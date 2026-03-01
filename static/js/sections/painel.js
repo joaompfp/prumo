@@ -146,6 +146,140 @@ App.registerSection('painel', async () => {
       body.innerHTML = '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
     }
 
+    // ── Track B: PT vs Mundo subsection ────────────────────────────
+    async function renderPTvsMundo(parentEl) {
+      const COMPARISONS = [
+        { label: 'Inflação (HICP)',   indicator: 'hicp',            source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27',  unit: '%',  decimals: 1 },
+        { label: 'Desemprego',        indicator: 'unemployment',    source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27',  unit: '%',  decimals: 1 },
+        { label: 'Crescimento PIB',   indicator: 'gdp_growth',      source: 'WORLDBANK', ref: 'EU',  refLabel: 'UE',     unit: '%',  decimals: 2 },
+        { label: 'PIB per Capita PPP',indicator: 'gdp_per_capita_ppp',source:'WORLDBANK',ref: 'EU',  refLabel: 'UE',     unit: '$',  decimals: 0 },
+      ];
+
+      const section = document.createElement('div');
+      section.className = 'pt-mundo-section';
+      section.innerHTML = `
+        <div class="section-label">Portugal vs Mundo · Comparação de Referência</div>
+        <div class="pt-mundo-grid" id="pt-mundo-grid">
+          ${COMPARISONS.map((_, i) => `<div class="pt-mundo-card" id="pt-mundo-card-${i}">
+            <div class="loading-state" style="height:80px"><div class="loading-spinner"></div></div>
+          </div>`).join('')}
+        </div>`;
+      parentEl.appendChild(section);
+
+      // Fetch all comparisons in parallel
+      await Promise.allSettled(COMPARISONS.map(async (cmp, i) => {
+        const cardEl = document.getElementById(`pt-mundo-card-${i}`);
+        try {
+          const since = '2018';
+          const url = `/api/mundo?indicator=${encodeURIComponent(cmp.indicator)}&source=${cmp.source}&countries=PT,${cmp.ref}&since=${since}`;
+          const data = await API.get(url);
+          const series = data.series || [];
+          const ptSeries  = series.find(s => s.country === 'PT');
+          const refSeries = series.find(s => s.country === cmp.ref);
+
+          const ptLast  = ptSeries?.data?.at(-1);
+          const refLast = refSeries?.data?.at(-1);
+
+          const dec = cmp.decimals ?? 1;
+          const ptVal  = ptLast?.value  != null ? Number(ptLast.value).toFixed(dec) : 'n/d';
+          const refVal = refLast?.value != null ? Number(refLast.value).toFixed(dec) : 'n/d';
+          const period = ptLast?.period || '';
+
+          let deltaHtml = '';
+          if (ptLast?.value != null && refLast?.value != null) {
+            const delta = ptLast.value - refLast.value;
+            const sign  = delta > 0 ? '+' : '';
+            const cls   = delta > 0 ? 'positive' : (delta < 0 ? 'negative' : '');
+            const dStr  = cmp.decimals === 0 ? Math.round(delta).toLocaleString('pt-PT') : delta.toFixed(cmp.decimals ?? 1);
+            deltaHtml = `<div class="pt-mundo-delta ${cls}">PT ${sign}${dStr}${cmp.unit} vs ${cmp.refLabel}</div>`;
+          }
+
+          const unitDisp = cmp.unit === '€' ? '€' : cmp.unit;
+          cardEl.innerHTML = `
+            <div class="pt-mundo-card-title">${cmp.label}</div>
+            <div class="pt-mundo-compare-row">
+              <div class="pt-mundo-col pt-col">
+                <div class="pt-mundo-col-label">🇵🇹 Portugal</div>
+                <div class="pt-mundo-col-value">${ptVal}<span class="pt-mundo-col-unit"> ${unitDisp}</span></div>
+              </div>
+              <div class="pt-mundo-col ref-col">
+                <div class="pt-mundo-col-label">🇪🇺 ${cmp.refLabel}</div>
+                <div class="pt-mundo-col-value">${refVal}<span class="pt-mundo-col-unit"> ${unitDisp}</span></div>
+              </div>
+            </div>
+            ${deltaHtml}
+            ${period ? `<div class="pt-mundo-col-period">Último dado: ${period}</div>` : ''}`;
+        } catch(e) {
+          if (cardEl) cardEl.innerHTML = `<div class="pt-mundo-card-title">${cmp.label}</div><div class="error-state" style="height:60px">Erro ao carregar</div>`;
+        }
+      }));
+    }
+
+    // ── Track C: Haiku analysis card ─────────────────────────────────
+    async function renderHaikuAnalysis(parentEl, kpis) {
+      const topKpis = kpis
+        .filter(k => k.spark && k.spark.length > 0 && k.value != null)
+        .slice(0, 5);
+
+      if (!topKpis.length) return;
+
+      const section = document.createElement('div');
+      section.className = 'haiku-analysis-section';
+      section.innerHTML = `
+        <div class="haiku-card" id="haiku-analysis-card">
+          <div class="haiku-card-header">
+            <span class="haiku-badge">Análise IA</span>
+            <span class="haiku-model-tag">Claude Haiku · Interpretação automática</span>
+          </div>
+          <div class="haiku-loading" id="haiku-loading">
+            <div class="loading-spinner" style="width:14px;height:14px"></div>
+            <span>A gerar análise interpretativa…</span>
+          </div>
+          <div class="haiku-text" id="haiku-text" style="display:none"></div>
+        </div>`;
+      parentEl.appendChild(section);
+
+      try {
+        const seriesPayload = topKpis.map(k => ({
+          source: k.source || 'INE',
+          indicator: k.id || k.indicator,
+          label: k.label,
+          unit: k.unit || '',
+          data: (k.spark || []).map((v, i) => ({ period: `T-${topKpis[0].spark.length - i}`, value: v })),
+        }));
+
+        const resp = await fetch('/api/interpret', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ series: seriesPayload, from: '', to: '' }),
+        });
+        const result = await resp.json();
+
+        const loadEl = document.getElementById('haiku-loading');
+        const textEl = document.getElementById('haiku-text');
+        if (loadEl) loadEl.style.display = 'none';
+        if (textEl) {
+          if (result.text) {
+            textEl.textContent = result.text;
+            textEl.style.display = 'block';
+          } else {
+            textEl.textContent = 'Análise não disponível (token Haiku não configurado).';
+            textEl.style.display = 'block';
+            textEl.style.color = 'var(--c-muted)';
+          }
+        }
+      } catch(e) {
+        const loadEl = document.getElementById('haiku-loading');
+        const textEl = document.getElementById('haiku-text');
+        if (loadEl) loadEl.style.display = 'none';
+        if (textEl) {
+          textEl.textContent = 'Análise indisponível.';
+          textEl.style.display = 'block';
+          textEl.style.color = 'var(--c-muted)';
+        }
+      }
+    }
+
     // ── WP-9: Painel card → Explorador deep-link ────────────────────
     body.addEventListener('click', (e) => {
       const card = e.target.closest('.kpi-card[data-source][data-indicator]');
@@ -166,6 +300,11 @@ App.registerSection('painel', async () => {
         } catch(e) { console.warn('[painel] sparkline error:', kpi.id, e); }
       }
     });
+
+    // ── Render PT vs Mundo + Haiku sections ──────────────────────────
+    const pSection = body.querySelector('.painel-sections') || body;
+    renderPTvsMundo(pSection);
+    renderHaikuAnalysis(pSection, allKpis);
 
   } catch(e) {
     console.error('[painel] init error:', e);

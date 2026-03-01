@@ -101,12 +101,13 @@ body {
   align-items: center;
   gap: 0;
   padding: 0 var(--sp-xl) 0 var(--sp-lg);
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   font-weight: 700;
-  font-size: 1.6rem;
+  font-size: 1.45rem;
   color: var(--c-text);
   white-space: nowrap;
   border-right: 1px solid var(--c-border);
-  letter-spacing: 0.5px;
+  letter-spacing: -0.3px;
 }
 
 .nav-brand-link {
@@ -600,4 +601,14 @@ body {
 }
 .site-footer a:hover {
   color: var(--c-pt);
+}
+
+/* ── Footer dev credit ───────────────────────────────────────────── */
+.footer-dev {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+}
+.footer-dev strong {
+  color: var(--c-pt);
+  font-weight: 600;
 }

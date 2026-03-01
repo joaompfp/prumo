@@ -1238,3 +1238,190 @@
     gap: var(--sp-sm);
   }
 }
+
+/* ── Track B: PT vs Mundo — Painel subsection ────────────────────── */
+.pt-mundo-section {
+  margin-top: var(--sp-2xl);
+  padding-top: var(--sp-xl);
+  border-top: 2px solid var(--c-border);
+}
+
+.pt-mundo-section .section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: var(--sp-md);
+  border-left: 2px solid var(--c-eu);
+  padding-left: 8px;
+}
+
+.pt-mundo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-md);
+}
+
+@media (max-width: 768px) {
+  .pt-mundo-grid { grid-template-columns: 1fr; }
+}
+
+.pt-mundo-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-md) var(--sp-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.pt-mundo-card-title {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.pt-mundo-compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-md);
+  margin-top: var(--sp-xs);
+}
+
+.pt-mundo-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pt-mundo-col-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pt-mundo-col-value {
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.pt-mundo-col.pt-col .pt-mundo-col-value {
+  color: var(--c-pt);
+}
+
+.pt-mundo-col.ref-col .pt-mundo-col-value {
+  color: var(--c-eu);
+}
+
+.pt-mundo-col-unit {
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  color: var(--c-text-sub);
+}
+
+.pt-mundo-col-period {
+  font-size: 10px;
+  color: var(--c-muted);
+}
+
+.pt-mundo-delta {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-muted);
+  margin-top: var(--sp-xs);
+  padding-top: var(--sp-xs);
+  border-top: 1px solid var(--c-border);
+}
+
+.pt-mundo-delta.positive { color: var(--c-positive); }
+.pt-mundo-delta.negative { color: var(--c-negative); }
+
+/* ── Track C: Haiku Analysis Card ───────────────────────────────── */
+.haiku-analysis-section {
+  margin-top: var(--sp-xl);
+}
+
+.haiku-card {
+  background: linear-gradient(135deg, #FFF9F5 0%, #FFF5F5 100%);
+  border: 1px solid #F5C0C0;
+  border-left: 4px solid var(--c-pt);
+  border-radius: var(--radius);
+  padding: var(--sp-md) var(--sp-lg);
+  margin-top: var(--sp-md);
+}
+
+.haiku-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-sm);
+}
+
+.haiku-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-pt);
+  background: #FFE8E8;
+  border: 1px solid #FFCDD2;
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.haiku-model-tag {
+  font-size: 9px;
+  color: var(--c-muted);
+  font-style: italic;
+}
+
+.haiku-text {
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.haiku-loading {
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+/* ── Ficha V9: Additional typography readability ─────────────────── */
+/* Larger, clearer methodology text */
+#ficha .methodology-content p,
+#ficha .methodology-content li {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--c-text-sub);
+}
+
+/* Source title more prominent */
+#ficha .source-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+/* Coverage pill for each indicator row */
+.coverage-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--c-surface-2);
+  color: var(--c-muted);
+  white-space: nowrap;
+}
