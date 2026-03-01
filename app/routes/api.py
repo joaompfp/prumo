@@ -18,6 +18,7 @@ from ..services.fosso import build_fosso
 from ..services.produtividade import build_produtividade
 from ..services.explorador import build_explorador_catalog
 from ..services.series import query_series, query_compare
+from ..services.mundo import get_mundo_data, MUNDO_INDICATORS, COUNTRY_GROUPS_MUNDO
 from ..services.briefing import build_briefing, build_summary
 
 router = APIRouter(prefix="/api")
@@ -72,6 +73,36 @@ def api_compare(
 ):
     return query_compare(dataset, countries, months, indicator, source, since)
 
+
+
+@router.get("/mundo")
+def api_mundo(
+    indicator: str = Query("unemployment"),
+    source: str = Query("EUROSTAT"),
+    countries: str = Query("PT,ES,GR,CZ,HU,PL,RO,SK"),
+    since: str = Query(None),
+    to: str = Query(None),
+):
+    """PT vs Mundo comparison endpoint. Uses same DB backend as /api/compare."""
+    return get_mundo_data(indicator, source, countries, since, to)
+
+
+@router.get("/mundo/meta")
+def api_mundo_meta():
+    """Return available indicators and country groups for mundo section."""
+    return {
+        "indicators": MUNDO_INDICATORS,
+        "country_groups": COUNTRY_GROUPS_MUNDO,
+    }
+
+
+@router.post("/interpret")
+async def interpret_endpoint(request: Request):
+    """Call Claude Haiku to interpret chart series data. Returns None if token unconfigured."""
+    from ..services.interpret import interpret_chart
+    body = await request.json()
+    text = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""))
+    return {"text": text, "model": "claude-haiku-4-5-20250414" if text else None}
 
 @router.get("/catalog")
 def api_catalog():

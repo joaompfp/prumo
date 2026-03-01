@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 const App = (() => {
-  const SECTIONS = ['painel', 'europa', 'explorador', 'ficha'];
+  const SECTIONS = ['painel', 'europa', 'mundo', 'explorador', 'ficha'];
   const _initialized = {};
   const _loaders = {};
 
@@ -15,7 +15,7 @@ const App = (() => {
     'energia':       'explorador',
     'emprego':       'explorador',
     'macro':         'explorador',
-    'analise':       'painel',
+    'analise':       'explorador',
     'fosso':         'painel',
     'produtividade': 'painel',
   };

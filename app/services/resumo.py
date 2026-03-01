@@ -35,9 +35,11 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
         series = [{"period": r[0], "value": r[1], "unit": r[2]} for r in rows]
         latest = series[-1]
 
-        # Saldo/index indicators — show absolute pp change, not % change
+        # Saldo/index/rate indicators — show absolute pp change, not % change
         # Applies to: confidence (saldo), cli (OECD index ~100), order_books (saldo)
-        if kpi_id in ("confidence", "cli", "order_books"):
+        #             euribor_* (interest rates in % — pp delta is the meaningful metric)
+        _PP_INDICATORS = ("confidence", "cli", "order_books", "euribor_3m", "euribor_6m", "euribor_12m")
+        if kpi_id in _PP_INDICATORS:
             yoy = None
             if len(series) >= 13:
                 try:
@@ -45,7 +47,7 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
                     target = f"{int(yr)-1}-{mo}"
                     for pt in series:
                         if pt["period"] == target and pt["value"] is not None:
-                            yoy = round(latest["value"] - pt["value"], 1)  # absolute pp
+                            yoy = round(latest["value"] - pt["value"], 2)  # absolute pp
                             break
                 except:
                     pass
@@ -109,6 +111,22 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
             if yoy is not None:
                 sign = "+" if yoy >= 0 else ""
                 context = f"{sign}{yoy:.1f} pp face ao ano anterior"
+        elif kpi_id in ("euribor_3m", "euribor_6m", "euribor_12m"):
+            # Rate indicators: show pp change with month reference (e.g. "descida de 0.97 pp desde dezembro 2024")
+            if yoy is not None:
+                try:
+                    from datetime import datetime as _dt
+                    import calendar
+                    yr_prev = int(latest["period"][:4]) - 1
+                    mo_prev = int(latest["period"][5:7])
+                    month_names_pt = ["janeiro","fevereiro","março","abril","maio","junho",
+                                      "julho","agosto","setembro","outubro","novembro","dezembro"]
+                    month_name = month_names_pt[mo_prev - 1]
+                    direction = "descida" if yoy < 0 else "subida"
+                    context = f"{direction} de {abs(yoy):.2f} pp desde {month_name} {yr_prev}"
+                except:
+                    sign = "+" if yoy >= 0 else ""
+                    context = f"{sign}{yoy:.2f} pp face ao ano anterior"
         elif invert_sentiment and trend_dir == "up" and yoy is not None and yoy < 0 and trend_months >= 3:
             # Conflict: trend going up (bad) but YoY is down (good for invert indicators)
             # Show YoY to avoid confusing "em subida" with green sentiment
@@ -119,8 +137,9 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
         elif yoy is not None:
             context = f"{'Subiu' if yoy > 0 else 'Desceu'} {abs(yoy):.1f}% face ao ano anterior"
 
-        # Saldo/index indicators display yoy in pp
-        yoy_display_unit = "pp" if kpi_id in ("confidence", "cli", "order_books") else None
+        # Saldo/index/rate indicators display yoy in pp
+        _PP_DISPLAY = ("confidence", "cli", "order_books", "euribor_3m", "euribor_6m", "euribor_12m")
+        yoy_display_unit = "pp" if kpi_id in _PP_DISPLAY else None
 
         return {
             "id": kpi_id,

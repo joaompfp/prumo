@@ -113,7 +113,7 @@ App.registerSection('europa', async () => {
   COUNTRY_GROUPS.forEach(g => g.defaultSelected.forEach(c => selectedCountries.add(c)));
   LOCKED_COUNTRIES.forEach(c => selectedCountries.add(c));
 
-  let _viewMode = 'lines'; // 'lines' | 'snapshot'
+  let _viewMode = 'lines'; // 'lines' | 'snapshot' | 'mundo'
   let _activeIndicator = EUROPA_INDICATORS[0];
   let _startYear = 2015;
   let _activePreset = null;
@@ -189,7 +189,7 @@ App.registerSection('europa', async () => {
       LOCKED_COUNTRIES.forEach(c => selectedCountries.add(c));
     }
     if (!isNaN(hashState.since)) _startYear = hashState.since;
-    _viewMode = hashState.view || 'lines';
+    _viewMode = ['lines','snapshot','mundo'].includes(hashState.view) ? hashState.view : 'lines';
   }
 
   // ── Toast — usa App.showToast (WP-5 unified) ─────────────────────
@@ -205,9 +205,11 @@ App.registerSection('europa', async () => {
             `<option value="${ind.id}" ${ind.id === _activeIndicator.id ? 'selected' : ''}>${ind.label}</option>`
           ).join('')}
         </select>
-        <button id="eu-view-toggle" class="swd-select" style="cursor:pointer;padding:5px 12px;white-space:nowrap">
-          ${_viewMode === 'lines' ? 'Linhas' : 'Snapshot'}
-        </button>
+        <div class="eu-view-tabs" id="eu-view-tabs">
+          <button class="eu-view-tab ${_viewMode === 'lines' ? 'active' : ''}" data-view="lines">Linhas</button>
+          <button class="eu-view-tab ${_viewMode === 'snapshot' ? 'active' : ''}" data-view="snapshot">Snapshot</button>
+          <button class="eu-view-tab ${_viewMode === 'mundo' ? 'active' : ''}" data-view="mundo">PT+UE27</button>
+        </div>
         <button class="share-btn" id="eu-share-btn">Partilhar</button>
       </div>
 
@@ -245,7 +247,7 @@ App.registerSection('europa', async () => {
     const pickerEl         = document.getElementById('eu-country-picker');
     const pickerDetails    = document.getElementById('eu-picker-details');
     const startYearSel     = document.getElementById('europa-since');
-    const viewToggleBtn    = document.getElementById('eu-view-toggle');
+    // eu-view-toggle replaced by eu-view-tabs
     const shareBtn         = document.getElementById('eu-share-btn');
 
     // ── Indicator selection ──────────────────────────────────────
@@ -257,10 +259,12 @@ App.registerSection('europa', async () => {
       loadEuropa();
     });
 
-    // ── View toggle ──────────────────────────────────────────────
-    viewToggleBtn.addEventListener('click', () => {
-      _viewMode = _viewMode === 'lines' ? 'snapshot' : 'lines';
-      viewToggleBtn.textContent = _viewMode === 'lines' ? 'Linhas' : 'Snapshot';
+    // ── View tabs ──────────────────────────────────────────────
+    document.getElementById('eu-view-tabs').addEventListener('click', e => {
+      const btn = e.target.closest('[data-view]');
+      if (!btn) return;
+      _viewMode = btn.dataset.view;
+      document.querySelectorAll('.eu-view-tab').forEach(b => b.classList.toggle('active', b.dataset.view === _viewMode));
       loadEuropa();
     });
 
@@ -311,7 +315,7 @@ App.registerSection('europa', async () => {
         // WP-8: Auto-switch to snapshot when "Todos EU" (all countries)
         if (preset.countries === null && _viewMode === 'lines') {
           _viewMode = 'snapshot';
-          viewToggleBtn.textContent = 'Snapshot';
+          document.querySelectorAll('.eu-view-tab').forEach(b => b.classList.toggle('active', b.dataset.view === 'snapshot'));
         }
         loadEuropa();
       });
@@ -416,6 +420,8 @@ App.registerSection('europa', async () => {
 
         if (_viewMode === 'snapshot') {
           renderSnapshot(series);
+        } else if (_viewMode === 'mundo') {
+          renderMundo(series);
         } else {
           renderLines(series);
         }
@@ -522,6 +528,91 @@ App.registerSection('europa', async () => {
           } : undefined,
         }],
         grid: { containLabel: true, left: 80, right: 60, top: 10, bottom: 20 },
+      });
+    }
+
+    function renderMundo(series) {
+      // Mundo view: PT vs UE-27 side-by-side across time, with gap highlighted
+      const ptSeries  = series.find(s => s.country === 'PT');
+      const euSeries  = series.find(s => ['EU27','EU27_2020','EU'].includes(s.country));
+
+      if (!ptSeries || !euSeries) {
+        document.getElementById('eu-legend').innerHTML =
+          `<span style="color:var(--c-muted)">Requer PT e UE-27 seleccionados.</span>`;
+        return;
+      }
+
+      // Build period union
+      const allPeriods = [...new Set([
+        ...(ptSeries.data || []).map(d => d.period),
+        ...(euSeries.data || []).map(d => d.period),
+      ])].sort();
+
+      const ptByP  = Object.fromEntries((ptSeries.data || []).map(d => [d.period, d.value]));
+      const euByP  = Object.fromEntries((euSeries.data || []).map(d => [d.period, d.value]));
+
+      const ptVals = allPeriods.map(p => ptByP[p] ?? null);
+      const euVals = allPeriods.map(p => euByP[p] ?? null);
+      const gapVals = allPeriods.map(p => {
+        const pt = ptByP[p]; const eu = euByP[p];
+        return (pt != null && eu != null) ? +(pt - eu).toFixed(2) : null;
+      });
+
+      // Legend
+      const ptLast  = ptVals.filter(v=>v!=null).at(-1);
+      const euLast  = euVals.filter(v=>v!=null).at(-1);
+      const gapLast = gapVals.filter(v=>v!=null).at(-1);
+      document.getElementById('eu-legend').innerHTML = `
+        <div class="legend-item">
+          <span>🇵🇹</span><div class="legend-dot" style="background:#CC0000"></div>
+          <span style="font-weight:700">Portugal</span>
+          <span style="color:#CC0000;font-weight:600">${ptLast != null ? fmt.num(ptLast) : 'n/d'}</span>
+        </div>
+        <div class="legend-item">
+          <span>🇪🇺</span><div class="legend-dot" style="background:#4A90D9"></div>
+          <span>UE-27</span>
+          <span style="color:#4A90D9;font-weight:600">${euLast != null ? fmt.num(euLast) : 'n/d'}</span>
+        </div>
+        <div class="legend-item" style="margin-left:var(--sp-md)">
+          <span style="font-size:11px;color:var(--c-muted)">Diferença PT−UE27:</span>
+          <span style="font-weight:700;color:${gapLast != null && gapLast >= 0 ? '#2E7D32' : '#CC0000'}">${gapLast != null ? (gapLast >= 0 ? '+' : '') + fmt.num(gapLast) : 'n/d'}</span>
+        </div>`;
+
+      const periods = allPeriods.map(p => fmt.period(p));
+      const chartEl = document.getElementById('europa-chart');
+      if (_europaChart) { SWD.destroyChart(_europaChart); }
+      _europaChart = SWD.createSWDChart(chartEl, {
+        ...SWD.baseOptions(),
+        legend: { show: false },
+        xAxis: SWD.timeAxis(periods, { interval: Math.max(0, Math.floor(periods.length / 8) - 1) }),
+        yAxis: SWD.valueAxis({ scale: true }),
+        series: [
+          {
+            type: 'line', name: 'Portugal',
+            data: ptVals, symbol: 'none',
+            lineStyle: { color: '#CC0000', width: 3 },
+            itemStyle: { color: '#CC0000' }, z: 10,
+            endLabel: { show: true, formatter: 'PT', fontSize: 10, color: '#CC0000', fontFamily: 'Inter, system-ui, sans-serif' },
+          },
+          {
+            type: 'line', name: 'UE-27',
+            data: euVals, symbol: 'none',
+            lineStyle: { color: '#4A90D9', width: 2, type: 'dashed' },
+            itemStyle: { color: '#4A90D9' }, z: 5,
+            endLabel: { show: true, formatter: 'EU27', fontSize: 10, color: '#4A90D9', fontFamily: 'Inter, system-ui, sans-serif' },
+          },
+          {
+            type: 'bar', name: 'Diferença PT−UE27',
+            data: gapVals.map(v => ({
+              value: v,
+              itemStyle: { color: v != null && v >= 0 ? 'rgba(46,125,50,0.35)' : 'rgba(204,0,0,0.25)' }
+            })),
+            barMaxWidth: 16,
+            yAxisIndex: 0,
+            z: 1,
+          },
+        ],
+        grid: { containLabel: true, left: 40, right: 90, top: 20, bottom: 30 },
       });
     }
 

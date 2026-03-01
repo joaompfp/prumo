@@ -17,6 +17,7 @@ def build_industria(period_years=10):
         "metals_base":    {"cae": "24",  "name": "Metalurgia de Base", "indicator": "ipi_seasonal_cae_24"},
         "metal_products": {"cae": "25",  "name": "Produtos Metálicos", "indicator": "ipi_seasonal_cae_25"},
         "machinery":      {"cae": "28",  "name": "Máquinas e Equipamentos", "indicator": "ipi_seasonal_cae_28"},
+        "vehicles":       {"cae": "29",  "name": "Veículos Automóveis", "indicator": "ipi_seasonal_cae_29"},
         "total":          {"cae": "TOT", "name": "Total Indústria", "indicator": "ipi_seasonal_cae_TOT"},
     }
 

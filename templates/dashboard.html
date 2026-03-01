@@ -22,6 +22,8 @@
   <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Space Grotesk: clean geometric sans-serif para logo -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
   <!-- BASE_PATH injection -->
   <script>window.__BASE_PATH__ = "{{ base_path }}";</script>
@@ -37,12 +39,13 @@
 
 <!-- NAV -->
 <nav class="nav" role="navigation" aria-label="Secções do dashboard">
-  <div class="nav-brand" title="Indicadores Económicos Portugal — Plataforma de Dados">
-    CAE <span>Dashboard</span>
-  </div>
+  <a href="https://joao.date/dados" class="nav-brand-link" title="Indicadores Económicos Portugal — Plataforma de Dados">
+    <div class="nav-brand"><span class="nav-brand-cae">CAE</span><span class="nav-brand-sep">/</span><span class="nav-brand-pt">PT</span></div>
+  </a>
   <a class="nav-tab" href="#painel"      data-section="painel"      aria-label="Painel de Indicadores">Painel</a>
-  <a class="nav-tab" href="#europa"      data-section="europa"      aria-label="Comparação Europeia">Europa</a>
-  <a class="nav-tab" href="#explorador"  data-section="explorador"  aria-label="Explorador de Dados">Explorador</a>
+  <a class="nav-tab" href="#europa"      data-section="europa"      aria-label="Comparação Europeia">PT vs Europa</a>
+  <a class="nav-tab" href="#mundo"       data-section="mundo"       aria-label="PT vs Mundo">PT vs Mundo</a>
+  <a class="nav-tab" href="#explorador"  data-section="explorador"  aria-label="Análise de Dados">Análise</a>
   <a class="nav-tab" href="#ficha"       data-section="ficha"       aria-label="Ficha Técnica">Ficha</a>
 </nav>
 
@@ -72,6 +75,22 @@
     <div class="loading-state">
       <div class="loading-spinner"></div>
       <span>A carregar dados europeus…</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- #mundo -->
+<section id="mundo" class="section">
+  <div class="section-header">
+    <div class="section-eyebrow">PT VS MUNDO · COMPARAÇÃO GLOBAL</div>
+    <h2 class="section-title">A carregar comparação mundial…</h2>
+    <p class="section-subtitle"></p>
+  </div>
+  <div class="section-body">
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <span>A carregar dados mundiais…</span>
     </div>
   </div>
 </section>
@@ -112,7 +131,8 @@
 <script src="{{ base_path }}/static/js/swd-charts.js"></script>
 <script src="{{ base_path }}/static/js/sections/painel.js"></script>
 <script src="{{ base_path }}/static/js/sections/europa.js"></script>
-<script src="{{ base_path }}/static/js/sections/explorador.js"></script>
+<script src="{{ base_path }}/static/js/sections/mundo.js"></script>
+<script src="{{ base_path }}/static/js/sections/analise.js"></script>
 <script src="{{ base_path }}/static/js/sections/ficha.js"></script>
 
 <noscript>
@@ -127,6 +147,20 @@
     </ul>
   </div>
 </noscript>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copy">&copy; 2026 CAE</span>
+    <span class="footer-sep">&mdash;</span>
+    <a href="https://o.joao.date" class="footer-link">o.joao.date</a>
+    <span class="footer-sep">&middot;</span>
+    <a href="https://joao.date/dados" class="footer-link">CAE Dashboard</a>
+    <span class="footer-sep">&middot;</span>
+    <span class="footer-sources">Dados: INE · Eurostat · Banco de Portugal · OCDE</span>
+    <span class="footer-sep">&middot;</span>
+    <span class="footer-dev">Desenvolvido por <strong>Jarbas</strong></span>
+  </div>
+</footer>
 
 </body>
 </html>

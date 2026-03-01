@@ -63,9 +63,13 @@ const API = (() => {
 
 /* Formatting utilities */
 const fmt = {
-  num: (v, decimals = 1) => {
+  num: (v, decimals) => {
     if (v === null || v === undefined || isNaN(v)) return 'n/d';
-    return Number(v).toFixed(decimals);
+    const n = Number(v);
+    if (decimals !== undefined) return n.toFixed(decimals);
+    const abs = Math.abs(n);
+    const d = abs >= 100 ? 0 : abs >= 10 ? 1 : 3;  // <10 (combustíveis, elect., euribor) → 3 casas
+    return n.toFixed(d);
   },
   pct: (v, decimals = 1) => {
     if (v === null || v === undefined || isNaN(v)) return 'n/d';

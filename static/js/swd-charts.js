@@ -87,7 +87,7 @@ const SWD = (() => {
         },
         subtextStyle: {
           fontSize: 12,
-          color: '#888888',
+          color: '#666666',
           fontFamily: 'Inter, system-ui, sans-serif',
         },
       } : undefined,
@@ -133,7 +133,7 @@ const SWD = (() => {
       splitLine: { show: false },
       axisLabel: {
         fontSize: 10,
-        color: '#888888',
+        color: '#666666',
         fontFamily: 'Inter, system-ui, sans-serif',
         interval: opts.interval ?? defaultInterval,
         rotate: opts.rotate ?? 0,
@@ -157,7 +157,7 @@ const SWD = (() => {
       },
       axisLabel: {
         fontSize: 11,
-        color: '#888888',
+        color: '#666666',
         fontFamily: 'Inter, system-ui, sans-serif',
         formatter: opts.formatter || null,
       },

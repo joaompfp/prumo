@@ -99,7 +99,7 @@ App.registerSection('ficha', async () => {
               ${srcDesc ? `<p class="source-desc">${srcDesc}</p>` : ''}
             </div>
             <div class="source-header-right">
-              <span class="source-badge">${indicators.length} indicadores</span>
+              <span class="source-badge" data-source="${src}">${indicators.length} indicadores</span>
               ${urlHTML}
             </div>
           </div>

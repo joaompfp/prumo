@@ -3,16 +3,44 @@ from ..constants import CATALOG, FRED_SERIES, WB_CODES
 
 def compute_yoy(series):
     """Given a sorted list of {period, value}, compute YoY change for latest point.
-    Bug 5: tries exact match, then +/-1 month fallback, then any point from prev year."""
+    Handles both YYYY-MM (monthly) and YYYY (annual) period formats.
+    For monthly: tries annual entry of prev year first (handles mixed ERSE series),
+      then exact same month prev year, then +/-5 months fallback.
+    For annual: looks for prev year annual entry directly."""
     if not series:
         return None
     latest = series[-1]
     if latest["value"] is None:
         return None
     try:
-        yr, mo = latest["period"].split("-")
+        period = latest["period"]
+        period_map = {pt["period"]: pt for pt in series if pt["value"] is not None}
+
+        if "-" not in period:
+            # Annual period (YYYY) — look for previous year annual entry
+            prev_key = str(int(period) - 1)
+            if prev_key in period_map:
+                prev_val = period_map[prev_key]["value"]
+                if prev_val and prev_val != 0:
+                    return round((latest["value"] - prev_val) / abs(prev_val) * 100, 1)
+            return None
+
+        # Monthly period (YYYY-MM)
+        yr, mo = period.split("-")
         yr, mo = int(yr), int(mo)
         prev_yr = yr - 1
+
+        # B5 FIX: for mixed YYYY / YYYY-MM series (e.g. ERSE semi-annual tariff revisions),
+        # try the annual entry of prev year FIRST — gives the correct year-over-year reference
+        # (e.g. '2024-06' compares to '2023' annual, not to '2023-07' mid-year revision).
+        # Safe for pure monthly series (INE, BPORTUGAL, OECD): they have no YYYY entries
+        # in period_map, so the lookup fails and falls through to the monthly search.
+        prev_annual = str(prev_yr)
+        if prev_annual in period_map:
+            prev_val = period_map[prev_annual]["value"]
+            if prev_val and prev_val != 0:
+                return round((latest["value"] - prev_val) / abs(prev_val) * 100, 1)
+
         # Build month candidates: exact, then adjacent months
         month_candidates = [mo]
         for delta in range(1, 6):  # try up to +/-5 months
@@ -21,7 +49,6 @@ def compute_yoy(series):
             if 1 <= m_plus  <= 12: month_candidates.append(m_plus)
             if 1 <= m_minus <= 12: month_candidates.append(m_minus)
 
-        period_map = {pt["period"]: pt for pt in series if pt["value"] is not None}
         for m in month_candidates:
             target = f"{prev_yr}-{m:02d}"
             if target in period_map:

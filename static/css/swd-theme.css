@@ -22,15 +22,15 @@
   --c-neutral:  #666666;
 
   /* UI */
-  --c-bg:       #FFFFFF;
-  --c-surface:  #F8F9FA;
-  --c-surface-2: #EBEBEB; /* slightly darker than --c-surface for table headers */
-  --c-border:   #EBEBEB;
+  --c-bg:       #F6F4F1;   /* fundo quente — off-white */
+  --c-surface:  #FFFFFF;   /* cartões brancos sobre fundo quente */
+  --c-surface-2: #F2F0ED; /* ligeiramente mais escuro que fundo para theads */
+  --c-border:   #E2DED9;
   --c-text:     #1A1A1A;
-  --c-text-sub: #555555;
-  --c-nav-bg:   #2B2B2B;
-  --c-nav-text: rgba(255,255,255,0.72);
-  --c-nav-active: #FFFFFF;
+  --c-text-sub: #5A5550;
+  --c-nav-bg:   #FFFFFF;   /* nav clara */
+  --c-nav-text: #5A5550;
+  --c-nav-active: #1A1A1A;
   --c-accent:   #CC0000;
 
   /* Spacing */
@@ -85,6 +85,8 @@ body {
   top: 0;
   z-index: 100;
   background: var(--c-nav-bg);
+  border-bottom: 1px solid var(--c-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   display: flex;
   align-items: stretch;
   gap: 0;
@@ -97,18 +99,25 @@ body {
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: var(--sp-sm);
+  gap: 0;
   padding: 0 var(--sp-xl) 0 var(--sp-lg);
   font-weight: 700;
-  font-size: var(--fs-sm);
-  color: #FFFFFF;
+  font-size: 1.6rem;
+  color: var(--c-text);
   white-space: nowrap;
-  border-right: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid var(--c-border);
   letter-spacing: 0.5px;
 }
 
+.nav-brand-link {
+  display: flex;
+  align-items: stretch;
+  text-decoration: none;
+  color: inherit;
+}
+
 .nav-brand span {
-  color: #FF6666; /* was var(--c-pt) = #CC0000 — fails WCAG AA (2.41:1) on #2B2B2B nav; #FF6666 = ~5.0:1 ✅ */
+  color: var(--c-pt);   /* #CC0000 — WCAG AA (5.5:1) sobre nav branca ✅ */
 }
 
 .nav-tab {
@@ -126,7 +135,7 @@ body {
 }
 
 .nav-tab:hover {
-  color: #FFFFFF;
+  color: var(--c-text);
 }
 
 .nav-tab.active {
@@ -574,4 +583,21 @@ body {
   background: #990000;
   border-color: #990000;
   color: #FFFFFF;
+}
+
+/* ── Site Footer ─────────────────────────────────────────────────── */
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.75rem;
+  color: var(--c-muted);
+  border-top: 1px solid var(--c-border);
+  margin-top: auto;
+}
+.site-footer a {
+  color: var(--c-muted);
+  text-decoration: none;
+}
+.site-footer a:hover {
+  color: var(--c-pt);
 }

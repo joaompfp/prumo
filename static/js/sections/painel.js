@@ -57,7 +57,7 @@ App.registerSection('painel', async () => {
     }
 
     // Exclude technical/non-citizen indicators from headline
-    const HEADLINE_BLACKLIST = new Set(['spread_pt_de', 'cli', 'order_books', 'industrial_employment', 'industrial_production', 'energy_dependence', 'wages_industry']);
+    const HEADLINE_BLACKLIST = new Set(['spread_pt_de', 'cli', 'order_books', 'industrial_employment', 'industrial_production', 'ipi_total', 'energy_dependence', 'wages_industry', 'gdp_per_capita', 'rnd_pct_gdp', 'employment_rate', 'copper', 'aluminum', 'natural_gas']);
     const kpisWithYoY = allKpis.filter(k => k.yoy !== null && k.yoy !== undefined && !HEADLINE_BLACKLIST.has(k.id));
     const byAbsYoY = kpisWithYoY.slice().sort((a, b) => Math.abs(b.yoy) - Math.abs(a.yoy));
     const top1 = byAbsYoY[0];
@@ -76,6 +76,14 @@ App.registerSection('painel', async () => {
     if (titleEl) titleEl.textContent = titleMsg;
     if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} indicadores · Fonte: INE, Eurostat, WorldBank`;
 
+    // Source label map
+    const SOURCE_LABELS = {
+      'INE': 'INE', 'EUROSTAT': 'Eurostat', 'FRED': 'FRED',
+      'BPORTUGAL': 'Banco de Portugal', 'OECD': 'OCDE',
+      'WORLDBANK': 'Banco Mundial', 'REN': 'REN',
+      'ERSE': 'ERSE', 'DGEG': 'DGEG',
+    };
+
     // ── KPI card template (shared) ───────────────────────────────────
     function renderKpiCard(kpi) {
       const sentiment = kpi.sentiment || 'neutral';
@@ -88,12 +96,20 @@ App.registerSection('painel', async () => {
       const value = kpi.value !== null && kpi.value !== undefined ? fmt.num(kpi.value) : 'n/d';
       const unit = kpi.unit || '';
       const context = kpi.context || '';
+      const description = kpi.description || '';
       const label = kpi.label || kpi.id;
       const hasSpark = kpi.spark && kpi.spark.length > 0;
+      const sourceLabel = kpi.source ? (SOURCE_LABELS[kpi.source] || kpi.source) : '';
 
+      const dataAttrs = kpi.source && kpi.indicator
+        ? ` data-source="${kpi.source}" data-indicator="${kpi.indicator}" title="Ver ${label} no Explorador"`
+        : '';
       return `
-      <div class="kpi-card ${sentiment}">
-        <div class="kpi-label">${label}</div>
+      <div class="kpi-card ${sentiment}"${dataAttrs}>
+        <div class="kpi-card-header">
+          <div class="kpi-label">${label}</div>
+          ${sourceLabel ? `<span class="kpi-source-tag">${sourceLabel}</span>` : ''}
+        </div>
         <div class="kpi-value-row">
           <span class="kpi-value">${value}</span>
           <span class="kpi-unit">${unit}</span>
@@ -103,6 +119,7 @@ App.registerSection('painel', async () => {
           <span class="kpi-arrow ${sentiment}">${arrow}</span>
           <span class="kpi-label" style="font-size:11px;letter-spacing:0.5px;">vs ano anterior</span>
         </div>
+        ${description ? `<div class="kpi-description">${description}</div>` : ''}
         ${context ? `<div class="kpi-context">${context}</div>` : ''}
         ${hasSpark ? `<div class="spark-container" id="spark-${kpi.id}"></div>` : ''}
       </div>`;
@@ -128,6 +145,13 @@ App.registerSection('painel', async () => {
       const kpis = allKpis;
       body.innerHTML = '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
     }
+
+    // ── WP-9: Painel card → Explorador deep-link ────────────────────
+    body.addEventListener('click', (e) => {
+      const card = e.target.closest('.kpi-card[data-source][data-indicator]');
+      if (!card || !card.dataset.source || !card.dataset.indicator) return;
+      window.location.hash = `#explorador?s=${encodeURIComponent(card.dataset.source + '/' + card.dataset.indicator)}`;
+    });
 
     // ── Sparklines (all KPIs regardless of render mode) ─────────────
     allKpis.forEach(kpi => {

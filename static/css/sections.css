@@ -50,6 +50,43 @@
   min-height: 160px;
 }
 
+#painel .kpi-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-xs);
+  margin-bottom: 2px;
+}
+
+#painel .kpi-source-tag {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-top: 2px;
+}
+
+#painel .kpi-description {
+  font-size: var(--fs-xs);
+  color: var(--c-text-sub);
+  line-height: 1.45;
+  margin-top: var(--sp-xs);
+}
+
+#painel .kpi-context {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  font-style: italic;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
 #painel .spark-container {
   height: 44px;
   margin-top: var(--sp-sm);
@@ -736,4 +773,468 @@
   font-weight: 400;
   color: var(--c-text-sub);
   letter-spacing: 0;
+}
+
+/* ── #mundo — PT vs Mundo section ──────────────────────────────── */
+.mundo-top-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-md);
+}
+
+.mundo-presets {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-sm);
+}
+
+#mundo .chart-container.tall {
+  height: 800px;
+  min-height: 400px;
+}
+
+/* ── AI Panel — Análise com Haiku ───────────────────────────────── */
+.analise-layout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.analise-layout .chart-col {
+  flex: 7;
+  min-width: 0;
+}
+
+#ai-panel {
+  flex: 3;
+  min-width: 220px;
+  background: #F9F7F4;
+  border-left: 3px solid #CC0000;
+  padding: 1rem 1.2rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  align-self: flex-start;
+  margin-top: 0;
+}
+
+#ai-panel .ai-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-muted);
+  margin-bottom: 0.75rem;
+}
+
+.ai-loading {
+  color: var(--c-muted);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .analise-layout {
+    flex-direction: column;
+  }
+  .analise-layout .chart-col {
+    width: 100%;
+    flex: none;
+  }
+  #ai-panel {
+    width: 100%;
+    flex: none;
+    border-left: none;
+    border-top: 3px solid #CC0000;
+    min-width: 0;
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Ficha — Tipografia e Legibilidade (V9) ─────────────────────── */
+
+/* Source badge com cor por fonte */
+#ficha .source-badge[data-source="INE"],
+#ficha .source-badge[data-source="EUROSTAT"] {
+  background: #E8EAF6;
+  color: #003399;
+  border: 1px solid #C5CAE9;
+}
+
+#ficha .source-badge[data-source="WORLDBANK"],
+#ficha .source-badge[data-source="OECD"] {
+  background: #E0F2F1;
+  color: #009999;
+  border: 1px solid #B2DFDB;
+}
+
+#ficha .source-badge[data-source="FRED"] {
+  background: #FFF3E0;
+  color: #E67E22;
+  border: 1px solid #FFE0B2;
+}
+
+#ficha .source-badge[data-source="DGEG"],
+#ficha .source-badge[data-source="ERSE"],
+#ficha .source-badge[data-source="REN"] {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #C8E6C9;
+}
+
+#ficha .source-badge[data-source="BPORTUGAL"] {
+  background: #FFEBEE;
+  color: #CC0000;
+  border: 1px solid #FFCDD2;
+}
+
+/* Hierarquia: título e metadados */
+#ficha .source-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 4px;
+}
+
+#ficha .source-desc {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  margin: 0;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Espaçamento entre source cards */
+#ficha .source-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Indicador label em destaque na tabela */
+#ficha .indicator-table td:nth-child(2) {
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+}
+
+/* Metadados em tom neutro */
+#ficha .indicator-table td:not(:nth-child(2)) {
+  color: var(--c-muted);
+  font-size: var(--fs-xs);
+}
+
+/* Coverage e observações como tiny text */
+#ficha .indicator-table td:nth-child(5),
+#ficha .indicator-table td:nth-child(6),
+#ficha .indicator-table td:nth-child(7) {
+  font-size: 11px;
+  color: var(--c-muted);
+}
+
+/* Mobile: layout em coluna, sem truncações */
+@media (max-width: 768px) {
+  #ficha .source-header {
+    flex-direction: column;
+  }
+  #ficha .source-header-right {
+    justify-content: flex-start;
+    margin-top: var(--sp-xs);
+  }
+  #ficha .ficha-meta {
+    flex-direction: column;
+    gap: var(--sp-xs);
+  }
+}
+
+/* Ficha header meta */
+.ficha-header {
+  margin-bottom: var(--sp-xl);
+}
+
+.ficha-meta {
+  display: flex;
+  gap: var(--sp-lg);
+  flex-wrap: wrap;
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+}
+
+.ficha-meta strong {
+  color: var(--c-text);
+}
+
+
+/* ── Ficha indicator table — V9 typography ──────────────────────── */
+#ficha .indicator-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+#ficha .indicator-table th {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--c-muted);
+  text-align: left;
+  padding: var(--sp-xs) var(--sp-md);
+  border-bottom: 2px solid var(--c-border);
+  white-space: nowrap;
+}
+
+#ficha .indicator-table td {
+  padding: 8px var(--sp-md);
+  border-bottom: 1px solid var(--c-border);
+  vertical-align: middle;
+}
+
+#ficha .indicator-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Indicator name: prominent */
+#ficha .indicator-table td:nth-child(2) {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--c-text);
+  min-width: 180px;
+}
+
+/* Metadata: muted */
+#ficha .indicator-table td:nth-child(1),
+#ficha .indicator-table td:nth-child(3),
+#ficha .indicator-table td:nth-child(4) {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+/* Coverage and count: tiny secondary */
+#ficha .indicator-table td:nth-child(5),
+#ficha .indicator-table td:nth-child(6),
+#ficha .indicator-table td:nth-child(7) {
+  font-size: 11px;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+.indicator-link {
+  color: var(--c-muted);
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 10px;
+}
+
+.indicator-link:hover {
+  color: var(--c-pt);
+  text-decoration: underline;
+}
+
+/* Source cards spacing */
+.source-cards-list .source-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Methodology section styling */
+.methodology-section {
+  margin-top: var(--sp-2xl);
+  padding-top: var(--sp-xl);
+  border-top: 2px solid var(--c-border);
+}
+
+.methodology-section h3 {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: var(--sp-xl);
+}
+
+.methodology-section h4 {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--c-text);
+  margin: var(--sp-xl) 0 var(--sp-sm);
+  padding-bottom: var(--sp-xs);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.methodology-content p,
+.methodology-content li {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.7;
+  margin-bottom: var(--sp-sm);
+}
+
+.methodology-content ul {
+  padding-left: var(--sp-lg);
+  margin-bottom: var(--sp-md);
+}
+
+.dashboard-info {
+  margin-top: var(--sp-2xl);
+  padding: var(--sp-lg);
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+}
+
+.dashboard-info h3 {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  margin-bottom: var(--sp-md);
+}
+
+.dashboard-info li {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  margin-bottom: var(--sp-xs);
+  list-style: disc;
+  margin-left: var(--sp-lg);
+}
+
+.ficha-disclaimer {
+  margin-top: var(--sp-xl);
+  padding: var(--sp-md) var(--sp-lg);
+  background: var(--c-surface-2);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--c-border);
+}
+
+.ficha-disclaimer p {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CAE v9 Sprint — Track A, B, C additions
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Track A: Nav brand V9 ──────────────────────────────────────── */
+.nav-brand-cae {
+  font-weight: 800;
+  color: var(--c-text);
+  letter-spacing: -0.5px;
+}
+.nav-brand-sep {
+  color: var(--c-border);
+  margin: 0 1px;
+  font-weight: 300;
+}
+.nav-brand-pt {
+  color: var(--c-pt);
+  font-weight: 700;
+}
+
+/* ── Track A: Footer V9 ─────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--c-border);
+  padding: var(--sp-lg) var(--sp-xl);
+  margin-top: var(--sp-2xl);
+  background: var(--c-surface);
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+.footer-copy { font-weight: 600; color: var(--c-text-sub); }
+.footer-sep  { color: var(--c-border); }
+.footer-link { color: var(--c-eu); text-decoration: none; }
+.footer-link:hover { text-decoration: underline; }
+.footer-sources { font-style: italic; }
+
+@media (max-width: 600px) {
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .footer-sep { display: none; }
+}
+
+/* ── Track B: Europa view tabs (Linhas | Snapshot | PT+UE27) ────── */
+.eu-view-tabs {
+  display: inline-flex;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.eu-view-tab {
+  padding: 5px 12px;
+  background: var(--c-surface);
+  border: none;
+  border-right: 1px solid var(--c-border);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--c-text-sub);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.eu-view-tab:last-child { border-right: none; }
+.eu-view-tab:hover { background: var(--c-bg); color: var(--c-text); }
+.eu-view-tab.active {
+  background: var(--c-pt);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Track C: AI Panel V9 enhancements ──────────────────────────── */
+.ai-context {
+  font-size: 0.72rem;
+  color: var(--c-muted);
+  margin-bottom: 0.5rem;
+  font-style: italic;
+  line-height: 1.4;
+  border-bottom: 1px solid rgba(204,0,0,0.15);
+  padding-bottom: 0.5rem;
+}
+.ai-footer {
+  margin-top: 0.75rem;
+  font-size: 0.68rem;
+  color: var(--c-muted);
+  text-align: right;
+  font-style: italic;
+}
+#ai-panel p { margin: 0 0 0.6rem; }
+#ai-panel p:last-child { margin-bottom: 0; }
+
+/* ── Ficha Tipografia V9 — mobile legibility ─────────────────────── */
+@media (max-width: 768px) {
+  #ficha .source-title {
+    font-size: 1rem;
+  }
+  #ficha .source-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  #ficha .source-badge {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+  #ficha .indicator-table td:nth-child(2) {
+    font-size: 0.85rem;
+    min-width: 140px;
+  }
+  #ficha .indicator-table td {
+    padding: 8px var(--sp-sm);
+    font-size: 0.8rem;
+  }
+  #ficha .indicator-table th {
+    font-size: 0.7rem;
+    padding: var(--sp-xs) var(--sp-sm);
+  }
+  .ficha-meta {
+    font-size: 0.85rem;
+    gap: var(--sp-sm);
+  }
 }

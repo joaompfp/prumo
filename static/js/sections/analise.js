@@ -71,9 +71,17 @@ App.registerSection('explorador', async () => {
         <button class="btn-primary" id="exp-render-btn">Ver →</button>
       </div>
 
-      <div class="explorador-chart-container" id="exp-chart-wrap">
-        <div class="explorador-empty-state">
-          Selecciona indicadores para visualizar
+      <div class="analise-layout">
+        <div class="chart-col explorador-chart-container" id="exp-chart-wrap">
+          <div class="explorador-empty-state">
+            Selecciona indicadores para visualizar
+          </div>
+        </div>
+        <div id="ai-panel" style="display:none">
+          <div class="ai-label">✦ Análise Automática</div>
+          <div class="ai-context" id="ai-panel-context"></div>
+          <div id="ai-panel-text"></div>
+          <div class="ai-footer" id="ai-panel-footer"></div>
         </div>
       </div>
 
@@ -338,12 +346,58 @@ App.registerSection('explorador', async () => {
     if (selected.length > 0) render();
   }
 
+
+  // ── AI Panel (Haiku) ──────────────────────────────────────────
+  async function updateAIPanel(seriesData, from, to) {
+    const panel   = document.getElementById('ai-panel');
+    const text    = document.getElementById('ai-panel-text');
+    const ctx     = document.getElementById('ai-panel-context');
+    const footer  = document.getElementById('ai-panel-footer');
+    if (!panel || !text) return;
+
+    // Show context (which indicators + period)
+    if (ctx) {
+      const labels = seriesData.map(s => s.label).join(', ');
+      const period = from && to ? `${from} → ${to}` : (from || to || '');
+      ctx.textContent = period ? `${labels} · ${period}` : labels;
+    }
+
+    text.innerHTML = '<span class="ai-loading">A analisar com Claude Haiku…</span>';
+    panel.style.display = '';
+
+    try {
+      const res = await fetch('/api/interpret', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa'}),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (data.text) {
+        // Format paragraphs
+        const formatted = data.text.split(/\n\n+/).map(p => p.trim()).filter(Boolean)
+          .map(p => `<p style="margin:0 0 0.6rem">${p}</p>`).join('');
+        text.innerHTML = formatted || data.text;
+        panel.style.display = '';
+        // Footer with timestamp
+        if (footer) footer.textContent = `Análise gerada: ${new Date().toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`;
+      } else {
+        panel.style.display = 'none';
+      }
+    } catch(e) {
+      console.warn('[ai-panel] interpret error:', e);
+      panel.style.display = 'none';
+    }
+  }
+
   // ── Clear chart ───────────────────────────────────────────────
   function clearChart() {
     if (chartInst) { SWD.destroyChart(chartInst); chartInst = null; }
     elChartWrap.innerHTML = '<div class="explorador-empty-state">Selecciona indicadores para visualizar</div>';
     elTableWrap.classList.add('hidden');
     lastSeries = [];
+    const _aiPanel = document.getElementById('ai-panel');
+    if (_aiPanel) _aiPanel.style.display = 'none';
     // M2: Remove unit warning banner when chart is cleared
     const banner = document.getElementById('exp-unit-warning');
     if (banner) banner.remove();
@@ -410,6 +464,9 @@ App.registerSection('explorador', async () => {
 
       if (viewMode === 'chart') renderChart(yMode, units);
       else                      renderTable();
+
+      // AI interpretation panel (fire-and-forget — doesn't block render)
+      updateAIPanel(lastSeries, fromV, toV);
 
       updateURL();
     } catch (e) {
