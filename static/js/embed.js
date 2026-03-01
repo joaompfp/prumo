@@ -133,7 +133,7 @@
     div.style.cssText = 'text-align:right;font-size:11px;color:#888;margin-top:4px;font-family:sans-serif';
     div.innerHTML =
       'Dados: <a href="' + CAE_BASE + '#' + explorerHash +
-      '" target="_blank" rel="noopener" style="color:#CC0000;text-decoration:none">CAE Dashboard ↗</a>';
+      '" target="_blank" rel="noopener" style="color:#CC0000;text-decoration:none">Prumo PT ↗</a>';
     return div;
   }
 
@@ -145,7 +145,7 @@
       'border-radius:4px;color:#888;font-size:13px;font-family:sans-serif">' +
       'Dados indisponíveis — ' +
       '<a href="' + CAE_BASE + '" target="_blank" rel="noopener" ' +
-      'style="color:#CC0000;margin-left:4px;text-decoration:none">ver no dashboard ↗</a>' +
+      'style="color:#CC0000;margin-left:4px;text-decoration:none">ver no Prumo PT ↗</a>' +
       '</div>';
   }
 

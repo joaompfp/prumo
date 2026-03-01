@@ -17,12 +17,16 @@ def compute_yoy(series):
         period_map = {pt["period"]: pt for pt in series if pt["value"] is not None}
 
         if "-" not in period:
-            # Annual period (YYYY) — look for previous year annual entry
+            # Annual period (YYYY) — strictly look for YYYY-1 entry only.
+            # If the predecessor is YYYY-2 or older (data gap/lag), return None to avoid
+            # misleading multi-year variation presented as YoY.
             prev_key = str(int(period) - 1)
             if prev_key in period_map:
                 prev_val = period_map[prev_key]["value"]
                 if prev_val and prev_val != 0:
                     return round((latest["value"] - prev_val) / abs(prev_val) * 100, 1)
+            # Predecessor not found at YYYY-1 → data has a gap (e.g. lag of 2+ years).
+            # Do NOT fall back to YYYY-2 or older — that would be a biennual variation.
             return None
 
         # Monthly period (YYYY-MM)
@@ -41,9 +45,11 @@ def compute_yoy(series):
             if prev_val and prev_val != 0:
                 return round((latest["value"] - prev_val) / abs(prev_val) * 100, 1)
 
-        # Build month candidates: exact, then adjacent months
+        # Build month candidates: exact, then adjacent months.
+        # FIX 2: limit fallback to ±2 months to avoid comparing periods >14 months apart
+        # (which would be biennual/multi-month, not true YoY). ±5 months was too permissive.
         month_candidates = [mo]
-        for delta in range(1, 6):  # try up to +/-5 months
+        for delta in range(1, 3):  # try up to +/-2 months only (10–14 month window)
             m_plus  = mo + delta
             m_minus = mo - delta
             if 1 <= m_plus  <= 12: month_candidates.append(m_plus)

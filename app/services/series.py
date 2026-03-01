@@ -6,6 +6,98 @@ from stats_lib._country_labels import COUNTRY_LABELS
 
 _eurostat = EurostatSource()
 
+# EU27 member state codes (Eurostat convention: EL for Greece)
+EU27_CODES = frozenset([
+    'AT','BE','BG','CY','CZ','DE','DK','EE','EL','ES',
+    'FI','FR','HR','HU','IE','IT','LT','LU','LV','MT',
+    'NL','PL','PT','RO','SE','SI','SK',
+])
+EU_AGGREGATES = frozenset(['EU27','EU27_2020','EU'])
+
+# In the DB, Eurostat monthly aggregate is stored under region 'EU27'.
+# 'EU27_2020' only has sparse annual data from a different source.
+# Map UI → DB for EUROSTAT region queries; reverse map is used to restore the UI key.
+_EUROSTAT_REGION_DB = {'EU27_2020': 'EU27', 'EU': 'EU27'}
+_EUROSTAT_REGION_DB_REV = {v: k for k, v in _EUROSTAT_REGION_DB.items()}
+
+
+def _eu_db_regions(regions):
+    """Translate UI region codes to DB region codes for EUROSTAT queries.
+    Returns (db_regions, reverse_map) where reverse_map[db_key] = ui_key."""
+    db_regions = [_EUROSTAT_REGION_DB.get(r, r) for r in regions]
+    rev = {_EUROSTAT_REGION_DB[r]: r for r in regions if r in _EUROSTAT_REGION_DB}
+    return db_regions, rev
+
+
+# Composite indicators: blend high-quality Eurostat (EU27) with WorldBank (global)
+COMPOSITE_INDICATORS = {
+    "unemployment": {
+        "eu":    ("EUROSTAT",  "unemployment"),
+        "world": ("WORLDBANK", "unemployment_wb"),
+    },
+    "employment_rate": {
+        "eu":    ("EUROSTAT",  "employment_rate"),
+        "world": ("WORLDBANK", "employment_rate"),
+    },
+}
+
+
+def query_composite(key: str, countries: str, since_yr: str = None) -> dict:
+    """Blend Eurostat (EU27, high frequency) + WorldBank (global, annual) for a composite indicator.
+
+    EU27 countries use Eurostat data; all other countries use WorldBank.
+    EU aggregates (EU27_2020, EU) use Eurostat.
+    """
+    comp = COMPOSITE_INDICATORS[key]
+    regions = [c.strip() for c in countries.split(",") if c.strip()]
+
+    eu_regions    = [r for r in regions if r in EU27_CODES or r in EU_AGGREGATES]
+    world_regions = [r for r in regions if r not in EU27_CODES and r not in EU_AGGREGATES]
+
+    since_clause = f"AND period >= '{since_yr}'" if since_yr else ""
+    series_map: dict[str, list] = {}
+
+    conn = get_db()
+    try:
+        if eu_regions:
+            eu_src, eu_ind = comp["eu"]
+            db_eu_regions, eu_rev = _eu_db_regions(eu_regions)
+            ph = ','.join(['?' for _ in db_eu_regions])
+            rows = conn.execute(
+                f"SELECT region, period, value FROM indicators "
+                f"WHERE source=? AND indicator=? AND region IN ({ph}) {since_clause} "
+                f"ORDER BY region, period",
+                [eu_src, eu_ind] + db_eu_regions,
+            ).fetchall()
+            for db_region, period, value in rows:
+                ui_region = eu_rev.get(db_region, db_region)
+                series_map.setdefault(ui_region, []).append({"period": period, "value": value})
+
+        if world_regions:
+            w_src, w_ind = comp["world"]
+            ph = ','.join(['?' for _ in world_regions])
+            rows = conn.execute(
+                f"SELECT region, period, value FROM indicators "
+                f"WHERE source=? AND indicator=? AND region IN ({ph}) {since_clause} "
+                f"ORDER BY region, period",
+                [w_src, w_ind] + world_regions,
+            ).fetchall()
+            for region, period, value in rows:
+                series_map.setdefault(region, []).append({"period": period, "value": value})
+    finally:
+        conn.close()
+
+    series = [
+        {"country": r, "label": COUNTRY_LABELS.get(r, r), "data": series_map[r]}
+        for r in regions if r in series_map
+    ]
+    return {
+        "dataset": f"composite:{key}",
+        "source":  "COMPOSITE",
+        "series":  series,
+        "note":    None if series else "Dados não disponíveis.",
+    }
+
 
 def query_series(sources, indicators, from_p, to_p):
     """Query time series data for one or more source+indicator pairs.
@@ -57,21 +149,26 @@ def query_compare(dataset, countries, months, indicator=None, source="EUROSTAT",
     if indicator:
         conn = get_db()
         try:
-            placeholders = ','.join(['?' for _ in regions])
+            db_regions = regions
+            region_rev = {}
+            if source == "EUROSTAT":
+                db_regions, region_rev = _eu_db_regions(regions)
+            placeholders = ','.join(['?' for _ in db_regions])
             sql = f"""
                 SELECT region, period, value FROM indicators
                 WHERE source=? AND indicator=? AND region IN ({placeholders})
                 {f"AND period >= '{since_yr}'" if since_yr else ''}
                 ORDER BY region, period
             """
-            rows = conn.execute(sql, [source, indicator] + regions).fetchall()
+            rows = conn.execute(sql, [source, indicator] + db_regions).fetchall()
         finally:
             conn.close()
 
-        # Group by region
+        # Group by region (map DB keys back to UI keys)
         series_map = {}
-        for region, period, value in rows:
-            series_map.setdefault(region, []).append({"period": period, "value": value})
+        for db_region, period, value in rows:
+            ui_region = region_rev.get(db_region, db_region)
+            series_map.setdefault(ui_region, []).append({"period": period, "value": value})
 
         series = [
             {

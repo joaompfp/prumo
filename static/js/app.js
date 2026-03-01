@@ -4,11 +4,11 @@
    ═══════════════════════════════════════════════════════════════ */
 
 const App = (() => {
-  const SECTIONS = ['painel', 'europa', 'mundo', 'explorador', 'ficha'];
+  const SECTIONS = ['painel', 'comparativos', 'explorador', 'ficha', 'ajuda'];
   const _initialized = {};
   const _loaders = {};
 
-  // Legacy hash redirects — old V5/V6 section names
+  // Legacy hash redirects — old V5/V6/V7 section names
   const REDIRECTS = {
     'resumo':        'painel',
     'industria':     'explorador',
@@ -18,6 +18,8 @@ const App = (() => {
     'analise':       'explorador',
     'fosso':         'painel',
     'produtividade': 'painel',
+    'europa':        'comparativos',
+    'mundo':         'comparativos',
   };
 
   function registerSection(id, initFn) {

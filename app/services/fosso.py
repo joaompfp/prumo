@@ -36,9 +36,9 @@ def build_fosso():
             AND region='EU' ORDER BY period
         """).fetchall()
         rnd_pt = conn.execute("""
-            SELECT period, value FROM indicators
+            SELECT period, AVG(value) as value FROM indicators
             WHERE source='WORLDBANK' AND indicator='rnd_pct_gdp'
-            AND region='PT' ORDER BY period
+            AND region='PT' GROUP BY period ORDER BY period
         """).fetchall()
         # R&D EU average — compute from available countries
         rnd_eu_rows = conn.execute("""

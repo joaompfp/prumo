@@ -215,10 +215,18 @@ const SWD = (() => {
     // Force resize after layout settles (fix sizing on first render)
     setTimeout(() => { try { chart.resize(); } catch(e) {} }, 150);
 
-    // Resize automático
-    const resizeFn = () => chart.resize();
+    // Resize automático em window resize
+    const resizeFn = () => { try { chart.resize(); } catch(e) {} };
     window.addEventListener('resize', resizeFn);
     chart._swdResizeFn = resizeFn;
+
+    // ResizeObserver — garante resize quando o container muda de tamanho
+    // (e.g. mudança de tab em mobile, orientação, layout shifts)
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => { try { chart.resize(); } catch(e) {} });
+      ro.observe(container);
+      chart._swdRO = ro;
+    }
 
     _charts.push(chart);
     return chart;
@@ -227,6 +235,7 @@ const SWD = (() => {
   function destroyChart(chart) {
     if (!chart) return;
     if (chart._swdResizeFn) window.removeEventListener('resize', chart._swdResizeFn);
+    if (chart._swdRO) chart._swdRO.disconnect();
     chart.dispose();
     const idx = _charts.indexOf(chart);
     if (idx > -1) _charts.splice(idx, 1);

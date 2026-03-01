@@ -98,11 +98,150 @@ def api_mundo_meta():
 
 @router.post("/interpret")
 async def interpret_endpoint(request: Request):
-    """Call Claude Haiku to interpret chart series data. Returns None if token unconfigured."""
+    """Call Claude Haiku (with web search) to interpret chart series data."""
     from ..services.interpret import interpret_chart
     body = await request.json()
-    text = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""))
-    return {"text": text, "model": "claude-haiku-4-5-20250414" if text else None}
+    result = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""))
+    if not result:
+        return {"text": None, "links": [], "model": None}
+    if isinstance(result, str):  # backward compat
+        return {"text": result, "links": [], "model": "claude-haiku-4-5-20251001"}
+    return {"text": result.get("text"), "links": result.get("links", []), "model": "claude-haiku-4-5-20251001"}
+
+
+@router.get("/painel-analysis")
+async def painel_analysis_endpoint(request: Request):
+    """Sonnet one-shot analysis of all Painel KPIs. Disk-cached per data period."""
+    from ..services.painel import build_painel
+    from ..services.painel_analysis import get_painel_analysis
+    force = request.query_params.get("force") == "1"
+    data = build_painel()
+    sections = data.get("sections", [])
+    updated = data.get("updated", "")
+    return get_painel_analysis(sections, updated, force=force)
+
+
+@router.get("/compare-catalog")
+def api_compare_catalog(request: Request):
+    """
+    Return the multi-country indicator catalog for PT vs Europa or PT vs Mundo.
+    Entries not present in the DB are silently filtered out.
+    Query param: section=europa (default) | mundo
+    """
+    from ..constants.compare_catalog import EUROPA_CATALOG, MUNDO_CATALOG
+    section = request.query_params.get("section", "europa")
+    catalog = EUROPA_CATALOG if section == "europa" else MUNDO_CATALOG
+
+    try:
+        conn = get_db()
+        present = set(conn.execute(
+            "SELECT DISTINCT source, indicator FROM indicators"
+        ).fetchall())
+    except Exception:
+        present = None  # DB unavailable — return full catalog
+
+    result = []
+    for entry in catalog:
+        mode = entry.get("mode", "db")
+        if mode == "legacy":
+            result.append(entry)  # legacy entries not in DB — always include
+        elif present is None or (entry.get("source"), entry.get("indicator")) in present:
+            result.append(entry)
+
+    return result
+
+
+@router.get("/comparativos/catalog")
+def api_comparativos_catalog():
+    """Return the full Comparativos indicator catalog.
+    All COMPOSITE entries always included. EUROSTAT/WORLDBANK entries filtered
+    to those actually present in the DB.
+    """
+    from ..constants.compare_catalog import COMPARATIVOS_CATALOG
+    from ..services.series import COMPOSITE_INDICATORS
+
+    try:
+        conn = get_db()
+        present = set(conn.execute(
+            "SELECT DISTINCT source, indicator FROM indicators"
+        ).fetchall())
+        conn.close()
+    except Exception:
+        present = None
+
+    result = []
+    for entry in COMPARATIVOS_CATALOG:
+        src = entry.get("source")
+        ind = entry.get("indicator")
+        if src == "COMPOSITE":
+            if ind in COMPOSITE_INDICATORS:
+                result.append(entry)
+        elif src is None or entry.get("mode") == "legacy":
+            result.append(entry)
+        elif present is None or (src, ind) in present:
+            result.append(entry)
+
+    return result
+
+
+@router.get("/comparativos/countries")
+def api_comparativos_countries(source: str = Query("EUROSTAT"), indicator: str = Query("unemployment")):
+    """Return list of country codes that have data for the given indicator.
+    For COMPOSITE indicators, returns the union of EU27 (Eurostat) + WorldBank countries.
+    """
+    from ..services.series import COMPOSITE_INDICATORS, EU27_CODES, EU_AGGREGATES
+
+    try:
+        conn = get_db()
+        if source == "COMPOSITE":
+            comp = COMPOSITE_INDICATORS.get(indicator, {})
+            eu_src, eu_ind = comp.get("eu", (None, None))
+            w_src, w_ind   = comp.get("world", (None, None))
+            countries = set()
+            if eu_src:
+                rows = conn.execute(
+                    "SELECT DISTINCT region FROM indicators WHERE source=? AND indicator=?",
+                    [eu_src, eu_ind]
+                ).fetchall()
+                countries.update(r[0] for r in rows)
+            if w_src:
+                rows = conn.execute(
+                    "SELECT DISTINCT region FROM indicators WHERE source=? AND indicator=?",
+                    [w_src, w_ind]
+                ).fetchall()
+                countries.update(r[0] for r in rows)
+        else:
+            rows = conn.execute(
+                "SELECT DISTINCT region FROM indicators WHERE source=? AND indicator=?",
+                [source, indicator]
+            ).fetchall()
+            countries = {r[0] for r in rows}
+        conn.close()
+    except Exception:
+        countries = set()
+
+    return sorted(countries)
+
+
+@router.get("/comparativos/data")
+def api_comparativos_data(
+    source: str = Query("COMPOSITE"),
+    indicator: str = Query("unemployment"),
+    countries: str = Query("PT,ES,DE"),
+    since: str = Query(None),
+):
+    """Comparison data endpoint supporting COMPOSITE, EUROSTAT, and WORLDBANK sources."""
+    from ..services.series import query_composite, COMPOSITE_INDICATORS
+
+    if source == "COMPOSITE":
+        if indicator not in COMPOSITE_INDICATORS:
+            from fastapi.responses import JSONResponse
+            return JSONResponse(status_code=400, content={"error": f"Unknown composite: {indicator}"})
+        return query_composite(indicator, countries, since)
+
+    # Regular single-source: delegate to existing query_compare
+    return query_compare(None, countries, 0, indicator=indicator, source=source, since_yr=since)
+
 
 @router.get("/catalog")
 def api_catalog():
@@ -133,6 +272,13 @@ def api_catalog():
         return enriched
     except Exception:
         return CATALOG
+
+
+@router.get("/quality")
+def api_quality():
+    """Data quality report: catalog drift, orphan indicators, freshness, flatlines, region coverage."""
+    from ..services.quality import run_quality_checks
+    return run_quality_checks()
 
 
 @router.get("/explorador")

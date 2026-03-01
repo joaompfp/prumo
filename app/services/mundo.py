@@ -21,10 +21,10 @@ MUNDO_INDICATORS = {
         "unit": "EUR",
     },
     "EUROSTAT/hicp": {
-        "label": "Inflaçao (HICP %)",
+        "label": "Inflação HICP (taxa anual %)",
         "source": "EUROSTAT",
         "indicator": "hicp",
-        "unit": "%",
+        "unit": "% (taxa anual)",
     },
     "EUROSTAT/employment_rate": {
         "label": "Taxa de Emprego (%)",
@@ -107,10 +107,53 @@ def get_mundo_data(indicator: str, source: str, countries: str, since: str = Non
         for s in payload["series"]:
             s["data"] = [d for d in s["data"] if d.get("period", "") <= to]
 
-    # Enrich with metadata
+    # FIX 3: HICP is stored as index_2015 (values >100), not as a rate (%).
+    # Convert to YoY rate to avoid misleading display: "125%" reads as 125% inflation.
+    # For any series where the latest value is >20, compute (val_t / val_t-12 - 1) * 100.
+    if indicator == "hicp" and payload.get("series"):
+        for series_item in payload["series"]:
+            raw_data = series_item.get("data", [])
+            period_map = {d["period"]: d["value"] for d in raw_data if d.get("value") is not None}
+            converted = []
+            for d in raw_data:
+                period = d.get("period", "")
+                val = d.get("value")
+                if val is None or not period or "-" not in period:
+                    converted.append({"period": period, "value": None})
+                    continue
+                # Check if this looks like an index (not a rate)
+                if val > 20:
+                    # Compute YoY: find same month previous year
+                    try:
+                        yr, mo = period.split("-")
+                        prev_period = f"{int(yr)-1}-{mo}"
+                        prev_val = period_map.get(prev_period)
+                        if prev_val and prev_val != 0:
+                            yoy_rate = round((val / prev_val - 1) * 100, 1)
+                            converted.append({"period": period, "value": yoy_rate})
+                        else:
+                            converted.append({"period": period, "value": None})
+                    except Exception:
+                        converted.append({"period": period, "value": None})
+                else:
+                    # Already a rate (shouldn't happen for HICP index, but be safe)
+                    converted.append(d)
+            series_item["data"] = converted
+        # Update metadata to reflect the transformation
+        payload["unit"] = "% (taxa anual)"
+        payload["hicp_converted"] = True  # flag for frontend if needed
+    else:
+        # Enrich with metadata unit
+        key = f"{source}/{indicator}"
+        meta = MUNDO_INDICATORS.get(key, {})
+        payload["unit"] = meta.get("unit", "")
+
+    # Always enrich label from metadata
     key = f"{source}/{indicator}"
     meta = MUNDO_INDICATORS.get(key, {})
-    payload["unit"] = meta.get("unit", "")
-    payload["label"] = meta.get("label", indicator)
+    if indicator == "hicp":
+        payload["label"] = "Inflação HICP (taxa anual %)"
+    else:
+        payload["label"] = meta.get("label", indicator)
 
     return payload

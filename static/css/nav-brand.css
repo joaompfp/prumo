@@ -1,0 +1,63 @@
+/* ═══════════════════════════════════════════════════════════════
+   Prumo PT Nav Brand
+   Minimal, constructivist — instrumento de trabalho, não startup
+   ═══════════════════════════════════════════════════════════════ */
+
+.nav-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  user-select: none;
+  outline-offset: 3px;
+  padding: 0 4px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Icon ────────────────────────────────────────────────────── */
+.nav-brand-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ── Wordmark ─────────────────────────────────────────────────  */
+.nav-brand-wordmark {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-size: 17px;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.nav-brand-open {
+  font-weight: 400;
+  color: #4B5563;
+}
+
+.nav-brand-stats {
+  font-weight: 700;
+  color: #CC0000;
+}
+
+/* ── Version tag — small superscript, sem caixa ──────────────  */
+.nav-brand-version {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: #9CA3AF;
+  letter-spacing: 0;
+  align-self: flex-end;
+  margin-bottom: 1px;
+}
+
+/* ── Mobile: esconde brand ───────────────────────────────────── */
+@media (max-width: 600px) {
+  .nav-brand-link,
+  .nav-brand { display: none !important; }
+}

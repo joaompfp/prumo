@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Bússola logo">
+  <!--
+    Bússola Mark v0
+    Minimalist compass rose: 4 cardinal points, N dominant (red PT)
+    Palette: #CC0000 (PT/action) · #003399 (EU/data) · #ffffff
+    License: AGPL-3.0
+  -->
+
+  <!-- Compass bezel ring -->
+  <circle cx="16" cy="16" r="14" stroke="#003399" stroke-width="1.2"/>
+
+  <!-- Tick marks at cardinal positions (outside arrow tips) -->
+  <line x1="16" y1="1"  x2="16" y2="3.5" stroke="#CC0000" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="31" y1="16" x2="28.5" y2="16" stroke="#003399" stroke-width="1"   stroke-linecap="round"/>
+  <line x1="16" y1="31" x2="16"   y2="28.5" stroke="#003399" stroke-width="1" stroke-linecap="round"/>
+  <line x1="1"  y1="16" x2="3.5"  y2="16" stroke="#003399" stroke-width="1"   stroke-linecap="round"/>
+
+  <!-- S point (white, recessive — South) -->
+  <polygon points="16,29 14,18 18,18" fill="#ffffff"/>
+
+  <!-- E point (EU blue, medium) -->
+  <polygon points="29,16 18,14 18,18" fill="#003399" opacity="0.65"/>
+
+  <!-- W point (EU blue, lighter — implied depth) -->
+  <polygon points="3,16 14,14 14,18" fill="#003399" opacity="0.35"/>
+
+  <!-- N point (Portugal red, dominant — taller + wider) -->
+  <polygon points="16,3 19.5,16 12.5,16" fill="#CC0000"/>
+
+  <!-- Center jewel: white disc with blue ring -->
+  <circle cx="16" cy="16" r="2.8" fill="#ffffff"/>
+  <circle cx="16" cy="16" r="2.8" stroke="#003399" stroke-width="0.8"/>
+</svg>

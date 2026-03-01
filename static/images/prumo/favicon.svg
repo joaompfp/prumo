@@ -1,0 +1,33 @@
+<!--
+  Prumo PT — Favicon 32×32
+  Prumo em vista frontal. Reconhecível a 16px.
+  Zero texto. Formas muito limpas.
+  Paleta: #CC0000 · #8B0000 · #9CA3AF
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"
+     fill="none" role="img" aria-label="Prumo PT favicon">
+
+  <!-- Barra de suspensão horizontal (crossbar) -->
+  <!-- 20px largura, 2px altura, centrada em x=16 -->
+  <rect x="6" y="4" width="20" height="2.5"
+        fill="#CC0000"/>
+
+  <!-- Fio de prumo (~8px de comprimento) -->
+  <line x1="16" y1="6.5" x2="16" y2="14"
+        stroke="#9CA3AF" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- Corpo do prumo: pentágono com ponta afilada -->
+  <!-- Topo: y=14, largura máxima: 12px (x=10 a x=22) -->
+  <!-- Ponta: y=30 em x=16 -->
+  <polygon points="10,14 22,14 24,22 16,30 8,22"
+           fill="#CC0000"/>
+
+  <!-- Linha de referência interna (vertical central) -->
+  <line x1="16" y1="16" x2="16" y2="28"
+        stroke="#8B0000" stroke-width="0.7" opacity="0.5"/>
+
+  <!-- Ponto de referência na ponta -->
+  <circle cx="16" cy="30" r="2"
+          fill="#8B0000"/>
+
+</svg>

@@ -9,11 +9,13 @@ App.registerSection('explorador', async () => {
   const BASE       = window.__BASE_PATH__ || '';
 
   // ── State ──────────────────────────────────────────────────────
-  let catalog    = {};          // {SOURCE: {label, indicators: {IND: {...}}}}
-  let selected   = [];          // [{source, indicator, label, unit}]
-  let chartInst  = null;
-  let viewMode   = 'chart';     // 'chart' | 'table'
-  let lastSeries = [];          // [{source, indicator, label, unit, data:[{period,value}]}]
+  let catalog      = {};        // {SOURCE: {label, indicators: {IND: {...}}}}
+  let selected     = [];        // [{source, indicator, label, unit}]
+  let chartInst    = null;
+  let viewMode     = 'chart';   // 'chart' | 'table'
+  let lastSeries   = [];        // [{source, indicator, label, unit, data:[{period,value}]}]
+  let aiPanelAbort = null;      // AbortController for in-flight AI panel request
+  let renderVersion = 0;        // Monotonic counter — discard stale concurrent renders
 
   // ── Source colours ────────────────────────────────────────────
   const SOURCE_COLOR = {
@@ -54,6 +56,7 @@ App.registerSection('explorador', async () => {
 
       <div class="explorador-chips" id="exp-chips">
         <span class="chip-placeholder" id="exp-chip-placeholder">Selecciona indicadores acima (máx. 5)</span>
+        <button class="exp-clear-btn hidden" id="exp-clear-btn" title="Limpar todos os indicadores">Limpar</button>
       </div>
 
       <div class="explorador-timerange">
@@ -68,20 +71,22 @@ App.registerSection('explorador', async () => {
           <button class="time-preset-btn" data-years="10">10A</button>
           <button class="time-preset-btn" data-years="0">Tudo</button>
         </div>
-        <button class="btn-primary" id="exp-render-btn">Ver →</button>
+        <button class="time-preset-btn" id="exp-render-btn">Ver →</button>
+        <button class="time-preset-btn" id="exp-ai-btn" title="Análise automática com Claude Haiku" disabled>✦ IA</button>
       </div>
 
       <div class="analise-layout">
-        <div class="chart-col explorador-chart-container" id="exp-chart-wrap">
-          <div class="explorador-empty-state">
-            Selecciona indicadores para visualizar
-          </div>
-        </div>
         <div id="ai-panel" style="display:none">
           <div class="ai-label">✦ Análise Automática</div>
           <div class="ai-context" id="ai-panel-context"></div>
           <div id="ai-panel-text"></div>
+          <div class="ai-links" id="ai-panel-links"></div>
           <div class="ai-footer" id="ai-panel-footer"></div>
+        </div>
+        <div class="explorador-chart-container" id="exp-chart-wrap">
+          <div class="explorador-empty-state">
+            Selecciona indicadores para visualizar
+          </div>
         </div>
       </div>
 
@@ -117,6 +122,7 @@ App.registerSection('explorador', async () => {
   const elBtnCSV      = body.querySelector('#exp-btn-csv');
   const elBtnShare    = body.querySelector('#exp-btn-share');
   const elRenderBtn   = body.querySelector('#exp-render-btn');
+  const elAIBtn       = body.querySelector('#exp-ai-btn');
 
   // ── Set defaults ──────────────────────────────────────────────
   elFrom.value = subtractYears(5);
@@ -223,7 +229,11 @@ App.registerSection('explorador', async () => {
         const unit = decodeURIComponent(el.dataset.unit);
         addIndicator(src, ind, lbl, unit);
         elSearch.value = '';
-        elResults.classList.add('hidden');
+        if (elSrcFilter.value) {
+          renderResults(); // keep open so user can pick another from same source
+        } else {
+          elResults.classList.add('hidden');
+        }
       });
     });
   }
@@ -239,6 +249,23 @@ App.registerSection('explorador', async () => {
     }
   });
 
+  // ── Session persistence ───────────────────────────────────────
+  const SS_KEY = 'bussola_exp_selected';
+  function saveSession() {
+    try { sessionStorage.setItem(SS_KEY, JSON.stringify(selected)); } catch(_) {}
+  }
+  function loadSession() {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(SS_KEY) || '[]');
+      saved.forEach(s => {
+        if (selected.length < 5 && !selected.some(e => e.source === s.source && e.indicator === s.indicator)) {
+          selected.push(s);
+        }
+      });
+      if (selected.length) { renderChips(); renderFicha(); render(); }
+    } catch(_) {}
+  }
+
   // ── Chip management ───────────────────────────────────────────
   function addIndicator(source, indicator, label, unit) {
     if (selected.length >= 5) {
@@ -253,6 +280,7 @@ App.registerSection('explorador', async () => {
     renderChips();
     renderFicha();
     autoRender();
+    saveSession();
   }
 
   function removeIndicator(source, indicator) {
@@ -261,16 +289,29 @@ App.registerSection('explorador', async () => {
     renderFicha();
     if (selected.length > 0) autoRender();
     else clearChart();
+    saveSession();
+  }
+
+  function clearAllIndicators() {
+    selected = [];
+    try { sessionStorage.removeItem(SS_KEY); } catch(_) {}
+    renderChips();
+    renderFicha();
+    clearChart();
+    updateURL();
   }
 
   function renderChips() {
     // Remove existing chips (keep placeholder)
     elChips.querySelectorAll('.indicator-chip').forEach(c => c.remove());
 
+    const elClear = document.getElementById('exp-clear-btn');
     if (selected.length === 0) {
       elChipPH.style.display = '';
+      if (elClear) elClear.classList.add('hidden');
     } else {
       elChipPH.style.display = 'none';
+      if (elClear) elClear.classList.remove('hidden');
       selected.forEach((s, i) => {
         const chip = document.createElement('span');
         chip.className = 'indicator-chip';
@@ -307,7 +348,7 @@ App.registerSection('explorador', async () => {
         const srcData = catalog[s.source] || {};
         const indData = (srcData.indicators || {})[s.indicator] || {};
         const color = SERIES_COLORS[i % SERIES_COLORS.length];
-        return `<div class="ficha-inline-card">
+        return `<div class="ficha-inline-card" data-source="${s.source}" data-indicator="${s.indicator}" title="Clique para ver na Ficha Técnica">
           <div class="ficha-inline-header">
             <span class="ficha-color-dot" style="background:${color}"></span>
             <strong>${s.label}</strong>
@@ -316,6 +357,7 @@ App.registerSection('explorador', async () => {
           <div class="ficha-inline-body">
             ${indData.description ? `<p class="ficha-inline-desc">${indData.description}</p>` : ''}
             <div class="ficha-inline-meta">
+              <span>Código: <code class="indicator-shortcode">${s.indicator}</code></span>
               <span>Unidade: <strong>${s.unit || indData.unit || 'n/d'}</strong></span>
               <span>Frequência: <strong>${freqLabel(indData.frequency)}</strong></span>
               <span>Cobertura: <strong>${indData.since || '?'} — ${indData.until || '?'}</strong></span>
@@ -324,12 +366,27 @@ App.registerSection('explorador', async () => {
           </div>
         </div>`;
       }).join('')}`;
+
+    // Click card → navigate to Ficha and scroll to that indicator's row
+    container.querySelectorAll('.ficha-inline-card[data-source]').forEach(card => {
+      card.addEventListener('click', async () => {
+        const src = card.dataset.source;
+        const ind = card.dataset.indicator;
+        await App.navigate('ficha');
+        const row = document.getElementById(`ficha-row-${src}-${ind}`);
+        if (row) {
+          row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          row.classList.add('ficha-row-highlight');
+          setTimeout(() => row.classList.remove('ficha-row-highlight'), 2000);
+        }
+      });
+    });
   }
 
   // ── Time range presets ────────────────────────────────────────
-  body.querySelectorAll('.time-preset-btn').forEach(btn => {
+  body.querySelectorAll('.time-preset-btn[data-years]').forEach(btn => {
     btn.addEventListener('click', () => {
-      body.querySelectorAll('.time-preset-btn').forEach(b => b.classList.remove('active'));
+      body.querySelectorAll('.time-preset-btn[data-years]').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const years = parseInt(btn.dataset.years, 10);
       elTo.value = nowYM();
@@ -341,6 +398,22 @@ App.registerSection('explorador', async () => {
   // ── Render button ─────────────────────────────────────────────
   elRenderBtn.addEventListener('click', () => render());
 
+  // ── IA toggle button ──────────────────────────────────────────
+  elAIBtn.addEventListener('click', () => {
+    if (!lastSeries.length) return;
+    const panel = document.getElementById('ai-panel');
+    if (!panel) return;
+    if (panel.style.display === 'none') {
+      // Show and trigger analysis
+      updateAIPanel(lastSeries, elFrom.value || '', elTo.value || nowYM());
+    } else {
+      // Hide panel and cancel any in-flight request
+      if (aiPanelAbort) { aiPanelAbort.abort(); aiPanelAbort = null; }
+      panel.style.display = 'none';
+      elAIBtn.classList.remove('active');
+    }
+  });
+
   // ── Auto-render on selection change ──────────────────────────
   function autoRender() {
     if (selected.length > 0) render();
@@ -348,10 +421,37 @@ App.registerSection('explorador', async () => {
 
 
   // ── AI Panel (Haiku) ──────────────────────────────────────────
+  function _renderMd(text) {
+    // Strip preamble lines (model thinking out loud) and horizontal rules
+    const lines = text.split('\n');
+    const preambleRe = /^(vou |irei |vamos |let me |i'll |i will |análise\s*$|---+\s*$)/i;
+    const firstContent = lines.findIndex(l => !preambleRe.test(l.trim()) && l.trim().length > 0);
+    const cleaned = (firstContent > 0 ? lines.slice(firstContent) : lines).join('\n');
+
+    return cleaned
+      .replace(/^---+\s*$/gm, '')
+      .replace(/^#{1,3}\s+/gm, '')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/^- (.+)$/gm, '<li>$1</li>')
+      .replace(/(<li>.*<\/li>)/gs, m => `<ul>${m}</ul>`)
+      .split(/\n\n+/)
+      .map(p => p.trim())
+      .filter(Boolean)
+      .map(p => p.startsWith('<ul>') ? p : `<p style="margin:0 0 0.7rem">${p.replace(/\n/g, ' ')}</p>`)
+      .join('');
+  }
+
   async function updateAIPanel(seriesData, from, to) {
+    // Cancel any in-flight request from a previous render
+    if (aiPanelAbort) { aiPanelAbort.abort(); }
+    const ctrl = new AbortController();
+    aiPanelAbort = ctrl;
+
     const panel   = document.getElementById('ai-panel');
     const text    = document.getElementById('ai-panel-text');
     const ctx     = document.getElementById('ai-panel-context');
+    const linksEl = document.getElementById('ai-panel-links');
     const footer  = document.getElementById('ai-panel-footer');
     if (!panel || !text) return;
 
@@ -362,31 +462,52 @@ App.registerSection('explorador', async () => {
       ctx.textContent = period ? `${labels} · ${period}` : labels;
     }
 
+    // Clear stale links immediately so old ones don't persist during loading
+    if (linksEl) { linksEl.innerHTML = ''; linksEl.style.display = 'none'; }
+    if (footer) footer.textContent = '';
+
     text.innerHTML = '<span class="ai-loading">A analisar com Claude Haiku…</span>';
     panel.style.display = '';
+    if (elAIBtn) { elAIBtn.classList.add('active'); elAIBtn.disabled = false; }
 
     try {
-      const res = await fetch('/api/interpret', {
+      const res = await fetch(`${BASE}/api/interpret`, {
         method: 'POST',
+        signal: ctrl.signal,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa'}),
       });
+      if (ctrl.signal.aborted) return;
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      if (ctrl.signal.aborted) return;
       if (data.text) {
-        // Format paragraphs
-        const formatted = data.text.split(/\n\n+/).map(p => p.trim()).filter(Boolean)
-          .map(p => `<p style="margin:0 0 0.6rem">${p}</p>`).join('');
-        text.innerHTML = formatted || data.text;
+        text.innerHTML = _renderMd(data.text) || data.text;
         panel.style.display = '';
+        if (elAIBtn) elAIBtn.classList.add('active');
+        // Links from web search
+        if (linksEl) {
+          const links = data.links || [];
+          if (links.length) {
+            linksEl.innerHTML = `<span class="ai-links-label">🔗 Leitura relacionada:</span>` +
+              links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" title="${l.url}">${l.title || l.url}</a>`).join('');
+            linksEl.style.display = '';
+          } else {
+            linksEl.innerHTML = '';
+            linksEl.style.display = 'none';
+          }
+        }
         // Footer with timestamp
         if (footer) footer.textContent = `Análise gerada: ${new Date().toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`;
       } else {
         panel.style.display = 'none';
+        if (elAIBtn) elAIBtn.classList.remove('active');
       }
     } catch(e) {
+      if (e.name === 'AbortError') return;  // cancelled by newer request — leave panel as-is
       console.warn('[ai-panel] interpret error:', e);
       panel.style.display = 'none';
+      if (elAIBtn) elAIBtn.classList.remove('active');
     }
   }
 
@@ -398,6 +519,7 @@ App.registerSection('explorador', async () => {
     lastSeries = [];
     const _aiPanel = document.getElementById('ai-panel');
     if (_aiPanel) _aiPanel.style.display = 'none';
+    if (elAIBtn) { elAIBtn.classList.remove('active'); elAIBtn.disabled = true; }
     // M2: Remove unit warning banner when chart is cleared
     const banner = document.getElementById('exp-unit-warning');
     if (banner) banner.remove();
@@ -407,6 +529,9 @@ App.registerSection('explorador', async () => {
   // ── Main render ───────────────────────────────────────────────
   async function render() {
     if (!selected.length) return;
+
+    // Version guard: discard results from older concurrent renders
+    const myVersion = ++renderVersion;
 
     elChartWrap.innerHTML = '<div class="loading-state"><div class="loading-spinner"></div><span>A carregar séries…</span></div>';
 
@@ -426,6 +551,8 @@ App.registerSection('explorador', async () => {
       });
 
       const results = await Promise.all(fetches);
+      // Discard if a newer render started while we were fetching
+      if (myVersion !== renderVersion) return;
       // Each result is an array; take first element per query
       lastSeries = results.map((arr, i) => {
         const item = Array.isArray(arr) && arr.length ? arr[0] : null;
@@ -445,7 +572,7 @@ App.registerSection('explorador', async () => {
                   : units.length === 2 ? 'dual'
                   : 'indexed';
 
-      // M2: Warn on incompatible units
+      // M2: Warn on incompatible units — banner goes BEFORE analise-layout, outside the flex row
       if (units.length > 1) {
         let banner = document.getElementById('exp-unit-warning');
         if (!banner) {
@@ -453,9 +580,14 @@ App.registerSection('explorador', async () => {
           banner.id = 'exp-unit-warning';
           banner.className = 'exp-warning-banner';
         }
-        banner.textContent = `Unidades incompatíveis (${units.join(' vs ')}) — o gráfico pode ser enganador. Considera usar o modo Indexado.`;
-        if (!elChartWrap.parentNode.contains(banner)) {
-          elChartWrap.parentNode.insertBefore(banner, elChartWrap);
+        if (yMode === 'dual') {
+          banner.textContent = `Dois eixos verticais — esquerdo: ${units[0]} · direito: ${units[1]}`;
+        } else {
+          banner.textContent = `Unidades incompatíveis (${units.join(', ')}) — o gráfico pode ser enganador. Considera usar o modo Indexado.`;
+        }
+        const analiseLayout = elChartWrap.parentNode;
+        if (banner.parentNode !== analiseLayout.parentNode) {
+          analiseLayout.parentNode.insertBefore(banner, analiseLayout);
         }
       } else {
         const banner = document.getElementById('exp-unit-warning');
@@ -465,8 +597,14 @@ App.registerSection('explorador', async () => {
       if (viewMode === 'chart') renderChart(yMode, units);
       else                      renderTable();
 
-      // AI interpretation panel (fire-and-forget — doesn't block render)
-      updateAIPanel(lastSeries, fromV, toV);
+      // Enable IA button now that we have data
+      if (elAIBtn) elAIBtn.disabled = false;
+
+      // Refresh AI panel only if already visible (user toggled it on)
+      const _aiPanelEl = document.getElementById('ai-panel');
+      if (_aiPanelEl && _aiPanelEl.style.display !== 'none') {
+        updateAIPanel(lastSeries, fromV, toV);
+      }
 
       updateURL();
     } catch (e) {
@@ -477,6 +615,7 @@ App.registerSection('explorador', async () => {
 
   // ── Chart rendering ───────────────────────────────────────────
   function renderChart(yMode, units) {
+    const isMobile = window.innerWidth < 600;
     const chartH = Math.max(elChartWrap.offsetHeight || 0, 400);
     elChartWrap.innerHTML = `<div id="exp-chart" style="width:100%;height:${chartH}px"></div>`;
     const chartEl = elChartWrap.querySelector('#exp-chart');
@@ -518,7 +657,7 @@ App.registerSection('explorador', async () => {
 
       return SWD.lineSeries(s.label, values, color, {
         width: 2.5,
-        endLabel: s.label.length < 25 ? s.label : s.label.slice(0, 22) + '…',
+        endLabel: isMobile ? null : (s.label.length < 40 ? s.label : s.label.slice(0, 37) + '…'),
       });
     }).map((s, i) => ({
       ...s,
@@ -546,9 +685,14 @@ App.registerSection('explorador', async () => {
       textStyle: { fontSize: 11, fontFamily: 'Inter, system-ui, sans-serif', color: '#555' },
       itemWidth: 16,
       itemHeight: 3,
+      // FIX 5: truncate long names + show full name on hover
+      formatter: function(name) {
+        return name.length > 35 ? name.substring(0, 32) + '…' : name;
+      },
+      tooltip: { show: true },  // full name visible on hover
     };
-    // Adjust grid bottom for legend; right:120 gives room for end labels (m2 fix: was 20/80, labels clipped)
-    baseOpts.grid = { ...baseOpts.grid, bottom: 48, right: 120 };
+    // Adjust grid bottom for legend; right:180 gives room for end labels (disabled on mobile)
+    baseOpts.grid = { ...baseOpts.grid, bottom: 48, right: isMobile ? 16 : 180 };
 
     const opts = {
       ...baseOpts,
@@ -665,7 +809,7 @@ App.registerSection('explorador', async () => {
 
   function restoreFromURL() {
     const hash = window.location.hash;
-    if (!hash.includes('?s=')) return;
+    if (!hash.includes('?s=')) return false;
     try {
       const qs   = hash.split('?')[1] || '';
       const map  = Object.fromEntries(qs.split('&').map(p => p.split('=')));
@@ -676,40 +820,59 @@ App.registerSection('explorador', async () => {
       if (fromV) elFrom.value = fromV;
       if (toV)   elTo.value   = toV;
 
+      let added = 0;
       const pairs = sStr.split(',').filter(Boolean);
       pairs.forEach(pair => {
         const slash = pair.indexOf('/');
         if (slash < 0) return;
         const src = pair.slice(0, slash);
         const ind = pair.slice(slash + 1);
+        if (selected.length >= 5) return;
+        if (selected.some(e => e.source === src && e.indicator === ind)) return;
         const srcInfo = catalog[src];
         if (!srcInfo) return;
         const indInfo = srcInfo.indicators?.[ind];
         if (!indInfo) return;
         selected.push({ source: src, indicator: ind, label: indInfo.label || ind, unit: indInfo.unit || '' });
+        added++;
       });
 
-      if (selected.length) {
+      if (added > 0) {
         renderChips();
         renderFicha();
         render();
+        saveSession();
       }
+      return added > 0;
     } catch (e) {
       console.warn('[explorador] URL restore error:', e);
+      return false;
     }
   }
 
-  // ── WP-9: handle deep-link re-entry from Painel cards ─────────────
+  // ── Clear button ──────────────────────────────────────────────
+  document.getElementById('exp-clear-btn')?.addEventListener('click', () => {
+    clearAllIndicators();
+  });
+
+  // ── Handle deep-link re-entry (Painel cards, Ficha links, shared URLs) ──
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash;
     if (hash.startsWith('#explorador?')) {
-      selected = [];
-      renderChips();
-      renderFicha();
+      // Painel cards always navigate with 1 indicator → ADD behaviour.
+      // External deep-links (emails, shared URLs) have multiple → REPLACE.
+      try {
+        const qs  = hash.split('?')[1] || '';
+        const map = Object.fromEntries(qs.split('&').map(p => p.split('=')));
+        const newInds = decodeURIComponent(map.s || '').split(',').filter(Boolean);
+        if (newInds.length > 1) selected = [];  // full deep-link → clear first
+      } catch(_) {}
       restoreFromURL();
     }
   });
 
   // ── Init ──────────────────────────────────────────────────────
-  restoreFromURL();
+  if (!restoreFromURL()) {
+    loadSession();  // No URL params → restore previous session
+  }
 });

@@ -74,7 +74,7 @@ App.registerSection('painel', async () => {
     const titleEl = container.querySelector('.section-title');
     const subEl = container.querySelector('.section-subtitle');
     if (titleEl) titleEl.textContent = titleMsg;
-    if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} indicadores · Fonte: INE, Eurostat, WorldBank`;
+    if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
 
     // Source label map
     const SOURCE_LABELS = {
@@ -126,9 +126,29 @@ App.registerSection('painel', async () => {
     }
 
     // ── Render ───────────────────────────────────────────────────────
+    // IA button in section header
+    const headerEl = container.querySelector('.section-header');
+    if (headerEl && !headerEl.querySelector('#painel-ia-btn')) {
+      const iaBtn = document.createElement('button');
+      iaBtn.id = 'painel-ia-btn';
+      iaBtn.className = 'time-preset-btn painel-ia-toggle';
+      iaBtn.title = 'Análise interpretativa com Claude Sonnet';
+      iaBtn.textContent = '✦ Análise IA';
+      headerEl.appendChild(iaBtn);
+    }
+
+    // Persistent IA panel placeholder (injected at top of body)
+    const iaPanelHtml = `<div id="painel-ia-panel" style="display:none">
+      <div class="painel-ia-header">
+        <span class="painel-ia-label">✦ Análise CAE — Claude Sonnet</span>
+        <span class="painel-ia-meta" id="painel-ia-meta"></span>
+      </div>
+      <div id="painel-ia-text" class="painel-ia-text"></div>
+      <div id="painel-ia-links" class="painel-ia-links" style="display:none"></div>
+    </div>`;
+
     if (useSections) {
-      // Section-based rendering (Painel V2)
-      body.innerHTML = '<div class="painel-sections">' +
+      body.innerHTML = iaPanelHtml + '<div class="painel-sections">' +
         data.sections.map(section => {
           const kpis = section.kpis || [];
           return `
@@ -141,10 +161,92 @@ App.registerSection('painel', async () => {
         }).join('') +
         '</div>';
     } else {
-      // Flat grid fallback (legacy /api/resumo)
       const kpis = allKpis;
-      body.innerHTML = '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
+      body.innerHTML = iaPanelHtml + '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
     }
+
+    // ── IA button toggle logic ─────────────────────────────────────
+    let iaLoading = false;
+    function _renderMd(text) {
+      // Minimal markdown: **bold**, *italic*, paragraphs; strip --- separators
+      return text
+        .replace(/^---+\s*$/gm, '')          // strip horizontal rules
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gs, m => `<ul>${m}</ul>`)
+        .split(/\n\n+/)
+        .map(p => p.trim())
+        .filter(Boolean)
+        .map(p => p.startsWith('<ul>') ? p : `<p>${p.replace(/\n/g, ' ')}</p>`)
+        .join('');
+    }
+
+    async function toggleIAPanel() {
+      const panel   = document.getElementById('painel-ia-panel');
+      const btn     = document.getElementById('painel-ia-btn');
+      const textEl  = document.getElementById('painel-ia-text');
+      const metaEl  = document.getElementById('painel-ia-meta');
+      const linksEl = document.getElementById('painel-ia-links');
+      if (!panel) return;
+
+      if (panel.style.display !== 'none') {
+        panel.style.display = 'none';
+        if (btn) btn.classList.remove('active');
+        return;
+      }
+
+      // Show panel
+      panel.style.display = '';
+      if (btn) btn.classList.add('active');
+
+      // If already has content, just show
+      if (textEl && textEl.innerHTML.trim() && !textEl.querySelector('.ai-loading')) return;
+
+      // Load analysis
+      if (iaLoading) return;
+      iaLoading = true;
+      if (textEl) textEl.innerHTML = '<span class="ai-loading">A gerar análise com Claude Sonnet…</span>';
+
+      try {
+        const BASE = window.__BASE_PATH__ || '';
+        const resp = await fetch(`${BASE}/api/painel-analysis`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const result = await resp.json();
+        if (result.text) {
+          if (textEl) textEl.innerHTML = _renderMd(result.text);
+          if (metaEl) {
+            const ts = result.generated_at ? new Date(result.generated_at).toLocaleDateString('pt-PT') : '';
+            const genTime = result.generation_ms ? ` · ${Math.round(result.generation_ms / 1000)}s` : '';
+            metaEl.textContent = (result.cached ? 'cache' : `gerado agora${genTime}`) + (ts ? ` · ${ts}` : '') + ` · dados: ${result.data_period || ''}`;
+          }
+          // Render per-section links
+          const sectionLinks = result.section_links || {};
+          const linkEntries = Object.entries(sectionLinks).filter(([, links]) => links && links.length);
+          if (linksEl && linkEntries.length) {
+            linksEl.innerHTML = '<span class="ai-links-label">🔗 Leitura relacionada por secção:</span>' +
+              linkEntries.map(([section, links]) =>
+                `<div class="painel-ia-links-section"><strong>${section}</strong>` +
+                links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.title || l.url}</a>`).join('') +
+                '</div>'
+              ).join('');
+            linksEl.style.display = '';
+          } else if (linksEl) {
+            linksEl.style.display = 'none';
+          }
+        } else {
+          if (textEl) textEl.innerHTML = '<em style="color:var(--c-muted)">Análise indisponível — token Sonnet não configurado.</em>';
+        }
+      } catch(e) {
+        if (textEl) textEl.innerHTML = `<em style="color:var(--c-muted)">Erro: ${e.message}</em>`;
+      } finally {
+        iaLoading = false;
+      }
+    }
+
+    // Bind button (may have been re-rendered)
+    const iaBtnEl = container.querySelector('#painel-ia-btn');
+    if (iaBtnEl) iaBtnEl.addEventListener('click', toggleIAPanel);
 
     // ── Track B: PT vs Mundo subsection ────────────────────────────
     async function renderPTvsMundo(parentEl) {
@@ -183,7 +285,7 @@ App.registerSection('painel', async () => {
           const dec = cmp.decimals ?? 1;
           const ptVal  = ptLast?.value  != null ? Number(ptLast.value).toFixed(dec) : 'n/d';
           const refVal = refLast?.value != null ? Number(refLast.value).toFixed(dec) : 'n/d';
-          const period = ptLast?.period || '';
+          const period = (ptLast?.period || '').replace(/-00$/, '');
 
           let deltaHtml = '';
           if (ptLast?.value != null && refLast?.value != null) {
@@ -215,71 +317,6 @@ App.registerSection('painel', async () => {
       }));
     }
 
-    // ── Track C: Haiku analysis card ─────────────────────────────────
-    async function renderHaikuAnalysis(parentEl, kpis) {
-      const topKpis = kpis
-        .filter(k => k.spark && k.spark.length > 0 && k.value != null)
-        .slice(0, 5);
-
-      if (!topKpis.length) return;
-
-      const section = document.createElement('div');
-      section.className = 'haiku-analysis-section';
-      section.innerHTML = `
-        <div class="haiku-card" id="haiku-analysis-card">
-          <div class="haiku-card-header">
-            <span class="haiku-badge">Análise IA</span>
-            <span class="haiku-model-tag">Claude Haiku · Interpretação automática</span>
-          </div>
-          <div class="haiku-loading" id="haiku-loading">
-            <div class="loading-spinner" style="width:14px;height:14px"></div>
-            <span>A gerar análise interpretativa…</span>
-          </div>
-          <div class="haiku-text" id="haiku-text" style="display:none"></div>
-        </div>`;
-      parentEl.appendChild(section);
-
-      try {
-        const seriesPayload = topKpis.map(k => ({
-          source: k.source || 'INE',
-          indicator: k.id || k.indicator,
-          label: k.label,
-          unit: k.unit || '',
-          data: (k.spark || []).map((v, i) => ({ period: `T-${topKpis[0].spark.length - i}`, value: v })),
-        }));
-
-        const resp = await fetch('/api/interpret', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ series: seriesPayload, from: '', to: '' }),
-        });
-        const result = await resp.json();
-
-        const loadEl = document.getElementById('haiku-loading');
-        const textEl = document.getElementById('haiku-text');
-        if (loadEl) loadEl.style.display = 'none';
-        if (textEl) {
-          if (result.text) {
-            textEl.textContent = result.text;
-            textEl.style.display = 'block';
-          } else {
-            textEl.textContent = 'Análise não disponível (token Haiku não configurado).';
-            textEl.style.display = 'block';
-            textEl.style.color = 'var(--c-muted)';
-          }
-        }
-      } catch(e) {
-        const loadEl = document.getElementById('haiku-loading');
-        const textEl = document.getElementById('haiku-text');
-        if (loadEl) loadEl.style.display = 'none';
-        if (textEl) {
-          textEl.textContent = 'Análise indisponível.';
-          textEl.style.display = 'block';
-          textEl.style.color = 'var(--c-muted)';
-        }
-      }
-    }
-
     // ── WP-9: Painel card → Explorador deep-link ────────────────────
     body.addEventListener('click', (e) => {
       const card = e.target.closest('.kpi-card[data-source][data-indicator]');
@@ -301,10 +338,9 @@ App.registerSection('painel', async () => {
       }
     });
 
-    // ── Render PT vs Mundo + Haiku sections ──────────────────────────
+    // ── Render PT vs Mundo subsection ────────────────────────────────
     const pSection = body.querySelector('.painel-sections') || body;
     renderPTvsMundo(pSection);
-    renderHaikuAnalysis(pSection, allKpis);
 
   } catch(e) {
     console.error('[painel] init error:', e);

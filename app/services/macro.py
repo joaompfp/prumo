@@ -55,7 +55,7 @@ def build_macro():
             conn = get_db()
             try:
                 rows2 = conn.execute(
-                    "SELECT period, value FROM indicators WHERE source=? AND indicator=? AND region='PT' ORDER BY period",
+                    "SELECT period, AVG(value) as value FROM indicators WHERE source=? AND indicator=? AND region='PT' GROUP BY period ORDER BY period",
                     [src, ind]
                 ).fetchall()
             finally:

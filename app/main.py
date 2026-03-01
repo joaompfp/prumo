@@ -1,5 +1,6 @@
 import os
 import time
+import threading
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -60,6 +61,31 @@ def healthz():
     return {"status": "ok"}
 
 
+def _prewarm_painel():
+    """Pre-generate Painel IA analysis in the background after startup."""
+    time.sleep(8)  # let uvicorn finish binding
+    try:
+        from .services.painel import build_painel
+        from .services.painel_analysis import get_painel_analysis
+        data = build_painel()
+        sections = data.get("sections", [])
+        updated = data.get("updated", "")
+        if not sections or not updated:
+            print("[startup] painel pre-warm: no data available", flush=True)
+            return
+        print(f"[startup] pre-warming Painel IA for period {updated}…", flush=True)
+        result = get_painel_analysis(sections, updated)
+        if result.get("cached"):
+            print(f"[startup] Painel IA already cached for {updated}", flush=True)
+        elif result.get("text"):
+            ms = result.get("generation_ms", "?")
+            print(f"[startup] Painel IA generated in {ms}ms for {updated}", flush=True)
+        else:
+            print(f"[startup] Painel IA failed: {result.get('error')}", flush=True)
+    except Exception as e:
+        print(f"[startup] painel pre-warm error: {e}", flush=True)
+
+
 @app.on_event("startup")
 def startup():
     energy_db = os.path.join(os.path.dirname(CAE_DB_PATH), "energy-data.db")
@@ -70,6 +96,7 @@ def startup():
         print(f"Energy DB: {energy_db}", flush=True)
     else:
         print(f"Energy DB not found, using main DB for all sources", flush=True)
+    threading.Thread(target=_prewarm_painel, daemon=True).start()
 
 
 if __name__ == "__main__":

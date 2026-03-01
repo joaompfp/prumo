@@ -7,6 +7,15 @@
 /* ── Fonts ─────────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
+/* Noto Color Emoji — flags for country pickers and legends */
+@font-face {
+  font-family: 'Noto Color Emoji';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/NotoColorEmoji.woff2') format('woff2');
+  unicode-range: U+1f1e6-1f1ff;
+}
+
 /* ── Tokens ─────────────────────────────────────────────────────── */
 :root {
   /* Brand colours */
@@ -42,11 +51,11 @@
   --sp-2xl: 64px;
 
   /* Typography scale */
-  --fs-xs:   11px;
-  --fs-sm:   13px;
-  --fs-base: 15px;
-  --fs-md:   18px;
-  --fs-lg:   22px;
+  --fs-xs:   15px;
+  --fs-sm:   17px;
+  --fs-base: 19px;
+  --fs-md:   22px;
+  --fs-lg:   26px;
   --fs-xl:   32px;
   --fs-2xl:  48px;
   --fs-3xl:  64px;
@@ -72,8 +81,11 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--c-bg);
+  font-family: 'Inter', 'Noto Color Emoji', system-ui, -apple-system, sans-serif;
+  background-color: var(--c-bg);
+  background-image: url("../images/prumo/bg-pattern.svg");
+  background-repeat: repeat;
+  background-size: 60px 60px;
   color: var(--c-text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -144,6 +156,20 @@ body {
   border-bottom-color: var(--c-pt);
 }
 
+.nav-tab-icon {
+  margin-right: 5px;
+  font-size: 15px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-tab-icon-svg img {
+  vertical-align: middle;
+  margin-bottom: 1px;
+  opacity: 0.85;
+}
+
 /* ── Sections ───────────────────────────────────────────────────── */
 .section {
   display: none;
@@ -189,7 +215,8 @@ body {
 /* Bug 4: use CSS Grid for proper 3-column layout */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* FIX 4: auto-fill with minmax — wraps to 2 cols ~900px, 1 col ~600px automatically */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
   margin-bottom: var(--sp-2xl);
 }
@@ -509,8 +536,32 @@ body {
 @media (max-width: 600px) {
   .kpi-grid { grid-template-columns: 1fr; }
   .kpi-value { font-size: var(--fs-xl); }
-  .nav-brand { display: none; }
   .chart-container { height: 220px; }
+
+  /* Mobile nav: esconde brand, tabs distribuem-se em full-width */
+  .nav-brand-link,
+  .nav-brand { display: none; }
+
+  .nav-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 0 2px;
+    font-size: 10px;
+    letter-spacing: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+  }
+  .nav-tab-icon {
+    margin-right: 0;
+    font-size: 18px;
+  }
+  .nav-tab-icon-svg img {
+    width: 18px;
+    height: 18px;
+  }
+  .nav-tab-label { display: none; }
 }
 
 /* ── Footnote ───────────────────────────────────────────────────── */
@@ -590,17 +641,17 @@ body {
 .site-footer {
   text-align: center;
   padding: 1.5rem 1rem;
-  font-size: 0.75rem;
+  font-size: var(--fs-sm);
   color: var(--c-muted);
   border-top: 1px solid var(--c-border);
   margin-top: auto;
 }
 .site-footer a {
-  color: var(--c-muted);
+  color: var(--c-pt);
   text-decoration: none;
 }
 .site-footer a:hover {
-  color: var(--c-pt);
+  text-decoration: underline;
 }
 
 /* ── Footer dev credit ───────────────────────────────────────────── */

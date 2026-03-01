@@ -3,16 +3,21 @@ from ..constants import CATALOG, UNIT_OVERRIDES
 from .helpers import compute_yoy, compute_trend, spark_data
 
 
-def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sentiment=False, scale_factor=1.0, unit_override=None):
+def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sentiment=False, scale_factor=1.0, unit_override=None, region=None):
     """Build a single KPI card for /api/resumo.
     scale_factor: multiply stored value by this (e.g. 100 for ratio→% conversion).
     unit_override: force a unit string regardless of what DB returns.
+    region: filter by region (e.g. 'PT') — required for multi-country sources like EUROSTAT/WORLDBANK.
     """
     try:
         conn = get_db(source)
         try:
-            sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? ORDER BY period"
-            params = [source, indicator]
+            if region:
+                sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND region=? ORDER BY period"
+                params = [source, indicator, region]
+            else:
+                sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? ORDER BY period"
+                params = [source, indicator]
             cursor = conn.execute(sql, params)
             rows = cursor.fetchall()
         finally:
@@ -22,8 +27,12 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
             # Re-query with detail filter
             conn = get_db(source)
             try:
-                sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND detail LIKE ? ORDER BY period"
-                params = [source, indicator, f"%{detail_filter}%"]
+                if region:
+                    sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND region=? AND detail LIKE ? ORDER BY period"
+                    params = [source, indicator, region, f"%{detail_filter}%"]
+                else:
+                    sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND detail LIKE ? ORDER BY period"
+                    params = [source, indicator, f"%{detail_filter}%"]
                 cursor = conn.execute(sql, params)
                 rows = cursor.fetchall()
             finally:
