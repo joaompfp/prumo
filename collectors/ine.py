@@ -41,7 +41,7 @@ def _period_sort_key(period_name: str) -> str:
         "Janeiro de 2025" → "2025-01"
         "Dezembro de 2025" → "2025-12"
         "3.º Trimestre de 2025" → "2025-07"
-        "2024" → "2024-00"
+        "2024" → "2024"
     """
     lower = period_name.lower().strip()
 
@@ -61,7 +61,7 @@ def _period_sort_key(period_name: str) -> str:
 
     # Anual: "2025"
     if lower.isdigit() and len(lower) == 4:
-        return f"{lower}-00"
+        return lower
 
     # Fallback: usar string original
     return period_name

@@ -4,15 +4,15 @@ CATALOG = {
     "description": "Estatísticas oficiais portuguesas. Produção industrial, emprego, salários e confiança empresarial.",
     "url": "https://www.ine.pt",
     "indicators": {
-      "ipi_seasonal_cae": {
-        "label": "IPI Indústria Transformadora (dessaz.)",
-        "description": "Índice de Produção Industrial da indústria transformadora portuguesa, série dessazonalizada, base 2021=100. Mede a evolução do volume de produção das empresas industriais, eliminando variações sazonais pelo método TRAMO-SEATS. Um valor acima de 100 indica produção superior à média de 2021. Fonte: INE, Índices de Produção Industrial.",
+      "ipi_seasonal_cae_TOT": {
+        "label": "IPI Total Indústria (dessaz.)",
+        "description": "Índice de Produção Industrial total (todas as indústrias), série dessazonalizada, base 2021=100. Mede a evolução do volume de produção, eliminando variações sazonais pelo método TRAMO-SEATS. Um valor acima de 100 indica produção superior à média de 2021. Fonte: INE, Índices de Produção Industrial.",
         "unit": "Índice 2021=100",
         "frequency": "monthly",
         "lag_months": 2,
-        "since": "2000-01",
-        "until": "2025-11",
-        "rows": 311,
+        "since": "2005-01",
+        "until": "2025-12",
+        "rows": 252,
         "tags": ["produção", "indústria", "conjuntura"]
       },
       "ipi_yoy_cae": {
