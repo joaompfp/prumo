@@ -89,7 +89,7 @@ App.registerSection('explorador', async () => {
         <button class="btn-toggle active" id="exp-btn-chart">Gráfico</button>
         <button class="btn-toggle" id="exp-btn-table">Tabela</button>
         <button class="btn-action" id="exp-btn-csv">CSV</button>
-        <button class="btn-action" id="exp-btn-share">🔗 Partilhar</button>
+        <button class="btn-action" id="exp-btn-share">Partilhar</button>
       </div>
     </div>`;
 
