@@ -70,7 +70,7 @@ App.registerSection('ficha', async () => {
       }).join('');
 
       const tableHTML = indicators.length > 0 ? `
-        <div class="indicator-table-wrap">
+        <div class="table-scroll-wrap">
           <table class="indicator-table">
             <thead>
               <tr>
@@ -130,25 +130,25 @@ App.registerSection('ficha', async () => {
           <p>O dashboard utiliza o agregado <strong>EU27_2020</strong> do Eurostat, que corresponde aos <strong>27 Estados-membros actuais da União Europeia após a saída do Reino Unido</strong> (Brexit, 1 de Fevereiro de 2020). Este agregado <strong>não inclui o Reino Unido</strong> em nenhum período — mesmo para anos anteriores a 2020, o Eurostat recalcula retroactivamente as séries excluindo o UK, para garantir coerência temporal. Não usamos o agregado EA20 (Área do Euro, 20 países) excepto quando indicado explicitamente, porque excluiria Estados-membros relevantes fora da zona euro (como a Polónia, a Suécia ou a Roménia). O EU27_2020 é o agregado de referência mais abrangente e politicamente actual.</p>
 
           <h4>Frequência de Actualização por Fonte</h4>
-          <table class="methodology-table" style="width:100%;border-collapse:collapse;font-size:0.85rem">
-            <thead><tr style="background:var(--c-surface-2,#222)"><th style="padding:6px 10px;text-align:left">Fonte</th><th style="padding:6px 10px;text-align:left">Indicadores</th><th style="padding:6px 10px;text-align:left">Freq.</th><th style="padding:6px 10px;text-align:left">Lag</th></tr></thead>
+          <div class="table-scroll-wrap"><table class="methodology-table">
+            <thead><tr><th>Fonte</th><th>Indicadores</th><th>Freq.</th><th>Lag</th></tr></thead>
             <tbody>
-              <tr><td style="padding:5px 10px"><strong>INE</strong></td><td style="padding:5px 10px">IPI (dessaz.), emprego e salários na indústria, IHPC, confiança empresarial</td><td style="padding:5px 10px">Mensal</td><td style="padding:5px 10px">~2 meses</td></tr>
-              <tr><td style="padding:5px 10px"><strong>Eurostat</strong></td><td style="padding:5px 10px">IPI por sector NACE, desemprego harmonizado, PIB trimestral, preços energia semestrais</td><td style="padding:5px 10px">Mensal/Trim./Sem.</td><td style="padding:5px 10px">~3 meses (IPI)</td></tr>
-              <tr><td style="padding:5px 10px"><strong>FRED</strong></td><td style="padding:5px 10px">Brent, gás natural, cobre, alumínio, trigo, milho, café, EUR/USD</td><td style="padding:5px 10px">Mensal</td><td style="padding:5px 10px">Quase em tempo real</td></tr>
-              <tr><td style="padding:5px 10px"><strong>Banco de Portugal</strong></td><td style="padding:5px 10px">Euribor (1m/3m/6m/12m), yields soberanos, spread PT-DE, crédito, depósitos</td><td style="padding:5px 10px">Mensal</td><td style="padding:5px 10px">0–2 meses</td></tr>
-              <tr><td style="padding:5px 10px"><strong>OCDE</strong></td><td style="padding:5px 10px">CLI (indicador avançado), inquéritos BTS (encomendas, produção, preços, emprego)</td><td style="padding:5px 10px">Mensal</td><td style="padding:5px 10px">1–2 meses</td></tr>
-              <tr><td style="padding:5px 10px"><strong>REN</strong></td><td style="padding:5px 10px">Produção eléctrica por fonte, consumo, importações, preço MIBEL</td><td style="padding:5px 10px">Mensal</td><td style="padding:5px 10px">~1 mês</td></tr>
-              <tr><td style="padding:5px 10px"><strong>DGEG</strong></td><td style="padding:5px 10px">Produção eléctrica, combustíveis (semanal), gás natural indústria (semestral)</td><td style="padding:5px 10px">Semanal–Anual</td><td style="padding:5px 10px">Variável</td></tr>
-              <tr><td style="padding:5px 10px"><strong>ERSE</strong></td><td style="padding:5px 10px">Tarifas de acesso às redes (MAT, AT, MT, BTE, BTN)</td><td style="padding:5px 10px">Anual</td><td style="padding:5px 10px">Antes do período tarifário</td></tr>
-              <tr><td style="padding:5px 10px"><strong>World Bank</strong></td><td style="padding:5px 10px">Natalidade, I&amp;D % PIB, IDE, PIB per capita (PPC)</td><td style="padding:5px 10px">Anual</td><td style="padding:5px 10px">~6–12 meses</td></tr>
+              <tr><td><strong>INE</strong></td><td>IPI (dessaz.), emprego e salários na indústria, IHPC, confiança empresarial</td><td>Mensal</td><td>~2 meses</td></tr>
+              <tr><td><strong>Eurostat</strong></td><td>IPI por sector NACE, desemprego harmonizado, PIB trimestral, preços energia semestrais</td><td>Mensal/Trim./Sem.</td><td>~3 meses (IPI)</td></tr>
+              <tr><td><strong>FRED</strong></td><td>Brent, gás natural, cobre, alumínio, trigo, milho, café, EUR/USD</td><td>Mensal</td><td>Quase em tempo real</td></tr>
+              <tr><td><strong>Banco de Portugal</strong></td><td>Euribor (1m/3m/6m/12m), yields soberanos, spread PT-DE, crédito, depósitos</td><td>Mensal</td><td>0–2 meses</td></tr>
+              <tr><td><strong>OCDE</strong></td><td>CLI (indicador avançado), inquéritos BTS (encomendas, produção, preços, emprego)</td><td>Mensal</td><td>1–2 meses</td></tr>
+              <tr><td><strong>REN</strong></td><td>Produção eléctrica por fonte, consumo, importações, preço MIBEL</td><td>Mensal</td><td>~1 mês</td></tr>
+              <tr><td><strong>DGEG</strong></td><td>Produção eléctrica, combustíveis (semanal), gás natural indústria (semestral)</td><td>Semanal–Anual</td><td>Variável</td></tr>
+              <tr><td><strong>ERSE</strong></td><td>Tarifas de acesso às redes (MAT, AT, MT, BTE, BTN)</td><td>Anual</td><td>Antes do período tarifário</td></tr>
+              <tr><td><strong>World Bank</strong></td><td>Natalidade, I&amp;D % PIB, IDE, PIB per capita (PPC)</td><td>Anual</td><td>~6–12 meses</td></tr>
             </tbody>
-          </table>
+          </table></div>
 
           <h4>Disclaimer de Responsabilidade</h4>
           <p>Os dados apresentados neste dashboard são compilados a partir de fontes estatísticas oficiais para fins de <strong>análise e discussão no âmbito da Comissão de Assuntos Económicos</strong> (CAE). Este painel <strong>não constitui publicação oficial</strong> e não substitui os relatórios, comunicados ou bases de dados das entidades produtoras de estatística. Os dados podem divergir ligeiramente das publicações oficiais devido a diferenças de data de extracção, revisões posteriores, ou arredondamentos.</p>
 
-          <h4>⚠️ Notas de Interpretação</h4>
+          <h4>Notas de Interpretação</h4>
           <ul>
             <li><strong>O IPI mede volume, não valor.</strong> Uma queda nos preços das matérias-primas pode coexistir com um IPI estável ou crescente. Para avaliar a saúde real de um sector, o IPI deve ser lido em conjunto com o índice de volume de negócios.</li>
             <li><strong>A média EU27 esconde dispersões enormes.</strong> O PIB per capita do Luxemburgo é ~10x o da Bulgária. Comparar Portugal com a "média EU27" sugere uma distância moderada (~68%), mas a mediana seria uma referência mais honesta do que a média ponderada.</li>
@@ -165,9 +165,6 @@ App.registerSection('ficha', async () => {
       <div class="dashboard-info">
         <h3>Sobre este Dashboard</h3>
         <ul>
-          <li>Versão: <strong>7.0</strong></li>
-          <li>Stack: <strong>FastAPI + DuckDB + ECharts 5.5.0</strong></li>
-          <li>Design: Inspirado em <strong>Storytelling with Data (SWD)</strong> — Cole Nussbaumer Knaflic</li>
           <li>URL: <a href="https://joao.date/dados" target="_blank" rel="noopener" style="color:var(--c-red)">joao.date/dados</a></li>
           <li>Embed: <code>&lt;div class="cae-embed" data-indicators="SOURCE/indicator"&gt;&lt;/div&gt;</code></li>
         </ul>

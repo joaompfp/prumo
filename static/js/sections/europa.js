@@ -15,19 +15,19 @@ App.registerSection('europa', async () => {
   // V5: Multi-indicator support (direct DB query mode)
   const EUROPA_INDICATORS = [
     // Legacy IPI datasets (use /api/europa Eurostat client)
-    { id: 'manufacturing',   label: '🏭 IPI Transformadora',   mode: 'legacy', dataset: 'manufacturing' },
-    { id: 'total_industry',  label: '📊 IPI Total Indústria',   mode: 'legacy', dataset: 'total_industry' },
-    { id: 'metals',          label: '⚙️ Metais e Metalurgia',   mode: 'legacy', dataset: 'metals' },
-    { id: 'chemicals',       label: '🧪 Química e Plásticos',   mode: 'db', source: 'EUROSTAT', indicator: 'chemicals_pharma' },
-    { id: 'transport',       label: '🚗 Material de Transporte', mode: 'db', source: 'EUROSTAT', indicator: 'transport_eq' },
+    { id: 'manufacturing',   label: 'IPI Transformadora',   mode: 'legacy', dataset: 'manufacturing' },
+    { id: 'total_industry',  label: 'IPI Total Indústria',   mode: 'legacy', dataset: 'total_industry' },
+    { id: 'metals',          label: 'Metais e Metalurgia',   mode: 'legacy', dataset: 'metals' },
+    { id: 'chemicals',       label: 'Química e Plásticos',   mode: 'db', source: 'EUROSTAT', indicator: 'chemicals_pharma' },
+    { id: 'transport',       label: 'Material de Transporte', mode: 'db', source: 'EUROSTAT', indicator: 'transport_eq' },
     // V5: Direct DB indicators
-    { id: 'unemployment',      label: '📉 Desemprego (%)',       mode: 'db', source: 'EUROSTAT', indicator: 'unemployment' },
-    { id: 'gdp_per_capita_eur',label: '💶 PIB/capita (€)',       mode: 'db', source: 'EUROSTAT', indicator: 'gdp_per_capita_eur' },
-    { id: 'gov_debt_pct_gdp',  label: '📋 Dívida Pública %PIB', mode: 'db', source: 'EUROSTAT', indicator: 'gov_debt_pct_gdp' },
-    { id: 'employment_rate',   label: '👷 Taxa de Emprego',      mode: 'db', source: 'EUROSTAT', indicator: 'employment_rate' },
-    { id: 'birth_rate',        label: '👶 Natalidade (/1000)',   mode: 'db', source: 'WORLDBANK', indicator: 'birth_rate' },
-    { id: 'rnd_pct_gdp',       label: '🔬 I&D % PIB',           mode: 'db', source: 'WORLDBANK', indicator: 'rnd_pct_gdp' },
-    { id: 'fdi_inflows_pct_gdp',label: '💸 IDE Entradas %PIB',  mode: 'db', source: 'WORLDBANK', indicator: 'fdi_inflows_pct_gdp' },
+    { id: 'unemployment',      label: 'Desemprego (%)',       mode: 'db', source: 'EUROSTAT', indicator: 'unemployment' },
+    { id: 'gdp_per_capita_eur',label: 'PIB/capita (€)',       mode: 'db', source: 'EUROSTAT', indicator: 'gdp_per_capita_eur' },
+    { id: 'gov_debt_pct_gdp',  label: 'Dívida Pública %PIB', mode: 'db', source: 'EUROSTAT', indicator: 'gov_debt_pct_gdp' },
+    { id: 'employment_rate',   label: 'Taxa de Emprego',      mode: 'db', source: 'EUROSTAT', indicator: 'employment_rate' },
+    { id: 'birth_rate',        label: 'Natalidade (/1000)',   mode: 'db', source: 'WORLDBANK', indicator: 'birth_rate' },
+    { id: 'rnd_pct_gdp',       label: 'I&D % PIB',           mode: 'db', source: 'WORLDBANK', indicator: 'rnd_pct_gdp' },
+    { id: 'fdi_inflows_pct_gdp',label: 'IDE Entradas %PIB',  mode: 'db', source: 'WORLDBANK', indicator: 'fdi_inflows_pct_gdp' },
   ];
 
   // V5: Base year / unit label per indicator (for dynamic subtitle)
@@ -89,7 +89,7 @@ App.registerSection('europa', async () => {
       defaultSelected: [],
     },
     {
-      label: 'Outros ⚠',
+      label: 'Outros',
       countries: ['EL', 'IE', 'EE', 'LV', 'SI', 'HR', 'SK', 'CY', 'LU', 'MT'],
       names: { EL:'EL', IE:'IE', EE:'EE', LV:'LV', SI:'SI', HR:'HR', SK:'SK', CY:'CY', LU:'LU', MT:'MT' },
       defaultSelected: [],
@@ -192,31 +192,10 @@ App.registerSection('europa', async () => {
     _viewMode = hashState.view || 'lines';
   }
 
-  // ── Toast ────────────────────────────────────────────────────────
-  function showToast(msg) {
-    let toast = document.getElementById('europa-toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'europa-toast';
-      toast.className = 'toast-notification';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2200);
-  }
+  // ── Toast — usa App.showToast (WP-5 unified) ─────────────────────
 
   try {
     body.innerHTML = `
-      <style>
-        .country-group { margin-bottom: 10px; }
-        .country-group-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
-        .country-pills { display: flex; flex-wrap: wrap; gap: 4px; }
-        .country-pill { display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; min-height: 24px; border-radius: 12px; border: 1.5px solid #ddd; cursor: pointer; font-size: 11px; font-weight: 500; background: #fff; color: #555; transition: all 0.15s; user-select: none; }
-        .country-pill:hover { border-color: #999; color: #333; }
-        .country-pill.selected { color: #fff; border-color: transparent; }
-        .country-pill.locked { cursor: default; }
-      </style>
 
       <!-- Barra topo: indicador + toggle -->
       <div class="europa-top-bar">
@@ -227,9 +206,9 @@ App.registerSection('europa', async () => {
           ).join('')}
         </select>
         <button id="eu-view-toggle" class="swd-select" style="cursor:pointer;padding:5px 12px;white-space:nowrap">
-          ${_viewMode === 'lines' ? '📈 Linhas' : '📊 Snapshot'}
+          ${_viewMode === 'lines' ? 'Linhas' : 'Snapshot'}
         </button>
-        <button class="share-btn" id="eu-share-btn">🔗 Partilhar</button>
+        <button class="share-btn" id="eu-share-btn">Partilhar</button>
       </div>
 
       <!-- Preset chips + ano selector -->
@@ -281,14 +260,14 @@ App.registerSection('europa', async () => {
     // ── View toggle ──────────────────────────────────────────────
     viewToggleBtn.addEventListener('click', () => {
       _viewMode = _viewMode === 'lines' ? 'snapshot' : 'lines';
-      viewToggleBtn.textContent = _viewMode === 'lines' ? '📈 Linhas' : '📊 Snapshot';
+      viewToggleBtn.textContent = _viewMode === 'lines' ? 'Linhas' : 'Snapshot';
       loadEuropa();
     });
 
     // ── Share button ─────────────────────────────────────────────
     shareBtn.addEventListener('click', () => {
       const url = location.origin + location.pathname + buildHash();
-      navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copiado!'), () => showToast('Link: ' + url));
+      navigator.clipboard.writeText(url).then(() => App.showToast('Link copiado!'), () => App.showToast('Link: ' + url));
     });
 
     // ── Year selector ────────────────────────────────────────────
@@ -329,6 +308,11 @@ App.registerSection('europa', async () => {
 
         // Close custom picker
         pickerDetails.open = false;
+        // WP-8: Auto-switch to snapshot when "Todos EU" (all countries)
+        if (preset.countries === null && _viewMode === 'lines') {
+          _viewMode = 'snapshot';
+          viewToggleBtn.textContent = 'Snapshot';
+        }
         loadEuropa();
       });
     });
@@ -426,7 +410,7 @@ App.registerSection('europa', async () => {
                 : `Portugal acompanha UE-27 (${diff >= 0 ? '+' : ''}${diff.toFixed(1)})`;
             }
           } else {
-            titleEl.textContent = `${dataLabel.replace(/[🏭📊⚙️🧪🚗📉💶📋👷👶🔬💸]/gu, '').trim()} — comparação europeia`;
+            titleEl.textContent = `${dataLabel.trim()} — comparação europeia`;
           }
         }
 
@@ -438,7 +422,7 @@ App.registerSection('europa', async () => {
       } catch(e) {
         console.error('[europa] load error:', e);
         document.getElementById('eu-legend').innerHTML =
-          `<div class="error-state">⚠ Erro: ${e.message}</div>`;
+          `<div class="error-state">Erro: ${e.message}</div>`;
       }
     }
 
@@ -513,8 +497,9 @@ App.registerSection('europa', async () => {
 
       const labels = snapData.map(d => d.label);
       const values = snapData.map(d => d.value);
+      // M3: PT highlighted in red, all others grey (no rainbow decoration)
       const colors = snapData.map(d =>
-        d.country === 'PT' ? SWD.COLORS.pt : SWD.COUNTRY_COLORS[d.country] || SWD.COLORS.other
+        d.country === 'PT' ? '#CC0000' : '#CCCCCC'
       );
       const avgValue = values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
 

@@ -22,7 +22,7 @@
     positive: '#2E7D32',
     negative: '#CC0000',
     neutral:  '#555555',
-    series:   ['#003399', '#CC0000', '#2E7D32', '#E65100', '#6A1B9A', '#00838F'],
+    series:   ['#CC0000', '#4A90D9', '#2E7D32', '#E67E22', '#9B59B6', '#00838F'],
   };
 
   /* ------------------------------------------------------------------ */
@@ -143,7 +143,7 @@
       '<div style="display:flex;align-items:center;justify-content:center;' +
       'height:' + height + 'px;background:#f9f9f9;border:1px solid #eee;' +
       'border-radius:4px;color:#888;font-size:13px;font-family:sans-serif">' +
-      '⚠️ Dados indisponíveis — ' +
+      'Dados indisponíveis — ' +
       '<a href="' + CAE_BASE + '" target="_blank" rel="noopener" ' +
       'style="color:#CC0000;margin-left:4px;text-decoration:none">ver no dashboard ↗</a>' +
       '</div>';
@@ -192,23 +192,34 @@
       xAxis: {
         type: 'category',
         data: normalised.periods,
-        axisLabel: { fontSize: 10, color: '#666' },
-        axisLine:  { lineStyle: { color: '#ddd' } },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { fontSize: 10, color: '#666', fontFamily: 'Inter, system-ui, sans-serif', hideOverlap: true },
       },
       yAxis: {
-        type:      'value',
+        type: 'value',
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: { lineStyle: { color: '#F0F0F0', width: 1 } },
         axisLabel: { fontSize: 10, color: '#666' },
-        splitLine: { lineStyle: { color: '#f0f0f0' } },
       },
       series: normalised.series.map(function (s, i) {
         return {
           name:      s.name,
           type:      'line',
           data:      s.data,
-          smooth:    true,
+          smooth:    false,
           symbol:    'none',
           lineStyle: { width: 2, color: COLORS.series[i % COLORS.series.length] },
           itemStyle: { color: COLORS.series[i % COLORS.series.length] },
+          endLabel: normalised.series.length === 1 ? undefined : {
+            show: true,
+            formatter: function(p) { return s.name; },
+            fontSize: 10,
+            color: COLORS.series[i % COLORS.series.length],
+            fontFamily: 'Inter, system-ui, sans-serif',
+          },
         };
       }),
       tooltip: {

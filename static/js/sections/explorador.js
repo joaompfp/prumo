@@ -37,25 +37,14 @@ App.registerSection('explorador', async () => {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   }
 
-  // ── Toast ─────────────────────────────────────────────────────
-  function showToast(msg) {
-    const t = document.createElement('div');
-    t.className = 'explorador-toast';
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => { t.classList.add('visible'); }, 10);
-    setTimeout(() => {
-      t.classList.remove('visible');
-      setTimeout(() => t.remove(), 400);
-    }, 2500);
-  }
+  // ── Toast — usa App.showToast (WP-5 unified) ─────────────────────
 
   // ── Build HTML skeleton ───────────────────────────────────────
   body.innerHTML = `
     <div class="explorador-wrap">
       <div class="explorador-search-bar">
         <input id="exp-search" class="swd-input" type="text"
-               placeholder="🔍 Pesquisar indicadores…" autocomplete="off">
+               placeholder="Pesquisar indicadores..." autocomplete="off">
         <select id="exp-source-filter" class="swd-select">
           <option value="">Todas as fontes</option>
         </select>
@@ -94,8 +83,10 @@ App.registerSection('explorador', async () => {
         </div>
       </div>
 
+      <div id="explorador-ficha" class="explorador-ficha"></div>
+
       <div class="explorador-actions">
-        <button class="btn-toggle active" id="exp-btn-chart">Chart</button>
+        <button class="btn-toggle active" id="exp-btn-chart">Gráfico</button>
         <button class="btn-toggle" id="exp-btn-table">Tabela</button>
         <button class="btn-action" id="exp-btn-csv">CSV</button>
         <button class="btn-action" id="exp-btn-share">🔗 Partilhar</button>
@@ -243,21 +234,23 @@ App.registerSection('explorador', async () => {
   // ── Chip management ───────────────────────────────────────────
   function addIndicator(source, indicator, label, unit) {
     if (selected.length >= 5) {
-      showToast('Máximo de 5 indicadores atingido');
+      App.showToast('Máximo de 5 indicadores atingido');
       return;
     }
     if (selected.some(s => s.source === source && s.indicator === indicator)) {
-      showToast('Indicador já seleccionado');
+      App.showToast('Indicador já seleccionado');
       return;
     }
     selected.push({ source, indicator, label, unit });
     renderChips();
+    renderFicha();
     autoRender();
   }
 
   function removeIndicator(source, indicator) {
     selected = selected.filter(s => !(s.source === source && s.indicator === indicator));
     renderChips();
+    renderFicha();
     if (selected.length > 0) autoRender();
     else clearChart();
   }
@@ -287,6 +280,44 @@ App.registerSection('explorador', async () => {
     }
   }
 
+  // ── WP-10: Inline ficha técnica dos indicadores seleccionados ────
+  function renderFicha() {
+    const container = document.getElementById('explorador-ficha');
+    if (!container || selected.length === 0) {
+      if (container) container.innerHTML = '';
+      return;
+    }
+
+    const freqLabel = f => ({
+      monthly: 'Mensal', annual: 'Anual', weekly: 'Semanal',
+      semester: 'Semestral', quarterly: 'Trimestral',
+    }[f] || f || 'n/d');
+
+    container.innerHTML = `
+      <h3 class="ficha-inline-title">Ficha técnica dos indicadores seleccionados</h3>
+      ${selected.map((s, i) => {
+        const srcData = catalog[s.source] || {};
+        const indData = (srcData.indicators || {})[s.indicator] || {};
+        const color = SERIES_COLORS[i % SERIES_COLORS.length];
+        return `<div class="ficha-inline-card">
+          <div class="ficha-inline-header">
+            <span class="ficha-color-dot" style="background:${color}"></span>
+            <strong>${s.label}</strong>
+            <span class="ficha-inline-source">${srcData.label || s.source}</span>
+          </div>
+          <div class="ficha-inline-body">
+            ${indData.description ? `<p class="ficha-inline-desc">${indData.description}</p>` : ''}
+            <div class="ficha-inline-meta">
+              <span>Unidade: <strong>${s.unit || indData.unit || 'n/d'}</strong></span>
+              <span>Frequência: <strong>${freqLabel(indData.frequency)}</strong></span>
+              <span>Cobertura: <strong>${indData.since || '?'} — ${indData.until || '?'}</strong></span>
+              <span>Observações: <strong>${indData.rows || 'n/d'}</strong></span>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}`;
+  }
+
   // ── Time range presets ────────────────────────────────────────
   body.querySelectorAll('.time-preset-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -313,6 +344,9 @@ App.registerSection('explorador', async () => {
     elChartWrap.innerHTML = '<div class="explorador-empty-state">Selecciona indicadores para visualizar</div>';
     elTableWrap.classList.add('hidden');
     lastSeries = [];
+    // M2: Remove unit warning banner when chart is cleared
+    const banner = document.getElementById('exp-unit-warning');
+    if (banner) banner.remove();
     updateURL();
   }
 
@@ -357,19 +391,36 @@ App.registerSection('explorador', async () => {
                   : units.length === 2 ? 'dual'
                   : 'indexed';
 
+      // M2: Warn on incompatible units
+      if (units.length > 1) {
+        let banner = document.getElementById('exp-unit-warning');
+        if (!banner) {
+          banner = document.createElement('div');
+          banner.id = 'exp-unit-warning';
+          banner.className = 'exp-warning-banner';
+        }
+        banner.textContent = `⚠️ Unidades incompatíveis (${units.join(' vs ')}) — o gráfico pode ser enganador. Considera usar o modo Indexado.`;
+        if (!elChartWrap.parentNode.contains(banner)) {
+          elChartWrap.parentNode.insertBefore(banner, elChartWrap);
+        }
+      } else {
+        const banner = document.getElementById('exp-unit-warning');
+        if (banner) banner.remove();
+      }
+
       if (viewMode === 'chart') renderChart(yMode, units);
       else                      renderTable();
 
       updateURL();
     } catch (e) {
-      elChartWrap.innerHTML = `<div class="error-state">⚠ Erro: ${e.message}</div>`;
+      elChartWrap.innerHTML = `<div class="error-state">Erro: ${e.message}</div>`;
       console.error('[explorador] render error:', e);
     }
   }
 
   // ── Chart rendering ───────────────────────────────────────────
   function renderChart(yMode, units) {
-    const chartH = Math.max(elChartWrap.offsetHeight || 0, 667);
+    const chartH = Math.max(elChartWrap.offsetHeight || 0, 400);
     elChartWrap.innerHTML = `<div id="exp-chart" style="width:100%;height:${chartH}px"></div>`;
     const chartEl = elChartWrap.querySelector('#exp-chart');
 
@@ -414,7 +465,7 @@ App.registerSection('explorador', async () => {
       });
     }).map((s, i) => ({
       ...s,
-      connectNulls: true,
+      connectNulls: false,
       yAxisIndex: yMode === 'dual' ? (units.indexOf(lastSeries[i].unit) === 1 ? 1 : 0) : 0,
     }));
 
@@ -439,8 +490,8 @@ App.registerSection('explorador', async () => {
       itemWidth: 16,
       itemHeight: 3,
     };
-    // Adjust grid bottom for legend
-    baseOpts.grid = { ...baseOpts.grid, bottom: 48, right: yMode === 'dual' ? 80 : 20 };
+    // Adjust grid bottom for legend; right:120 gives room for end labels (m2 fix: was 20/80, labels clipped)
+    baseOpts.grid = { ...baseOpts.grid, bottom: 48, right: 120 };
 
     const opts = {
       ...baseOpts,
@@ -455,7 +506,8 @@ App.registerSection('explorador', async () => {
           let html = `<div style="font-weight:600;margin-bottom:4px">${period}</div>`;
           params.forEach(p => {
             if (p.value !== null && p.value !== undefined) {
-              html += `<div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${p.color};margin-right:6px"></span>${p.seriesName}: <strong>${p.value}</strong></div>`;
+              const unit = lastSeries[p.seriesIndex]?.unit || '';
+              html += `<div><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${p.color};margin-right:6px"></span>${p.seriesName}: <strong>${typeof p.value === 'number' ? p.value.toLocaleString('pt-PT') : p.value}</strong> ${unit}</div>`;
             }
           });
           return html;
@@ -521,7 +573,7 @@ App.registerSection('explorador', async () => {
 
   // ── CSV Export ────────────────────────────────────────────────
   elBtnCSV.addEventListener('click', () => {
-    if (!selected.length) { showToast('Selecciona indicadores primeiro'); return; }
+    if (!selected.length) { App.showToast('Selecciona indicadores primeiro'); return; }
     const srcParam = selected.map(s => s.source).join(',');
     const indParam = selected.map(s => s.indicator).join(',');
     let url = `${BASE}/api/export?sources=${encodeURIComponent(srcParam)}&indicators=${encodeURIComponent(indParam)}`;
@@ -535,9 +587,9 @@ App.registerSection('explorador', async () => {
   // ── Share ─────────────────────────────────────────────────────
   elBtnShare.addEventListener('click', () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
-      showToast('Link copiado!');
+      App.showToast('Link copiado!');
     }).catch(() => {
-      showToast('Copia o URL manualmente');
+      App.showToast('Copia o URL manualmente');
     });
   });
 
@@ -547,7 +599,7 @@ App.registerSection('explorador', async () => {
       history.replaceState(null, '', '#explorador');
       return;
     }
-    const s = selected.map(s => `${s.source}/${s.indicator}`).join(',');
+    const s = selected.map(sel => `${sel.source}/${sel.indicator}`).join(',');
     const params = [`s=${encodeURIComponent(s)}`];
     if (elFrom.value) params.push(`from=${elFrom.value}`);
     if (elTo.value)   params.push(`to=${elTo.value}`);
@@ -582,12 +634,24 @@ App.registerSection('explorador', async () => {
 
       if (selected.length) {
         renderChips();
+        renderFicha();
         render();
       }
     } catch (e) {
       console.warn('[explorador] URL restore error:', e);
     }
   }
+
+  // ── WP-9: handle deep-link re-entry from Painel cards ─────────────
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash;
+    if (hash.startsWith('#explorador?')) {
+      selected = [];
+      renderChips();
+      renderFicha();
+      restoreFromURL();
+    }
+  });
 
   // ── Init ──────────────────────────────────────────────────────
   restoreFromURL();

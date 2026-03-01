@@ -101,7 +101,21 @@ const App = (() => {
     </div>`;
   }
 
-  return { init, registerSection, navigate, errorHTML };
+  function showToast(msg, duration = 2500) {
+    let toast = document.getElementById('app-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'app-toast';
+      toast.className = 'toast-notification';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+  }
+
+  return { init, registerSection, navigate, errorHTML, showToast };
 })();
 
 window.App = App;

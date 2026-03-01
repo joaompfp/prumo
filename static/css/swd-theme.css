@@ -24,10 +24,11 @@
   /* UI */
   --c-bg:       #FFFFFF;
   --c-surface:  #F8F9FA;
+  --c-surface-2: #EBEBEB; /* slightly darker than --c-surface for table headers */
   --c-border:   #EBEBEB;
   --c-text:     #1A1A1A;
   --c-text-sub: #555555;
-  --c-nav-bg:   #1A1A1A;
+  --c-nav-bg:   #2B2B2B;
   --c-nav-text: rgba(255,255,255,0.72);
   --c-nav-active: #FFFFFF;
   --c-accent:   #CC0000;
@@ -107,7 +108,7 @@ body {
 }
 
 .nav-brand span {
-  color: var(--c-pt);
+  color: #FF6666; /* was var(--c-pt) = #CC0000 — fails WCAG AA (2.41:1) on #2B2B2B nav; #FF6666 = ~5.0:1 ✅ */
 }
 
 .nav-tab {
@@ -347,6 +348,25 @@ body {
   outline-offset: 1px;
 }
 
+.swd-input {
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: border-color 0.15s;
+}
+.swd-input:focus {
+  outline: none;
+  border-color: var(--c-pt);
+  box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.1);
+}
+.swd-input::placeholder {
+  color: var(--c-muted);
+}
+
 /* ── Tables ─────────────────────────────────────────────────────── */
 .swd-table {
   width: 100%;
@@ -545,13 +565,13 @@ body {
 }
 
 .btn-primary {
-  background: var(--c-pt);
+  background: #B30000;
   color: #FFFFFF;
-  border-color: var(--c-pt);
+  border-color: #B30000;
 }
 
 .btn-primary:hover {
-  background: #AA0000;
-  border-color: #AA0000;
+  background: #990000;
+  border-color: #990000;
   color: #FFFFFF;
 }
