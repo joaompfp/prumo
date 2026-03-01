@@ -1,0 +1,167 @@
+/* ═══════════════════════════════════════════════════════════════
+   Mobile Responsive — Prumo PT
+   Regra: NUNCA alterar layout desktop. Só @media queries.
+   Breakpoints: ≤768px (tablet/mobile), ≤640px (phones), ≤480px (small)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Section header typography ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.8px;
+  }
+
+  .section-title {
+    font-size: var(--fs-md); /* 22px → was 26px */
+  }
+
+  .section-subtitle {
+    font-size: var(--fs-sm); /* 17px → was 19px */
+  }
+}
+
+/* ── KPI cards: reduzir padding horizontal ───────────────────────── */
+@media (max-width: 768px) {
+  .kpi-card {
+    padding: var(--sp-md) var(--sp-md); /* 16px 16px → era 24px 40px */
+  }
+
+  .kpi-yoy {
+    font-size: var(--fs-sm); /* 17px → era 22px */
+  }
+
+  .kpi-arrow {
+    font-size: var(--fs-base); /* 19px → era 26px */
+  }
+
+  #painel .kpi-card {
+    min-height: 140px; /* era 160px */
+  }
+}
+
+/* ── Europa + Mundo: chart tall — altura razoável em mobile ──────── */
+@media (max-width: 768px) {
+  #europa .chart-container.tall,
+  #mundo .chart-container.tall {
+    height: 400px;
+    min-height: 300px;
+  }
+}
+
+/* ── Europa + Mundo: top bars — stack vertical em mobile ─────────── */
+@media (max-width: 640px) {
+  .europa-top-bar,
+  .mundo-top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--sp-sm);
+  }
+
+  .europa-top-bar .swd-select,
+  .mundo-top-bar .swd-select {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  .europa-top-bar .eu-view-tabs,
+  .mundo-top-bar .eu-view-tabs {
+    align-self: flex-start;
+  }
+
+  .europa-top-bar .share-btn,
+  .mundo-top-bar .share-btn {
+    align-self: flex-start;
+  }
+}
+
+/* ── Comparativos: preset chips — wrap limpo em mobile ───────────── */
+@media (max-width: 640px) {
+  .europa-presets,
+  .mundo-presets,
+  .cmp-presets {
+    gap: 4px;
+  }
+
+  .preset-chip {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}
+
+/* ── Explorador: altura do gráfico em mobile ─────────────────────── */
+@media (max-width: 768px) {
+  .explorador-chart-container {
+    min-height: 280px;
+    height: max(38vh, 280px);
+  }
+}
+
+/* ── Explorador: chip text — truncar em ecrãs estreitos ─────────── */
+@media (max-width: 480px) {
+  .chip-text {
+    max-width: 180px;
+  }
+}
+
+/* ── Explorador search bar: full-width em mobile ─────────────────── */
+@media (max-width: 640px) {
+  .explorador-search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .explorador-search-bar .swd-input {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* ── Ficha: source cards padding reduzido em mobile ──────────────── */
+@media (max-width: 768px) {
+  #ficha .source-card {
+    padding: var(--sp-md); /* 16px → era 24px */
+  }
+}
+
+/* ── Painel IA panel: padding compacto em mobile ─────────────────── */
+@media (max-width: 640px) {
+  #painel-ia-panel {
+    padding: var(--sp-sm) var(--sp-md);
+  }
+}
+
+/* ── AI panel: padding compacto em mobile ────────────────────────── */
+@media (max-width: 640px) {
+  #ai-panel {
+    padding: 0.5rem 0.9rem;
+  }
+}
+
+/* ── chart-card: padding reduzido em mobile ──────────────────────── */
+@media (max-width: 768px) {
+  .chart-card {
+    padding: var(--sp-md);
+  }
+}
+
+/* ── Comparativos chart tall: altura razoável ────────────────────── */
+/* (já existe em sections.css @600px → 320px; reforçar entre 601-768px) */
+@media (max-width: 768px) {
+  #comparativos .chart-container.tall {
+    height: 340px;
+  }
+}
+
+/* ── Footer: compactar em ecrãs muito pequenos ───────────────────── */
+@media (max-width: 480px) {
+  .footer-inner {
+    font-size: 12px;
+  }
+}
+
+/* ── Subsection title: reduzir em mobile ─────────────────────────── */
+@media (max-width: 768px) {
+  .subsection-title {
+    font-size: var(--fs-base); /* 19px → era 22px */
+  }
+}

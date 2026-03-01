@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAE Dashboard — Indicadores Económicos Portugal</title>
-  <meta name="description" content="Plataforma de dados económicos de Portugal: indicadores, comparação europeia, explorador de séries com exportação CSV. Dados INE, Eurostat, OCDE, BCE.">
+  <title>Prumo PT — Economia a Régua e Esquadro</title>
+  <meta name="description" content="Indicadores económicos e sociais portugueses com análise interpretativa por IA. Dados INE, Eurostat, Banco de Portugal, OCDE, Banco Mundial e mais. Economia verificada, não descrita.">
 
   <!-- Open Graph / Social -->
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://joao.date/dados">
-  <meta property="og:title"       content="CAE Dashboard — Indicadores Económicos Portugal">
-  <meta property="og:description" content="Plataforma de dados económicos: indicadores, comparação europeia, explorador de séries. INE, Eurostat, OCDE, BCE.">
+  <meta property="og:title"       content="Prumo PT — Economia a Régua e Esquadro">
+  <meta property="og:description" content="Dashboard de indicadores económicos portugueses com análise IA integrada. Dados das fontes oficiais, verificados, não comentados.">
   <meta property="og:locale"      content="pt_PT">
   <meta name="twitter:card"       content="summary">
-  <meta name="twitter:title"      content="CAE Dashboard — Indicadores Económicos Portugal">
-  <meta name="twitter:description" content="Indicadores económicos PT: explorador de séries, comparação europeia, CSV export.">
+  <meta name="twitter:title"      content="Prumo PT — Economia a Régua e Esquadro">
+  <meta name="twitter:description" content="Indicadores económicos PT: painel, comparação europeia, explorador de séries. Análise IA por Claude. Dados INE, Eurostat, OCDE, Banco Mundial.">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23006600'/><rect x='10' width='22' height='32' fill='%23CC0000'/><circle cx='10' cy='16' r='7' fill='%23FFFF00' opacity='.9'/></svg>">
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
 
   <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,8 @@
   <!-- CSS -->
   <link rel="stylesheet" href="{{ base_path }}/static/css/swd-theme.css">
   <link rel="stylesheet" href="{{ base_path }}/static/css/sections.css">
+  <link rel="stylesheet" href="{{ base_path }}/static/css/nav-brand.css">
+  <link rel="stylesheet" href="{{ base_path }}/static/css/mobile.css">
 
   <!-- ECharts -->
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
@@ -39,14 +41,31 @@
 
 <!-- NAV -->
 <nav class="nav" role="navigation" aria-label="Secções do dashboard">
-  <a href="https://joao.date/dados" class="nav-brand-link" title="Indicadores Económicos Portugal — Plataforma de Dados">
-    <div class="nav-brand"><span class="nav-brand-cae">CAE</span><span class="nav-brand-sep">/</span><span class="nav-brand-pt">PT</span></div>
+  <a href="https://joao.date/dados" class="nav-brand-link" title="Prumo PT — Economia a Régua e Esquadro">
+    <div class="nav-brand">
+      <!-- Prumo (plumb bob): instrumento de verificação vertical -->
+      <svg class="nav-brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <!-- Crossbar de suspensão -->
+        <line x1="10" y1="3" x2="22" y2="3" stroke="#CC0000" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Fio -->
+        <line x1="16" y1="3" x2="16" y2="11" stroke="#9CA3AF" stroke-width="1"/>
+        <!-- Corpo do prumo -->
+        <path d="M10 11 L22 11 L21 19 L18.5 25 L16 29 L13.5 25 L11 19 Z" fill="#CC0000"/>
+        <!-- Reflexo -->
+        <line x1="14.5" y1="12.5" x2="13.5" y2="22" stroke="rgba(255,255,255,0.22)" stroke-width="1.2" stroke-linecap="round"/>
+        <!-- Ponta de referência -->
+        <circle cx="16" cy="29" r="1.2" fill="#8B0000"/>
+      </svg>
+      <span class="nav-brand-wordmark">
+        <span class="nav-brand-open">Prumo </span><span class="nav-brand-stats">PT</span>
+      </span>
+    </div>
   </a>
-  <a class="nav-tab" href="#painel"      data-section="painel"      aria-label="Painel de Indicadores">Painel</a>
-  <a class="nav-tab" href="#europa"      data-section="europa"      aria-label="Comparação Europeia">PT vs Europa</a>
-  <a class="nav-tab" href="#mundo"       data-section="mundo"       aria-label="PT vs Mundo">PT vs Mundo</a>
-  <a class="nav-tab" href="#explorador"  data-section="explorador"  aria-label="Análise de Dados">Análise</a>
-  <a class="nav-tab" href="#ficha"       data-section="ficha"       aria-label="Ficha Técnica">Ficha</a>
+  <a class="nav-tab" href="#painel"       data-section="painel"       aria-label="Painel de Indicadores"><span class="nav-tab-icon">📊</span>Painel</a>
+  <a class="nav-tab" href="#comparativos" data-section="comparativos" aria-label="PT vs Europa e Mundo"><span class="nav-tab-icon">🌍</span>Comparativos</a>
+  <a class="nav-tab" href="#explorador"   data-section="explorador"   aria-label="Análise de Dados"><span class="nav-tab-icon nav-tab-icon-svg"><img src="/static/images/prumo/icon-analise.svg" width="15" height="15" alt="" aria-hidden="true"></span>Análise</a>
+  <a class="nav-tab" href="#ficha"        data-section="ficha"        aria-label="Ficha Técnica"><span class="nav-tab-icon">📋</span>Ficha</a>
+  <a class="nav-tab" href="#ajuda"        data-section="ajuda"        aria-label="Ajuda e Sobre"><span class="nav-tab-icon">❓</span>Ajuda</a>
 </nav>
 
 <!-- #painel -->
@@ -64,33 +83,17 @@
   </div>
 </section>
 
-<!-- #europa -->
-<section id="europa" class="section">
+<!-- #comparativos -->
+<section id="comparativos" class="section">
   <div class="section-header">
-    <div class="section-eyebrow">COMPARAÇÃO EUROPEIA · PT vs EU</div>
-    <h2 class="section-title">A carregar comparação europeia…</h2>
+    <div class="section-eyebrow">COMPARATIVOS · PT VS EUROPA E MUNDO</div>
+    <h2 class="section-title">A carregar comparação…</h2>
     <p class="section-subtitle"></p>
   </div>
   <div class="section-body">
     <div class="loading-state">
       <div class="loading-spinner"></div>
-      <span>A carregar dados europeus…</span>
-    </div>
-  </div>
-</section>
-
-
-<!-- #mundo -->
-<section id="mundo" class="section">
-  <div class="section-header">
-    <div class="section-eyebrow">PT VS MUNDO · COMPARAÇÃO GLOBAL</div>
-    <h2 class="section-title">A carregar comparação mundial…</h2>
-    <p class="section-subtitle"></p>
-  </div>
-  <div class="section-body">
-    <div class="loading-state">
-      <div class="loading-spinner"></div>
-      <span>A carregar dados mundiais…</span>
+      <span>A carregar dados…</span>
     </div>
   </div>
 </section>
@@ -125,19 +128,29 @@
   </div>
 </section>
 
+<!-- #ajuda -->
+<section id="ajuda" class="section">
+  <div class="section-header">
+    <div class="section-eyebrow">AJUDA · SOBRE</div>
+    <h2 class="section-title">Como usar o Prumo PT</h2>
+    <p class="section-subtitle">Guia rápido de cada secção e contexto sobre o projecto</p>
+  </div>
+  <div class="section-body"></div>
+</section>
+
 <!-- SCRIPTS -->
 <script src="{{ base_path }}/static/js/app.js"></script>
 <script src="{{ base_path }}/static/js/api.js"></script>
 <script src="{{ base_path }}/static/js/swd-charts.js"></script>
 <script src="{{ base_path }}/static/js/sections/painel.js"></script>
-<script src="{{ base_path }}/static/js/sections/europa.js"></script>
-<script src="{{ base_path }}/static/js/sections/mundo.js"></script>
+<script src="{{ base_path }}/static/js/sections/comparativos.js"></script>
 <script src="{{ base_path }}/static/js/sections/analise.js"></script>
 <script src="{{ base_path }}/static/js/sections/ficha.js"></script>
+<script src="{{ base_path }}/static/js/sections/ajuda.js"></script>
 
 <noscript>
   <div style="font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:24px 32px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;color:#333">
-    <h1 style="font-size:20px;margin:0 0 12px;color:#CC0000">CAE Dashboard — Indicadores Económicos Portugal</h1>
+    <h1 style="font-size:20px;margin:0 0 12px;color:#CC0000">Prumo PT — Economia a Régua e Esquadro</h1>
     <p style="margin:0 0 12px">Este dashboard requer JavaScript para carregar os dados e gráficos.</p>
     <p style="margin:0 0 16px;color:#666;font-size:14px">Acesso directo às fontes:</p>
     <ul style="margin:0;padding-left:20px;font-size:14px;line-height:2">
@@ -150,15 +163,25 @@
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <span class="footer-copy">&copy; 2026 CAE</span>
-    <span class="footer-sep">&mdash;</span>
-    <a href="https://o.joao.date" class="footer-link">o.joao.date</a>
+    <a href="https://o.joao.date" target="_blank" rel="noopener">o.joao.date</a>
     <span class="footer-sep">&middot;</span>
-    <a href="https://joao.date/dados" class="footer-link">CAE Dashboard</a>
+    <span class="footer-sources">Dados:
+      <a href="https://www.ine.pt" target="_blank" rel="noopener">INE</a> ·
+      <a href="https://ec.europa.eu/eurostat" target="_blank" rel="noopener">Eurostat</a> ·
+      <a href="https://www.bportugal.pt" target="_blank" rel="noopener">Banco de Portugal</a> ·
+      <a href="https://stats.oecd.org" target="_blank" rel="noopener">OCDE</a> ·
+      <a href="https://data.worldbank.org" target="_blank" rel="noopener">Banco Mundial</a> ·
+      <a href="https://www.erse.pt" target="_blank" rel="noopener">ERSE</a> ·
+      <a href="https://datahub.ren.pt" target="_blank" rel="noopener">REN</a>
+    </span>
     <span class="footer-sep">&middot;</span>
-    <span class="footer-sources">Dados: INE · Eurostat · Banco de Portugal · OCDE</span>
+    <span class="footer-pcp">Preparado para a <span style="font-weight:700">CAE</span>/<a href="https://pcp.pt" target="_blank" rel="noopener" style="font-weight:700;color:#CC0000">PCP</a></span>
     <span class="footer-sep">&middot;</span>
-    <span class="footer-dev">Desenvolvido por <strong>Jarbas</strong></span>
+    <span class="footer-licenses">
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">AGPL-3.0</a> ·
+      <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">ODbL</a> ·
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC-BY-SA-NC</a>
+    </span>
   </div>
 </footer>
 
