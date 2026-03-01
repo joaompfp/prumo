@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAE Dashboard — Indicadores Económicos Portugal</title>
+  <meta name="description" content="Plataforma de dados económicos de Portugal: indicadores, comparação europeia, explorador de séries com exportação CSV. Dados INE, Eurostat, OCDE, BCE.">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://joao.date/dados">
+  <meta property="og:title"       content="CAE Dashboard — Indicadores Económicos Portugal">
+  <meta property="og:description" content="Plataforma de dados económicos: indicadores, comparação europeia, explorador de séries. INE, Eurostat, OCDE, BCE.">
+  <meta property="og:locale"      content="pt_PT">
+  <meta name="twitter:card"       content="summary">
+  <meta name="twitter:title"      content="CAE Dashboard — Indicadores Económicos Portugal">
+  <meta name="twitter:description" content="Indicadores económicos PT: explorador de séries, comparação europeia, CSV export.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23006600'/><rect x='10' width='22' height='32' fill='%23CC0000'/><circle cx='10' cy='16' r='7' fill='%23FFFF00' opacity='.9'/></svg>">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- BASE_PATH injection -->
+  <script>window.__BASE_PATH__ = "{{ base_path }}";</script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ base_path }}/static/css/swd-theme.css">
+  <link rel="stylesheet" href="{{ base_path }}/static/css/sections.css">
+
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Secções do dashboard">
+  <div class="nav-brand" title="Indicadores Económicos Portugal — Plataforma de Dados">
+    CAE <span>Dashboard</span>
+  </div>
+  <a class="nav-tab" href="#painel"      data-section="painel"      aria-label="Painel de Indicadores">Painel</a>
+  <a class="nav-tab" href="#europa"      data-section="europa"      aria-label="Comparação Europeia">Europa</a>
+  <a class="nav-tab" href="#explorador"  data-section="explorador"  aria-label="Explorador de Dados">Explorador</a>
+  <a class="nav-tab" href="#ficha"       data-section="ficha"       aria-label="Ficha Técnica">Ficha</a>
+</nav>
+
+<!-- #painel -->
+<section id="painel" class="section" role="main">
+  <div class="section-header">
+    <div class="section-eyebrow">INDICADORES ECONÓMICOS · PORTUGAL</div>
+    <h1 class="section-title">A carregar indicadores…</h1>
+    <p class="section-subtitle"></p>
+  </div>
+  <div class="section-body">
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <span>A carregar indicadores…</span>
+    </div>
+  </div>
+</section>
+
+<!-- #europa -->
+<section id="europa" class="section">
+  <div class="section-header">
+    <div class="section-eyebrow">COMPARAÇÃO EUROPEIA · PT vs EU</div>
+    <h2 class="section-title">A carregar comparação europeia…</h2>
+    <p class="section-subtitle"></p>
+  </div>
+  <div class="section-body">
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <span>A carregar dados europeus…</span>
+    </div>
+  </div>
+</section>
+
+<!-- #explorador -->
+<section id="explorador" class="section">
+  <div class="section-header">
+    <div class="section-eyebrow">EXPLORADOR DE DADOS · SÉRIES TEMPORAIS · CSV</div>
+    <h2 class="section-title">Explorar indicadores — seleccione e visualize</h2>
+    <p class="section-subtitle">Seleccione indicadores, visualize em gráfico e exporte em CSV</p>
+  </div>
+  <div class="section-body">
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <span>A carregar catálogo…</span>
+    </div>
+  </div>
+</section>
+
+<!-- #ficha -->
+<section id="ficha" class="section">
+  <div class="section-header">
+    <div class="section-eyebrow">FICHA TÉCNICA · FONTES · METODOLOGIA</div>
+    <h2 class="section-title">Fontes de dados e metodologia</h2>
+    <p class="section-subtitle">Todos os indicadores, fontes primárias, cobertura e notas metodológicas</p>
+  </div>
+  <div class="section-body">
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <span>A carregar ficha técnica…</span>
+    </div>
+  </div>
+</section>
+
+<!-- SCRIPTS -->
+<script src="{{ base_path }}/static/js/app.js"></script>
+<script src="{{ base_path }}/static/js/api.js"></script>
+<script src="{{ base_path }}/static/js/swd-charts.js"></script>
+<script src="{{ base_path }}/static/js/sections/painel.js"></script>
+<script src="{{ base_path }}/static/js/sections/europa.js"></script>
+<script src="{{ base_path }}/static/js/sections/explorador.js"></script>
+<script src="{{ base_path }}/static/js/sections/ficha.js"></script>
+
+<noscript>
+  <div style="font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:24px 32px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;color:#333">
+    <h1 style="font-size:20px;margin:0 0 12px;color:#CC0000">CAE Dashboard — Indicadores Económicos Portugal</h1>
+    <p style="margin:0 0 12px">Este dashboard requer JavaScript para carregar os dados e gráficos.</p>
+    <p style="margin:0 0 16px;color:#666;font-size:14px">Acesso directo às fontes:</p>
+    <ul style="margin:0;padding-left:20px;font-size:14px;line-height:2">
+      <li><a href="https://www.ine.pt" style="color:#CC0000">INE — Instituto Nacional de Estatística</a></li>
+      <li><a href="https://ec.europa.eu/eurostat" style="color:#CC0000">Eurostat — Estatísticas da União Europeia</a></li>
+      <li><a href="https://www.bportugal.pt" style="color:#CC0000">Banco de Portugal</a></li>
+    </ul>
+  </div>
+</noscript>
+
+</body>
+</html>

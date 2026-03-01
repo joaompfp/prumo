@@ -1,0 +1,131 @@
+from ..constants import CATALOG, FRED_SERIES, WB_CODES
+
+
+def compute_yoy(series):
+    """Given a sorted list of {period, value}, compute YoY change for latest point.
+    Bug 5: tries exact match, then +/-1 month fallback, then any point from prev year."""
+    if not series:
+        return None
+    latest = series[-1]
+    if latest["value"] is None:
+        return None
+    try:
+        yr, mo = latest["period"].split("-")
+        yr, mo = int(yr), int(mo)
+        prev_yr = yr - 1
+        # Build month candidates: exact, then adjacent months
+        month_candidates = [mo]
+        for delta in range(1, 6):  # try up to +/-5 months
+            m_plus  = mo + delta
+            m_minus = mo - delta
+            if 1 <= m_plus  <= 12: month_candidates.append(m_plus)
+            if 1 <= m_minus <= 12: month_candidates.append(m_minus)
+
+        period_map = {pt["period"]: pt for pt in series if pt["value"] is not None}
+        for m in month_candidates:
+            target = f"{prev_yr}-{m:02d}"
+            if target in period_map:
+                prev_val = period_map[target]["value"]
+                if prev_val and prev_val != 0:
+                    return round((latest["value"] - prev_val) / abs(prev_val) * 100, 1)
+    except:
+        pass
+    return None
+
+
+def compute_trend(series, n=6):
+    """Count consecutive months of increase/decrease at tail of series."""
+    if len(series) < 2:
+        return "flat", 0
+    direction = None
+    count = 0
+    for i in range(len(series)-1, 0, -1):
+        curr = series[i]["value"]
+        prev = series[i-1]["value"]
+        if curr is None or prev is None:
+            break
+        d = "up" if curr > prev else ("down" if curr < prev else "flat")
+        if direction is None:
+            direction = d
+        if d == direction:
+            count += 1
+        else:
+            break
+        if count >= n:
+            break
+    return direction or "flat", count
+
+
+def spark_data(series, n=12):
+    """Return last n values as a flat list for sparklines."""
+    return [pt["value"] for pt in series[-n:] if pt["value"] is not None]
+
+
+def trend_text(label, desc, last_val, prev_val, unit):
+    if prev_val is None or prev_val == 0:
+        return {"label": label, "text": f"{desc}: {last_val:.2f} {unit}.", "trend": "flat"}
+    pct = (last_val - prev_val) / abs(prev_val) * 100
+    direction = "subiu" if pct > 0 else "desceu"
+    trend = "up" if pct > 0 else "down"
+    abs_pct = abs(pct)
+    return {
+        "label": label,
+        "text": f"{desc} {direction} {abs_pct:.1f}% face ao mês anterior ({last_val:.2f} vs {prev_val:.2f} {unit}).",
+        "trend": trend
+    }
+
+
+def shift_period(period, months):
+    """Shift YYYY-MM period by `months` months."""
+    try:
+        y, m = int(period[:4]), int(period[5:7])
+        total = y * 12 + m - 1 + months
+        ny, nm = divmod(total, 12)
+        return f"{ny:04d}-{nm+1:02d}"
+    except Exception:
+        return period
+
+
+def find_period(rows, target_period):
+    """Find row with period == target, or None."""
+    for r in reversed(rows):
+        if r["period"] == target_period:
+            return r
+    return None
+
+
+def label_for(source, indicator):
+    return CATALOG.get(source, {}).get("indicators", {}).get(indicator, {}).get("label", indicator)
+
+
+def unit_for(source, indicator):
+    return CATALOG.get(source, {}).get("indicators", {}).get(indicator, {}).get("unit", "")
+
+
+def source_url_for(source: str, indicator: str) -> str:
+    """Return the best URL for a given source+indicator pair."""
+    if source == "EUROSTAT":
+        return "https://ec.europa.eu/eurostat/databrowser/"
+    elif source == "INE":
+        return "https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_BD_tema"
+    elif source == "FRED":
+        series = FRED_SERIES.get(indicator)
+        if series:
+            return f"https://fred.stlouisfed.org/series/{series}"
+        return f"https://fred.stlouisfed.org/series/{indicator.upper()}"
+    elif source == "WORLDBANK":
+        code = WB_CODES.get(indicator)
+        if code:
+            return f"https://data.worldbank.org/indicator/{code}"
+        return "https://data.worldbank.org/"
+    elif source == "BPORTUGAL":
+        return "https://www.bportugal.pt/estatisticas/dados"
+    elif source == "OECD":
+        return "https://stats.oecd.org/"
+    elif source == "REN":
+        return "https://datahub.ren.pt/app/pt/producao/"
+    elif source == "ERSE":
+        return "https://www.erse.pt/"
+    elif source == "DGEG":
+        return "https://www.dgeg.gov.pt/media/"
+    return ""

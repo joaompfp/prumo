@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+
+# Editor
+*.bak
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (managed separately, not in repo)
+*.duckdb
+*.db
+
+# Reference materials (large files, local only)
+docs/*.pdf
+docs/*.epub
+docs/swd-*/
+docs/archive/
