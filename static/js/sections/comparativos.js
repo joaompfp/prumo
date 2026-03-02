@@ -471,12 +471,17 @@ App.registerSection('comparativos', async () => {
       };
     });
 
+    const isMobileCmp = chartEl.offsetWidth < 640;
+    // On mobile: hide end-labels to prevent chart overflow
+    if (isMobileCmp) {
+      chartSeries = chartSeries.map(s => ({ ...s, endLabel: { show: false } }));
+    }
     _cmpChart = SWD.createSWDChart(chartEl, {
       ...SWD.baseOptions(),
       xAxis: SWD.timeAxis(periods, { interval: Math.max(0, Math.floor(periods.length / 8) - 1) }),
       yAxis: SWD.valueAxis({ scale: true }),
       series: chartSeries,
-      grid: { containLabel: true, left: 40, right: 90, top: 20, bottom: 30 },
+      grid: { containLabel: true, left: 40, right: isMobileCmp ? 16 : 90, top: 20, bottom: 30 },
     });
   }
 
