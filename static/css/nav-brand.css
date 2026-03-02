@@ -61,3 +61,14 @@
   .nav-brand-link,
   .nav-brand { display: none !important; }
 }
+
+/* Logo 4 (Prumo PT) — SVG file replacing inline icon */
+.nav-brand-logo {
+  height: 44px;
+  width: auto;
+  display: block;
+  /* On dark navbar, invert to white/light mode — the SVG uses light bg so keep as-is */
+}
+@media (max-width: 600px) {
+  .nav-brand-logo { height: 36px; }
+}

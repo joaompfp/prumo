@@ -42,24 +42,7 @@
 <!-- NAV -->
 <nav class="nav" role="navigation" aria-label="Secções do dashboard">
   <a href="https://joao.date/dados" class="nav-brand-link" title="Prumo PT — Economia a Régua e Esquadro">
-    <div class="nav-brand">
-      <!-- Prumo (plumb bob): instrumento de verificação vertical -->
-      <svg class="nav-brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-        <!-- Crossbar de suspensão -->
-        <line x1="10" y1="3" x2="22" y2="3" stroke="#CC0000" stroke-width="1.8" stroke-linecap="round"/>
-        <!-- Fio -->
-        <line x1="16" y1="3" x2="16" y2="11" stroke="#9CA3AF" stroke-width="1"/>
-        <!-- Corpo do prumo -->
-        <path d="M10 11 L22 11 L21 19 L18.5 25 L16 29 L13.5 25 L11 19 Z" fill="#CC0000"/>
-        <!-- Reflexo -->
-        <line x1="14.5" y1="12.5" x2="13.5" y2="22" stroke="rgba(255,255,255,0.22)" stroke-width="1.2" stroke-linecap="round"/>
-        <!-- Ponta de referência -->
-        <circle cx="16" cy="29" r="1.2" fill="#8B0000"/>
-      </svg>
-      <span class="nav-brand-wordmark">
-        <span class="nav-brand-open">Prumo </span><span class="nav-brand-stats">PT</span>
-      </span>
-    </div>
+    <img src="{{ base_path }}/static/images/prumo/logo.svg" alt="Prumo PT" class="nav-brand-logo" height="44" loading="eager">
   </a>
   <a class="nav-tab" href="#painel"       data-section="painel"       aria-label="Painel de Indicadores"><span class="nav-tab-icon">📊</span><span class="nav-tab-label">Painel</span></a>
   <a class="nav-tab" href="#comparativos" data-section="comparativos" aria-label="PT vs Europa e Mundo"><span class="nav-tab-icon">🌍</span><span class="nav-tab-label">Comparativos</span></a>

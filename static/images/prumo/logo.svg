@@ -1,86 +1,35 @@
-<!--
-  Prumo PT — Logótipo Principal v0
-  Versão horizontal: símbolo à esquerda, wordmark + tagline à direita
-  Construtivista geométrico. Zero gradientes. Zero sombras.
-  Paleta: #CC0000 · #1F2937 · #374151 · #9CA3AF
--->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 88" fill="none" role="img" aria-label="Prumo PT logótipo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" width="320" height="72">
+  <defs>
+    <style>
+      .nm { font-family: 'Playfair Display', 'Lora', Georgia, serif; font-weight: 700; font-size: 34px; }
+      .tg { font-family: 'Montserrat', 'Source Sans Pro', Arial, sans-serif; font-weight: 300; font-size: 7.5px; letter-spacing: 2.2px; fill: #A0A0A0; }
+      .ic { font-family: Arial Narrow, Arial, sans-serif; font-weight: 700; font-size: 5px; fill: #CC2A2A; }
+    </style>
+  </defs>
 
-  <!-- ── GRUPO: Símbolo (prumo) ─────────────────────────────── -->
-  <g id="symbol" transform="translate(16, 4)">
+  <!-- ── ÍCONE: Fio de prumo ───────────────────────────── -->
+  <!-- Barra horizontal vermelha (travessa) -->
+  <rect x="18" y="7" width="22" height="2.5" rx="0.8" fill="#CC2A2A"/>
+  <!-- Fio vertical cinza -->
+  <rect x="28.2" y="4" width="1.6" height="14" rx="0.5" fill="#9E9E9E"/>
 
-    <!-- Suspensão: barra horizontal de fixação -->
-    <rect id="crossbar"
-          x="14" y="8" width="28" height="3"
-          fill="#CC0000"/>
+  <!-- Corpo do prumo: pentágono invertido, contorno vermelho -->
+  <!-- Pontos: topo-esq, topo-dir, ombro-dir, ponta-baixo, ombro-esq -->
+  <polygon points="16,22  42,22  45,32  29,58  13,32"
+           fill="none" stroke="#CC2A2A" stroke-width="1.8" stroke-linejoin="round"/>
 
-    <!-- Pino de suspensão: pequeno retângulo central -->
-    <rect id="pin"
-          x="26.5" y="5" width="3" height="6"
-          fill="#CC0000"/>
+  <!-- Termos económicos (pequenos, dentro) -->
+  <text x="23" y="32" class="ic">PIB</text>
+  <text x="18" y="40" class="ic">EUR</text>
+  <text x="23" y="48" class="ic">IPC</text>
 
-    <!-- Fio de prumo: linha vertical tensa -->
-    <line id="string"
-          x1="28" y1="11" x2="28" y2="23"
-          stroke="#9CA3AF" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- ── SEPARADOR ──────────────────────────────────────── -->
+  <line x1="58" y1="14" x2="58" y2="60" stroke="#CCCCCC" stroke-width="1"/>
 
-    <!-- Corpo do prumo: pentágono (topo reto, base pontiaguda) -->
-    <!-- Geometria: max width 22px a 1/3 da altura, ponta a baixo -->
-    <polygon id="plumb-body"
-             points="18,23 38,23 41,42 28,74 15,42"
-             fill="#CC0000"/>
+  <!-- ── WORDMARK ───────────────────────────────────────── -->
+  <text x="68" y="50" class="nm" fill="#3B4A5C">Prumo</text>
+  <text x="224" y="50" class="nm" fill="#CC2A2A">PT</text>
 
-    <!-- Linha de referência interna: risca vertical central no corpo -->
-    <line id="reference-line"
-          x1="28" y1="26" x2="28" y2="70"
-          stroke="#8B0000" stroke-width="0.8" opacity="0.5"/>
-
-    <!-- Ponto de referência na ponta -->
-    <circle id="tip-point"
-            cx="28" cy="74" r="2.5"
-            fill="#8B0000"/>
-
-    <!-- Linha de prumo abaixo da ponta (extensão vertical de referência) -->
-    <line id="plumb-line"
-          x1="28" y1="76.5" x2="28" y2="84"
-          stroke="#9CA3AF" stroke-width="0.8" stroke-dasharray="2,2"/>
-
-  </g>
-
-  <!-- ── GRUPO: Wordmark ────────────────────────────────────── -->
-  <g id="wordmark" transform="translate(72, 0)">
-
-    <!-- "Prumo" — peso regular, cinzento escuro -->
-    <text
-      x="0" y="46"
-      font-family="Georgia, 'Times New Roman', serif"
-      font-size="34"
-      font-weight="400"
-      letter-spacing="-0.5"
-      fill="#374151">Prumo</text>
-
-    <!-- "PT" — peso bold, vermelho Portugal -->
-    <text
-      x="142" y="46"
-      font-family="Georgia, 'Times New Roman', serif"
-      font-size="34"
-      font-weight="700"
-      fill="#CC0000">PT</text>
-
-    <!-- Tagline em versalete/monospace -->
-    <text
-      x="1" y="62"
-      font-family="'Courier New', Courier, monospace"
-      font-size="9.5"
-      font-weight="400"
-      letter-spacing="1.8"
-      fill="#9CA3AF">ECONOMIA A RÉGUA E ESQUADRO</text>
-
-  </g>
-
-  <!-- ── GRUPO: Separador vertical símbolo/wordmark ─────────── -->
-  <line id="divider"
-        x1="68" y1="14" x2="68" y2="74"
-        stroke="#9CA3AF" stroke-width="0.6" opacity="0.4"/>
-
+  <!-- ── TAGLINE ─────────────────────────────────────────── -->
+  <text x="69" y="62" class="tg">ECONOMIA A RÉGUA E ESQUADRO</text>
 </svg>
