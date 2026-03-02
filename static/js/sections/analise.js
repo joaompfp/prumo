@@ -675,8 +675,8 @@ App.registerSection('explorador', async () => {
     if (yMode === 'single') {
       yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0] || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: '#888' } });
     } else if (yMode === 'dual') {
-      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0], nameLocation: 'end', nameTextStyle: { fontSize: 10, color: SERIES_COLORS[0] } });
-      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[1], nameLocation: 'end', nameTextStyle: { fontSize: 10, color: SERIES_COLORS[1] }, position: 'right' });
+      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0] || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: SERIES_COLORS[0] } });
+      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[1] || units[0] || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: SERIES_COLORS[1] }, position: 'right' });
     } else {
       yAxes.push({ ...SWD.valueAxis({ scale: true }), name: 'Index (início=100)', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: '#888' } });
     }

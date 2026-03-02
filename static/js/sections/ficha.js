@@ -222,6 +222,7 @@ App.registerSection('ficha', async () => {
       <!-- 1. Header -->
       <div class="ficha-header">
         <div class="ficha-meta">
+          <span><strong>${totalIndicators}</strong> indicadores em <strong>${totalSrcs}</strong> fontes</span>
           <span>Última actualização: <strong>${updated}</strong></span>
           <span>Total de observações: <strong>${totalRows > 0 ? totalRows.toLocaleString('pt-PT') : '—'}</strong></span>
           <span>Cobertura: <strong>${earliest} → ${latest}</strong></span>

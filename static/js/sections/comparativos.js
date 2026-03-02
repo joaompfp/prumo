@@ -445,7 +445,7 @@ App.registerSection('comparativos', async () => {
         type: 'line', name: s.label,
         data: s.data.map(d => d.value),
         symbol: 'none',
-        lineStyle: { color, width: isPT ? 2.5 : 1.5, opacity: isPT ? 1 : 0.75 },
+        lineStyle: { color, width: isPT ? 2.5 : 1.5, opacity: isPT ? 1 : (series.length > 10 ? 0.35 : 0.75) },
         itemStyle: { color },
         z: isPT ? 10 : 1,
         emphasis: { focus: 'series' },
