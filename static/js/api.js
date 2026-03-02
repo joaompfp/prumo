@@ -147,8 +147,21 @@ window.fmt = fmt;
     'GT':   'Gt',
     // Other common
     'USD':  'USD',
+    'USD/t':   'USD/t',
+    'USD/ton': 'USD/t',
+    'USD/lb':  'USD/lb',
+    'USD/libra': 'USD/lb',
+    'USD/bbl': 'USD/bbl',
+    'USD/bushel': 'USD/bushel',
+    'EUR/t':   '€/t',
+    'EUR/ton': '€/t',
+    'EUR/kg':  '€/kg',
+    '€/ton':   '€/t',
+    '€/tonelada': '€/t',
     'M EUR': 'M€',
     'M€':   'M€',
+    'MtCO2e': 'MtCO₂e',
+    'Mton CO2e': 'MtCO₂e',
     '%PIB': '% PIB',
     '% PIB': '% PIB',
   };
@@ -156,11 +169,32 @@ window.fmt = fmt;
   // Families of units that share the same physical dimension but differ by SI prefix.
   // When two series are in the same family, convert the larger to the smaller for display.
   const UNIT_FAMILIES = [
-    { base: '€/Wh',  members: { '€/kWh': 1, '€/MWh': 1e-3, '€/GWh': 1e-6 } },
-    { base: 'Wh',    members: { 'kWh': 1, 'MWh': 1e3, 'GWh': 1e6, 'TWh': 1e9 } },
-    { base: 'tep',   members: { 'tep': 1, 'ktep': 1e3, 'Mtep': 1e6 } },
-    { base: 't',     members: { 't': 1, 'kt': 1e3, 'Mt': 1e6 } },
-    { base: '€/l',   members: { '€/l': 1, '€/m³': 1e-3 } },
+    // Energy price (per energy unit)
+    { base: '€/Wh',    members: { '€/kWh': 1, '€/MWh': 1e-3, '€/GWh': 1e-6 } },
+    { base: 'USD/Wh',  members: { 'USD/kWh': 1, 'USD/MWh': 1e-3 } },
+    { base: '€/GJ',    members: { '€/GJ': 1, '€/MJ': 1e3 } },
+    // Energy volume
+    { base: 'Wh',      members: { 'kWh': 1, 'MWh': 1e3, 'GWh': 1e6, 'TWh': 1e9 } },
+    { base: 'J',       members: { 'GJ': 1, 'TJ': 1e3, 'PJ': 1e6 } },
+    // Oil equivalent
+    { base: 'tep',     members: { 'tep': 1, 'ktep': 1e3, 'Mtep': 1e6 } },
+    // Mass
+    { base: 'g',       members: { 'g': 1, 'kg': 1e3, 't': 1e6, 'kt': 1e9, 'Mt': 1e12 } },
+    // Price per mass (commodities)
+    { base: '€/g',     members: { '€/kg': 1, '€/t': 1e-3, '€/ton': 1e-3, '€/tonelada': 1e-3 } },
+    { base: 'USD/g',   members: { 'USD/kg': 1, 'USD/t': 1e-3, 'USD/ton': 1e-3, 'USD/lb': 2.205, 'USD/libra': 2.205 } },
+    // Price per volume (fuels)
+    { base: '€/l',     members: { '€/l': 1, '€/m³': 1e-3 } },
+    { base: 'USD/l',   members: { 'USD/l': 1, 'USD/bbl': 0.00629 } },  // 1 bbl ≈ 158.987 l → USD/l = USD/bbl * 0.00629
+    // CO₂ mass
+    { base: 'tCO2',    members: { 'tCO₂': 1, 'MtCO₂': 1e6, 'Mton CO2e': 1e6, 'ktCO₂': 1e3 } },
+    // Power / capacity
+    { base: 'W',       members: { 'kW': 1, 'MW': 1e3, 'GW': 1e6 } },
+    // Currency scale
+    { base: '€',       members: { '€': 1, 'M€': 1e6, 'G€': 1e9 } },
+    { base: 'USD',     members: { 'USD': 1, 'M USD': 1e6, 'B USD': 1e9 } },
+    // Volume
+    { base: 'l',       members: { 'l': 1, 'm³': 1e3 } },
   ];
 
   fmt.unit = function(u) {
