@@ -594,9 +594,12 @@ App.registerSection('explorador', async () => {
       const rawUnits = lastSeries.map(s => s.unit || '');
       const resolved = fmt.resolveUnits(rawUnits);
       // Apply conversion factors to lastSeries data (mutate a copy)
+      const conversions = []; // track which series were converted for UX notice
       lastSeries = lastSeries.map((s, i) => {
         const { factor, unit } = resolved[i];
         if (factor === 1) return { ...s, unit };
+        const origUnit = s.unit;
+        conversions.push(`${s.label}: ${fmt.unit(origUnit)||origUnit} → ${unit} (×${factor % 1 === 0 ? factor : factor.toFixed(4)})`);
         return { ...s, unit, data: s.data.map(d => ({ ...d, value: d.value != null ? d.value * factor : null })) };
       });
       const units = [...new Set(lastSeries.map(s => s.unit).filter(Boolean))];
@@ -605,6 +608,24 @@ App.registerSection('explorador', async () => {
                   : 'indexed';
 
       // M2: Warn on incompatible units — banner goes BEFORE analise-layout, outside the flex row
+      // Show conversion notice if unit scaling was applied
+      if (conversions.length) {
+        let convBanner = document.getElementById('exp-conv-notice');
+        if (!convBanner) {
+          convBanner = document.createElement('div');
+          convBanner.id = 'exp-conv-notice';
+          convBanner.className = 'exp-info-banner';
+        }
+        convBanner.textContent = `Conversão automática de unidades: ${conversions.join(' | ')}`;
+        const analiseLayout = elChartWrap.parentNode;
+        if (convBanner.parentNode !== analiseLayout.parentNode) {
+          analiseLayout.parentNode.insertBefore(convBanner, analiseLayout);
+        }
+      } else {
+        const cb = document.getElementById('exp-conv-notice');
+        if (cb) cb.remove();
+      }
+
       if (units.length > 1) {
         let banner = document.getElementById('exp-unit-warning');
         if (!banner) {
@@ -868,8 +889,11 @@ App.registerSection('explorador', async () => {
       pairs.forEach(pair => {
         const slash = pair.indexOf('/');
         if (slash < 0) return;
-        const src = pair.slice(0, slash);
+        let src = pair.slice(0, slash);
         const ind = pair.slice(slash + 1);
+        // Alias normalisation: OCDE→OECD, Banco Mundial→WORLDBANK, etc.
+        const SRC_ALIAS = { 'OCDE': 'OECD', 'BANCO MUNDIAL': 'WORLDBANK', 'BANCO DE PORTUGAL': 'BPORTUGAL' };
+        src = SRC_ALIAS[src.toUpperCase()] || src;
         if (selected.length >= 5) return;
         if (selected.some(e => e.source === src && e.indicator === ind)) return;
         const srcInfo = catalog[src];

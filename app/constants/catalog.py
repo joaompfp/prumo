@@ -339,9 +339,9 @@ CATALOG = {
         "tags": ["commodities", "metais", "indústria"]
       },
       "wheat": {
-        "label": "Trigo (USD/bushel)",
+        "label": "Trigo (USD/t)",
         "description": "Preço mensal médio do trigo no mercado internacional (Chicago Board of Trade), em USD/bushel (1 bushel ≈ 27,2 kg). Input crítico para a indústria moageira, padaria e alimentação animal. A invasão da Ucrânia em 2022 demonstrou a sua importância estratégica para a segurança alimentar europeia — Ucrânia e Rússia representam ~30% das exportações globais. Fonte: FRED, série PWHEAMTUSDM (FMI).",
-        "unit": "USD/bushel",
+        "unit": "USD/t",
         "frequency": "monthly",
         "lag_months": 0,
         "since": "1990-01",
@@ -350,9 +350,9 @@ CATALOG = {
         "tags": ["commodities", "alimentar", "agricultura"]
       },
       "corn": {
-        "label": "Milho (USD/bushel)",
+        "label": "Milho (USD/t)",
         "description": "Preço mensal médio do milho no mercado internacional (Chicago Board of Trade), em USD/bushel. Usado como ração animal (suinicultura, avicultura), matéria-prima na indústria alimentar e de biocombustíveis (etanol). Relevante para os custos da indústria de alimentos compostos para animais, sector significativo em Portugal. Fonte: FRED, série PMAIZMTUSDM (FMI).",
-        "unit": "USD/bushel",
+        "unit": "USD/t",
         "frequency": "monthly",
         "lag_months": 0,
         "since": "1990-01",
@@ -404,7 +404,7 @@ CATALOG = {
       "commodity_soybean": {
         "label": "Soja (USD/bushel)",
         "description": "Preço mensal médio da soja (CBOT), em USD/bushel. Principal oleaginosa para alimentação, rações e biodiesel. Fonte: FRED, PSOYBUSDM (FMI).",
-        "unit": "USD/bushel",
+        "unit": "USD/t",
         "frequency": "monthly",
         "since": "2003-01",
         "until": "2026-01",

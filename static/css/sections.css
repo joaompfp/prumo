@@ -762,6 +762,16 @@
   margin-bottom: 12px;
 }
 
+.exp-info-banner {
+  background: #E8F4FD;
+  border: 1px solid #90CAF9;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: var(--fs-sm);
+  color: #1565C0;
+  margin-bottom: 8px;
+}
+
 /* ── m5: Ficha methodology table — unified typography ───────────── */
 .methodology-table {
   width: 100%;
