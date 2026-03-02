@@ -145,34 +145,57 @@ window.fmt = fmt;
     'KT':   'kt',
     'MT':   'Mt',
     'GT':   'Gt',
-    // Other common
-    'USD':  'USD',
-    'USD/t':   'USD/t',
-    'USD/ton': 'USD/t',
-    'USD/lb':  'USD/lb',
-    'USD/libra': 'USD/lb',
-    'USD/bbl': 'USD/bbl',
-    'USD/bushel': 'USD/bushel',
-    'EUR/t':   '€/t',
-    'EUR/ton': '€/t',
-    'EUR/kg':  '€/kg',
-    '€/ton':   '€/t',
+    // Other common — all units that actually appear in catalog.py
+    'EUR/GJ':    '€/GJ',
+    'EUR/kW/mês': '€/kW/mês',
+    'EUR/bbl':   '€/bbl',
+    'EUR/USD':   'EUR/USD',  // exchange rate — keep as-is
+    'EUR/hab.':  '€/hab.',
+    'EUR/t':     '€/t',
+    'EUR/ton':   '€/t',
+    'EUR/kg':    '€/kg',
+    '€/ton':     '€/t',
     '€/tonelada': '€/t',
-    'M EUR': 'M€',
-    'M€':   'M€',
+    'USD':       'USD',
+    'USD/t':     'USD/t',
+    'USD/ton':   'USD/t',
+    'USD/lb':    'USD/lb',
+    'USD/libra': 'USD/lb',
+    'USD/bbl':   'USD/bbl',
+    'USD/bushel':'USD/bushel',
+    'USD/MMBtu': 'USD/MMBtu',
+    'USD/oz':    'USD/oz',
+    'USD/EUR':   'USD/EUR',
+    'USD (2017)':'USD (2017)',
+    'USD/hab.':  'USD/hab.',
+    'M EUR':  'M€',
+    'M€':     'M€',
+    'm3':     'm³',           // missing accent
+    'tep/M EUR': 'tep/M€',
     'MtCO2e': 'MtCO₂e',
     'Mton CO2e': 'MtCO₂e',
-    '%PIB': '% PIB',
-    '% PIB': '% PIB',
+    '%PIB':   '% PIB',
+    '% PIB':  '% PIB',
+    '% do PIB': '% PIB',      // normalise to single notation
+    '% população': '% pop.',
+    '% pop. 15+': '% pop. 15+',
+    'Saldo de respostas': 'Saldo',
+    'nascimentos por 1.000 habitantes': 'nascim./1000 hab.',
+    'por 1.000 hab.': '/1000 hab.',
+    'p.b.':   'p.b.',
+    'PPS':    'PPS',
+    'anos':   'anos',
+    'habitantes': 'hab.',
   };
 
   // Families of units that share the same physical dimension but differ by SI prefix.
   // When two series are in the same family, convert the larger to the smaller for display.
   const UNIT_FAMILIES = [
-    // Energy price (per energy unit)
+    // Energy price (per energy unit) — only convert within pure SI-prefix variants
+    // €/kWh (57) + €/MWh (4): same unit, different prefix → auto-convert
     { base: '€/Wh',    members: { '€/kWh': 1, '€/MWh': 1e-3, '€/GWh': 1e-6 } },
+    // €/GJ (22) kept separate — gas market convention, mixing with €/kWh confuses users
     { base: 'USD/Wh',  members: { 'USD/kWh': 1, 'USD/MWh': 1e-3 } },
-    { base: '€/GJ',    members: { '€/GJ': 1, '€/MJ': 1e3 } },
     // Energy volume
     { base: 'Wh',      members: { 'kWh': 1, 'MWh': 1e3, 'GWh': 1e6, 'TWh': 1e9 } },
     { base: 'J',       members: { 'GJ': 1, 'TJ': 1e3, 'PJ': 1e6 } },

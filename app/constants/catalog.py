@@ -234,7 +234,7 @@ CATALOG = {
       "unit_labour_cost_hour":   {"label": "Custo Unitário por Hora (UE)",                "description": "Custo unitário do trabalho calculado com base em horas trabalhadas. Multi-país UE. Fonte: Eurostat.", "unit": "Índice", "frequency": "annual", "since": "1975-01", "until": "2025-01", "rows": 881, "tags": ["custos", "trabalho"]},
       "unit_labour_cost_person": {"label": "Custo Unitário por Trabalhador (UE)",         "description": "Custo unitário do trabalho calculado com base em número de pessoas empregadas. Multi-país UE. Fonte: Eurostat.", "unit": "Índice", "frequency": "annual", "since": "1975-01", "until": "2025-01", "rows": 881, "tags": ["custos", "trabalho"]},
       "gdp_quarterly":            {"label": "PIB Trimestral (Eurostat)",                   "description": "Produto Interno Bruto trimestral, multi-país UE, em índice ou volume. Fonte: Eurostat, NAMQ_10_GDP.", "unit": "Índice", "frequency": "quarterly", "since": "2000-01", "until": "2025-12", "rows": 2907, "tags": ["pib", "macro", "europa"]},
-      "gdp_per_capita_eur":       {"label": "PIB per capita — EUR correntes (Eurostat)",   "description": "PIB per capita em euros correntes, multi-país UE. Permite comparação nominal entre países da zona euro. Fonte: Eurostat, NAMA_10_PC.", "unit": "EUR/hab.", "frequency": "annual", "since": "1975-01", "until": "2025-01", "rows": 887, "tags": ["pib", "macro", "europa"]},
+      "gdp_per_capita_eur":       {"label": "PIB per capita — EUR correntes (Eurostat)",   "description": "PIB per capita em euros correntes, multi-país UE. Permite comparação nominal entre países da zona euro. Fonte: Eurostat, NAMA_10_PC.", "unit": "€/hab.", "frequency": "annual", "since": "1975-01", "until": "2025-01", "rows": 887, "tags": ["pib", "macro", "europa"]},
       "gdp_per_capita_pps":       {"label": "PIB per capita — PPC (Eurostat)",             "description": "PIB per capita em Paridade de Poder de Compra (PPS), multi-país UE. Elimina diferenças de nível de preços para comparação real. Fonte: Eurostat.", "unit": "PPS", "frequency": "annual", "since": "2000-01", "until": "2024-01", "rows": 150, "tags": ["pib", "macro", "comparação"]},
       "gov_debt_pct_gdp":         {"label": "Dívida Pública (% PIB, Eurostat)",            "description": "Dívida bruta das administrações públicas em % do PIB, multi-país UE. Critério de Maastricht: ≤60%. Fonte: Eurostat, GOV_10DD_GGDEBT.", "unit": "% PIB", "frequency": "annual", "since": "1995-01", "until": "2024-01", "rows": 830, "tags": ["dívida", "finanças públicas", "europa"]},
       "gov_deficit_pct_gdp":      {"label": "Défice Público (% PIB, Eurostat)",            "description": "Saldo das administrações públicas em % do PIB, multi-país UE. Critério de Maastricht: ≤−3%. Fonte: Eurostat, GOV_10DD_GGDEBT.", "unit": "% PIB", "frequency": "annual", "since": "1995-01", "until": "2024-01", "rows": 836, "tags": ["défice", "finanças públicas", "europa"]},
@@ -589,7 +589,7 @@ CATALOG = {
       "electricity_price_mibel": {
         "label": "Preço MIBEL (EUR/MWh)",
         "description": "Preço médio mensal da electricidade no Mercado Ibérico de Electricidade (MIBEL), em €/MWh. Referência de custo para grandes consumidores industriais em regime de mercado livre e para as tarifas reguladas. Muito sensível à disponibilidade hídrica em Portugal e Espanha, ao preço do gás natural e à produção solar/eólica na península ibérica. Fonte: REN, DataHub — Dados de mercado MIBEL/OMIE.",
-        "unit": "EUR/MWh",
+        "unit": "€/MWh",
         "frequency": "monthly",
         "lag_months": 1,
         "since": "2007-07",
@@ -833,10 +833,10 @@ CATALOG = {
       "energy_intensity":                 {"label": "Intensidade Energética (tep/M€)",                   "description": "Quantidade de energia primária consumida por unidade de PIB (tep por milhão de euros de PIB a preços constantes). Mede a eficiência energética da economia — quanto menor, mais eficiente. Portugal melhorou este indicador significativamente desde 2005, mas ainda se situa acima da média da UE. Frequência anual com desfasamento de 12-18 meses. Fonte: DGEG, Balanço Energético.",     "unit": "tep/M€",    "frequency": "annual",    "since": "1995-01", "until": "2023-01", "rows": 29, "tags": ["eficiência", "energia", "macro"]},
       "co2_emissions_total":              {"label": "Emissões CO₂ Totais (Mton)",                        "description": "Emissões totais de CO₂ equivalente pelo sector energético em Portugal (Mton CO₂e). Inclui emissões da combustão de combustíveis fósseis para electricidade, calor industrial e transportes. Portugal tem compromissos de redução de 55% até 2030 (face a 1990) no âmbito do Green Deal europeu. Frequência anual. Fonte: DGEG / APA, Inventário Nacional de Emissões de GEE.",           "unit": "Mton CO2e", "frequency": "annual",    "since": "1995-01", "until": "2023-01", "rows": 29, "tags": ["emissões", "clima", "ambiente"]},
       "co2_emissions_energy":             {"label": "Emissões CO₂ Sector Energético (Mton)",             "description": "Emissões de CO₂ provenientes exclusivamente da combustão de energia (electricidade, calor e transportes), excluindo processos industriais e resíduos. Subconjunto das emissões totais, útil para isolar o impacto das políticas energéticas (renovável, eficiência, electrificação). Frequência anual. Fonte: DGEG / APA, Inventário Nacional de Emissões de GEE.",                            "unit": "Mton CO2e", "frequency": "annual",    "since": "1995-01", "until": "2023-01", "rows": 29, "tags": ["emissões", "clima", "energia"]},
-      "price_diesel_pvp":                 {"label": "Preço Gasóleo PVP (€/l)",                           "description": "Preço médio mensal do gasóleo rodoviário em Portugal (€/l), preço de venda ao público (PVP) incluindo todos os impostos (ISP, IVA, CSR). Série histórica desde 2004, actualizada mensalmente. Custo operacional crítico para transporte rodoviário de mercadorias e logística industrial. Fonte: DGEG, Preços dos Combustíveis.",                                                                    "unit": "EUR/l",       "frequency": "monthly",   "since": "2004-01", "until": "2026-02", "rows": 203, "tags": ["combustível", "preço", "transporte"]},
-      "price_gasoline_95_pvp":            {"label": "Preço Gasolina 95 PVP (€/l)",                       "description": "Preço médio mensal da gasolina sem chumbo 95 em Portugal (€/l), preço de venda ao público (PVP) incluindo todos os impostos (ISP, IVA, CSR). Referência para o custo dos transportes particulares e de frotas ligeiras. Série histórica desde 2004, actualizada mensalmente. Fonte: DGEG, Preços dos Combustíveis.",                                                                                    "unit": "EUR/l",       "frequency": "monthly",   "since": "2004-01", "until": "2026-02", "rows": 203, "tags": ["combustível", "preço"]},
-      "natgas_price_industry_€_per_MWh": {"label": "Preço Gás Natural Indústria (€/MWh)",               "description": "Preço semestral do gás natural para consumidores industriais em Portugal na banda de consumo I3 (10.000–100.000 GJ/ano), em €/MWh, incluindo todos os impostos e taxas. Comparável com as médias publicadas pelo Eurostat para os países da UE (série NRG_PC_203). Frequência semestral — dois valores por ano (S1 e S2). Fonte: DGEG, Estatísticas dos Preços da Energia.",              "unit": "EUR/MWh",     "frequency": "semester",  "since": "2019-07", "until": "2025-01", "rows": 12, "tags": ["gás", "energia", "indústria", "preço"]},
-      "industrial_band_ic_incl_taxes":   {"label": "Preço Electricidade Industrial Banda IC (€/kWh)",   "description": "Preço da electricidade para consumidores industriais na banda IC (500–2.000 MWh/ano), em €/kWh, incluindo todos os impostos, taxas e encargos da rede. Banda mais representativa das PME industriais portuguesas. Publicado semestralmente pela DGEG em linha com o inquérito harmonizado Eurostat (série NRG_PC_205). Fonte: DGEG, Estatísticas dos Preços da Energia.",                       "unit": "EUR/kWh",     "frequency": "semester",  "since": "2016-01", "until": "2025-01", "rows": 19, "tags": ["electricidade", "preço", "indústria"]},
+      "price_diesel_pvp":                 {"label": "Preço Gasóleo PVP (€/l)",                           "description": "Preço médio mensal do gasóleo rodoviário em Portugal (€/l), preço de venda ao público (PVP) incluindo todos os impostos (ISP, IVA, CSR). Série histórica desde 2004, actualizada mensalmente. Custo operacional crítico para transporte rodoviário de mercadorias e logística industrial. Fonte: DGEG, Preços dos Combustíveis.",                                                                    "unit": "€/l",       "frequency": "monthly",   "since": "2004-01", "until": "2026-02", "rows": 203, "tags": ["combustível", "preço", "transporte"]},
+      "price_gasoline_95_pvp":            {"label": "Preço Gasolina 95 PVP (€/l)",                       "description": "Preço médio mensal da gasolina sem chumbo 95 em Portugal (€/l), preço de venda ao público (PVP) incluindo todos os impostos (ISP, IVA, CSR). Referência para o custo dos transportes particulares e de frotas ligeiras. Série histórica desde 2004, actualizada mensalmente. Fonte: DGEG, Preços dos Combustíveis.",                                                                                    "unit": "€/l",       "frequency": "monthly",   "since": "2004-01", "until": "2026-02", "rows": 203, "tags": ["combustível", "preço"]},
+      "natgas_price_industry_€_per_MWh": {"label": "Preço Gás Natural Indústria (€/MWh)",               "description": "Preço semestral do gás natural para consumidores industriais em Portugal na banda de consumo I3 (10.000–100.000 GJ/ano), em €/MWh, incluindo todos os impostos e taxas. Comparável com as médias publicadas pelo Eurostat para os países da UE (série NRG_PC_203). Frequência semestral — dois valores por ano (S1 e S2). Fonte: DGEG, Estatísticas dos Preços da Energia.",              "unit": "€/MWh",     "frequency": "semester",  "since": "2019-07", "until": "2025-01", "rows": 12, "tags": ["gás", "energia", "indústria", "preço"]},
+      "industrial_band_ic_incl_taxes":   {"label": "Preço Electricidade Industrial Banda IC (€/kWh)",   "description": "Preço da electricidade para consumidores industriais na banda IC (500–2.000 MWh/ano), em €/kWh, incluindo todos os impostos, taxas e encargos da rede. Banda mais representativa das PME industriais portuguesas. Publicado semestralmente pela DGEG em linha com o inquérito harmonizado Eurostat (série NRG_PC_205). Fonte: DGEG, Estatísticas dos Preços da Energia.",                       "unit": "€/kWh",     "frequency": "semester",  "since": "2016-01", "until": "2025-01", "rows": 19, "tags": ["electricidade", "preço", "indústria"]},
       "brent_usd":                        {"label": "Petróleo Brent (USD/barril) — DGEG",                "description": "Preço mensal do petróleo Brent em USD/barril segundo a recolha da DGEG para efeitos de cálculo de preços de combustíveis e indicadores energéticos nacionais. Série recente (a partir de 2024). Para histórico longo use FRED/brent_oil. Fonte: DGEG, Estatísticas de Energia — Preços Internacionais.",                                                                                           "unit": "USD/bbl",   "frequency": "monthly",   "since": "2024-12", "until": "2025-12", "rows": 13, "tags": ["petróleo", "commodities", "energia"]},
       "agricultural_diesel": {
         "label": "Gasóleo Agrícola — Consumo (ktep)",
@@ -851,7 +851,7 @@ CATALOG = {
       "aviation_gasoline": {
         "label": "Gasolina de Aviação — Preço (EUR/l)",
         "description": "Preço mensal da gasolina de aviação AVGAS em Portugal (EUR/litro). Para aeronaves de pistão (aviação geral, treino, desporto aéreo). Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -861,7 +861,7 @@ CATALOG = {
       "aviation_jet_fuel": {
         "label": "Combustível Aviação Jet — Preço (EUR/l)",
         "description": "Preço mensal do combustível Jet A-1 (querosene) para aviação a jacto em Portugal, em EUR/litro. Custo operacional crítico para companhias aéreas. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -871,7 +871,7 @@ CATALOG = {
       "brent_eur": {
         "label": "Petróleo Brent (EUR/barril)",
         "description": "Preço mensal do petróleo Brent convertido para euros por barril. Indicador do impacto cambial nos custos energéticos nacionais. Fonte: DGEG.",
-        "unit": "EUR/bbl",
+        "unit": "€/bbl",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -991,7 +991,7 @@ CATALOG = {
       "diesel_pretax": {
         "label": "Gasóleo — Preço Pré-Imposto (EUR/l)",
         "description": "Preço mensal do gasóleo rodoviário em Portugal antes de impostos (ISP, IVA, CSR), em EUR/litro. Reflecte a componente de mercado no preço final. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1011,7 +1011,7 @@ CATALOG = {
       "energy_intensity_final": {
         "label": "Intensidade Energia Final (tep/M EUR)",
         "description": "Intensidade energética do consumo final por unidade de PIB (tep/M EUR). Mede eficiência da economia no uso de energia. Frequência anual. Fonte: DGEG.",
-        "unit": "tep/M EUR",
+        "unit": "tep/M€",
         "frequency": "annual",
         "since": "1995-01",
         "until": "2023-01",
@@ -1021,7 +1021,7 @@ CATALOG = {
       "energy_intensity_industry": {
         "label": "Intensidade Energética Indústria (tep/M EUR)",
         "description": "Intensidade energética do sector industrial (energia por unidade de VAB industrial). Indicador de competitividade para sectores energointensivos. Frequência anual. Fonte: DGEG.",
-        "unit": "tep/M EUR",
+        "unit": "tep/M€",
         "frequency": "annual",
         "since": "1995-01",
         "until": "2023-01",
@@ -1031,7 +1031,7 @@ CATALOG = {
       "energy_intensity_primary": {
         "label": "Intensidade Energia Primária (tep/M EUR)",
         "description": "Intensidade energética do consumo primário por unidade de PIB. Inclui perdas de conversão. Frequência anual. Fonte: DGEG.",
-        "unit": "tep/M EUR",
+        "unit": "tep/M€",
         "frequency": "annual",
         "since": "1995-01",
         "until": "2023-01",
@@ -1041,7 +1041,7 @@ CATALOG = {
       "energy_intensity_services": {
         "label": "Intensidade Energética Serviços (tep/M EUR)",
         "description": "Intensidade energética do sector de serviços em Portugal (energia por unidade de VAB terciário). Frequência anual. Fonte: DGEG.",
-        "unit": "tep/M EUR",
+        "unit": "tep/M€",
         "frequency": "annual",
         "since": "1995-01",
         "until": "2023-01",
@@ -1131,7 +1131,7 @@ CATALOG = {
       "gasoline_pretax": {
         "label": "Gasolina 95 — Preço Pré-Imposto (EUR/l)",
         "description": "Preço mensal da gasolina 95 em Portugal antes de impostos, em EUR/litro. Componente de mercado no preço final. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1251,7 +1251,7 @@ CATALOG = {
       "natgas_avg_price": {
         "label": "Gás Natural — Preço Médio (EUR/MWh)",
         "description": "Preço médio mensal do gás natural em Portugal (todos os consumidores), em EUR/MWh. Fonte: DGEG.",
-        "unit": "EUR/MWh",
+        "unit": "€/MWh",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1261,7 +1261,7 @@ CATALOG = {
       "natgas_cogeneration": {
         "label": "Gás Natural Cogeração — Volume (m3)",
         "description": "Volume mensal de gás natural consumido em instalações de cogeração em Portugal, em m3. Fonte: DGEG.",
-        "unit": "m3",
+        "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1271,7 +1271,7 @@ CATALOG = {
       "natgas_dedicated_plants": {
         "label": "Gás Natural Centrais Dedicadas — Volume (m3)",
         "description": "Volume mensal de gás natural consumido em centrais CCGT dedicadas à produção eléctrica, em m3. Fonte: DGEG.",
-        "unit": "m3",
+        "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1281,7 +1281,7 @@ CATALOG = {
       "natgas_imports_pipeline": {
         "label": "Gás Natural — Importações Gasoduto (m3)",
         "description": "Volume mensal de gás natural importado via gasoduto (Espanha/Argélia) para Portugal, em m3. Fonte: DGEG.",
-        "unit": "m3",
+        "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1291,7 +1291,7 @@ CATALOG = {
       "natgas_imports_ship": {
         "label": "Gás Natural — Importações GNL (m3)",
         "description": "Volume mensal de GNL importado por navio para o Terminal de Sines, em m3. Diversificação de fornecimento. Fonte: DGEG.",
-        "unit": "m3",
+        "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1301,7 +1301,7 @@ CATALOG = {
       "natgas_imports_total": {
         "label": "Gás Natural — Importações Total (m3)",
         "description": "Volume mensal total de gás natural importado para Portugal (gasoduto + GNL), em m3. Fonte: DGEG.",
-        "unit": "m3",
+        "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1311,7 +1311,7 @@ CATALOG = {
       "natgas_other_sectors": {
         "label": "Gás Natural Outros Sectores — Volume (m3)",
         "description": "Volume mensal de gás natural consumido em outros sectores (residencial, serviços, outros industriais), em m3. Fonte: DGEG.",
-        "unit": "m3",
+        "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1321,7 +1321,7 @@ CATALOG = {
       "natgas_total": {
         "label": "Gás Natural Total — Volume (m3)",
         "description": "Volume mensal total de gás natural consumido em Portugal (todas as utilizações), em m3. Fonte: DGEG.",
-        "unit": "m3",
+        "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1391,7 +1391,7 @@ CATALOG = {
       "price_agricultural_diesel": {
         "label": "Preço Gasóleo Agrícola (EUR/l)",
         "description": "Preço médio mensal do gasóleo agrícola colorido em Portugal, em EUR/litro. Custo de produção para o sector agro-alimentar e florestal. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2022-01",
         "until": "2025-12",
@@ -1401,7 +1401,7 @@ CATALOG = {
       "price_diesel": {
         "label": "Preço Gasóleo (EUR/l) — recente",
         "description": "Preço médio mensal do gasóleo rodoviário em Portugal (EUR/litro), série recente DGEG. Para histórico longo desde 2004 usar price_diesel_pvp. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1411,7 +1411,7 @@ CATALOG = {
       "price_diesel_pretax": {
         "label": "Preço Gasóleo Pré-Imposto (EUR/l)",
         "description": "Preço mensal do gasóleo rodoviário em Portugal antes de impostos (ISP, CSR, IVA), em EUR/litro. Série histórica longa desde 2015. A diferença para o PVP quantifica a carga tributária por litro. Fonte: DGEG, Preços dos Combustíveis.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2015-04",
         "until": "2026-02",
@@ -1421,7 +1421,7 @@ CATALOG = {
       "price_fuel_oil_industry": {
         "label": "Preço Fuelóleo Industrial (EUR/t)",
         "description": "Preço médio mensal do fuelóleo para uso industrial em Portugal, em EUR/tonelada. Custo de energia para indústrias energointensivas. Fonte: DGEG.",
-        "unit": "EUR/t",
+        "unit": "€/t",
         "frequency": "monthly",
         "since": "2022-01",
         "until": "2025-12",
@@ -1431,7 +1431,7 @@ CATALOG = {
       "price_gasoline_95_pretax": {
         "label": "Preço Gasolina 95 Pré-Imposto (EUR/l)",
         "description": "Preço mensal da gasolina 95 em Portugal antes de impostos, em EUR/litro. Série histórica longa desde 2015. Permite análise da carga fiscal sobre combustíveis. Fonte: DGEG, Preços dos Combustíveis.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2015-04",
         "until": "2026-02",
@@ -1441,7 +1441,7 @@ CATALOG = {
       "price_gasoline_98_pvp": {
         "label": "Preço Gasolina 98 PVP (EUR/l) [histórico]",
         "description": "Preço médio mensal da gasolina IO 98 em Portugal (PVP com todos os impostos), em EUR/litro. Série histórica 2004-2009. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2004-01",
         "until": "2009-12",
@@ -1451,7 +1451,7 @@ CATALOG = {
       "price_gasoline_io95": {
         "label": "Preço Gasolina IO95 PVP (EUR/l) — recente",
         "description": "Preço médio mensal da gasolina IO 95 em Portugal (PVP), série recente. Para histórico longo usar price_gasoline_95_pvp. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1461,7 +1461,7 @@ CATALOG = {
       "price_gasoline_io98": {
         "label": "Preço Gasolina IO98 PVP (EUR/l) — recente",
         "description": "Preço médio mensal da gasolina IO 98 em Portugal (PVP), série recente. Gasolina premium. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1471,7 +1471,7 @@ CATALOG = {
       "price_heating_diesel": {
         "label": "Preço Gasóleo de Aquecimento (EUR/l)",
         "description": "Preço médio mensal do gasóleo de aquecimento em Portugal, em EUR/litro. Combustível para aquecimento com tributação reduzida. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2022-01",
         "until": "2025-12",
@@ -1481,7 +1481,7 @@ CATALOG = {
       "price_lpg_auto": {
         "label": "Preço GPL Auto (EUR/l)",
         "description": "Preço médio mensal do GPL auto em Portugal, em EUR/litro. Alternativa económica aos combustíveis líquidos. Fonte: DGEG.",
-        "unit": "EUR/l",
+        "unit": "€/l",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1951,7 +1951,7 @@ CATALOG = {
       "industrial_band_ia_excl_taxes": {
         "label": "Electricidade Ind. Banda IA s/impostos (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IA (<20 MWh/ano) excluindo impostos. Fonte: DGEG (Eurostat NRG_PC_205).",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -1961,7 +1961,7 @@ CATALOG = {
       "industrial_band_ia_excl_vat": {
         "label": "Electricidade Ind. Banda IA s/IVA (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IA (<20 MWh/ano) excluindo IVA. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -1971,7 +1971,7 @@ CATALOG = {
       "industrial_band_ia_incl_taxes": {
         "label": "Electricidade Ind. Banda IA c/impostos (EUR/kWh)",
         "description": "Preço total da electricidade para consumidores industriais na banda IA (<20 MWh/ano) com todos os impostos. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -1981,7 +1981,7 @@ CATALOG = {
       "industrial_band_ib_excl_taxes": {
         "label": "Electricidade Ind. Banda IB s/impostos (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IB (20-500 MWh/ano) excluindo impostos. Relevante para PME. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -1991,7 +1991,7 @@ CATALOG = {
       "industrial_band_ib_excl_vat": {
         "label": "Electricidade Ind. Banda IB s/IVA (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IB (20-500 MWh/ano) excluindo IVA. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2001,7 +2001,7 @@ CATALOG = {
       "industrial_band_ib_incl_taxes": {
         "label": "Electricidade Ind. Banda IB c/impostos (EUR/kWh)",
         "description": "Preço total da electricidade para consumidores industriais na banda IB (20-500 MWh/ano) com todos os impostos. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2011,7 +2011,7 @@ CATALOG = {
       "industrial_band_ic_excl_taxes": {
         "label": "Electricidade Ind. Banda IC s/impostos (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IC (500-2000 MWh/ano) excluindo impostos. Banda mais representativa das PME. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2021,7 +2021,7 @@ CATALOG = {
       "industrial_band_ic_excl_vat": {
         "label": "Electricidade Ind. Banda IC s/IVA (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IC (500-2000 MWh/ano) excluindo IVA. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2031,7 +2031,7 @@ CATALOG = {
       "industrial_band_id_excl_taxes": {
         "label": "Electricidade Ind. Banda ID s/impostos (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda ID (2000-20000 MWh/ano) excluindo impostos. Grandes consumidores. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2041,7 +2041,7 @@ CATALOG = {
       "industrial_band_id_excl_vat": {
         "label": "Electricidade Ind. Banda ID s/IVA (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda ID (2000-20000 MWh/ano) excluindo IVA. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2051,7 +2051,7 @@ CATALOG = {
       "industrial_band_id_incl_taxes": {
         "label": "Electricidade Ind. Banda ID c/impostos (EUR/kWh)",
         "description": "Preço total da electricidade para consumidores industriais na banda ID (2000-20000 MWh/ano) com todos os impostos. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2061,7 +2061,7 @@ CATALOG = {
       "industrial_band_ie_excl_taxes": {
         "label": "Electricidade Ind. Banda IE s/impostos (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IE (20000-70000 MWh/ano) excluindo impostos. Grandes indústrias energointensivas. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2071,7 +2071,7 @@ CATALOG = {
       "industrial_band_ie_excl_vat": {
         "label": "Electricidade Ind. Banda IE s/IVA (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IE (20000-70000 MWh/ano) excluindo IVA. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2081,7 +2081,7 @@ CATALOG = {
       "industrial_band_ie_incl_taxes": {
         "label": "Electricidade Ind. Banda IE c/impostos (EUR/kWh)",
         "description": "Preço total da electricidade para consumidores industriais na banda IE (20000-70000 MWh/ano) com todos os impostos. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2091,7 +2091,7 @@ CATALOG = {
       "industrial_band_if_excl_taxes": {
         "label": "Electricidade Ind. Banda IF s/impostos (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IF (70000-150000 MWh/ano) excluindo impostos. Indústrias muito energointensivas. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2101,7 +2101,7 @@ CATALOG = {
       "industrial_band_if_excl_vat": {
         "label": "Electricidade Ind. Banda IF s/IVA (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IF (70000-150000 MWh/ano) excluindo IVA. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2111,7 +2111,7 @@ CATALOG = {
       "industrial_band_if_incl_taxes": {
         "label": "Electricidade Ind. Banda IF c/impostos (EUR/kWh)",
         "description": "Preço total da electricidade para consumidores industriais na banda IF (70000-150000 MWh/ano) com todos os impostos. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2016-01",
         "until": "2025-01",
@@ -2121,7 +2121,7 @@ CATALOG = {
       "industrial_band_ig_excl_taxes": {
         "label": "Electricidade Ind. Banda IG s/impostos (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IG (>150000 MWh/ano) excluindo impostos. Mega-consumidores. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2017-01",
         "until": "2025-01",
@@ -2131,7 +2131,7 @@ CATALOG = {
       "industrial_band_ig_excl_vat": {
         "label": "Electricidade Ind. Banda IG s/IVA (EUR/kWh)",
         "description": "Preço da electricidade para consumidores industriais na banda IG (>150000 MWh/ano) excluindo IVA. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2017-01",
         "until": "2025-01",
@@ -2141,7 +2141,7 @@ CATALOG = {
       "industrial_band_ig_incl_taxes": {
         "label": "Electricidade Ind. Banda IG c/impostos (EUR/kWh)",
         "description": "Preço total da electricidade para consumidores industriais na banda IG (>150000 MWh/ano) com todos os impostos. Fonte: DGEG.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2017-01",
         "until": "2025-01",
@@ -2151,7 +2151,7 @@ CATALOG = {
       "industrial_eu_band_ia_excl_taxes": {
         "label": "Electricidade UE Banda IA s/impostos (EUR/kWh)",
         "description": "Preço médio da electricidade na UE para consumidores industriais banda IA (<20 MWh/ano), excluindo impostos. Referência de benchmark europeu. Fonte: DGEG / Eurostat.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2022-07",
         "until": "2022-12",
@@ -2161,7 +2161,7 @@ CATALOG = {
       "industrial_eu_band_ib_excl_taxes": {
         "label": "Electricidade UE Banda IB s/impostos (EUR/kWh)",
         "description": "Preço médio da electricidade na UE para consumidores industriais banda IB (20-500 MWh/ano), excluindo impostos. Referência de benchmark europeu. Fonte: DGEG / Eurostat.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2022-07",
         "until": "2022-12",
@@ -2171,7 +2171,7 @@ CATALOG = {
       "industrial_eu_band_ic_excl_taxes": {
         "label": "Electricidade UE Banda IC s/impostos (EUR/kWh)",
         "description": "Preço médio da electricidade na UE para consumidores industriais banda IC (500-2000 MWh/ano), excluindo impostos. Referência de competitividade no contexto europeu. Fonte: DGEG / Eurostat.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "semi-annual",
         "since": "2022-07",
         "until": "2022-12",
@@ -2181,7 +2181,7 @@ CATALOG = {
       "natgas_price_domestic_21.07": {
         "label": "Gas Natural Doméstico D1 21 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D1, referência 21,07 GJ, em EUR/GJ. Série histórica DGEG. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-07",
         "until": "2023-12",
@@ -2191,7 +2191,7 @@ CATALOG = {
       "natgas_price_domestic_21.12": {
         "label": "Gas Natural Doméstico D1 21.12 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D1, referência 21,12 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-07",
         "until": "2024-12",
@@ -2201,7 +2201,7 @@ CATALOG = {
       "natgas_price_domestic_21.77": {
         "label": "Gas Natural Doméstico D1 21.77 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D1, referência 21,77 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-01",
         "until": "2024-06",
@@ -2211,7 +2211,7 @@ CATALOG = {
       "natgas_price_domestic_22.19": {
         "label": "Gas Natural Doméstico D1 22.19 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D1, referência 22,19 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-01",
         "until": "2023-06",
@@ -2221,7 +2221,7 @@ CATALOG = {
       "natgas_price_domestic_22.63": {
         "label": "Gas Natural Doméstico D1 22.63 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D1, referência 22,63 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2017-01",
         "until": "2022-06",
@@ -2231,7 +2231,7 @@ CATALOG = {
       "natgas_price_domestic_75.86": {
         "label": "Gas Natural Doméstico D2 75.86 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D2 (20-200 GJ/ano), referência 75,86 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-07",
         "until": "2023-12",
@@ -2241,7 +2241,7 @@ CATALOG = {
       "natgas_price_domestic_76.03": {
         "label": "Gas Natural Doméstico D2 76.03 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D2, referência 76,03 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-07",
         "until": "2024-12",
@@ -2251,7 +2251,7 @@ CATALOG = {
       "natgas_price_domestic_78.37": {
         "label": "Gas Natural Doméstico D2 78.37 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D2, referência 78,37 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-01",
         "until": "2024-06",
@@ -2261,7 +2261,7 @@ CATALOG = {
       "natgas_price_domestic_79.87": {
         "label": "Gas Natural Doméstico D2 79.87 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D2, referência 79,87 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-01",
         "until": "2023-06",
@@ -2271,7 +2271,7 @@ CATALOG = {
       "natgas_price_domestic_81.48": {
         "label": "Gas Natural Doméstico D2 81.48 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos banda D2, referência 81,48 GJ/ano, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2017-01",
         "until": "2022-06",
@@ -2281,7 +2281,7 @@ CATALOG = {
       "natgas_price_domestic_€_per_GJ": {
         "label": "Gas Natural Doméstico — Preço (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores domésticos em Portugal, em EUR/GJ. Série DGEG. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-07",
         "until": "2025-01",
@@ -2291,7 +2291,7 @@ CATALOG = {
       "natgas_price_domestic_€_per_MWh": {
         "label": "Gas Natural Doméstico — Preço (EUR/MWh)",
         "description": "Preço semestral do gás natural para consumidores domésticos em Portugal, em EUR/MWh. Série DGEG. Fonte: DGEG.",
-        "unit": "EUR/MWh",
+        "unit": "€/MWh",
         "frequency": "semi-annual",
         "since": "2019-07",
         "until": "2025-01",
@@ -2301,7 +2301,7 @@ CATALOG = {
       "natgas_price_industry_27.08": {
         "label": "Gas Natural Indústria I3 27.08 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I3 (10000-100000 GJ/ano), referência 27,08 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-01",
         "until": "2023-06",
@@ -2311,7 +2311,7 @@ CATALOG = {
       "natgas_price_industry_27.32": {
         "label": "Gas Natural Indústria I3 27.32 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I3, referência 27,32 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-07",
         "until": "2023-12",
@@ -2321,7 +2321,7 @@ CATALOG = {
       "natgas_price_industry_27.64": {
         "label": "Gas Natural Indústria I3 27.64 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I3, referência 27,64 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2017-01",
         "until": "2022-06",
@@ -2331,7 +2331,7 @@ CATALOG = {
       "natgas_price_industry_29.54": {
         "label": "Gas Natural Indústria I3 29.54 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I3, referência 29,54 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-01",
         "until": "2024-06",
@@ -2341,7 +2341,7 @@ CATALOG = {
       "natgas_price_industry_32.56": {
         "label": "Gas Natural Indústria I3 32.56 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I3, referência 32,56 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-07",
         "until": "2024-12",
@@ -2351,7 +2351,7 @@ CATALOG = {
       "natgas_price_industry_7.52": {
         "label": "Gas Natural Indústria I1 7.52 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I1 (<1000 GJ/ano), referência 7,52 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-01",
         "until": "2023-06",
@@ -2361,7 +2361,7 @@ CATALOG = {
       "natgas_price_industry_7.59": {
         "label": "Gas Natural Indústria I1 7.59 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I1, referência 7,59 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2018-07",
         "until": "2023-12",
@@ -2371,7 +2371,7 @@ CATALOG = {
       "natgas_price_industry_7.68": {
         "label": "Gas Natural Indústria I1 7.68 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I1, referência 7,68 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2017-01",
         "until": "2022-06",
@@ -2381,7 +2381,7 @@ CATALOG = {
       "natgas_price_industry_8.21": {
         "label": "Gas Natural Indústria I1 8.21 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I1, referência 8,21 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-01",
         "until": "2024-06",
@@ -2391,7 +2391,7 @@ CATALOG = {
       "natgas_price_industry_9.05": {
         "label": "Gas Natural Indústria I1 9.05 GJ (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais banda I1, referência 9,05 GJ, em EUR/GJ. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-07",
         "until": "2024-12",
@@ -2401,7 +2401,7 @@ CATALOG = {
       "natgas_price_industry_€_per_GJ": {
         "label": "Gas Natural Indústria — Preço (EUR/GJ)",
         "description": "Preço semestral do gás natural para consumidores industriais em Portugal, em EUR/GJ. Série DGEG. Fonte: DGEG.",
-        "unit": "EUR/GJ",
+        "unit": "€/GJ",
         "frequency": "semi-annual",
         "since": "2019-07",
         "until": "2025-01",
@@ -2416,15 +2416,15 @@ CATALOG = {
     "url": "https://www.erse.pt",
     "note": "Tarifas semestrais (ou anuais) por nível de tensão: MAT (Muito Alta Tensão), AT (Alta Tensão), MT (Média Tensão), BTE (Baixa Tensão Especial), BTN (Baixa Tensão Normal).",
     "indicators": {
-      "tariff_mt_peak":     {"label": "Tarifa MT — Ponta (€/kWh)",        "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de ponta horária, em €/kWh. Aplicável a consumidores industriais e comerciais com potência contratada superior a 41,4 kVA. A tarifa de acesso à rede é a componente regulada do preço da electricidade — aprovada anualmente pela ERSE, independente do preço de energia em mercado. Publicada anualmente antes do início do período tarifário (geralmente Janeiro). Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.", "unit": "EUR/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "MT"]},
-      "tariff_mt_off_peak": {"label": "Tarifa MT — Vazio (€/kWh)",        "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de vazio (horas de menor consumo, geralmente nocturno e fim-de-semana), em €/kWh. Tipicamente inferior à tarifa de ponta, incentivando o deslocamento de consumo industrial para períodos de menor carga no sistema eléctrico. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                                                                              "unit": "EUR/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "MT"]},
-      "tariff_at_peak":     {"label": "Tarifa AT — Ponta (€/kWh)",        "description": "Tarifa de acesso à rede eléctrica em Alta Tensão (AT, 1-45 kV) no período de ponta, em €/kWh. Aplicável a grandes consumidores industriais com potências elevadas, como indústrias siderúrgicas, cimenteiras, refinarias e grandes complexos industriais. Tarifa regulada anualmente pela ERSE. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                                                                                    "unit": "EUR/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "AT"]},
-      "tariff_mat_peak":    {"label": "Tarifa MAT — Ponta (€/kWh)",       "description": "Tarifa de acesso à rede eléctrica em Muito Alta Tensão (MAT, >45 kV) no período de ponta, em €/kWh. Aplicável a grandes indústrias energointensivas com ligação directa à rede de transporte nacional (RNT), como fundições, electroquímica e grandes complexos industriais. É a tarifa de rede mais baixa por kWh, dado o volume de consumo. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                               "unit": "EUR/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "MAT"]},
-      "btn_simple":         {"label": "Tarifa BTN Simples (€/kWh)",       "description": "Tarifa de energia em Baixa Tensão Normal (BTN) para consumidores sem discriminação horária, em €/kWh. Aplicável a pequenas empresas, comércio e serviços com potência contratada ≤41,4 kVA. Referência para o custo da electricidade das PME e do sector de serviços. Publicada anualmente pela ERSE. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                                                                         "unit": "EUR/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "PME", "BTN"]},
+      "tariff_mt_peak":     {"label": "Tarifa MT — Ponta (€/kWh)",        "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de ponta horária, em €/kWh. Aplicável a consumidores industriais e comerciais com potência contratada superior a 41,4 kVA. A tarifa de acesso à rede é a componente regulada do preço da electricidade — aprovada anualmente pela ERSE, independente do preço de energia em mercado. Publicada anualmente antes do início do período tarifário (geralmente Janeiro). Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.", "unit": "€/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "MT"]},
+      "tariff_mt_off_peak": {"label": "Tarifa MT — Vazio (€/kWh)",        "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de vazio (horas de menor consumo, geralmente nocturno e fim-de-semana), em €/kWh. Tipicamente inferior à tarifa de ponta, incentivando o deslocamento de consumo industrial para períodos de menor carga no sistema eléctrico. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                                                                              "unit": "€/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "MT"]},
+      "tariff_at_peak":     {"label": "Tarifa AT — Ponta (€/kWh)",        "description": "Tarifa de acesso à rede eléctrica em Alta Tensão (AT, 1-45 kV) no período de ponta, em €/kWh. Aplicável a grandes consumidores industriais com potências elevadas, como indústrias siderúrgicas, cimenteiras, refinarias e grandes complexos industriais. Tarifa regulada anualmente pela ERSE. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                                                                                    "unit": "€/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "AT"]},
+      "tariff_mat_peak":    {"label": "Tarifa MAT — Ponta (€/kWh)",       "description": "Tarifa de acesso à rede eléctrica em Muito Alta Tensão (MAT, >45 kV) no período de ponta, em €/kWh. Aplicável a grandes indústrias energointensivas com ligação directa à rede de transporte nacional (RNT), como fundições, electroquímica e grandes complexos industriais. É a tarifa de rede mais baixa por kWh, dado o volume de consumo. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                               "unit": "€/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "indústria", "MAT"]},
+      "btn_simple":         {"label": "Tarifa BTN Simples (€/kWh)",       "description": "Tarifa de energia em Baixa Tensão Normal (BTN) para consumidores sem discriminação horária, em €/kWh. Aplicável a pequenas empresas, comércio e serviços com potência contratada ≤41,4 kVA. Referência para o custo da electricidade das PME e do sector de serviços. Publicada anualmente pela ERSE. Fonte: ERSE, Tarifas e Preços para a Energia Eléctrica.",                                                                                                                                                                                                                                         "unit": "€/kWh", "frequency": "annual", "since": "2010-01", "until": "2025-01", "rows": 16, "tags": ["electricidade", "tarifa", "PME", "BTN"]},
       "access_mt_peak": {
         "label": "Tarifa Acesso MT — Ponta (EUR/kWh)",
         "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de ponta horária, em EUR/kWh. Aprovada anualmente pela ERSE para consumidores MT (>41,4 kVA). Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2434,7 +2434,7 @@ CATALOG = {
       "access_mt_off_peak": {
         "label": "Tarifa Acesso MT — Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de vazio (horas de menor carga), em EUR/kWh. Tarifa reduzida incentiva deslocamento de consumo industrial. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2444,7 +2444,7 @@ CATALOG = {
       "access_mt_super_off_peak": {
         "label": "Tarifa Acesso MT — Super Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de super vazio (madrugada), em EUR/kWh. A tarifa MT mais baixa — incentiva carregamento de VE e bombagem em excesso renovável. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2454,7 +2454,7 @@ CATALOG = {
       "access_mt_shoulder": {
         "label": "Tarifa Acesso MT — Cheio (EUR/kWh)",
         "description": "Tarifa de acesso à rede eléctrica em Média Tensão (MT) no período de cheio (horas intermédias entre ponta e vazio). Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2464,7 +2464,7 @@ CATALOG = {
       "access_mt_power_peak": {
         "label": "Tarifa Acesso MT — Potência Ponta (EUR/kW/mês)",
         "description": "Tarifa de potência em ponta para consumidores de Média Tensão (MT), em EUR/kW/mês. Cobrada sobre a potência máxima em período de ponta. Incentiva demand response. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2474,7 +2474,7 @@ CATALOG = {
       "access_mt_power_contracted": {
         "label": "Tarifa Acesso MT — Potência Contratada (EUR/kW/mês)",
         "description": "Tarifa de potência contratada para consumidores de Média Tensão (MT), em EUR/kW/mês. Componente fixa mensal sobre a potência contratada. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2484,7 +2484,7 @@ CATALOG = {
       "access_at_peak": {
         "label": "Tarifa Acesso AT — Ponta (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Alta Tensão (AT, 1-45 kV) no período de ponta, em EUR/kWh. Grandes consumidores industriais. Aprovada anualmente pela ERSE. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2494,7 +2494,7 @@ CATALOG = {
       "access_at_off_peak": {
         "label": "Tarifa Acesso AT — Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Alta Tensão (AT) no período de vazio, em EUR/kWh. Estimula deslocamento de consumo para horas de baixa carga. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2504,7 +2504,7 @@ CATALOG = {
       "access_at_super_off_peak": {
         "label": "Tarifa Acesso AT — Super Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Alta Tensão (AT) no período de super vazio, em EUR/kWh. A tarifa AT mais baixa. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2514,7 +2514,7 @@ CATALOG = {
       "access_at_shoulder": {
         "label": "Tarifa Acesso AT — Cheio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Alta Tensão (AT) no período de cheio. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2524,7 +2524,7 @@ CATALOG = {
       "access_at_power_peak": {
         "label": "Tarifa Acesso AT — Potência Ponta (EUR/kW/mês)",
         "description": "Tarifa de potência em ponta para consumidores de Alta Tensão (AT), em EUR/kW/mês. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2534,7 +2534,7 @@ CATALOG = {
       "access_at_power_contracted": {
         "label": "Tarifa Acesso AT — Potência Contratada (EUR/kW/mês)",
         "description": "Tarifa de potência contratada para consumidores de Alta Tensão (AT), em EUR/kW/mês. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2544,7 +2544,7 @@ CATALOG = {
       "access_mat_peak": {
         "label": "Tarifa Acesso MAT — Ponta (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Muito Alta Tensão (MAT, >45 kV) no período de ponta, em EUR/kWh. Grandes consumidores ligados directamente à rede de transporte nacional (RNT). Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2554,7 +2554,7 @@ CATALOG = {
       "access_mat_off_peak": {
         "label": "Tarifa Acesso MAT — Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Muito Alta Tensão (MAT) no período de vazio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2564,7 +2564,7 @@ CATALOG = {
       "access_mat_super_off_peak": {
         "label": "Tarifa Acesso MAT — Super Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em MAT no período de super vazio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2574,7 +2574,7 @@ CATALOG = {
       "access_mat_shoulder": {
         "label": "Tarifa Acesso MAT — Cheio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em MAT no período de cheio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2584,7 +2584,7 @@ CATALOG = {
       "access_mat_power_peak": {
         "label": "Tarifa Acesso MAT — Potência Ponta (EUR/kW/mês)",
         "description": "Tarifa de potência em ponta para consumidores de Muito Alta Tensão (MAT), em EUR/kW/mês. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2594,7 +2594,7 @@ CATALOG = {
       "access_mat_power_contracted": {
         "label": "Tarifa Acesso MAT — Potência Contratada (EUR/kW/mês)",
         "description": "Tarifa de potência contratada para consumidores de Muito Alta Tensão (MAT), em EUR/kW/mês. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2604,7 +2604,7 @@ CATALOG = {
       "access_bte_peak": {
         "label": "Tarifa Acesso BTE — Ponta (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Baixa Tensão Especial (BTE, >41,4 kVA, <1 kV) no período de ponta, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2614,7 +2614,7 @@ CATALOG = {
       "access_bte_off_peak": {
         "label": "Tarifa Acesso BTE — Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Baixa Tensão Especial (BTE) no período de vazio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2624,7 +2624,7 @@ CATALOG = {
       "access_bte_super_off_peak": {
         "label": "Tarifa Acesso BTE — Super Vazio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Baixa Tensão Especial (BTE) no período de super vazio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2634,7 +2634,7 @@ CATALOG = {
       "access_bte_shoulder": {
         "label": "Tarifa Acesso BTE — Cheio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Baixa Tensão Especial (BTE) no período de cheio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2644,7 +2644,7 @@ CATALOG = {
       "access_bte_power_peak": {
         "label": "Tarifa Acesso BTE — Potência Ponta (EUR/kW/mês)",
         "description": "Tarifa de potência em ponta para consumidores de Baixa Tensão Especial (BTE), em EUR/kW/mês. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2654,7 +2654,7 @@ CATALOG = {
       "access_bte_power_contracted": {
         "label": "Tarifa Acesso BTE — Potência Contratada (EUR/kW/mês)",
         "description": "Tarifa de potência contratada para consumidores de Baixa Tensão Especial (BTE), em EUR/kW/mês. Fonte: ERSE.",
-        "unit": "EUR/kW/mês",
+        "unit": "€/kW/mês",
         "frequency": "annual",
         "since": "2022-07",
         "until": "2026-01",
@@ -2664,7 +2664,7 @@ CATALOG = {
       "access_btn_peak": {
         "label": "Tarifa Acesso BTN — Ponta (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Baixa Tensão Normal (BTN, até 41,4 kVA) no período de ponta, em EUR/kWh. Pequenas empresas, comércio e habitação. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2674,7 +2674,7 @@ CATALOG = {
       "access_btn_shoulder": {
         "label": "Tarifa Acesso BTN — Cheio (EUR/kWh)",
         "description": "Tarifa de acesso à rede em Baixa Tensão Normal (BTN) no período de cheio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2684,7 +2684,7 @@ CATALOG = {
       "btn_simple_le6_9kva": {
         "label": "Tarifa BTN Simples até 6,9 kVA (EUR/kWh)",
         "description": "Tarifa de energia em BTN sem discriminação horária para consumidores com potência até 6,9 kVA, em EUR/kWh. Publicada pela ERSE até 2020 (série histórica). Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2020-04",
@@ -2694,7 +2694,7 @@ CATALOG = {
       "btn_simple_gt6_9kva": {
         "label": "Tarifa BTN Simples acima de 6,9 kVA (EUR/kWh)",
         "description": "Tarifa de energia em BTN sem discriminação horária para consumidores com potência acima de 6,9 kVA, em EUR/kWh. Publicada pela ERSE até 2020 (série histórica). Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2020-04",
@@ -2704,7 +2704,7 @@ CATALOG = {
       "tariff_at_off_peak": {
         "label": "Tarifa AT — Vazio (EUR/kWh) [hist]",
         "description": "Tarifa de energia em Alta Tensão (AT) no período de vazio, série histórica ERSE 2014-2020. Para série actual ver access_at_off_peak. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2014-01",
         "until": "2020-04",
@@ -2714,7 +2714,7 @@ CATALOG = {
       "tariff_at_shoulder": {
         "label": "Tarifa AT — Cheio (EUR/kWh) [hist]",
         "description": "Tarifa de energia em Alta Tensão (AT) no período de cheio, série histórica ERSE 2014-2020. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2014-01",
         "until": "2020-04",
@@ -2724,7 +2724,7 @@ CATALOG = {
       "tariff_at_super_off_peak": {
         "label": "Tarifa AT — Super Vazio (EUR/kWh) [hist]",
         "description": "Tarifa de energia em Alta Tensão (AT) no período de super vazio, série histórica ERSE 2014-2020. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2014-01",
         "until": "2020-04",
@@ -2734,7 +2734,7 @@ CATALOG = {
       "tariff_mat_off_peak": {
         "label": "Tarifa MAT — Vazio (EUR/kWh)",
         "description": "Tarifa de energia em Muito Alta Tensão (MAT) no período de vazio, em EUR/kWh. Série ERSE desde 2013. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2744,7 +2744,7 @@ CATALOG = {
       "tariff_mat_shoulder": {
         "label": "Tarifa MAT — Cheio (EUR/kWh)",
         "description": "Tarifa de energia em Muito Alta Tensão (MAT) no período de cheio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2754,7 +2754,7 @@ CATALOG = {
       "tariff_mat_super_off_peak": {
         "label": "Tarifa MAT — Super Vazio (EUR/kWh)",
         "description": "Tarifa de energia em Muito Alta Tensão (MAT) no período de super vazio, em EUR/kWh. Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2013-01",
         "until": "2026-01",
@@ -2764,7 +2764,7 @@ CATALOG = {
       "tariff_mt_shoulder": {
         "label": "Tarifa MT — Cheio (EUR/kWh) [hist]",
         "description": "Tarifa de energia em Média Tensão (MT) no período de cheio, série histórica ERSE (2021). Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2021-01",
         "until": "2021-10",
@@ -2774,7 +2774,7 @@ CATALOG = {
       "tariff_mt_super_off_peak": {
         "label": "Tarifa MT — Super Vazio (EUR/kWh) [hist]",
         "description": "Tarifa de energia em Média Tensão (MT) no período de super vazio, série histórica ERSE (2021). Fonte: ERSE.",
-        "unit": "EUR/kWh",
+        "unit": "€/kWh",
         "frequency": "annual",
         "since": "2021-01",
         "until": "2021-10",
@@ -2800,7 +2800,7 @@ CATALOG = {
       },
       "rnd_pct_gdp": {
         "label": "I&D (% do PIB)",
-        "unit": "% do PIB",
+        "unit": "% PIB",
         "description": "Despesa bruta em Investigação e Desenvolvimento (I&D) como percentagem do PIB, Portugal. Inclui I&D realizado pelo sector empresarial, ensino superior, Estado e organizações privadas sem fins lucrativos. Portugal tem como meta 3% do PIB em I&D (Agenda de Competitividade). Frequência anual com desfasamento de 18-24 meses. Fonte: Banco Mundial, indicador GB.XPD.RSDV.GD.ZS (UNESCO/OCDE).",
         "frequency": "annual",
         "since": "2000-01",
@@ -2810,7 +2810,7 @@ CATALOG = {
       },
       "fdi_inflows_pct_gdp": {
         "label": "Investimento Directo Estrangeiro — Entradas",
-        "unit": "% do PIB",
+        "unit": "% PIB",
         "description": "Fluxos de Investimento Directo Estrangeiro (IDE) recebidos por Portugal como percentagem do PIB. Mede a atractividade de Portugal para investidores internacionais. Indicador muito volátil ano a ano devido a operações societárias de grande dimensão. Frequência anual. Fonte: Banco Mundial, indicador BX.KLT.DINV.WD.GD.ZS (UNCTAD / Banco de Portugal).",
         "frequency": "annual",
         "since": "1970-01",
