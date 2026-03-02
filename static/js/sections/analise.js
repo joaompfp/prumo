@@ -570,8 +570,9 @@ App.registerSection('explorador', async () => {
         };
       });
 
-      // Determine Y-axis mode
-      const units = [...new Set(lastSeries.map(s => s.unit).filter(Boolean))];
+      // Determine Y-axis mode — normalise unit strings first (€/l === EUR/l etc.)
+      const normUnit = u => (u || '').replace(/^€\//, 'EUR/').replace(/\bEUR\/[Ll]\b/g, 'EUR/l').replace(/\bEUR\/[Kk][Ww][Hh]\b/g, 'EUR/kWh').replace(/\bEUR\/[Mm][Ww][Hh]\b/g, 'EUR/MWh').trim();
+      const units = [...new Set(lastSeries.map(s => normUnit(s.unit)).filter(Boolean))];
       const yMode = units.length <= 1 ? 'single'
                   : units.length === 2 ? 'dual'
                   : 'indexed';
@@ -761,7 +762,8 @@ App.registerSection('explorador', async () => {
     elChartWrap.classList.remove('hidden');
     elTableWrap.classList.add('hidden');
     if (lastSeries.length) {
-      const units = [...new Set(lastSeries.map(s => s.unit).filter(Boolean))];
+      const normU = u => (u || '').replace(/^€\//, 'EUR/').replace(/\bEUR\/[Ll]\b/g, 'EUR/l').replace(/\bEUR\/[Kk][Ww][Hh]\b/g, 'EUR/kWh').replace(/\bEUR\/[Mm][Ww][Hh]\b/g, 'EUR/MWh').trim();
+      const units = [...new Set(lastSeries.map(s => normU(s.unit)).filter(Boolean))];
       const yMode = units.length <= 1 ? 'single' : units.length === 2 ? 'dual' : 'indexed';
       renderChart(yMode, units);
     }
