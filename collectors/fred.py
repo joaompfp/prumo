@@ -40,6 +40,10 @@ class FREDClient:
         "sugar": "PSUGAISAUSDM",              # Global price of Sugar
         "cotton": "PCOTTINDUSDM",             # Global price of Cotton
 
+        # Metais preciosos
+        "gold_price": "GOLDAMGBD228NLBM",     # Gold Fixing Price (LBMA), USD/troy oz
+        "silver_price": "SLVPRUSD",           # Silver Price, USD/troy oz
+
         # Forex (contexto exportações)
         "eur_usd": "DEXUSEU",                 # U.S. / Euro Foreign Exchange Rate
     }
