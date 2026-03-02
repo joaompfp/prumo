@@ -195,3 +195,16 @@
     padding: 6px 12px;
   }
 }
+
+/* ── Explorador: prevent source dropdown overflow on mobile ── */
+@media (max-width: 640px) {
+  #exp-source-filter {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .explorador-controls {
+    flex-wrap: wrap;
+  }
+}
