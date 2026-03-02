@@ -615,9 +615,9 @@ App.registerSection('explorador', async () => {
 
   // ── Chart rendering ───────────────────────────────────────────
   function renderChart(yMode, units) {
-    const isMobile = window.innerWidth < 600;
-    const chartH = Math.max(elChartWrap.offsetHeight || 0, 400);
-    elChartWrap.innerHTML = `<div id="exp-chart" style="width:100%;height:${chartH}px"></div>`;
+    const isMobile = (elChartWrap.offsetWidth || window.innerWidth) < 640;
+    const chartH = Math.max(elChartWrap.offsetHeight || 0, isMobile ? 320 : 400);
+    elChartWrap.innerHTML = `<div id="exp-chart" style="width:100%;height:${chartH}px;overflow:hidden"></div>`;
     const chartEl = elChartWrap.querySelector('#exp-chart');
 
     if (chartInst) { SWD.destroyChart(chartInst); chartInst = null; }
@@ -657,7 +657,7 @@ App.registerSection('explorador', async () => {
 
       return SWD.lineSeries(s.label, values, color, {
         width: 2.5,
-        endLabel: isMobile ? null : (s.label.length < 40 ? s.label : s.label.slice(0, 37) + '…'),
+        endLabel: isMobile ? false : (s.label.length < 40 ? s.label : s.label.slice(0, 37) + '…'),
       });
     }).map((s, i) => ({
       ...s,

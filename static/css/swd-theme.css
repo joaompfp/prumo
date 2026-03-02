@@ -537,6 +537,9 @@ body {
   .kpi-grid { grid-template-columns: 1fr; }
   .kpi-value { font-size: var(--fs-xl); }
   .chart-container { height: 220px; }
+  /* Análise: chart ocupa toda a largura disponível */
+  .section { padding: var(--sp-md) var(--sp-sm); }
+  #exp-chart, .chart-wrap, [id="exp-chart"] { overflow: hidden !important; }
 
   /* Mobile nav: esconde brand, tabs distribuem-se em full-width */
   .nav-brand-link,
