@@ -89,9 +89,9 @@ const fmt = {
     if (v === null || v === undefined || isNaN(v)) return '→';
     return v > 0.5 ? '↑' : v < -0.5 ? '↓' : '→';
   },
-  period: (p) => {
+  period: (p, opts = {}) => {
     if (!p) return p;
-    // Quarterly: "2025-Q3" or "2025-Q3"
+    // Quarterly: "2025-Q3" or "2025 Q3"
     const qm = p.match(/^(\d{4})[- ]Q(\d)$/);
     if (qm) return `Q${qm[2]} ${qm[1].slice(2)}`;
     // Semi-annual: "2025 S1" or "2025-H1"
@@ -99,9 +99,11 @@ const fmt = {
     if (sm) return `S${sm[2]} ${sm[1].slice(2)}`;
     // Annual: "2025"
     if (/^\d{4}$/.test(p)) return p;
-    // Monthly: "2025-03"
+    // Monthly: "2025-03" (or annual-collapsed "YYYY-12" when opts.annualCollapsed)
     if (!p.includes('-')) return p;
     const [y, m] = p.split('-');
+    // Annual period collapsed to YYYY-12 by normalisePeriod → show just the year
+    if (opts.annualCollapsed && m === '12') return y;
     const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
     const mIdx = parseInt(m, 10) - 1;
     if (isNaN(mIdx) || mIdx < 0 || mIdx > 11) return p; // fallback
@@ -111,3 +113,95 @@ const fmt = {
 
 window.API = API;
 window.fmt = fmt;
+
+// ── Unit display normalisation ─────────────────────────────────────────────
+// Call: fmt.unit(u) → canonical display string
+// Call: fmt.unitFamily(u) → { base, scale, factor } for prefix-aware comparison
+(function() {
+  const UNIT_DISPLAY = {
+    // Currency notation
+    'EUR':        '€',
+    'EUR/l':      '€/l',
+    'EUR/L':      '€/l',
+    'EUR/kWh':    '€/kWh',
+    'EUR/KWH':    '€/kWh',
+    'EUR/kwh':    '€/kWh',
+    'EUR/MWh':    '€/MWh',
+    'EUR/MWH':    '€/MWh',
+    'EUR/GJ':     '€/GJ',
+    'EUR/kW/mês': '€/kW/mês',
+    'EUR/m3':     '€/m³',
+    'EUR/m³':     '€/m³',
+    // Energy
+    'KWH':  'kWh',
+    'MWH':  'MWh',
+    'GWH':  'GWh',
+    'TWH':  'TWh',
+    'GJ':   'GJ',
+    'TEP':  'tep',
+    'KTEP': 'ktep',
+    // Mass
+    'T':    't',
+    'KT':   'kt',
+    'MT':   'Mt',
+    'GT':   'Gt',
+    // Other common
+    'USD':  'USD',
+    'M EUR': 'M€',
+    'M€':   'M€',
+    '%PIB': '% PIB',
+    '% PIB': '% PIB',
+  };
+
+  // Families of units that share the same physical dimension but differ by SI prefix.
+  // When two series are in the same family, convert the larger to the smaller for display.
+  const UNIT_FAMILIES = [
+    { base: '€/Wh',  members: { '€/kWh': 1, '€/MWh': 1e-3, '€/GWh': 1e-6 } },
+    { base: 'Wh',    members: { 'kWh': 1, 'MWh': 1e3, 'GWh': 1e6, 'TWh': 1e9 } },
+    { base: 'tep',   members: { 'tep': 1, 'ktep': 1e3, 'Mtep': 1e6 } },
+    { base: 't',     members: { 't': 1, 'kt': 1e3, 'Mt': 1e6 } },
+    { base: '€/l',   members: { '€/l': 1, '€/m³': 1e-3 } },
+  ];
+
+  fmt.unit = function(u) {
+    if (!u) return u;
+    const norm = UNIT_DISPLAY[u];
+    if (norm) return norm;
+    // Try case-insensitive
+    const key = Object.keys(UNIT_DISPLAY).find(k => k.toLowerCase() === u.toLowerCase());
+    return key ? UNIT_DISPLAY[key] : u;
+  };
+
+  fmt.unitFamily = function(u) {
+    const disp = fmt.unit(u) || u;
+    for (const fam of UNIT_FAMILIES) {
+      if (disp in fam.members) return { family: fam.base, scale: fam.members[disp], unit: disp };
+    }
+    return null;
+  };
+
+  /**
+   * Given an array of unit strings, return { units[], converters[] } where:
+   * - units[] are the canonical display units (same-family units converted to the smallest)
+   * - converters[] are functions value → converted value
+   * If two units are in the same family, both are normalised to the finest-grained member.
+   */
+  fmt.resolveUnits = function(rawUnits) {
+    const display = rawUnits.map(u => fmt.unit(u) || u);
+    const result = display.map(u => ({ unit: u, factor: 1 }));
+
+    for (const fam of UNIT_FAMILIES) {
+      const indices = display.reduce((acc, u, i) => { if (u in fam.members) acc.push(i); return acc; }, []);
+      if (indices.length > 1) {
+        // Convert all to the unit with smallest scale (highest resolution)
+        const scales = indices.map(i => fam.members[display[i]]);
+        const minScale = Math.min(...scales);
+        const targetUnit = Object.keys(fam.members).find(k => fam.members[k] === minScale);
+        indices.forEach((i, j) => {
+          result[i] = { unit: targetUnit, factor: scales[j] / minScale };
+        });
+      }
+    }
+    return result;
+  };
+})();

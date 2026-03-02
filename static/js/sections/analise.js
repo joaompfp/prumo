@@ -39,6 +39,25 @@ App.registerSection('explorador', async () => {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   }
 
+  // ── Period normalisation (WP-E5) ──────────────────────────────
+  // Normalises all period formats to YYYY-MM so mixed-frequency series
+  // (e.g. annual "2024" vs monthly "2024-03") align on the same X-axis.
+  function normalisePeriod(p) {
+    if (!p) return p;
+    // Annual: "2024" → "2024-12"
+    if (/^\d{4}$/.test(p)) return `${p}-12`;
+    // Quarterly: "2025-Q3" or "2025 Q3" → "2025-09"
+    const qm = p.match(/^(\d{4})[- ]Q(\d)$/);
+    if (qm) return `${qm[1]}-${String(parseInt(qm[2]) * 3).padStart(2, '0')}`;
+    // Semi-annual: "2025 S1" or "2025-H1" → "2025-06" / "2025-12"
+    const sm = p.match(/^(\d{4})[- ][SH](\d)$/);
+    if (sm) return `${sm[1]}-${sm[2] === '1' ? '06' : '12'}`;
+    // Monthly: "2025-03" → as-is
+    return p;
+  }
+  // Returns true if the raw period string was an annual value ("YYYY")
+  function isAnnualPeriod(p) { return !!p && /^\d{4}$/.test(p); }
+
   // ── Toast — usa App.showToast (WP-5 unified) ─────────────────────
 
   // ── Build HTML skeleton ───────────────────────────────────────
@@ -571,8 +590,16 @@ App.registerSection('explorador', async () => {
       });
 
       // Determine Y-axis mode — normalise unit strings first (€/l === EUR/l etc.)
-      const normUnit = u => (u || '').replace(/^€\//, 'EUR/').replace(/\bEUR\/[Ll]\b/g, 'EUR/l').replace(/\bEUR\/[Kk][Ww][Hh]\b/g, 'EUR/kWh').replace(/\bEUR\/[Mm][Ww][Hh]\b/g, 'EUR/MWh').trim();
-      const units = [...new Set(lastSeries.map(s => normUnit(s.unit)).filter(Boolean))];
+      // Resolve units: normalise display + convert same-family units (€/kWh + €/MWh → single axis)
+      const rawUnits = lastSeries.map(s => s.unit || '');
+      const resolved = fmt.resolveUnits(rawUnits);
+      // Apply conversion factors to lastSeries data (mutate a copy)
+      lastSeries = lastSeries.map((s, i) => {
+        const { factor, unit } = resolved[i];
+        if (factor === 1) return { ...s, unit };
+        return { ...s, unit, data: s.data.map(d => ({ ...d, value: d.value != null ? d.value * factor : null })) };
+      });
+      const units = [...new Set(lastSeries.map(s => s.unit).filter(Boolean))];
       const yMode = units.length <= 1 ? 'single'
                   : units.length === 2 ? 'dual'
                   : 'indexed';
@@ -627,14 +654,19 @@ App.registerSection('explorador', async () => {
 
     if (chartInst) { SWD.destroyChart(chartInst); chartInst = null; }
 
-    // Collect all periods (union)
+    // Normalise all periods to YYYY-MM before merging series (WP-E5)
+    const normPeriod = p => normalisePeriod(p);
+    // Track which normalised periods were originally annual (for display via fmt.period)
+    const annualNormPeriods = new Set(
+      lastSeries.flatMap(s => s.data.filter(d => isAnnualPeriod(d.period)).map(d => normPeriod(d.period)))
+    );
     const allPeriods = [...new Set(
-      lastSeries.flatMap(s => s.data.map(d => d.period))
+      lastSeries.flatMap(s => s.data.map(d => normPeriod(d.period)))
     )].sort();
 
     const series = lastSeries.map((s, i) => {
       const color   = SERIES_COLORS[i] || '#999';
-      const byPeriod = Object.fromEntries(s.data.map(d => [d.period, d.value]));
+      const byPeriod = Object.fromEntries(s.data.map(d => [normPeriod(d.period), d.value]));
 
       let values;
       if (yMode === 'indexed') {
@@ -709,7 +741,8 @@ App.registerSection('explorador', async () => {
         ...baseOpts.tooltip,
         formatter: params => {
           const period = params[0]?.axisValue || '';
-          let html = `<div style="font-weight:600;margin-bottom:4px">${period}</div>`;
+          const dispPeriod = fmt.period(period, { annualCollapsed: annualNormPeriods.has(period) });
+          let html = `<div style="font-weight:600;margin-bottom:4px">${dispPeriod}</div>`;
           params.forEach(p => {
             if (p.value !== null && p.value !== undefined) {
               const unit = lastSeries[p.seriesIndex]?.unit || '';
@@ -730,18 +763,23 @@ App.registerSection('explorador', async () => {
   function renderTable() {
     elTableWrap.classList.remove('hidden');
 
+    // Normalise all periods to YYYY-MM before merging series (WP-E5)
+    const normPeriod = p => normalisePeriod(p);
+    const annualNormPeriods = new Set(
+      lastSeries.flatMap(s => s.data.filter(d => isAnnualPeriod(d.period)).map(d => normPeriod(d.period)))
+    );
     const allPeriods = [...new Set(
-      lastSeries.flatMap(s => s.data.map(d => d.period))
+      lastSeries.flatMap(s => s.data.map(d => normPeriod(d.period)))
     )].sort().reverse();
 
     const headers = ['Período', ...lastSeries.map(s => `${s.source} — ${s.label}`)];
     const byPeriod = lastSeries.map(s =>
-      Object.fromEntries(s.data.map(d => [d.period, d.value]))
+      Object.fromEntries(s.data.map(d => [normPeriod(d.period), d.value]))
     );
 
     const rows = allPeriods
       .filter(p => lastSeries.some((_, i) => byPeriod[i][p] !== undefined))
-      .map(p => [p, ...lastSeries.map((_, i) => {
+      .map(p => [fmt.period(p, { annualCollapsed: annualNormPeriods.has(p) }), ...lastSeries.map((_, i) => {
         const v = byPeriod[i][p];
         return v !== null && v !== undefined ? v : '—';
       })]);
@@ -762,8 +800,7 @@ App.registerSection('explorador', async () => {
     elChartWrap.classList.remove('hidden');
     elTableWrap.classList.add('hidden');
     if (lastSeries.length) {
-      const normU = u => (u || '').replace(/^€\//, 'EUR/').replace(/\bEUR\/[Ll]\b/g, 'EUR/l').replace(/\bEUR\/[Kk][Ww][Hh]\b/g, 'EUR/kWh').replace(/\bEUR\/[Mm][Ww][Hh]\b/g, 'EUR/MWh').trim();
-      const units = [...new Set(lastSeries.map(s => normU(s.unit)).filter(Boolean))];
+      const units = [...new Set(lastSeries.map(s => fmt.unit(s.unit) || s.unit).filter(Boolean))];
       const yMode = units.length <= 1 ? 'single' : units.length === 2 ? 'dual' : 'indexed';
       renderChart(yMode, units);
     }
