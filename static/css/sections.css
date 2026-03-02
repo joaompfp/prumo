@@ -351,7 +351,7 @@
 }
 
 .exp-result-item:hover { background: var(--c-bg); }
-.exp-result-item.already-selected { opacity: 0.5; cursor: default; }
+.exp-result-item.already-selected { opacity: 0.45; cursor: default; pointer-events: none; }
 
 .exp-item-label {
   flex: 1;
@@ -1894,8 +1894,9 @@ details[open] .source-collapse-closed { visibility: hidden; }
 
 @media (max-width: 640px) {
   .cmp-top-bar         { flex-direction: column; align-items: stretch; }
-  .cmp-top-bar-right   { margin-left: 0; }
+  .cmp-top-bar-right   { margin-left: 0; flex-wrap: wrap; }
   .cmp-ind-row select  { max-width: 100% !important; }
+  .share-btn           { flex: 1; text-align: center; }
 }
 
 .cmp-presets {
