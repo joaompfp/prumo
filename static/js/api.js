@@ -90,10 +90,22 @@ const fmt = {
     return v > 0.5 ? '↑' : v < -0.5 ? '↓' : '→';
   },
   period: (p) => {
-    if (!p || !p.includes('-')) return p;
+    if (!p) return p;
+    // Quarterly: "2025-Q3" or "2025-Q3"
+    const qm = p.match(/^(\d{4})[- ]Q(\d)$/);
+    if (qm) return `Q${qm[2]} ${qm[1].slice(2)}`;
+    // Semi-annual: "2025 S1" or "2025-H1"
+    const sm = p.match(/^(\d{4})[- ][SH](\d)$/);
+    if (sm) return `S${sm[2]} ${sm[1].slice(2)}`;
+    // Annual: "2025"
+    if (/^\d{4}$/.test(p)) return p;
+    // Monthly: "2025-03"
+    if (!p.includes('-')) return p;
     const [y, m] = p.split('-');
     const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-    return `${months[parseInt(m,10)-1]} ${y.slice(2)}`;
+    const mIdx = parseInt(m, 10) - 1;
+    if (isNaN(mIdx) || mIdx < 0 || mIdx > 11) return p; // fallback
+    return `${months[mIdx]} ${y.slice(2)}`;
   },
 };
 
