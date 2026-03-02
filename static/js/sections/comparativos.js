@@ -232,6 +232,11 @@ App.registerSection('comparativos', async () => {
     </div>
     <div class="footnote" id="cmp-footnote"></div>`;
 
+  // Restore select visual state explicitly — HTML `selected` attr is not always
+  // honoured visually when set via dynamic innerHTML (Chromium / Safari quirk).
+  document.getElementById('cmp-source-select').value = _source;
+  document.getElementById('cmp-ind-select').value    = _ind.id;
+
   // ── Country picker rendering ───────────────────────────────────
   function renderPicker() {
     const body = document.getElementById('cmp-picker-body');
@@ -281,6 +286,12 @@ App.registerSection('comparativos', async () => {
 
   renderPicker();
 
+  // Force visual selection state (browser may not apply `selected` attr reliably on dynamic innerHTML)
+  const _elSrc = document.getElementById('cmp-source-select');
+  const _elInd = document.getElementById('cmp-ind-select');
+  if (_elSrc) _elSrc.value = _source;
+  if (_elInd) _elInd.value = _ind.id;
+
   // ── Source change (cascade: updates indicator select) ─────────
   document.getElementById('cmp-source-select').addEventListener('change', async e => {
     _source = e.target.value;
@@ -289,6 +300,7 @@ App.registerSection('comparativos', async () => {
     if (first) _ind = first;
     // Rebuild indicator dropdown
     document.getElementById('cmp-ind-select').innerHTML = buildIndicatorSelect(_source, _ind.id);
+    document.getElementById('cmp-ind-select').value = _ind.id;  // explicit — innerHTML `selected` attr may not update visual state
     await fetchAvailableCountries();
     for (const c of [..._selected]) {
       if (!_available.has(c) && !LOCKED.has(c)) _selected.delete(c);

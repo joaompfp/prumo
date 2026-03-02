@@ -235,11 +235,9 @@ App.registerSection('explorador', async () => {
         const unit = decodeURIComponent(el.dataset.unit);
         addIndicator(src, ind, lbl, unit);
         elSearch.value = '';
-        if (elSrcFilter.value) {
-          renderResults(); // keep open so user can pick another from same source
-        } else {
-          elResults.classList.add('hidden');
-        }
+        // Set source filter to the just-added source so user can pick another from same source
+        if (!elSrcFilter.value) elSrcFilter.value = src;
+        renderResults(); // always keep open after adding
       });
     });
   }
