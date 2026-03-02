@@ -1260,7 +1260,7 @@ CATALOG = {
       },
       "natgas_cogeneration": {
         "label": "Gás Natural Cogeração — Volume (m3)",
-        "description": "Volume mensal de gás natural consumido em instalações de cogeração em Portugal, em m3. Fonte: DGEG.",
+        "description": "Volume mensal de gás natural consumido em instalações de cogeração em Portugal, em Gm³ (mil milhões de m³). Fonte: DGEG.",
         "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
@@ -1270,7 +1270,7 @@ CATALOG = {
       },
       "natgas_dedicated_plants": {
         "label": "Gás Natural Centrais Dedicadas — Volume (m3)",
-        "description": "Volume mensal de gás natural consumido em centrais CCGT dedicadas à produção eléctrica, em m3. Fonte: DGEG.",
+        "description": "Volume mensal de gás natural consumido em centrais CCGT dedicadas à produção eléctrica, em Gm³ (mil milhões de m³). Fonte: DGEG.",
         "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
@@ -1280,8 +1280,8 @@ CATALOG = {
       },
       "natgas_imports_pipeline": {
         "label": "Gás Natural — Importações Gasoduto (m3)",
-        "description": "Volume mensal de gás natural importado via gasoduto (Espanha/Argélia) para Portugal, em m3. Fonte: DGEG.",
-        "unit": "m³",
+        "description": "Volume mensal de gás natural importado via gasoduto (Espanha/Argélia) para Portugal, em Gm³ (mil milhões de m³). Fonte: DGEG.",
+        "unit": "Gm³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1291,7 +1291,7 @@ CATALOG = {
       "natgas_imports_ship": {
         "label": "Gás Natural — Importações GNL (m3)",
         "description": "Volume mensal de GNL importado por navio para o Terminal de Sines, em m3. Diversificação de fornecimento. Fonte: DGEG.",
-        "unit": "m³",
+        "unit": "Gm³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1299,9 +1299,9 @@ CATALOG = {
         "tags": ["gás", "gnl", "importação"],
       },
       "natgas_imports_total": {
-        "label": "Gás Natural — Importações Total (m3)",
-        "description": "Volume mensal total de gás natural importado para Portugal (gasoduto + GNL), em m3. Fonte: DGEG.",
-        "unit": "m³",
+        "label": "Gás Natural — Importações Total (Gm³)",
+        "description": "Volume mensal total de gás natural importado para Portugal (gasoduto + GNL), em Gm³ (mil milhões de m³). Fonte: DGEG.",
+        "unit": "Gm³",
         "frequency": "monthly",
         "since": "2024-12",
         "until": "2025-12",
@@ -1310,7 +1310,7 @@ CATALOG = {
       },
       "natgas_other_sectors": {
         "label": "Gás Natural Outros Sectores — Volume (m3)",
-        "description": "Volume mensal de gás natural consumido em outros sectores (residencial, serviços, outros industriais), em m3. Fonte: DGEG.",
+        "description": "Volume mensal de gás natural consumido em outros sectores (residencial, serviços, outros industriais), em Gm³ (mil milhões de m³). Fonte: DGEG.",
         "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
@@ -1320,7 +1320,7 @@ CATALOG = {
       },
       "natgas_total": {
         "label": "Gás Natural Total — Volume (m3)",
-        "description": "Volume mensal total de gás natural consumido em Portugal (todas as utilizações), em m3. Fonte: DGEG.",
+        "description": "Volume mensal total de gás natural consumido em Portugal (todas as utilizações), em Gm³ (mil milhões de m³). Fonte: DGEG.",
         "unit": "m³",
         "frequency": "monthly",
         "since": "2024-12",
