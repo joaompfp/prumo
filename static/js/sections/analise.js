@@ -169,12 +169,18 @@ App.registerSection('explorador', async () => {
     const srcF   = elSrcFilter.value;
     const all    = flatIndicators();
 
+    // Source aliases PT-PT → inglês e vice-versa
+    const SRC_ALIASES = { ocde: 'oecd', oecd: 'ocde', 'banco de portugal': 'bportugal', bportugal: 'banco de portugal', 'banco mundial': 'worldbank', worldbank: 'banco mundial', eurostat: 'eurostat', ine: 'ine', fred: 'fred', dgeg: 'dgeg', erse: 'erse', ren: 'ren' };
     const filtered = all.filter(item => {
       const matchSrc = !srcF || item.source === srcF;
+      const srcLower = item.source.toLowerCase();
+      const alias    = SRC_ALIASES[query] || '';
       const matchQ   = !query ||
         item.label.toLowerCase().includes(query) ||
-        item.source.toLowerCase().includes(query) ||
-        item.indicator.toLowerCase().includes(query);
+        srcLower.includes(query) ||
+        (alias && srcLower.includes(alias)) ||
+        item.indicator.toLowerCase().includes(query) ||
+        (item.description || '').toLowerCase().includes(query);
       return matchSrc && matchQ;
     });
 

@@ -24,12 +24,12 @@ EUROPA_CATALOG = [
     {"id": "labour_productivity_hour_real", "source": "EUROSTAT", "indicator": "labour_productivity_hour_real", "label": "Produtividade/hora (real)", "group": "Mercado de Trabalho", "unit_label": "Índice 2015=100"},
 
     # ── Preços e Consumo ────────────────────────────────────────────────
-    {"id": "hicp",                       "source": "EUROSTAT",  "indicator": "hicp",                       "label": "Inflação (HICP %)",             "group": "Preços e Consumo",    "unit_label": "%"},
+    {"id": "hicp",                       "source": "EUROSTAT",  "indicator": "hicp",                       "label": "Inflação (HICP %)",             "group": "Preços e Consumo",    "unit_label": "Índice (2015=100)"},
     {"id": "consumer_confidence",        "source": "EUROSTAT",  "indicator": "consumer_confidence",        "label": "Confiança dos Consumidores",    "group": "Preços e Consumo",    "unit_label": "Índice"},
 
     # ── PIB e Convergência ──────────────────────────────────────────────
     {"id": "gdp_per_capita_eur",         "source": "EUROSTAT",  "indicator": "gdp_per_capita_eur",         "label": "PIB per capita (€)",            "group": "PIB e Convergência",  "unit_label": "€/hab."},
-    {"id": "gdp_quarterly",              "source": "EUROSTAT",  "indicator": "gdp_quarterly",              "label": "PIB Trimestral (var. %)",       "group": "PIB e Convergência",  "unit_label": "% trim."},
+    {"id": "gdp_quarterly",              "source": "EUROSTAT",  "indicator": "gdp_quarterly",              "label": "PIB Trimestral (volume)",        "group": "PIB e Convergência",  "unit_label": "M€"},
 
     # ── Finanças Públicas ───────────────────────────────────────────────
     {"id": "gov_debt_pct_gdp",           "source": "EUROSTAT",  "indicator": "gov_debt_pct_gdp",           "label": "Dívida Pública % PIB",          "group": "Finanças Públicas",   "unit_label": "% PIB"},
@@ -110,13 +110,13 @@ COMPARATIVOS_CATALOG = [
 
     # ── EUROSTAT: EU27 only (alta freq.) ────────────────────────────────────
     {"id": "eu_hicp",              "source": "EUROSTAT",  "indicator": "hicp",
-     "label": "Inflação (HICP %)",          "group": "Preços e Consumo",       "unit_label": "%"},
+     "label": "Inflação (HICP %)",          "group": "Preços e Consumo",       "unit_label": "Índice (2015=100)"},
     {"id": "eu_consumer_conf",     "source": "EUROSTAT",  "indicator": "consumer_confidence",
      "label": "Confiança dos Consumidores", "group": "Preços e Consumo",       "unit_label": "Índice"},
     {"id": "eu_gdp_eur",           "source": "EUROSTAT",  "indicator": "gdp_per_capita_eur",
      "label": "PIB per capita (€)",         "group": "PIB e Convergência",     "unit_label": "€/hab."},
     {"id": "eu_gdp_quarterly",     "source": "EUROSTAT",  "indicator": "gdp_quarterly",
-     "label": "PIB Trimestral (var. %)",    "group": "PIB e Convergência",     "unit_label": "% trim."},
+     "label": "PIB Trimestral (volume)",     "group": "PIB e Convergência",     "unit_label": "M€"},
     {"id": "eu_gdp_pps",           "source": "EUROSTAT",  "indicator": "gdp_per_capita_pps",
      "label": "PIB per capita (PPS EU=100)","group": "PIB e Convergência",     "unit_label": "PPS"},
     {"id": "eu_gov_debt",          "source": "EUROSTAT",  "indicator": "gov_debt_pct_gdp",
@@ -195,7 +195,7 @@ MUNDO_CATALOG = [
 
     # ── Finanças Públicas ───────────────────────────────────────────────
     {"id": "gov_debt_pct_gdp",           "source": "EUROSTAT",  "indicator": "gov_debt_pct_gdp",           "label": "Dívida Pública % PIB",          "group": "Finanças Públicas",   "unit_label": "% PIB"},
-    {"id": "hicp",                       "source": "EUROSTAT",  "indicator": "hicp",                       "label": "Inflação (HICP %)",             "group": "Finanças Públicas",   "unit_label": "%"},
+    {"id": "hicp",                       "source": "EUROSTAT",  "indicator": "hicp",                       "label": "Inflação (HICP %)",             "group": "Finanças Públicas",   "unit_label": "Índice (2015=100)"},
 
     # ── Educação e Inovação ─────────────────────────────────────────────
     {"id": "internet_users_pct",         "source": "WORLDBANK", "indicator": "internet_users_pct",         "label": "Utilizadores Internet (%)",     "group": "Educação e Inovação", "unit_label": "%"},

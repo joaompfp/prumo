@@ -328,7 +328,10 @@ App.registerSection('comparativos', async () => {
     if (!btn) return;
     const preset = PRESETS.find(p => p.label === btn.dataset.preset);
     if (!preset) return;
-    _selected = new Set(preset.countries.filter(c => _available.has(c) || LOCKED.has(c)));
+    // BUG-1 FIX: include ALL preset countries regardless of _available.
+    // Filtering here caused PALOP/non-EU countries to be silently dropped
+    // when the current indicator was EUROSTAT-only (e.g. unemployment).
+    _selected = new Set(preset.countries);
     LOCKED.forEach(c => _selected.add(c));
     _activePreset = preset.label;
     document.querySelectorAll('#cmp-presets .preset-chip').forEach(b =>

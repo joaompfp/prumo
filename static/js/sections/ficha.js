@@ -174,8 +174,8 @@ App.registerSection('ficha', async () => {
               <tbody>
                 <tr><td><strong>INE</strong></td><td>IPI (dessaz.), emprego e salários na indústria, IHPC, confiança empresarial</td><td>Mensal</td><td>~2 meses</td></tr>
                 <tr><td><strong>Eurostat</strong></td><td>IPI por sector NACE (transformadora, total, alimentar, têxtil, química, transporte, construção), desemprego harmonizado, emprego, ULC, produtividade laboral, HICP, confiança dos consumidores, PIB trimestral e per capita, dívida e défice públicos, balança corrente</td><td>Mensal/Trim./Anual</td><td>~2–4 meses</td></tr>
-                <tr><td><strong>FRED</strong></td><td>Brent, gás natural, cobre, alumínio, trigo, milho, café, EUR/USD</td><td>Mensal</td><td>Quase em tempo real</td></tr>
-                <tr><td><strong>Banco de Portugal</strong></td><td>Euribor (1m/3m/6m/12m), yields soberanos, spread PT-DE, crédito, depósitos</td><td>Mensal</td><td>0–2 meses</td></tr>
+                <tr><td><strong>FRED</strong></td><td>Brent, gás natural, cobre, alumínio, trigo, milho, café</td><td>Mensal</td><td>Quase em tempo real</td></tr>
+                <tr><td><strong>Banco de Portugal</strong></td><td>Euribor (1m/3m/6m/12m), yields soberanos, spread PT-DE, EUR/USD, crédito, depósitos</td><td>Mensal</td><td>0–2 meses</td></tr>
                 <tr><td><strong>OCDE</strong></td><td>CLI (indicador avançado), inquéritos BTS (encomendas, produção, preços, emprego)</td><td>Mensal</td><td>1–2 meses</td></tr>
                 <tr><td><strong>REN</strong></td><td>Produção eléctrica por fonte, consumo, importações, preço MIBEL</td><td>Mensal</td><td>~1 mês</td></tr>
                 <tr><td><strong>DGEG</strong></td><td>Produção eléctrica, combustíveis (semanal), gás natural indústria (semestral)</td><td>Semanal–Anual</td><td>Variável</td></tr>

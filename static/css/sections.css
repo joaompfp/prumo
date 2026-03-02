@@ -744,6 +744,12 @@
 .table-scroll-wrap table {
   min-width: 480px; /* ensures the table doesn't collapse, triggers scroll on mobile */
 }
+@media (max-width: 600px) {
+  .table-scroll-wrap {
+    margin: 4px -8px; /* bleed to edge to maximise usable width */
+    padding: 0 8px;
+  }
+}
 
 /* ── M2: Explorador unit mismatch warning ───────────────────────── */
 .exp-warning-banner {
