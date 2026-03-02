@@ -165,3 +165,33 @@
     font-size: var(--fs-base); /* 19px → era 22px */
   }
 }
+
+/* ── Comparativos dropdowns: prevent overflow on mobile ── */
+@media (max-width: 640px) {
+  .cmp-top-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cmp-source-row,
+  .cmp-ind-row {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .cmp-source-row .swd-select,
+  .cmp-ind-row .swd-select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+  .cmp-top-bar-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  #cmp-share {
+    flex: 1;
+    min-width: 0;
+  }
+}
