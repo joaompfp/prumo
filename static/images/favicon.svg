@@ -1,33 +1,10 @@
-<!--
-  Prumo PT — Favicon 32×32
-  Prumo em vista frontal. Reconhecível a 16px.
-  Zero texto. Formas muito limpas.
-  Paleta: #CC0000 · #8B0000 · #9CA3AF
--->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"
-     fill="none" role="img" aria-label="Prumo PT favicon">
-
-  <!-- Barra de suspensão horizontal (crossbar) -->
-  <!-- 20px largura, 2px altura, centrada em x=16 -->
-  <rect x="6" y="4" width="20" height="2.5"
-        fill="#CC0000"/>
-
-  <!-- Fio de prumo (~8px de comprimento) -->
-  <line x1="16" y1="6.5" x2="16" y2="14"
-        stroke="#9CA3AF" stroke-width="1" stroke-linecap="round"/>
-
-  <!-- Corpo do prumo: pentágono com ponta afilada -->
-  <!-- Topo: y=14, largura máxima: 12px (x=10 a x=22) -->
-  <!-- Ponta: y=30 em x=16 -->
-  <polygon points="10,14 22,14 24,22 16,30 8,22"
-           fill="#CC0000"/>
-
-  <!-- Linha de referência interna (vertical central) -->
-  <line x1="16" y1="16" x2="16" y2="28"
-        stroke="#8B0000" stroke-width="0.7" opacity="0.5"/>
-
-  <!-- Ponto de referência na ponta -->
-  <circle cx="16" cy="30" r="2"
-          fill="#8B0000"/>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <line x1="16" y1="2" x2="16" y2="8" stroke="#8899AA" stroke-width="1.2" stroke-linecap="round"/>
+  <circle cx="16" cy="2" r="1.5" fill="none" stroke="#8899AA" stroke-width="0.9"/>
+  <rect x="8" y="8" width="16" height="14" rx="1.5" fill="#C0392B"/>
+  <line x1="8" y1="11" x2="11" y2="11" stroke="#E06050" stroke-width="0.7"/>
+  <line x1="8" y1="14" x2="12" y2="14" stroke="#E06050" stroke-width="0.7"/>
+  <line x1="8" y1="17" x2="11" y2="17" stroke="#E06050" stroke-width="0.7"/>
+  <text x="16" y="16.5" font-family="Georgia,serif" font-size="9" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">&#x3A3;</text>
+  <polygon points="8,22 24,22 16,30" fill="#C0392B"/>
 </svg>

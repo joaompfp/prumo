@@ -1,35 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" width="320" height="72">
-  <defs>
-    <style>
-      .nm { font-family: 'Playfair Display', 'Lora', Georgia, serif; font-weight: 700; font-size: 34px; }
-      .tg { font-family: 'Montserrat', 'Source Sans Pro', Arial, sans-serif; font-weight: 300; font-size: 7.5px; letter-spacing: 2.2px; fill: #A0A0A0; }
-      .ic { font-family: Arial Narrow, Arial, sans-serif; font-weight: 700; font-size: 5px; fill: #CC2A2A; }
-    </style>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 72" fill="none">
+  <!-- Prumo PT Logo — Variante B+C (fusão) -->
 
-  <!-- ── ÍCONE: Fio de prumo ───────────────────────────── -->
-  <!-- Barra horizontal vermelha (travessa) -->
-  <rect x="18" y="7" width="22" height="2.5" rx="0.8" fill="#CC2A2A"/>
-  <!-- Fio vertical cinza -->
-  <rect x="28.2" y="4" width="1.6" height="14" rx="0.5" fill="#9E9E9E"/>
+  <!-- Corda/fio topo -->
+  <line x1="26" y1="4" x2="26" y2="14" stroke="#6B7B9A" stroke-width="1.2" stroke-linecap="round"/>
+  <circle cx="26" cy="4" r="2" fill="none" stroke="#6B7B9A" stroke-width="1"/>
 
-  <!-- Corpo do prumo: pentágono invertido, contorno vermelho -->
-  <!-- Pontos: topo-esq, topo-dir, ombro-dir, ponta-baixo, ombro-esq -->
-  <polygon points="16,22  42,22  45,32  29,58  13,32"
-           fill="none" stroke="#CC2A2A" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Corpo rectangular navy -->
+  <rect x="14" y="14" width="24" height="36" rx="2" ry="2" fill="#C0392B"/>
 
-  <!-- Termos económicos (pequenos, dentro) -->
-  <text x="23" y="32" class="ic">PIB</text>
-  <text x="18" y="40" class="ic">EUR</text>
-  <text x="23" y="48" class="ic">IPC</text>
+  <!-- Marcas de graduação técnicas -->
+  <line x1="14" y1="20" x2="18" y2="20" stroke="#E07060" stroke-width="0.8"/>
+  <line x1="14" y1="26" x2="20" y2="26" stroke="#E07060" stroke-width="0.8"/>
+  <line x1="14" y1="32" x2="18" y2="32" stroke="#E07060" stroke-width="0.8"/>
+  <line x1="14" y1="38" x2="20" y2="38" stroke="#E07060" stroke-width="0.8"/>
+  <line x1="14" y1="44" x2="18" y2="44" stroke="#E07060" stroke-width="0.8"/>
 
-  <!-- ── SEPARADOR ──────────────────────────────────────── -->
-  <line x1="58" y1="14" x2="58" y2="60" stroke="#CCCCCC" stroke-width="1"/>
+  <!-- Sigma branco legivel -->
+  <text x="26" y="37" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">&#x3A3;</text>
 
-  <!-- ── WORDMARK ───────────────────────────────────────── -->
-  <text x="68" y="50" class="nm" fill="#3B4A5C">Prumo</text>
-  <text x="224" y="50" class="nm" fill="#CC2A2A">PT</text>
+  <!-- Ponta conica base -->
+  <polygon points="14,50 38,50 26,62" fill="#C0392B"/>
 
-  <!-- ── TAGLINE ─────────────────────────────────────────── -->
-  <text x="69" y="62" class="tg">ECONOMIA A RÉGUA E ESQUADRO</text>
+  <!-- Fio vertical descendo da ponta -->
+  <line x1="26" y1="62" x2="26" y2="69" stroke="#CCCCCC" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- Linha horizontal ancora fio->wordmark -->
+  <line x1="26" y1="69" x2="360" y2="69" stroke="#CCCCCC" stroke-width="0.7" stroke-linecap="round"/>
+
+  <!-- "Prumo" serif bold cinza escuro -->
+  <text x="52" y="34" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="bold" fill="#2C3E50">Prumo</text>
+
+  <!-- "PT" serif bold vermelho — junto a "Prumo" -->
+  <text x="174" y="34" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="bold" fill="#C0392B"> PT</text>
+
+  <!-- Tagline — mais visível -->
+  <text x="52" y="56" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="400" fill="#6B7B8A" letter-spacing="2.5">ECONOMIA A R&#xC9;GUA E ESQUADRO</text>
 </svg>
