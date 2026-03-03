@@ -47,12 +47,10 @@
   font-size: 11px;
   font-weight: 700;
   color: #8B0000;
-  letter-spacing: 2px;
   line-height: 1;
   text-align: center;
   margin-top: -1px;
-  /* letter-spacing adds trailing space after last char — offset by half */
-  padding-left: 2px;
+  width: 100%;
   pointer-events: none;
 }
 
@@ -125,20 +123,15 @@
   border: 1px solid rgba(0,0,0,0.10);
   border-radius: 4px;
   cursor: pointer;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  min-width: 26px;
-  height: 22px;
-  padding: 0 5px;
+  padding: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
+  line-height: 0;
   transition: background 0.15s, box-shadow 0.15s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
+.lang-toggle svg { display: block; border-radius: 1px; }
 .lang-toggle:hover {
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.14);
@@ -153,7 +146,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   z-index: 200;
-  min-width: 56px;
+  min-width: 80px;
   padding: 4px;
   display: flex;
   flex-direction: column;
@@ -164,17 +157,23 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px 14px;
+  padding: 5px 10px;
   border-radius: 4px;
   font-size: 11px;
   font-family: 'Inter', system-ui, sans-serif;
-  text-align: center;
-  letter-spacing: 0.5px;
+  text-align: left;
+  letter-spacing: 0.3px;
   transition: background 0.12s;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
+.lang-option svg { flex-shrink: 0; border-radius: 1px; }
+.lang-option-label { font-weight: 600; color: #374151; }
 .lang-option:hover { background: #f3f4f6; }
-.lang-option.active { background: #fee2e2; font-weight: 600; }
+.lang-option.active { background: #fee2e2; }
+.lang-option.active .lang-option-label { font-weight: 700; }
 
 /* ═══════════════════════════════════════════════════════════════
    MOBILE (<=600px)
