@@ -195,7 +195,8 @@ body {
 
 /* ── Section Header ─────────────────────────────────────────────── */
 .section-header {
-  margin-bottom: var(--sp-sm);
+  margin-top: var(--sp-lg);
+  margin-bottom: var(--sp-md);
 }
 
 .section-eyebrow {
