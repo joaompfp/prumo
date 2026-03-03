@@ -38,8 +38,25 @@ def _parse_meta_json(text: str) -> tuple:
         return text[:idx].strip(), {}, None, {}
 
 
-def _build_painel_prompt(sections: list, updated: str) -> str:
-    ideology = _load_ideology()
+def _build_painel_prompt(sections: list, updated: str, lens: str = None, custom_ideology: str = None) -> str:
+    if lens:
+        from .ideology_lenses import get_lens_prompt, get_lens_link_sources, get_lens_metadata
+        ideology = get_lens_prompt(lens, custom_ideology=custom_ideology)
+        link_sources = get_lens_link_sources(lens)
+        lens_meta = get_lens_metadata(lens)
+        lens_meta = None
+    else:
+        ideology = _load_ideology()
+        link_sources = "publico.pt, dn.pt, rtp.pt, observador.pt, expresso.pt, eco.sapo.pt, jornaldenegocios.pt"
+        lens_meta = None
+
+    # Build search hint: include party short name + full name in web searches
+    search_party_hint = ""
+    if lens_meta and lens_meta.get("party"):
+        short = lens_meta.get("short", "")
+        party = lens_meta["party"]
+        search_party_hint = f"Inclui '{short} {party}' nos termos de pesquisa. "
+    search_hint = f"{search_party_hint}Usa o tema da secção como termo (ex: 'energia Portugal 2026', 'emprego Portugal recente'). Prioriza artigos o mais recentes possível."
 
     section_blocks = []
     section_names = []
@@ -79,23 +96,25 @@ def _build_painel_prompt(sections: list, updated: str) -> str:
     instruction = (
         f"Tens um orçamento ESTRITO de {token_budget} tokens para análise + links.\n"
         "NÃO escrevas notas, planos, separadores (---) nem texto em inglês. Começa directamente com a análise.\n\n"
-        "PASSO 1 — Pesquisa (silenciosa): pesquisa 2 artigos recentes (últimos 2 meses) por secção. Máx. 6 pesquisas.\n\n"
+        f"PASSO 1 — Pesquisa (silenciosa): pesquisa 2 artigos recentes (últimos 2 meses) por secção. Máx. 6 pesquisas. {search_hint}\n\n"
         "PASSO 2 — Análise em **português europeu** (sem brasileirismos), período: " + updated + ".\n"
-        "Para cada secção (###), escreve EXACTAMENTE 3 frases curtas com **negrito** nos conceitos-chave.\n"
+        "Para cada secção, escreve EXACTAMENTE 3 frases curtas com **negrito** nos conceitos-chave.\n"
         "Interpreta impacto real para trabalhadores e famílias — não repitas números.\n"
-        "Título inline em negrito (ex: **Custo de Vida:**). Linha em branco entre parágrafos.\n"
-        "Termina com **Síntese:** (máx. 2 frases transversais). Sem listas, sem cabeçalhos.\n\n"
+        "Formato OBRIGATÓRIO: cada secção começa com título inline em negrito seguido de dois pontos (ex: **Custo de Vida:**). "
+        "NÃO uses cabeçalhos markdown (###). Linha em branco entre parágrafos.\n"
+        "Termina com **Síntese:** (máx. 2 frases transversais). Sem listas, sem cabeçalhos markdown.\n\n"
         "PASSO 3 — OBRIGATÓRIO: imediatamente após a última frase, escreve:\n"
         f"META_JSON:{{\"section_links\":{{{{}}}},\"section_charts\":{{{{}}}},\"chart_pick\":{{}}}}\n"
         "Regras para META_JSON:\n"
-        f"  section_links: OBRIGATÓRIO 3 links REAIS (URLs de artigos específicos, NÃO páginas de categoria) por secção ({sections_list}). "
-        "Ordem ESTRITA: pos 1-2 = artigos REAIS (análises policy, artigos temáticos, NOT comentários pessoais de colunistas) de publico.pt, dn.pt, rtp.pt, sapo.pt, avante.pt, ou observador.pt; "
-        "pos 3 = artigo REAL de pcp.pt (análise, comunicado, artigo editorial — NÃO colunista pessoal; ex: https://pcp.pt/2026/03/inflacao-salarios-familia ou https://pcp.pt/comunicado-inflacao-2026). "
-        "URLs devem conter slug de artigo (pelo menos 3 segmentos: ex https://observador.pt/2026/03/custo-vida-portuguesa). "
-        "Formato: lista de 3 strings. EVITA: bancos, governo, institutos financeiros, páginas de categoria (/noticias, /tema, etc), colunistas pessoais, home pages. "
+        f"  section_links: OBRIGATÓRIO 2-3 links REAIS (URLs de artigos específicos, NÃO páginas de categoria) por secção ({sections_list}). "
+        f"Fontes EXCLUSIVAS: {link_sources}. "
+        "PROIBIDO: fpf.pt, abola.pt, record.pt, zerozero.pt, maisfutebol.iol.pt, ojogo.pt — ZERO links de futebol ou desporto. "
+        "Quando pesquisares na web, ADICIONA '-futebol -desporto -liga -seleção' aos termos de pesquisa. "
+        "URLs devem conter slug de artigo com pelo menos 3 segmentos (ex: https://observador.pt/2026/03/custo-vida-portuguesa). "
+        "Formato: lista de strings. EVITA: bancos, governo, institutos financeiros, páginas de categoria (/noticias, /tema), colunistas pessoais, home pages. "
         "NUNCA uses o mesmo URL em duas secções diferentes. "
         "✓ URL válido: https://publico.pt/2026/03/artigo-custo-vida-salarios (tem ano/mes/slug)\n"
-        "✗ URL inválido: https://publico.pt/noticias ou https://publico.pt/autores/joao-silva (categoria ou colunista)\n"
+        "✗ URL inválido: https://rtp.pt/noticias/desporto/liga-nacoes (desporto!) ou https://publico.pt/autores/joao (colunista)\n"
         f"  section_charts: para cada secção usa UM ÚNICO id (string, NÃO array) da lista [{ids_str}]"
         " — o indicador que MAIS MENCIONASTE no texto dessa secção. Para 'Síntese': O indicador mais importante de toda a análise.\n"
         "  chart_pick: {{\"indicator\":\"id_exacto\",\"source\":\"FONTE\",\"label\":\"nome\",\"title\":\"insight criativo ≤12 palavras\"}} — mesmo que section_charts[Síntese].\n"
@@ -154,7 +173,7 @@ def _build_pt_europa_section() -> dict:
         return {"id": "pt_europa", "title": "Portugal vs. Europa", "kpis": []}
 
 
-def get_painel_analysis(sections: list, updated: str, force: bool = False) -> dict:
+def get_painel_analysis(sections: list, updated: str, force: bool = False, lens: str = None, custom_ideology: str = None) -> dict:
     """
     Return Sonnet analysis of Painel sections.
     Results are cached to disk keyed by `updated`. Cache survives restarts.
@@ -172,7 +191,12 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False) -> di
     except Exception:
         cache = {}
 
-    cache_key = f"painel:v20:{updated}"
+    # Custom ideology gets its own cache key (hash of text)
+    import hashlib as _hl
+    lens_key = lens or "default"
+    if lens == "custom" and custom_ideology:
+        lens_key = "custom:" + _hl.md5(custom_ideology.encode()).hexdigest()[:8]
+    cache_key = f"painel:v21:{updated}:{lens_key}"
     if not force and cache_key in cache:
         entry = cache[cache_key]
         return {
@@ -186,7 +210,7 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False) -> di
             "cached": True,
         }
 
-    prompt = _build_painel_prompt(sections, updated)
+    prompt = _build_painel_prompt(sections, updated, lens=lens, custom_ideology=custom_ideology)
     if not prompt:
         return {"text": None, "cached": False, "error": "No KPI data available"}
 
@@ -218,22 +242,80 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False) -> di
 
         text, section_links, chart_pick, section_charts = _parse_meta_json(full_text)
 
-        # Validate ALL links — drop 404s/unreachable (Sonnet hallucinates URLs)
+        # ── Filter out sports/football/irrelevant URLs before validation ──
+        _BLOCKED_DOMAINS = {'fpf.pt', 'abola.pt', 'record.pt', 'zerozero.pt',
+                            'maisfutebol.iol.pt', 'ojogo.pt', 'tribunaexpresso.pt'}
+        _SPORTS_SLUGS = re.compile(
+            r'(?:futebol|desporto|liga-nacoes|champions|selecao|benfica|sporting|porto|'
+            r'premier-league|euro-2|mundial|jogos-olimpicos|bruno-fernandes|ronaldo|'
+            r'campeonato|eliminatorias|transferencias|treinador|equipa-nacional)',
+            re.IGNORECASE,
+        )
+        def _is_sports_url(url: str) -> bool:
+            try:
+                from urllib.parse import urlparse
+                host = urlparse(url).hostname or ''
+                # Check blocked domains
+                for bd in _BLOCKED_DOMAINS:
+                    if host == bd or host.endswith('.' + bd):
+                        return True
+                # Check URL path for sports slugs
+                if _SPORTS_SLUGS.search(url):
+                    return True
+            except Exception:
+                pass
+            return False
+
+        for sec in list(section_links.keys()):
+            before = len(section_links[sec])
+            section_links[sec] = [u for u in section_links[sec] if not _is_sports_url(u)]
+            dropped = before - len(section_links[sec])
+            if dropped:
+                print(f"[painel_analysis] dropped {dropped} sports URL(s) from '{sec}'", flush=True)
+
+        # Validate ALL links — drop 404s/unreachable (model hallucinates URLs)
         import urllib.request as _ur, concurrent.futures as _cf
         def _check_url(url):
+            ua = {"User-Agent": "Mozilla/5.0 (compatible; PrumoBot/1.0)"}
             try:
-                req = _ur.Request(str(url), headers={"User-Agent": "Mozilla/5.0"}, method="HEAD")
-                with _ur.urlopen(req, timeout=4) as r:
-                    return url, r.status < 400
-            except Exception:
+                # Try HEAD first
+                req = _ur.Request(str(url), headers=ua, method="HEAD")
+                with _ur.urlopen(req, timeout=5) as r:
+                    ok = r.status < 400
+                    if ok:
+                        return url, True
+            except Exception as e:
+                err = str(e)
+                # 405 Method Not Allowed = URL exists, just doesn't accept HEAD
+                if '405' in err:
+                    return url, True
+            # Fallback: GET with range header (minimal download)
+            try:
+                req = _ur.Request(str(url), headers={**ua, "Range": "bytes=0-512"}, method="GET")
+                with _ur.urlopen(req, timeout=5) as r:
+                    return url, r.status < 400 or r.status == 206
+            except Exception as e:
+                err = str(e)
+                # 403 from some paywalled sites — still a real article
+                if '403' in err:
+                    return url, True
+                print(f"[painel_analysis] URL check failed: {url} → {err}", flush=True)
                 return url, False
         # Collect all unique URLs to check
         all_urls = list({url for links in section_links.values() for url in links if url})
-        with _cf.ThreadPoolExecutor(max_workers=8) as ex:
-            results = dict(ex.map(_check_url, all_urls))
+        if all_urls:
+            with _cf.ThreadPoolExecutor(max_workers=8) as ex:
+                results = dict(ex.map(_check_url, all_urls))
+            valid = sum(1 for v in results.values() if v)
+            print(f"[painel_analysis] URL validation: {valid}/{len(all_urls)} passed", flush=True)
+        else:
+            results = {}
         # Filter each section
         for sec in list(section_links.keys()):
+            before = len(section_links[sec])
             section_links[sec] = [u for u in section_links[sec] if results.get(u, False)]
+            if before and not section_links[sec]:
+                print(f"[painel_analysis] WARNING: all {before} URL(s) dropped for '{sec}'", flush=True)
 
         generated_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         cache[cache_key] = {

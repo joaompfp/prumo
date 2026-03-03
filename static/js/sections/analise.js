@@ -63,6 +63,16 @@ App.registerSection('explorador', async () => {
   // ── Build HTML skeleton ───────────────────────────────────────
   body.innerHTML = `
     <div class="explorador-wrap">
+      <!-- Guided exploration paths -->
+      <div class="exp-guided-paths" id="exp-guided">
+        <span class="exp-guided-label">Explorar:</span>
+        <button class="exp-path-btn" data-path="custo_vida">Custo de Vida</button>
+        <button class="exp-path-btn" data-path="emprego">Emprego</button>
+        <button class="exp-path-btn" data-path="energia">Energia</button>
+        <button class="exp-path-btn" data-path="industria">Indústria</button>
+        <button class="exp-path-btn" data-path="macro">Conjuntura</button>
+      </div>
+
       <div class="explorador-search-bar">
         <input id="exp-search" class="swd-input" type="text"
                placeholder="Pesquisar indicadores..." autocomplete="off">
@@ -91,7 +101,7 @@ App.registerSection('explorador', async () => {
           <button class="time-preset-btn" data-years="0">Tudo</button>
         </div>
         <button class="time-preset-btn" id="exp-render-btn">Ver →</button>
-        <button class="time-preset-btn" id="exp-ai-btn" title="Análise automática com Claude Haiku" disabled>✦ IA</button>
+        <button class="time-preset-btn" id="exp-ai-btn" title="Análise automática com IA" disabled>✦ IA</button>
       </div>
 
       <div class="analise-layout">
@@ -489,16 +499,18 @@ App.registerSection('explorador', async () => {
     if (linksEl) { linksEl.innerHTML = ''; linksEl.style.display = 'none'; }
     if (footer) footer.textContent = '';
 
-    text.innerHTML = '<span class="ai-loading">A analisar com Claude Haiku…</span>';
+    text.innerHTML = '<span class="ai-loading">A gerar análise IA…</span>';
     panel.style.display = '';
     if (elAIBtn) { elAIBtn.classList.add('active'); elAIBtn.disabled = false; }
 
     try {
+      const lens = localStorage.getItem('prumo-lens') || 'cae';
+      const custom_ideology = lens === 'custom' ? (localStorage.getItem('prumo-custom-ideology') || CUSTOM_LENS_DEFAULT) : null;
       const res = await fetch(`${BASE}/api/interpret`, {
         method: 'POST',
         signal: ctrl.signal,
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa'}),
+        body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa', lens, custom_ideology}),
       });
       if (ctrl.signal.aborted) return;
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -653,11 +665,8 @@ App.registerSection('explorador', async () => {
       // Enable IA button now that we have data
       if (elAIBtn) elAIBtn.disabled = false;
 
-      // Refresh AI panel only if already visible (user toggled it on)
-      const _aiPanelEl = document.getElementById('ai-panel');
-      if (_aiPanelEl && _aiPanelEl.style.display !== 'none') {
-        updateAIPanel(lastSeries, fromV, toV);
-      }
+      // Auto-trigger AI analysis on every render (always visible)
+      updateAIPanel(lastSeries, fromV, toV);
 
       updateURL();
     } catch (e) {
@@ -936,6 +945,53 @@ App.registerSection('explorador', async () => {
       } catch(_) {}
       restoreFromURL();
     }
+  });
+
+  // ── Guided exploration paths ────────────────────────────────────
+  const GUIDED_PATHS = {
+    custo_vida: [
+      { source: 'INE', indicator: 'hicp_total' },
+      { source: 'EUROSTAT', indicator: 'hicp_yoy' },
+    ],
+    emprego: [
+      { source: 'EUROSTAT', indicator: 'unemp_m' },
+      { source: 'INE', indicator: 'employment_rate' },
+    ],
+    energia: [
+      { source: 'EUROSTAT', indicator: 'electricity_price_household' },
+      { source: 'REN', indicator: 'electricity_price_mibel' },
+    ],
+    industria: [
+      { source: 'INE', indicator: 'ipi_total' },
+      { source: 'INE', indicator: 'ipi_seasonal_cae_TOT' },
+    ],
+    macro: [
+      { source: 'WORLDBANK', indicator: 'gdp_growth' },
+      { source: 'INE', indicator: 'confidence' },
+    ],
+  };
+
+  body.querySelectorAll('.exp-path-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pathId = btn.dataset.path;
+      const indicators = GUIDED_PATHS[pathId] || [];
+      // Clear current selection and add path indicators
+      selected = [];
+      indicators.forEach(({ source, indicator }) => {
+        const srcInfo = catalog[source];
+        if (!srcInfo) return;
+        const indInfo = srcInfo.indicators?.[indicator];
+        if (!indInfo) return;
+        selected.push({ source, indicator, label: indInfo.label || indicator, unit: indInfo.unit || '' });
+      });
+      renderChips();
+      renderFicha();
+      if (selected.length) render();
+      saveSession();
+      // Highlight active path
+      body.querySelectorAll('.exp-path-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
   });
 
   // ── Init ──────────────────────────────────────────────────────

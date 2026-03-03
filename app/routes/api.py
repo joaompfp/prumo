@@ -98,27 +98,39 @@ def api_mundo_meta():
 
 @router.post("/interpret")
 async def interpret_endpoint(request: Request):
-    """Call Claude Haiku (with web search) to interpret chart series data."""
+    """AI interpretation of chart series data (with web search)."""
     from ..services.interpret import interpret_chart
     body = await request.json()
-    result = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""))
+    result = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""), lens=body.get("lens"), custom_ideology=body.get("custom_ideology"))
     if not result:
-        return {"text": None, "links": [], "model": None}
+        return {"text": None, "links": []}
     if isinstance(result, str):  # backward compat
-        return {"text": result, "links": [], "model": "claude-haiku-4-5-20251001"}
-    return {"text": result.get("text"), "links": result.get("links", []), "model": "claude-haiku-4-5-20251001"}
+        return {"text": result, "links": []}
+    return {"text": result.get("text"), "links": result.get("links", [])}
 
 
-@router.get("/painel-analysis")
+@router.api_route("/painel-analysis", methods=["GET", "POST"])
 async def painel_analysis_endpoint(request: Request):
     """Sonnet one-shot analysis of all Painel KPIs. Disk-cached per data period.
     If force=1 and cache miss, triggers background generation and returns 202 with status.
+    Optional lens= param selects political perspective (pcp, ps, ad, il, be, neutro, custom).
+    For lens=custom, POST with JSON body {"custom_ideology": "..."}.
     """
     import asyncio
     from ..services.painel import build_painel
     from ..services.painel_analysis import get_painel_analysis
     force = request.query_params.get("force") == "1"
     bg = request.query_params.get("bg") == "1"
+    lens = request.query_params.get("lens")
+    custom_ideology = None
+    if request.method == "POST":
+        try:
+            body = await request.json()
+            custom_ideology = body.get("custom_ideology")
+            if not lens:
+                lens = body.get("lens")
+        except Exception:
+            pass
     data = build_painel()
     sections = data.get("sections", [])
     updated = data.get("updated", "")
@@ -130,10 +142,10 @@ async def painel_analysis_endpoint(request: Request):
     loop = asyncio.get_event_loop()
     # If bg=1, fire and forget — return immediately
     if bg:
-        loop.run_in_executor(None, get_painel_analysis, sections, updated, True)
+        loop.run_in_executor(None, get_painel_analysis, sections, updated, True, lens, custom_ideology)
         return {"status": "generating", "message": "Analysis generation started in background"}
     # Otherwise run in thread pool — does NOT block the event loop (other requests served normally)
-    return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force)
+    return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology)
 
 
 _link_title_cache: dict = {}
@@ -174,22 +186,26 @@ async def painel_card_links_endpoint(request: Request):
     """Deferred link search for a Painel analysis card. Cached 1 week."""
     topic   = request.query_params.get("topic", "")
     context = request.query_params.get("context", "")
+    lens    = request.query_params.get("lens", "cae")
     if not topic:
         return {"links": [], "error": "topic required"}
     from ..services.painel_card_links import get_card_links
-    return get_card_links(topic, context)
+    return get_card_links(topic, context, lens)
 
 
 @router.get("/painel-headline")
 async def painel_headline_endpoint(request: Request):
-    """Claude Opus one-shot headline for Painel KPIs. Disk-cached 6h."""
+    """Claude Opus one-shot headline for Painel KPIs. Disk-cached 6h per lens."""
     from ..services.painel import build_painel
     from ..services.painel_headline import get_painel_headline
     force = request.query_params.get("force") == "1"
+    lens = request.query_params.get("lens")
     data = build_painel()
     sections = data.get("sections", [])
     updated = data.get("updated", "")
-    return get_painel_headline(sections, updated, force=force)
+    import asyncio
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, lambda: get_painel_headline(sections, updated, force=force, lens=lens))
 
 
 @router.get("/compare-catalog")
@@ -442,33 +458,42 @@ def api_stats(
     return count_stats(event_type, since)
 
 
-_manifesto_cache: dict = {}
+@router.get("/lenses")
+def api_lenses():
+    """Return available ideology lenses for the frontend selector."""
+    from ..services.ideology_lenses import get_lenses
+    return get_lenses()
 
-@router.get("/manifesto")
-def api_manifesto():
-    """Expose ideology text and prompt flow for the Manifesto tab. Cached in memory until restart."""
-    global _manifesto_cache
-    if not _manifesto_cache:
+
+@router.get("/metodologia")
+def api_metodologia(request: Request):
+    """Expose ideology text and prompt flow for the Metodologia tab.
+    Optional lens= param to show a specific lens's ideology text."""
+    from ..services.ideology_lenses import get_lens_prompt, get_lens_metadata, get_lenses
+    lens_id = request.query_params.get("lens")
+    if lens_id:
+        meta = get_lens_metadata(lens_id)
+        ideology = get_lens_prompt(lens_id)
+    else:
         from ..services.interpret import _load_ideology
         ideology = _load_ideology()
-        _manifesto_cache = {
-            "ideology": ideology,
-            "flow": [
-                {"step": 1, "label": "Dados económicos", "desc": "INE, Eurostat, OCDE, Banco Mundial, REN, ERSE — recolhidos automaticamente"},
-                {"step": 2, "label": "Enquadramento político", "desc": "Texto editável em ideology.txt — define o ângulo analítico"},
-                {"step": 3, "label": "Prompt ao Claude Sonnet", "desc": "Dados + enquadramento → análise em português europeu, por secção"},
-                {"step": 4, "label": "Análise IA", "desc": "3 frases por tema, com links a artigos reais, gráfico por card"},
-            ]
-        }
-    return _manifesto_cache
+        meta = None
     return {
         "ideology": ideology,
+        "lens": meta and {
+            "id": meta["id"],
+            "label": meta["label"],
+            "party": meta["party"],
+            "source": meta["source"],
+            "color": meta["color"],
+        },
+        "lenses": get_lenses(),
         "flow": [
             {"step": 1, "label": "Dados económicos", "desc": "INE, Eurostat, OCDE, Banco Mundial, REN, ERSE — recolhidos automaticamente"},
-            {"step": 2, "label": "Enquadramento político", "desc": "Texto editável em ideology.txt — define o ângulo analítico"},
+            {"step": 2, "label": "Enquadramento político", "desc": "Lente seleccionável — cada uma derivada do programa eleitoral do respectivo partido"},
             {"step": 3, "label": "Prompt ao Claude Sonnet", "desc": "Dados + enquadramento → análise em português europeu, por secção"},
             {"step": 4, "label": "Análise IA", "desc": "3 frases por tema, com links a artigos reais, gráfico por card"},
-        ]
+        ],
     }
 
 

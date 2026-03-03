@@ -4,9 +4,20 @@
    Implementação: header + source cards + metodologia + dashboard info + disclaimer
    ═══════════════════════════════════════════════════════════════ */
 
-App.registerSection('ficha', async () => {
-  const container = document.getElementById('ficha');
-  const body = container.querySelector('.section-body');
+// Ficha loads inside metodologia — triggered when <details> is opened
+(() => {
+  let _fichaLoaded = false;
+  const details = document.getElementById('ficha-container');
+  if (!details) return;
+  details.addEventListener('toggle', async () => {
+    if (!details.open || _fichaLoaded) return;
+    _fichaLoaded = true;
+    await _loadFicha();
+  });
+
+  async function _loadFicha() {
+  const body = document.querySelector('#ficha');
+  if (!body) return;
 
   try {
     body.innerHTML = `<div class="loading-state"><div class="loading-spinner"></div><span>A carregar ficha técnica…</span></div>`;
@@ -41,9 +52,9 @@ App.registerSection('ficha', async () => {
     const updated   = resumo.updated || '—';
     const totalSrcs = Object.keys(expBySrc).length || catalogOrder.length;
 
-    // Update section title in header
-    const titleEl = container.querySelector('.section-title');
-    if (titleEl) titleEl.textContent = `Ficha Técnica — ${totalSrcs} fontes, ${totalIndicators} indicadores`;
+    // Update ficha summary with stats
+    const summaryEl = document.querySelector('.mf-ficha-summary .mf-heading');
+    if (summaryEl) summaryEl.textContent = `Ficha Técnica — ${totalSrcs} fontes, ${totalIndicators} indicadores`;
 
     // ── Source card HTML generator (all DB indicators + catalog metadata) ──
     function renderSourceCard(src, idx = 0) {
@@ -206,15 +217,19 @@ App.registerSection('ficha', async () => {
       </div>`;
 
     // ── Dashboard info ────────────────────────────────────────────────
-    const _appBase = window.location.origin + (window.__BASE_PATH__ || '');
-    const _appDisplay = window.location.hostname + (window.__BASE_PATH__ || '');
+    const _appUrl = 'https://joao.date/dados';
     const dashboardHTML = `
       <div class="dashboard-info">
         <h3>Sobre o Prumo PT</h3>
         <ul>
-          <li>URL: <a href="${_appBase}" target="_blank" rel="noopener" style="color:var(--c-pt)">${_appDisplay}</a></li>
-          <li>Embed: <code>&lt;div class="cae-embed" data-indicators="SOURCE/indicator"&gt;&lt;/div&gt;</code></li>
+          <li><strong>URL:</strong> <a href="${_appUrl}" target="_blank" rel="noopener" style="color:var(--c-pt)">joao.date/dados</a></li>
+          <li><strong>Contacto:</strong> <a href="mailto:joao.mpfp+prumo@gmail.com" style="color:var(--c-pt)">joao.mpfp+prumo@gmail.com</a></li>
         </ul>
+        <p style="margin-top:var(--sp-md);font-size:var(--fs-xs);color:var(--c-text-sub);line-height:1.6">
+          <strong>Embed em qualquer página:</strong> Copie o snippet abaixo para incorporar um gráfico interactivo do Prumo PT no seu site ou artigo.
+        </p>
+        <pre class="dashboard-embed-code"><code>&lt;script src="${_appUrl}/static/js/embed.js" data-base="${_appUrl}" async&gt;&lt;/script&gt;
+&lt;div class="cae-embed" data-indicators="INE/ipi_total"&gt;&lt;/div&gt;</code></pre>
       </div>`;
 
     // ── Render ────────────────────────────────────────────────────────
@@ -249,4 +264,5 @@ App.registerSection('ficha', async () => {
     console.error('[ficha] error:', e);
     body.innerHTML = App.errorHTML(e.message);
   }
-});
+  } // end _loadFicha
+})();

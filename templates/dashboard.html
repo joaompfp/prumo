@@ -34,7 +34,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 
   <!-- BASE_PATH injection -->
-  <script>window.__BASE_PATH__ = "{{ base_path }}";</script>
+  <script>window.__BASE_PATH__ = "{{ base_path }}"; window.__N_INDICATORS__ = {{ n_indicators }}; window.__CUSTOM_LENS_DEFAULT__ = {{ custom_lens_default | tojson }};</script>
 
   <!-- CSS -->
   <link rel="stylesheet" href="{{ base_path }}/static/css/swd-theme.css">
@@ -49,23 +49,48 @@
 
 <!-- NAV -->
 <nav class="nav" role="navigation" aria-label="Secções do dashboard">
-  <a href="https://joao.date/dados" class="nav-brand-link" title="Prumo PT — Dados. Contexto. Decisão.">
-    <!-- Desktop: logo original (PNG transparente) -->
-    <img src="{{ base_path }}/static/images/prumo/nav-icon.png" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-desktop" loading="eager">
-    <!-- Mobile: figura + PRUMO PT -->
-    <img src="{{ base_path }}/static/images/prumo/logo-mobile.svg" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-mobile" loading="eager">
+  <a href="https://joao.date/dados" class="nav-brand-link" title="Prumo PT — Dados. Contexto. Narrativas.">
+    <span class="nav-brand-icon-wrap">
+      <img src="{{ base_path }}/static/images/prumo/nav-icon.png" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-desktop" loading="eager">
+      <img src="{{ base_path }}/static/images/prumo/logo-mobile.svg" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-mobile" loading="eager">
+    </span>
     <div class="nav-brand-text">
       <div class="nav-brand-name">Prumo</div>
-      <div class="nav-brand-tagline">Dados. Contexto. Decisão.</div>
+      <div class="nav-brand-tagline">Dados. Contexto. Narrativas.</div>
     </div>
   </a>
   <a class="nav-tab" href="#painel"       data-section="painel"       aria-label="Painel de Indicadores"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="1.5" width="5" height="5" rx="0.5"/><rect x="9.5" y="1.5" width="5" height="5" rx="0.5"/><rect x="1.5" y="9.5" width="5" height="5" rx="0.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="0.5"/></svg></span><span class="nav-tab-label">Painel</span></a>
   <a class="nav-tab" href="#comparativos" data-section="comparativos" aria-label="PT vs Europa e Mundo"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c-2 1.5-3 4-3 6.5s1 5 3 6.5M8 1.5c2 1.5 3 4 3 6.5s-1 5-3 6.5"/></svg></span><span class="nav-tab-label">Comparativos</span></a>
   <a class="nav-tab" href="#explorador"   data-section="explorador"   aria-label="Análise de Dados"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4 4M4 8.5l1.5-2L7 8l2-3"/></svg></span><span class="nav-tab-label">Análise</span></a>
-  <a class="nav-tab" href="#ficha"        data-section="ficha"        aria-label="Ficha Técnica"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1"/><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3"/></svg></span><span class="nav-tab-label">Ficha</span></a>
-  <a class="nav-tab" href="#ajuda"        data-section="ajuda"        aria-label="Ajuda e Sobre"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M6 6c0-1.1.9-2 2-2 1.1 0 2 .9 2 2 0 1-.7 1.6-1.5 2C7.8 8.5 8 9 8 9.5"/><circle cx="8" cy="12" r=".75" fill="currentColor" stroke="none"/></svg></span><span class="nav-tab-label">Ajuda</span></a>
-  <a class="nav-tab" href="#manifesto"    data-section="manifesto"    aria-label="Manifesto"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h10v12H3zM5.5 5.5h5M5.5 8h5M5.5 10.5h2.5"/><circle cx="11" cy="10.5" r="1.5" fill="currentColor" stroke="none" opacity=".7"/></svg></span><span class="nav-tab-label">Manifesto</span></a>
+  <a class="nav-tab" href="#metodologia"  data-section="metodologia"  aria-label="Metodologia e Ficha Técnica"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h10v12H3zM5.5 5.5h5M5.5 8h5M5.5 10.5h2.5"/><circle cx="11" cy="10.5" r="1.5" fill="currentColor" stroke="none" opacity=".7"/></svg></span><span class="nav-tab-label">Metodologia</span></a>
+  <a class="nav-tab" href="#ajuda" data-section="ajuda" aria-label="Ajuda e Sobre" title="Ajuda"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M6 6c0-1.1.9-2 2-2 1.1 0 2 .9 2 2 0 1-.7 1.6-1.5 2C7.8 8.5 8 9 8 9.5"/><circle cx="8" cy="12" r=".75" fill="currentColor" stroke="none"/></svg></span><span class="nav-tab-label">Ajuda</span></a>
 </nav>
+
+<!-- Global search bar — below nav -->
+<div class="search-bar" id="search-bar">
+  <div class="search-bar-inner">
+    <svg class="search-bar-icon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>
+    <input id="search-input" class="search-bar-input" type="text" placeholder="Pesquisar indicadores, secções, ajuda…" autocomplete="off" spellcheck="false">
+    <kbd class="search-bar-kbd">Ctrl+K</kbd>
+  </div>
+  <div class="search-results" id="search-results"></div>
+</div>
+
+<!-- Onboarding hero — shown on first visit, dismissed permanently -->
+<div class="hero-onboarding" id="hero-onboarding">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 class="hero-title">Economia portuguesa,<br>verificada.</h1>
+      <p class="hero-desc">9 fontes oficiais. {{ n_indicators }}+ indicadores. Análise IA com enquadramento editorial transparente — escolha a lente política.</p>
+      <div class="hero-sources">INE · Eurostat · Banco de Portugal · OCDE · Banco Mundial · REN · DGEG · ERSE · FRED</div>
+      <div class="hero-actions">
+        <button class="hero-cta" id="hero-cta-explore">Explorar dados</button>
+        <a href="#metodologia" class="hero-link">Como funciona →</a>
+      </div>
+    </div>
+  </div>
+  <button class="hero-dismiss" id="hero-dismiss" title="Fechar e não mostrar novamente">✕</button>
+</div>
 
 <!-- #painel -->
 <section id="painel" class="section" role="main">
@@ -112,21 +137,6 @@
   </div>
 </section>
 
-<!-- #ficha -->
-<section id="ficha" class="section">
-  <div class="section-header">
-    <div class="section-eyebrow">FICHA TÉCNICA · FONTES · METODOLOGIA</div>
-    <h2 class="section-title">Fontes de dados e metodologia</h2>
-    <p class="section-subtitle">Todos os indicadores, fontes primárias, cobertura e notas metodológicas</p>
-  </div>
-  <div class="section-body">
-    <div class="loading-state">
-      <div class="loading-spinner"></div>
-      <span>A carregar ficha técnica…</span>
-    </div>
-  </div>
-</section>
-
 <!-- #ajuda -->
 <section id="ajuda" class="section">
   <div class="section-header">
@@ -137,40 +147,15 @@
   <div class="section-body"></div>
 </section>
 
-<!-- Umami Analytics -->
-<script defer src="/js/u/script.js" data-website-id="b71a25ad-e95b-499d-9783-d63999f068d2" data-host-url="/js/u"></script>
-
-<!-- SCRIPTS -->
-<script src="{{ base_path }}/static/js/app.js"></script>
-<script src="{{ base_path }}/static/js/api.js"></script>
-<script src="{{ base_path }}/static/js/swd-charts.js"></script>
-<script src="{{ base_path }}/static/js/sections/painel.js"></script>
-<script src="{{ base_path }}/static/js/sections/comparativos.js"></script>
-<script src="{{ base_path }}/static/js/sections/analise.js"></script>
-<script src="{{ base_path }}/static/js/sections/ficha.js"></script>
-<script src="{{ base_path }}/static/js/sections/ajuda.js"></script>
-
-<noscript>
-  <div style="font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:24px 32px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;color:#333">
-    <h1 style="font-size:20px;margin:0 0 12px;color:#CC0000">Prumo PT — Economia a Régua e Esquadro</h1>
-    <p style="margin:0 0 12px">Este dashboard requer JavaScript para carregar os dados e gráficos.</p>
-    <p style="margin:0 0 16px;color:#666;font-size:14px">Acesso directo às fontes:</p>
-    <ul style="margin:0;padding-left:20px;font-size:14px;line-height:2">
-      <li><a href="https://www.ine.pt" style="color:#CC0000">INE — Instituto Nacional de Estatística</a></li>
-      <li><a href="https://ec.europa.eu/eurostat" style="color:#CC0000">Eurostat — Estatísticas da União Europeia</a></li>
-      <li><a href="https://www.bportugal.pt" style="color:#CC0000">Banco de Portugal</a></li>
-    </ul>
-  </div>
-</noscript>
-
-<!-- #manifesto -->
-<section id="manifesto" class="section" role="main">
+<!-- #metodologia -->
+<section id="metodologia" class="section" role="main">
   <div class="section-header">
-    <h2 class="section-title">Manifesto</h2>
+    <h2 class="section-title">Metodologia</h2>
     <p class="section-subtitle">Como as análises IA são geradas</p>
   </div>
   <div class="mf-body">
-    <p class="mf-intro">Cada análise é gerada a partir de dados socioeconómicos reais, combinados com um enquadramento editorial explícito. O processo é totalmente transparente — o texto completo do prompt é apresentado abaixo.</p>
+    <p class="mf-intro">Cada análise é gerada a partir de <strong>dados socioeconómicos reais</strong>, combinados com um <strong>enquadramento editorial explícito</strong>. O processo é totalmente transparente: em seguida mostramos como, a partir de dados oficiais, e aplicando <strong>instruções à medida como Lente</strong>, um <a href="https://claude.ai" target="_blank" rel="noopener">modelo LLM (em 2026)</a> produz copy e editorial à medida.</p>
+    <p class="mf-instance-notice">Esta instância do Prumo pode correr sob qualquer uma das lentes à escolha. Por defeito assume um prompt gerado pelos seus autores. Experimente as lentes disponíveis para ver os mesmos dados interpretados sob diferentes perspectivas políticas.</p>
 
     <h3 class="mf-heading">Fluxo da análise</h3>
     <div class="mf-flow">
@@ -214,8 +199,10 @@
         </div>
         <div class="mf-flow-right">
           <div class="mf-flow-label mf-flow-label--t2">Enquadramento editorial <span class="mf-ex-tag mf-ex-tag--t2" style="vertical-align:middle;margin-left:8px">ideology.txt</span></div>
-          <div class="mf-flow-sub">Injectado no início de cada prompt. Define o ponto de vista da análise — fixo e transparente.</div>
-          <pre class="mf-flow-code mf-flow-code--ideology">{{ ideology }}</pre>
+          <div class="mf-flow-sub">Injectado no início de cada prompt. Define o ponto de vista da análise — seleccionável e transparente. Cada lente é derivada do programa eleitoral do respectivo partido.</div>
+          <div class="mf-lens-bar" id="mf-lens-bar"></div>
+          <div class="mf-lens-source" id="mf-lens-source"></div>
+          <pre class="mf-flow-code mf-flow-code--ideology" id="mf-ideology-text">{{ ideology }}</pre>
         </div>
       </div>
 
@@ -273,9 +260,46 @@ fontes: [
 
     </div>
 
+    <!-- Ficha Técnica — collapsed inside Metodologia -->
+    <details class="mf-ficha-details" id="ficha-container">
+      <summary class="mf-ficha-summary">
+        <h3 class="mf-heading" style="display:inline;margin:0">Ficha Técnica — Fontes e Metodologia</h3>
+        <span class="mf-ficha-hint"></span>
+      </summary>
+      <div class="section-body" id="ficha">
+        <div class="loading-state"><div class="loading-spinner"></div><span>A carregar ficha técnica…</span></div>
+      </div>
+    </details>
 
   </div>
 </section>
+
+<!-- Umami Analytics -->
+<script defer src="/js/u/script.js" data-website-id="b71a25ad-e95b-499d-9783-d63999f068d2" data-host-url="/js/u"></script>
+
+<!-- SCRIPTS -->
+<script src="{{ base_path }}/static/js/app.js"></script>
+<script src="{{ base_path }}/static/js/api.js"></script>
+<script src="{{ base_path }}/static/js/swd-charts.js"></script>
+<script src="{{ base_path }}/static/js/sections/painel.js"></script>
+<script src="{{ base_path }}/static/js/sections/comparativos.js"></script>
+<script src="{{ base_path }}/static/js/sections/analise.js"></script>
+<script src="{{ base_path }}/static/js/sections/ficha.js"></script>
+<script src="{{ base_path }}/static/js/sections/ajuda.js"></script>
+<script src="{{ base_path }}/static/js/search.js"></script>
+
+<noscript>
+  <div style="font-family:system-ui,sans-serif;max-width:680px;margin:60px auto;padding:24px 32px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;color:#333">
+    <h1 style="font-size:20px;margin:0 0 12px;color:#CC0000">Prumo PT — Economia a Régua e Esquadro</h1>
+    <p style="margin:0 0 12px">Este dashboard requer JavaScript para carregar os dados e gráficos.</p>
+    <p style="margin:0 0 16px;color:#666;font-size:14px">Acesso directo às fontes:</p>
+    <ul style="margin:0;padding-left:20px;font-size:14px;line-height:2">
+      <li><a href="https://www.ine.pt" style="color:#CC0000">INE — Instituto Nacional de Estatística</a></li>
+      <li><a href="https://ec.europa.eu/eurostat" style="color:#CC0000">Eurostat — Estatísticas da União Europeia</a></li>
+      <li><a href="https://www.bportugal.pt" style="color:#CC0000">Banco de Portugal</a></li>
+    </ul>
+  </div>
+</noscript>
 
 <footer class="site-footer">
   <div class="footer-inner">

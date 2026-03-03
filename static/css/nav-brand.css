@@ -1,50 +1,72 @@
 /* ═══════════════════════════════════════════════════════════════
-   Prumo PT — Nav Brand v4
-   Desktop: [ícone] [Prumo bold + tagline]
-   Mobile:  [ícone] [PRUMO PT bold, maior]
+   Prumo PT — Nav Brand v6
+   Plumb bob centred over "PT" like a balance needle (fiel)
+   Desktop: [icon-over-PT column] [Prumo + tagline]
+   Mobile:  [icon-over-PT column] only
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Wrapper ─────────────────────────────────────────────────── */
 .nav-brand-link {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   text-decoration: none;
   user-select: none;
-  padding: 0 16px 0 8px;
-  border-right: 1px solid var(--c-border, #E5E7EB);
+  padding: 4px 16px 4px 10px;
   flex-shrink: 0;
   height: 100%;
-  transition: padding 0.25s ease, gap 0.25s ease;
+  position: relative;
 }
 
-/* ── Ícone square ────────────────────────────────────────────── */
+/* ── Icon + PT column — stacked vertically, centred ──────────── */
+.nav-brand-icon-wrap {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ── Ícone (plumb bob) ───────────────────────────────────────── */
 .nav-brand-icon-img {
   height: 52px;
   width: 52px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
-  transition: height 0.25s ease, width 0.25s ease;
+}
+
+/* ── PT letters — centred below icon, like the balance target ── */
+/* letter-spacing adds trailing space after T — compensate with padding-left
+   so the midpoint of "P T" sits exactly under the plumb bob needle point */
+.nav-brand-icon-wrap::after {
+  content: "PT";
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  font-weight: 900;
+  color: #8B0000;
+  letter-spacing: 1.5px;
+  line-height: 1;
+  text-align: center;
+  margin-top: -2px;
+  padding-left: 1px; /* compensate letter-spacing trailing space (half of 1.5px ≈ 1px for pixel-perfect centering) */
+  pointer-events: none;
 }
 
 /* ── Ícones: desktop vs mobile ──────────────────────────────── */
-.nav-brand-icon-desktop {
-  display: block;   /* visível no desktop */
-}
-.nav-brand-icon-mobile {
-  display: none;    /* oculto no desktop */
-}
+.nav-brand-icon-desktop { display: block; }
+.nav-brand-icon-mobile  { display: none; }
 
 /* ── Bloco de texto ──────────────────────────────────────────── */
 .nav-brand-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 6px;
   overflow: hidden;
-  transition: opacity 0.25s ease, max-width 0.25s ease;
-  max-width: 200px;
+  max-width: 260px;
   opacity: 1;
 }
 
@@ -52,8 +74,8 @@
 .nav-brand-name {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 900;
-  font-size: 20px;
-  letter-spacing: -0.3px;
+  font-size: 31px;
+  letter-spacing: -0.4px;
   color: #111827;
   line-height: 1;
   white-space: nowrap;
@@ -62,9 +84,9 @@
 /* ── Tagline — desktop ───────────────────────────────────────── */
 .nav-brand-tagline {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 8.5px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 2.2px;
+  letter-spacing: 1.4px;
   color: #6B7280;
   text-transform: uppercase;
   line-height: 1;
@@ -72,28 +94,16 @@
 }
 
 /* ── "Prumo PT" — mobile only (oculto no desktop) ────────────── */
-.nav-brand-name-mobile {
-  display: none;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 900;
-  font-size: 17px;
-  letter-spacing: -0.2px;
-  color: #111827;
-  line-height: 1;
-  white-space: nowrap;
-}
+.nav-brand-name-mobile { display: none; }
 
-/* ── Nav tabs — mais compactos ───────────────────────────────── */
+/* ── Nav tabs — compact to fit 5 tabs ────────────────────────── */
 .nav-tab {
-  padding: 0 14px !important;
+  padding: 0 12px !important;
   font-size: 10.5px !important;
   letter-spacing: 0.5px !important;
-  transition: padding 0.25s ease;
 }
-
 .nav-tab-icon {
   margin-right: 5px !important;
-  transition: margin 0.2s ease;
 }
 
 /* ── Legacy ──────────────────────────────────────────────────── */
@@ -101,28 +111,13 @@
 
 /* ═══════════════════════════════════════════════════════════════
    MOBILE (<=600px)
-   - Ícone square mantém-se
-   - "Prumo PT" maior, Playfair 900, sem tagline
-   - Tabs: só ícone, sem label
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
   .nav-brand-link {
-    padding: 0 10px 0 8px;
+    padding: 0 4px 0 8px;
     gap: 0;
   }
-
-  /* Trocar ícones */
-  .nav-brand-icon-desktop {
-    display: none;
-  }
-  .nav-brand-icon-mobile {
-    display: block;
-    height: 52px;   /* mais alto pois tem texto dentro */
-    width: auto;
-  }
-
-  /* Esconder bloco de texto — o texto já está na imagem mobile */
-  .nav-brand-text {
-    display: none;
-  }
+  .nav-brand-icon-desktop { display: block; }
+  .nav-brand-icon-mobile  { display: none; }
+  .nav-brand-text { display: none; }
 }

@@ -62,7 +62,7 @@
 
   /* Layout */
   --content-max: 1280px;
-  --nav-height: 64px;
+  --nav-height: 78px;
   --radius: 8px;
   --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
   --shadow-md: 0 2px 12px rgba(0,0,0,0.09);
@@ -118,7 +118,6 @@ body {
   font-size: 1.45rem;
   color: var(--c-text);
   white-space: nowrap;
-  border-right: 1px solid var(--c-border);
   letter-spacing: -0.3px;
 }
 
@@ -577,7 +576,16 @@ body {
     width: 18px;
     height: 18px;
   }
-  .nav-tab-label { display: none; }
+  .nav-tab-label {
+    display: block;
+    font-size: 8px;
+    letter-spacing: 0.3px;
+    line-height: 1;
+    opacity: 0.75;
+  }
+  .nav-tab.active .nav-tab-label {
+    opacity: 1;
+  }
 }
 
 /* ── Footnote ───────────────────────────────────────────────────── */

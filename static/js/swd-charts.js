@@ -59,6 +59,31 @@ const SWD = (() => {
     EE: '#607d8b',
     LV: '#795548',
     LT: '#ff9800',
+    // Resto da Europa
+    GB: '#1a237e',
+    NO: '#0d47a1',
+    CH: '#b71c1c',
+    TR: '#4e342e',
+    // OCDE (não-EU)
+    US: '#1565c0',
+    CA: '#c62828',
+    JP: '#ad1457',
+    KR: '#6a1b9a',
+    AU: '#00695c',
+    MX: '#33691e',
+    // PALOP
+    AO: '#e65100',
+    MZ: '#bf360c',
+    CV: '#0277bd',
+    GW: '#558b2f',
+    ST: '#00838f',
+    // Emergentes
+    CN: '#d32f2f',
+    IN: '#f57f17',
+    BR: '#2e7d32',
+    ZA: '#4527a0',
+    AR: '#00acc1',
+    CL: '#6d4c41',
   };
 
   // Base options — zero clutter
@@ -248,6 +273,8 @@ const SWD = (() => {
   /* ── Sparkline (micro gráfico KPI) ────────────────────────────── */
   function createSparkline(container, data, color = '#CC0000') {
     if (!container || !data || !data.length) return null;
+    // Support both flat numbers and {period, value} objects
+    const vals = data.map(d => d.value ?? d.v ?? d);
     const chart = createSWDChart(container, {
       backgroundColor: 'transparent',
       animation: false,
@@ -255,13 +282,13 @@ const SWD = (() => {
       xAxis: {
         type: 'category',
         show: false,
-        data: data.map((_, i) => i),
+        data: vals.map((_, i) => i),
         boundaryGap: false,
       },
       yAxis: { type: 'value', show: false, scale: true },
       series: [{
         type: 'line',
-        data,
+        data: vals,
         smooth: true,
         symbol: 'none',
         lineStyle: { color, width: 2 },

@@ -90,8 +90,9 @@ def compute_trend(series, n=6):
 
 
 def spark_data(series, n=12):
-    """Return last n values as a flat list for sparklines."""
-    return [pt["value"] for pt in series[-n:] if pt["value"] is not None]
+    """Return last n data points as {period, value} dicts for sparklines."""
+    return [{"period": pt["period"], "value": pt["value"]}
+            for pt in series[-n:] if pt["value"] is not None]
 
 
 def trend_text(label, desc, last_val, prev_val, unit):

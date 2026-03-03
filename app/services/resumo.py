@@ -80,12 +80,14 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
         display_spark = spark
         if scale_factor != 1.0 and display_value is not None:
             display_value = round(display_value * scale_factor, 2)
-            display_spark = [round(v * scale_factor, 2) if v is not None else None for v in spark]
+            display_spark = [{"period": pt["period"], "value": round(pt["value"] * scale_factor, 2) if pt["value"] is not None else None}
+                             for pt in spark]
 
         # Round excessively precise floats to 2 decimal places for display
         if display_value is not None and isinstance(display_value, float):
             display_value = round(display_value, 2)
-        display_spark = [round(v, 2) if isinstance(v, float) else v for v in display_spark]
+        display_spark = [{"period": pt["period"], "value": round(pt["value"], 2) if isinstance(pt["value"], float) else pt["value"]}
+                         for pt in display_spark]
 
         # Bug 3: apply human-readable unit overrides; then caller's unit_override takes precedence
         raw_unit = latest["unit"] or ""
@@ -177,15 +179,15 @@ def build_resumo():
         resumo_kpi("unemployment", "Desemprego",
                      "OECD", "unemp_m", invert_sentiment=True),
         resumo_kpi("inflation", "Inflação",
-                     "INE", "hicp_yoy", invert_sentiment=True),
+                     "INE", "hicp_yoy", invert_sentiment=True, unit_override="%"),
         resumo_kpi("energy_cost", "Custo Energia",
                      "REN", "electricity_price_mibel", invert_sentiment=True),
         resumo_kpi("industrial_employment", "Emprego Industrial",
-                     "INE", "emp_industry_cae", detail_filter='"dim_3": "C"'),
+                     "INE", "emp_industry_cae", detail_filter='"dim_3": "C"', unit_override="milhares"),
         resumo_kpi("confidence", "Confiança Industrial",
-                     "INE", "conf_manufacturing"),
+                     "INE", "conf_manufacturing", unit_override="saldo"),
         resumo_kpi("euribor_12m", "Euribor 12 meses",
-                     "BPORTUGAL", "euribor_12m", invert_sentiment=True),
+                     "BPORTUGAL", "euribor_12m", invert_sentiment=True, unit_override="%"),
         resumo_kpi("diesel", "Gasóleo",
                      "DGEG", "price_diesel", invert_sentiment=True),
     ]

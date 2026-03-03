@@ -79,21 +79,27 @@ def _parse_links(text: str) -> tuple:
         return text[:idx].strip(), []
 
 
-def interpret_chart(series: list, from_p: str, to_p: str):
+def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, custom_ideology: str = None):
     """Call Claude Haiku (with web search) to interpret chart data.
-    Returns dict {"text": str, "links": list} or None if unconfigured."""
+    Returns dict {"text": str, "links": list} or None if unconfigured.
+    Optional lens parameter selects a political perspective (see ideology_lenses.py).
+    When lens='custom', custom_ideology contains the user-provided ideology text."""
     if not ANTHROPIC_KEY:
         return None
 
+    # Custom ideology gets its own cache key (hash of text), never 'default'
+    lens_key = lens or "default"
+    if lens == "custom" and custom_ideology:
+        lens_key = "custom:" + hashlib.md5(custom_ideology.encode()).hexdigest()[:8]
     key = hashlib.md5(json.dumps(
-        [{"s": s["source"], "i": s["indicator"]} for s in series] + [from_p, to_p]
+        [{"s": s["source"], "i": s["indicator"]} for s in series] + [from_p, to_p, lens_key]
     ).encode()).hexdigest()
 
     now = time.time()
     if key in _cache and now - _cache[key][0] < CACHE_TTL:
         return _cache[key][1]
 
-    prompt = _build_prompt(series, from_p, to_p)
+    prompt = _build_prompt(series, from_p, to_p, lens=lens, custom_ideology=custom_ideology)
     if not prompt:
         return None
 
@@ -150,7 +156,7 @@ def _sample_evenly(data: list, max_pts: int) -> list:
     return [data[i] for i in sorted(indices)]
 
 
-def _build_prompt(series, from_p, to_p):
+def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None):
     if not series:
         return None
 
@@ -199,7 +205,11 @@ def _build_prompt(series, from_p, to_p):
         f'"{s.get("label", s.get("indicator", "?"))}"' for s in series
     )
 
-    context = _load_ideology()
+    if lens:
+        from .ideology_lenses import get_lens_prompt
+        context = get_lens_prompt(lens, custom_ideology=custom_ideology)
+    else:
+        context = _load_ideology()
     instruction = (
         "IMPORTANTE: não escrevas introduções, planos, títulos nem comentários em nenhum idioma. "
         "Começa directamente com a pesquisa, depois escreve só a análise.\n\n"

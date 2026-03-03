@@ -479,7 +479,7 @@ App.registerSection('comparativos', async () => {
     _cmpChart = SWD.createSWDChart(chartEl, {
       ...SWD.baseOptions(),
       xAxis: SWD.timeAxis(periods, { interval: Math.max(0, Math.floor(periods.length / 8) - 1) }),
-      yAxis: SWD.valueAxis({ scale: true }),
+      yAxis: { ...SWD.valueAxis({ scale: true }), name: _ind.unit_label || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: '#888' } },
       series: finalSeries,
       grid: { containLabel: true, left: 40, right: isMobileCmp ? 16 : 90, top: 20, bottom: 30 },
     });
@@ -506,7 +506,7 @@ App.registerSection('comparativos', async () => {
 
     _cmpChart = SWD.createSWDChart(chartEl, {
       ...SWD.baseOptions(),
-      xAxis: { type: 'value', axisLabel: { fontSize: 10, color: '#999' }, splitLine: { lineStyle: { color: '#f0f0f0' } } },
+      xAxis: { type: 'value', name: _ind.unit_label || '', nameLocation: 'end', nameTextStyle: { fontSize: 9, color: '#aaa' }, axisLabel: { fontSize: 10, color: '#999' }, splitLine: { lineStyle: { color: '#f0f0f0' } } },
       yAxis: { type: 'category', data: labels.slice().reverse(), axisLabel: { fontSize: 10, color: '#666', fontFamily: 'Inter, Noto Color Emoji, sans-serif' } },
       series: [{
         type: 'bar', data: values.slice().reverse(),

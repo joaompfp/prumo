@@ -11,8 +11,12 @@ _CACHE_PATH = os.path.join(_DATA_DIR, "painel-headline-cache.json")
 _CACHE_TTL_SECONDS = 6 * 3600  # 6 hours
 
 
-def _build_headline_prompt(sections: list) -> str | None:
-    ideology = _load_ideology()
+def _build_headline_prompt(sections: list, lens: str = None, custom_ideology: str = None) -> str | None:
+    if lens:
+        from .ideology_lenses import get_lens_prompt
+        ideology = get_lens_prompt(lens, custom_ideology=custom_ideology)
+    else:
+        ideology = _load_ideology()
     lines = []
     for section in sections:
         title = section.get("title", "Indicadores")
@@ -39,26 +43,32 @@ def _build_headline_prompt(sections: list) -> str | None:
     )
 
 
-def _get_sonnet_analysis_text() -> str | None:
-    """Load the most recent Sonnet analysis from its cache."""
+def _get_sonnet_analysis_text(lens_key: str = None, updated: str = None) -> str | None:
+    """Load the Sonnet analysis from its cache, optionally for a specific lens+period."""
     import os, json
     analysis_cache_path = os.path.join(_DATA_DIR, "painel-analysis-cache.json")
     try:
         cache = json.loads(open(analysis_cache_path, encoding="utf-8").read())
-        # Find most recent entry
+        # Try to find exact match for this lens+period
+        if lens_key and updated:
+            for version in ("v21", "v20", "v19"):
+                key = f"painel:{version}:{updated}:{lens_key}"
+                if key in cache and cache[key].get("text"):
+                    return cache[key]["text"]
+        # Fallback: find most recent entry
         entries = [(k, v) for k, v in cache.items() if v.get("text")]
         if not entries:
             return None
-        latest = max(entries, key=lambda x: x[1].get("ts", 0))
+        latest = max(entries, key=lambda x: x[1].get("generated_at", ""))
         return latest[1]["text"]
     except Exception:
         return None
 
 
-def get_painel_headline(sections: list, updated: str, force: bool = False) -> dict:
+def get_painel_headline(sections: list, updated: str, force: bool = False, lens: str = None, custom_ideology: str = None) -> dict:
     """
     Return Claude Opus headline derived from Sonnet analysis.
-    Disk-cached per data period, TTL 6h.
+    Disk-cached per data period + lens, TTL 6h.
     Returns None headline on failure — JS falls back to rule-based title.
     """
     if not ANTHROPIC_KEY:
@@ -72,7 +82,11 @@ def get_painel_headline(sections: list, updated: str, force: bool = False) -> di
     except Exception:
         cache = {}
 
-    cache_key = f"headline:v2:{updated}"
+    import hashlib as _hl
+    lens_key = lens or "default"
+    if lens == "custom" and custom_ideology:
+        lens_key = "custom:" + _hl.md5(custom_ideology.encode()).hexdigest()[:8]
+    cache_key = f"headline:v3:{updated}:{lens_key}"
     now = time.time()
 
     if not force and cache_key in cache:
@@ -85,12 +99,20 @@ def get_painel_headline(sections: list, updated: str, force: bool = False) -> di
                 "cached": True,
             }
 
-    # Try to use existing Sonnet analysis as context
-    sonnet_text = _get_sonnet_analysis_text()
+    # Build ideology context for the headline
+    if lens:
+        from .ideology_lenses import get_lens_prompt
+        ideology = get_lens_prompt(lens, custom_ideology=custom_ideology)
+    else:
+        ideology = _load_ideology()
+
+    # Try to use existing analysis (for this lens) as context
+    sonnet_text = _get_sonnet_analysis_text(lens_key=lens_key, updated=updated)
 
     if sonnet_text:
         # Ask Opus to distil the analysis into a headline
         user_msg = (
+            f"{ideology}\n\n---\n\n"
             "Com base nesta análise económica sobre Portugal, escreve uma manchete jornalística em PT-PT:\n"
             "LINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números\n"
             "LINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante\n"
@@ -101,7 +123,7 @@ def get_painel_headline(sections: list, updated: str, force: bool = False) -> di
         )
     else:
         # Fallback: use raw KPI data with ideology framing
-        user_msg = _build_headline_prompt(sections)
+        user_msg = _build_headline_prompt(sections, lens=lens, custom_ideology=custom_ideology)
         if not user_msg:
             return {"headline": None, "cached": False, "error": "No data available"}
 

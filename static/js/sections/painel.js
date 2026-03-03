@@ -76,16 +76,29 @@ App.registerSection('painel', async () => {
     if (titleEl) titleEl.textContent = titleMsg;
 
     // Fetch headline from Opus (non-blocking — fallback to rule-based)
-    API.get('/api/painel-headline').then(h => {
-      if (!h?.headline) return;
-      const lines = h.headline.split('\n').map(l => l.trim()).filter(Boolean);
-      if (titleEl && lines[0]) titleEl.textContent = lines[0];
-      if (subEl && lines.length > 1) {
-        // Replace data-update line with Opus subtitles
-        subEl.innerHTML = lines.slice(1).map(l => `<span>${l}</span>`).join(' &middot; ')
-          + ` <span style="opacity:.6;font-size:.9em">· ${updated} · ${allKpis.length} KPIs</span>`;
-      }
-    }).catch(() => {}); // silent fail → rule-based title stays
+    // NOTE: _fetchHeadline is called early (before currentLens is declared),
+    // so it must always receive an explicit lens param here.
+    function _fetchHeadline(lens) {
+      const lensParam = lens || localStorage.getItem('prumo-lens') || 'cae';
+      API.get(`/api/painel-headline?lens=${encodeURIComponent(lensParam)}`).then(h => {
+        if (!h?.headline) return;
+        const lines = h.headline.split('\n').map(l => l.trim()).filter(Boolean);
+        if (titleEl && lines[0]) {
+          titleEl.classList.add('ia-dissolve-out');
+          setTimeout(() => {
+            titleEl.textContent = lines[0];
+            titleEl.classList.remove('ia-dissolve-out');
+            titleEl.classList.add('ia-dissolve-in');
+            setTimeout(() => titleEl.classList.remove('ia-dissolve-in'), 400);
+          }, 300);
+        }
+        if (subEl && lines.length > 1) {
+          subEl.innerHTML = lines.slice(1).map(l => `<span>${l}</span>`).join(' &middot; ')
+            + ` <span style="opacity:.6;font-size:.9em">· ${updated} · ${allKpis.length} KPIs</span>`;
+        }
+      }).catch(() => {}); // silent fail → rule-based title stays
+    }
+    _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
 
     if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
 
@@ -145,32 +158,141 @@ App.registerSection('painel', async () => {
       const iaBtn = document.createElement('button');
       iaBtn.id = 'painel-ia-btn';
       iaBtn.className = 'time-preset-btn painel-ia-toggle';
-      iaBtn.title = 'Análise interpretativa com Claude Sonnet';
+      iaBtn.title = 'Análise política interpretativa com IA';
       iaBtn.textContent = '✦ Análise IA';
       iaBtn.classList.add('active');
       headerEl.appendChild(iaBtn);
     }
 
+    // ── Ideology lens state ─────────────────────────────────────────
+    let currentLens = localStorage.getItem('prumo-lens') || 'cae';
+    let availableLenses = [];
+
+    // Fetch lenses from backend
+    try {
+      availableLenses = await API.get('/api/lenses');
+    } catch(e) { console.warn('[painel] failed to load lenses:', e); }
+
+    function getLensParam() { return currentLens || 'cae'; }
+    function getCustomIdeology() {
+      if (currentLens !== 'custom') return null;
+      return localStorage.getItem('prumo-custom-ideology') || CUSTOM_LENS_DEFAULT;
+    }
+
+    function renderLensPills() {
+      // Update header lens label
+      const lensNameEl = document.getElementById('painel-ia-lens-name');
+      if (lensNameEl) lensNameEl.textContent = currentLensLabel();
+      const bar = document.getElementById('lens-selector');
+      if (!bar || !availableLenses.length) return;
+      bar.innerHTML = availableLenses.map(l => {
+        const active = l.id === currentLens ? 'active' : '';
+        const style = l.id === currentLens ? `style="border-color:${l.color};color:${l.color}"` : '';
+        const icon = _lensIcon(l.icon || l.id);
+        const isParty = !!PARTY_LOGOS[l.icon || l.id];
+        const label = isParty ? '' : l.short;
+        return `<button class="lens-pill ${active} ${isParty ? 'lens-pill-logo' : ''}" data-lens="${l.id}" ${style} title="${l.label}${l.source ? '\nFonte: '+l.source : ''}">${icon}${label}</button>`;
+      }).join('');
+      // Show/hide custom ideology textarea
+      const existing = document.getElementById('custom-ideology-wrap');
+      if (currentLens === 'custom') {
+        if (!existing) {
+          const wrap = document.createElement('div');
+          wrap.id = 'custom-ideology-wrap';
+          wrap.className = 'custom-ideology-wrap';
+          wrap.innerHTML = `<textarea id="custom-ideology-text" class="custom-ideology-textarea"
+            placeholder="Escreve aqui o teu enquadramento ideológico. Ex: 'És um analista que privilegia a sustentabilidade ambiental e a economia circular…'"
+            rows="4">${localStorage.getItem('prumo-custom-ideology') || CUSTOM_LENS_DEFAULT}</textarea>
+            <div class="custom-ideology-footer">
+              <span class="custom-ideology-hint">Este texto é enviado como contexto ao modelo de IA. Guardado localmente no browser.</span>
+              <button id="custom-ideology-save" class="lens-pill" style="border-color:#9C27B0;color:#9C27B0;font-size:10px">Guardar</button>
+            </div>`;
+          bar.parentNode.insertBefore(wrap, bar.nextSibling);
+          wrap.querySelector('#custom-ideology-save').addEventListener('click', () => {
+            const txt = wrap.querySelector('#custom-ideology-text').value.trim();
+            if (txt) {
+              localStorage.setItem('prumo-custom-ideology', txt);
+              App.showToast('Lente personalizada guardada');
+            }
+          });
+          // Auto-save on blur
+          wrap.querySelector('#custom-ideology-text').addEventListener('blur', () => {
+            const txt = wrap.querySelector('#custom-ideology-text').value.trim();
+            if (txt) localStorage.setItem('prumo-custom-ideology', txt);
+          });
+        }
+      } else if (existing) {
+        existing.remove();
+      }
+    }
+
+    // Find label for current lens (full name for header display)
+    function currentLensLabel() {
+      if (currentLens === 'custom') return 'Personalizada';
+      const l = availableLenses.find(x => x.id === currentLens);
+      return l ? l.label : currentLens.toUpperCase();
+    }
+
+    // Update disclaimer text based on current lens
+    // Portuguese article for each party (gender-correct)
+    const _PARTY_ARTICLE = {
+      'Partido Comunista Português': 'do',
+      'Bloco de Esquerda': 'do',
+      'Livre': 'do',
+      'Pessoas-Animais-Natureza': 'do',
+      'Partido Socialista': 'do',
+      'Aliança Democrática (PSD + CDS-PP)': 'da',
+      'Iniciativa Liberal': 'da',
+      'Chega': 'do',
+    };
+    function updateDisclaimer() {
+      const el = document.getElementById('painel-ia-disclaimer');
+      if (!el) return;
+      const l = availableLenses.find(x => x.id === currentLens);
+      const partyName = l?.party;
+      if (partyName) {
+        const art = _PARTY_ARTICLE[partyName] || 'do';
+        el.textContent = `Análise simulada — não constitui posição oficial ${art} ${partyName}`;
+      } else if (currentLens === 'cae') {
+        el.textContent = 'Análise simulada — perspectiva editorial do operador desta instância';
+      } else if (currentLens === 'custom') {
+        el.textContent = 'Análise simulada — lente personalizada pelo utilizador';
+      } else {
+        el.textContent = 'Análise gerada por IA — meramente indicativa';
+      }
+    }
+
     // Persistent IA panel placeholder (injected at top of body)
     const iaPanelHtml = `<div id="painel-ia-panel" class="ia-collapsed">
       <div class="painel-ia-header">
-        <span class="painel-ia-label">✦ Análise IA — Claude Sonnet</span>
+        <span class="painel-ia-label">✦ Análise Política · Lente: <span id="painel-ia-lens-name">${currentLensLabel()}</span></span>
+        <span class="painel-ia-tagline">(quase) instantânea, só juntar electricidade</span>
+        <div class="lens-selector" id="lens-selector"></div>
         <span class="painel-ia-meta" id="painel-ia-meta"></span>
         <button class="painel-ia-regen" id="painel-ia-regen" title="Forçar nova análise">↺</button>
       </div>
       <div id="painel-ia-text" class="painel-ia-text"></div>
       <div id="painel-ia-links" class="painel-ia-links" style="display:none"></div>
+      <div id="painel-ia-disclaimer" class="painel-ia-disclaimer"></div>
     </div>`;
 
     // ── PT vs Europa placeholder (no topo antes das KPI sections) ────────
     const ptEuropaPlaceholder = '<div class="pt-mundo-top-container" id="pt-mundo-top-container"></div>';
 
+    // ── Theme quick-nav pills ─────────────────────────────────────────
+    const themeNavHtml = useSections
+      ? `<nav class="painel-theme-nav" id="painel-theme-nav">
+          <button class="theme-pill active" data-target="pt-mundo-top-container">PT vs Europa</button>
+          ${data.sections.map(s => `<button class="theme-pill" data-target="section-${s.id}">${s.label}</button>`).join('')}
+        </nav>`
+      : '';
+
     if (useSections) {
-      body.innerHTML = iaPanelHtml + ptEuropaPlaceholder + '<div class="painel-sections">' +
+      body.innerHTML = iaPanelHtml + themeNavHtml + ptEuropaPlaceholder + '<div class="painel-sections">' +
         data.sections.map(section => {
           const kpis = section.kpis || [];
           return `
-          <div class="painel-section" data-section-id="${section.id}">
+          <div class="painel-section" id="section-${section.id}" data-section-id="${section.id}">
             <div class="section-label" style="cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between">
               <span>${section.label}</span>
               <span class="section-collapse-arrow" style="font-size:16px;line-height:1;transition:transform .2s">&#9660;</span>
@@ -204,9 +326,109 @@ App.registerSection('painel', async () => {
           sessionStorage.setItem(storageKey, isCollapsed ? '0' : '1');
         });
       });
+      // ── Theme quick-nav pill click logic ────────────────────────────
+      const themeNav = body.querySelector('#painel-theme-nav');
+      if (themeNav) {
+        themeNav.addEventListener('click', e => {
+          const pill = e.target.closest('.theme-pill');
+          if (!pill) return;
+          themeNav.querySelectorAll('.theme-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          const target = document.getElementById(pill.dataset.target);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+
+        // Highlight active pill on scroll (IntersectionObserver)
+        const sections = body.querySelectorAll('.painel-section, #pt-mundo-top-container');
+        const observer = new IntersectionObserver(entries => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              themeNav.querySelectorAll('.theme-pill').forEach(p => {
+                p.classList.toggle('active', p.dataset.target === id);
+              });
+            }
+          }
+        }, { rootMargin: '-120px 0px -60% 0px', threshold: 0 });
+        sections.forEach(s => observer.observe(s));
+      }
+
     } else {
       const kpis = allKpis;
       body.innerHTML = iaPanelHtml + ptEuropaPlaceholder + '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
+    }
+
+    // ── Render lens pills + handler ────────────────────────────────
+    renderLensPills();
+    updateDisclaimer();
+    const lensBar = document.getElementById('lens-selector');
+    if (lensBar) {
+      lensBar.addEventListener('click', e => {
+        const pill = e.target.closest('.lens-pill');
+        if (!pill) return;
+        const newLens = pill.dataset.lens;
+        if (newLens === currentLens) return;
+        currentLens = newLens;
+        localStorage.setItem('prumo-lens', newLens);
+        renderLensPills();
+        updateDisclaimer();
+        // Dispatch global lens change event (syncs other sections)
+        window.dispatchEvent(new CustomEvent('lens-change', {detail: {lens: newLens, source: 'painel'}}));
+        // Dissolve + re-fetch analysis
+        _dissolveFetchAnalysis(newLens);
+      });
+    }
+    // Listen for lens changes from OTHER sections (metodologia, etc)
+    window.addEventListener('lens-change', e => {
+      if (e.detail.source === 'painel') return; // ignore own events
+      const newLens = e.detail.lens;
+      if (newLens === currentLens) return;
+      currentLens = newLens;
+      renderLensPills();
+      updateDisclaimer();
+      _dissolveFetchAnalysis(newLens);
+    });
+
+    // Dissolve current IA text and re-fetch with new lens
+    function _dissolveFetchAnalysis(newLens) {
+      // Re-fetch headline with new lens (non-blocking)
+      _fetchHeadline(newLens);
+      const textEl = document.getElementById('painel-ia-text');
+      const panel = document.getElementById('painel-ia-panel');
+      // For custom lens without text, show notice
+      if (newLens === 'custom' && !localStorage.getItem('prumo-custom-ideology')) {
+        if (textEl) textEl.innerHTML = '<p style="color:var(--c-muted);font-style:italic">Escreve o teu enquadramento no campo acima e gera a análise.</p>';
+        return;
+      }
+      // Dissolve out, then re-fetch
+      if (textEl && textEl.innerHTML.trim()) {
+        textEl.classList.add('ia-dissolve-out');
+        textEl.addEventListener('transitionend', function _dissolveEnd() {
+          textEl.removeEventListener('transitionend', _dissolveEnd);
+          textEl.classList.remove('ia-dissolve-out');
+          textEl.innerHTML = '';
+          if (panel && !panel.classList.contains('ia-collapsed')) {
+            toggleIAPanel(); // close
+            toggleIAPanel(); // reopen → triggers re-fetch
+          }
+        }, {once: true});
+        // Safety timeout in case transitionend doesn't fire
+        setTimeout(() => {
+          textEl.classList.remove('ia-dissolve-out');
+          if (!textEl.innerHTML.trim() || textEl.classList.contains('ia-dissolve-out')) {
+            textEl.innerHTML = '';
+            if (panel && !panel.classList.contains('ia-collapsed')) {
+              toggleIAPanel(); toggleIAPanel();
+            }
+          }
+        }, 500);
+      } else {
+        if (panel && !panel.classList.contains('ia-collapsed')) {
+          toggleIAPanel(); toggleIAPanel();
+        }
+      }
     }
 
     // ── Render PT vs Europa no topo (antes das restantes secções) ──────────
@@ -215,7 +437,7 @@ App.registerSection('painel', async () => {
 
     // ── IA button toggle logic ─────────────────────────────────────
     let iaLoading = false;
-    function _renderMiniSparkline(container, data, yoy, refData) {
+    function _renderMiniSparkline(container, data, yoy, refData, unit, label) {
     if (!window.echarts || !data?.length) {
       container.style.cssText = 'display:flex;align-items:center;justify-content:center;color:var(--c-muted);font-size:12px';
       container.textContent = 'Sem dados';
@@ -224,6 +446,13 @@ App.registerSection('painel', async () => {
     const chart = window.echarts.init(container, null, { renderer: 'svg' });
     const vals  = data.map(d => d.value ?? d.v ?? d);
     const color = yoy >= 0 ? '#2E7D32' : '#C62828';
+    // Abbreviate long units for mini chart y-axis label
+    const _UNIT_SHORT = {
+      'Índice (2021=100)': 'Índ.',
+      'EUR/litro': '€/L',
+      'milhares': 'mil',
+    };
+    const unitStr = _UNIT_SHORT[unit] || unit || '';
     const series = [
       { name: 'PT', type: 'line', data: vals, smooth: true,
         lineStyle: { color, width: 2.5 },
@@ -231,7 +460,6 @@ App.registerSection('painel', async () => {
         symbol: 'none' },
     ];
     if (refData?.length) {
-      // Align ref series to same x-axis periods (by position)
       const refVals = refData.map(d => d.value ?? d.v ?? d);
       series.push({
         name: 'EU', type: 'line', data: refVals, smooth: true,
@@ -240,83 +468,113 @@ App.registerSection('painel', async () => {
       });
     }
     chart.setOption({
-      grid: { top: 8, right: 4, bottom: 20, left: 40 },
+      grid: { top: 8, right: 4, bottom: 20, left: 44 },
       xAxis: { type: 'category', data: data.map(d => d.period || d.p || ''),
                axisLabel: { fontSize: 9, color: '#888',
-                 interval: 'auto',
-                 // Show only ~4 labels max regardless of data density
+                 interval: 0,
                  formatter: (v, i) => {
-                   const step = Math.max(1, Math.floor(data.length / 4));
-                   return i % step === 0 ? v.slice(0, 7) : '';
+                   const n = data.length;
+                   const MO = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+                   const fmt = (s) => {
+                     const parts = s.split('-');
+                     if (parts.length >= 2) {
+                       const mi = parseInt(parts[1], 10) - 1;
+                       return MO[mi] || s.slice(5,7);
+                     }
+                     return s;
+                   };
+                   // Always show first + last; show ~3 evenly spaced in between
+                   if (i === 0) return v.slice(0, 7);
+                   if (i === n - 1) return fmt(v);
+                   const step = Math.max(1, Math.round((n - 1) / 4));
+                   return i % step === 0 ? fmt(v) : '';
                  }
                },
                axisLine: { lineStyle: { color: '#ddd' } }, axisTick: { show: false } },
       yAxis: { type: 'value', scale: true,
-               axisLabel: { fontSize: 9, color: '#888' },
+               name: unitStr, nameLocation: 'end', nameTextStyle: { fontSize: 8, color: '#aaa', padding: [0, 0, 0, 0] },
+               axisLabel: { fontSize: 9, color: '#888',
+                 formatter: v => {
+                   if (Math.abs(v) >= 1e9) return (v / 1e9).toFixed(1) + 'B';
+                   if (Math.abs(v) >= 1e6) return (v / 1e6).toFixed(1) + 'M';
+                   if (Math.abs(v) >= 1e3) return (v / 1e3).toFixed(1) + 'k';
+                   return v % 1 === 0 ? v : v.toFixed(1);
+                 }
+               },
                splitLine: { lineStyle: { color: '#f0f0f0' } } },
       series,
-      tooltip: { trigger: 'axis', textStyle: { fontSize: 11 } },
+      tooltip: { trigger: 'axis', textStyle: { fontSize: 11 },
+        formatter: params => {
+          const period = params[0]?.axisValue || '';
+          const lines = params.map(p => `${p.marker} ${p.seriesName}: <b>${p.value}</b> ${unitStr}`);
+          return `${period}<br>${lines.join('<br>')}`;
+        }
+      },
       ...(refData?.length ? { legend: { data: ['PT','EU'], top: 0, right: 0, itemWidth: 12, itemHeight: 8, textStyle: { fontSize: 9 } } } : {}),
     });
   }
 
     async function _loadDeferredCardLinks(container, existingLinks) {
-    // For each card without a link, fetch one deferred from /api/painel-card-links
+    // For each card without links, fetch deferred from /api/painel-card-links
     const cards = container.querySelectorAll('.ai-analysis-card');
     const BASE = window.__BASE_PATH__ || '';
     cards.forEach(async (card) => {
       const titleEl = card.querySelector('.ai-card-title');
       if (!titleEl) return;
       const topic = titleEl.textContent.trim();
-      // Already has a link from Sonnet?
+      // Already has links from Sonnet?
       if (existingLinks[topic]?.length) return;
-      // Fetch deferred
       try {
         const body = card.querySelector('.ai-card-body')?.textContent?.slice(0, 200) || '';
-        const r = await fetch(`${BASE}/api/painel-card-links?topic=${encodeURIComponent(topic)}&context=${encodeURIComponent(body)}`);
+        const r = await fetch(`${BASE}/api/painel-card-links?topic=${encodeURIComponent(topic)}&context=${encodeURIComponent(body)}&lens=${encodeURIComponent(currentLens)}`);
         const d = await r.json();
-        if (d.links?.length) {
-          const linkEl = card.querySelector('.ai-card-link');
-          if (!linkEl) {
-            const head = card.querySelector('.ai-card-head');
-            if (head) {
-              const a = document.createElement('a');
-              a.href = d.links[0].url;
-              a.target = '_blank';
-              a.className = 'ai-card-link';
-              a.title = d.links[0].title || 'Leia mais';
-              a.textContent = '↗';
-              head.appendChild(a);
-            }
+        if (!d.links?.length) return;
+        // Add ↗ icon to card header
+        if (!card.querySelector('.ai-card-link')) {
+          const head = card.querySelector('.ai-card-head');
+          if (head) {
+            const a = document.createElement('a');
+            a.href = d.links[0].url;
+            a.target = '_blank';
+            a.className = 'ai-card-link';
+            a.title = d.links[0].title || 'Leia mais';
+            a.textContent = '↗';
+            head.appendChild(a);
           }
+        }
+        // Build full "Leituras Relacionadas" section if card doesn't have one
+        if (!card.querySelector('.ai-card-links')) {
+          const linksDiv = document.createElement('div');
+          linksDiv.className = 'ai-card-links';
+          linksDiv.innerHTML = `<div class="ai-card-links-label">Leituras relacionadas</div>` +
+            d.links.map((l, li) => {
+              const url = typeof l === 'string' ? l : l.url;
+              const domain = url.replace(/https?:\/\/(www\.)?/, '').split('/')[0];
+              const linkTitleId = `ai-def-lnkt-${topic.replace(/\W/g,'')}-${li}`;
+              // Async fetch real title
+              fetch(`${BASE}/api/link-title?url=${encodeURIComponent(url)}`)
+                .then(r2 => r2.json()).then(dt => {
+                  const el = document.getElementById(linkTitleId);
+                  if (!el) return;
+                  const clean = (dt.title || '')
+                    .replace(/\s*[|—\-]\s*(Público|Observador|RTP|DN|SAPO|PCP|Avante|Expresso)[^|—\-]*$/i, '')
+                    .trim();
+                  if (clean) el.textContent = clean;
+                }).catch(() => {});
+              return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="ai-card-extlink" title="${url}"><span class="ai-link-source">${domain}</span> ↗ <span id="${linkTitleId}" class="ai-link-title">…</span></a>`;
+            }).join('');
+          card.appendChild(linksDiv);
         }
       } catch(e) { /* silent */ }
     });
   }
 
     function _renderAnalysisCards(text, links) {
+    // Normalize: convert ### headings to **Title:** format (model sometimes outputs markdown headings)
+    const normalized = text.replace(/^#{1,3}\s+(.+)$/gm, (_, title) => `**${title.trim()}:**`);
+
     // Split by **Title:** pattern into cards
-    const CARD_RE = /\*\*([^*]+):\*\*/g;
-    const segments = [];
-    let lastIdx = 0, m;
-
-    while ((m = CARD_RE.exec(text)) !== null) {
-      if (m.index > lastIdx) {
-        // text before first header → intro card
-        const intro = text.slice(lastIdx, m.index).trim();
-        if (intro && !segments.length) segments.push({ title: null, body: intro });
-      }
-      const titleStart = m.index;
-      const bodyStart  = m.index + m[0].length;
-      // Find next header
-      const nextMatch = CARD_RE.exec(text);
-      CARD_RE.lastIndex = m.index + m[0].length; // reset to find correctly
-      segments.push({ title: m[1].trim(), body: null, _start: bodyStart });
-      lastIdx = titleStart;
-    }
-
-    // Simpler split approach: split on **Title:** pattern
-    const parts = text.split(/(?=\*\*[^*]+:\*\*)/);
+    const parts = normalized.split(/(?=\*\*[^*]+:\*\*)/);
     const cards = parts.map(part => {
       const hm = part.match(/^\*\*([^*]+):\*\*(.+)$/s);
       if (hm) return { title: hm[1].trim(), body: hm[2].trim() };
@@ -379,7 +637,7 @@ App.registerSection('painel', async () => {
             <div class="ai-card-chart-comment" id="ai-ccm-${i}"></div>
           </div>
         </div>
-        ${allLinkHtml ? `<div class="ai-card-links">${allLinkHtml}</div>` : ''}
+        ${allLinkHtml ? `<div class="ai-card-links"><div class="ai-card-links-label">Leituras relacionadas</div>${allLinkHtml}</div>` : ''}
       </div>`;
     }).join('');
 
@@ -451,7 +709,7 @@ App.registerSection('painel', async () => {
         }
         commentEl.textContent = msg;
       }
-      _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSpark || null);
+      _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSpark || null, kpi.unit || kpi.yoy_unit || '', kpi.label || '');
     };
 
     // First pass: render all cards immediately (no EU ref)
@@ -470,7 +728,7 @@ App.registerSection('painel', async () => {
           if (chartEl) {
             // Destroy & re-render with EU ref
             try { window.echarts.getInstanceByDom(chartEl)?.dispose(); } catch(e) {}
-            _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSeries.data);
+            _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSeries.data, kpi.unit || kpi.yoy_unit || '', kpi.label || '');
           }
         }
       } catch(e) { /* silent — EU ref is optional enhancement */ }
@@ -510,9 +768,10 @@ App.registerSection('painel', async () => {
   }
 
   function _renderMd(text) {
-      // Minimal markdown: **bold**, *italic*, paragraphs; strip --- separators
+      // Minimal markdown: headings, **bold**, *italic*, paragraphs; strip --- separators
       return text
         .replace(/^---+\s*$/gm, '')          // strip horizontal rules
+        .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')  // ### headings → bold
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/^- (.+)$/gm, '<li>$1</li>')
@@ -546,19 +805,78 @@ App.registerSection('painel', async () => {
       // Load analysis
       if (iaLoading) return;
       iaLoading = true;
-      if (textEl) textEl.innerHTML = '<span class="ai-loading">A gerar análise com Claude Sonnet…</span>';
+      if (textEl) textEl.innerHTML = '<span class="ai-loading">A carregar análise IA…</span>';
 
       try {
         const BASE = window.__BASE_PATH__ || '';
-        console.log('[painel-ia] Fetching analysis...');
-        const resp = await fetch(`${BASE}/api/painel-analysis`);
-        console.log('[painel-ia] Response status:', resp.status);
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const result = await resp.json();
+        const lensParam = getLensParam();
+        const customIdeology = getCustomIdeology();
+        console.log('[painel-ia] Fetching analysis, lens:', lensParam);
+
+        // Helper: fetch analysis (with short timeout for cache hits)
+        async function _fetchAnalysis(timeoutMs) {
+          const ac = new AbortController();
+          const timer = setTimeout(() => ac.abort(), timeoutMs);
+          try {
+            let r;
+            if (lensParam === 'custom' && customIdeology) {
+              r = await fetch(`${BASE}/api/painel-analysis?lens=custom`, {
+                method: 'POST', signal: ac.signal,
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({custom_ideology: customIdeology}),
+              });
+            } else {
+              r = await fetch(`${BASE}/api/painel-analysis?lens=${encodeURIComponent(lensParam)}`, {signal: ac.signal});
+            }
+            clearTimeout(timer);
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            return await r.json();
+          } catch(e) { clearTimeout(timer); throw e; }
+        }
+
+        // Helper: fire background generation
+        function _fireBg() {
+          if (lensParam === 'custom' && customIdeology) {
+            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({custom_ideology: customIdeology}),
+            }).catch(() => {});
+          } else {
+            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(lensParam)}`).catch(() => {});
+          }
+        }
+
+        // Try quick fetch first (15s — enough for cached results)
+        let result;
+        try {
+          result = await _fetchAnalysis(15000);
+        } catch(quickErr) {
+          // Cache miss or timeout — fire background generation and poll
+          console.log('[painel-ia] Quick fetch failed, starting bg generation:', quickErr.message);
+          _fireBg();
+          if (textEl) textEl.innerHTML = '<span class="ai-loading">A gerar análise IA (~90s)…</span>';
+          // Poll every 8s for up to 3 minutes
+          const maxPolls = 22;
+          for (let p = 0; p < maxPolls; p++) {
+            await new Promise(r => setTimeout(r, 8000));
+            try {
+              result = await _fetchAnalysis(10000);
+              if (result?.text) break;
+            } catch(_) { /* still generating */ }
+            if (textEl) {
+              const elapsed = (p + 1) * 8;
+              textEl.innerHTML = `<span class="ai-loading">A gerar análise IA… ${elapsed}s</span>`;
+            }
+          }
+          if (!result?.text) throw new Error('Timeout — análise não gerada. Tente recarregar.');
+        }
+        console.log('[painel-ia] Data received, chart_pick:', result.chart_pick);
         console.log('[painel-ia] Data received, chart_pick:', result.chart_pick);
         if (result.text) {
           if (textEl) {
             textEl.innerHTML = _renderAnalysisCards(result.text, result.section_links || {});
+            textEl.classList.add('ia-dissolve-in');
+            setTimeout(() => textEl.classList.remove('ia-dissolve-in'), 500);
 
             // Build kpiPerCard: Sonnet specifies indicator per section via section_charts
             // Fallback: highest abs YoY when no match
@@ -605,7 +923,8 @@ App.registerSection('painel', async () => {
           if (metaEl) {
             const ts = result.generated_at ? new Date(result.generated_at).toLocaleDateString('pt-PT') : '';
             const genTime = result.generation_ms ? ` · ${Math.round(result.generation_ms / 1000)}s` : '';
-            metaEl.textContent = (result.cached ? 'cache' : `gerado agora${genTime}`) + (ts ? ` · ${ts}` : '') + ` · dados: ${result.data_period || ''}`;
+            const metaInfo = (result.cached ? 'cache' : `gerado agora${genTime}`) + (ts ? ` · ${ts}` : '') + ` · dados: ${result.data_period || ''}`;
+            metaEl.innerHTML = `<span class="ia-meta-icon" title="${metaInfo}">ℹ</span>`;
           }
           // Global links list removed — links are shown inline per card
         } else {
@@ -632,7 +951,16 @@ App.registerSection('painel', async () => {
         const metaEl = document.getElementById('painel-ia-meta');
         if (metaEl) metaEl.textContent = 'A gerar nova análise (~60s)…';
         const BASE = window.__BASE_PATH__ || '';
-        try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1`); } catch(e) {}
+        const _regenLens = getLensParam();
+        const _regenCustom = getCustomIdeology();
+        if (_regenLens === 'custom' && _regenCustom) {
+          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom`, {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({custom_ideology: _regenCustom}),
+          }); } catch(e) {}
+        } else {
+          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(_regenLens)}`); } catch(e) {}
+        }
         // Reload after 75s
         setTimeout(() => {
           regenBtn.disabled = false;

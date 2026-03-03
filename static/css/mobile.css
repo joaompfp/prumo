@@ -74,18 +74,33 @@
   }
 }
 
-/* ── Comparativos: preset chips — wrap limpo em mobile ───────────── */
+/* ── Comparativos: preset chips — scrollable row on mobile ────────── */
 @media (max-width: 640px) {
   .europa-presets,
   .mundo-presets,
   .cmp-presets {
     gap: 4px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
   }
+  .cmp-presets::-webkit-scrollbar { display: none; }
 
   .preset-chip {
-    font-size: 12px;
-    padding: 4px 10px;
+    font-size: 11px;
+    padding: 5px 10px;
+    flex-shrink: 0;
   }
+
+  /* Country chips: more compact on mobile */
+  .country-chip {
+    font-size: 10px;
+    padding: 2px 5px;
+    min-height: 20px;
+  }
+  .chip-flag { font-size: 11px; }
 }
 
 /* ── Explorador: altura do gráfico em mobile ─────────────────────── */

@@ -1,17 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 260" fill="none">
-  <!-- Real logo PNG — o prumo técnico original -->
-  <image href="../prumo/nav-icon.png" x="10" y="0" width="180" height="180"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" fill="none">
+  <!-- Same plumb bob icon as desktop -->
+  <image href="nav-icon.png" x="2" y="0" width="60" height="60"/>
 
-  <!-- PRUMO PT por baixo -->
-  <text x="100" y="207"
-        text-anchor="middle"
+  <!-- Small PT accent — bottom-right corner -->
+  <text x="56" y="62"
+        text-anchor="end"
         font-family="Georgia, serif"
-        font-size="22" font-weight="900" letter-spacing="-0.3"
-        fill="#1E293B">PRUMO</text>
-
-  <text x="100" y="228"
-        text-anchor="middle"
-        font-family="Georgia, serif"
-        font-size="13" font-weight="700" letter-spacing="5"
-        fill="#8B1A1A">PT</text>
+        font-size="11" font-weight="900" letter-spacing="0.5"
+        fill="#8B0000" opacity="0.85">PT</text>
 </svg>

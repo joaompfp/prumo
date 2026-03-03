@@ -6,33 +6,65 @@ App.registerSection('ajuda', () => {
   const container = document.getElementById('ajuda');
   const body = container.querySelector('.section-body');
 
-  const titleEl = container.querySelector('.section-title');
-  if (titleEl) titleEl.textContent = 'Como usar o Prumo PT';
+  // Hide redundant section header — content headings are enough
+  const header = container.querySelector('.section-header');
+  if (header) header.style.display = 'none';
 
   body.innerHTML = `
     <div class="ajuda-wrap">
 
+      <!-- ── O que é o Prumo PT ────────────────────────────────── -->
+      <h3 class="ajuda-h3">O Que é o Prumo PT</h3>
+      <div class="ajuda-sobre">
+        <p>Dashboard de economia portuguesa com dados de <strong>9 fontes oficiais</strong> e análise por IA.</p>
+        <ul class="ajuda-tips">
+          <li>${window.__N_INDICATORS__ || 370}+ indicadores — produção, emprego, preços, energia, comércio externo</li>
+          <li>Fontes: INE, Eurostat, Banco de Portugal, OCDE, Banco Mundial, REN, DGEG, ERSE, FRED</li>
+          <li>Análise interpretativa gerada por LLM, com lente editorial seleccionável</li>
+          <li>Não é uma publicação oficial — é uma ferramenta de trabalho</li>
+        </ul>
+
+        <div class="ajuda-fontes-line">
+          <strong>Fontes e licenças:</strong><br>
+          <a href="https://www.ine.pt" target="_blank" rel="noopener">INE</a> ·
+          <a href="https://ec.europa.eu/eurostat" target="_blank" rel="noopener">Eurostat</a>
+          (<a href="https://ec.europa.eu/eurostat/help/copyright-notice" target="_blank" rel="noopener">CC BY 4.0</a>) ·
+          <a href="https://www.bportugal.pt" target="_blank" rel="noopener">Banco de Portugal</a>
+          (<a href="https://www.bportugal.pt/termos-e-condicoes" target="_blank" rel="noopener">termos</a>) ·
+          <a href="https://stats.oecd.org" target="_blank" rel="noopener">OCDE</a>
+          (<a href="https://www.oecd.org/en/about/terms-conditions.html" target="_blank" rel="noopener">termos</a>) ·
+          <a href="https://data.worldbank.org" target="_blank" rel="noopener">Banco Mundial</a>
+          (<a href="https://data.worldbank.org/summary-terms-of-use" target="_blank" rel="noopener">CC BY 4.0</a>) ·
+          <a href="https://datahub.ren.pt" target="_blank" rel="noopener">REN</a>
+          (<a href="https://datahub.ren.pt/pt/termos-legais-e-condicoes-gerais/" target="_blank" rel="noopener">termos</a>) ·
+          <a href="https://www.dgeg.gov.pt" target="_blank" rel="noopener">DGEG</a> ·
+          <a href="https://www.erse.pt" target="_blank" rel="noopener">ERSE</a> ·
+          <a href="https://fred.stlouisfed.org" target="_blank" rel="noopener">FRED</a>
+          (<a href="https://fred.stlouisfed.org/legal/" target="_blank" rel="noopener">termos</a>)
+        </div>
+      </div>
+
       <!-- ── Guia de secções — collapsible cards ───────────────── -->
-      <h3 class="ajuda-h3">Guia de Secções</h3>
+      <h3 class="ajuda-h3" style="margin-top:var(--sp-2xl)">Guia de Secções</h3>
       <div class="ajuda-cards-list">
 
         <details class="ajuda-card-collapse" open>
           <summary class="ajuda-card-summary">
-            <span class="ajuda-icon">📊</span>
+            <span class="ajuda-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="#444" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="0.5"/><rect x="9.5" y="1.5" width="5" height="5" rx="0.5"/><rect x="1.5" y="9.5" width="5" height="5" rx="0.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="0.5"/></svg></span>
             <span class="ajuda-card-title">Painel</span>
           </summary>
           <div class="ajuda-card-body">
             <p>Visão geral de Portugal: 30+ indicadores organizados em 7 temas — Custo de Vida, Indústria, Emprego, Conjuntura, Energia, Externo e Competitividade. Cada cartão mostra o valor mais recente, tendência e variação homóloga.</p>
             <ul class="ajuda-tips">
               <li>Clique em qualquer cartão para abrir o indicador na secção Análise.</li>
-              <li>O botão <strong>+ IA</strong> no início da página gera análise interpretativa (Claude Sonnet) de todos os temas, com leituras relacionadas por secção.</li>
+              <li>O botão <strong>+ IA</strong> no início da página gera análise interpretativa de todos os temas, com leituras relacionadas por secção.</li>
             </ul>
           </div>
         </details>
 
         <details class="ajuda-card-collapse">
           <summary class="ajuda-card-summary">
-            <span class="ajuda-icon">🌍</span>
+            <span class="ajuda-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="#444" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c-2 1.5-3 4-3 6.5s1 5 3 6.5M8 1.5c2 1.5 3 4 3 6.5s-1 5-3 6.5"/></svg></span>
             <span class="ajuda-card-title">Comparativos</span>
           </summary>
           <div class="ajuda-card-body">
@@ -49,11 +81,11 @@ App.registerSection('ajuda', () => {
 
         <details class="ajuda-card-collapse">
           <summary class="ajuda-card-summary">
-            <span class="ajuda-icon ajuda-icon-svg"><img src="${(window.__BASE_PATH__||'')}/static/images/prumo/icon-analise.svg" width="20" height="20" alt="" aria-hidden="true" style="vertical-align:middle;margin-bottom:1px"></span>
+            <span class="ajuda-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="#444" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4 4M4 8.5l1.5-2L7 8l2-3"/></svg></span>
             <span class="ajuda-card-title">Análise</span>
           </summary>
           <div class="ajuda-card-body">
-            <p>Explorador livre de séries temporais. Pesquise qualquer indicador das 9 fontes disponíveis (mais de 370 combinações fonte/indicador), ajuste o intervalo temporal e visualize o gráfico. Uma interpretação por IA (Claude Haiku) adapta o foco ao horizonte: conjuntural para 1 ano, estrutural para 10 anos — com links para artigos e relatórios recentes relacionados.</p>
+            <p>Explorador livre de séries temporais. Pesquise qualquer indicador das 9 fontes disponíveis (mais de 370 combinações fonte/indicador), ajuste o intervalo temporal e visualize o gráfico. A interpretação por IA adapta o foco ao horizonte: conjuntural para 1 ano, estrutural para 10 anos — com links para artigos e relatórios recentes relacionados.</p>
             <ul class="ajuda-tips">
               <li>Pode seleccionar e sobrepor múltiplos indicadores em simultâneo.</li>
               <li>Quando dois indicadores têm unidades incompatíveis, o gráfico usa dois eixos verticais automaticamente.</li>
@@ -66,11 +98,11 @@ App.registerSection('ajuda', () => {
 
         <details class="ajuda-card-collapse">
           <summary class="ajuda-card-summary">
-            <span class="ajuda-icon">📋</span>
-            <span class="ajuda-card-title">Ficha Técnica</span>
+            <span class="ajuda-icon"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="#444" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h10v12H3zM5.5 5.5h5M5.5 8h5M5.5 10.5h2.5"/><circle cx="11" cy="10.5" r="1.5" fill="#444" stroke="none" opacity=".7"/></svg></span>
+            <span class="ajuda-card-title">Metodologia e Ficha Técnica</span>
           </summary>
           <div class="ajuda-card-body">
-            <p>Documentação completa de todas as fontes e indicadores disponíveis na base de dados: cobertura temporal, frequência de actualização, unidade e notas metodológicas. Inclui todas as séries — incluindo as que não estão no Painel.</p>
+            <p>A secção Metodologia explica como cada análise IA é gerada — dados reais, enquadramento editorial transparente e prompt completo. A Ficha Técnica (colapsável no final da Metodologia) documenta todas as fontes e indicadores: cobertura temporal, frequência de actualização, unidade e notas metodológicas.</p>
             <ul class="ajuda-tips">
               <li>Clicar no código de qualquer indicador leva-o directamente à secção Análise.</li>
               <li>Indicadores com cobertura multi-país (ex: Eurostat por nação) abrem nos Comparativos.</li>
@@ -107,7 +139,7 @@ App.registerSection('ajuda', () => {
 
         <details class="method-accordion">
           <summary>Como funciona a análise com IA?</summary>
-          <p>A secção Análise usa Claude Haiku para gerar um parágrafo interpretativo a partir dos dados visíveis no gráfico, com pesquisa na web para sugerir leituras recentes relacionadas. O foco adapta-se ao horizonte temporal: 1 ano → análise conjuntural; 5 anos → ciclo económico; 10 anos → tendência estrutural. O Painel usa Claude Sonnet para análise mais extensa de cada tema, também com links por secção temática.</p>
+          <p>A secção Análise gera um parágrafo interpretativo a partir dos dados visíveis no gráfico, com pesquisa na web para sugerir leituras recentes relacionadas. O foco adapta-se ao horizonte temporal: 1 ano → análise conjuntural; 5 anos → ciclo económico; 10 anos → tendência estrutural. O Painel gera análise mais extensa de cada tema, também com links por secção temática. Todo o conteúdo gerado por IA é filtrado pela lente ideológica seleccionada.</p>
         </details>
 
         <details class="method-accordion">
@@ -122,38 +154,16 @@ App.registerSection('ajuda', () => {
 
         <details class="method-accordion">
           <summary>Encontrei um erro ou tenho uma sugestão. O que faço?</summary>
-          <p>Envie um <a href="mailto:joao.mpfp+prumo@gmail.com" style="color:var(--c-pt)">e-mail</a> com uma descrição do problema (qual indicador, que valor parece errado, o que esperaria ver). Erros de dados são prioritários — obrigado pela ajuda a melhorar o Prumo PT.</p>
+          <p>Envie um <a href="mailto:joao.mpfp+prumo@gmail.com" style="color:var(--c-pt)">e-mail ao autor</a> com uma descrição do problema (qual indicador, que valor parece errado, o que esperaria ver). Erros de dados são prioritários — obrigado pela ajuda a melhorar o Prumo PT.</p>
         </details>
 
       </div>
 
-      <!-- ── Sobre ───────────────────────────────────────────────── -->
-      <h3 class="ajuda-h3" style="margin-top:var(--sp-2xl)">Sobre o Prumo PT</h3>
+      <!-- ── Autor ──────────────────────────────────────────────── -->
+      <h3 class="ajuda-h3" style="margin-top:var(--sp-2xl)">Autor</h3>
       <div class="ajuda-sobre">
-        <p>O nome combina dois elementos. <strong>Prumo</strong> — instrumento de precisão da construção e engenharia civil, usado para verificar se uma estrutura está verdadeiramente vertical. Não orienta, não mede distâncias — verifica se está direito. A metáfora é exacta: esta ferramenta não descreve a economia portuguesa tal como nos é apresentada — verifica se o que nos dizem corresponde ao que os dados mostram. <strong>PT</strong> — âncora geográfica e identitária. Portugal. Directo, sem adjectivos.</p>
-
-        <p>O ponto de partida é concreto: o que acontece à produção, ao emprego, aos preços, à energia. Não aos mercados financeiros em abstracto, mas à realidade que se mede em folhas de salário, em facturas de electricidade, em taxas de desemprego. A economia não é uma força da natureza — é o resultado de decisões e de condições que os dados ajudam a tornar visíveis.</p>
-
-        <p>O Prumo PT reúne dados de 9 fontes estatísticas oficiais — INE, Eurostat, Banco de Portugal, OCDE, Banco Mundial, REN, DGEG, ERSE, FRED — e organiza-os de forma acessível e comparável, com análise interpretativa integrada por IA. Foi construído para quem analisa a conjuntura económica portuguesa e quer acesso rápido, consolidado e fundamentado. Não é uma publicação oficial. É uma ferramenta de trabalho.</p>
-
-        <div class="ajuda-fontes-line">
-          <strong>Fontes e licenças:</strong><br>
-          <a href="https://www.ine.pt" target="_blank" rel="noopener">INE</a> ·
-          <a href="https://ec.europa.eu/eurostat" target="_blank" rel="noopener">Eurostat</a>
-          (<a href="https://ec.europa.eu/eurostat/help/copyright-notice" target="_blank" rel="noopener">CC BY 4.0</a>) ·
-          <a href="https://www.bportugal.pt" target="_blank" rel="noopener">Banco de Portugal</a>
-          (<a href="https://www.bportugal.pt/termos-e-condicoes" target="_blank" rel="noopener">termos</a>) ·
-          <a href="https://stats.oecd.org" target="_blank" rel="noopener">OCDE</a>
-          (<a href="https://www.oecd.org/en/about/terms-conditions.html" target="_blank" rel="noopener">termos</a>) ·
-          <a href="https://data.worldbank.org" target="_blank" rel="noopener">Banco Mundial</a>
-          (<a href="https://data.worldbank.org/summary-terms-of-use" target="_blank" rel="noopener">CC BY 4.0</a>) ·
-          <a href="https://datahub.ren.pt" target="_blank" rel="noopener">REN</a>
-          (<a href="https://datahub.ren.pt/pt/termos-legais-e-condicoes-gerais/" target="_blank" rel="noopener">termos</a>) ·
-          <a href="https://www.dgeg.gov.pt" target="_blank" rel="noopener">DGEG</a> ·
-          <a href="https://www.erse.pt" target="_blank" rel="noopener">ERSE</a> ·
-          <a href="https://fred.stlouisfed.org" target="_blank" rel="noopener">FRED</a>
-          (<a href="https://fred.stlouisfed.org/legal/" target="_blank" rel="noopener">termos</a>)
-        </div>
+        <p>Criado por <strong><a href="https://joao.date" target="_blank" rel="noopener" style="color:var(--c-pt)">João Peixoto</a></strong>, PMP — gestor de projecto e engenheiro. Desenvolvimento assistido por IA (Claude, Anthropic); todas as decisões editoriais e de arquitectura são do autor. Código open-source (AGPL-3.0) — será publicado no GitHub quando estabilizar.</p>
+        <p style="font-size:var(--fs-xs);color:var(--c-muted);margin-top:var(--sp-sm)"><a href="mailto:joao.mpfp+prumo@gmail.com" style="color:var(--c-pt)">Enviar e-mail</a> · <a href="https://joao.date" target="_blank" rel="noopener" style="color:var(--c-pt)">joao.date</a></p>
       </div>
 
     </div>`;

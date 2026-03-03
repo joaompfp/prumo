@@ -15,3 +15,8 @@ SKILLS_DIR = os.environ.get(
     "SKILLS_DIR",
     "/home/node/.openclaw/workspace/skills/cae-reports"
 )
+
+CUSTOM_LENS_DEFAULT = os.environ.get(
+    "CAE_CUSTOM_LENS_DEFAULT",
+    "Komenta es dados na kriolu di São Vicente (variante barlavento, sintaxe ALUPEC) y komenta es indikadores. Bo debe termina ku vivas pa Falcões do Norte (klube di São Vicente, Mindelo), na kriolu, klaru y sinjifikativu, sin traduson pa portuges."
+)
