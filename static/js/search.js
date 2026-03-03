@@ -40,6 +40,132 @@ const Search = (() => {
     'banco de portugal': 'bportugal', bportugal: 'banco de portugal',
   };
 
+  // ── Synonym dictionary — maps popular search terms → indicator keywords ──
+  // Each key expands the search to also match any of its synonym values
+  const SEARCH_SYNONYMS = {
+    // Habitação / imobiliário
+    casa:        ['habitação','habitacao','imobiliário','imobiliario','rendas','arrendamento','alojamento','housing','hpi','dwellings'],
+    casas:       ['habitação','habitacao','imobiliário','imobiliario','rendas','arrendamento','alojamento','housing','hpi'],
+    renda:       ['arrendamento','habitação','habitacao','rendas','alojamento','housing'],
+    rendas:      ['arrendamento','habitação','habitacao','alojamento','housing'],
+    habitação:   ['casa','casas','imobiliário','imobiliario','arrendamento','housing','hpi','dwellings'],
+    habitacao:   ['casa','casas','imobiliário','imobiliario','arrendamento','housing','hpi','dwellings'],
+    imobiliário: ['habitação','habitacao','casa','casas','hpi','housing','dwellings'],
+    imobiliario: ['habitação','habitacao','casa','casas','hpi','housing','dwellings'],
+
+    // Energia / eletricidade / gás
+    luz:           ['electricidade','eletricidade','energia','electricity','kwh','preço energia','tarifas'],
+    eletricidade:  ['electricidade','energia','electricity','kwh','luz','tarifas'],
+    electricidade: ['eletricidade','energia','electricity','kwh','luz','tarifas'],
+    energia:       ['electricidade','eletricidade','electricity','gás','gas','renováveis','renovaveis','kwh'],
+    gás:           ['gas','energia','natural gas','combustíveis','combustiveis'],
+    gas:           ['gás','energia','natural gas','combustíveis','combustiveis'],
+    gasolina:      ['combustíveis','combustiveis','gasóleo','gasoleo','petróleo','petroleo','fuel','oil'],
+    gasóleo:       ['combustíveis','combustiveis','gasolina','petróleo','petroleo','fuel','diesel'],
+    gasoleo:       ['combustíveis','combustiveis','gasolina','petróleo','petroleo','fuel','diesel'],
+    combustível:   ['gasolina','gasóleo','gasoleo','petróleo','petroleo','fuel','oil'],
+    combustivel:   ['gasolina','gasóleo','gasoleo','petróleo','petroleo','fuel','oil'],
+    petróleo:      ['oil','crude','brent','gasolina','combustíveis','combustiveis'],
+    petroleo:      ['oil','crude','brent','gasolina','combustíveis','combustiveis'],
+
+    // Emprego / trabalho
+    emprego:       ['desemprego','trabalho','employment','unemployment','taxa emprego','ocupação','ocupacao'],
+    desemprego:    ['emprego','unemployment','taxa desemprego','jobless'],
+    trabalho:      ['emprego','desemprego','employment','salários','salarios','horas','earnings'],
+    salário:       ['salários','salarios','wages','earnings','remuneração','remuneracao','rendimento'],
+    salario:       ['salários','salarios','wages','earnings','remuneração','remuneracao','rendimento'],
+    salários:      ['salário','wages','earnings','remuneração','remuneracao','rendimento'],
+    salarios:      ['salário','wages','earnings','remuneração','remuneracao','rendimento'],
+    ordenado:      ['salário','salarios','wages','earnings','rendimento','remuneração'],
+
+    // Preços / inflação
+    preços:        ['inflação','inflacao','ipc','cpi','hicp','preço','price','prices'],
+    precos:        ['inflação','inflacao','ipc','cpi','hicp','preço','price','prices'],
+    inflação:      ['ipc','cpi','hicp','preços','precos','price index','deflator'],
+    inflacao:      ['ipc','cpi','hicp','preços','precos','price index','deflator'],
+    carestia:      ['inflação','inflacao','ipc','cpi','preços','precos'],
+    custo:         ['preços','precos','inflação','inflacao','custo de vida','despesa'],
+
+    // PIB / crescimento
+    pib:           ['gdp','produto interno bruto','crescimento','growth','economia'],
+    gdp:           ['pib','produto interno bruto','crescimento','growth'],
+    crescimento:   ['pib','gdp','growth','expansão','expansao'],
+    economia:      ['pib','gdp','crescimento','growth','produção','producao'],
+    recessão:      ['pib','gdp','contração','contracao','crise','recession'],
+    recessao:      ['pib','gdp','contração','contracao','crise','recession'],
+
+    // Dívida / finanças públicas
+    dívida:        ['divida','debt','défice','deficit','finanças públicas','financas publicas'],
+    divida:        ['dívida','debt','défice','deficit','finanças públicas','financas publicas'],
+    défice:        ['deficit','dívida','divida','debt','saldo orçamental'],
+    deficit:       ['défice','dívida','divida','debt','saldo orçamental'],
+
+    // Indústria / produção
+    fábricas:      ['fabricas','indústria','industria','produção industrial','ipi','manufacturing'],
+    fabricas:      ['fábricas','indústria','industria','produção industrial','ipi','manufacturing'],
+    indústria:     ['industria','produção industrial','manufacturing','ipi','fábricas','fabricas'],
+    industria:     ['indústria','produção industrial','manufacturing','ipi','fábricas','fabricas'],
+
+    // Comércio
+    exportações:   ['exportacoes','exports','comércio','comercio','balança comercial','trade'],
+    exportacoes:   ['exportações','exports','comércio','comercio','balança comercial','trade'],
+    importações:   ['importacoes','imports','comércio','comercio','balança comercial','trade'],
+    importacoes:   ['importações','imports','comércio','comercio','balança comercial','trade'],
+
+    // Turismo
+    turismo:       ['tourism','turistas','alojamento','hóspedes','hospedes','dormidas'],
+    turistas:      ['turismo','tourism','hóspedes','hospedes','dormidas'],
+
+    // Educação
+    escola:        ['educação','educacao','escolaridade','education','ensino','alunos'],
+    educação:      ['educacao','escola','escolaridade','education','ensino'],
+    educacao:      ['educação','escola','escolaridade','education','ensino'],
+
+    // Saúde
+    saúde:         ['saude','health','hospitais','esperança de vida','mortalidade'],
+    saude:         ['saúde','health','hospitais','esperança de vida','mortalidade'],
+    hospital:      ['saúde','saude','health','hospitais','mortalidade'],
+
+    // Demografia
+    população:     ['populacao','population','demografia','natalidade','mortalidade','emigração','imigracao'],
+    populacao:     ['população','population','demografia','natalidade','mortalidade','emigração','imigracao'],
+    nascimentos:   ['natalidade','população','populacao','fertilidade','fertility'],
+    emigração:     ['emigracao','imigração','imigracao','migração','migracao','population'],
+    emigracao:     ['emigração','imigração','imigracao','migração','migracao','population'],
+
+    // Pobreza / desigualdade
+    pobreza:       ['poverty','desigualdade','gini','risco de pobreza','exclusão social'],
+    desigualdade:  ['gini','pobreza','poverty','inequality','rendimento'],
+    pobres:        ['pobreza','poverty','risco de pobreza','exclusão social'],
+  };
+
+  // ── Trigram fuzzy scoring ──────────────────────────────────────
+  function _trigrams(s) {
+    const t = new Set();
+    const p = ` ${s} `;
+    for (let i = 0; i < p.length - 2; i++) t.add(p.slice(i, i + 3));
+    return t;
+  }
+  function _fuzzyScore(query, text) {
+    if (text.includes(query)) return 1;
+    const qt = _trigrams(query), tt = _trigrams(text);
+    let shared = 0;
+    for (const t of qt) if (tt.has(t)) shared++;
+    return shared / qt.size;
+  }
+
+  // ── Expand query into [original + synonym terms] ─────────────
+  function _expandQuery(q) {
+    const terms = [q];
+    // Check if any synonym key is contained in the query (or equals it)
+    for (const [key, syns] of Object.entries(SEARCH_SYNONYMS)) {
+      if (q === key || q.includes(key)) {
+        for (const s of syns) if (!terms.includes(s)) terms.push(s);
+      }
+    }
+    return terms;
+  }
+
   // ── Init ──────────────────────────────────────────────────────
   function init() {
     _input   = document.getElementById('search-input');
@@ -151,16 +277,41 @@ const Search = (() => {
       }
     }
 
-    // 3. Indicators (max 15)
+    // 3. Indicators — synonym expansion + fuzzy fallback (max 15)
     const alias = SRC_ALIASES[q] || '';
-    const indMatches = _flatIndicators.filter(item => {
-      const srcLower = item.source.toLowerCase();
-      return item.label.toLowerCase().includes(q) ||
-             srcLower.includes(q) ||
-             (alias && srcLower.includes(alias)) ||
-             item.indicator.toLowerCase().includes(q) ||
-             item.description.toLowerCase().includes(q);
-    }).slice(0, 15);
+    const terms = _expandQuery(q);
+    const FUZZY_THRESHOLD = 0.45;
+
+    // Score each indicator: 1 = exact/synonym hit, 0..1 = fuzzy
+    const scored = [];
+    for (const item of _flatIndicators) {
+      const hay = [
+        item.label.toLowerCase(),
+        item.source.toLowerCase(),
+        item.indicator.toLowerCase(),
+        item.description.toLowerCase(),
+      ].join(' ');
+
+      // Exact / synonym match — check all expanded terms
+      let exact = false;
+      for (const t of terms) {
+        if (hay.includes(t)) { exact = true; break; }
+      }
+      if (!exact && alias && hay.includes(alias)) exact = true;
+
+      if (exact) {
+        scored.push({ item, score: 1 });
+      } else if (q.length >= 3) {
+        // Fuzzy only for queries ≥3 chars — score against label + description
+        const fs = Math.max(
+          _fuzzyScore(q, item.label.toLowerCase()),
+          _fuzzyScore(q, item.description.toLowerCase()) * 0.8
+        );
+        if (fs >= FUZZY_THRESHOLD) scored.push({ item, score: fs });
+      }
+    }
+    scored.sort((a, b) => b.score - a.score);
+    const indMatches = scored.slice(0, 15).map(s => s.item);
 
     if (indMatches.length) {
       html += `<div class="search-group-label">Indicadores</div>`;

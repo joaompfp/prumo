@@ -43,15 +43,16 @@
 .nav-brand-icon-wrap::after {
   content: "PT";
   display: block;
-  font-family: Georgia, serif;
-  font-size: 12px;
-  font-weight: 900;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
   color: #8B0000;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   line-height: 1;
   text-align: center;
-  margin-top: -2px;
-  padding-left: 2px; /* compensate letter-spacing — shift PT slightly right to center under plumb bob */
+  margin-top: -1px;
+  /* letter-spacing adds trailing space after last char — offset by half */
+  padding-left: 2px;
   pointer-events: none;
 }
 
@@ -121,19 +122,22 @@
 .lang-toggle {
   background: rgba(255,255,255,0.92);
   backdrop-filter: blur(6px);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 15px;
-  width: 30px;
-  height: 30px;
-  padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
   transition: background 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 .lang-toggle:hover {
   background: #fff;
@@ -149,7 +153,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   z-index: 200;
-  min-width: 110px;
+  min-width: 56px;
   padding: 4px;
   display: flex;
   flex-direction: column;
@@ -160,11 +164,12 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-family: inherit;
-  text-align: left;
+  padding: 5px 14px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'Inter', system-ui, sans-serif;
+  text-align: center;
+  letter-spacing: 0.5px;
   transition: background 0.12s;
   white-space: nowrap;
 }
