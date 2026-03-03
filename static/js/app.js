@@ -19,17 +19,14 @@ const DEFAULT_OUTPUT_LANGUAGE = window.__DEFAULT_OUTPUT_LANGUAGE__ || 'pt';
 function getOutputLanguage() {
   return localStorage.getItem('prumo-output-language') || DEFAULT_OUTPUT_LANGUAGE;
 }
-// Inline SVG mini-flags (emoji flags don't render on Linux)
-const LANG_FLAGS = {
-  pt: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="20" height="14" fill="#FF0000"/><rect width="8" height="14" fill="#006600"/><circle cx="8" cy="7" r="2.8" fill="#FFCC00"/></svg>`,
-  crioulo: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="20" height="14" fill="#003893"/><rect y="4.67" width="20" height="4.67" fill="#CF2027"/><rect y="3.5" width="20" height="1.17" fill="#fff"/><rect y="9.33" width="20" height="1.17" fill="#fff"/><circle cx="6.5" cy="7" r="1.6" fill="#F7D116"/></svg>`,
-  fr: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="6.67" height="14" fill="#002395"/><rect x="6.67" width="6.67" height="14" fill="#fff"/><rect x="13.33" width="6.67" height="14" fill="#ED2939"/></svg>`,
-  es: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="20" height="14" fill="#AA151B"/><rect y="3.5" width="20" height="7" fill="#F1BF00"/></svg>`,
-  en: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="20" height="14" fill="#012169"/><path d="M0 0L20 14M20 0L0 14" stroke="#fff" stroke-width="2.5"/><path d="M0 0L20 14M20 0L0 14" stroke="#C8102E" stroke-width="1.2"/><path d="M10 0v14M0 7h20" stroke="#fff" stroke-width="4"/><path d="M10 0v14M0 7h20" stroke="#C8102E" stroke-width="2"/></svg>`,
-  de: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="20" height="4.67" fill="#000"/><rect y="4.67" width="20" height="4.67" fill="#DD0000"/><rect y="9.33" width="20" height="4.67" fill="#FFCC00"/></svg>`,
-  it: `<svg viewBox="0 0 20 14" width="20" height="14"><rect width="6.67" height="14" fill="#009246"/><rect x="6.67" width="6.67" height="14" fill="#fff"/><rect x="13.33" width="6.67" height="14" fill="#CE2B37"/></svg>`,
-};
-const LANG_LABELS = { pt: 'PT', crioulo: 'KR', en: 'EN', es: 'ES', fr: 'FR', de: 'DE', it: 'IT' };
+// Flag images via flagcdn.com — key is lang code from site.json, value is ISO 3166-1 alpha-2
+const LANG_ISO = { pt: 'pt', cv: 'cv', en: 'gb', es: 'es', fr: 'fr', de: 'de', it: 'it' };
+function _flagImg(langKey, w = 20) {
+  const iso = LANG_ISO[langKey] || langKey;
+  return `<img src="https://flagcdn.com/w40/${iso}.png" width="${w}" height="${Math.round(w*0.7)}" alt="${iso.toUpperCase()}" style="border-radius:1px;vertical-align:middle;display:block">`;
+}
+const LANG_LABELS = { pt: 'PT', cv: 'CV', en: 'EN', es: 'ES', fr: 'FR', de: 'DE', it: 'IT' };
+const LANG_NAMES = { pt: 'Português', cv: 'Kriolu', en: 'English', es: 'Español', fr: 'Français', de: 'Deutsch', it: 'Italiano' };
 
 function _lensIcon(lensId) {
   const BASE = window.__BASE_PATH__ || '';
@@ -176,14 +173,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const langKeys = Object.keys(OUTPUT_LANGUAGES);
     if (langKeys.length > 1) {
       const current = getOutputLanguage();
-      const curFlag = LANG_FLAGS[current] || '';
-      langContainer.innerHTML = `<button class="lang-toggle" id="lang-toggle" title="Idioma de saída da IA">${curFlag}</button>
+      langContainer.innerHTML = `<button class="lang-toggle" id="lang-toggle" title="Língua / Language / Langue">${_flagImg(current)}</button>
         <div class="lang-dropdown hidden" id="lang-dropdown">
           ${langKeys.map(k => {
-            const f = LANG_FLAGS[k] || '';
             const lbl = LANG_LABELS[k] || k.toUpperCase();
+            const name = LANG_NAMES[k] || k;
             const active = k === current ? ' active' : '';
-            return `<button class="lang-option${active}" data-lang="${k}">${f}<span class="lang-option-label">${lbl}</span></button>`;
+            return `<button class="lang-option${active}" data-lang="${k}" title="${name}">${_flagImg(k)}<span class="lang-option-label">${lbl}</span></button>`;
           }).join('')}
         </div>`;
       const toggle = langContainer.querySelector('#lang-toggle');
@@ -195,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!opt) return;
         const lang = opt.dataset.lang;
         localStorage.setItem('prumo-output-language', lang);
-        toggle.innerHTML = LANG_FLAGS[lang] || lang.toUpperCase();
+        toggle.innerHTML = _flagImg(lang);
         dropdown.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === lang));
         dropdown.classList.add('hidden');
         window.dispatchEvent(new CustomEvent('language-change', { detail: { language: lang } }));

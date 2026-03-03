@@ -376,7 +376,7 @@
 }
 
 #painel .kpi-grid {
-  margin-top: var(--sp-xl);
+  margin-top: 0;
   /* Ensure 3 cols only when space allows >=280px each */
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }

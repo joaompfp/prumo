@@ -131,7 +131,7 @@
   transition: background 0.15s, box-shadow 0.15s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
-.lang-toggle svg { display: block; border-radius: 1px; }
+.lang-toggle img, .lang-toggle svg { display: block; border-radius: 1px; }
 .lang-toggle:hover {
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.14);
@@ -169,7 +169,7 @@
   align-items: center;
   gap: 8px;
 }
-.lang-option svg { flex-shrink: 0; border-radius: 1px; }
+.lang-option img, .lang-option svg { flex-shrink: 0; border-radius: 1px; }
 .lang-option-label { font-weight: 600; color: #374151; }
 .lang-option:hover { background: #f3f4f6; }
 .lang-option.active { background: #fee2e2; }
