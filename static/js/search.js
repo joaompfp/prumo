@@ -137,6 +137,77 @@ const Search = (() => {
     pobreza:       ['poverty','desigualdade','gini','risco de pobreza','exclusão social'],
     desigualdade:  ['gini','pobreza','poverty','inequality','rendimento'],
     pobres:        ['pobreza','poverty','risco de pobreza','exclusão social'],
+
+    // ── COMBUSTÍVEIS / CARBURANTES (Carro, combustível patterns) ──
+    carro:         ['diesel','gasoline','gasolina','gasóleo','gasoleo','lpg','combustível','fuel','petrol','auto','vehicle'],
+    carros:        ['diesel','gasoline','gasolina','gasóleo','gasoleo','lpg','combustível','fuel','petrol','auto','vehicles'],
+    diesel:        ['road_fuels_diesel','price_diesel','diesel_pretax','petroleum_diesel','carro','combustível','fuel'],
+    gasoline:      ['road_fuels_gasoline','price_gasoline','gasoline_pretax','gasolina','fuel','combustível'],
+    gasolina:      ['gasoline','road_fuels_gasoline','price_gasoline','combustível','fuel','petrol'],
+    lpg:           ['road_fuels_lpg','price_lpg_auto','lpg_auto','combustível','gas','propane','butane'],
+    combustível:   ['diesel','gasoline','gasolina','gasóleo','lpg','fuel','petrol','carro','preço combustível'],
+    combustivel:   ['diesel','gasoline','gasolina','gasóleo','lpg','fuel','petrol','carro','preço combustível'],
+    'preco_combustivel': ['price_diesel','price_gasoline','price_lpg_auto','fuel price','combustível'],
+    'preco_fuel':  ['price_diesel','price_gasoline','price_lpg_auto','preco_combustivel','diesel','gasoline'],
+
+    // ── ELETRICIDADE / ENERGIA ELÉTRICA (Luz, tarifa patterns) ──
+    tarifa:        ['electricidade','eletricidade','energia','electricity','preco_eletricidade','access','btn'],
+    tarifas:       ['electricidade','eletricidade','energia','electricity','preco_eletricidade','access','btn'],
+    'preco_eletricidade': ['access','btn','tarifa','electricity','electricidade','energy price'],
+    'preco_energia': ['access','btn','tarifa','electricity','energy','renewable','wind','solar'],
+    eléctrica:     ['eletricidade','electricity','energia','light','power','tarifa','access'],
+    electrica:     ['eletricidade','electricity','energia','light','power','tarifa','access'],
+    access:        ['electricidade','eletricidade','tarifa','price','consumption','btn'],
+    btn:           ['access','electricidade','eletricidade','tarifa','consumption','energy'],
+
+    // ── ENERGIAS RENOVÁVEIS ──
+    renovável:     ['renewable','solar','wind','hydro','biomass','capacity','geothermal'],
+    renovavel:     ['renewable','solar','wind','hydro','biomass','capacity','geothermal'],
+    solar:         ['capacity_solar_pv','renewable','wind','hydro','energy','capacity'],
+    vento:         ['wind','capacity_wind','renewable','hydro','solar','energy','capacity'],
+    hídrica:       ['hydro','capacity_hydro','renewable','water','dam','wind','solar'],
+    hidrica:       ['hydro','capacity_hydro','renewable','water','dam','wind','solar'],
+
+    // ── CONSUMO (Consumo patterns) ──
+    consumo:       ['consumption','consumir','energia','electricity','gas','petróleo','water','demand'],
+    consumir:      ['consumo','consumption','demand','usage'],
+    consumos:      ['consumo','consumption','demand','usage'],
+
+    // ── INDÚSTRIA / PRODUÇÃO (Fabrico, indústria patterns) ──
+    fabrico:       ['manufacturing','production','indústria','industria','fábricas','fabricas','ipi'],
+    produção:      ['producao','production','industrial','manufacturing','indústria','industria'],
+    producao:      ['produção','production','industrial','manufacturing','indústria','industria'],
+    'producao_industrial': ['industrial_production','ipi','manufacturing','production'],
+    'producao_ind': ['industrial_production','ipi','manufacturing','production'],
+
+    // ── COMMODITIES (Metais, preços patterns) ──
+    cobre:         ['copper','commodity','metal','price','mine'],
+    alumínio:      ['aluminum','aluminio','metal','commodity','price'],
+    aluminio:      ['aluminum','metal','commodity','price','alumínio'],
+    ferro:         ['iron','iron_ore','commodity','metal','steel','price'],
+    aço:           ['steel','commodity','metal','iron','price'],
+    ouro:          ['gold','commodity','precious','metal','price'],
+    prata:         ['silver','commodity','precious','metal','price'],
+    níquel:        ['nickel','commodity','metal','price'],
+    niquel:        ['nickel','commodity','metal','price','níquel'],
+    zinco:         ['zinc','commodity','metal','price'],
+
+    // ── AGRÍCOLA / COMMODITIES AGRÍCOLAS ──
+    milho:         ['corn','commodity','agricultural','price','grain'],
+    trigo:         ['wheat','commodity','agricultural','price','grain'],
+    soja:          ['soybean','commodity','agricultural','price','grain'],
+    açúcar:        ['sugar','commodity','agricultural','price'],
+    acucar:        ['sugar','commodity','agricultural','price','açúcar'],
+    algodão:       ['cotton','commodity','agricultural','price'],
+    algodao:       ['cotton','commodity','agricultural','price','algodão'],
+    café:          ['coffee','commodity','agricultural','price'],
+    cafe:          ['coffee','commodity','agricultural','price','café'],
+
+    // ── COMMODITIES ENERGÉTICAS ──
+    brent:        ['oil','crude','petroleum','price','commodity','energy'],
+    crude:        ['oil','brent','petroleum','energy','commodity'],
+    carvao:       ['coal','combustível','fuel','energy','consumption'],
+    'gas_natural': ['natural_gas','fuel','energy','consumption','gas','combustível'],
   };
 
   // ── Trigram fuzzy scoring ──────────────────────────────────────
