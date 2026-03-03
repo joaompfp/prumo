@@ -156,13 +156,39 @@ App.registerSection('painel', async () => {
           const kpis = section.kpis || [];
           return `
           <div class="painel-section" data-section-id="${section.id}">
-            <div class="section-label">${section.label}</div>
+            <div class="section-label" style="cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between">
+              <span>${section.label}</span>
+              <span class="section-collapse-arrow" style="font-size:16px;line-height:1;transition:transform .2s">&#9660;</span>
+            </div>
             <div class="kpi-grid">
               ${kpis.map(renderKpiCard).join('')}
             </div>
           </div>`;
         }).join('') +
         '</div>';
+
+      // ── Collapsible sections (Feature 1) ─────────────────────────────
+      body.querySelectorAll('.painel-section').forEach(sec => {
+        const sectionId = sec.dataset.sectionId;
+        const label = sec.querySelector('.section-label');
+        const grid  = sec.querySelector('.kpi-grid');
+        const arrow = sec.querySelector('.section-collapse-arrow');
+        if (!label || !grid || !arrow) return;
+
+        const storageKey = `painel-collapsed-${sectionId}`;
+        // Restore persisted state
+        if (sessionStorage.getItem(storageKey) === '1') {
+          grid.style.display = 'none';
+          arrow.style.transform = 'rotate(-90deg)';
+        }
+
+        label.addEventListener('click', () => {
+          const isCollapsed = grid.style.display === 'none';
+          grid.style.display = isCollapsed ? '' : 'none';
+          arrow.style.transform = isCollapsed ? '' : 'rotate(-90deg)';
+          sessionStorage.setItem(storageKey, isCollapsed ? '0' : '1');
+        });
+      });
     } else {
       const kpis = allKpis;
       body.innerHTML = iaPanelHtml + ptEuropaPlaceholder + '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
@@ -258,24 +284,72 @@ App.registerSection('painel', async () => {
     // ── Track B: PT vs Mundo subsection ────────────────────────────
     async function renderPTvsMundo(parentEl) {
       const COMPARISONS = [
-        { label: 'Inflação (HICP)',   indicator: 'hicp',            source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27',  unit: '%',  decimals: 1 },
-        { label: 'Desemprego',        indicator: 'unemployment',    source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27',  unit: '%',  decimals: 1 },
-        { label: 'Crescimento PIB',   indicator: 'gdp_growth',      source: 'WORLDBANK', ref: 'EU',  refLabel: 'UE',     unit: '%',  decimals: 2 },
-        { label: 'PIB per Capita PPP',    indicator: 'gdp_per_capita_ppp',         source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '$',     decimals: 0 },
-        { label: 'Electricidade (Dom.)',   indicator: 'electricity_price_household', source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/kWh', decimals: 3, note: 'Fonte: Eurostat nrg_pc_204 · Semestral' },
-        { label: 'Rendimento Hora Med.',   indicator: 'earn_ses_pub2s',             source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/h',   decimals: 2, note: 'Fonte: Eurostat SES · Dados de 4 em 4 anos' },
+        // higherIsBetter: false = PT acima da média é MAU (vermelho)
+        //                 true  = PT acima da média é BOM (verde)
+        //                 null  = neutro (cinzento)
+        { label: 'Inflação (HICP)',        indicator: 'hicp',                   source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '%',    decimals: 1, higherIsBetter: false },
+        { label: 'Desemprego',             indicator: 'unemployment',           source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '%',    decimals: 1, higherIsBetter: false },
+        { label: 'Crescimento PIB',        indicator: 'gdp_growth',             source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 2, higherIsBetter: true  },
+        { label: 'PIB per Capita PPP',     indicator: 'gdp_per_capita_ppp',     source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '$',    decimals: 0, higherIsBetter: true  },
+        { label: 'Electricidade (Dom.)',   indicator: 'electricity_price_household', source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/kWh', decimals: 3, higherIsBetter: false, note: 'Fonte: Eurostat nrg_pc_204 · Semestral' },
+        { label: 'Rendimento Hora Med.',   indicator: 'earn_ses_pub2s',         source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/h',  decimals: 2, higherIsBetter: true,  note: 'Fonte: Eurostat SES · Dados de 4 em 4 anos' },
+        { label: 'Rendimento Mensal Est.', indicator: 'earn_ses_pub2s',         source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/mês',decimals: 0, higherIsBetter: true,  note: 'Estimado: €/h × 176h (22dias×8h)', transform: v => v * 176 },
+        { label: 'Nível de Preços (PLI)',  indicator: 'price_level_index',      source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '',     decimals: 1, higherIsBetter: false, note: 'EU27=100 · 2020' },
+        { label: 'Esperança de Vida',      indicator: 'life_expectancy',        source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: 'anos', decimals: 1, higherIsBetter: true  },
+        { label: 'Taxa de Emprego',        indicator: 'employment_rate',        source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 1, higherIsBetter: true  },
+        { label: 'Saúde (% PIB)',          indicator: 'health_expenditure',     source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 1, higherIsBetter: null  },
+        { label: 'Ensino Superior',        indicator: 'tertiary_enrollment',    source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 1, higherIsBetter: true  },
       ];
+
+      // ── Mapping to COMPARATIVOS_CATALOG ids (Feature 2) ─────────────
+      const CATALOG_MAP = {
+        'EUROSTAT/hicp':               'eu_hicp',
+        'EUROSTAT/unemployment':       'cmp_unemployment',
+        'WORLDBANK/gdp_growth':        'wb_gdp_growth',
+        'WORLDBANK/gdp_per_capita_ppp':'wb_gdp_per_capita_ppp',
+        'WORLDBANK/life_expectancy':   'wb_life_expectancy',
+        'WORLDBANK/employment_rate':   'cmp_employment_rate',
+        'WORLDBANK/health_expenditure':'wb_health_exp',
+        'WORLDBANK/tertiary_enrollment':'wb_tertiary',
+      };
 
       const section = document.createElement('div');
       section.className = 'pt-mundo-section';
       section.innerHTML = `
-        <div class="section-label">Portugal vs Mundo · Comparação de Referência</div>
+        <div class="section-label pt-mundo-toggle" id="pt-mundo-label" style="cursor:pointer;user-select:none">
+          Portugal vs Europa · Comparação de Referência
+          <span class="pt-mundo-chevron" id="pt-mundo-chevron" style="float:right;transition:transform .2s;font-size:16px;line-height:1">&#9660;</span>
+        </div>
         <div class="pt-mundo-grid" id="pt-mundo-grid">
-          ${COMPARISONS.map((_, i) => `<div class="pt-mundo-card" id="pt-mundo-card-${i}">
-            <div class="loading-state" style="height:80px"><div class="loading-spinner"></div></div>
-          </div>`).join('')}
+          ${COMPARISONS.map((cmp, i) => {
+            const catalogId = CATALOG_MAP[`${cmp.source}/${cmp.indicator}`];
+            const dataAttrs = catalogId
+              ? ` data-catalog-id="${catalogId}" style="cursor:pointer"`
+              : '';
+            return `<div class="pt-mundo-card"${dataAttrs} id="pt-mundo-card-${i}">
+              <div class="loading-state" style="height:80px"><div class="loading-spinner"></div></div>
+            </div>`;
+          }).join('')}
         </div>`;
       parentEl.appendChild(section);
+      // Collapsible toggle
+      const toggleLabel = section.querySelector('#pt-mundo-label');
+      const grid = section.querySelector('#pt-mundo-grid');
+      const chevron = section.querySelector('#pt-mundo-chevron');
+      let collapsed = false;
+      toggleLabel.addEventListener('click', () => {
+        collapsed = !collapsed;
+        grid.style.display = collapsed ? 'none' : '';
+        chevron.style.transform = collapsed ? 'rotate(-90deg)' : '';
+      });
+
+      // ── Deep link to Comparativos (Feature 2) ────────────────────────
+      section.addEventListener('click', e => {
+        const card = e.target.closest('.pt-mundo-card[data-catalog-id]');
+        if (!card) return;
+        const catalogId = card.dataset.catalogId;
+        window.location.hash = `#comparativos?ind=${encodeURIComponent(catalogId)}&countries=PT,ES,EU27_2020`;
+      });
 
       // Fetch all comparisons in parallel
       await Promise.allSettled(COMPARISONS.map(async (cmp, i) => {
@@ -292,17 +366,32 @@ App.registerSection('painel', async () => {
           const refLast = refSeries?.data?.at(-1);
 
           const dec = cmp.decimals ?? 1;
-          const ptVal  = ptLast?.value  != null ? Number(ptLast.value).toFixed(dec) : 'n/d';
-          const refVal = refLast?.value != null ? Number(refLast.value).toFixed(dec) : 'n/d';
+          const tf = cmp.transform || (v => v);
+          const ptRaw  = ptLast?.value  != null ? tf(Number(ptLast.value))  : null;
+          const refRaw = refLast?.value != null ? tf(Number(refLast.value)) : null;
+          const ptVal  = ptRaw  != null ? (dec === 0 ? Math.round(ptRaw).toLocaleString('pt-PT')  : ptRaw.toFixed(dec))  : 'n/d';
+          const refVal = refRaw != null ? (dec === 0 ? Math.round(refRaw).toLocaleString('pt-PT') : refRaw.toFixed(dec)) : 'n/d';
           const period = (ptLast?.period || '').replace(/-00$/, '');
 
           let deltaHtml = '';
-          if (ptLast?.value != null && refLast?.value != null) {
-            const delta = ptLast.value - refLast.value;
-            const sign  = delta > 0 ? '+' : '';
-            const cls   = delta > 0 ? 'positive' : (delta < 0 ? 'negative' : '');
-            const dStr  = cmp.decimals === 0 ? Math.round(delta).toLocaleString('pt-PT') : delta.toFixed(cmp.decimals ?? 1);
-            deltaHtml = `<div class="pt-mundo-delta ${cls}">PT ${sign}${dStr}${cmp.unit} vs ${cmp.refLabel}</div>`;
+          if (ptRaw != null && refRaw != null && refRaw !== 0) {
+            const pctDiff = ((ptRaw - refRaw) / Math.abs(refRaw)) * 100;
+            const sign = pctDiff > 0 ? '+' : '';
+            const pctStr = Math.abs(pctDiff) < 1 ? pctDiff.toFixed(1) : Math.round(pctDiff).toString();
+            const dir = pctDiff > 0 ? 'acima' : 'abaixo';
+            // Sentimento depende de higherIsBetter:
+            //   null  → neutro (cinzento, sem conotação)
+            //   true  → PT acima=verde, abaixo=vermelho
+            //   false → PT acima=vermelho, abaixo=verde
+            let cls = '';
+            if (cmp.higherIsBetter === null || cmp.higherIsBetter === undefined) {
+              cls = '';  // neutro
+            } else if (cmp.higherIsBetter) {
+              cls = pctDiff > 0 ? 'positive' : (pctDiff < 0 ? 'negative' : '');
+            } else {
+              cls = pctDiff > 0 ? 'negative' : (pctDiff < 0 ? 'positive' : '');
+            }
+            deltaHtml = `<div class="pt-mundo-delta ${cls}">PT ${sign}${pctStr}% ${dir} da média europeia</div>`;
           }
 
           const unitDisp = cmp.unit === '€' ? '€' : cmp.unit;
