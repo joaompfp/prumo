@@ -41,11 +41,12 @@
 /* letter-spacing adds trailing space after T — compensate with padding-left
    so the midpoint of "P T" sits exactly under the plumb bob needle point */
 .nav-brand-icon-wrap::after {
-  content: "PT";
+  content: "pt";
   display: block;
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 12px;
-  font-weight: 900;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 13px;
+  font-weight: 600;
+  font-style: italic;
   color: #8B0000;
   line-height: 1;
   text-align: center;
