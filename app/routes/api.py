@@ -199,17 +199,49 @@ async def painel_card_links_endpoint(request: Request):
 
 @router.get("/painel-headline")
 async def painel_headline_endpoint(request: Request):
-    """Claude Opus one-shot headline for Painel KPIs. Disk-cached 6h per lens."""
+    """Claude Opus one-shot headline for Painel KPIs. Disk-cached 6h per lens + language."""
     from ..services.painel import build_painel
     from ..services.painel_headline import get_painel_headline
     force = request.query_params.get("force") == "1"
     lens = request.query_params.get("lens")
+    output_language = request.query_params.get("output_language") or "pt"
     data = build_painel()
     sections = data.get("sections", [])
     updated = data.get("updated", "")
     import asyncio
     loop = asyncio.get_event_loop()
-    return await loop.run_in_executor(None, lambda: get_painel_headline(sections, updated, force=force, lens=lens))
+    return await loop.run_in_executor(None, lambda: get_painel_headline(sections, updated, force=force, lens=lens, output_language=output_language))
+
+
+@router.get("/painel-headlines-batch")
+async def painel_headlines_batch_endpoint(request: Request):
+    """Generate all headlines (all lenses × all languages) for caching.
+    Runs in background — returns immediately with job status.
+    Check /painel-headline for cached results."""
+    from ..services.painel import build_painel
+    from ..services.painel_headline import generate_all_headlines
+    import asyncio
+    import threading
+
+    data = build_painel()
+    sections = data.get("sections", [])
+    updated = data.get("updated", "")
+
+    # Run batch generation in background thread (non-blocking)
+    def _batch_gen():
+        try:
+            generate_all_headlines(sections, updated)
+        except Exception as e:
+            print(f"[api] batch generation error: {e}", flush=True)
+
+    thread = threading.Thread(target=_batch_gen, daemon=True)
+    thread.start()
+
+    return {
+        "status": "started",
+        "message": "Batch generation started (50 headlines: 10 lenses × 5 languages)",
+        "updated": updated
+    }
 
 
 @router.get("/compare-catalog")

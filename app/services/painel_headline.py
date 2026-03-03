@@ -11,7 +11,7 @@ _CACHE_PATH = os.path.join(_DATA_DIR, "painel-headline-cache.json")
 _CACHE_TTL_SECONDS = 6 * 3600  # 6 hours
 
 
-def _build_headline_prompt(sections: list, lens: str = None, custom_ideology: str = None) -> str | None:
+def _build_headline_prompt(sections: list, lens: str = None, custom_ideology: str = None, output_language: str = "pt") -> str | None:
     if lens:
         from .ideology_lenses import get_lens_prompt
         ideology = get_lens_prompt(lens, custom_ideology=custom_ideology)
@@ -30,15 +30,22 @@ def _build_headline_prompt(sections: list, lens: str = None, custom_ideology: st
         return None
 
     kpi_block = "\n".join(lines)
+
+    # Language-specific headline instructions
+    lang_instructions = {
+        "pt": "Com base nos dados acima, escreve uma manchete jornalística em português europeu (PT-PT):\nLINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números\nLINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante\nLINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional\n\nSem aspas, sem ponto final, sem prefixos como 'Título:', 'Linha 1:' etc.\nSepara as linhas com \\n apenas. Âncora tudo nos números. Começa directamente.",
+        "cv": "Baseadu na datus aba, scriva un tituláu jornalistiku em kriolu di São Vicente (barlavento):\nLINHA 1 (tituláu): máx. 12 palavras — es factu mais merkanti ku numeru\nLINHA 2 (subtituláu): máx. 10 palavras — kontestu u kontras relevanti\nLINHA 3 (2º subtituláu, opsionál): máx. 10 palavras — se tê tensãu adisionál\n\nSem aspa, sem pontu finál, sem prefixa kumá 'Tituláu:', 'Linha 1:' etc.\nSepara na linhas ku \\n só. Ancra tudo na numeru. Kumesa direktamenti.",
+        "fr": "Sur la base des données ci-dessus, écrivez un titre journalistique en français (France):\nLIGNE 1 (titre): max. 12 mots — les faits les plus marquants avec chiffres\nLIGNE 2 (sous-titre): max. 10 mots — contexte ou contraste pertinent\nLIGNE 3 (2e sous-titre, optionnel): max. 10 mots — s'il y a tension supplémentaire\n\nSans guillemets, sans point final, sans préfixes comme 'Titre:', 'Ligne 1:' etc.\nSéparez les lignes par \\n seulement. Ancrez tout aux chiffres. Commencez directement.",
+        "es": "En función de los datos anteriores, escriba un titular periodístico en español (castellano):\nLÍNEA 1 (titular): máx. 12 palabras — los hechos más relevantes con números\nLÍNEA 2 (subtítulo): máx. 10 palabras — contexto o contraste relevante\nLÍNEA 3 (2º subtítulo, opcional): máx. 10 palabras — si hay tensión adicional\n\nSin comillas, sin punto final, sin prefijos como 'Titular:', 'Línea 1:' etc.\nSepare las líneas con \\n únicamente. Ancle todo en números. Comience directamente.",
+        "en": "Based on the data above, write a journalistic headline in English (British):\nLINE 1 (headline): max. 12 words — the most striking facts with numbers\nLINE 2 (subheadline): max. 10 words — relevant context or contrast\nLINE 3 (2nd subheadline, optional): max. 10 words — if there's additional tension\n\nNo quotes, no full stop, no prefixes like 'Headline:', 'Line 1:' etc.\nSeparate lines with \\n only. Anchor everything to numbers. Start directly.",
+    }
+
+    instructions = lang_instructions.get(output_language, lang_instructions["pt"])
+
     return (
         f"{ideology}\n\n"
         "---\n\n"
-        "Com base nos dados acima, escreve uma manchete jornalística em PT-PT:\n"
-        "LINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números\n"
-        "LINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante\n"
-        "LINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional\n\n"
-        "Sem aspas, sem ponto final, sem prefixos como 'Título:', 'Linha 1:' etc.\n"
-        "Separa as linhas com \\n apenas. Âncora tudo nos números. Começa directamente.\n\n"
+        f"{instructions}\n\n"
         f"{kpi_block}"
     )
 
@@ -65,10 +72,10 @@ def _get_sonnet_analysis_text(lens_key: str = None, updated: str = None) -> str 
         return None
 
 
-def get_painel_headline(sections: list, updated: str, force: bool = False, lens: str = None, custom_ideology: str = None) -> dict:
+def get_painel_headline(sections: list, updated: str, force: bool = False, lens: str = None, custom_ideology: str = None, output_language: str = "pt") -> dict:
     """
     Return Claude Opus headline derived from Sonnet analysis.
-    Disk-cached per data period + lens, TTL 6h.
+    Disk-cached per data period + lens + language, TTL 6h.
     Returns None headline on failure — JS falls back to rule-based title.
     """
     if not ANTHROPIC_KEY:
@@ -86,7 +93,7 @@ def get_painel_headline(sections: list, updated: str, force: bool = False, lens:
     lens_key = lens or "default"
     if lens == "custom" and custom_ideology:
         lens_key = "custom:" + _hl.md5(custom_ideology.encode()).hexdigest()[:8]
-    cache_key = f"headline:v3:{updated}:{lens_key}"
+    cache_key = f"headline:v4:{updated}:{lens_key}:{output_language}"
     now = time.time()
 
     if not force and cache_key in cache:
@@ -109,21 +116,26 @@ def get_painel_headline(sections: list, updated: str, force: bool = False, lens:
     # Try to use existing analysis (for this lens) as context
     sonnet_text = _get_sonnet_analysis_text(lens_key=lens_key, updated=updated)
 
+    # Language-specific analysis headline instructions
+    analysis_instructions = {
+        "pt": "Com base nesta análise económica sobre Portugal, escreve uma manchete jornalística em português europeu (PT-PT):\nLINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números\nLINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante\nLINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional\n\nSem aspas, sem ponto final, sem prefixos. Separa as linhas com \\n. Âncora tudo nos números. Começa directamente com a manchete.",
+        "cv": "Baseadu neta analizu ekonomiku sôbri Portugál, scriva un tituláu jornalistiku em kriolu:\nLINHA 1 (tituláu): máx. 12 palavras — es factu mais merkanti ku numeru\nLINHA 2 (subtituláu): máx. 10 palavras — kontestu u kontras relevanti\nLINHA 3 (2º subtituláu, opsionál): máx. 10 palavras — se tê tensãu adisionál\n\nSem aspa, sem prefixu, sem ponto finál. Separa na linhas ku \\n. Ancra tudo na numeru. Kumesa direktamenti.",
+        "fr": "En fonction de cette analyse économique sur le Portugal, écrivez un titre journalistique en français (France):\nLIGNE 1 (titre): max. 12 mots — les faits les plus marquants avec chiffres\nLIGNE 2 (sous-titre): max. 10 mots — contexte ou contraste pertinent\nLIGNE 3 (2e sous-titre, optionnel): max. 10 mots — s'il y a tension supplémentaire\n\nSans guillemets, sans point final, sans préfixes. Séparez les lignes par \\n. Ancrez tout aux chiffres. Commencez directement.",
+        "es": "En función de este análisis económico sobre Portugal, escriba un titular periodístico en español (castellano):\nLÍNEA 1 (titular): máx. 12 palabras — los hechos más relevantes con números\nLÍNEA 2 (subtítulo): máx. 10 palabras — contexto o contraste relevante\nLÍNEA 3 (2º subtítulo, opcional): máx. 10 palabras — si hay tensión adicional\n\nSin comillas, sin punto final, sin prefijos. Separe las líneas con \\n. Ancle todo en números. Comience directamente.",
+        "en": "Based on this economic analysis of Portugal, write a journalistic headline in English (British):\nLINE 1 (headline): max. 12 words — the most striking facts with numbers\nLINE 2 (subheadline): max. 10 words — relevant context or contrast\nLINE 3 (2nd subheadline, optional): max. 10 words — if there's additional tension\n\nNo quotes, no full stop, no prefixes. Separate lines with \\n. Anchor everything to numbers. Start directly."
+    }
+    analysis_instruction = analysis_instructions.get(output_language, analysis_instructions["pt"])
+
     if sonnet_text:
         # Ask Opus to distil the analysis into a headline
         user_msg = (
             f"{ideology}\n\n---\n\n"
-            "Com base nesta análise económica sobre Portugal, escreve uma manchete jornalística em PT-PT:\n"
-            "LINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números\n"
-            "LINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante\n"
-            "LINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional\n\n"
-            "Sem aspas, sem ponto final, sem prefixos. Separa as linhas com \\n. "
-            "Âncora tudo nos números. Começa directamente com a manchete.\n\n"
+            f"{analysis_instruction}\n\n"
             f"ANÁLISE:\n{sonnet_text[:3000]}"
         )
     else:
         # Fallback: use raw KPI data with ideology framing
-        user_msg = _build_headline_prompt(sections, lens=lens, custom_ideology=custom_ideology)
+        user_msg = _build_headline_prompt(sections, lens=lens, custom_ideology=custom_ideology, output_language=output_language)
         if not user_msg:
             return {"headline": None, "cached": False, "error": "No data available"}
 
@@ -168,3 +180,37 @@ def get_painel_headline(sections: list, updated: str, force: bool = False, lens:
     except Exception as exc:
         print(f"[painel_headline] error: {exc}", flush=True)
         return {"headline": None, "cached": False, "error": str(exc)}
+
+
+def generate_all_headlines(sections: list, updated: str, lenses: list = None, languages: list = None) -> dict:
+    """
+    Generate headlines for all lenses × languages combinations.
+    Returns dict with results: {cache_key: {headline, generated_at, cached}, ...}
+    Use this for batch pre-generation (called during painel rebuild).
+    """
+    if not lenses:
+        lenses = ["cae", "pcp", "ps", "be", "livre", "pan", "ad", "il", "chega", "neutro"]
+    if not languages:
+        languages = ["pt", "cv", "fr", "es", "en"]
+
+    results = {}
+    total = len(lenses) * len(languages)
+    count = 0
+
+    print(f"[painel_headline] batch generating {total} headlines ({len(lenses)} lenses × {len(languages)} languages)...", flush=True)
+
+    for lens in lenses:
+        for lang in languages:
+            count += 1
+            try:
+                result = get_painel_headline(sections, updated, force=True, lens=lens, output_language=lang)
+                cache_key = f"headline:v4:{updated}:{lens}:{lang}"
+                results[cache_key] = result
+                status = "✓" if result.get("headline") else "✗"
+                print(f"[painel_headline] [{count}/{total}] {status} {lens:8s} {lang} — {result.get('headline', '')[:60]}", flush=True)
+            except Exception as e:
+                print(f"[painel_headline] [{count}/{total}] ✗ {lens:8s} {lang} — ERROR: {e}", flush=True)
+                results[f"headline:v4:{updated}:{lens}:{lang}"] = {"headline": None, "error": str(e)}
+
+    print(f"[painel_headline] batch complete: {sum(1 for r in results.values() if r.get('headline'))} succeeded, {sum(1 for r in results.values() if not r.get('headline'))} failed", flush=True)
+    return results

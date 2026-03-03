@@ -80,7 +80,8 @@ App.registerSection('painel', async () => {
     // so it must always receive an explicit lens param here.
     function _fetchHeadline(lens) {
       const lensParam = lens || localStorage.getItem('prumo-lens') || 'cae';
-      API.get(`/api/painel-headline?lens=${encodeURIComponent(lensParam)}`).then(h => {
+      const langParam = getOutputLanguage();
+      API.get(`/api/painel-headline?lens=${encodeURIComponent(lensParam)}&output_language=${encodeURIComponent(langParam)}`).then(h => {
         if (!h?.headline) return;
         const lines = h.headline.split('\n').map(l => l.trim()).filter(Boolean);
         if (titleEl && lines[0]) {
@@ -99,6 +100,11 @@ App.registerSection('painel', async () => {
       }).catch(() => {}); // silent fail → rule-based title stays
     }
     _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
+
+    // Re-fetch headline when language changes
+    window.addEventListener('language-change', () => {
+      _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
+    });
 
     if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
 

@@ -28,6 +28,40 @@ function _flagImg(langKey, w = 20) {
 const LANG_LABELS = { pt: 'PT', cv: 'CV', en: 'EN', es: 'ES', fr: 'FR', de: 'DE', it: 'IT' };
 const LANG_NAMES = { pt: 'Português', cv: 'Kriolu', en: 'English', es: 'Español', fr: 'Français', de: 'Deutsch', it: 'Italiano' };
 
+// ── UI Messages (localized for each language) ──────────────────────────────
+const UI_MESSAGES = {
+  pt: {
+    lens_saved: 'Lente personalizada guardada',
+    choose_language: 'Escolhe o teu idioma de saída',
+    copy_copied: 'Copiado para a área de transferência',
+  },
+  cv: {
+    lens_saved: 'Lenti personalizada guardadu',
+    choose_language: 'Eskoji ku idioma di saída',
+    copy_copied: 'Kopiadu pa klipi',
+  },
+  fr: {
+    lens_saved: 'Lens personnalisé enregistré',
+    choose_language: 'Choisissez votre langue de sortie',
+    copy_copied: 'Copié dans le presse-papiers',
+  },
+  es: {
+    lens_saved: 'Lente personalizada guardado',
+    choose_language: 'Elige tu idioma de salida',
+    copy_copied: 'Copiado al portapapeles',
+  },
+  en: {
+    lens_saved: 'Custom lens saved',
+    choose_language: 'Choose your output language',
+    copy_copied: 'Copied to clipboard',
+  },
+};
+
+function _getMessage(key) {
+  const lang = getOutputLanguage();
+  return (UI_MESSAGES[lang] && UI_MESSAGES[lang][key]) || (UI_MESSAGES.pt && UI_MESSAGES.pt[key]) || key;
+}
+
 function _lensIcon(lensId) {
   const BASE = window.__BASE_PATH__ || '';
   if (PARTY_LOGOS[lensId]) return `<img class="lens-logo" src="${BASE}/static/images/parties/${PARTY_LOGOS[lensId]}" alt="${lensId}">`;
@@ -215,6 +249,34 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('hero-cta-explore')?.addEventListener('click', dismiss);
   }
 
+  // ── Language selector prompt — show only on first visit ──────────────────
+  if (!localStorage.getItem('prumo-language-selected')) {
+    const langContainer = document.getElementById('nav-lang-selector');
+    if (langContainer) {
+      const prompt = document.createElement('div');
+      prompt.className = 'lang-selector-prompt';
+      prompt.style.cssText = `
+        position: fixed; top: 60px; right: 10px; z-index: 9998;
+        background: #fff; border: 1px solid #ddd; border-radius: 8px;
+        padding: 12px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        font-size: 12px; font-weight: 600; color: #374151;
+        display: flex; align-items: center; gap: 8px;
+      `;
+      const msgLang = getOutputLanguage();
+      const prompts = {
+        pt: 'Escolha o seu idioma de saída',
+        cv: 'Eskoji ku idioma di saída',
+        fr: 'Choisissez votre langue de sortie',
+        es: 'Elige tu idioma de salida',
+        en: 'Choose your output language',
+      };
+      prompt.textContent = prompts[msgLang] || prompts.pt;
+      document.body.appendChild(prompt);
+      setTimeout(() => prompt.remove(), 5000);
+      localStorage.setItem('prumo-language-selected', '1');
+    }
+  }
+
   // ── Metodologia lens bar — populate from /api/lenses ──────────────
   const mfLensBar = document.getElementById('mf-lens-bar');
   if (mfLensBar) {
@@ -259,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
               const txt = wrap.querySelector('#mf-custom-ideology-text').value.trim();
               if (txt) {
                 localStorage.setItem('prumo-custom-ideology', txt);
-                App.showToast('Lente personalizada guardada');
+                App.showToast(_getMessage('lens_saved'));
                 const textEl = document.getElementById('mf-ideology-text');
                 if (textEl) textEl.textContent = txt;
               }
