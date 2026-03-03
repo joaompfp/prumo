@@ -121,6 +121,18 @@ async def painel_analysis_endpoint(request: Request):
     return get_painel_analysis(sections, updated, force=force)
 
 
+@router.get("/painel-headline")
+async def painel_headline_endpoint(request: Request):
+    """Claude Opus one-shot headline for Painel KPIs. Disk-cached 6h."""
+    from ..services.painel import build_painel
+    from ..services.painel_headline import get_painel_headline
+    force = request.query_params.get("force") == "1"
+    data = build_painel()
+    sections = data.get("sections", [])
+    updated = data.get("updated", "")
+    return get_painel_headline(sections, updated, force=force)
+
+
 @router.get("/compare-catalog")
 def api_compare_catalog(request: Request):
     """

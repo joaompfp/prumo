@@ -1,0 +1,112 @@
+"""One-shot headline generation via Claude Opus — cached 6h."""
+import os
+import json
+import time
+from .interpret import ANTHROPIC_KEY, _opener
+from urllib.request import Request
+
+CAE_DB_PATH = os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
+_DATA_DIR = os.path.dirname(CAE_DB_PATH)
+_CACHE_PATH = os.path.join(_DATA_DIR, "painel-headline-cache.json")
+_CACHE_TTL_SECONDS = 6 * 3600  # 6 hours
+
+
+def _build_headline_prompt(sections: list) -> str | None:
+    lines = []
+    for section in sections:
+        title = section.get("title", "Indicadores")
+        for k in section.get("kpis", []):
+            if k.get("value") is None:
+                continue
+            yoy_str = f", var. anual: {k['yoy']:+.1f}{k.get('yoy_unit') or '%'}" if k.get("yoy") is not None else ""
+            lines.append(f"  - {k['label']} ({title}): {k['value']} {k.get('unit', '')}{yoy_str}")
+
+    if not lines:
+        return None
+
+    kpi_block = "\n".join(lines)
+    return (
+        "Com base nestes indicadores económicos portugueses, escreve UMA frase noticiosa "
+        "com máximo 12 palavras, específica com números, em português europeu. "
+        "Sem aspas, sem ponto final, sem prefixos como 'Headline:' ou 'Frase:'.\n"
+        "Exemplos:\n"
+        "  Inflação em 2.4% enquanto salários crescem 4.1% — convergência lenta\n"
+        "  Desemprego nos 6.3% com energia a pesar nas famílias\n\n"
+        f"{kpi_block}"
+    )
+
+
+def get_painel_headline(sections: list, updated: str, force: bool = False) -> dict:
+    """
+    Return Claude Opus headline for Painel KPIs.
+    Disk-cached per data period, TTL 6h.
+    Returns None headline on failure — JS falls back to rule-based title.
+    """
+    if not ANTHROPIC_KEY:
+        return {"headline": None, "cached": False, "error": "API key not configured"}
+
+    # Load cache
+    cache = {}
+    try:
+        if os.path.exists(_CACHE_PATH):
+            cache = json.loads(open(_CACHE_PATH, encoding="utf-8").read())
+    except Exception:
+        cache = {}
+
+    cache_key = f"headline:v1:{updated}"
+    now = time.time()
+
+    if not force and cache_key in cache:
+        entry = cache[cache_key]
+        age = now - entry.get("ts", 0)
+        if age < _CACHE_TTL_SECONDS:
+            return {
+                "headline": entry["headline"],
+                "generated_at": entry["generated_at"],
+                "cached": True,
+            }
+
+    prompt = _build_headline_prompt(sections)
+    if not prompt:
+        return {"headline": None, "cached": False, "error": "No KPI data available"}
+
+    try:
+        body = json.dumps({
+            "model": "claude-opus-4-6-20251101",
+            "max_tokens": 80,
+            "messages": [{"role": "user", "content": prompt}],
+        }).encode()
+
+        req = Request(
+            "https://api.anthropic.com/v1/messages",
+            data=body,
+            headers={
+                "x-api-key": ANTHROPIC_KEY,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+        )
+
+        with _opener.open(req, timeout=30) as resp:
+            data = json.loads(resp.read())
+            text_parts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
+            headline = " ".join(text_parts).strip().strip('"').strip("'")
+
+        generated_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        cache[cache_key] = {
+            "headline": headline,
+            "generated_at": generated_at,
+            "ts": now,
+        }
+        print(f"[painel_headline] generated: {headline!r}", flush=True)
+
+        try:
+            open(_CACHE_PATH, "w", encoding="utf-8").write(json.dumps(cache, ensure_ascii=False, indent=2))
+        except Exception as e:
+            print(f"[painel_headline] cache write error: {e}", flush=True)
+
+        return {"headline": headline, "generated_at": generated_at, "cached": False}
+
+    except Exception as exc:
+        print(f"[painel_headline] error: {exc}", flush=True)
+        return {"headline": None, "cached": False, "error": str(exc)}

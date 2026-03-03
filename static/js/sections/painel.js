@@ -74,6 +74,12 @@ App.registerSection('painel', async () => {
     const titleEl = container.querySelector('.section-title');
     const subEl = container.querySelector('.section-subtitle');
     if (titleEl) titleEl.textContent = titleMsg;
+
+    // Fetch headline from Opus (non-blocking — fallback to rule-based)
+    API.get('/api/painel-headline').then(h => {
+      if (h?.headline && titleEl) titleEl.textContent = h.headline;
+    }).catch(() => {}); // silent fail → rule-based title stays
+
     if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
 
     // Source label map
