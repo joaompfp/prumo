@@ -147,8 +147,11 @@ App.registerSection('painel', async () => {
       <div id="painel-ia-links" class="painel-ia-links" style="display:none"></div>
     </div>`;
 
+    // ── PT vs Europa placeholder (no topo antes das KPI sections) ────────
+    const ptEuropaPlaceholder = '<div class="pt-mundo-top-container" id="pt-mundo-top-container"></div>';
+
     if (useSections) {
-      body.innerHTML = iaPanelHtml + '<div class="painel-sections">' +
+      body.innerHTML = iaPanelHtml + ptEuropaPlaceholder + '<div class="painel-sections">' +
         data.sections.map(section => {
           const kpis = section.kpis || [];
           return `
@@ -162,8 +165,12 @@ App.registerSection('painel', async () => {
         '</div>';
     } else {
       const kpis = allKpis;
-      body.innerHTML = iaPanelHtml + '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
+      body.innerHTML = iaPanelHtml + ptEuropaPlaceholder + '<div class="kpi-grid">' + kpis.map(renderKpiCard).join('') + '</div>';
     }
+
+    // ── Render PT vs Europa no topo (antes das restantes secções) ──────────
+    const ptEuropaTop = body.querySelector('#pt-mundo-top-container');
+    if (ptEuropaTop) renderPTvsMundo(ptEuropaTop);
 
     // ── IA button toggle logic ─────────────────────────────────────
     let iaLoading = false;
@@ -255,6 +262,7 @@ App.registerSection('painel', async () => {
         { label: 'Desemprego',        indicator: 'unemployment',    source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27',  unit: '%',  decimals: 1 },
         { label: 'Crescimento PIB',   indicator: 'gdp_growth',      source: 'WORLDBANK', ref: 'EU',  refLabel: 'UE',     unit: '%',  decimals: 2 },
         { label: 'PIB per Capita PPP',indicator: 'gdp_per_capita_ppp',source:'WORLDBANK',ref: 'EU',  refLabel: 'UE',     unit: '$',  decimals: 0 },
+        // TODO: adicionar indicadores EU
       ];
 
       const section = document.createElement('div');
@@ -338,9 +346,6 @@ App.registerSection('painel', async () => {
       }
     });
 
-    // ── Render PT vs Mundo subsection ────────────────────────────────
-    const pSection = body.querySelector('.painel-sections') || body;
-    renderPTvsMundo(pSection);
 
   } catch(e) {
     console.error('[painel] init error:', e);
