@@ -43,14 +43,15 @@
 .nav-brand-icon-wrap::after {
   content: "PT";
   display: block;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 12px;
+  font-weight: 900;
   color: #8B0000;
   line-height: 1;
   text-align: center;
   margin-top: -1px;
   width: 100%;
+  padding-left: 1px;
   pointer-events: none;
 }
 
