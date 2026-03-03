@@ -9,7 +9,7 @@
 .nav-brand-link {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
   text-decoration: none;
   user-select: none;
   padding: 4px 16px 4px 10px;
