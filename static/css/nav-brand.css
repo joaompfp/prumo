@@ -30,8 +30,8 @@
 
 /* ── Ícone (plumb bob) ───────────────────────────────────────── */
 .nav-brand-icon-img {
-  height: 57px;
-  width: 57px;
+  height: 63px;
+  width: 63px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
