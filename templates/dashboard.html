@@ -10,20 +10,28 @@
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://joao.date/dados">
   <meta property="og:title"       content="Prumo PT — Economia a Régua e Esquadro">
-  <meta property="og:description" content="Dashboard de indicadores económicos portugueses com análise IA integrada. Dados das fontes oficiais, verificados, não comentados.">
+  <meta property="og:description" content="Dashboard de indicadores socioeconómicos portugueses com análise IA integrada. Fontes oficiais, processo transparente.">
   <meta property="og:locale"      content="pt_PT">
+  <meta property="og:image"       content="https://cae.joao.date/static/images/prumo/logo-og.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
   <meta name="twitter:card"       content="summary">
   <meta name="twitter:title"      content="Prumo PT — Economia a Régua e Esquadro">
   <meta name="twitter:description" content="Indicadores económicos PT: painel, comparação europeia, explorador de séries. Análise IA por Claude. Dados INE, Eurostat, OCDE, Banco Mundial.">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+  <!-- Favicons & PWA icons -->
+  <link rel="icon" type="image/svg+xml" href="{{ base_path }}/static/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ base_path }}/static/images/prumo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ base_path }}/static/images/prumo/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ base_path }}/static/images/prumo/apple-touch-icon.png">
+  <link rel="manifest" href="{{ base_path }}/static/site.webmanifest">
 
   <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Space Grotesk: clean geometric sans-serif para logo -->
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Playfair Display + Inter: logo identity system -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 
   <!-- BASE_PATH injection -->
   <script>window.__BASE_PATH__ = "{{ base_path }}";</script>
@@ -41,14 +49,22 @@
 
 <!-- NAV -->
 <nav class="nav" role="navigation" aria-label="Secções do dashboard">
-  <a href="https://joao.date/dados" class="nav-brand-link" title="Prumo PT — Economia a Régua e Esquadro">
-    <img src="{{ base_path }}/static/images/prumo/logo.svg" alt="Prumo PT" class="nav-brand-logo" height="44" loading="eager">
+  <a href="https://joao.date/dados" class="nav-brand-link" title="Prumo PT — Dados. Contexto. Decisão.">
+    <!-- Desktop: logo original (PNG transparente) -->
+    <img src="{{ base_path }}/static/images/prumo/nav-icon.png" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-desktop" loading="eager">
+    <!-- Mobile: figura + PRUMO PT -->
+    <img src="{{ base_path }}/static/images/prumo/logo-mobile.svg" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-mobile" loading="eager">
+    <div class="nav-brand-text">
+      <div class="nav-brand-name">Prumo</div>
+      <div class="nav-brand-tagline">Dados. Contexto. Decisão.</div>
+    </div>
   </a>
-  <a class="nav-tab" href="#painel"       data-section="painel"       aria-label="Painel de Indicadores"><span class="nav-tab-icon">📊</span><span class="nav-tab-label">Painel</span></a>
-  <a class="nav-tab" href="#comparativos" data-section="comparativos" aria-label="PT vs Europa e Mundo"><span class="nav-tab-icon">🌍</span><span class="nav-tab-label">Comparativos</span></a>
-  <a class="nav-tab" href="#explorador"   data-section="explorador"   aria-label="Análise de Dados"><span class="nav-tab-icon">🔍</span><span class="nav-tab-label">Análise</span></a>
-  <a class="nav-tab" href="#ficha"        data-section="ficha"        aria-label="Ficha Técnica"><span class="nav-tab-icon">📋</span><span class="nav-tab-label">Ficha</span></a>
-  <a class="nav-tab" href="#ajuda"        data-section="ajuda"        aria-label="Ajuda e Sobre"><span class="nav-tab-icon">❓</span><span class="nav-tab-label">Ajuda</span></a>
+  <a class="nav-tab" href="#painel"       data-section="painel"       aria-label="Painel de Indicadores"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="1.5" width="5" height="5" rx="0.5"/><rect x="9.5" y="1.5" width="5" height="5" rx="0.5"/><rect x="1.5" y="9.5" width="5" height="5" rx="0.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="0.5"/></svg></span><span class="nav-tab-label">Painel</span></a>
+  <a class="nav-tab" href="#comparativos" data-section="comparativos" aria-label="PT vs Europa e Mundo"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c-2 1.5-3 4-3 6.5s1 5 3 6.5M8 1.5c2 1.5 3 4 3 6.5s-1 5-3 6.5"/></svg></span><span class="nav-tab-label">Comparativos</span></a>
+  <a class="nav-tab" href="#explorador"   data-section="explorador"   aria-label="Análise de Dados"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4 4M4 8.5l1.5-2L7 8l2-3"/></svg></span><span class="nav-tab-label">Análise</span></a>
+  <a class="nav-tab" href="#ficha"        data-section="ficha"        aria-label="Ficha Técnica"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1"/><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3"/></svg></span><span class="nav-tab-label">Ficha</span></a>
+  <a class="nav-tab" href="#ajuda"        data-section="ajuda"        aria-label="Ajuda e Sobre"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M6 6c0-1.1.9-2 2-2 1.1 0 2 .9 2 2 0 1-.7 1.6-1.5 2C7.8 8.5 8 9 8 9.5"/><circle cx="8" cy="12" r=".75" fill="currentColor" stroke="none"/></svg></span><span class="nav-tab-label">Ajuda</span></a>
+  <a class="nav-tab" href="#manifesto"    data-section="manifesto"    aria-label="Manifesto"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h10v12H3zM5.5 5.5h5M5.5 8h5M5.5 10.5h2.5"/><circle cx="11" cy="10.5" r="1.5" fill="currentColor" stroke="none" opacity=".7"/></svg></span><span class="nav-tab-label">Manifesto</span></a>
 </nav>
 
 <!-- #painel -->
@@ -147,6 +163,120 @@
   </div>
 </noscript>
 
+<!-- #manifesto -->
+<section id="manifesto" class="section" role="main">
+  <div class="section-header">
+    <h2 class="section-title">Manifesto</h2>
+    <p class="section-subtitle">Como as análises IA são geradas</p>
+  </div>
+  <div class="mf-body">
+    <p class="mf-intro">Cada análise é gerada a partir de dados socioeconómicos reais, combinados com um enquadramento editorial explícito. O processo é totalmente transparente — o texto completo do prompt é apresentado abaixo.</p>
+
+    <h3 class="mf-heading">Fluxo da análise</h3>
+    <div class="mf-flow">
+
+      <div class="mf-flow-step">
+        <div class="mf-flow-left">
+          <div class="mf-flow-bubble mf-flow-bubble--t1">1</div>
+          <div class="mf-flow-vline mf-flow-vline--t1"></div>
+        </div>
+        <div class="mf-flow-right">
+          <div class="mf-flow-label mf-flow-label--t1">Dados económicos</div>
+          <div class="mf-flow-sub">Séries temporais actualizadas automaticamente a partir de APIs públicas. Cada indicador é armazenado com fonte, unidade e período.</div>
+          <pre class="mf-flow-code"># Exemplo — INE: Índice de Produção Industrial
+{
+  "source":    "INE",
+  "indicator": "ipi_seasonal_cae_TOT",
+  "period":    "2026-01",
+  "value":     112.4,
+  "unit":      "índice (base 2021=100)"
+}
+
+# Fonte original:
+# https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores
+# Actualização: mensal · Cobertura: 2000–presente</pre>
+          <div class="mf-flow-pill-row">
+            <span class="mf-pill">INE</span>
+            <span class="mf-pill">Eurostat</span>
+            <span class="mf-pill">Banco de Portugal</span>
+            <span class="mf-pill">REN</span>
+            <span class="mf-pill">ERSE</span>
+            <span class="mf-pill">FRED</span>
+            <span class="mf-pill">WorldBank</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mf-flow-step mf-flow-step--t2">
+        <div class="mf-flow-left">
+          <div class="mf-flow-bubble mf-flow-bubble--t2">2</div>
+          <div class="mf-flow-vline mf-flow-vline--t2"></div>
+        </div>
+        <div class="mf-flow-right">
+          <div class="mf-flow-label mf-flow-label--t2">Enquadramento editorial <span class="mf-ex-tag mf-ex-tag--t2" style="vertical-align:middle;margin-left:8px">ideology.txt</span></div>
+          <div class="mf-flow-sub">Injectado no início de cada prompt. Define o ponto de vista da análise — fixo e transparente.</div>
+          <pre class="mf-flow-code mf-flow-code--ideology">{{ ideology }}</pre>
+        </div>
+      </div>
+
+      <div class="mf-flow-step">
+        <div class="mf-flow-left">
+          <div class="mf-flow-bubble mf-flow-bubble--t3">3</div>
+          <div class="mf-flow-vline mf-flow-vline--t3"></div>
+        </div>
+        <div class="mf-flow-right">
+          <div class="mf-flow-label mf-flow-label--t3">Prompt enviado ao modelo</div>
+          <div class="mf-flow-sub">Os dados do passo 1 e o enquadramento do passo 2 são combinados num único prompt estruturado. O modelo também pode pesquisar a web para contextualizar com notícias recentes.</div>
+          <pre class="mf-flow-code"># Estrutura do prompt (simplificado):
+
+[ideology.txt]          ← enquadramento editorial (passo 2)
+
+Série: IPI Total Indústria (dessaz.)
+Período: Jan 2025 – Jan 2026
+Valores: 108.2, 109.1, 107.8, ..., 112.4
+Variação anual: +3.9%
+
+Pesquisa notícias recentes sobre este indicador
+em Portugal (últimos 90 dias). Fontes PT prioritárias.
+Escreve uma análise de 3–4 parágrafos.</pre>
+          <div class="mf-flow-pill-row">
+            <span class="mf-pill">Claude Haiku</span>
+            <span class="mf-pill">web search activo</span>
+            <span class="mf-pill">cache 30 dias</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mf-flow-step mf-flow-step--last">
+        <div class="mf-flow-left">
+          <div class="mf-flow-bubble mf-flow-bubble--t4">4</div>
+        </div>
+        <div class="mf-flow-right">
+          <div class="mf-flow-label mf-flow-label--t4">Análise publicada na página</div>
+          <div class="mf-flow-sub">O modelo devolve texto estruturado com análise, enquadramento e links de contexto. É apresentado como card expandível junto ao gráfico da série.</div>
+          <pre class="mf-flow-code"># Output estruturado (exemplo):
+
+headline: "Produção industrial cresce 3.9% — maior ritmo desde 2022"
+
+análise:
+  "O índice de produção industrial atingiu 112.4 pontos
+   em Janeiro, acumulando o quarto mês consecutivo de
+   crescimento. A recuperação concentra-se nos sectores
+   de bens intermédios (+5.1%) e automóvel (+8.3%)..."
+
+fontes: [
+  { título: "Indústria portuguesa acelera...", url: "...", data: "2026-02-14" },
+  { título: "BCE mantém juros — impacto...",  url: "...", data: "2026-02-08" }
+]</pre>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</section>
+
 <footer class="site-footer">
   <div class="footer-inner">
     <a href="https://o.joao.date" target="_blank" rel="noopener">o.joao.date</a>
@@ -173,4 +303,3 @@
 </footer>
 
 </body>
-</html>

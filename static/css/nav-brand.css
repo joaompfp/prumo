@@ -1,74 +1,128 @@
 /* ═══════════════════════════════════════════════════════════════
-   Prumo PT Nav Brand
-   Minimal, constructivist — instrumento de trabalho, não startup
+   Prumo PT — Nav Brand v4
+   Desktop: [ícone] [Prumo bold + tagline]
+   Mobile:  [ícone] [PRUMO PT bold, maior]
    ═══════════════════════════════════════════════════════════════ */
 
+/* ── Wrapper ─────────────────────────────────────────────────── */
 .nav-brand-link {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   text-decoration: none;
   user-select: none;
-  outline-offset: 3px;
-  padding: 0 4px;
+  padding: 0 16px 0 8px;
+  border-right: 1px solid var(--c-border, #E5E7EB);
+  flex-shrink: 0;
+  height: 100%;
+  transition: padding 0.25s ease, gap 0.25s ease;
 }
 
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ── Icon ────────────────────────────────────────────────────── */
-.nav-brand-icon {
-  width: 24px;
-  height: 24px;
+/* ── Ícone square ────────────────────────────────────────────── */
+.nav-brand-icon-img {
+  height: 52px;
+  width: 52px;
+  object-fit: contain;
   flex-shrink: 0;
   display: block;
+  transition: height 0.25s ease, width 0.25s ease;
 }
 
-/* ── Wordmark ─────────────────────────────────────────────────  */
-.nav-brand-wordmark {
-  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  font-size: 17px;
-  letter-spacing: -0.5px;
+/* ── Ícones: desktop vs mobile ──────────────────────────────── */
+.nav-brand-icon-desktop {
+  display: block;   /* visível no desktop */
+}
+.nav-brand-icon-mobile {
+  display: none;    /* oculto no desktop */
+}
+
+/* ── Bloco de texto ──────────────────────────────────────────── */
+.nav-brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-width 0.25s ease;
+  max-width: 200px;
+  opacity: 1;
+}
+
+/* ── Nome "Prumo" — desktop ──────────────────────────────────── */
+.nav-brand-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+  color: #111827;
   line-height: 1;
+  white-space: nowrap;
 }
 
-.nav-brand-open {
-  font-weight: 400;
-  color: #4B5563;
-}
-
-.nav-brand-stats {
-  font-weight: 700;
-  color: #CC0000;
-}
-
-/* ── Version tag — small superscript, sem caixa ──────────────  */
-.nav-brand-version {
+/* ── Tagline — desktop ───────────────────────────────────────── */
+.nav-brand-tagline {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  color: #9CA3AF;
-  letter-spacing: 0;
-  align-self: flex-end;
-  margin-bottom: 1px;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 2.2px;
+  color: #6B7280;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-/* ── Mobile: esconde brand ───────────────────────────────────── */
-@media (max-width: 600px) {
-  .nav-brand-link,
-  .nav-brand { display: none !important; }
+/* ── "Prumo PT" — mobile only (oculto no desktop) ────────────── */
+.nav-brand-name-mobile {
+  display: none;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: -0.2px;
+  color: #111827;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-/* Logo 4 (Prumo PT) — SVG file replacing inline icon */
-.nav-brand-logo {
-  height: 44px;
-  width: auto;
-  display: block;
-  /* On dark navbar, invert to white/light mode — the SVG uses light bg so keep as-is */
+/* ── Nav tabs — mais compactos ───────────────────────────────── */
+.nav-tab {
+  padding: 0 14px !important;
+  font-size: 10.5px !important;
+  letter-spacing: 0.5px !important;
+  transition: padding 0.25s ease;
 }
+
+.nav-tab-icon {
+  margin-right: 5px !important;
+  transition: margin 0.2s ease;
+}
+
+/* ── Legacy ──────────────────────────────────────────────────── */
+.nav-brand-logo { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE (<=600px)
+   - Ícone square mantém-se
+   - "Prumo PT" maior, Playfair 900, sem tagline
+   - Tabs: só ícone, sem label
+   ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 600px) {
-  .nav-brand-logo { height: 36px; }
+  .nav-brand-link {
+    padding: 0 10px 0 8px;
+    gap: 0;
+  }
+
+  /* Trocar ícones */
+  .nav-brand-icon-desktop {
+    display: none;
+  }
+  .nav-brand-icon-mobile {
+    display: block;
+    height: 52px;   /* mais alto pois tem texto dentro */
+    width: auto;
+  }
+
+  /* Esconder bloco de texto — o texto já está na imagem mobile */
+  .nav-brand-text {
+    display: none;
+  }
 }

@@ -2,7 +2,7 @@
 import os
 import json
 import time
-from .interpret import ANTHROPIC_KEY, _opener
+from .interpret import ANTHROPIC_KEY, _opener, _load_ideology
 from urllib.request import Request
 
 CAE_DB_PATH = os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
@@ -12,6 +12,7 @@ _CACHE_TTL_SECONDS = 6 * 3600  # 6 hours
 
 
 def _build_headline_prompt(sections: list) -> str | None:
+    ideology = _load_ideology()
     lines = []
     for section in sections:
         title = section.get("title", "Indicadores")
@@ -26,19 +27,37 @@ def _build_headline_prompt(sections: list) -> str | None:
 
     kpi_block = "\n".join(lines)
     return (
-        "Com base nestes indicadores económicos portugueses, escreve UMA frase noticiosa "
-        "com máximo 12 palavras, específica com números, em português europeu. "
-        "Sem aspas, sem ponto final, sem prefixos como 'Headline:' ou 'Frase:'.\n"
-        "Exemplos:\n"
-        "  Inflação em 2.4% enquanto salários crescem 4.1% — convergência lenta\n"
-        "  Desemprego nos 6.3% com energia a pesar nas famílias\n\n"
+        f"{ideology}\n\n"
+        "---\n\n"
+        "Com base nos dados acima, escreve uma manchete jornalística em PT-PT:\n"
+        "LINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números\n"
+        "LINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante\n"
+        "LINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional\n\n"
+        "Sem aspas, sem ponto final, sem prefixos como 'Título:', 'Linha 1:' etc.\n"
+        "Separa as linhas com \\n apenas. Âncora tudo nos números. Começa directamente.\n\n"
         f"{kpi_block}"
     )
 
 
+def _get_sonnet_analysis_text() -> str | None:
+    """Load the most recent Sonnet analysis from its cache."""
+    import os, json
+    analysis_cache_path = os.path.join(_DATA_DIR, "painel-analysis-cache.json")
+    try:
+        cache = json.loads(open(analysis_cache_path, encoding="utf-8").read())
+        # Find most recent entry
+        entries = [(k, v) for k, v in cache.items() if v.get("text")]
+        if not entries:
+            return None
+        latest = max(entries, key=lambda x: x[1].get("ts", 0))
+        return latest[1]["text"]
+    except Exception:
+        return None
+
+
 def get_painel_headline(sections: list, updated: str, force: bool = False) -> dict:
     """
-    Return Claude Opus headline for Painel KPIs.
+    Return Claude Opus headline derived from Sonnet analysis.
     Disk-cached per data period, TTL 6h.
     Returns None headline on failure — JS falls back to rule-based title.
     """
@@ -53,7 +72,7 @@ def get_painel_headline(sections: list, updated: str, force: bool = False) -> di
     except Exception:
         cache = {}
 
-    cache_key = f"headline:v1:{updated}"
+    cache_key = f"headline:v2:{updated}"
     now = time.time()
 
     if not force and cache_key in cache:
@@ -66,15 +85,31 @@ def get_painel_headline(sections: list, updated: str, force: bool = False) -> di
                 "cached": True,
             }
 
-    prompt = _build_headline_prompt(sections)
-    if not prompt:
-        return {"headline": None, "cached": False, "error": "No KPI data available"}
+    # Try to use existing Sonnet analysis as context
+    sonnet_text = _get_sonnet_analysis_text()
+
+    if sonnet_text:
+        # Ask Opus to distil the analysis into a headline
+        user_msg = (
+            "Com base nesta análise económica sobre Portugal, escreve uma manchete jornalística em PT-PT:\n"
+            "LINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números\n"
+            "LINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante\n"
+            "LINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional\n\n"
+            "Sem aspas, sem ponto final, sem prefixos. Separa as linhas com \\n. "
+            "Âncora tudo nos números. Começa directamente com a manchete.\n\n"
+            f"ANÁLISE:\n{sonnet_text[:3000]}"
+        )
+    else:
+        # Fallback: use raw KPI data with ideology framing
+        user_msg = _build_headline_prompt(sections)
+        if not user_msg:
+            return {"headline": None, "cached": False, "error": "No data available"}
 
     try:
         body = json.dumps({
-            "model": "claude-opus-4-6-20251101",
-            "max_tokens": 80,
-            "messages": [{"role": "user", "content": prompt}],
+            "model": "claude-opus-4-6",
+            "max_tokens": 120,
+            "messages": [{"role": "user", "content": user_msg}],
         }).encode()
 
         req = Request(
@@ -90,7 +125,7 @@ def get_painel_headline(sections: list, updated: str, force: bool = False) -> di
         with _opener.open(req, timeout=30) as resp:
             data = json.loads(resp.read())
             text_parts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
-            headline = " ".join(text_parts).strip().strip('"').strip("'")
+            headline = "\n".join(text_parts).strip().strip('"').strip("'").replace("\\n", "\n")
 
         generated_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         cache[cache_key] = {
@@ -98,7 +133,8 @@ def get_painel_headline(sections: list, updated: str, force: bool = False) -> di
             "generated_at": generated_at,
             "ts": now,
         }
-        print(f"[painel_headline] generated: {headline!r}", flush=True)
+        source = "sonnet-analysis" if sonnet_text else "raw-kpis"
+        print(f"[painel_headline] generated from {source}: {headline!r}", flush=True)
 
         try:
             open(_CACHE_PATH, "w", encoding="utf-8").write(json.dumps(cache, ensure_ascii=False, indent=2))

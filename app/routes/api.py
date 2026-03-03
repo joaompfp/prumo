@@ -111,14 +111,73 @@ async def interpret_endpoint(request: Request):
 
 @router.get("/painel-analysis")
 async def painel_analysis_endpoint(request: Request):
-    """Sonnet one-shot analysis of all Painel KPIs. Disk-cached per data period."""
+    """Sonnet one-shot analysis of all Painel KPIs. Disk-cached per data period.
+    If force=1 and cache miss, triggers background generation and returns 202 with status.
+    """
+    import asyncio
     from ..services.painel import build_painel
     from ..services.painel_analysis import get_painel_analysis
     force = request.query_params.get("force") == "1"
+    bg = request.query_params.get("bg") == "1"
     data = build_painel()
     sections = data.get("sections", [])
     updated = data.get("updated", "")
-    return get_painel_analysis(sections, updated, force=force)
+    # Add PT vs Europa comparison section
+    from ..services.painel_analysis import _build_pt_europa_section
+    pt_europa = _build_pt_europa_section()
+    if pt_europa.get("kpis"):
+        sections = sections + [pt_europa]
+    loop = asyncio.get_event_loop()
+    # If bg=1, fire and forget — return immediately
+    if bg:
+        loop.run_in_executor(None, get_painel_analysis, sections, updated, True)
+        return {"status": "generating", "message": "Analysis generation started in background"}
+    # Otherwise run in thread pool — does NOT block the event loop (other requests served normally)
+    return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force)
+
+
+_link_title_cache: dict = {}
+
+@router.get("/link-title")
+async def link_title_endpoint(url: str = ""):
+    """Fetch <title> or og:title from a URL. In-memory cache (1 day TTL)."""
+    if not url or not url.startswith("http"):
+        return {"title": ""}
+    if url in _link_title_cache:
+        return {"title": _link_title_cache[url]}
+    import urllib.request, re
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; CAE-Dashboard/1.0)"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            html = resp.read(32768).decode("utf-8", errors="replace")
+        title = ""
+        for pat in [
+            r'og:title[^>]+content=[^>]*?content=["\']([^"\'<>]+)',
+            r'content=["\']([^"\'<>]+)["\'][^>]*?og:title',
+            r'<og:title[^>]*>([^<]+)</og:title>',
+            r'<title[^>]*>([^<]+)</title>',
+        ]:
+            m = re.search(pat, html, re.I | re.S)
+            if m:
+                title = m.group(1).strip()[:120]
+                break
+        import html as _html
+        title = _html.unescape(title) if title else ""
+        _link_title_cache[url] = title
+        return {"title": title}
+    except Exception:
+        return {"title": ""}
+
+
+@router.get("/painel-card-links")
+async def painel_card_links_endpoint(request: Request):
+    """Deferred link search for a Painel analysis card. Cached 1 week."""
+    topic   = request.query_params.get("topic", "")
+    context = request.query_params.get("context", "")
+    if not topic:
+        return {"links": [], "error": "topic required"}
+    from ..services.painel_card_links import get_card_links
+    return get_card_links(topic, context)
 
 
 @router.get("/painel-headline")
@@ -332,13 +391,13 @@ def api_kpis():
         conn = get_db()
         try:
             rows = conn.execute("""
-                SELECT source, indicator, value, unit, period, MAX(period)
+                SELECT source, indicator, ANY_VALUE(value) as value, ANY_VALUE(unit) as unit, MAX(period) as period
                 FROM indicators
                 WHERE source NOT IN ('DGEG', 'ERSE')
                 GROUP BY source, indicator
             """).fetchall()
             result = {}
-            for source, indicator, value, unit, period, _ in rows:
+            for source, indicator, value, unit, period in rows:
                 result.setdefault(source, {})[indicator] = {
                     "value": value, "unit": unit, "period": period,
                 }
@@ -381,6 +440,36 @@ def api_stats(
     if mode == "list":
         return query_stats(event_type, since, limit)
     return count_stats(event_type, since)
+
+
+_manifesto_cache: dict = {}
+
+@router.get("/manifesto")
+def api_manifesto():
+    """Expose ideology text and prompt flow for the Manifesto tab. Cached in memory until restart."""
+    global _manifesto_cache
+    if not _manifesto_cache:
+        from ..services.interpret import _load_ideology
+        ideology = _load_ideology()
+        _manifesto_cache = {
+            "ideology": ideology,
+            "flow": [
+                {"step": 1, "label": "Dados económicos", "desc": "INE, Eurostat, OCDE, Banco Mundial, REN, ERSE — recolhidos automaticamente"},
+                {"step": 2, "label": "Enquadramento político", "desc": "Texto editável em ideology.txt — define o ângulo analítico"},
+                {"step": 3, "label": "Prompt ao Claude Sonnet", "desc": "Dados + enquadramento → análise em português europeu, por secção"},
+                {"step": 4, "label": "Análise IA", "desc": "3 frases por tema, com links a artigos reais, gráfico por card"},
+            ]
+        }
+    return _manifesto_cache
+    return {
+        "ideology": ideology,
+        "flow": [
+            {"step": 1, "label": "Dados económicos", "desc": "INE, Eurostat, OCDE, Banco Mundial, REN, ERSE — recolhidos automaticamente"},
+            {"step": 2, "label": "Enquadramento político", "desc": "Texto editável em ideology.txt — define o ângulo analítico"},
+            {"step": 3, "label": "Prompt ao Claude Sonnet", "desc": "Dados + enquadramento → análise em português europeu, por secção"},
+            {"step": 4, "label": "Análise IA", "desc": "3 frases por tema, com links a artigos reais, gráfico por card"},
+        ]
+    }
 
 
 @router.get("/export")

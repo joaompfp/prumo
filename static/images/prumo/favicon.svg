@@ -1,10 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <line x1="16" y1="2" x2="16" y2="8" stroke="#8899AA" stroke-width="1.2" stroke-linecap="round"/>
-  <circle cx="16" cy="2" r="1.5" fill="none" stroke="#8899AA" stroke-width="0.9"/>
-  <rect x="8" y="8" width="16" height="14" rx="1.5" fill="#C0392B"/>
-  <line x1="8" y1="11" x2="11" y2="11" stroke="#E06050" stroke-width="0.7"/>
-  <line x1="8" y1="14" x2="12" y2="14" stroke="#E06050" stroke-width="0.7"/>
-  <line x1="8" y1="17" x2="11" y2="17" stroke="#E06050" stroke-width="0.7"/>
-  <text x="16" y="16.5" font-family="Georgia,serif" font-size="9" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">&#x3A3;</text>
-  <polygon points="8,22 24,22 16,30" fill="#C0392B"/>
+  <!-- Fundo vermelho rounded -->
+  <rect width="32" height="32" rx="6" fill="#C0392B"/>
+  <!-- Σ branco -->
+  <text x="16" y="23" text-anchor="middle"
+        font-family="Georgia, serif" font-size="20" font-weight="700"
+        fill="white">Σ</text>
 </svg>

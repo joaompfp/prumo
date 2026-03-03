@@ -32,7 +32,9 @@ def dashboard(request: Request):
         from ..config import BASE_PATH
         prefix = BASE_PATH
     prefix = prefix.rstrip("/")
+    from ..services.interpret import _load_ideology
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
         "base_path": prefix,
+        "ideology": _load_ideology(),
     })

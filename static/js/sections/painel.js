@@ -77,7 +77,14 @@ App.registerSection('painel', async () => {
 
     // Fetch headline from Opus (non-blocking — fallback to rule-based)
     API.get('/api/painel-headline').then(h => {
-      if (h?.headline && titleEl) titleEl.textContent = h.headline;
+      if (!h?.headline) return;
+      const lines = h.headline.split('\n').map(l => l.trim()).filter(Boolean);
+      if (titleEl && lines[0]) titleEl.textContent = lines[0];
+      if (subEl && lines.length > 1) {
+        // Replace data-update line with Opus subtitles
+        subEl.innerHTML = lines.slice(1).map(l => `<span>${l}</span>`).join(' &middot; ')
+          + ` <span style="opacity:.6;font-size:.9em">· ${updated} · ${allKpis.length} KPIs</span>`;
+      }
     }).catch(() => {}); // silent fail → rule-based title stays
 
     if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
@@ -140,14 +147,16 @@ App.registerSection('painel', async () => {
       iaBtn.className = 'time-preset-btn painel-ia-toggle';
       iaBtn.title = 'Análise interpretativa com Claude Sonnet';
       iaBtn.textContent = '✦ Análise IA';
+      iaBtn.classList.add('active');
       headerEl.appendChild(iaBtn);
     }
 
     // Persistent IA panel placeholder (injected at top of body)
-    const iaPanelHtml = `<div id="painel-ia-panel" style="display:none">
+    const iaPanelHtml = `<div id="painel-ia-panel" class="ia-collapsed">
       <div class="painel-ia-header">
-        <span class="painel-ia-label">✦ Análise CAE — Claude Sonnet</span>
+        <span class="painel-ia-label">✦ Análise IA — Claude Sonnet</span>
         <span class="painel-ia-meta" id="painel-ia-meta"></span>
+        <button class="painel-ia-regen" id="painel-ia-regen" title="Forçar nova análise">↺</button>
       </div>
       <div id="painel-ia-text" class="painel-ia-text"></div>
       <div id="painel-ia-links" class="painel-ia-links" style="display:none"></div>
@@ -206,7 +215,301 @@ App.registerSection('painel', async () => {
 
     // ── IA button toggle logic ─────────────────────────────────────
     let iaLoading = false;
-    function _renderMd(text) {
+    function _renderMiniSparkline(container, data, yoy, refData) {
+    if (!window.echarts || !data?.length) {
+      container.style.cssText = 'display:flex;align-items:center;justify-content:center;color:var(--c-muted);font-size:12px';
+      container.textContent = 'Sem dados';
+      return;
+    }
+    const chart = window.echarts.init(container, null, { renderer: 'svg' });
+    const vals  = data.map(d => d.value ?? d.v ?? d);
+    const color = yoy >= 0 ? '#2E7D32' : '#C62828';
+    const series = [
+      { name: 'PT', type: 'line', data: vals, smooth: true,
+        lineStyle: { color, width: 2.5 },
+        areaStyle: { color: color, opacity: 0.06 },
+        symbol: 'none' },
+    ];
+    if (refData?.length) {
+      // Align ref series to same x-axis periods (by position)
+      const refVals = refData.map(d => d.value ?? d.v ?? d);
+      series.push({
+        name: 'EU', type: 'line', data: refVals, smooth: true,
+        lineStyle: { color: '#1565C0', width: 1.5, type: 'dashed' },
+        symbol: 'none',
+      });
+    }
+    chart.setOption({
+      grid: { top: 8, right: 4, bottom: 20, left: 40 },
+      xAxis: { type: 'category', data: data.map(d => d.period || d.p || ''),
+               axisLabel: { fontSize: 9, color: '#888',
+                 interval: 'auto',
+                 // Show only ~4 labels max regardless of data density
+                 formatter: (v, i) => {
+                   const step = Math.max(1, Math.floor(data.length / 4));
+                   return i % step === 0 ? v.slice(0, 7) : '';
+                 }
+               },
+               axisLine: { lineStyle: { color: '#ddd' } }, axisTick: { show: false } },
+      yAxis: { type: 'value', scale: true,
+               axisLabel: { fontSize: 9, color: '#888' },
+               splitLine: { lineStyle: { color: '#f0f0f0' } } },
+      series,
+      tooltip: { trigger: 'axis', textStyle: { fontSize: 11 } },
+      ...(refData?.length ? { legend: { data: ['PT','EU'], top: 0, right: 0, itemWidth: 12, itemHeight: 8, textStyle: { fontSize: 9 } } } : {}),
+    });
+  }
+
+    async function _loadDeferredCardLinks(container, existingLinks) {
+    // For each card without a link, fetch one deferred from /api/painel-card-links
+    const cards = container.querySelectorAll('.ai-analysis-card');
+    const BASE = window.__BASE_PATH__ || '';
+    cards.forEach(async (card) => {
+      const titleEl = card.querySelector('.ai-card-title');
+      if (!titleEl) return;
+      const topic = titleEl.textContent.trim();
+      // Already has a link from Sonnet?
+      if (existingLinks[topic]?.length) return;
+      // Fetch deferred
+      try {
+        const body = card.querySelector('.ai-card-body')?.textContent?.slice(0, 200) || '';
+        const r = await fetch(`${BASE}/api/painel-card-links?topic=${encodeURIComponent(topic)}&context=${encodeURIComponent(body)}`);
+        const d = await r.json();
+        if (d.links?.length) {
+          const linkEl = card.querySelector('.ai-card-link');
+          if (!linkEl) {
+            const head = card.querySelector('.ai-card-head');
+            if (head) {
+              const a = document.createElement('a');
+              a.href = d.links[0].url;
+              a.target = '_blank';
+              a.className = 'ai-card-link';
+              a.title = d.links[0].title || 'Leia mais';
+              a.textContent = '↗';
+              head.appendChild(a);
+            }
+          }
+        }
+      } catch(e) { /* silent */ }
+    });
+  }
+
+    function _renderAnalysisCards(text, links) {
+    // Split by **Title:** pattern into cards
+    const CARD_RE = /\*\*([^*]+):\*\*/g;
+    const segments = [];
+    let lastIdx = 0, m;
+
+    while ((m = CARD_RE.exec(text)) !== null) {
+      if (m.index > lastIdx) {
+        // text before first header → intro card
+        const intro = text.slice(lastIdx, m.index).trim();
+        if (intro && !segments.length) segments.push({ title: null, body: intro });
+      }
+      const titleStart = m.index;
+      const bodyStart  = m.index + m[0].length;
+      // Find next header
+      const nextMatch = CARD_RE.exec(text);
+      CARD_RE.lastIndex = m.index + m[0].length; // reset to find correctly
+      segments.push({ title: m[1].trim(), body: null, _start: bodyStart });
+      lastIdx = titleStart;
+    }
+
+    // Simpler split approach: split on **Title:** pattern
+    const parts = text.split(/(?=\*\*[^*]+:\*\*)/);
+    const cards = parts.map(part => {
+      const hm = part.match(/^\*\*([^*]+):\*\*(.+)$/s);
+      if (hm) return { title: hm[1].trim(), body: hm[2].trim() };
+      const trimmed = part.trim();
+      return trimmed ? { title: null, body: trimmed } : null;
+    }).filter(Boolean);
+
+    if (!cards.length) return _renderMd(text); // fallback
+
+    // Section link icons
+    const ICONS = {
+      'Custo de Vida': '🛒', 'Poder de Compra': '💰', 'Energia': '⚡',
+      'Emprego': '👷', 'Indústria': '🏭', 'Produção': '🏭',
+      'Habitação': '🏠', 'Exportações': '📦', 'Comércio': '📦',
+      'Fiscal': '📊', 'Dívida': '📊', 'Convergência': '🇪🇺',
+      'Turismo': '✈️', 'Agricultura': '🌾', 'Construção': '🏗️',
+    };
+    const icon = t => {
+      if (!t) return '📌';
+      for (const [k, v] of Object.entries(ICONS)) if (t.includes(k)) return v;
+      return '📍';
+    };
+
+    const cardHtml = cards.map((c, i) => {
+      // Fix: links[section] is an array [{url,title},...], pick first URL
+      // links entries can be plain URL strings OR {url,title} objects
+      const _normLink = l => typeof l === 'string' ? {url: l, title: ''} : l;
+      const sectionLinks = (links[c.title] || []).map(_normLink).filter(l => l.url);
+      const firstUrl  = sectionLinks[0]?.url || null;
+      const lnk = firstUrl ? `<a href="${firstUrl}" target="_blank" rel="noopener noreferrer" class="ai-card-link" title="Leia mais">↗</a>` : '';
+      // Links: show domain initially, lazy-fetch real title
+      const allLinkHtml = sectionLinks.length
+        ? sectionLinks.map((l, li) => {
+            const domain = (l.url.replace(/https?:\/\/(www\.)?/, '').split('/')[0] || l.url);
+            const linkId = `ai-lnk-${i}-${li}`;
+            const linkTitleId = `ai-lnkt-${i}-${li}`;
+            // Kick off async title fetch
+            const BASE2 = window.__BASE_PATH__ || '';
+            fetch(`${BASE2}/api/link-title?url=${encodeURIComponent(l.url)}`)
+              .then(r => r.json()).then(d => {
+                const el = document.getElementById(linkTitleId);
+                if (!el) return;
+                const clean = (d.title || '')
+                  .replace(/\s*[|—\-]\s*(Público|Observador|RTP|DN|SAPO|PCP|Avante|Expresso)[^|—\-]*$/i, '')
+                  .trim();
+                if (clean) el.textContent = clean;
+              }).catch(() => {});
+            // Format: "source ↗ title-placeholder"
+            return `<a id="${linkId}" href="${l.url}" target="_blank" rel="noopener noreferrer" class="ai-card-extlink" title="${l.url}"><span class="ai-link-source">${domain}</span> ↗ <span id="${linkTitleId}" class="ai-link-title">…</span></a>`;
+          }).join('')
+        : '';
+
+      return `<div class="ai-analysis-card ${i === 0 ? 'active' : ''}" data-section="${c.title || ''}">
+        ${c.title ? `<div class="ai-card-head"><span class="ai-card-icon">${icon(c.title)}</span><span class="ai-card-title">${c.title}</span>${lnk}</div>` : ''}
+        <div class="ai-card-content">
+          <div class="ai-card-body">${_renderMd(c.body || '')}</div>
+          <div class="ai-card-chart-col">
+            <div class="ai-card-chart-title" id="ai-cct-${i}"></div>
+            <div class="ai-card-chart-box" id="ai-card-chart-${i}"></div>
+            <div class="ai-card-chart-comment" id="ai-ccm-${i}"></div>
+          </div>
+        </div>
+        ${allLinkHtml ? `<div class="ai-card-links">${allLinkHtml}</div>` : ''}
+      </div>`;
+    }).join('');
+
+    const dots = cards.map((_, i) =>
+      `<button class="ai-dot ${i === 0 ? 'active' : ''}" data-idx="${i}"></button>`
+    ).join('');
+
+    return `<div class="ai-cards-wrap">
+      <div class="ai-cards-track" id="ai-cards-track">${cardHtml}</div>
+      <div class="ai-cards-nav">
+        <button class="ai-nav-btn" id="ai-prev">‹</button>
+        <div class="ai-dots" id="ai-dots">${dots}</div>
+        <button class="ai-nav-btn" id="ai-next">›</button>
+      </div>
+    </div>`;
+  }
+
+  function _initAnalysisCardsNav(container, kpiPerCard) {
+    const track = container.querySelector('#ai-cards-track');
+    const dots  = container.querySelectorAll('.ai-dot');
+    const cards = container.querySelectorAll('.ai-analysis-card');
+    const prev  = container.querySelector('#ai-prev');
+    const next  = container.querySelector('#ai-next');
+    if (!track || !cards.length) return;
+
+    // Render chart for each card upfront (they're hidden so no perf issue)
+    const EU_SOURCES = new Set(['EUROSTAT','WORLDBANK']);
+    const EU_REF_MAP = { 'EUROSTAT': 'EU27_2020', 'WORLDBANK': 'EU' };
+    const BASE = window.__BASE_PATH__ || '';
+
+    const renderCard = (i, kpi, refSpark) => {
+      const chartEl   = document.getElementById(`ai-card-chart-${i}`);
+      const titleEl   = document.getElementById(`ai-cct-${i}`);
+      const commentEl = document.getElementById(`ai-ccm-${i}`);
+      if (!chartEl || !kpi?.spark?.length) return;
+
+      if (titleEl) {
+        const indUrl = `#explorador?s=${encodeURIComponent((kpi.source || '') + '/' + (kpi.id || ''))}`;
+        titleEl.innerHTML = `<a href="${indUrl}" class="ai-card-chart-title-link" title="Ver no Explorador de Análise">${kpi.label || ''} ↗</a>`;
+      }
+      if (commentEl) {
+        const period = kpi.spark?.at(-1)?.period || kpi.spark?.at(-1)?.p || '';
+        const yoy = kpi.yoy ?? 0;
+        const abs = Math.abs(yoy).toFixed(1);
+        const val = kpi.value;
+        const unit = kpi.unit || '%';
+        // Family-focused insight templates by indicator
+        const id = kpi.id || '';
+        const ind = kpi.indicator || '';
+        let msg = '';
+        if (ind === 'hicp_yoy' || id === 'inflation') {
+          msg = yoy > 0 ? `Preços ${abs}% acima do ano passado — poder de compra das famílias continua sob pressão` : `Inflação desce ${abs}% — algum alívio no orçamento familiar`;
+        } else if (ind === 'unemp_m' || id === 'unemployment') {
+          msg = yoy < 0 ? `Desemprego caiu ${abs}pp — mais famílias com rendimento de trabalho` : `Desemprego subiu ${abs}pp — mais famílias em situação vulnerável`;
+        } else if (ind === 'electricity_price_mibel' || id === 'energy_cost') {
+          msg = yoy < 0 ? `Grossista caiu ${abs}% — mas a factura doméstica ainda não reflecte a queda` : `Electricidade grossista sobe ${abs}% — custo energético das famílias em risco`;
+        } else if (/btn|electricity/i.test(ind)) {
+          msg = yoy > 0 ? `Tarifa sobe ${abs}% — mais peso na factura das famílias` : `Tarifa desce ${abs}% — algum alívio nas despesas fixas`;
+        } else if (/euribor/i.test(ind)) {
+          msg = yoy > 0 ? `Euribor sobe ${abs}pp — prestações de crédito habitação sobem` : `Euribor desce ${abs}pp — alívio para famílias com crédito variável`;
+        } else if (/wage|salar/i.test(ind) || id === 'wages_industry') {
+          msg = yoy > 0 ? `Salários industriais crescem ${abs}% — ganho real de poder de compra` : `Salários industriais caem ${abs}% — famílias operárias sob pressão`;
+        } else if (ind === 'rnd_pct_gdp') {
+          msg = `I&D em ${val}% do PIB — longe dos 3% da meta europeia; menos inovação = menos empregos qualificados`;
+        } else {
+          // Generic fallback with direction sentiment
+          const dir = yoy >= 0 ? 'Subida' : 'Descida';
+          msg = `${dir} de ${abs}${kpi.yoy_unit || '%'} — ${val} ${unit} em ${period}`;
+        }
+        commentEl.textContent = msg;
+      }
+      _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSpark || null);
+    };
+
+    // First pass: render all cards immediately (no EU ref)
+    (kpiPerCard || []).forEach((kpi, i) => renderCard(i, kpi, null));
+
+    // Second pass: async fetch EU ref series for EUROSTAT/WORLDBANK indicators
+    (kpiPerCard || []).forEach(async (kpi, i) => {
+      if (!kpi?.spark?.length || !EU_SOURCES.has(kpi.source)) return;
+      const ref = EU_REF_MAP[kpi.source] || 'EU27_2020';
+      try {
+        const url = `${BASE}/api/mundo?indicator=${encodeURIComponent(kpi.id)}&source=${kpi.source}&countries=${encodeURIComponent('PT,' + ref)}&since=2015`;
+        const data = await API.get(url);
+        const refSeries = (data.series || []).find(s => s.country === ref || s.country === 'EU27_2020' || s.country === 'EU');
+        if (refSeries?.data?.length) {
+          const chartEl = document.getElementById(`ai-card-chart-${i}`);
+          if (chartEl) {
+            // Destroy & re-render with EU ref
+            try { window.echarts.getInstanceByDom(chartEl)?.dispose(); } catch(e) {}
+            _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSeries.data);
+          }
+        }
+      } catch(e) { /* silent — EU ref is optional enhancement */ }
+    });
+
+    let current = 0;
+    const go = (idx) => {
+      // Wrap around
+      const len = cards.length;
+      current = ((idx % len) + len) % len;
+      cards.forEach((c, i) => {
+        if (i === current) {
+          c.classList.add('active');
+          c.classList.add('card-entering');
+          requestAnimationFrame(() => {
+            c.classList.remove('card-entering');
+            // Resize all ECharts instances in this card (were hidden at init)
+            c.querySelectorAll('[id^="ai-card-chart-"]').forEach(el => {
+              try { window.echarts?.getInstanceByDom(el)?.resize(); } catch(e) {}
+            });
+          });
+        } else {
+          c.classList.remove('active');
+        }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    };
+    prev?.addEventListener('click', () => go(current - 1));
+    next?.addEventListener('click', () => go(current + 1));
+    dots.forEach(d => d.addEventListener('click', () => go(+d.dataset.idx)));
+    let sx = 0;
+    track.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) go(dx < 0 ? current + 1 : current - 1);
+    }, { passive: true });
+  }
+
+  function _renderMd(text) {
       // Minimal markdown: **bold**, *italic*, paragraphs; strip --- separators
       return text
         .replace(/^---+\s*$/gm, '')          // strip horizontal rules
@@ -229,18 +532,16 @@ App.registerSection('painel', async () => {
       const linksEl = document.getElementById('painel-ia-links');
       if (!panel) return;
 
-      if (panel.style.display !== 'none') {
-        panel.style.display = 'none';
+      if (!panel.classList.contains('ia-collapsed')) {
+        panel.classList.add('ia-collapsed');
         if (btn) btn.classList.remove('active');
         return;
       }
-
-      // Show panel
-      panel.style.display = '';
+      panel.classList.remove('ia-collapsed');
       if (btn) btn.classList.add('active');
 
       // If already has content, just show
-      if (textEl && textEl.innerHTML.trim() && !textEl.querySelector('.ai-loading')) return;
+      if (textEl && textEl.innerHTML.trim() && !textEl.querySelector('.ai-loading') && !panel.classList.contains('ia-collapsed')) return;
 
       // Load analysis
       if (iaLoading) return;
@@ -249,30 +550,64 @@ App.registerSection('painel', async () => {
 
       try {
         const BASE = window.__BASE_PATH__ || '';
+        console.log('[painel-ia] Fetching analysis...');
         const resp = await fetch(`${BASE}/api/painel-analysis`);
+        console.log('[painel-ia] Response status:', resp.status);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const result = await resp.json();
+        console.log('[painel-ia] Data received, chart_pick:', result.chart_pick);
         if (result.text) {
-          if (textEl) textEl.innerHTML = _renderMd(result.text);
+          if (textEl) {
+            textEl.innerHTML = _renderAnalysisCards(result.text, result.section_links || {});
+
+            // Build kpiPerCard: Sonnet specifies indicator per section via section_charts
+            // Fallback: highest abs YoY when no match
+            const sectionCharts = result.section_charts || {};
+            const cardSections = textEl.querySelectorAll('.ai-analysis-card');
+            const kpiPerCard = Array.from(cardSections).map((cardEl, i) => {
+              const sectionTitle = cardEl.dataset.section || '';
+              // Sonnet may return string or array — always use first
+              const raw = sectionCharts[sectionTitle];
+              const indicatorId = Array.isArray(raw) ? raw[0] : raw;
+              let kpiMatch = null;
+
+              if (indicatorId) {
+                kpiMatch = allKpis.find(k => k.id === indicatorId)
+                        || allKpis.find(k => k.indicator === indicatorId)
+                        || allKpis.find(k => k.id?.includes(indicatorId) || indicatorId.includes(k.id || ''))
+                        || allKpis.find(k => k.indicator?.includes(indicatorId) || indicatorId.includes(k.indicator || ''));
+              }
+              if (!kpiMatch?.spark?.length) {
+                // Fallback: rotate through top-YoY KPIs
+                const ranked = allKpis
+                  .filter(k => k.spark?.length > 3 && k.yoy != null)
+                  .sort((a, b) => Math.abs(b.yoy) - Math.abs(a.yoy));
+                kpiMatch = ranked[i % Math.max(1, ranked.length)] || null;
+              }
+              return kpiMatch || null;
+            });
+
+            _initAnalysisCardsNav(textEl, kpiPerCard);
+            _loadDeferredCardLinks(textEl, result.section_links || {});
+
+            // chart_pick from Sonnet: override comment for the matching card
+            if (result.chart_pick?.indicator) {
+              const pick = result.chart_pick;
+              kpiPerCard.forEach((kpi, i) => {
+                if (kpi && (kpi.id === pick.indicator || kpi.indicator === pick.indicator ||
+                    kpi.label?.toLowerCase() === (pick.label || '').toLowerCase())) {
+                  const commentEl = document.getElementById(`ai-ccm-${i}`);
+                  if (commentEl && pick.title) commentEl.textContent = pick.title;
+                }
+              });
+            }
+          }
           if (metaEl) {
             const ts = result.generated_at ? new Date(result.generated_at).toLocaleDateString('pt-PT') : '';
             const genTime = result.generation_ms ? ` · ${Math.round(result.generation_ms / 1000)}s` : '';
             metaEl.textContent = (result.cached ? 'cache' : `gerado agora${genTime}`) + (ts ? ` · ${ts}` : '') + ` · dados: ${result.data_period || ''}`;
           }
-          // Render per-section links
-          const sectionLinks = result.section_links || {};
-          const linkEntries = Object.entries(sectionLinks).filter(([, links]) => links && links.length);
-          if (linksEl && linkEntries.length) {
-            linksEl.innerHTML = '<span class="ai-links-label">🔗 Leitura relacionada por secção:</span>' +
-              linkEntries.map(([section, links]) =>
-                `<div class="painel-ia-links-section"><strong>${section}</strong>` +
-                links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.title || l.url}</a>`).join('') +
-                '</div>'
-              ).join('');
-            linksEl.style.display = '';
-          } else if (linksEl) {
-            linksEl.style.display = 'none';
-          }
+          // Global links list removed — links are shown inline per card
         } else {
           if (textEl) textEl.innerHTML = '<em style="color:var(--c-muted)">Análise indisponível — token Sonnet não configurado.</em>';
         }
@@ -286,6 +621,33 @@ App.registerSection('painel', async () => {
     // Bind button (may have been re-rendered)
     const iaBtnEl = container.querySelector('#painel-ia-btn');
     if (iaBtnEl) iaBtnEl.addEventListener('click', toggleIAPanel);
+
+    // Regenerar button — triggers bg generation + reloads after 75s
+    const regenBtn = container.querySelector('#painel-ia-regen');
+    if (regenBtn) {
+      regenBtn.addEventListener('click', async () => {
+        regenBtn.textContent = '↺';
+        regenBtn.disabled = true;
+        regenBtn.title = 'A gerar nova análise…';
+        const metaEl = document.getElementById('painel-ia-meta');
+        if (metaEl) metaEl.textContent = 'A gerar nova análise (~60s)…';
+        const BASE = window.__BASE_PATH__ || '';
+        try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1`); } catch(e) {}
+        // Reload after 75s
+        setTimeout(() => {
+          regenBtn.disabled = false;
+          regenBtn.title = 'Forçar nova análise';
+          // Re-trigger analysis panel load
+          const textEl = document.getElementById('painel-ia-text');
+          if (textEl) textEl.innerHTML = '';
+          toggleIAPanel(); toggleIAPanel(); // close & reopen to reload
+        }, 75000);
+      });
+    }
+    // Auto-open on first render
+    if (!document.getElementById('painel-ia-panel')?.querySelector('.ai-analysis-card')) {
+      toggleIAPanel();
+    }
 
     // ── Track B: PT vs Mundo subsection ────────────────────────────
     async function renderPTvsMundo(parentEl) {
@@ -362,7 +724,7 @@ App.registerSection('painel', async () => {
         const cardEl = document.getElementById(`pt-mundo-card-${i}`);
         try {
           const since = '2018';
-          const url = `/api/mundo?indicator=${encodeURIComponent(cmp.indicator)}&source=${cmp.source}&countries=PT,${cmp.ref}&since=${since}`;
+          const url = `/api/mundo?indicator=${encodeURIComponent(cmp.indicator)}&source=${cmp.source}&countries=${encodeURIComponent('PT,' + cmp.ref)}&since=${since}`;
           const data = await API.get(url);
           const series = data.series || [];
           const ptSeries  = series.find(s => s.country === 'PT');

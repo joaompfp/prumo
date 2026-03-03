@@ -4,7 +4,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 const App = (() => {
-  const SECTIONS = ['painel', 'comparativos', 'explorador', 'ficha', 'ajuda'];
+  const SECTIONS = ['painel', 'comparativos', 'explorador', 'ficha', 'ajuda', 'manifesto'];
   const _initialized = {};
   const _loaders = {};
 
@@ -53,7 +53,10 @@ const App = (() => {
     const section = document.getElementById(sectionId);
     if (section) section.classList.add('active');
 
-    // Lazy init
+    // Lazy init — also re-init if navigating with query params (deep link)
+    const incomingHash = window.location.hash;
+    const hasIncomingParams = incomingHash.startsWith('#' + sectionId + '?');
+    if (hasIncomingParams) _initialized[sectionId] = false;
     if (!_initialized[sectionId] && _loaders[sectionId]) {
       _initialized[sectionId] = true;
       try {
@@ -66,10 +69,11 @@ const App = (() => {
     // Resize all charts in section (fix ECharts zero-width bug)
     setTimeout(() => SWD.resizeAll(), 50);
 
-    // Update URL (preserve query params for sections that use them)
+    // Update URL — preserve query params when navigating TO this section
     const currentHash = window.location.hash;
     const currentBase = currentHash.split('?')[0].replace('#', '');
-    if (currentBase !== sectionId) {
+    const hasQueryForThisSection = currentHash.startsWith('#' + sectionId + '?');
+    if (currentBase !== sectionId && !hasQueryForThisSection) {
       history.replaceState(null, '', '#' + sectionId);
     }
   }
