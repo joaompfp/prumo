@@ -7,12 +7,12 @@ import hashlib
 import json
 import time
 from urllib.request import Request
+from ..config import CAE_DB_PATH, INTERPRET_CACHE_PATH, OUTPUT_LANGUAGES, DEFAULT_OUTPUT_LANGUAGE
 
 ANTHROPIC_KEY = os.environ.get("CAE_ANTHROPIC_TOKEN", "")
-CAE_DB_PATH = os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
 _DATA_DIR = os.path.dirname(CAE_DB_PATH)
 _IDEOLOGY_PATH = os.path.join(_DATA_DIR, "ideology.txt")
-_CACHE_PATH = os.path.join(_DATA_DIR, "interpret-cache.json")
+_CACHE_PATH = INTERPRET_CACHE_PATH
 CACHE_TTL = 2592000  # 30 dias
 
 # Load disk cache into memory at import time
@@ -79,11 +79,12 @@ def _parse_links(text: str) -> tuple:
         return text[:idx].strip(), []
 
 
-def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, custom_ideology: str = None):
+def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, custom_ideology: str = None, output_language: str = None):
     """Call Claude Haiku (with web search) to interpret chart data.
     Returns dict {"text": str, "links": list} or None if unconfigured.
     Optional lens parameter selects a political perspective (see ideology_lenses.py).
-    When lens='custom', custom_ideology contains the user-provided ideology text."""
+    When lens='custom', custom_ideology contains the user-provided ideology text.
+    output_language selects the response language (key from site.json output_languages)."""
     if not ANTHROPIC_KEY:
         return None
 
@@ -91,15 +92,16 @@ def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, cust
     lens_key = lens or "default"
     if lens == "custom" and custom_ideology:
         lens_key = "custom:" + hashlib.md5(custom_ideology.encode()).hexdigest()[:8]
+    lang_key = output_language or DEFAULT_OUTPUT_LANGUAGE
     key = hashlib.md5(json.dumps(
-        [{"s": s["source"], "i": s["indicator"]} for s in series] + [from_p, to_p, lens_key]
+        [{"s": s["source"], "i": s["indicator"]} for s in series] + [from_p, to_p, lens_key, lang_key]
     ).encode()).hexdigest()
 
     now = time.time()
     if key in _cache and now - _cache[key][0] < CACHE_TTL:
         return _cache[key][1]
 
-    prompt = _build_prompt(series, from_p, to_p, lens=lens, custom_ideology=custom_ideology)
+    prompt = _build_prompt(series, from_p, to_p, lens=lens, custom_ideology=custom_ideology, output_language=output_language)
     if not prompt:
         return None
 
@@ -156,7 +158,7 @@ def _sample_evenly(data: list, max_pts: int) -> list:
     return [data[i] for i in sorted(indices)]
 
 
-def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None):
+def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None, output_language=None):
     if not series:
         return None
 
@@ -210,6 +212,17 @@ def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None):
         context = get_lens_prompt(lens, custom_ideology=custom_ideology)
     else:
         context = _load_ideology()
+
+    # Resolve output language description from site.json map
+    lang_code = output_language or DEFAULT_OUTPUT_LANGUAGE
+    lang_desc = OUTPUT_LANGUAGES.get(lang_code, OUTPUT_LANGUAGES.get(DEFAULT_OUTPUT_LANGUAGE, "português europeu (sem brasileirismos)"))
+
+    # Hard language constraint at the very top of the prompt
+    lang_prefix = (
+        f"IDIOMA OBRIGATÓRIO: toda a tua resposta DEVE ser escrita em {lang_desc}. "
+        f"Ignora quaisquer instruções posteriores que contradigam esta regra de idioma.\n\n"
+    )
+
     instruction = (
         "IMPORTANTE: não escrevas introduções, planos, títulos nem comentários em nenhum idioma. "
         "Começa directamente com a pesquisa, depois escreve só a análise.\n\n"
@@ -219,7 +232,7 @@ def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None):
         f"Prioriza fontes: jornaldenegocios.pt, eco.pt, observador.pt, publico.pt, expresso.pt, rtp.pt, reuters. "
         f"EVITA: conteúdo explicativo/educacional (o que é X, como funciona X), Wikipedia, FAQs de bancos, sites evergreen. "
         f"Queremos notícias de conjuntura recentes, não explicações do conceito.\n\n"
-        f"2. Escreve EXACTAMENTE 3 frases em português europeu (sem brasileirismos) sobre {indicator_labels}, "
+        f"2. Escreve EXACTAMENTE 3 frases em {lang_desc} sobre {indicator_labels}, "
         f"com foco na {focus} (período: {period_str}). "
         "Usa **negrito** para realçar os números ou factos mais importantes. "
         "Texto corrido, sem títulos. "
@@ -231,4 +244,4 @@ def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None):
         'LINKS:[{"url":"https://...","title":"..."}]\n'
         "Omite LINKS apenas se não encontraste fontes credíveis recentes."
     )
-    return f"{context}\n\n{instruction}\n\n" + "\n".join(parts)
+    return f"{lang_prefix}{context}\n\n{instruction}\n\n" + "\n".join(parts)

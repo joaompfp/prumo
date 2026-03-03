@@ -5,10 +5,10 @@ import json
 import time
 from .interpret import _load_ideology, _opener, ANTHROPIC_KEY
 from urllib.request import Request
+from ..config import CAE_DB_PATH, PAINEL_CACHE_PATH, OUTPUT_LANGUAGES, DEFAULT_OUTPUT_LANGUAGE
 
-CAE_DB_PATH = os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
 _DATA_DIR = os.path.dirname(CAE_DB_PATH)
-_CACHE_PATH = os.path.join(_DATA_DIR, "painel-analysis-cache.json")
+_CACHE_PATH = PAINEL_CACHE_PATH
 
 
 def _parse_meta_json(text: str) -> tuple:
@@ -38,7 +38,7 @@ def _parse_meta_json(text: str) -> tuple:
         return text[:idx].strip(), {}, None, {}
 
 
-def _build_painel_prompt(sections: list, updated: str, lens: str = None, custom_ideology: str = None) -> str:
+def _build_painel_prompt(sections: list, updated: str, lens: str = None, custom_ideology: str = None, output_language: str = None) -> str:
     if lens:
         from .ideology_lenses import get_lens_prompt, get_lens_link_sources, get_lens_metadata
         ideology = get_lens_prompt(lens, custom_ideology=custom_ideology)
@@ -93,11 +93,17 @@ def _build_painel_prompt(sections: list, updated: str, lens: str = None, custom_
                 indicator_ids.append(ind_id)
     ids_str = ", ".join(indicator_ids[:45])
 
+    # Resolve output language
+    lang_code = output_language or DEFAULT_OUTPUT_LANGUAGE
+    lang_desc = OUTPUT_LANGUAGES.get(lang_code, OUTPUT_LANGUAGES.get(DEFAULT_OUTPUT_LANGUAGE, "português europeu (sem brasileirismos)"))
+
     instruction = (
+        f"IDIOMA OBRIGATÓRIO: toda a tua resposta DEVE ser escrita em {lang_desc}. "
+        f"Ignora quaisquer instruções posteriores que contradigam esta regra de idioma.\n\n"
         f"Tens um orçamento ESTRITO de {token_budget} tokens para análise + links.\n"
         "NÃO escrevas notas, planos, separadores (---) nem texto em inglês. Começa directamente com a análise.\n\n"
         f"PASSO 1 — Pesquisa (silenciosa): pesquisa 2 artigos recentes (últimos 2 meses) por secção. Máx. 6 pesquisas. {search_hint}\n\n"
-        "PASSO 2 — Análise em **português europeu** (sem brasileirismos), período: " + updated + ".\n"
+        f"PASSO 2 — Análise em **{lang_desc}**, período: " + updated + ".\n"
         "Para cada secção, escreve EXACTAMENTE 3 frases curtas com **negrito** nos conceitos-chave.\n"
         "Interpreta impacto real para trabalhadores e famílias — não repitas números.\n"
         "Formato OBRIGATÓRIO: cada secção começa com título inline em negrito seguido de dois pontos (ex: **Custo de Vida:**). "
@@ -173,7 +179,7 @@ def _build_pt_europa_section() -> dict:
         return {"id": "pt_europa", "title": "Portugal vs. Europa", "kpis": []}
 
 
-def get_painel_analysis(sections: list, updated: str, force: bool = False, lens: str = None, custom_ideology: str = None) -> dict:
+def get_painel_analysis(sections: list, updated: str, force: bool = False, lens: str = None, custom_ideology: str = None, output_language: str = None) -> dict:
     """
     Return Sonnet analysis of Painel sections.
     Results are cached to disk keyed by `updated`. Cache survives restarts.
@@ -196,7 +202,8 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
     lens_key = lens or "default"
     if lens == "custom" and custom_ideology:
         lens_key = "custom:" + _hl.md5(custom_ideology.encode()).hexdigest()[:8]
-    cache_key = f"painel:v21:{updated}:{lens_key}"
+    lang_key = output_language or DEFAULT_OUTPUT_LANGUAGE
+    cache_key = f"painel:v22:{updated}:{lens_key}:{lang_key}"
     if not force and cache_key in cache:
         entry = cache[cache_key]
         return {
@@ -210,7 +217,7 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
             "cached": True,
         }
 
-    prompt = _build_painel_prompt(sections, updated, lens=lens, custom_ideology=custom_ideology)
+    prompt = _build_painel_prompt(sections, updated, lens=lens, custom_ideology=custom_ideology, output_language=output_language)
     if not prompt:
         return {"text": None, "cached": False, "error": "No KPI data available"}
 

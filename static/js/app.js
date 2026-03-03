@@ -12,6 +12,15 @@ const PARTY_LOGOS = {
 };
 const PARTY_ICONS = {};
 const CUSTOM_LENS_DEFAULT = window.__CUSTOM_LENS_DEFAULT__ || '';
+const OUTPUT_LANGUAGES = window.__OUTPUT_LANGUAGES__ || { pt: 'português europeu' };
+const DEFAULT_OUTPUT_LANGUAGE = window.__DEFAULT_OUTPUT_LANGUAGE__ || 'pt';
+
+// ── Global output language state ─────────────────────────────────────
+function getOutputLanguage() {
+  return localStorage.getItem('prumo-output-language') || DEFAULT_OUTPUT_LANGUAGE;
+}
+const LANG_FLAGS = { pt: '🇵🇹', crioulo: '🇨🇻', en: '🇬🇧', es: '🇪🇸', fr: '🇫🇷', de: '🇩🇪', it: '🇮🇹' };
+
 function _lensIcon(lensId) {
   const BASE = window.__BASE_PATH__ || '';
   if (PARTY_LOGOS[lensId]) return `<img class="lens-logo" src="${BASE}/static/images/parties/${PARTY_LOGOS[lensId]}" alt="${lensId}">`;
@@ -150,6 +159,40 @@ window.App = App;
 
 document.addEventListener('DOMContentLoaded', () => {
   App.init();
+
+  // ── Global language selector (nav bar) ────────────────────────────
+  const langContainer = document.getElementById('nav-lang-selector');
+  if (langContainer) {
+    const langKeys = Object.keys(OUTPUT_LANGUAGES);
+    if (langKeys.length > 1) {
+      const current = getOutputLanguage();
+      const flag = LANG_FLAGS[current] || current.toUpperCase();
+      langContainer.innerHTML = `<button class="lang-toggle" id="lang-toggle" title="Idioma de saída da IA">${flag}</button>
+        <div class="lang-dropdown hidden" id="lang-dropdown">
+          ${langKeys.map(k => {
+            const f = LANG_FLAGS[k] || '';
+            const active = k === current ? ' active' : '';
+            return `<button class="lang-option${active}" data-lang="${k}">${f} ${k.toUpperCase()}</button>`;
+          }).join('')}
+        </div>`;
+      const toggle = langContainer.querySelector('#lang-toggle');
+      const dropdown = langContainer.querySelector('#lang-dropdown');
+      toggle.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('hidden'); });
+      document.addEventListener('click', () => dropdown.classList.add('hidden'));
+      dropdown.addEventListener('click', e => {
+        const opt = e.target.closest('.lang-option');
+        if (!opt) return;
+        const lang = opt.dataset.lang;
+        localStorage.setItem('prumo-output-language', lang);
+        toggle.textContent = LANG_FLAGS[lang] || lang.toUpperCase();
+        dropdown.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === lang));
+        dropdown.classList.add('hidden');
+        window.dispatchEvent(new CustomEvent('language-change', { detail: { language: lang } }));
+      });
+    } else {
+      langContainer.style.display = 'none';
+    }
+  }
 
   // ── Hero onboarding — show only on first visit ──────────────────
   const hero = document.getElementById('hero-onboarding');

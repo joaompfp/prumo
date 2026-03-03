@@ -51,7 +51,7 @@
   line-height: 1;
   text-align: center;
   margin-top: -2px;
-  padding-left: 1px; /* compensate letter-spacing trailing space (half of 1.5px ≈ 1px for pixel-perfect centering) */
+  padding-left: 2px; /* compensate letter-spacing — shift PT slightly right to center under plumb bob */
   pointer-events: none;
 }
 
@@ -108,6 +108,68 @@
 
 /* ── Legacy ──────────────────────────────────────────────────── */
 .nav-brand-logo { display: none; }
+
+/* ── Language FAB — fixed top-right ───────────────────────────── */
+.lang-fab {
+  position: fixed;
+  top: 8px;
+  right: 10px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+}
+.lang-toggle {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 15px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.lang-toggle:hover {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+}
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid var(--c-border, #e5e7eb);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  z-index: 200;
+  min-width: 110px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lang-dropdown.hidden { display: none; }
+.lang-option {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.12s;
+  white-space: nowrap;
+}
+.lang-option:hover { background: #f3f4f6; }
+.lang-option.active { background: #fee2e2; font-weight: 600; }
 
 /* ═══════════════════════════════════════════════════════════════
    MOBILE (<=600px)

@@ -391,6 +391,11 @@ App.registerSection('painel', async () => {
       _dissolveFetchAnalysis(newLens);
     });
 
+    // Listen for output language changes — re-fetch analysis
+    window.addEventListener('language-change', () => {
+      _dissolveFetchAnalysis(currentLens);
+    });
+
     // Dissolve current IA text and re-fetch with new lens
     function _dissolveFetchAnalysis(newLens) {
       // Re-fetch headline with new lens (non-blocking)
@@ -811,7 +816,8 @@ App.registerSection('painel', async () => {
         const BASE = window.__BASE_PATH__ || '';
         const lensParam = getLensParam();
         const customIdeology = getCustomIdeology();
-        console.log('[painel-ia] Fetching analysis, lens:', lensParam);
+        const langParam = getOutputLanguage();
+        console.log('[painel-ia] Fetching analysis, lens:', lensParam, 'lang:', langParam);
 
         // Helper: fetch analysis (with short timeout for cache hits)
         async function _fetchAnalysis(timeoutMs) {
@@ -820,13 +826,13 @@ App.registerSection('painel', async () => {
           try {
             let r;
             if (lensParam === 'custom' && customIdeology) {
-              r = await fetch(`${BASE}/api/painel-analysis?lens=custom`, {
+              r = await fetch(`${BASE}/api/painel-analysis?lens=custom&output_language=${encodeURIComponent(langParam)}`, {
                 method: 'POST', signal: ac.signal,
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({custom_ideology: customIdeology}),
               });
             } else {
-              r = await fetch(`${BASE}/api/painel-analysis?lens=${encodeURIComponent(lensParam)}`, {signal: ac.signal});
+              r = await fetch(`${BASE}/api/painel-analysis?lens=${encodeURIComponent(lensParam)}&output_language=${encodeURIComponent(langParam)}`, {signal: ac.signal});
             }
             clearTimeout(timer);
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -837,12 +843,12 @@ App.registerSection('painel', async () => {
         // Helper: fire background generation
         function _fireBg() {
           if (lensParam === 'custom' && customIdeology) {
-            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom`, {
+            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom&output_language=${encodeURIComponent(langParam)}`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({custom_ideology: customIdeology}),
             }).catch(() => {});
           } else {
-            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(lensParam)}`).catch(() => {});
+            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(lensParam)}&output_language=${encodeURIComponent(langParam)}`).catch(() => {});
           }
         }
 
@@ -953,13 +959,14 @@ App.registerSection('painel', async () => {
         const BASE = window.__BASE_PATH__ || '';
         const _regenLens = getLensParam();
         const _regenCustom = getCustomIdeology();
+        const _regenLang = getOutputLanguage();
         if (_regenLens === 'custom' && _regenCustom) {
-          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom`, {
+          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom&output_language=${encodeURIComponent(_regenLang)}`, {
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({custom_ideology: _regenCustom}),
           }); } catch(e) {}
         } else {
-          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(_regenLens)}`); } catch(e) {}
+          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(_regenLens)}&output_language=${encodeURIComponent(_regenLang)}`); } catch(e) {}
         }
         // Reload after 75s
         setTimeout(() => {

@@ -506,11 +506,12 @@ App.registerSection('explorador', async () => {
     try {
       const lens = localStorage.getItem('prumo-lens') || 'cae';
       const custom_ideology = lens === 'custom' ? (localStorage.getItem('prumo-custom-ideology') || CUSTOM_LENS_DEFAULT) : null;
+      const output_language = getOutputLanguage();
       const res = await fetch(`${BASE}/api/interpret`, {
         method: 'POST',
         signal: ctrl.signal,
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa', lens, custom_ideology}),
+        body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa', lens, custom_ideology, output_language}),
       });
       if (ctrl.signal.aborted) return;
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

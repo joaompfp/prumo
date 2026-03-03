@@ -98,10 +98,11 @@ def api_mundo_meta():
 
 @router.post("/interpret")
 async def interpret_endpoint(request: Request):
-    """AI interpretation of chart series data (with web search)."""
+    """AI interpretation of chart series data (with web search).
+    Accepts output_language param to control response language (key from site.json output_languages)."""
     from ..services.interpret import interpret_chart
     body = await request.json()
-    result = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""), lens=body.get("lens"), custom_ideology=body.get("custom_ideology"))
+    result = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""), lens=body.get("lens"), custom_ideology=body.get("custom_ideology"), output_language=body.get("output_language"))
     if not result:
         return {"text": None, "links": []}
     if isinstance(result, str):  # backward compat
@@ -122,6 +123,7 @@ async def painel_analysis_endpoint(request: Request):
     force = request.query_params.get("force") == "1"
     bg = request.query_params.get("bg") == "1"
     lens = request.query_params.get("lens")
+    output_language = request.query_params.get("output_language")
     custom_ideology = None
     if request.method == "POST":
         try:
@@ -129,6 +131,8 @@ async def painel_analysis_endpoint(request: Request):
             custom_ideology = body.get("custom_ideology")
             if not lens:
                 lens = body.get("lens")
+            if not output_language:
+                output_language = body.get("output_language")
         except Exception:
             pass
     data = build_painel()
@@ -142,10 +146,10 @@ async def painel_analysis_endpoint(request: Request):
     loop = asyncio.get_event_loop()
     # If bg=1, fire and forget — return immediately
     if bg:
-        loop.run_in_executor(None, get_painel_analysis, sections, updated, True, lens, custom_ideology)
+        loop.run_in_executor(None, get_painel_analysis, sections, updated, True, lens, custom_ideology, output_language)
         return {"status": "generating", "message": "Analysis generation started in background"}
     # Otherwise run in thread pool — does NOT block the event loop (other requests served normally)
-    return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology)
+    return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology, output_language)
 
 
 _link_title_cache: dict = {}
@@ -463,6 +467,16 @@ def api_lenses():
     """Return available ideology lenses for the frontend selector."""
     from ..services.ideology_lenses import get_lenses
     return get_lenses()
+
+
+@router.get("/languages")
+def api_languages():
+    """Return available output languages for the language selector."""
+    from ..config import OUTPUT_LANGUAGES, DEFAULT_OUTPUT_LANGUAGE
+    return {
+        "languages": OUTPUT_LANGUAGES,
+        "default": DEFAULT_OUTPUT_LANGUAGE,
+    }
 
 
 @router.get("/metodologia")

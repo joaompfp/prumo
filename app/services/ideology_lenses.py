@@ -10,15 +10,19 @@ The CAE lens also falls back to /data/ideology.txt for backward compatibility.
 """
 import os
 from .interpret import _load_ideology
+from ..config import site_cfg, IDEOLOGIES_DIR
 
-CAE_DB_PATH = os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
-_DATA_DIR = os.path.dirname(CAE_DB_PATH)
-_IDEOLOGIES_DIR = os.path.join(_DATA_DIR, "ideologies")
+_IDEOLOGIES_DIR = IDEOLOGIES_DIR
+
+# Ideology file mapping from site.json (e.g. {"pcp": "pcp.txt", ...})
+_IDEOLOGY_MAP: dict = site_cfg("ideologies", {}) or {}
 
 
 def _load_lens_file(lens_id: str) -> str | None:
-    """Load ideology text from /data/ideologies/<lens_id>.txt if it exists."""
-    path = os.path.join(_IDEOLOGIES_DIR, f"{lens_id}.txt")
+    """Load ideology text from ideologies dir (configured in site.json paths.ideologies_dir).
+    Filename comes from site.json 'ideologies' map, falling back to <lens_id>.txt."""
+    filename = _IDEOLOGY_MAP.get(lens_id, f"{lens_id}.txt")
+    path = os.path.join(_IDEOLOGIES_DIR, filename)
     try:
         if os.path.exists(path):
             text = open(path, encoding="utf-8").read().strip()

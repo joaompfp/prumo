@@ -34,7 +34,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 
   <!-- BASE_PATH injection -->
-  <script>window.__BASE_PATH__ = "{{ base_path }}"; window.__N_INDICATORS__ = {{ n_indicators }}; window.__CUSTOM_LENS_DEFAULT__ = {{ custom_lens_default | tojson }};</script>
+  <script>window.__BASE_PATH__ = "{{ base_path }}"; window.__N_INDICATORS__ = {{ n_indicators }}; window.__CUSTOM_LENS_DEFAULT__ = {{ custom_lens_default | tojson }}; window.__OUTPUT_LANGUAGES__ = {{ output_languages | tojson }}; window.__DEFAULT_OUTPUT_LANGUAGE__ = {{ default_output_language | tojson }};</script>
 
   <!-- CSS -->
   <link rel="stylesheet" href="{{ base_path }}/static/css/swd-theme.css">
@@ -65,6 +65,7 @@
   <a class="nav-tab" href="#metodologia"  data-section="metodologia"  aria-label="Metodologia e Ficha Técnica"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2h10v12H3zM5.5 5.5h5M5.5 8h5M5.5 10.5h2.5"/><circle cx="11" cy="10.5" r="1.5" fill="currentColor" stroke="none" opacity=".7"/></svg></span><span class="nav-tab-label">Metodologia</span></a>
   <a class="nav-tab" href="#ajuda" data-section="ajuda" aria-label="Ajuda e Sobre" title="Ajuda"><span class="nav-tab-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M6 6c0-1.1.9-2 2-2 1.1 0 2 .9 2 2 0 1-.7 1.6-1.5 2C7.8 8.5 8 9 8 9.5"/><circle cx="8" cy="12" r=".75" fill="currentColor" stroke="none"/></svg></span><span class="nav-tab-label">Ajuda</span></a>
 </nav>
+<div class="lang-fab" id="nav-lang-selector" title="Idioma de saída da IA"></div>
 
 <!-- Global search bar — below nav -->
 <div class="search-bar" id="search-bar">

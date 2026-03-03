@@ -4,7 +4,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from ..config import TEMPLATES_DIR, STATIC_DIR, CUSTOM_LENS_DEFAULT
+from ..config import TEMPLATES_DIR, STATIC_DIR, CUSTOM_LENS_DEFAULT, OUTPUT_LANGUAGES, DEFAULT_OUTPUT_LANGUAGE
 
 router = APIRouter()
 templates = Jinja2Templates(directory=TEMPLATES_DIR)
@@ -54,4 +54,6 @@ def dashboard(request: Request):
         "ideology": _load_ideology(),
         "n_indicators": _count_indicators(),
         "custom_lens_default": CUSTOM_LENS_DEFAULT,
+        "output_languages": OUTPUT_LANGUAGES,
+        "default_output_language": DEFAULT_OUTPUT_LANGUAGE,
     })
