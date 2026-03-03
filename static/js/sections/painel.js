@@ -261,8 +261,9 @@ App.registerSection('painel', async () => {
         { label: 'Inflação (HICP)',   indicator: 'hicp',            source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27',  unit: '%',  decimals: 1 },
         { label: 'Desemprego',        indicator: 'unemployment',    source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27',  unit: '%',  decimals: 1 },
         { label: 'Crescimento PIB',   indicator: 'gdp_growth',      source: 'WORLDBANK', ref: 'EU',  refLabel: 'UE',     unit: '%',  decimals: 2 },
-        { label: 'PIB per Capita PPP',indicator: 'gdp_per_capita_ppp',source:'WORLDBANK',ref: 'EU',  refLabel: 'UE',     unit: '$',  decimals: 0 },
-        // TODO: adicionar indicadores EU
+        { label: 'PIB per Capita PPP',    indicator: 'gdp_per_capita_ppp',         source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '$',     decimals: 0 },
+        { label: 'Electricidade (Dom.)',   indicator: 'electricity_price_household', source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/kWh', decimals: 3, note: 'Fonte: Eurostat nrg_pc_204 · Semestral' },
+        { label: 'Rendimento Hora Med.',   indicator: 'earn_ses_pub2s',             source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/h',   decimals: 2, note: 'Fonte: Eurostat SES · Dados de 4 em 4 anos' },
       ];
 
       const section = document.createElement('div');
@@ -318,7 +319,8 @@ App.registerSection('painel', async () => {
               </div>
             </div>
             ${deltaHtml}
-            ${period ? `<div class="pt-mundo-col-period">Último dado: ${period}</div>` : ''}`;
+            ${period ? `<div class="pt-mundo-col-period">Último dado: ${period}</div>` : ''}
+            ${cmp.note ? `<div class="pt-mundo-note">${cmp.note}</div>` : ''}`;
         } catch(e) {
           if (cardEl) cardEl.innerHTML = `<div class="pt-mundo-card-title">${cmp.label}</div><div class="error-state" style="height:60px">Erro ao carregar</div>`;
         }
