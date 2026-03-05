@@ -1,10 +1,8 @@
 # Prumo
 
-<img width="1253" height="113" alt="image" src="https://github.com/user-attachments/assets/c4cfd6fc-ca94-431e-94b0-8c5710629f9e" />
-
 Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**, serving 11 interactive sections with data from 9 official statistical sources.
 
-<img width="1192" height="889" alt="image" src="https://github.com/user-attachments/assets/8d7d258a-94c0-485b-a7a8-bbc775a1106e" />
+<img width="1471" height="1082" alt="image" src="https://github.com/user-attachments/assets/a2a779d1-a2ec-40c8-8e38-a47f040a7600" />
 
 
 ## Architecture
