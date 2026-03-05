@@ -4,7 +4,7 @@ Quick reference for design standards and visual patterns used across Prumo.
 
 ## Quick Links
 
-- **[Design Resources](/design/)** — Storytelling with Data book, exercises, and implementations (Python, R, JavaScript)
+- **[Design Resources](/design/)** — Design inspired by *Storytelling with Data* (Cole Nussbaumer Knaflic, Wiley, 2015), plus open-source implementations (Python, R, JavaScript)
 - **SWD Principles** — See [docs/design/README.md](/design/README.md) for how we apply them
 
 ## Visual Standards
@@ -100,8 +100,9 @@ Prumo primary colors:
 
 ## Resources
 
-- **Book:** `docs/design/Storytelling with Data - Cole Nussbaumer Knaflic.epub`
-- **Exercises:** `docs/design/swd-exercises/` (by chapter)
+- **Inspiration source:** *Storytelling with Data: A Data Visualization Guide for Business Professionals* — Cole Nussbaumer Knaflic (Wiley, 2015)
+- **Author website:** https://www.storytellingwithdata.com/
+- **Project references:** `docs/design/` notes and open-source implementations only
 - **Python examples:** `docs/design/swd-python-matplotlib/`
 - **R examples:** `docs/design/swd-r-ggplot/`
 - **React examples:** `docs/design/swd-highcharts-nextjs/`

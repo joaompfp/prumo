@@ -1,15 +1,18 @@
-# Design Resources — Storytelling with Data
+# Design Resources — SWD-Inspired References
 
-This folder contains **Storytelling with Data** (SWD) reference materials, exercises, and implementations that inspire Prumo's visual design and charting patterns.
+This folder contains resources inspired by **Storytelling with Data** (SWD) principles, plus open-source implementations that support Prumo's visual design and charting patterns.
 
 ## Contents
 
-### 📖 Book & Exercises
+### 📖 Attribution & Open Materials
 
-- **`Storytelling with Data - Cole Nussbaumer Knaflic.epub`** — Complete EPUB of the book
-- **`swd-exercises/`** — Chapter-by-chapter exercises
-  - CHAPTER 1-7 folders with notebooks and workbooks
-  - `CHAPTER 2/2.2 PYTHON.ipynb` — Python exercises with Jupyter
+- **Design inspiration:** *Storytelling with Data: A Data Visualization Guide for Business Professionals*
+  - Author: Cole Nussbaumer Knaflic
+  - Publisher: Wiley
+  - Year: 2015
+  - Website: https://www.storytellingwithdata.com/
+- **Policy:** copyrighted book/exercise files are not stored in this repository
+- **Open materials in repo:** implementations and notes only
 
 ### 💻 Implementations
 
@@ -89,9 +92,9 @@ Prumo draws inspiration from these reference implementations:
 - Review `swd-r-ggplot/theme/theme_swd.R` for consistent styling
 
 ### For Learning
-- Work through exercises in `swd-exercises/`
-- Study figure references in the book EPUB
-- Implement figures yourself (great learning exercise!)
+- Study open-source implementations in this folder
+- Recreate figures from publicly available examples
+- Apply SWD principles to Prumo charts and UI decisions
 
 ### For Design Decisions
 - When adding new chart types, check SWD examples first

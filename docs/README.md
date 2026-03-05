@@ -30,7 +30,7 @@ Central reference for all Prumo project documentation, organized by topic and us
 - **[../SOURCES.md](../SOURCES.md)** — Official source registry (in root)
 
 ### Design & UX
-- **[design/](design/)** — Storytelling with Data book, exercises, implementations
+- **[design/](design/)** — Design inspired by *Storytelling with Data* (Cole Nussbaumer Knaflic, Wiley, 2015), with open-source implementations and project notes
 - **[wp7-design-strings.md](wp7-design-strings.md)** — UI string references & localization
 - **[content/narratives.md](content/narratives.md)** — How AI-generated narratives work
 
@@ -61,7 +61,7 @@ Central reference for all Prumo project documentation, organized by topic and us
 | Document | Purpose | Audience |
 |----------|---------|----------|
 | **DESIGN.md** | Visual standards, KPI card anatomy, color/typography rules | Designers, frontend devs |
-| **[design/](design/)** | SWD book, exercises, Python/R/JS chart examples | Designers, data viz developers |
+| **[design/](design/)** | SWD-inspired notes and open-source Python/R/JS chart examples | Designers, data viz developers |
 | **WP7 Design Strings** | UI copy, labels, error messages | Translators, UX writers |
 | **Narratives.md** | AI-generated trend analysis & interpretation | Backend/AI developers |
 

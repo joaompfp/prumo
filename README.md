@@ -8,7 +8,7 @@ Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**,
 - **[�📚 Full Documentation Index](docs/README.md)** — Central guide to all project docs
 - Contribution guide: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - Formal source registry: [`SOURCES.md`](SOURCES.md)
-- Design resources: [`docs/design/`](docs/design/) — Storytelling with Data references, exercises, and implementations
+- Design resources: [`docs/design/`](docs/design/) — design inspiration notes and open-source implementations (no copyrighted book files)
 - AI agent guidelines: [`copilot-instructions.md`](.github/copilot-instructions.md)
 
 ## Português (pt-PT)

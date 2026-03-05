@@ -44,10 +44,8 @@ Quick visual guide to all Prumo documentation, guides, and resources organized b
 │   ├── research/                      # Exploratory research
 │   │   └── hugo-integration-research.md
 │   │
-│   ├── design/                        # Storytelling with Data resources
-│   │   ├── README.md                  # Design resources index
-│   │   ├── *.epub                     # Book file
-│   │   ├── swd-exercises/             # Python/R/JS exercises by chapter
+│   ├── design/                        # SWD-inspired design references (no copyrighted binaries)
+│   │   ├── README.md                  # Attribution + design resource policy
 │   │   ├── swd-python-matplotlib/     # Matplotlib chart examples
 │   │   ├── swd-r-ggplot/              # R ggplot2 examples + theme
 │   │   └── swd-highcharts-nextjs/     # React/Next.js components
@@ -234,7 +232,7 @@ Start here:
 
 - [x] Central docs index: `docs/README.md`
 - [x] Design guide: `docs/design-guide.md`
-- [x] Design resources: `docs/design/` (SWD book + exercises)
+- [x] Design resources: `docs/design/` (SWD-inspired notes + open implementations only)
 - [x] Deployment runbook: `docs/operations/MIGRATION_RUNBOOK.md`
 - [x] AI agent guidelines: `.github/copilot-instructions.md`
 - [x] Browser automation: `docker/md/browser-automation.md`
