@@ -4,8 +4,12 @@ Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**,
 
 ## Open-source docs
 
-- Contribution guide: [`CONTRIBUTING.md`](stacks/jarbas/images/prumo/CONTRIBUTING.md)
-- Formal source registry: [`SOURCES.md`](stacks/jarbas/images/prumo/SOURCES.md)
+- **[�️ Documentation Map](DOCS_MAP.md)** — Quick navigation guide for all resources
+- **[�📚 Full Documentation Index](docs/README.md)** — Central guide to all project docs
+- Contribution guide: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- Formal source registry: [`SOURCES.md`](SOURCES.md)
+- Design resources: [`docs/design/`](docs/design/) — Storytelling with Data references, exercises, and implementations
+- AI agent guidelines: [`copilot-instructions.md`](.github/copilot-instructions.md)
 
 ## Português (pt-PT)
 
@@ -144,6 +148,25 @@ All endpoints are under `/api/` and return JSON.
 | `CAE_BASE_PATH` | `""` | URL base path (for subpath serving) |
 | `SKILLS_DIR` | `/home/node/.openclaw/workspace/skills/cae-reports` | Path to OpenClaw skills directory |
 | `TZ` | — | Timezone (from compose) |
+
+## Local `server-env` workflow (non-commit)
+
+For machine-specific setup, use a local folder at `stacks/jarbas/images/prumo/server-env/`.
+
+- `server-env/` is intentionally ignored by git and must never be committed.
+- Keep all local-only links/files inside `server-env/` (for example symlinks to root-level resources such as `.bash_aliases`, `.env`, and selected folders under `md/`).
+- Preferred pattern is symlink-based references from `server-env/` so local server context is available without changing tracked deployment/configuration files.
+
+Example local setup:
+
+```bash
+mkdir -p stacks/jarbas/images/prumo/server-env
+ln -s ../../../../../.bash_aliases stacks/jarbas/images/prumo/server-env/bash_aliases
+ln -s ../../../../../.env stacks/jarbas/images/prumo/server-env/env
+ln -s ../../../../../md stacks/jarbas/images/prumo/server-env/md
+```
+
+This workflow is local-only and does not change compose behavior or deployment semantics.
 
 ## Data Volume & First-Run Initialization
 

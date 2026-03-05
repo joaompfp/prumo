@@ -1,0 +1,942 @@
+#!/usr/bin/env python3
+"""
+cae-collect — Unified data collection CLI for CAE economic reports.
+
+Usage:
+    cae-collect <source> <method> [--param=value ...] [--ref=YYYY-MM] [--no-cache]
+    cae-collect list [source]
+    cae-collect db <query|indicator> [--source=DGEG] [--category=renewables] [--period-from=2020] [--period-to=2025] [--format=table|json]
+    cae-collect dashboard <type> [--months=13] [--ref=YYYY-MM] [--no-cache]
+    cae-collect cache <stats|list|clear> [--source=INE] [--older-than=90] [--all]
+
+Sources: ine, eurostat, fred, worldbank, oecd, eredes, dgeg-api, dgeg, erse
+
+Global options:
+    --ref=YYYY-MM    Reference month (default: current month). Anchors all
+                     period calculations, e.g. --ref=2026-01 --months=13
+                     fetches Jan 2025 to Jan 2026 regardless of run date.
+    --no-cache       Force fresh API fetch, ignoring cached data.
+    --db=PATH        Custom path to cae-data.db (default: data/cae-data.db).
+
+Examples:
+    cae-collect list                           # List all sources
+    cae-collect list ine                       # List INE methods
+    cae-collect ine get_ipi --cae=manufacturing --months=6
+    cae-collect ine get_ipi --cae=manufacturing --months=13 --ref=2026-01
+    cae-collect dashboard macro --months=13 --ref=2026-01
+    cae-collect dashboard commodities --months=12 --no-cache
+    cae-collect cache stats                    # Show cache statistics
+    cae-collect cache list --source=INE        # List cached fetches
+    cae-collect cache clear --older-than=90    # Clear old entries
+    cae-collect cache clear --all              # Clear everything
+"""
+
+import sys
+import os
+import json
+import sqlite3
+import argparse
+from pathlib import Path
+from datetime import datetime
+
+# Add skill directory to path
+SKILL_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(SKILL_DIR))
+
+DB_PATH = SKILL_DIR / "reference-data" / "energy-data.db"
+
+
+# ============================================================
+# Helpers
+# ============================================================
+
+def fmt_json(data, compact=False):
+    """Format data as JSON"""
+    if compact:
+        return json.dumps(data, ensure_ascii=False, default=str)
+    return json.dumps(data, indent=2, ensure_ascii=False, default=str)
+
+
+def fmt_table(rows, headers=None):
+    """Simple table formatter"""
+    if not rows:
+        return "(no data)"
+    if headers:
+        rows = [headers] + rows
+    widths = [max(len(str(row[i])) for row in rows) for i in range(len(rows[0]))]
+    lines = []
+    for i, row in enumerate(rows):
+        line = "  ".join(str(row[j]).ljust(widths[j]) for j in range(len(row)))
+        lines.append(line)
+        if i == 0 and headers:
+            lines.append("  ".join("-" * w for w in widths))
+    return "\n".join(lines)
+
+
+def print_err(msg):
+    print(f"ERROR: {msg}", file=sys.stderr)
+    sys.exit(1)
+
+
+def get_client(source):
+    """Import and instantiate the appropriate client"""
+    source = source.lower().replace("-", "_")
+    try:
+        if source == "ine":
+            from collectors.ine import INEClient
+            return INEClient()
+        elif source == "eurostat":
+            from collectors.eurostat import EurostatClient
+            return EurostatClient()
+        elif source == "fred":
+            from collectors.fred import FREDClient
+            return FREDClient()
+        elif source == "worldbank":
+            from collectors.worldbank import WorldBankClient
+            return WorldBankClient()
+        elif source == "oecd":
+            from collectors.oecd import OECDClient
+            return OECDClient()
+        elif source == "eredes":
+            from collectors.eredes import EREDESClient
+            return EREDESClient()
+        elif source == "dgeg_api":
+            from collectors.dgeg_fuel_api import DGEGFuelPricesClient
+            return DGEGFuelPricesClient()
+        elif source == "bportugal":
+            from collectors.bportugal import BPortugalClient
+            return BPortugalClient()
+        elif source == "ren":
+            from collectors.ren import RENClient
+            return RENClient()
+        else:
+            print_err(f"Unknown source: {source}. Valid: ine, eurostat, fred, worldbank, oecd, eredes, dgeg-api, bportugal, ren")
+    except ImportError as e:
+        print_err(f"Missing dependency: {e}. Run with: uv run --with requests --with python-dateutil python3 scripts/cae-collect {source} ...")
+
+
+def list_methods(client):
+    """List public convenience methods of a client"""
+    methods = []
+    for name in sorted(dir(client)):
+        if name.startswith("_") or name.startswith("get_data") or name == "BASE_URL":
+            continue
+        attr = getattr(client, name)
+        if callable(attr) and not isinstance(attr, type):
+            doc = (attr.__doc__ or "").strip().split("\n")[0]
+            methods.append((name, doc))
+    return methods
+
+
+def list_methods_from_file(source):
+    """Parse method names from source file without importing (avoids dependency issues)"""
+    source_files = {
+        "ine": "collectors/ine.py",
+        "eurostat": "collectors/eurostat.py",
+        "fred": "collectors/fred.py",
+        "worldbank": "collectors/worldbank.py",
+        "oecd": "collectors/oecd.py",
+        "eredes": "collectors/eredes.py",
+        "dgeg_api": "collectors/dgeg_fuel_api.py",
+        "bportugal": "collectors/bportugal.py",
+        "ren": "collectors/ren.py",
+    }
+    if source not in source_files:
+        return None
+    filepath = SKILL_DIR / source_files[source]
+    if not filepath.exists():
+        return None
+    methods = []
+    import re
+    with open(filepath) as f:
+        for line in f:
+            m = re.match(r'    def (get_\w+|compare_\w+)\(', line)
+            if m:
+                name = m.group(1)
+                if not name.startswith("_"):
+                    methods.append((name, ""))
+    # Read docstrings in a second pass
+    content = filepath.read_text()
+    for i, (name, _) in enumerate(methods):
+        pattern = rf'def {name}\([^)]*\).*?:\s*\n\s*"""([^"]*)'
+        match = re.search(pattern, content, re.DOTALL)
+        if match:
+            doc = match.group(1).strip().split("\n")[0]
+            methods[i] = (name, doc)
+    return methods
+
+
+def coerce_param(value):
+    """Convert string param values to appropriate types"""
+    if value.lower() == "true":
+        return True
+    if value.lower() == "false":
+        return False
+    try:
+        return int(value)
+    except ValueError:
+        pass
+    try:
+        return float(value)
+    except ValueError:
+        pass
+    # Handle lists: "PT,ES,DE" → ["PT", "ES", "DE"]
+    if "," in value:
+        return [v.strip() for v in value.split(",")]
+    return value
+
+
+# ============================================================
+# DB queries (DGEG + ERSE energy data)
+# ============================================================
+
+def db_connect():
+    if not DB_PATH.exists():
+        print_err(f"Energy database not found: {DB_PATH}")
+    return sqlite3.connect(f"file:{DB_PATH}?mode=ro&immutable=1", uri=True)
+
+
+def db_list_indicators(source=None, category=None):
+    conn = db_connect()
+    q = """
+        SELECT source, category, indicator, unit, period_type,
+               MIN(period) as from_period, MAX(period) as to_period, COUNT(*) as points
+        FROM indicators
+        WHERE 1=1
+    """
+    params = []
+    if source:
+        q += " AND source = ?"
+        params.append(source.upper())
+    if category:
+        q += " AND category = ?"
+        params.append(category)
+    q += " GROUP BY source, category, indicator, unit, period_type ORDER BY source, category, indicator"
+    rows = conn.execute(q, params).fetchall()
+    conn.close()
+    return rows
+
+
+def db_query(source=None, category=None, indicator=None, period_from=None, period_to=None, region=None, limit=100):
+    conn = db_connect()
+    q = "SELECT source, category, indicator, region, period, value, unit FROM indicators WHERE 1=1"
+    params = []
+    if source:
+        q += " AND source = ?"
+        params.append(source.upper())
+    if category:
+        q += " AND category = ?"
+        params.append(category)
+    if indicator:
+        q += " AND indicator LIKE ?"
+        params.append(f"%{indicator}%")
+    if region:
+        q += " AND region = ?"
+        params.append(region)
+    if period_from:
+        q += " AND period >= ?"
+        params.append(str(period_from))
+    if period_to:
+        q += " AND period <= ?"
+        params.append(str(period_to))
+    q += f" ORDER BY source, category, indicator, period DESC LIMIT {limit}"
+    rows = conn.execute(q, params).fetchall()
+    conn.close()
+    return rows
+
+
+def db_latest(source=None, category=None, n=1):
+    """Get latest N records per indicator"""
+    conn = db_connect()
+    q = """
+        SELECT source, category, indicator, region, period, value, unit
+        FROM indicators i1
+        WHERE 1=1
+    """
+    params = []
+    if source:
+        q += " AND source = ?"
+        params.append(source.upper())
+    if category:
+        q += " AND category = ?"
+        params.append(category)
+    # Get latest per indicator using window function
+    q = f"""
+        SELECT source, category, indicator, region, period, value, unit
+        FROM (
+            SELECT *, ROW_NUMBER() OVER (PARTITION BY source, category, indicator ORDER BY period DESC) as rn
+            FROM indicators
+            WHERE 1=1
+            {"AND source = ?" if source else ""}
+            {"AND category = ?" if category else ""}
+        ) t
+        WHERE rn <= {n}
+        ORDER BY source, category, indicator, period DESC
+    """
+    params = []
+    if source:
+        params.append(source.upper())
+    if category:
+        params.append(category)
+    rows = conn.execute(q, params).fetchall()
+    conn.close()
+    return rows
+
+
+# ============================================================
+# Cache wrapper
+# ============================================================
+
+# Global store instance (lazy init)
+_store = None
+_use_cache = True
+
+def _get_store():
+    global _store
+    if _store is None:
+        from store import DataStore
+        _store = DataStore(db_path=os.getenv("CAE_DATA_DB"))
+    return _store
+
+def _set_store(db_path):
+    global _store
+    from store import DataStore
+    _store = DataStore(db_path=db_path)
+
+def cached(source, method, fn, ref_month=None, **params):
+    """Wrap a collector call with cache logic.
+
+    If cache is enabled and a valid cached response exists, returns it.
+    Otherwise calls fn(), stores the result, and returns it.
+    On API failure: returns cached data if available, logs error.
+    """
+    if not _use_cache:
+        return fn()
+
+    store = _get_store()
+
+    # Build cache params (exclude ref_date objects, use ref_month string)
+    cache_params = {k: v for k, v in params.items() if v is not None}
+    if ref_month:
+        cache_params["ref"] = ref_month
+
+    # Check cache
+    hit = store.get_cached(source, method, **cache_params)
+    if hit is not None:
+        return hit
+
+    # Cache miss — call API
+    try:
+        result = fn()
+    except Exception as e:
+        # API failed — try to return stale cache
+        store.log_error(source, method, str(e), ref_month=ref_month, **cache_params)
+        stale = store.get_cached(source, method, **cache_params)
+        if stale is not None:
+            stale["_cache_warning"] = f"Stale cache (API failed: {e})"
+            return stale
+        return {"error": str(e), "indicator": method}
+
+    # Store result (only if no error)
+    if "error" not in result or result.get("data"):
+        try:
+            store.store_response(source, method, result,
+                                 ref_month=ref_month, **cache_params)
+        except Exception as e:
+            import sys
+            print(f"CACHE WARN: Failed to store {source}/{method}: {e}", file=sys.stderr)
+
+    return result
+
+
+# ============================================================
+# Dashboards (pre-built data collection bundles)
+# ============================================================
+
+def dashboard_macro(months=13, ref_date=None):
+    """Collect macro indicators from multiple sources — parallel via ThreadPoolExecutor"""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    from collectors.ine import INEClient
+    from collectors.eurostat import EurostatClient
+    from collectors.oecd import OECDClient
+    ine = INEClient()
+    eu  = EurostatClient()
+    oecd = OECDClient()
+
+    ref_month = ref_date.strftime("%Y-%m") if ref_date else None
+
+    tasks = {
+        "ine_ipi":              lambda: cached("INE", "get_ipi",
+            lambda: ine.get_ipi(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months, cae="manufacturing"),
+        "ine_ipi_yoy":          lambda: cached("INE", "get_ipi_yoy",
+            lambda: ine.get_ipi_yoy(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months, cae="manufacturing"),
+        "ine_employment":       lambda: cached("INE", "get_employment",
+            lambda: ine.get_employment(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "ine_wages":            lambda: cached("INE", "get_wages",
+            lambda: ine.get_wages(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "ine_confidence":       lambda: cached("INE", "get_confidence",
+            lambda: ine.get_confidence(sector="manufacturing", months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months, sector="manufacturing"),
+        "ine_hicp":             lambda: cached("INE", "get_hicp",
+            lambda: ine.get_hicp(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "eurostat_ipi":         lambda: cached("EUROSTAT", "get_ipi_portugal",
+            lambda: eu.get_ipi_portugal(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "eurostat_unemployment":lambda: cached("EUROSTAT", "get_unemployment_portugal",
+            lambda: eu.get_unemployment_portugal(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "eurostat_hicp":        lambda: cached("EUROSTAT", "get_hicp_portugal",
+            lambda: eu.get_hicp_portugal(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "oecd_cli_business":    lambda: cached("OECD", "get_cli",
+            lambda: oecd.get_cli(measure="business_confidence", months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months, measure="business_confidence"),
+        "oecd_unemployment":    lambda: cached("OECD", "get_unemployment",
+            lambda: oecd.get_unemployment(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+    }
+
+    results = {}
+    with ThreadPoolExecutor(max_workers=11) as executor:
+        futures = {executor.submit(fn): key for key, fn in tasks.items()}
+        for future in as_completed(futures):
+            key = futures[future]
+            try:
+                results[key] = future.result()
+            except Exception as e:
+                results[key] = {"error": str(e), "indicator": key}
+
+    return results
+
+
+def dashboard_industrial(months=13, ref_date=None):
+    """Collect industrial sector indicators — parallel via ThreadPoolExecutor"""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    from collectors.ine import INEClient
+    from collectors.eurostat import EurostatClient
+    from collectors.oecd import OECDClient
+    ine  = INEClient()
+    eu   = EurostatClient()
+    oecd = OECDClient()
+
+    ref_month = ref_date.strftime("%Y-%m") if ref_date else None
+
+    tasks = {
+        "ine_dashboard":      lambda: cached("INE", "get_industrial_dashboard",
+            lambda: ine.get_industrial_dashboard(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "eurostat_dashboard": lambda: cached("EUROSTAT", "get_industrial_dashboard",
+            lambda: eu.get_industrial_dashboard(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+        "oecd_bts":           lambda: cached("OECD", "get_bts_dashboard",
+            lambda: oecd.get_bts_dashboard(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months),
+    }
+
+    results = {}
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures = {executor.submit(fn): key for key, fn in tasks.items()}
+        for future in as_completed(futures):
+            key = futures[future]
+            try:
+                results[key] = future.result()
+            except Exception as e:
+                results[key] = {"error": str(e), "source": key}
+
+    return results
+
+
+def dashboard_energy():
+    """Collect latest energy data from SQLite DB (no caching needed — local DB)"""
+    results = {}
+
+    # Latest renewable production
+    rows = db_latest(source="DGEG", category="renewables", n=2)
+    by_indicator = {}
+    for r in rows:
+        key = r[2]
+        if key not in by_indicator:
+            by_indicator[key] = []
+        by_indicator[key].append({
+            "period": r[4],
+            "value": r[5],
+            "unit": r[6]
+        })
+    results["renewables"] = by_indicator
+
+    # Latest fossil fuel consumption
+    rows = db_latest(source="DGEG", category="fossil_fuels", n=2)
+    by_indicator = {}
+    for r in rows:
+        key = r[2]
+        if key not in by_indicator:
+            by_indicator[key] = []
+        by_indicator[key].append({
+            "period": r[4],
+            "value": r[5],
+            "unit": r[6]
+        })
+    results["fossil_fuels"] = by_indicator
+
+    # Latest fuel prices
+    rows = db_latest(source="DGEG", category="fuel_prices", n=2)
+    by_indicator = {}
+    for r in rows:
+        key = r[2]
+        if key not in by_indicator:
+            by_indicator[key] = []
+        by_indicator[key].append({
+            "period": r[4],
+            "value": r[5],
+            "unit": r[6]
+        })
+    results["fuel_prices"] = by_indicator
+
+    # Latest ERSE tariffs
+    rows = db_latest(source="ERSE", n=1)
+    by_category = {}
+    for r in rows:
+        cat = r[1]
+        if cat not in by_category:
+            by_category[cat] = {}
+        by_category[cat][r[2]] = {
+            "period": r[4],
+            "value": r[5],
+            "unit": r[6]
+        }
+    results["erse"] = by_category
+
+    return results
+
+
+def dashboard_commodities(months=12, ref_date=None):
+    """Collect commodity prices from FRED"""
+    ref_month = ref_date.strftime("%Y-%m") if ref_date else None
+    results = {}
+    try:
+        from collectors.fred import FREDClient
+        fred = FREDClient()
+        results["dashboard"] = cached("FRED", "get_commodity_dashboard",
+            lambda: fred.get_commodity_dashboard(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months)
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+
+def dashboard_financial(months=13, ref_date=None):
+    """Collect financial/monetary indicators from BPstat (Banco de Portugal)"""
+    ref_month = ref_date.strftime("%Y-%m") if ref_date else None
+    results = {}
+    try:
+        from collectors.bportugal import BPortugalClient
+        bp = BPortugalClient()
+        results = cached("BPORTUGAL", "get_financial_dashboard",
+            lambda: bp.get_financial_dashboard(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months)
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+
+def dashboard_grid(months=13, ref_date=None):
+    """Collect electricity grid data from REN (balance + OMIE prices)"""
+    ref_month = ref_date.strftime("%Y-%m") if ref_date else None
+    results = {}
+    try:
+        from collectors.ren import RENClient
+        ren = RENClient()
+        results = cached("REN", "get_energy_dashboard",
+            lambda: ren.get_energy_dashboard(months=months, ref_date=ref_date),
+            ref_month=ref_month, months=months)
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+
+# ============================================================
+# Helpers: parse global options
+# ============================================================
+
+def _parse_ref(value):
+    """Parse --ref=YYYY-MM into a datetime object (last day of month)."""
+    import re
+    if not re.match(r'^\d{4}-\d{2}$', value):
+        print_err(f"Invalid --ref format: '{value}'. Expected YYYY-MM (e.g., 2026-01)")
+    year, month = int(value[:4]), int(value[5:7])
+    if month < 1 or month > 12:
+        print_err(f"Invalid month in --ref: {value}")
+    # Reject future dates (data hasn't been published yet)
+    now = datetime.now()
+    if year > now.year or (year == now.year and month > now.month):
+        print_err(f"--ref={value} is in the future. Data not yet available.")
+    # Use last day of month as reference
+    if month == 12:
+        return datetime(year + 1, 1, 1) - __import__('datetime').timedelta(days=1)
+    return datetime(year, month + 1, 1) - __import__('datetime').timedelta(days=1)
+
+
+# Known data availability boundaries per source.
+# Requests before these dates will return partial/no data for those sources.
+# Format: earliest YYYY-MM with reliable monthly data.
+SOURCE_DATA_STARTS = {
+    "INE_BASE2021":  "2005-01",  # IPI, employment, wages (Base 2021 series)
+    "INE_LEGACY":    "1997-01",  # HICP, confidence (older series)
+    "EUROSTAT":      "1999-01",  # IPI, HICP, unemployment
+    "OECD":          "1998-01",  # CLI, unemployment, BTS
+    "FRED":          "1990-01",  # Commodities (varies by series)
+    "WORLDBANK":     "1960",     # Annual only, most indicators from 1960
+}
+# Absolute minimum: reject dates before 1995 (no source has useful monthly data)
+MIN_REF_DATE = "1995-01"
+
+
+def _validate_ref_date(ref_date, dashboard_type=None):
+    """Warn about data availability for historical reference dates.
+
+    Returns list of warning strings (empty if all OK). Does not block execution.
+    """
+    if ref_date is None:
+        return []
+
+    ref_str = ref_date.strftime("%Y-%m")
+    warnings = []
+
+    if ref_str < MIN_REF_DATE:
+        print(f"WARNING: --ref={ref_str} is before {MIN_REF_DATE}. "
+              f"Most sources have no monthly data this far back.",
+              file=sys.stderr)
+
+    if dashboard_type in ("macro", "industrial"):
+        if ref_str < SOURCE_DATA_STARTS["INE_BASE2021"]:
+            warnings.append(
+                f"INE Base 2021 series (IPI, employment, wages) start from "
+                f"{SOURCE_DATA_STARTS['INE_BASE2021']}. "
+                f"These indicators will return empty for --ref={ref_str}."
+            )
+        if ref_str < SOURCE_DATA_STARTS["EUROSTAT"]:
+            warnings.append(
+                f"Eurostat monthly data starts from ~{SOURCE_DATA_STARTS['EUROSTAT']}. "
+                f"Some indicators may be missing."
+            )
+
+    for w in warnings:
+        print(f"WARNING: {w}", file=sys.stderr)
+
+    return warnings
+
+
+def _extract_global_opts(args):
+    """Extract --ref, --no-cache, --db from args. Returns (ref_date, remaining_args)."""
+    global _use_cache
+    ref_date = None
+    remaining = []
+
+    for a in args:
+        if a.startswith("--ref="):
+            ref_date = _parse_ref(a[6:])
+        elif a == "--no-cache":
+            _use_cache = False
+        elif a.startswith("--db="):
+            _set_store(a[5:])
+        else:
+            remaining.append(a)
+
+    return ref_date, remaining
+
+
+# ============================================================
+# Main CLI
+# ============================================================
+
+def main():
+    args = sys.argv[1:]
+
+    if not args or args[0] in ("-h", "--help", "help"):
+        print(__doc__)
+        sys.exit(0)
+
+    # Extract global options first
+    ref_date, args = _extract_global_opts(args)
+
+    if not args:
+        print(__doc__)
+        sys.exit(0)
+
+    cmd = args[0].lower()
+
+    # ---- cache ----
+    if cmd == "cache":
+        if len(args) < 2:
+            print("Usage: cae-collect cache <stats|list|clear> [options]")
+            sys.exit(1)
+
+        store = _get_store()
+        subcmd = args[1].lower()
+
+        params = {}
+        for a in args[2:]:
+            if a.startswith("--"):
+                if "=" in a:
+                    k, v = a[2:].split("=", 1)
+                    params[k.replace("-", "_")] = v
+                else:
+                    params[a[2:].replace("-", "_")] = True
+
+        if subcmd == "stats":
+            stats = store.cache_stats()
+            print(fmt_json(stats))
+
+        elif subcmd == "list":
+            entries = store.cache_list(
+                source=params.get("source"),
+                limit=int(params.get("limit", 50))
+            )
+            if entries:
+                headers = ("Source", "Method", "Ref", "Fetched", "Points", "Status")
+                rows = [(e["source"], e["method"], e["ref_month"] or "-",
+                         (e["fetched_at"] or "")[:19], e["points"], e["status"])
+                        for e in entries]
+                print(fmt_table(rows, headers))
+            else:
+                print("(no cached entries)")
+
+        elif subcmd == "clear":
+            clear_all = params.get("all", False)
+            older_than = int(params.get("older_than", 0)) or None
+
+            if not clear_all and not older_than and not params.get("source"):
+                print("Specify --all, --older-than=DAYS, or --source=NAME")
+                sys.exit(1)
+
+            deleted = store.cache_clear(
+                source=params.get("source"),
+                older_than_days=older_than,
+                clear_all=clear_all
+            )
+            print(f"Deleted: {deleted['indicators']} data points, "
+                  f"{deleted['fetch_log']} fetch log entries")
+
+        elif subcmd == "import":
+            # Import from legacy energy-data.db
+            legacy_path = params.get("path", str(DB_PATH))
+            count = store.import_energy_db(legacy_path)
+            print(f"Imported {count} records from {legacy_path}")
+
+        else:
+            print_err(f"Unknown cache subcommand: {subcmd}. Valid: stats, list, clear, import")
+
+        sys.exit(0)
+
+    # ---- list ----
+    if cmd == "list":
+        if len(args) < 2:
+            print("Available sources:")
+            print("  ine        — INE (Instituto Nacional de Estatística, Portugal)")
+            print("  eurostat   — Eurostat (EU statistics)")
+            print("  fred       — FRED (Federal Reserve Economic Data, commodities)")
+            print("  worldbank  — World Bank (global development indicators)")
+            print("  oecd       — OECD (confidence, BTS, unemployment, CPI)")
+            print("  eredes     — E-REDES Open Data (consumption, production, CAE by geography)")
+            print("  dgeg-api   — DGEG fuel prices API (real-time station prices)")
+            print("  dgeg       — DGEG energy data (via SQLite DB)")
+            print("  erse       — ERSE electricity tariffs (via SQLite DB)")
+            print()
+            print("Usage: cae-collect list <source>")
+            sys.exit(0)
+
+        source = args[1].lower().replace("-", "_")
+        if source in ("dgeg", "erse"):
+            rows = db_list_indicators(source=source.upper())
+            headers = ("Source", "Category", "Indicator", "Unit", "Freq", "From", "To", "Pts")
+            print(fmt_table(rows, headers))
+        else:
+            # Try file-based listing first (no dependency needed)
+            methods = list_methods_from_file(source)
+            if methods is None:
+                # Fall back to import-based listing
+                client = get_client(source)
+                methods = list_methods(client)
+            if not methods:
+                print(f"No public methods found for {source}")
+            else:
+                print(f"\n{source.upper()} methods ({len(methods)}):\n")
+                for name, doc in methods:
+                    print(f"  {name}")
+                    if doc:
+                        print(f"    {doc[:100]}")
+        sys.exit(0)
+
+    # ---- db ----
+    if cmd == "db":
+        if len(args) < 2:
+            print("Usage: cae-collect db <list|query|latest> [options]")
+            sys.exit(1)
+
+        subcmd = args[1].lower()
+        # Parse --key=value params
+        params = {}
+        for a in args[2:]:
+            if a.startswith("--"):
+                if "=" in a:
+                    k, v = a[2:].split("=", 1)
+                    params[k.replace("-", "_")] = v
+                else:
+                    params[a[2:].replace("-", "_")] = True
+
+        output_format = params.pop("format", "table")
+
+        if subcmd == "list":
+            rows = db_list_indicators(
+                source=params.get("source"),
+                category=params.get("category")
+            )
+            if output_format == "json":
+                data = [{"source": r[0], "category": r[1], "indicator": r[2],
+                         "unit": r[3], "freq": r[4], "from": r[5], "to": r[6], "points": r[7]}
+                        for r in rows]
+                print(fmt_json(data))
+            else:
+                headers = ("Source", "Category", "Indicator", "Unit", "Freq", "From", "To", "Pts")
+                print(fmt_table(rows, headers))
+
+        elif subcmd == "query":
+            rows = db_query(
+                source=params.get("source"),
+                category=params.get("category"),
+                indicator=params.get("indicator"),
+                period_from=params.get("period_from"),
+                period_to=params.get("period_to"),
+                region=params.get("region"),
+                limit=int(params.get("limit", 100))
+            )
+            if output_format == "json":
+                data = [{"source": r[0], "category": r[1], "indicator": r[2],
+                         "region": r[3], "period": r[4], "value": r[5], "unit": r[6]}
+                        for r in rows]
+                print(fmt_json(data))
+            else:
+                headers = ("Source", "Category", "Indicator", "Region", "Period", "Value", "Unit")
+                print(fmt_table(rows, headers))
+
+        elif subcmd == "latest":
+            n = int(params.get("n", 1))
+            rows = db_latest(
+                source=params.get("source"),
+                category=params.get("category"),
+                n=n
+            )
+            if output_format == "json":
+                data = [{"source": r[0], "category": r[1], "indicator": r[2],
+                         "region": r[3], "period": r[4], "value": r[5], "unit": r[6]}
+                        for r in rows]
+                print(fmt_json(data))
+            else:
+                headers = ("Source", "Category", "Indicator", "Region", "Period", "Value", "Unit")
+                print(fmt_table(rows, headers))
+
+        else:
+            print_err(f"Unknown db subcommand: {subcmd}. Valid: list, query, latest")
+
+        sys.exit(0)
+
+    # ---- dashboard ----
+    if cmd == "dashboard":
+        if len(args) < 2:
+            print("Usage: cae-collect dashboard <macro|industrial|energy|commodities|financial|grid> [--months=13] [--ref=YYYY-MM]")
+            sys.exit(1)
+
+        dtype = args[1].lower()
+        params = {}
+        for a in args[2:]:
+            if a.startswith("--") and "=" in a:
+                k, v = a[2:].split("=", 1)
+                params[k] = coerce_param(v)
+
+        months = params.get("months", 13)
+
+        # Validate historical depth
+        _validate_ref_date(ref_date, dashboard_type=dtype)
+
+        if dtype == "macro":
+            data = dashboard_macro(months=months, ref_date=ref_date)
+        elif dtype == "industrial":
+            data = dashboard_industrial(months=months, ref_date=ref_date)
+        elif dtype == "energy":
+            data = dashboard_energy()
+        elif dtype == "commodities":
+            data = dashboard_commodities(months=months, ref_date=ref_date)
+        elif dtype == "financial":
+            data = dashboard_financial(months=months, ref_date=ref_date)
+        elif dtype == "grid":
+            data = dashboard_grid(months=months, ref_date=ref_date)
+        else:
+            print_err(f"Unknown dashboard type: {dtype}. Valid: macro, industrial, energy, commodities, financial, grid")
+
+        print(fmt_json(data))
+        sys.exit(0)
+
+    # ---- source method ----
+    # Parse: cae-collect <source> <method> [--param=value ...]
+    if len(args) < 2:
+        print_err(f"Usage: cae-collect <source> <method> [--param=value ...]")
+
+    source = cmd.replace("-", "_")
+    method_name = args[1]
+
+    # Parse params
+    params = {}
+    for a in args[2:]:
+        if a.startswith("--"):
+            if "=" in a:
+                k, v = a[2:].split("=", 1)
+                params[k] = coerce_param(v)
+            else:
+                params[a[2:]] = True
+
+    # Special handling for db sources
+    if source in ("dgeg", "erse"):
+        print_err(f"Use 'cae-collect db' for {source.upper()} data. Example: cae-collect db query --source={source.upper()}")
+
+    client = get_client(source)
+
+    # Handle special dashboard methods
+    if method_name == "commodity_dashboard" and source == "fred":
+        months = params.get("months", 12)
+        data = client.get_commodity_dashboard(months=months, ref_date=ref_date)
+        print(fmt_json(data))
+        sys.exit(0)
+
+    # Get and call the method
+    if not hasattr(client, method_name):
+        print_err(f"Method '{method_name}' not found on {source}. Use 'cae-collect list {source}' to see available methods.")
+
+    method = getattr(client, method_name)
+    if not callable(method):
+        print_err(f"'{method_name}' is not a callable method on {source}")
+
+    # Inject ref_date if the method accepts it
+    if ref_date:
+        import inspect
+        sig = inspect.signature(method)
+        if "ref_date" in sig.parameters:
+            params["ref_date"] = ref_date
+
+    try:
+        result = method(**params)
+        print(fmt_json(result))
+    except TypeError as e:
+        print_err(f"Parameter error calling {source}.{method_name}(): {e}")
+    except Exception as e:
+        print_err(f"Error calling {source}.{method_name}(): {e}")
+
+
+if __name__ == "__main__":
+    main()
