@@ -8,7 +8,15 @@
   },
   "custom_lens_default": "",
   "ideologies": {
-    "neutro": "neutro.txt"
+    "neutro": "neutro.txt",
+    "left": "left.txt",
+    "right": "right.txt",
+    "center": "center.txt",
+    "progressive": "progressive.txt",
+    "conservative": "conservative.txt",
+    "liberal": "liberal.txt",
+    "social-democratic": "social-democratic.txt",
+    "green": "green.txt"
   },
   "output_languages": {
     "pt": "português europeu"
