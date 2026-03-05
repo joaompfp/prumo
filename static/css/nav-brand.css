@@ -12,7 +12,7 @@
   gap: 3px;
   text-decoration: none;
   user-select: none;
-  padding: 4px 16px 4px 10px;
+  padding: 4px 16px 4px 0px;
   flex-shrink: 0;
   height: 100%;
   position: relative;
@@ -41,11 +41,11 @@
 /* letter-spacing adds trailing space after T — compensate with padding-left
    so the midpoint of "P T" sits exactly under the plumb bob needle point */
 .nav-brand-icon-wrap::after {
-  content: "pt";
+  content: "Portugal";
   display: block;
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 19px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 200;
   font-style: italic;
   color: #8B0000;
   line-height: 1;
@@ -54,6 +54,7 @@
   width: 100%;
   padding-left: 1px;
   pointer-events: none;
+  letter-spacing: -1px;
 }
 
 /* ── Ícones: desktop vs mobile ──────────────────────────────── */
@@ -65,19 +66,20 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;
+  gap: 2px;
   overflow: hidden;
   max-width: 260px;
   opacity: 1;
+  margin-left:0px;
 }
 
 /* ── Nome "Prumo" — desktop ──────────────────────────────────── */
 .nav-brand-name {
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 900;
-  font-size: 31px;
-  letter-spacing: -0.4px;
-  color: #111827;
+  font-weight: 600;
+  font-size: 48px;
+  letter-spacing: -4px;
+  color: #8B0000;
   line-height: 1;
   white-space: nowrap;
 }
@@ -87,11 +89,12 @@
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 1.4px;
+  letter-spacing: 0px;
   color: #6B7280;
   text-transform: uppercase;
   line-height: 1;
   white-space: nowrap;
+  padding:4px 0 0 1px;
 }
 
 /* ── "Prumo PT" — mobile only (oculto no desktop) ────────────── */

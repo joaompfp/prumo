@@ -198,7 +198,7 @@
 
           <details class="method-accordion">
             <summary>Isenção de Responsabilidade</summary>
-            <p>Os dados apresentados neste dashboard são compilados a partir de fontes estatísticas oficiais para fins de <strong>análise e discussão económica</strong>. Este painel <strong>não constitui publicação oficial</strong> e não substitui os relatórios, comunicados ou bases de dados das entidades produtoras de estatística. Os dados podem divergir ligeiramente das publicações oficiais devido a diferenças de data de extracção, revisões posteriores, ou arredondamentos.</p>
+            <p>Os dados e simulações apresentados neste dashboard são compilados a partir de fontes estatísticas oficiais e programas partidários disponíveis publicamente para fins de análise e discussão políticas e económica. Este painel não constitui publicação oficial e não substitui os relatórios, comunicados ou bases de dados das entidades produtoras de estatística. Os dados podem divergir ligeiramente das publicações oficiais devido a diferenças de data de extracção, revisões posteriores, ou arredondamentos.</p>
           </details>
 
           <details class="method-accordion">
