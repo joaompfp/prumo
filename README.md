@@ -2,6 +2,15 @@
 
 Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**, serving 11 interactive sections with data from 9 official statistical sources.
 
+## Open-source docs
+
+- Contribution guide: [`CONTRIBUTING.md`](stacks/jarbas/images/prumo/CONTRIBUTING.md)
+- Formal source registry: [`SOURCES.md`](stacks/jarbas/images/prumo/SOURCES.md)
+
+## Português (pt-PT)
+
+Documentação complementar em português está disponível em [`docs/`](stacks/jarbas/images/prumo/docs/) e em notas de projeto como [`SETUP_NOTES.md`](stacks/jarbas/images/prumo/SETUP_NOTES.md). O `README` principal mantém-se em inglês para o público open-source internacional.
+
 <img width="1471" height="1082" alt="image" src="https://github.com/user-attachments/assets/a2a779d1-a2ec-40c8-8e38-a47f040a7600" />
 
 
@@ -80,6 +89,8 @@ prumo/
 | DGEG | Direcção-Geral de Energia e Geologia | Fuel prices |
 | World Bank | World Bank Group | Long-term development indicators |
 
+For provider URLs, cadence and terms/caveats notes, see [`SOURCES.md`](stacks/jarbas/images/prumo/SOURCES.md).
+
 ## Dashboard Sections
 
 | Section | Route | API | Description |
@@ -134,9 +145,22 @@ All endpoints are under `/api/` and return JSON.
 | `SKILLS_DIR` | `/home/node/.openclaw/workspace/skills/cae-reports` | Path to OpenClaw skills directory |
 | `TZ` | — | Timezone (from compose) |
 
+## Data Volume & First-Run Initialization
+
+On its first run, the container will automatically initialize the `/data` volume with default configuration (`site.json`) and ideology defaults if they don't already exist. The DuckDB database is **not** included in the image; if one is not mounted, the system will place a `README-DB.txt` indicating that data needs to be populated via the collection scripts or mounted externally. This ensures safe, idempotent bootstrapping without overwriting existing data.
+
 ## Deployment
 
 The dashboard runs as a Docker container behind Traefik reverse proxy.
+
+### Compose layering (Phase 2)
+
+Prumo is now split into two compose layers under [`stacks/jarbas/compose/`](stacks/jarbas/compose/):
+
+- [`prumo.base.yml`](stacks/jarbas/compose/prumo.base.yml): portable/OSS app defaults (build, runtime env, healthcheck).
+- [`prumo.yml`](stacks/jarbas/compose/prumo.yml): server override (Traefik routes, proxy cert chain, server networks, bind mounts used on this host).
+
+The stack loader in [`stacks/jarbas/compose.yml`](stacks/jarbas/compose.yml) includes base first and override second so current server behavior remains unchanged while keeping a reusable base.
 
 ### Build and deploy
 

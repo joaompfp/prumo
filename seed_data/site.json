@@ -1,0 +1,17 @@
+{
+  "paths": {
+    "db": "/data/cae-data.duckdb",
+    "ideologies_dir": "/data/ideologies",
+    "interpret_cache": "/data/interpret-cache.json",
+    "painel_cache": "/data/painel-analysis-cache.json",
+    "analytics_db": "/data/analytics.db"
+  },
+  "custom_lens_default": "",
+  "ideologies": {
+    "neutro": "neutro.txt"
+  },
+  "output_languages": {
+    "pt": "português europeu"
+  },
+  "default_output_language": "pt"
+}
