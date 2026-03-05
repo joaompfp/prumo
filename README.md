@@ -1,8 +1,11 @@
-# CAE Dashboard
+# Prumo
 
-Economic indicators dashboard for the Portuguese Parliamentary Commission on Economic Affairs (_Comissão de Assuntos Económicos_).
+<img width="1253" height="113" alt="image" src="https://github.com/user-attachments/assets/c4cfd6fc-ca94-431e-94b0-8c5710629f9e" />
 
-Built with **FastAPI** + **DuckDB** + **ECharts**, serving 11 interactive sections with data from 9 official statistical sources.
+Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**, serving 11 interactive sections with data from 9 official statistical sources.
+
+<img width="1192" height="889" alt="image" src="https://github.com/user-attachments/assets/8d7d258a-94c0-485b-a7a8-bbc775a1106e" />
+
 
 ## Architecture
 
