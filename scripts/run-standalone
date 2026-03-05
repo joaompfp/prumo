@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+VENV_DIR="${VENV_DIR:-.venv}"
+
+if [[ ! -d "$VENV_DIR" ]]; then
+  "$PYTHON_BIN" -m venv "$VENV_DIR"
+fi
+
+VENV_PYTHON="$VENV_DIR/bin/python"
+if [[ ! -x "$VENV_PYTHON" ]]; then
+  echo "Virtual environment python not found: $VENV_PYTHON" >&2
+  exit 1
+fi
+
+if ! "$VENV_PYTHON" -c "import fastapi, uvicorn, jinja2, duckdb, pandas" >/dev/null 2>&1; then
+  "$VENV_PYTHON" -m ensurepip --upgrade >/dev/null 2>&1 || true
+  if ! "$VENV_PYTHON" -m pip install -r requirements.txt >/dev/null; then
+    echo "Warning: failed to install dependencies in $VENV_DIR; falling back to current Python environment." >&2
+    VENV_PYTHON="${PYTHON_BIN}"
+  fi
+fi
+
+export CAE_DATA_DIR="${CAE_DATA_DIR:-$ROOT_DIR/data}"
+export CAE_DB_PATH="${CAE_DB_PATH:-$CAE_DATA_DIR/cae-data.duckdb}"
+export ANALYTICS_DB_PATH="${ANALYTICS_DB_PATH:-$CAE_DATA_DIR/analytics.db}"
+export CAE_PORT="${CAE_PORT:-8080}"
+
+mkdir -p "$CAE_DATA_DIR"
+
+cat <<MSG
+Starting Prumo (standalone mode)
+  CAE_DB_PATH=$CAE_DB_PATH
+  ANALYTICS_DB_PATH=$ANALYTICS_DB_PATH
+  URL=http://127.0.0.1:$CAE_PORT
+MSG
+
+exec "$VENV_PYTHON" -m uvicorn app.main:app --host 127.0.0.1 --port "$CAE_PORT"
