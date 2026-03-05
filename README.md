@@ -1,13 +1,14 @@
-# CAE Dashboard
+# Prumo
 
-Economic indicators dashboard for the Portuguese Parliamentary Commission on Economic Affairs (_Comissão de Assuntos Económicos_).
+Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**, serving 11 interactive sections with data from 9 official statistical sources.
 
-Built with **FastAPI** + **DuckDB** + **ECharts**, serving 11 interactive sections with data from 9 official statistical sources.
+<img width="1471" height="1082" alt="image" src="https://github.com/user-attachments/assets/a2a779d1-a2ec-40c8-8e38-a47f040a7600" />
+
 
 ## Architecture
 
 ```
-cae-dashboard/
+prumo/
 ├── app/                          # FastAPI application
 │   ├── main.py                   # App entrypoint, CORS, static mount, healthcheck
 │   ├── config.py                 # Environment variables and paths
