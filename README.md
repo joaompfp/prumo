@@ -10,7 +10,7 @@ Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**,
 ## Architecture
 
 ```
-cae-dashboard/
+prumo/
 ├── app/                          # FastAPI application
 │   ├── main.py                   # App entrypoint, CORS, static mount, healthcheck
 │   ├── config.py                 # Environment variables and paths
