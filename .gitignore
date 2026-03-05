@@ -32,3 +32,10 @@ docs/*.pdf
 docs/*.epub
 docs/swd-*/
 docs/archive/
+
+# Block copyrighted/reference binaries
+docs/design/**/*.pdf
+docs/design/**/*.epub
+docs/design/**/*.xlsx
+docs/design/**/*.pptx
+docs/design/**/*.pbix
