@@ -204,6 +204,29 @@ The subpath route uses Traefik's `StripPrefix` middleware which sets `X-Forwarde
 docker exec cae-dashboard ./scripts/cae-collect
 ```
 
+## Run standalone (without Docker)
+
+You can run Prumo directly on your machine with Python:
+
+```bash
+./scripts/run-standalone
+```
+
+This launcher will:
+- create `.venv` automatically (if missing),
+- install `requirements.txt`,
+- default data paths to `./data` when `/data` is not available.
+
+Optional overrides:
+
+```bash
+CAE_DATA_DIR=./data \
+CAE_DB_PATH=./data/cae-data.duckdb \
+ANALYTICS_DB_PATH=./data/analytics.db \
+CAE_PORT=8080 \
+./scripts/run-standalone
+```
+
 ## Technical Notes
 
 - **Single worker**: Uvicorn runs with `--workers 1` because DuckDB connections are not thread-safe. FastAPI's thread pool handles concurrent requests via per-thread connection reuse.
