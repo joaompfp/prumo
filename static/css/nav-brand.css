@@ -90,7 +90,7 @@
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0px;
-  color: #6B7280;
+  color: var(--c-text-sub);
   text-transform: uppercase;
   line-height: 1;
   white-space: nowrap;
@@ -115,31 +115,31 @@
 
 /* ── Language FAB — fixed top-right ───────────────────────────── */
 .lang-fab {
-  position: fixed;
-  top: 8px;
-  right: 10px;
-  z-index: 9999;
+  /* Integrado em .nav-controls — sem position fixed */
+  position: relative;
   display: flex;
   align-items: center;
 }
 .lang-toggle {
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(0,0,0,0.10);
-  border-radius: 4px;
+  background: none;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  padding: 3px;
+  padding: 4px 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 0;
-  transition: background 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  transition: background 0.15s;
+  opacity: 0.8;
 }
-.lang-toggle img, .lang-toggle svg { display: block; border-radius: 1px; }
+.lang-toggle img, .lang-toggle svg { display: block; border-radius: 2px; }
 .lang-toggle:hover {
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+  background: var(--c-surface-2, rgba(0,0,0,0.06));
+  opacity: 1;
+}
+[data-theme="dark"] .lang-toggle:hover {
+  background: rgba(255,255,255,0.08);
 }
 .lang-dropdown {
   position: absolute;
@@ -179,6 +179,12 @@
 .lang-option:hover { background: #f3f4f6; }
 .lang-option.active { background: #fee2e2; }
 .lang-option.active .lang-option-label { font-weight: 700; }
+
+/* Dark mode overrides — lang dropdown */
+[data-theme="dark"] .lang-dropdown { background: var(--c-surface); }
+[data-theme="dark"] .lang-option-label { color: var(--c-text); }
+[data-theme="dark"] .lang-option:hover { background: var(--c-surface-2); }
+[data-theme="dark"] .lang-option.active { background: rgba(231, 76, 60, 0.15); }
 
 /* ═══════════════════════════════════════════════════════════════
    MOBILE (<=600px)

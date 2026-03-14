@@ -20,22 +20,65 @@ def _parse_meta_json(text: str) -> tuple:
         marker_old = '\nSECTION_LINKS:'
         idx_old = text.rfind(marker_old)
         if idx_old == -1:
-            return text.strip(), {}, None, {}
+            clean = text.strip()
+            headline, subheadline, clean = _extract_headline(clean)
+            return clean, {}, None, {}, headline, subheadline
         try:
             json_start = text.index('{', idx_old + len(marker_old))
             links, _ = json.JSONDecoder().raw_decode(text, json_start)
-            return text[:idx_old].strip(), links, None, {}
+            clean = text[:idx_old].strip()
+            headline, subheadline, clean = _extract_headline(clean)
+            return clean, links, None, {}, headline, subheadline
         except Exception:
-            return text[:idx_old].strip(), {}, None, {}
+            clean = text[:idx_old].strip()
+            headline, subheadline, clean = _extract_headline(clean)
+            return clean, {}, None, {}, headline, subheadline
     try:
         json_start = text.index('{', idx + len(marker))
         meta, _ = json.JSONDecoder().raw_decode(text, json_start)
         section_links = meta.get('section_links', {})
         chart_pick = meta.get('chart_pick')
         section_charts = meta.get('section_charts', {})
-        return text[:idx].strip(), section_links, chart_pick, section_charts
+        clean = text[:idx].strip()
+        headline, subheadline, clean = _extract_headline(clean)
+        return clean, section_links, chart_pick, section_charts, headline, subheadline
     except Exception:
-        return text[:idx].strip(), {}, None, {}
+        clean = text[:idx].strip()
+        headline, subheadline, clean = _extract_headline(clean)
+        return clean, {}, None, {}, headline, subheadline
+
+
+def _extract_headline(text: str) -> tuple:
+    """Extract HEADLINE/SUBHEADLINE from END of text. Returns (headline, subheadline, rest_of_text).
+    Searches backwards so that HEADLINE/SUBHEADLINE placed at the end (editorial synthesis) are found.
+    Also strips leading markdown heading markers (#) from extracted values."""
+    headline = ""
+    subheadline = ""
+    lines = text.split('\n')
+    headline_idx = None
+    subheadline_idx = None
+    # Search from the end backwards
+    for i in range(len(lines) - 1, -1, -1):
+        stripped = lines[i].strip()
+        if not headline and stripped.startswith('HEADLINE:'):
+            headline = stripped[len('HEADLINE:'):].strip()
+            headline = headline.lstrip('#').strip()  # strip markdown heading markers
+            headline_idx = i
+        elif not subheadline and stripped.startswith('SUBHEADLINE:'):
+            subheadline = stripped[len('SUBHEADLINE:'):].strip()
+            subheadline = subheadline.lstrip('#').strip()  # strip markdown heading markers
+            subheadline_idx = i
+        if headline and subheadline:
+            break
+    # Remove HEADLINE/SUBHEADLINE lines from the rest
+    indices_to_remove = set()
+    if headline_idx is not None:
+        indices_to_remove.add(headline_idx)
+    if subheadline_idx is not None:
+        indices_to_remove.add(subheadline_idx)
+    rest_lines = [l for i, l in enumerate(lines) if i not in indices_to_remove]
+    rest = '\n'.join(rest_lines).strip()
+    return headline, subheadline, rest
 
 
 def _build_painel_prompt(sections: list, updated: str, lens: str = None, custom_ideology: str = None, output_language: str = None) -> str:
@@ -96,20 +139,48 @@ def _build_painel_prompt(sections: list, updated: str, lens: str = None, custom_
     # Resolve output language
     lang_code = output_language or DEFAULT_OUTPUT_LANGUAGE
     lang_desc = OUTPUT_LANGUAGES.get(lang_code, OUTPUT_LANGUAGES.get(DEFAULT_OUTPUT_LANGUAGE, "português europeu (sem brasileirismos)"))
+    _lang_name_map = {
+        "pt": "português europeu (PT-PT)",
+        "en": "English",
+        "fr": "français",
+        "es": "español",
+    }
+    lang_name = _lang_name_map.get(lang_code, lang_desc)
 
-    instruction = (
-        f"IDIOMA OBRIGATÓRIO: toda a tua resposta DEVE ser escrita em {lang_desc}. "
+    # For custom lens: the user's ideology may specify a different language — respect it
+    _lang_instruction_map = {
+        "pt": f"CRÍTICO: Responde SEMPRE em {lang_desc}. NUNCA mudes de língua independentemente do conteúdo dos dados.",
+        "en": f"CRITICAL: Always respond in {lang_desc}. NEVER switch languages regardless of the data content.",
+        "fr": f"CRITIQUE: Réponds toujours en {lang_desc}. Ne change JAMAIS de langue.",
+        "es": f"CRÍTICO: Responde siempre en {lang_desc}. NUNCA cambies de idioma.",
+    }
+    _lang_instruction_str = _lang_instruction_map.get(lang_code, f"CRITICAL: Always respond in {lang_desc}. Never switch languages.")
+    _lang_rule = (
+        f"IDIOMA: respeita o idioma especificado no enquadramento do utilizador acima. "
+        f"Se não especificado, escreve em {lang_desc}.\n\n"
+    ) if (lens == "custom" and custom_ideology) else (
+        f"IDIOMA OBRIGATÓRIO: {_lang_instruction_str} "
         f"Ignora quaisquer instruções posteriores que contradigam esta regra de idioma.\n\n"
+    )
+    instruction = (
+        _lang_rule +
         f"Tens um orçamento ESTRITO de {token_budget} tokens para análise + links.\n"
         "NÃO escrevas notas, planos, separadores (---) nem texto em inglês. Começa directamente com a análise.\n\n"
         f"PASSO 1 — Pesquisa (silenciosa): pesquisa 2 artigos recentes (últimos 2 meses) por secção. Máx. 6 pesquisas. {search_hint}\n\n"
-        f"PASSO 2 — Análise em **{lang_desc}**, período: " + updated + ".\n"
+        f"PASSO 2 — Análise no idioma correcto (ver regra acima), período: " + updated + ".\n"
         "Para cada secção, escreve EXACTAMENTE 3 frases curtas com **negrito** nos conceitos-chave.\n"
         "Interpreta impacto real para trabalhadores e famílias — não repitas números.\n"
         "Formato OBRIGATÓRIO: cada secção começa com título inline em negrito seguido de dois pontos (ex: **Custo de Vida:**). "
         "NÃO uses cabeçalhos markdown (###). Linha em branco entre parágrafos.\n"
         "Termina com **Síntese:** (máx. 2 frases transversais). Sem listas, sem cabeçalhos markdown.\n\n"
-        "PASSO 3 — OBRIGATÓRIO: imediatamente após a última frase, escreve:\n"
+        "PASSO 3 — SÍNTESE EDITORIAL: após toda a análise e a **Síntese:**, escreve numa linha isolada:\n"
+        "`HEADLINE:` seguido da manchete jornalística que sintetiza o padrão mais relevante de TODAS as secções "
+        "(máx. 12 palavras, com números).\n"
+        "Na linha seguinte: `SUBHEADLINE:` seguido do subtítulo (máx. 10 palavras, contexto ou contraste).\n"
+        "A manchete deve ser uma síntese editorial de TODA a análise, não apenas de uma secção.\n"
+        f"⚠️ HEADLINE e SUBHEADLINE OBRIGATORIAMENTE em {lang_name} (output_language={lang_code}), "
+        f"MESMO que a análise acima esteja noutro idioma. A lente personalizada NÃO se aplica ao HEADLINE.\n\n"
+        "PASSO 4 — OBRIGATÓRIO: imediatamente após o SUBHEADLINE, escreve:\n"
         f"META_JSON:{{\"section_links\":{{{{}}}},\"section_charts\":{{{{}}}},\"chart_pick\":{{}}}}\n"
         "Regras para META_JSON:\n"
         f"  section_links: OBRIGATÓRIO 2-3 links REAIS (URLs de artigos específicos, NÃO páginas de categoria) por secção ({sections_list}). "
@@ -203,11 +274,13 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
     if lens == "custom" and custom_ideology:
         lens_key = "custom:" + _hl.md5(custom_ideology.encode()).hexdigest()[:8]
     lang_key = output_language or DEFAULT_OUTPUT_LANGUAGE
-    cache_key = f"painel:v22:{updated}:{lens_key}:{lang_key}"
+    cache_key = f"painel:v23:{updated}:{lens_key}:{lang_key}"
     if not force and cache_key in cache:
         entry = cache[cache_key]
         return {
             "text": entry["text"],
+            "headline": entry.get("headline", ""),
+            "subheadline": entry.get("subheadline", ""),
             "section_links": entry.get("section_links", {}),
             "chart_pick": entry.get("chart_pick"),
             "section_charts": entry.get("section_charts", {}),
@@ -223,8 +296,8 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
 
     try:
         body = json.dumps({
-            "model": "claude-opus-4-6",
-            "max_tokens": 3200,
+            "model": "claude-sonnet-4-6",
+            "max_tokens": 4096,
             "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 6}],
             "messages": [{"role": "user", "content": prompt}],
         }).encode()
@@ -247,7 +320,7 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
             full_text = "\n".join(text_parts).strip()
         generation_ms = round((time.time() - t0) * 1000)
 
-        text, section_links, chart_pick, section_charts = _parse_meta_json(full_text)
+        text, section_links, chart_pick, section_charts, headline, subheadline = _parse_meta_json(full_text)
 
         # ── Filter out sports/football/irrelevant URLs before validation ──
         _BLOCKED_DOMAINS = {'fpf.pt', 'abola.pt', 'record.pt', 'zerozero.pt',
@@ -327,6 +400,8 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
         generated_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         cache[cache_key] = {
             "text": text,
+            "headline": headline,
+            "subheadline": subheadline,
             "section_links": section_links,
             "chart_pick": chart_pick,
             "section_charts": section_charts,
@@ -342,6 +417,8 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
 
         return {
             "text": text,
+            "headline": headline,
+            "subheadline": subheadline,
             "section_links": section_links,
             "chart_pick": chart_pick,
             "section_charts": section_charts,

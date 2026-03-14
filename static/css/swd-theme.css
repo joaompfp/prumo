@@ -66,6 +66,165 @@
   --radius: 8px;
   --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
   --shadow-md: 0 2px 12px rgba(0,0,0,0.09);
+
+  /* Callout / Banner tokens */
+  --c-callout-warning-bg:     #FFF8E1;
+  --c-callout-warning-border: #FFD54F;
+  --c-callout-warning-text:   #5D4037;
+  --c-callout-info-bg:        #E8F4FD;
+  --c-callout-info-border:    #90CAF9;
+  --c-callout-info-text:      #1565C0;
+  --c-callout-amber-bg:       #FFFBF0;
+  --c-callout-amber-border:   #F0E0A0;
+  --c-callout-amber-text:     #7A5500;
+
+  /* Badge tokens */
+  --c-badge-positive-bg:      #E8F5E9;
+  --c-badge-negative-bg:      #FFEBEE;
+  --c-badge-neutral-bg:       #F5F5F5;
+
+  /* Skeleton / loading tokens */
+  --c-skeleton-base:          #f0f0f0;
+  --c-skeleton-shine:         #e8e8e8;
+  --c-chart-loading-bg:       #fafafa;
+
+  /* Search bar tokens */
+  --c-kbd-bg:                 #FFFFFF;
+  --c-kbd-border:             #D5D0CB;
+  --c-search-focus-bg:        #FFFFFF;
+
+  /* Haiku card tokens */
+  --c-haiku-bg-start:         #FFF9F5;
+  --c-haiku-bg-end:           #FFF5F5;
+  --c-haiku-border:           #F5C0C0;
+  --c-haiku-badge-bg:         #FFE8E8;
+  --c-haiku-badge-border:     #FFCDD2;
+}
+
+/* ── Dark Mode ──────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --c-pt:       #e74c3c;
+  --c-eu:       #5ba3e8;
+  --c-other:    #888888;
+  --c-muted:    #a8a8c0;
+  --c-base100:  #444455;
+
+  --c-positive: #4CAF50;
+  --c-negative: #EF5350;
+  --c-neutral:  #888888;
+
+  --c-bg:       #0f0f13;
+  --c-surface:  #1e1e2a;
+  --c-surface-2: #1a1a24;
+  --c-border:   #2a2a3a;
+  --c-text:     #e8e8f0;
+  --c-text-sub: #a0a0b8;
+  --c-nav-bg:   #13131a;
+  --c-nav-text: #a0a0b8;
+  --c-nav-active: #e8e8f0;
+  --c-accent:   #e74c3c;
+
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.3);
+  --shadow-md: 0 2px 12px rgba(0,0,0,0.4);
+
+  /* Callout / Banner tokens — dark overrides */
+  --c-callout-warning-bg:     #2a2510;
+  --c-callout-warning-border: #6b5a00;
+  --c-callout-warning-text:   #e8c96a;
+  --c-callout-info-bg:        #101e2a;
+  --c-callout-info-border:    #1a4a7a;
+  --c-callout-info-text:      #7ab8f0;
+  --c-callout-amber-bg:       #1e1a0a;
+  --c-callout-amber-border:   #5a4400;
+  --c-callout-amber-text:     #c8a840;
+
+  /* Badge tokens — dark overrides */
+  --c-badge-positive-bg:      rgba(76, 175, 80, 0.15);
+  --c-badge-negative-bg:      rgba(239, 83, 80, 0.15);
+  --c-badge-neutral-bg:       rgba(136, 136, 136, 0.15);
+
+  /* Skeleton / loading tokens — dark overrides */
+  --c-skeleton-base:          #252535;
+  --c-skeleton-shine:         #2e2e42;
+  --c-chart-loading-bg:       #1e1e2a;
+
+  /* Search bar tokens — dark overrides */
+  --c-kbd-bg:                 #252535;
+  --c-kbd-border:             #3a3a4a;
+  --c-search-focus-bg:        #1e1e2a;
+
+  /* Haiku card tokens — dark overrides */
+  --c-haiku-bg-start:         #1e1822;
+  --c-haiku-bg-end:           #1e1a1a;
+  --c-haiku-border:           #4a2a2a;
+  --c-haiku-badge-bg:         rgba(231, 76, 60, 0.12);
+  --c-haiku-badge-border:     #5a2020;
+}
+
+/* Dark mode: suppress body bg-pattern and render via pseudo-element at low opacity */
+[data-theme="dark"] body {
+  background-image: none;
+}
+[data-theme="dark"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("../images/prumo/bg-pattern.svg");
+  background-repeat: repeat;
+  background-size: 60px 60px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Theme toggle button */
+.nav-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 16px;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--c-surface, #fff);
+  border: 1px solid var(--c-border, #e5e5e5);
+  border-radius: 24px;
+  padding: 4px 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--c-nav-text);
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  flex-shrink: 0;
+  white-space: nowrap;
+  opacity: 0.7;
+}
+.theme-toggle-btn:hover {
+  background: var(--c-surface-2);
+  opacity: 1;
+}
+
+/* Smooth theme transitions */
+body,
+.nav,
+.kpi-card,
+.chart-card,
+.search-bar,
+.search-bar-inner,
+.search-bar .search-results,
+#ai-panel,
+#painel-ia-panel {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* ── Reset ──────────────────────────────────────────────────────── */
@@ -136,7 +295,8 @@ body {
 .nav-tab {
   display: flex;
   align-items: center;
-  padding: 0 var(--sp-lg);
+  padding: 8px var(--sp-lg);
+  min-height: 44px;
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 11.5px;
   font-weight: 400;
@@ -145,21 +305,22 @@ body {
   color: var(--c-nav-text);
   text-decoration: none;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 0.18s, border-color 0.18s, opacity 0.18s;
+  border-bottom: 3px solid transparent;
+  transition: color 0.18s, border-color 0.18s, opacity 0.18s, background 0.18s;
   opacity: 0.7;
 }
 
 .nav-tab:hover {
   color: var(--c-text);
   opacity: 1;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .nav-tab.active {
   color: var(--c-nav-active);
   border-bottom-color: var(--c-pt);
   opacity: 1;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .nav-tab-icon {
@@ -454,7 +615,7 @@ body {
 .val-positive { color: var(--c-positive); font-weight: 600; }
 .val-negative { color: var(--c-negative); font-weight: 600; }
 .val-neutral  { color: var(--c-neutral); }
-.val-nd       { color: #BBBBBB; font-style: italic; }
+.val-nd       { color: var(--c-muted); font-style: italic; }
 
 /* ── Badge ──────────────────────────────────────────────────────── */
 .badge {
@@ -467,9 +628,9 @@ body {
   padding: 2px 8px;
   border-radius: 20px;
 }
-.badge-positive { background: #E8F5E9; color: var(--c-positive); }
-.badge-negative { background: #FFEBEE; color: var(--c-negative); }
-.badge-neutral  { background: #F5F5F5; color: var(--c-neutral); }
+.badge-positive { background: var(--c-badge-positive-bg); color: var(--c-positive); }
+.badge-negative { background: var(--c-badge-negative-bg); color: var(--c-negative); }
+.badge-neutral  { background: var(--c-badge-neutral-bg);  color: var(--c-neutral); }
 
 /* ── Loading / Error states ─────────────────────────────────────── */
 .loading-state {
@@ -593,7 +754,7 @@ body {
 /* ── Footnote ───────────────────────────────────────────────────── */
 .footnote {
   font-size: var(--fs-xs);
-  color: #AAAAAA;
+  color: var(--c-muted);
   margin-top: var(--sp-md);
   line-height: 1.6;
 }

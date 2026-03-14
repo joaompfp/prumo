@@ -161,6 +161,17 @@ LENSES = [
         "link_sources": _DEFAULT_LINK_SOURCES,
     },
     {
+        "id": "kriolu",
+        "label": "🇨🇻 Kriolu São Vicente (ALUPEC)",
+        "short": "🇨🇻 Kriolu",
+        "party": None,
+        "source": "Varianti Barlaventu, ortografia ALUPEC (DL 8/2009)",
+        "prompt": None,  # loaded from ideologies/kriolu.txt
+        "color": "#009A44",
+        "icon": "custom",
+        "link_sources": "observador.pt, publico.pt, eco.sapo.pt, jornaldenegocios.pt, rtp.pt",
+    },
+    {
         "id": "custom",
         "label": "Lente Personalizada",
         "short": "Custom",
@@ -282,6 +293,12 @@ _FALLBACK_PROMPTS = {
         "e indicas possíveis causas sem tomar posição política. "
         "Não privilegias nenhuma perspectiva ideológica. "
         "Usa linguagem objectiva e neutra."
+    ),
+    "kriolu": (
+        "Skribe tudu en kriolu di São Visenti (varianti Barlaventu, ortografia ALUPEC DL 8/2009). "
+        "Ka miska portuges — kriolu puru. "
+        "Analisi neutral i fatual. Deskrevi u ke dados ta mostrA, sén juizamentu polítiku. "
+        "Uza ta+verbu pa prezenti habitual, verbu-á pa pasadu simples, ka pa negason."
     ),
 }
 

@@ -3,6 +3,46 @@
    CAE Dashboard V7
    ═══════════════════════════════════════════════════════════════ */
 
+// ── Theme toggle — dark/light mode ──────────────────────────────────
+(function() {
+  const THEME_KEY = 'prumo-theme';
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+    // Update ECharts backgrounds if charts exist
+    try {
+      if (window.__prumoCharts) {
+        window.__prumoCharts.forEach(function(chart) {
+          if (chart && !chart.isDisposed()) {
+            chart.setOption({ backgroundColor: 'transparent' });
+          }
+        });
+      }
+    } catch(e) {}
+  }
+
+  function initTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    applyTheme(saved || preferred);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    const btn = document.getElementById('theme-toggle');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem(THEME_KEY, next);
+      });
+    }
+  });
+})();
+
 // ── Lens logos — all lenses use image files ──────────────────────────
 // Pills use <img> tags pointing to /static/images/parties/<id>_48.png
 const PARTY_LOGOS = {
@@ -235,14 +275,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ── Hero onboarding — show only on first visit ──────────────────
+  // ── Hero onboarding — full on first visit, compact for returning users ──
   const hero = document.getElementById('hero-onboarding');
   if (hero) {
-    if (localStorage.getItem('prumo-hero-dismissed')) {
-      hero.classList.add('hidden');
+    const _dismissed = localStorage.getItem('prumo-hero-dismissed');
+    if (_dismissed) {
+      // Returning user: show compact banner instead of hiding entirely
+      hero.classList.add('compact');
+      // Inject compact bar if not already present
+      if (!hero.querySelector('.hero-compact-bar')) {
+        const bar = document.createElement('div');
+        bar.className = 'hero-compact-bar';
+        bar.innerHTML = `
+          <span class="hero-compact-title">Economia portuguesa, verificada.</span>
+          <button class="hero-compact-expand" title="Expandir apresentação">↓ Sobre o Prumo</button>`;
+        hero.insertBefore(bar, hero.firstChild);
+        bar.querySelector('.hero-compact-expand').addEventListener('click', () => {
+          hero.classList.remove('compact', 'hidden');
+          bar.style.display = 'none';
+          localStorage.removeItem('prumo-hero-dismissed');
+        });
+      }
     }
     const dismiss = () => {
       hero.classList.add('hidden');
+      hero.classList.remove('compact');
       localStorage.setItem('prumo-hero-dismissed', '1');
     };
     document.getElementById('hero-dismiss')?.addEventListener('click', dismiss);

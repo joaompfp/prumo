@@ -57,3 +57,13 @@ def dashboard(request: Request):
         "output_languages": OUTPUT_LANGUAGES,
         "default_output_language": DEFAULT_OUTPUT_LANGUAGE,
     })
+
+
+@router.get("/{full_path:path}", response_class=HTMLResponse)
+def spa_fallback(request: Request, full_path: str):
+    """SPA catch-all: serve the dashboard for any unmatched path (client-side routing)."""
+    # Only handle non-API, non-static paths
+    if full_path.startswith("api/") or full_path.startswith("static/"):
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Not Found")
+    return dashboard(request)

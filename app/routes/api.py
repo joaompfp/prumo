@@ -146,7 +146,7 @@ async def painel_analysis_endpoint(request: Request):
     loop = asyncio.get_event_loop()
     # If bg=1, fire and forget — return immediately
     if bg:
-        loop.run_in_executor(None, get_painel_analysis, sections, updated, True, lens, custom_ideology, output_language)
+        loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology, output_language)
         return {"status": "generating", "message": "Analysis generation started in background"}
     # Otherwise run in thread pool — does NOT block the event loop (other requests served normally)
     return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology, output_language)
@@ -205,12 +205,13 @@ async def painel_headline_endpoint(request: Request):
     force = request.query_params.get("force") == "1"
     lens = request.query_params.get("lens")
     output_language = request.query_params.get("output_language") or "pt"
+    custom_ideology = request.query_params.get("custom_ideology") or None
     data = build_painel()
     sections = data.get("sections", [])
     updated = data.get("updated", "")
     import asyncio
     loop = asyncio.get_event_loop()
-    return await loop.run_in_executor(None, lambda: get_painel_headline(sections, updated, force=force, lens=lens, output_language=output_language))
+    return await loop.run_in_executor(None, lambda: get_painel_headline(sections, updated, force=force, lens=lens, custom_ideology=custom_ideology, output_language=output_language))
 
 
 @router.get("/painel-headlines-batch")

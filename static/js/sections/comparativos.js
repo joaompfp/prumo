@@ -424,8 +424,7 @@ App.registerSection('comparativos', async () => {
 
     } catch(e) {
       console.error('[comparativos] load error:', e);
-      document.getElementById('cmp-legend').innerHTML =
-        `<div class="error-state">Erro: ${e.message}</div>`;
+      document.getElementById('cmp-legend').innerHTML = App.errorHTML('Não foi possível carregar os dados. Tenta novamente.');
     }
   }
 

@@ -107,7 +107,7 @@ def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, cust
 
     try:
         body = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
+            "model": "claude-sonnet-4-5-20251001" if lens_key == "kriolu" else "claude-haiku-4-5-20251001",
             "max_tokens": 1400,
             "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}],
             "messages": [{"role": "user", "content": prompt}]
@@ -219,8 +219,7 @@ def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None, output_
 
     # Hard language constraint at the very top of the prompt
     lang_prefix = (
-        f"IDIOMA OBRIGATÓRIO: toda a tua resposta DEVE ser escrita em {lang_desc}. "
-        f"Ignora quaisquer instruções posteriores que contradigam esta regra de idioma.\n\n"
+        f"IDIOMA OBRIGATÓRIO: toda a tua resposta DEVE ser escrita em {lang_desc}.\n\n"
     )
 
     instruction = (

@@ -9,11 +9,21 @@ App.registerSection('painel', async () => {
   const body = container.querySelector('.section-body');
 
   try {
-    body.innerHTML = `
-      <div class="loading-state">
-        <div class="loading-spinner"></div>
-        <span>A carregar indicadores…</span>
+    // Skeleton KPI cards durante loading
+    const _skeletonCard = `
+      <div class="kpi-card kpi-card-skeleton">
+        <div class="kpi-card-header">
+          <div class="skeleton" style="width:62%;height:11px"></div>
+          <div class="skeleton" style="width:30px;height:11px"></div>
+        </div>
+        <div class="kpi-value-row">
+          <div class="skeleton" style="width:45%;height:26px;margin-top:8px"></div>
+        </div>
+        <div class="kpi-trend-row">
+          <div class="skeleton" style="width:55%;height:10px;margin-top:10px"></div>
+        </div>
       </div>`;
+    body.innerHTML = `<div class="kpi-grid">${Array.from({length: 10}, () => _skeletonCard).join('')}</div>`;
 
     // ── Try /api/painel (sections), fallback to /api/resumo (flat) ──
     let data;
@@ -73,7 +83,8 @@ App.registerSection('painel', async () => {
 
     const titleEl = container.querySelector('.section-title');
     const subEl = container.querySelector('.section-subtitle');
-    if (titleEl) titleEl.textContent = titleMsg;
+    // Title and subtitle start empty while AI headline loads.
+    // Rule-based fallback only in .catch() or if API returns no headline.
 
     // Fetch headline from Opus (non-blocking — fallback to rule-based)
     // NOTE: _fetchHeadline is called early (before currentLens is declared),
@@ -81,8 +92,18 @@ App.registerSection('painel', async () => {
     function _fetchHeadline(lens) {
       const lensParam = lens || localStorage.getItem('prumo-lens') || 'cae';
       const langParam = getOutputLanguage();
-      API.get(`/api/painel-headline?lens=${encodeURIComponent(lensParam)}&output_language=${encodeURIComponent(langParam)}`).then(h => {
-        if (!h?.headline) return;
+      let headlineUrl = `/api/painel-headline?lens=${encodeURIComponent(lensParam)}&output_language=${encodeURIComponent(langParam)}`;
+      if (lensParam === 'custom') {
+        const customText = localStorage.getItem('prumo-custom-ideology') || (typeof CUSTOM_LENS_DEFAULT !== 'undefined' ? CUSTOM_LENS_DEFAULT : '');
+        if (customText) headlineUrl += `&custom_ideology=${encodeURIComponent(customText)}`;
+      }
+      API.get(headlineUrl).then(h => {
+        if (!h?.headline) {
+          // API responded but no headline — apply rule-based fallback
+          if (titleEl && !titleEl.textContent) titleEl.textContent = titleMsg;
+          if (subEl && !subEl.textContent) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
+          return;
+        }
         const lines = h.headline.split('\n').map(l => l.trim()).filter(Boolean);
         if (titleEl && lines[0]) {
           titleEl.classList.add('ia-dissolve-out');
@@ -96,8 +117,14 @@ App.registerSection('painel', async () => {
         if (subEl && lines.length > 1) {
           subEl.innerHTML = lines.slice(1).map(l => `<span>${l}</span>`).join(' &middot; ')
             + ` <span style="opacity:.6;font-size:.9em">· ${updated} · ${allKpis.length} KPIs</span>`;
+        } else if (subEl && !subEl.innerHTML) {
+          subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
         }
-      }).catch(() => {}); // silent fail → rule-based title stays
+      }).catch(() => {
+        // Network/API failure — apply rule-based fallback (only if still empty)
+        if (titleEl && !titleEl.textContent) titleEl.textContent = titleMsg;
+        if (subEl && !subEl.textContent) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
+      });
     }
     _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
 
@@ -105,8 +132,6 @@ App.registerSection('painel', async () => {
     window.addEventListener('language-change', () => {
       _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
     });
-
-    if (subEl) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
 
     // Source label map
     const SOURCE_LABELS = {
@@ -182,7 +207,10 @@ App.registerSection('painel', async () => {
     function getLensParam() { return currentLens || 'cae'; }
     function getCustomIdeology() {
       if (currentLens !== 'custom') return null;
-      return localStorage.getItem('prumo-custom-ideology') || CUSTOM_LENS_DEFAULT;
+      // Prefer the live textarea value (may not be saved yet)
+      const el = document.getElementById('custom-ideology-text');
+      if (el && el.value.trim()) return el.value.trim();
+      return localStorage.getItem('prumo-custom-ideology') || null;
     }
 
     function renderLensPills() {
@@ -274,8 +302,10 @@ App.registerSection('painel', async () => {
         <span class="painel-ia-label">✦ Análise Política · Lente: <span id="painel-ia-lens-name">${currentLensLabel()}</span></span>
         <span class="painel-ia-tagline">(quase) instantânea, só juntar electricidade</span>
         <div class="lens-selector" id="lens-selector"></div>
+      </div>
+      <div class="painel-ia-actions">
         <span class="painel-ia-meta" id="painel-ia-meta"></span>
-        <button class="painel-ia-regen" id="painel-ia-regen" title="Forçar nova análise">↺</button>
+        <button class="painel-ia-regen" id="painel-ia-regen" title="Forçar nova análise">↺ regenerar</button>
       </div>
       <div id="painel-ia-text" class="painel-ia-text"></div>
       <div id="painel-ia-links" class="painel-ia-links" style="display:none"></div>
@@ -289,7 +319,7 @@ App.registerSection('painel', async () => {
     const themeNavHtml = useSections
       ? `<nav class="painel-theme-nav" id="painel-theme-nav">
           <button class="theme-pill active" data-target="pt-mundo-top-container">PT vs Europa</button>
-          ${data.sections.map(s => `<button class="theme-pill" data-target="section-${s.id}">${s.label}</button>`).join('')}
+          ${data.sections.map(s => `<button class="theme-pill" data-target="section-${s.id}">${s.label || s.title || s.id}</button>`).join('')}
         </nav>`
       : '';
 
@@ -409,7 +439,7 @@ App.registerSection('painel', async () => {
       const textEl = document.getElementById('painel-ia-text');
       const panel = document.getElementById('painel-ia-panel');
       // For custom lens without text, show notice
-      if (newLens === 'custom' && !localStorage.getItem('prumo-custom-ideology')) {
+      if (newLens === 'custom' && !localStorage.getItem('prumo-custom-ideology') && !CUSTOM_LENS_DEFAULT) {
         if (textEl) textEl.innerHTML = '<p style="color:var(--c-muted);font-style:italic">Escreve o teu enquadramento no campo acima e gera a análise.</p>';
         return;
       }
@@ -479,10 +509,10 @@ App.registerSection('painel', async () => {
       });
     }
     chart.setOption({
-      grid: { top: 8, right: 4, bottom: 20, left: 44 },
+      grid: { top: 8, right: 16, bottom: 40, left: 44, containLabel: true },
       xAxis: { type: 'category', data: data.map(d => d.period || d.p || ''),
                axisLabel: { fontSize: 9, color: '#888',
-                 interval: 0,
+                 interval: 'auto',
                  formatter: (v, i) => {
                    const n = data.length;
                    const MO = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -731,7 +761,7 @@ App.registerSection('painel', async () => {
       if (!kpi?.spark?.length || !EU_SOURCES.has(kpi.source)) return;
       const ref = EU_REF_MAP[kpi.source] || 'EU27_2020';
       try {
-        const url = `${BASE}/api/mundo?indicator=${encodeURIComponent(kpi.id)}&source=${kpi.source}&countries=${encodeURIComponent('PT,' + ref)}&since=2015`;
+        const url = `/api/mundo?indicator=${encodeURIComponent(kpi.indicator)}&source=${kpi.source}&countries=${encodeURIComponent('PT,' + ref)}&since=2015`;
         const data = await API.get(url);
         const refSeries = (data.series || []).find(s => s.country === ref || s.country === 'EU27_2020' || s.country === 'EU');
         if (refSeries?.data?.length) {
@@ -760,6 +790,12 @@ App.registerSection('painel', async () => {
             c.querySelectorAll('[id^="ai-card-chart-"]').forEach(el => {
               try { window.echarts?.getInstanceByDom(el)?.resize(); } catch(e) {}
             });
+            // Second resize after DOM settling (SVG renderer needs extra tick)
+            setTimeout(() => {
+              c.querySelectorAll('[id^="ai-card-chart-"]').forEach(el => {
+                try { window.echarts?.getInstanceByDom(el)?.resize(); } catch(e) {}
+              });
+            }, 50);
           });
         } else {
           c.classList.remove('active');
@@ -889,6 +925,25 @@ App.registerSection('painel', async () => {
             textEl.innerHTML = _renderAnalysisCards(result.text, result.section_links || {});
             textEl.classList.add('ia-dissolve-in');
             setTimeout(() => textEl.classList.remove('ia-dissolve-in'), 500);
+
+            // Use headline from analysis response (same language as analysis)
+            if (result.headline) {
+              const titleEl = container.querySelector('.section-title');
+              const subEl = container.querySelector('.section-subtitle');
+              if (titleEl) {
+                titleEl.classList.add('ia-dissolve-out');
+                setTimeout(() => {
+                  titleEl.textContent = result.headline;
+                  titleEl.classList.remove('ia-dissolve-out');
+                  titleEl.classList.add('ia-dissolve-in');
+                  setTimeout(() => titleEl.classList.remove('ia-dissolve-in'), 400);
+                }, 200);
+              }
+              if (subEl && result.subheadline) {
+                subEl.innerHTML = `<span>${_renderMd(result.subheadline)}</span>` +
+                  ` <span style="opacity:.6;font-size:.9em">· ${updated} · ${allKpis.length} KPIs</span>`;
+              }
+            }
 
             // Build kpiPerCard: Sonnet specifies indicator per section via section_charts
             // Fallback: highest abs YoY when no match
