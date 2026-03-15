@@ -250,9 +250,6 @@
     width: 36px;
   }
 
-  /* Remover pseudo-elemento "Portugal" em mobile para poupar espaço */
-  .nav-brand-icon-wrap::after { display: none; }
-
   /* Compactar o link de marca */
   .nav-brand-link {
     padding: 0 8px 0 8px !important;
