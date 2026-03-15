@@ -11,15 +11,26 @@
     document.documentElement.setAttribute('data-theme', theme);
     const btn = document.getElementById('theme-toggle');
     if (btn) btn.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
-    // Update ECharts backgrounds if charts exist
+    // Re-render ECharts with updated theme colors
     try {
-      if (window.__prumoCharts) {
-        window.__prumoCharts.forEach(function(chart) {
-          if (chart && !chart.isDisposed()) {
-            chart.setOption({ backgroundColor: 'transparent' });
-          }
-        });
-      }
+      const isDark = theme === 'dark';
+      const textColor  = isDark ? '#e8e8f0' : '#1A1A1A';
+      const subColor   = isDark ? '#a0a0b8' : '#666666';
+      const tooltipBg  = isDark ? '#1e1e2a' : '#FFFFFF';
+      const tooltipBdr = isDark ? '#2a2a3a' : '#EBEBEB';
+      const splitLine  = isDark ? '#252535' : '#F5F5F5';
+      const chartList  = window.__prumoCharts || (window.SWD && SWD._getCharts ? SWD._getCharts() : []);
+      chartList.forEach(function(chart) {
+        if (chart && !chart.isDisposed()) {
+          chart.setOption({
+            backgroundColor: 'transparent',
+            textStyle:  { color: textColor },
+            tooltip:    { backgroundColor: tooltipBg, borderColor: tooltipBdr, textStyle: { color: textColor } },
+            xAxis:      [{ axisLabel: { color: subColor } }],
+            yAxis:      [{ axisLabel: { color: subColor }, splitLine: { lineStyle: { color: splitLine } } }],
+          }, { notMerge: false });
+        }
+      });
     } catch(e) {}
   }
 

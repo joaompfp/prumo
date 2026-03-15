@@ -8,6 +8,30 @@ const SWD = (() => {
   // Registo de todos os charts para resize global
   const _charts = [];
 
+  // ── Dark mode theme helper ────────────────────────────────────────
+  // Reads CSS custom properties so charts adapt to dark/light mode.
+  function getCSSVar(name, fallback) {
+    try {
+      const val = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return val || fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function chartTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+      text:       isDark ? '#e8e8f0' : '#1A1A1A',
+      textSub:    isDark ? '#a0a0b8' : '#666666',
+      bg:         'transparent',
+      tooltipBg:  isDark ? '#1e1e2a' : '#FFFFFF',
+      tooltipBdr: isDark ? '#2a2a3a' : '#EBEBEB',
+      axisLine:   isDark ? '#3a3a4a' : '#E0E0E0',
+      splitLine:  isDark ? '#252535' : '#F5F5F5',
+    };
+  }
+
   // Paleta padrão SWD
   const COLORS = {
     pt:     '#CC0000',
@@ -88,6 +112,7 @@ const SWD = (() => {
 
   // Base options — zero clutter
   function baseOptions(title = '', subtitle = '') {
+    const t = chartTheme();
     return {
       backgroundColor: 'transparent',
       animation: true,
@@ -96,7 +121,7 @@ const SWD = (() => {
       color: [COLORS.pt, COLORS.eu, COLORS.es, COLORS.de, COLORS.fr, COLORS.other],
       textStyle: {
         fontFamily: 'Inter, system-ui, sans-serif',
-        color: '#1A1A1A',
+        color: t.text,
       },
       title: title ? {
         text: title,
@@ -106,13 +131,13 @@ const SWD = (() => {
         textStyle: {
           fontSize: 14,
           fontWeight: 600,
-          color: '#1A1A1A',
+          color: t.text,
           fontFamily: 'Inter, system-ui, sans-serif',
           lineHeight: 20,
         },
         subtextStyle: {
           fontSize: 12,
-          color: '#666666',
+          color: t.textSub,
           fontFamily: 'Inter, system-ui, sans-serif',
         },
       } : undefined,
@@ -125,19 +150,19 @@ const SWD = (() => {
       },
       tooltip: {
         trigger: 'axis',
-        backgroundColor: '#FFFFFF',
-        borderColor: '#EBEBEB',
+        backgroundColor: t.tooltipBg,
+        borderColor: t.tooltipBdr,
         borderWidth: 1,
         padding: [8, 12],
         textStyle: {
           fontSize: 12,
-          color: '#1A1A1A',
+          color: t.text,
           fontFamily: 'Inter, system-ui, sans-serif',
         },
         extraCssText: 'box-shadow: 0 2px 8px rgba(0,0,0,0.12); border-radius: 6px;',
         axisPointer: {
           type: 'line',
-          lineStyle: { color: '#E0E0E0', width: 1 },
+          lineStyle: { color: t.axisLine, width: 1 },
         },
       },
       legend: { show: false }, // Labels directos — sem legend separada
@@ -158,7 +183,7 @@ const SWD = (() => {
       splitLine: { show: false },
       axisLabel: {
         fontSize: 10,
-        color: '#666666',
+        color: chartTheme().textSub,
         fontFamily: 'Inter, system-ui, sans-serif',
         interval: opts.interval ?? defaultInterval,
         rotate: opts.rotate ?? 0,
@@ -172,17 +197,18 @@ const SWD = (() => {
 
   // yAxis padrão
   function valueAxis(opts = {}) {
+    const t = chartTheme();
     return {
       type: 'value',
       axisLine: { show: false },
       axisTick: { show: false },
       splitLine: {
         show: true,
-        lineStyle: { color: '#F0F0F0', width: 1 },
+        lineStyle: { color: t.splitLine, width: 1 },
       },
       axisLabel: {
         fontSize: 11,
-        color: '#666666',
+        color: t.textSub,
         fontFamily: 'Inter, system-ui, sans-serif',
         formatter: opts.formatter || null,
       },
@@ -350,6 +376,8 @@ const SWD = (() => {
     };
   }
 
+  function _getCharts() { return _charts; }
+
   return {
     COLORS,
     COUNTRY_COLORS,
@@ -363,6 +391,8 @@ const SWD = (() => {
     destroyChart,
     resizeAll,
     lineSeries,
+    _getCharts,
+    chartTheme,
   };
 })();
 
