@@ -967,22 +967,27 @@ App.registerSection('explorador', async () => {
     custo_vida: [
       { source: 'INE', indicator: 'hicp_total' },
       { source: 'EUROSTAT', indicator: 'hicp_yoy' },
+      { source: 'DGEG', indicator: 'price_gasoline' },
     ],
     emprego: [
-      { source: 'EUROSTAT', indicator: 'unemp_m' },
+      { source: 'EUROSTAT', indicator: 'unemployment' },
       { source: 'INE', indicator: 'employment_rate' },
+      { source: 'INE', indicator: 'wages_industry' },
     ],
     energia: [
-      { source: 'EUROSTAT', indicator: 'electricity_price_household' },
       { source: 'REN', indicator: 'electricity_price_mibel' },
+      { source: 'DGEG', indicator: 'price_diesel' },
+      { source: 'FRED', indicator: 'brent_oil' },
     ],
     industria: [
-      { source: 'INE', indicator: 'ipi_total' },
       { source: 'INE', indicator: 'ipi_seasonal_cae_TOT' },
+      { source: 'INE', indicator: 'ipi_total' },
+      { source: 'OECD', indicator: 'order_books' },
     ],
     macro: [
-      { source: 'WORLDBANK', indicator: 'gdp_growth' },
-      { source: 'INE', indicator: 'confidence' },
+      { source: 'INE', indicator: 'gdp_yoy' },
+      { source: 'EUROSTAT', indicator: 'unemployment' },
+      { source: 'INE', indicator: 'hicp_total' },
     ],
   };
 
@@ -1012,5 +1017,22 @@ App.registerSection('explorador', async () => {
   // ── Init ──────────────────────────────────────────────────────
   if (!restoreFromURL()) {
     loadSession();  // No URL params → restore previous session
+    // If still empty (no session), auto-load macro path as default
+    if (selected.length === 0) {
+      const defaultPath = GUIDED_PATHS.macro || [];
+      defaultPath.forEach(({ source, indicator }) => {
+        const srcInfo = catalog[source];
+        if (!srcInfo) return;
+        const indInfo = srcInfo.indicators?.[indicator];
+        if (!indInfo) return;
+        selected.push({ source, indicator, label: indInfo.label || indicator, unit: indInfo.unit || '' });
+      });
+      if (selected.length) {
+        renderChips();
+        renderFicha();
+        render();
+        body.querySelector('.exp-path-btn[data-path="macro"]')?.classList.add('active');
+      }
+    }
   }
 });
