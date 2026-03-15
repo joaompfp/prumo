@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff
+      - run: ruff check app/ collectors/ --output-format=github
+
+  test:
+    name: Test (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Create seed database
+        run: python scripts/create_seed_db.py
+      - name: Run tests
+        run: pytest tests/ -m "not integration and not slow" --cov=app --cov-report=term-missing
+        env:
+          CAE_DB_PATH: seed_data/seed.duckdb
+          ANTHROPIC_API_KEY: skip

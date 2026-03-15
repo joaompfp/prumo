@@ -43,3 +43,6 @@ docs/design/**/*.epub
 docs/design/**/*.xlsx
 docs/design/**/*.pptx
 docs/design/**/*.pbix
+
+# Seed database (generated, not committed)
+seed_data/seed.duckdb

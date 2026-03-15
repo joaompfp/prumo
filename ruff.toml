@@ -1,0 +1,6 @@
+line-length = 100
+
+[lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501", "F841"]
+exclude = ["venv/", "seed_data/", ".pytest_cache/"]
