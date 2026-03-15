@@ -86,6 +86,7 @@ def build_painel():
         # ── 1. Custo de Vida ─────────────────────────────────────────
         {
             "id": "custo_de_vida",
+            "name": "Custo de Vida",
             "label": "Custo de Vida",
             "kpis": [
                 painel_kpi("inflation",       "Inflação",             "INE",       "hicp_yoy",              invert_sentiment=True,  unit_override="%",             description=D["inflation"]),
@@ -102,6 +103,7 @@ def build_painel():
         # ── 2. Indústria ─────────────────────────────────────────────
         {
             "id": "industria",
+            "name": "Indústria",
             "label": "Indústria",
             "kpis": [
                 painel_kpi("ipi_total",   "Produção Industrial",  "INE",  "ipi_seasonal_cae_TOT", invert_sentiment=False,                                description=D["ipi_total"]),
@@ -118,6 +120,7 @@ def build_painel():
         # ── 3. Emprego ───────────────────────────────────────────────
         {
             "id": "emprego",
+            "name": "Emprego",
             "label": "Emprego",
             "kpis": [
                 painel_kpi("unemployment",          "Desemprego",           "OECD", "unemp_m",           invert_sentiment=True,                                description=D["unemployment"]),
@@ -128,6 +131,7 @@ def build_painel():
         # ── 4. Conjuntura ─────────────────────────────────────────────
         {
             "id": "conjuntura",
+            "name": "Conjuntura",
             "label": "Conjuntura",
             "kpis": [
                 painel_kpi("cli",        "Indicador Avançado",   "OECD", "cli",               invert_sentiment=False,                  description=D["cli"]),
@@ -138,6 +142,7 @@ def build_painel():
         # ── 5. Energia ───────────────────────────────────────────────
         {
             "id": "energia",
+            "name": "Energia",
             "label": "Energia",
             "kpis": [
                 painel_kpi("energy_cost",       "Electricidade Grossista", "REN",  "electricity_price_mibel",     invert_sentiment=True,                              description=D["energy_cost"]),
@@ -151,6 +156,7 @@ def build_painel():
         # ── 6. Externo ───────────────────────────────────────────────
         {
             "id": "externo",
+            "name": "Externo",
             "label": "Externo",
             "kpis": [
                 painel_kpi("eur_usd",      "EUR/USD",        "BPORTUGAL", "eur_usd",      invert_sentiment=False,                    description=D["eur_usd"]),
@@ -161,6 +167,7 @@ def build_painel():
         # ── 7. Competitividade ────────────────────────────────────────
         {
             "id": "competitividade",
+            "name": "Competitividade",
             "label": "Competitividade",
             "kpis": [
                 painel_kpi("gdp_per_capita",  "PIB per capita", "EUROSTAT",  "gdp_per_capita_eur", invert_sentiment=False, unit_override="€/hab", region="PT", description=D["gdp_per_capita"]),
@@ -183,7 +190,8 @@ def build_painel():
     # (full catalog, organized by category for completeness)
     try:
         import duckdb
-        db = duckdb.connect("/data/cae-data.duckdb", read_only=True)
+        from ..config import CAE_DB_PATH as _cae_db_path
+        db = duckdb.connect(_cae_db_path, read_only=True)
         all_indicators = db.sql("""
             SELECT DISTINCT
                 indicator,
@@ -203,15 +211,18 @@ def build_painel():
 
         # Add as a final "Catálogo Completo" section
         catalog_section = {
-            "id": "catalogo_completo",
-            "title": "Catálogo Completo",
+            "id": "catalogo",
+            "name": "Catálogo Completo",
+            "label": "Catálogo Completo",
             "subtitle": f"Todos os {len(all_indicators)} indicadores da base de dados",
             "kpis": [
                 {
                     "id": f"cat_{i}",
                     "label": f"{cat} ({len(items)} indicadores)",
+                    "name": f"{cat} ({len(items)} indicadores)",
                     "indicator": cat,
                     "source": "DATABASE",
+                    "period": "N/A",
                     "description": f"Categoria: {cat}. Indicadores: {', '.join([x['indicator'][:30] for x in items[:5]])}{'...' if len(items) > 5 else ''}",
                     "category_items": items,
                 }

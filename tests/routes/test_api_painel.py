@@ -32,10 +32,10 @@ class TestPanelEndpoint:
         assert "updated" in data
 
     def test_painel_has_seven_sections(self, client):
-        """Painel: Response includes 7 sections."""
+        """Painel: Response includes at least 7 sections (+ optional catalog section)."""
         response = client.get("/api/painel")
         data = response.json()
-        assert len(data.get("sections", [])) == 7
+        assert len(data.get("sections", [])) >= 7
 
     def test_painel_sections_have_ids_and_names(self, client):
         """Painel: Each section has id and name."""

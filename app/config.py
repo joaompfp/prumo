@@ -25,7 +25,7 @@ def site_cfg(key: str, default=None):
 
 
 # ── Paths (site.json > env var > default) ────────────────────────────
-CAE_DB_PATH = _paths.get("db") or os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
+CAE_DB_PATH = os.environ.get("CAE_DB_PATH") or _paths.get("db") or "/data/cae-data.duckdb"
 ENERGY_DB_PATH = os.path.join(os.path.dirname(CAE_DB_PATH), "energy-data.db")
 ANALYTICS_DB_PATH = _paths.get("analytics_db") or os.environ.get("ANALYTICS_DB_PATH", "/data/analytics.db")
 IDEOLOGIES_DIR = _paths.get("ideologies_dir") or os.path.join(os.path.dirname(CAE_DB_PATH), "ideologies")
