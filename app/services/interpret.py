@@ -93,8 +93,18 @@ def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, cust
     if lens == "custom" and custom_ideology:
         lens_key = "custom:" + hashlib.md5(custom_ideology.encode()).hexdigest()[:8]
     lang_key = output_language or DEFAULT_OUTPUT_LANGUAGE
+    # Quantize periods to quarter start for cache hits — ±1 month won't miss
+    def _quantize(p):
+        if not p or len(p) < 7:
+            return p
+        try:
+            m = int(p[5:7])
+            q = ((m - 1) // 3) * 3 + 1
+            return f"{p[:5]}{q:02d}"
+        except Exception:
+            return p
     key = hashlib.md5(json.dumps(
-        [{"s": s["source"], "i": s["indicator"]} for s in series] + [from_p, to_p, lens_key, lang_key]
+        [{"s": s["source"], "i": s["indicator"]} for s in series] + [_quantize(from_p), _quantize(to_p), lens_key, lang_key]
     ).encode()).hexdigest()
 
     now = time.time()

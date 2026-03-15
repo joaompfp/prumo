@@ -3,7 +3,7 @@ import io
 import json
 
 import duckdb
-from fastapi import APIRouter, Query, Request
+from fastapi import APIRouter, Query, Request, Response
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from ..constants import CHART_EVENTS, CATALOG
@@ -33,13 +33,15 @@ def api_resumo():
 
 
 @router.get("/painel")
-def api_painel():
+def api_painel(response: Response):
     """KPIs organized into 5 thematic sections (Custo de Vida, Emprego, Conjuntura, Energia, Externo)."""
+    response.headers["Cache-Control"] = "public, max-age=3600"  # 1h
     return build_painel()
 
 
 @router.get("/series")
 def api_series(
+    response: Response,
     source: str = Query(None, alias="source"),
     sources: str = Query(None),
     indicator: str = Query(None, alias="indicator"),
@@ -59,6 +61,7 @@ def api_series(
         ind_list = [i.strip() for i in indicators.split(",")]
     if not src_list or not ind_list:
         return JSONResponse(status_code=400, content={"error": "source and indicator are required"})
+    response.headers["Cache-Control"] = "public, max-age=3600"  # 1h — data updates infrequently
     return query_series(src_list, ind_list, from_period, to_period)
 
 
@@ -368,7 +371,8 @@ def api_comparativos_data(
 
 
 @router.get("/catalog")
-def api_catalog():
+def api_catalog(response: Response):
+    response.headers["Cache-Control"] = "public, max-age=86400"  # 24h — catalog rarely changes
     try:
         conn = get_db()
         try:

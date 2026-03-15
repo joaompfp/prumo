@@ -507,15 +507,27 @@ App.registerSection('explorador', async () => {
       const lens = localStorage.getItem('prumo-lens') || 'cae';
       const custom_ideology = lens === 'custom' ? (localStorage.getItem('prumo-custom-ideology') || CUSTOM_LENS_DEFAULT) : null;
       const output_language = getOutputLanguage();
-      const res = await fetch(`${BASE}/api/interpret`, {
-        method: 'POST',
-        signal: ctrl.signal,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa', lens, custom_ideology, output_language}),
-      });
-      if (ctrl.signal.aborted) return;
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+
+      // sessionStorage cache to avoid redundant LLM calls for same combo
+      const cacheKey = 'prumo_interpret_' + btoa(unescape(encodeURIComponent(
+        JSON.stringify({ind: seriesData.map(s => `${s.source}/${s.indicator}`).sort(), from, to, lens, output_language})
+      ))).slice(0, 64);
+      const cached = sessionStorage.getItem(cacheKey);
+      let data;
+      if (cached) {
+        data = JSON.parse(cached);
+      } else {
+        const res = await fetch(`${BASE}/api/interpret`, {
+          method: 'POST',
+          signal: ctrl.signal,
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({series: seriesData, from, to, lang: 'pt', context: 'economia portuguesa', lens, custom_ideology, output_language}),
+        });
+        if (ctrl.signal.aborted) return;
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+        try { sessionStorage.setItem(cacheKey, JSON.stringify(data)); } catch(_) {}
+      }
       if (ctrl.signal.aborted) return;
       if (data.text) {
         text.innerHTML = _renderMd(data.text) || data.text;
@@ -534,7 +546,9 @@ App.registerSection('explorador', async () => {
           }
         }
         // Footer with timestamp
-        if (footer) footer.textContent = `Análise gerada: ${new Date().toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`;
+        if (footer) footer.textContent = cached
+          ? `Análise em cache (sessão)`
+          : `Análise gerada: ${new Date().toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`;
       } else {
         panel.style.display = 'none';
         if (elAIBtn) elAIBtn.classList.remove('active');
