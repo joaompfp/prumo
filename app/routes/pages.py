@@ -48,11 +48,23 @@ def dashboard(request: Request):
         prefix = BASE_PATH
     prefix = prefix.rstrip("/")
     from ..services.interpret import _load_ideology
+    # Admin detection: ?admin=<token> or X-Admin-Token header matches CAE_ADMIN_TOKEN env
+    admin_token = os.environ.get("CAE_ADMIN_TOKEN", "")
+    is_admin = False
+    if admin_token:
+        is_admin = (
+            request.query_params.get("admin") == admin_token
+            or request.headers.get("X-Admin-Token") == admin_token
+            or request.cookies.get("prumo_admin") == admin_token
+        )
+    else:
+        is_admin = True  # No token configured = everyone is admin (dev mode)
     return templates.TemplateResponse("dashboard.html", {
         "request": request,
         "base_path": prefix,
         "ideology": _load_ideology(),
         "n_indicators": _count_indicators(),
+        "is_admin": is_admin,
         "custom_lens_default": CUSTOM_LENS_DEFAULT,
         "output_languages": OUTPUT_LANGUAGES,
         "default_output_language": DEFAULT_OUTPUT_LANGUAGE,

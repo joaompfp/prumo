@@ -193,6 +193,7 @@ App.registerSection('painel', async () => {
         ${description ? `<div class="kpi-description">${description}</div>` : ''}
         ${context ? `<div class="kpi-context">${context}</div>` : ''}
         ${hasSpark ? `<div class="spark-container" id="spark-${kpi.id}"></div>` : ''}
+        ${period ? `<div class="kpi-freshness" style="font-size:10px;opacity:.5;margin-top:4px;font-style:italic">Dados: ${period}</div>` : ''}
       </div>`;
     }
 
@@ -319,7 +320,7 @@ App.registerSection('painel', async () => {
       </div>
       <div class="painel-ia-actions">
         <span class="painel-ia-meta" id="painel-ia-meta"></span>
-        <button class="painel-ia-regen" id="painel-ia-regen" title="Forçar nova análise">↺ regenerar</button>
+        ${window.__IS_ADMIN__ ? '<button class="painel-ia-regen" id="painel-ia-regen" title="Forçar nova análise">↺ regenerar</button>' : ''}
       </div>
       <div id="painel-ia-text" class="painel-ia-text"></div>
       <div id="painel-ia-links" class="painel-ia-links" style="display:none"></div>

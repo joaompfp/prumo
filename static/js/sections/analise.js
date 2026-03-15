@@ -394,7 +394,8 @@ App.registerSection('explorador', async () => {
               <span>Unidade: <strong>${s.unit || indData.unit || 'n/d'}</strong></span>
               <span>Frequência: <strong>${freqLabel(indData.frequency)}</strong></span>
               <span>Cobertura: <strong>${indData.since || '?'} — ${indData.until || '?'}</strong></span>
-              <span>Observações: <strong>${indData.rows || 'n/d'}</strong></span>
+              <span>Observações: <strong>${indData.rows_pt || indData.rows || 'n/d'}</strong></span>
+              <button class="ficha-cite-btn" data-source="${s.source}" data-indicator="${s.indicator}" data-label="${encodeURIComponent(s.label)}" data-src-label="${encodeURIComponent(srcData.label || s.source)}" title="Copiar citação">Citar</button>
             </div>
           </div>
         </div>`;
@@ -402,7 +403,8 @@ App.registerSection('explorador', async () => {
 
     // Click card → navigate to Ficha and scroll to that indicator's row
     container.querySelectorAll('.ficha-inline-card[data-source]').forEach(card => {
-      card.addEventListener('click', async () => {
+      card.addEventListener('click', async (e) => {
+        if (e.target.closest('.ficha-cite-btn')) return; // Don't navigate on cite click
         const src = card.dataset.source;
         const ind = card.dataset.indicator;
         await App.navigate('ficha');
@@ -412,6 +414,20 @@ App.registerSection('explorador', async () => {
           row.classList.add('ficha-row-highlight');
           setTimeout(() => row.classList.remove('ficha-row-highlight'), 2000);
         }
+      });
+    });
+
+    // Citation copy
+    container.querySelectorAll('.ficha-cite-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const label = decodeURIComponent(btn.dataset.label);
+        const srcLabel = decodeURIComponent(btn.dataset.srcLabel);
+        const today = new Date().toISOString().slice(0, 10);
+        const citation = `${label}. Fonte: ${srcLabel}. In: Prumo PT (${window.location.origin}/dados). Acedido em ${today}.`;
+        navigator.clipboard.writeText(citation).then(() => {
+          App.showToast('Citação copiada!');
+        });
       });
     });
   }
@@ -813,8 +829,14 @@ App.registerSection('explorador', async () => {
     const annualNormPeriods = new Set(
       lastSeries.flatMap(s => s.data.filter(d => isAnnualPeriod(d.period)).map(d => normPeriod(d.period)))
     );
+    // Filter out annual aggregate rows (period="YYYY") when monthly data exists
+    // — they create confusing jumps in the table
+    const hasMonthly = lastSeries.some(s => s.data.some(d => d.period && d.period.length >= 7));
     const allPeriods = [...new Set(
-      lastSeries.flatMap(s => s.data.map(d => normPeriod(d.period)))
+      lastSeries.flatMap(s => s.data
+        .filter(d => !(hasMonthly && isAnnualPeriod(d.period)))
+        .map(d => normPeriod(d.period))
+      )
     )].sort().reverse();
 
     const headers = ['Período', ...lastSeries.map(s => `${s.source} — ${s.label}`)];

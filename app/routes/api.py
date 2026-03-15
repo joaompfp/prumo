@@ -4,7 +4,7 @@ import json
 
 import duckdb
 from fastapi import APIRouter, Query, Request, Response
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 
 from ..constants import CHART_EVENTS, CATALOG
 from ..database import get_db, fetch_series
@@ -386,6 +386,20 @@ def api_catalog(response: Response):
                 db_stats.setdefault(src, {})[ind] = {
                     "region_count": regions, "since": since, "until": until, "rows": cnt
                 }
+            # PT-specific counts for multi-region indicators
+            pt_rows = conn.execute("""
+                SELECT source, indicator, COUNT(*) as rows,
+                       MIN(period) as since, MAX(period) as until
+                FROM indicators WHERE region = 'PT'
+                GROUP BY source, indicator
+            """).fetchall()
+            for src, ind, cnt, since, until in pt_rows:
+                if src in db_stats and ind in db_stats[src]:
+                    s = db_stats[src][ind]
+                    if s["region_count"] > 1:
+                        s["rows_pt"] = cnt
+                        s["since"] = since  # Use PT-specific range
+                        s["until"] = until
         finally:
             conn.close()
         enriched = {}
@@ -400,6 +414,32 @@ def api_catalog(response: Response):
         return enriched
     except Exception:
         return CATALOG
+
+
+@router.get("/codebook")
+def api_codebook(response: Response):
+    """Downloadable CSV data dictionary: indicator ID, source, label, unit, frequency, coverage."""
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["source", "indicator", "label", "unit", "frequency", "since", "until", "description"])
+    for src, src_info in CATALOG.items():
+        for ind, meta in src_info.get("indicators", {}).items():
+            writer.writerow([
+                src, ind,
+                meta.get("label", ind),
+                meta.get("unit", ""),
+                meta.get("frequency", ""),
+                meta.get("since", ""),
+                meta.get("until", ""),
+                (meta.get("description", "") or "").replace("\n", " ")[:200],
+            ])
+    output.seek(0)
+    return StreamingResponse(
+        output,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=prumo-codebook.csv"},
+    )
 
 
 @router.get("/quality")
@@ -420,6 +460,39 @@ def api_audit_history():
     lines = Path(log_path).read_text(encoding="utf-8").strip().split("\n")
     entries = [json.loads(l) for l in lines[-30:] if l.strip()]
     return {"entries": entries}
+
+
+@router.get("/audit/dashboard")
+def api_audit_dashboard():
+    """Simple HTML audit dashboard — admin use."""
+    import os
+    from pathlib import Path
+    log_path = os.environ.get("AUDIT_LOG_PATH", "/data/audit-log.jsonl")
+    entries = []
+    if os.path.exists(log_path):
+        lines = Path(log_path).read_text(encoding="utf-8").strip().split("\n")
+        entries = [json.loads(l) for l in lines[-30:] if l.strip()]
+
+    rows_html = ""
+    for e in reversed(entries):
+        s = e["summary"]
+        status = "🟢" if s["errors"] == 0 else "🔴" if s["errors"] > 5 else "🟡"
+        err_details = ""
+        for err in e.get("errors", [])[:3]:
+            err_details += f"<br><small>{err['source']}/{err['indicator']}: {err['msg']}</small>"
+        rows_html += f"<tr><td>{status}</td><td>{e['ts'][:16]}</td><td>{s.get('ok', '?')}</td><td>{s['errors']}</td><td>{s['warnings']}</td><td>{s.get('info', 0)}{err_details}</td></tr>"
+
+    html = f"""<!DOCTYPE html><html><head><title>Prumo Audit Dashboard</title>
+    <style>body{{font-family:Inter,sans-serif;max-width:900px;margin:40px auto;padding:0 20px}}
+    table{{width:100%;border-collapse:collapse}}th,td{{padding:8px 12px;border-bottom:1px solid #eee;text-align:left}}
+    th{{background:#f5f5f5;font-size:12px;text-transform:uppercase;letter-spacing:0.5px}}
+    small{{color:#888}}</style></head>
+    <body><h1>Prumo — Audit Dashboard</h1>
+    <p>{len(entries)} audit runs (last 30 days) · <a href="/api/quality">Run live check</a> · <a href="/api/codebook">Download codebook</a></p>
+    <table><thead><tr><th></th><th>Date</th><th>OK</th><th>Errors</th><th>Warnings</th><th>Info</th></tr></thead>
+    <tbody>{rows_html or '<tr><td colspan=6>No audit data. Run: <code>python scripts/audit_nightly.py</code></td></tr>'}</tbody></table>
+    </body></html>"""
+    return HTMLResponse(content=html)
 
 
 @router.get("/explorador")
