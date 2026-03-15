@@ -4,6 +4,10 @@ __pycache__/
 *.pyo
 *.egg-info/
 .venv/
+venv/
+
+# Screenshots / temp files
+*.png
 
 # Local-only hidden files/folders (harden policy)
 **/.*
