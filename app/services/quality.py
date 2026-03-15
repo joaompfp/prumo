@@ -273,6 +273,130 @@ def _check_region_coverage(conn) -> list:
     return issues
 
 
+# ── Check 6: spike detection ──────────────────────────────────────────────────
+
+def _check_spikes(conn) -> list:
+    """Detect month-over-month spikes >3σ from rolling mean in monthly PT series."""
+    issues = []
+    for src, src_info in CATALOG.items():
+        for ind, meta in src_info.get("indicators", {}).items():
+            if meta.get("frequency") != "monthly":
+                continue
+            try:
+                rows = conn.execute(
+                    "SELECT period, value FROM indicators "
+                    "WHERE source=? AND indicator=? AND region='PT' "
+                    "ORDER BY period",
+                    [src, ind]
+                ).fetchall()
+            except Exception:
+                continue
+            vals = [r[1] for r in rows if r[1] is not None]
+            if len(vals) < 12:
+                continue
+            # Rolling mean and std over last 12 values
+            window = vals[-12:]
+            mean = sum(window) / len(window)
+            std = (sum((v - mean) ** 2 for v in window) / len(window)) ** 0.5
+            if std == 0:
+                continue
+            # Check last 3 values for spikes
+            for r in rows[-3:]:
+                if r[1] is None:
+                    continue
+                z = abs(r[1] - mean) / std
+                if z > 3:
+                    issues.append({
+                        "source": src, "indicator": ind,
+                        "severity": "warning", "check": "spike",
+                        "msg": f"period {r[0]}: value {r[1]} is {z:.1f}σ from 12m mean {mean:.2f}",
+                    })
+    return issues
+
+
+# ── Check 7: gap detection ───────────────────────────────────────────────────
+
+def _check_gaps(conn) -> list:
+    """Detect missing months in monthly PT series (gaps >1 month in last 24 months)."""
+    issues = []
+    today = date.today()
+    cutoff_y = today.year - 2
+    cutoff_ym = f"{cutoff_y}-{today.month:02d}"
+
+    for src, src_info in CATALOG.items():
+        for ind, meta in src_info.get("indicators", {}).items():
+            if meta.get("frequency") != "monthly":
+                continue
+            try:
+                rows = conn.execute(
+                    "SELECT DISTINCT period FROM indicators "
+                    "WHERE source=? AND indicator=? AND region='PT' AND period >= ? "
+                    "AND length(period)=7 "
+                    "ORDER BY period",
+                    [src, ind, cutoff_ym]
+                ).fetchall()
+            except Exception:
+                continue
+            periods = [r[0] for r in rows]
+            if len(periods) < 3:
+                continue
+            # Check for gaps between consecutive months
+            gaps = []
+            for i in range(1, len(periods)):
+                diff = _ym_diff_months(periods[i], periods[i - 1])
+                if diff > 1:
+                    gaps.append(f"{periods[i-1]}→{periods[i]} ({diff}m)")
+            if gaps and len(gaps) <= 3:
+                issues.append({
+                    "source": src, "indicator": ind,
+                    "severity": "warning", "check": "gap",
+                    "msg": f"gaps in last 24m: {', '.join(gaps)}",
+                })
+    return issues
+
+
+# ── Check 8: cross-source consistency ────────────────────────────────────────
+
+_CROSS_SOURCE_PAIRS = [
+    # (src_a, ind_a, src_b, ind_b, label, max_divergence)
+    ("EUROSTAT", "unemployment", "OECD", "unemp_m", "unemployment rate", 2.0),
+]
+
+
+def _check_cross_source(conn) -> list:
+    """Compare overlapping indicators across sources — flag divergences."""
+    issues = []
+    for src_a, ind_a, src_b, ind_b, label, max_div in _CROSS_SOURCE_PAIRS:
+        try:
+            rows_a = conn.execute(
+                "SELECT period, value FROM indicators "
+                "WHERE source=? AND indicator=? AND region='PT' "
+                "ORDER BY period DESC LIMIT 6",
+                [src_a, ind_a]
+            ).fetchall()
+            rows_b = conn.execute(
+                "SELECT period, value FROM indicators "
+                "WHERE source=? AND indicator=? AND region='PT' "
+                "ORDER BY period DESC LIMIT 6",
+                [src_b, ind_b]
+            ).fetchall()
+        except Exception:
+            continue
+        map_b = {r[0]: r[1] for r in rows_b}
+        for period, val_a in rows_a:
+            val_b = map_b.get(period)
+            if val_a is not None and val_b is not None:
+                diff = abs(val_a - val_b)
+                if diff > max_div:
+                    issues.append({
+                        "source": f"{src_a}+{src_b}", "indicator": label,
+                        "severity": "warning", "check": "cross_source",
+                        "msg": f"period {period}: {src_a}={val_a}, {src_b}={val_b}, diff={diff:.1f}pp",
+                    })
+                break  # Only check most recent overlapping period
+    return issues
+
+
 # ── Main runner ───────────────────────────────────────────────────────────────
 
 def run_quality_checks() -> dict:
@@ -315,6 +439,9 @@ def run_quality_checks() -> dict:
         + _check_freshness(db_stats_pt)
         + _check_flatline(conn)
         + _check_region_coverage(conn)
+        + _check_spikes(conn)
+        + _check_gaps(conn)
+        + _check_cross_source(conn)
     )
 
     # Group by check type, preserve order

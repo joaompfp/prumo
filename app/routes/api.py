@@ -404,9 +404,22 @@ def api_catalog(response: Response):
 
 @router.get("/quality")
 def api_quality():
-    """Data quality report: catalog drift, orphan indicators, freshness, flatlines, region coverage."""
+    """Data quality report: catalog drift, orphan indicators, freshness, flatlines, region coverage, spikes, gaps, cross-source."""
     from ..services.quality import run_quality_checks
     return run_quality_checks()
+
+
+@router.get("/audit/history")
+def api_audit_history():
+    """Return last 30 days of nightly audit results."""
+    import os
+    from pathlib import Path
+    log_path = os.environ.get("AUDIT_LOG_PATH", "/data/audit-log.jsonl")
+    if not os.path.exists(log_path):
+        return {"entries": [], "msg": "No audit log found. Run scripts/audit_nightly.py first."}
+    lines = Path(log_path).read_text(encoding="utf-8").strip().split("\n")
+    entries = [json.loads(l) for l in lines[-30:] if l.strip()]
+    return {"entries": entries}
 
 
 @router.get("/explorador")
