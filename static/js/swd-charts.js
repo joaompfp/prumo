@@ -275,14 +275,28 @@ const SWD = (() => {
     if (!container || !data || !data.length) return null;
     // Support both flat numbers and {period, value} objects
     const vals = data.map(d => d.value ?? d.v ?? d);
+    const periods = data.map(d => d.period ?? d.p ?? '');
     const chart = createSWDChart(container, {
       backgroundColor: 'transparent',
       animation: false,
+      tooltip: {
+        trigger: 'axis',
+        formatter: (params) => {
+          const idx = params[0]?.dataIndex;
+          const v = vals[idx];
+          const p = periods[idx] || '';
+          return v != null ? `<b>${p}</b><br/>${Number(v).toLocaleString('pt-PT')}` : '';
+        },
+        backgroundColor: 'rgba(30,30,30,0.9)',
+        borderColor: 'transparent',
+        textStyle: { color: '#fff', fontSize: 11 },
+        padding: [4, 8],
+      },
       grid: { left: 0, right: 0, top: 0, bottom: 0 },
       xAxis: {
         type: 'category',
         show: false,
-        data: vals.map((_, i) => i),
+        data: periods.length ? periods : vals.map((_, i) => i),
         boundaryGap: false,
       },
       yAxis: { type: 'value', show: false, scale: true },
@@ -291,6 +305,7 @@ const SWD = (() => {
         data: vals,
         smooth: true,
         symbol: 'none',
+        emphasis: { itemStyle: { color, borderWidth: 2 } },
         lineStyle: { color, width: 2 },
         areaStyle: {
           color: {

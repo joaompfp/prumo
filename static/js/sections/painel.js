@@ -158,6 +158,20 @@ App.registerSection('painel', async () => {
       const hasSpark = kpi.spark && kpi.spark.length > 0;
       const sourceLabel = kpi.source ? (SOURCE_LABELS[kpi.source] || kpi.source) : '';
 
+      // Base period clarity: show "Fev 2026 vs Fev 2025" instead of "vs ano anterior"
+      const period = kpi.period || '';
+      let yoyLabel = 'vs ano anterior';
+      if (period && period.length >= 7) {
+        const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+        const m = parseInt(period.slice(5, 7), 10);
+        const y = parseInt(period.slice(0, 4), 10);
+        if (m >= 1 && m <= 12 && y > 2000) {
+          yoyLabel = `${MONTHS[m-1]} ${y} vs ${MONTHS[m-1]} ${y-1}`;
+        }
+      } else if (period && period.length === 4) {
+        yoyLabel = `${period} vs ${parseInt(period, 10) - 1}`;
+      }
+
       const dataAttrs = kpi.source && kpi.indicator
         ? ` data-source="${kpi.source}" data-indicator="${kpi.indicator}" title="Ver ${label} no Explorador"`
         : '';
@@ -174,7 +188,7 @@ App.registerSection('painel', async () => {
         <div class="kpi-trend-row">
           <span class="kpi-yoy ${sentiment}">${yoyText}</span>
           <span class="kpi-arrow ${sentiment}">${arrow}</span>
-          <span class="kpi-label" style="font-size:11px;letter-spacing:0.5px;">vs ano anterior</span>
+          <span class="kpi-label" style="font-size:11px;letter-spacing:0.5px;">${yoyLabel}</span>
         </div>
         ${description ? `<div class="kpi-description">${description}</div>` : ''}
         ${context ? `<div class="kpi-context">${context}</div>` : ''}
