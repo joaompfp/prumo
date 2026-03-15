@@ -215,6 +215,7 @@ App.registerSection('explorador', async () => {
         const unit = decodeURIComponent(el.dataset.unit);
         addIndicator(src, ind, lbl, unit);
         elSearch.value = '';
+        elSrcFilter.value = '';  // Reset to "Todas as fontes" after selection
         elResults.classList.add('hidden');
       });
     });
@@ -406,6 +407,14 @@ App.registerSection('explorador', async () => {
       } else {
         const banner = document.getElementById('exp-unit-warning');
         if (banner) banner.remove();
+      }
+
+      // If "Tudo" is active and De: is empty, populate with earliest data point
+      if (!elFrom.value && lastSeries.length) {
+        const earliest = lastSeries
+          .flatMap(s => s.data.map(d => d.period))
+          .sort()[0];
+        if (earliest) elFrom.value = earliest;
       }
 
       if (viewMode === 'chart') renderChart(yMode, units);

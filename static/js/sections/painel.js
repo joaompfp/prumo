@@ -115,8 +115,8 @@ App.registerSection('painel', async () => {
           }, 300);
         }
         if (subEl && lines.length > 1) {
-          subEl.innerHTML = lines.slice(1).map(l => `<span>${l}</span>`).join(' &middot; ')
-            + ` <span style="opacity:.6;font-size:.9em">· ${updated} · ${allKpis.length} KPIs</span>`;
+          subEl.innerHTML = lines.slice(1).map(l => `<p style="margin:0.3em 0">${l}</p>`).join('')
+            + `<p style="margin:0.3em 0;opacity:.6;font-size:.9em">${updated} · ${allKpis.length} KPIs</p>`;
         } else if (subEl && !subEl.innerHTML) {
           subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
         }

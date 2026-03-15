@@ -32,22 +32,37 @@ def get_db(source=None):
     return _thread_local.conn
 
 
-def fetch_series(source, indicator, from_period=None, to_period=None):
-    """Fetch time series data for a single source+indicator pair."""
-    sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=?"
-    params = [source, indicator]
-    if from_period:
-        sql += " AND period >= ?"
-        params.append(from_period)
-    if to_period:
-        sql += " AND period <= ?"
-        params.append(to_period)
-    sql += " ORDER BY period"
+def fetch_series(source, indicator, from_period=None, to_period=None, region="PT"):
+    """Fetch time series data for a single source+indicator pair.
+
+    Defaults to region='PT' to avoid mixing data from multiple countries
+    in multi-region indicators (e.g. EUROSTAT unemployment has 27+ regions).
+    Falls back to the sole available region if PT returns empty (e.g. FRED
+    commodities stored under 'WORLD').
+    """
+    def _query(rgn):
+        sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND region=?"
+        params = [source, indicator, rgn]
+        if from_period:
+            sql += " AND period >= ?"
+            params.append(from_period)
+        if to_period:
+            sql += " AND period <= ?"
+            params.append(to_period)
+        sql += " ORDER BY period"
+        return conn.execute(sql, params).fetchall()
 
     conn = get_db(source)
     try:
-        cursor = conn.execute(sql, params)
-        rows = cursor.fetchall()
+        rows = _query(region)
+        if not rows and region == "PT":
+            # Fallback: find the single region for this indicator
+            alt = conn.execute(
+                "SELECT DISTINCT region FROM indicators WHERE source=? AND indicator=?",
+                [source, indicator],
+            ).fetchall()
+            if len(alt) == 1:
+                rows = _query(alt[0][0])
     finally:
         conn.close()
 

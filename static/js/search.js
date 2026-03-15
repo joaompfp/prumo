@@ -353,30 +353,34 @@ const Search = (() => {
     const terms = _expandQuery(q);
     const FUZZY_THRESHOLD = 0.45;
 
-    // Score each indicator: 1 = exact/synonym hit, 0..1 = fuzzy
+    // Score each indicator: label match > indicator code match > description-only match > fuzzy
     const scored = [];
     for (const item of _flatIndicators) {
-      const hay = [
-        item.label.toLowerCase(),
-        item.source.toLowerCase(),
-        item.indicator.toLowerCase(),
-        item.description.toLowerCase(),
-      ].join(' ');
+      const lbl  = item.label.toLowerCase();
+      const code = item.indicator.toLowerCase();
+      const src  = item.source.toLowerCase();
+      const desc = item.description.toLowerCase();
+      const hay  = [lbl, src, code, desc].join(' ');
 
-      // Exact / synonym match — check all expanded terms
-      let exact = false;
+      // Tiered scoring: label/code match ranks above description-only match
+      let score = 0;
       for (const t of terms) {
-        if (hay.includes(t)) { exact = true; break; }
+        if (lbl.includes(t))       { score = Math.max(score, 3); }
+        else if (code.includes(t)) { score = Math.max(score, 2.5); }
+        else if (hay.includes(t))  { score = Math.max(score, 1); }
       }
-      if (!exact && alias && hay.includes(alias)) exact = true;
+      if (!score && alias && hay.includes(alias)) score = 1;
 
-      if (exact) {
-        scored.push({ item, score: 1 });
+      // Bonus: original query (not synonym) matches label directly
+      if (lbl.includes(q)) score += 1;
+
+      if (score > 0) {
+        scored.push({ item, score });
       } else if (q.length >= 3) {
         // Fuzzy only for queries ≥3 chars — score against label + description
         const fs = Math.max(
-          _fuzzyScore(q, item.label.toLowerCase()),
-          _fuzzyScore(q, item.description.toLowerCase()) * 0.8
+          _fuzzyScore(q, lbl),
+          _fuzzyScore(q, desc) * 0.8
         );
         if (fs >= FUZZY_THRESHOLD) scored.push({ item, score: fs });
       }
