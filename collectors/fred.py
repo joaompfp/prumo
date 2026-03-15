@@ -192,7 +192,7 @@ class FREDClient:
 
         key_commodities = [
             "brent_oil", "natural_gas", "copper", "aluminum",
-            "wheat", "corn", "coffee"
+            "wheat", "corn", "coffee", "gold_price", "silver_price"
         ]
 
         return self.get_multiple(key_commodities, start_date=start_date,
