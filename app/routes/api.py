@@ -533,11 +533,23 @@ def api_kpis():
     try:
         conn = get_db()
         try:
+            # Fix: filter by region='PT' to avoid ANY_VALUE() returning data
+            # from random countries (e.g. Austria population instead of Portugal).
+            # Uses INNER JOIN with latest period subquery to get the most recent
+            # PT row for each (source, indicator) pair.
             rows = conn.execute("""
-                SELECT source, indicator, ANY_VALUE(value) as value, ANY_VALUE(unit) as unit, MAX(period) as period
-                FROM indicators
-                WHERE source NOT IN ('DGEG', 'ERSE')
-                GROUP BY source, indicator
+                SELECT i.source, i.indicator, i.value, i.unit, i.period
+                FROM indicators i
+                INNER JOIN (
+                    SELECT source, indicator, MAX(period) as max_period
+                    FROM indicators
+                    WHERE region = 'PT'
+                      AND source NOT IN ('DGEG', 'ERSE')
+                    GROUP BY source, indicator
+                ) latest ON i.source = latest.source
+                       AND i.indicator = latest.indicator
+                       AND i.period = latest.max_period
+                       AND i.region = 'PT'
             """).fetchall()
             result = {}
             for source, indicator, value, unit, period in rows:
