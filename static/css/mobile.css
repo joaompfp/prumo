@@ -225,3 +225,114 @@
 }
 
 /* ── Nav controls: posição gerida por swd-theme.css (fixed bottom-right) ── */
+
+/* ═══════════════════════════════════════════════════════════════
+   C2 — FASE 3 MOBILE FIXES (2026-03-15)
+   Fixes: nav-brand compacto, font sizes min 12px, hero constraints
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── C2-1: Nav-brand compacto em mobile — reduzir para não cobrir viewport ── */
+@media (max-width: 767px) {
+  /* Esconder o ícone desktop grande (63px) e mostrar versão mobile menor */
+  .nav-brand-icon-desktop { display: none !important; }
+  .nav-brand-icon-mobile  { display: block !important; width: 36px; height: 36px; }
+
+  /* Esconder texto "Prumo" + tagline em mobile */
+  .nav-brand-text { display: none !important; }
+
+  /* Compactar o wrapper do ícone */
+  .nav-brand-icon-wrap {
+    height: 36px;
+    width: 36px;
+  }
+
+  /* Remover pseudo-elemento "Portugal" em mobile para poupar espaço */
+  .nav-brand-icon-wrap::after { display: none; }
+
+  /* Compactar o link de marca */
+  .nav-brand-link {
+    padding: 0 8px 0 8px !important;
+    min-width: 52px;
+  }
+
+  /* Tabs: flexíveis com min-width razoável */
+  .nav-tab {
+    flex: 1;
+    min-width: 48px;
+    padding: 0 4px !important;
+  }
+}
+
+/* ── C2-2: Font sizes mínimas em mobile — KPI labels e metadados ── */
+@media (max-width: 480px) {
+  /* KPI label: mínimo 12px (era ~9px hardcoded em kpi-source-tag) */
+  .kpi-label {
+    font-size: 12px !important;
+  }
+
+  /* Source tag: mínimo 11px (era 9px) */
+  #painel .kpi-source-tag {
+    font-size: 11px !important;
+  }
+
+  /* KPI context/description: mínimo 12px */
+  .kpi-context,
+  #painel .kpi-description,
+  #painel .kpi-context {
+    font-size: 12px !important;
+  }
+
+  /* KPI unit inline */
+  .kpi-unit {
+    font-size: 15px !important;
+  }
+
+  /* Painel-ia labels */
+  .painel-ia-label,
+  .painel-ia-tagline,
+  .painel-ia-meta {
+    font-size: 11px !important;
+  }
+}
+
+/* ── C2-3: Hero onboarding — conter e limitar em mobile ── */
+@media (max-width: 480px) {
+  .hero-onboarding {
+    padding: 28px 20px !important;
+    max-height: 280px;
+    overflow: hidden;
+  }
+
+  .hero-title {
+    font-size: 24px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-desc {
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+    /* Limitar a 2 linhas em mobile muito pequeno */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-sources {
+    /* Esconder em mobile muito pequeno para poupar espaço */
+    display: none;
+  }
+}
+
+/* ── C2-4: Chart containers — max-height e overflow em mobile ── */
+@media (max-width: 480px) {
+  .chart-container {
+    max-height: 220px;
+    overflow: hidden;
+  }
+
+  /* Sparklines: altura razoável */
+  #painel .spark-container {
+    height: 36px !important;
+  }
+}
