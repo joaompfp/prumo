@@ -85,6 +85,11 @@ def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, cust
     Optional lens parameter selects a political perspective (see ideology_lenses.py).
     When lens='custom', custom_ideology contains the user-provided ideology text.
     output_language selects the response language (key from site.json output_languages)."""
+    # ── LLM DISABLED: stub mode while validating charts ──
+    indicator_names = ", ".join(f"{s.get('source','?')}/{s.get('indicator','?')}" for s in series)
+    return {"text": f"[Análise IA desactivada — modo de validação de gráficos]\n\nIndicadores: {indicator_names}\nPeríodo: {from_p} → {to_p}\nLente: {lens or 'default'}", "links": []}
+    # ── END STUB ──
+
     if not ANTHROPIC_KEY:
         return None
 
@@ -232,25 +237,11 @@ def _build_prompt(series, from_p, to_p, lens=None, custom_ideology=None, output_
         f"IDIOMA OBRIGATÓRIO: toda a tua resposta DEVE ser escrita em {lang_desc}.\n\n"
     )
 
-    instruction = (
-        "IMPORTANTE: não escrevas introduções, planos, títulos nem comentários em nenhum idioma. "
-        "Começa directamente com a pesquisa, depois escreve só a análise.\n\n"
-        f"1. Pesquisa (silenciosa): faz 2-3 pesquisas web de NOTÍCIAS RECENTES sobre {indicator_labels} "
-        f"em Portugal — decisões de política económica, impacto em famílias/empresas, declarações do BCE/INE/Governo. "
-        f"Usa termos como '2025 Portugal {indicator_labels}' ou 'impacto famílias {indicator_labels}'. "
-        f"Prioriza fontes: jornaldenegocios.pt, eco.pt, observador.pt, publico.pt, expresso.pt, rtp.pt, reuters. "
-        f"EVITA: conteúdo explicativo/educacional (o que é X, como funciona X), Wikipedia, FAQs de bancos, sites evergreen. "
-        f"Queremos notícias de conjuntura recentes, não explicações do conceito.\n\n"
-        f"2. Escreve EXACTAMENTE 3 frases em {lang_desc} sobre {indicator_labels}, "
-        f"com foco na {focus} (período: {period_str}). "
-        "Usa **negrito** para realçar os números ou factos mais importantes. "
-        "Texto corrido, sem títulos. "
-        "Linguagem simples e directa — como se explicasses a um amigo: o que aconteceu, porque importa, o que muda na vida das pessoas. "
-        "EVITA jargão técnico ou académico (sem 'subordinação estrutural', 'política monetária expansionista', 'dinâmicas de transmissão'). "
-        "Se precisas de um termo técnico, explica-o em 3 palavras. "
-        "Termina SEMPRE com uma frase completa.\n\n"
-        "3. Na linha seguinte à análise, inclui os links das pesquisas:\n"
-        'LINKS:[{"url":"https://...","title":"..."}]\n'
-        "Omite LINKS apenas se não encontraste fontes credíveis recentes."
+    from .prompt_loader import load_prompt
+    instruction = load_prompt("interpret",
+        indicator_labels=indicator_labels,
+        lang_desc=lang_desc,
+        focus=focus,
+        period_str=period_str,
     )
     return f"{lang_prefix}{context}\n\n{instruction}\n\n" + "\n".join(parts)

@@ -548,7 +548,8 @@ App.registerSection('painel', async () => {
                },
                axisLine: { lineStyle: { color: '#ddd' } }, axisTick: { show: false } },
       yAxis: { type: 'value', scale: true,
-               name: unitStr, nameLocation: 'end', nameTextStyle: { fontSize: 8, color: '#aaa', padding: [0, 0, 0, 0] },
+               name: unitStr, nameLocation: 'end',
+               nameTextStyle: { fontSize: 9, color: '#999', fontFamily: 'Inter, system-ui, sans-serif' },
                axisLabel: { fontSize: 9, color: '#888',
                  formatter: v => {
                    if (Math.abs(v) >= 1e9) return (v / 1e9).toFixed(1) + 'B';

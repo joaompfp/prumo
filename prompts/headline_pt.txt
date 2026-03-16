@@ -1,0 +1,7 @@
+Com base nos dados acima, escreve uma manchete jornalística em português europeu (PT-PT):
+LINHA 1 (título): máx. 12 palavras — os factos mais marcantes
+LINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante
+LINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional
+
+Sem aspas, sem ponto final, sem prefixos como 'Título:', 'Linha 1:' etc.
+Separa as linhas com \n apenas. Âncora tudo nos números. Começa directamente.

@@ -1,0 +1,6 @@
+Based on this economic analysis of Portugal, write a journalistic headline in English (British):
+LINE 1 (headline): max. 12 words — the most striking facts with numbers
+LINE 2 (subheadline): max. 10 words — relevant context or contrast
+LINE 3 (2nd subheadline, optional): max. 10 words — if there's additional tension
+
+No quotes, no full stop, no prefixes. Separate lines with \n. Anchor everything to numbers. Start directly.

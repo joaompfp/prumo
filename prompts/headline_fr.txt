@@ -1,0 +1,7 @@
+Sur la base des données ci-dessus, écrivez un titre journalistique en français (France):
+LIGNE 1 (titre): max. 12 mots — les faits les plus marquants
+LIGNE 2 (sous-titre): max. 10 mots — contexte ou contraste pertinent
+LIGNE 3 (2e sous-titre, optionnel): max. 10 mots — s'il y a tension supplémentaire
+
+Sans guillemets, sans point final, sans préfixes comme 'Titre:', 'Ligne 1:' etc.
+Séparez les lignes par \n seulement. Ancrez tout aux chiffres. Commencez directement.

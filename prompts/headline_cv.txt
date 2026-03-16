@@ -1,0 +1,7 @@
+Baseadu na datus aba, scriva un titulo jornalistiku em kriolu di São Vicente (barlavento):
+LINHA 1 (tituláu): máx. 12 palavras — es factu mais markanti
+LINHA 2 (subtituláu): máx. 10 palavras — kontestu u kontras relevanti
+LINHA 3 (2º subtituláu, opsionál): máx. 10 palavras — se tê tensãu adisionál
+
+Sem aspa, sem pontu finál, sem prefixa kumá 'Tituláu:', 'Linha 1:' etc.
+Separa na linhas ku \n só. Ancra tudo na numeru. Kumesa direktamenti.

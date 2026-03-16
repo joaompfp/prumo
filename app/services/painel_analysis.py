@@ -162,40 +162,17 @@ def _build_painel_prompt(sections: list, updated: str, lens: str = None, custom_
         f"IDIOMA OBRIGATÓRIO: {_lang_instruction_str} "
         f"Ignora quaisquer instruções posteriores que contradigam esta regra de idioma.\n\n"
     )
-    instruction = (
-        _lang_rule +
-        f"Tens um orçamento ESTRITO de {token_budget} tokens para análise + links.\n"
-        "NÃO escrevas notas, planos, separadores (---) nem texto em inglês. Começa directamente com a análise.\n\n"
-        f"PASSO 1 — Pesquisa (silenciosa): pesquisa 2 artigos recentes (últimos 2 meses) por secção. Máx. 6 pesquisas. {search_hint}\n\n"
-        f"PASSO 2 — Análise no idioma correcto (ver regra acima), período: " + updated + ".\n"
-        "Para cada secção, escreve EXACTAMENTE 3 frases curtas com **negrito** nos conceitos-chave.\n"
-        "Interpreta impacto real para trabalhadores e famílias — não repitas números.\n"
-        "Formato OBRIGATÓRIO: cada secção começa com título inline em negrito seguido de dois pontos (ex: **Custo de Vida:**). "
-        "NÃO uses cabeçalhos markdown (###). Linha em branco entre parágrafos.\n"
-        "Termina com **Síntese:** (máx. 2 frases transversais). Sem listas, sem cabeçalhos markdown.\n\n"
-        "PASSO 3 — SÍNTESE EDITORIAL: após toda a análise e a **Síntese:**, escreve numa linha isolada:\n"
-        "`HEADLINE:` seguido da manchete jornalística que sintetiza o padrão mais relevante de TODAS as secções "
-        "(máx. 12 palavras, com números).\n"
-        "Na linha seguinte: `SUBHEADLINE:` seguido do subtítulo (máx. 10 palavras, contexto ou contraste).\n"
-        "A manchete deve ser uma síntese editorial de TODA a análise, não apenas de uma secção.\n"
-        f"⚠️ HEADLINE e SUBHEADLINE OBRIGATORIAMENTE em {lang_name} (output_language={lang_code}), "
-        f"MESMO que a análise acima esteja noutro idioma. A lente personalizada NÃO se aplica ao HEADLINE.\n\n"
-        "PASSO 4 — OBRIGATÓRIO: imediatamente após o SUBHEADLINE, escreve:\n"
-        f"META_JSON:{{\"section_links\":{{{{}}}},\"section_charts\":{{{{}}}},\"chart_pick\":{{}}}}\n"
-        "Regras para META_JSON:\n"
-        f"  section_links: OBRIGATÓRIO 2-3 links REAIS (URLs de artigos específicos, NÃO páginas de categoria) por secção ({sections_list}). "
-        f"Fontes EXCLUSIVAS: {link_sources}. "
-        "PROIBIDO: fpf.pt, abola.pt, record.pt, zerozero.pt, maisfutebol.iol.pt, ojogo.pt — ZERO links de futebol ou desporto. "
-        "Quando pesquisares na web, ADICIONA '-futebol -desporto -liga -seleção' aos termos de pesquisa. "
-        "URLs devem conter slug de artigo com pelo menos 3 segmentos (ex: https://observador.pt/2026/03/custo-vida-portuguesa). "
-        "Formato: lista de strings. EVITA: bancos, governo, institutos financeiros, páginas de categoria (/noticias, /tema), colunistas pessoais, home pages. "
-        "NUNCA uses o mesmo URL em duas secções diferentes. "
-        "✓ URL válido: https://publico.pt/2026/03/artigo-custo-vida-salarios (tem ano/mes/slug)\n"
-        "✗ URL inválido: https://rtp.pt/noticias/desporto/liga-nacoes (desporto!) ou https://publico.pt/autores/joao (colunista)\n"
-        f"  section_charts: para cada secção usa UM ÚNICO id (string, NÃO array) da lista [{ids_str}]"
-        " — o indicador que MAIS MENCIONASTE no texto dessa secção. Para 'Síntese': O indicador mais importante de toda a análise.\n"
-        "  chart_pick: {{\"indicator\":\"id_exacto\",\"source\":\"FONTE\",\"label\":\"nome\",\"title\":\"insight criativo ≤12 palavras\"}} — mesmo que section_charts[Síntese].\n"
-        "META_JSON deve ser a ÚLTIMA linha."
+    from .prompt_loader import load_prompt
+    instruction = load_prompt("painel_analysis",
+        lang_rule=_lang_rule,
+        token_budget=token_budget,
+        search_hint=search_hint,
+        updated=updated,
+        lang_name=lang_name,
+        lang_code=lang_code,
+        sections_list=sections_list,
+        link_sources=link_sources,
+        ids_str=ids_str,
     )
 
     return f"{ideology}\n\n{instruction}\n\n" + "\n\n".join(section_blocks)
@@ -257,6 +234,10 @@ def get_painel_analysis(sections: list, updated: str, force: bool = False, lens:
     Pass force=True to regenerate even if cached.
     Cache key versioned (v3) to invalidate old entries without section_links.
     """
+    # ── LLM DISABLED: stub mode while validating charts ──
+    return {"text": "[Análise Painel IA desactivada — modo de validação de gráficos]", "cached": False, "error": None}
+    # ── END STUB ──
+
     if not ANTHROPIC_KEY:
         return {"text": None, "cached": False, "error": "API key not configured"}
 

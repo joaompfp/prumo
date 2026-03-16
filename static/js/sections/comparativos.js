@@ -478,9 +478,9 @@ App.registerSection('comparativos', async () => {
     _cmpChart = SWD.createSWDChart(chartEl, {
       ...SWD.baseOptions(),
       xAxis: SWD.timeAxis(periods, { interval: Math.max(0, Math.floor(periods.length / 8) - 1) }),
-      yAxis: { ...SWD.valueAxis({ scale: true }), name: _ind.unit_label || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: '#888' } },
+      yAxis: { ...SWD.valueAxis({ scale: true }), name: _ind.unit_label || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: '#888', fontFamily: 'Inter, system-ui, sans-serif' } },
       series: finalSeries,
-      grid: { containLabel: true, left: 40, right: isMobileCmp ? 16 : 90, top: 20, bottom: 30 },
+      grid: { containLabel: true, left: 40, right: isMobileCmp ? 16 : 90, top: 25, bottom: 30 },
     });
   }
 

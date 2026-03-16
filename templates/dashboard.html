@@ -61,7 +61,7 @@
   <a href="https://joao.date/dados" class="nav-brand-link" title="Prumo PT — Dados. Contexto. Narrativas.">
     <span class="nav-brand-icon-wrap">
       <img src="{{ base_path }}/static/images/prumo/nav-icon.png" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-desktop" loading="eager">
-      <img src="{{ base_path }}/static/images/prumo/logo-mobile.svg" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-mobile" loading="eager">
+      <img src="{{ base_path }}/static/images/prumo/nav-icon.png" alt="Prumo PT" class="nav-brand-icon-img nav-brand-icon-mobile" loading="eager">
     </span>
     <div class="nav-brand-text">
       <div class="nav-brand-name">Prumo</div>
@@ -77,9 +77,13 @@
     <button id="theme-toggle" aria-label="Alternar tema claro/escuro" class="theme-toggle-btn">
       <span class="theme-icon">🌙</span>
     </button>
+    <div class="lens-fab" id="nav-lens-selector" title="Lente ideológica — enquadramento editorial das análises IA"></div>
     <div class="lang-fab" id="nav-lang-selector" title="Idioma — muda o idioma das análises IA e dos textos gerados"></div>
   </div>
 </nav>
+
+<!-- Global lens hint — below nav, shows selected ideology + disclaimer -->
+<div class="lens-hint-bar" id="lens-hint-bar"></div>
 
 <!-- Global search bar — below nav -->
 <div class="search-bar" id="search-bar">

@@ -113,6 +113,104 @@
 /* ── Legacy ──────────────────────────────────────────────────── */
 .nav-brand-logo { display: none; }
 
+/* ── Lens hint bar — below nav, shows active ideology ────────── */
+.lens-hint-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 3px 16px;
+  background: var(--c-surface, #f9fafb);
+  border-bottom: 1px solid var(--c-border, #e5e7eb);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  color: var(--c-muted, #9ca3af);
+  min-height: 22px;
+}
+.lens-hint-bar:empty { display: none; }
+.lens-hint-prefix { font-weight: 600; color: var(--c-text-secondary, #6b7280); letter-spacing: 0.3px; }
+.lens-hint-icon { display: flex; align-items: center; line-height: 0; }
+.lens-hint-icon img.lens-logo { width: 14px; height: 14px; border-radius: 3px; object-fit: contain; }
+.lens-hint-icon .lens-icon { font-size: 12px; }
+.lens-hint-label { font-weight: 700; color: var(--c-text-secondary, #6b7280); text-transform: uppercase; letter-spacing: 0.5px; }
+.lens-hint-sep { color: var(--c-border, #d1d5db); }
+.lens-hint-disclaimer { font-style: italic; }
+[data-theme="dark"] .lens-hint-bar { background: var(--c-surface); border-color: var(--c-border); }
+
+/* ── Lens FAB — global ideology selector ──────────────────────── */
+.lens-fab {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.lens-toggle {
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 4px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  transition: background 0.15s;
+  opacity: 0.8;
+}
+.lens-toggle img.lens-logo { display: block; width: 22px; height: 22px; border-radius: 3px; object-fit: contain; }
+.lens-toggle .lens-icon { font-size: 18px; }
+.lens-toggle:hover {
+  background: var(--c-surface-2, rgba(0,0,0,0.06));
+  opacity: 1;
+}
+[data-theme="dark"] .lens-toggle:hover {
+  background: rgba(255,255,255,0.08);
+}
+.lens-dropdown {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 4px;
+  background: #fff;
+  border: 1px solid var(--c-border, #e5e7eb);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  z-index: 200;
+  min-width: 120px;
+  max-width: 200px;
+  padding: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.lens-dropdown.hidden { display: none; }
+.lens-option {
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'Inter', system-ui, sans-serif;
+  text-align: center;
+  transition: background 0.12s, border-color 0.12s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lens-option img.lens-logo { width: 22px; height: 22px; border-radius: 3px; object-fit: contain; }
+.lens-option .lens-icon { font-size: 16px; }
+.lens-option-label { font-weight: 600; color: #374151; font-size: 10px; }
+.lens-option:hover { background: #f3f4f6; }
+.lens-option.active { background: #fee2e2; border-color: #fca5a5; }
+.lens-option.active .lens-option-label { font-weight: 700; }
+
+/* Dark mode — lens dropdown */
+[data-theme="dark"] .lens-dropdown { background: var(--c-surface); }
+[data-theme="dark"] .lens-option-label { color: var(--c-text); }
+[data-theme="dark"] .lens-option:hover { background: var(--c-surface-2); }
+[data-theme="dark"] .lens-option.active { background: rgba(231, 76, 60, 0.15); }
+
 /* ── Language FAB — fixed top-right ───────────────────────────── */
 .lang-fab {
   /* Integrado em .nav-controls — sem position fixed */

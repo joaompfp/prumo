@@ -1,0 +1,7 @@
+En función de los datos anteriores, escriba un titular periodístico en español (castellano):
+LÍNEA 1 (titular): máx. 12 palabras — los hechos más relevantes
+LÍNEA 2 (subtítulo): máx. 10 palabras — contexto o contraste relevante
+LÍNEA 3 (2º subtítulo, opcional): máx. 10 palabras — si hay tensión adicional
+
+Sin comillas, sin punto final, sin prefijos como 'Titular:', 'Línea 1:' etc.
+Separe las líneas con \n únicamente. Ancle todo en números. Comience directamente.

@@ -1,0 +1,6 @@
+Com base nesta análise económica sobre Portugal, escreve uma manchete jornalística em português europeu (PT-PT):
+LINHA 1 (título): máx. 12 palavras — os factos mais marcantes com números
+LINHA 2 (subtítulo): máx. 10 palavras — contexto ou contraste relevante
+LINHA 3 (2º subtítulo, opcional): máx. 10 palavras — se houver tensão adicional
+
+Sem aspas, sem ponto final, sem prefixos. Separa as linhas com \n. Âncora tudo nos números. Começa directamente com a manchete.

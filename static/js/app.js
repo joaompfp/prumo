@@ -124,6 +124,66 @@ function _lensIcon(lensId) {
 // Dispatch: window.dispatchEvent(new CustomEvent('lens-change', {detail: {lens, source}}))
 // Listen:   window.addEventListener('lens-change', e => { ... })
 
+// ── Global lens hint bar — shows active ideology below nav ─────────
+const _PARTY_ARTICLE = {
+  'Partido Comunista Português': 'do', 'Bloco de Esquerda': 'do',
+  'Livre': 'do', 'Pessoas-Animais-Natureza': 'do', 'Partido Socialista': 'do',
+  'Aliança Democrática (PSD + CDS-PP)': 'da', 'Iniciativa Liberal': 'da', 'Chega': 'do',
+};
+function _updateLensHintBar(lenses) {
+  const bar = document.getElementById('lens-hint-bar');
+  if (!bar) return;
+  const lensId = localStorage.getItem('prumo-lens') || 'cae';
+  const lens = (lenses || []).find(l => l.id === lensId);
+  const icon = _lensIcon(lens?.icon || lensId);
+  let disclaimer;
+  const party = lens?.party;
+  if (party) {
+    const art = _PARTY_ARTICLE[party] || 'do';
+    disclaimer = `Análise simulada — não constitui posição oficial ${art} ${party}`;
+  } else if (lensId === 'cae') {
+    disclaimer = 'Análise simulada — perspectiva editorial do operador desta instância';
+  } else if (lensId === 'custom') {
+    disclaimer = 'Análise simulada — lente personalizada pelo utilizador';
+  } else {
+    disclaimer = 'Análise gerada por IA — meramente indicativa';
+  }
+  // Preserve the dropdown if it's currently inside the bar (avoid destroying it on re-render)
+  const dropdown = document.getElementById('lens-dropdown');
+  const dropdownInBar = dropdown && dropdown.parentNode === bar;
+  if (dropdownInBar) bar.removeChild(dropdown);
+
+  bar.innerHTML = `<span class="lens-hint-prefix">Lente:</span><span class="lens-hint-icon">${icon}</span><span class="lens-hint-label">${lens?.short || lensId}</span><span class="lens-hint-sep">·</span><span class="lens-hint-disclaimer">${disclaimer}</span>`;
+
+  // Re-attach dropdown if it was here before
+  if (dropdownInBar && dropdown) {
+    bar.appendChild(dropdown);
+  }
+
+  // Make the hint bar clickable → open a lens dropdown anchored to the hint bar
+  bar.style.cursor = 'pointer';
+  bar.onclick = (e) => {
+    e.stopPropagation();
+    const dd = document.getElementById('lens-dropdown');
+    if (!dd) return;
+    // Move dropdown into hint bar so it opens near the click
+    if (dd.parentNode !== bar) {
+      bar.style.position = 'relative';
+      bar.appendChild(dd);
+      dd.style.bottom = 'auto';
+      dd.style.top = '100%';
+      dd.style.right = 'auto';
+      dd.style.left = '50%';
+      dd.style.transform = 'translateX(-50%)';
+      dd.style.marginBottom = '0';
+      dd.style.marginTop = '2px';
+    }
+    dd.classList.toggle('hidden');
+  };
+}
+// Update on lens change
+window.addEventListener('lens-change', () => _updateLensHintBar(window.__prumoLenses || []));
+
 const App = (() => {
   const SECTIONS = ['painel', 'comparativos', 'explorador', 'metodologia', 'ajuda'];
   const _initialized = {};
@@ -251,6 +311,62 @@ window.App = App;
 
 document.addEventListener('DOMContentLoaded', () => {
   App.init();
+
+  // ── Global lens selector (nav bar) ───────────────────────────────
+  const lensContainer = document.getElementById('nav-lens-selector');
+  if (lensContainer) {
+    const BASE = window.__BASE_PATH__ || '';
+    fetch(`${BASE}/api/lenses`).then(r => r.json()).then(lenses => {
+      if (!Array.isArray(lenses) || !lenses.length) return;
+      const current = localStorage.getItem('prumo-lens') || 'cae';
+      const currentLens = lenses.find(l => l.id === current) || lenses[0];
+      const currentIcon = _lensIcon(currentLens.icon || currentLens.id);
+      lensContainer.innerHTML = `<button class="lens-toggle" id="lens-toggle" title="Lente ideológica">${currentIcon}</button>
+        <div class="lens-dropdown hidden" id="lens-dropdown">
+          ${lenses.map(l => {
+            const active = l.id === current ? ' active' : '';
+            const icon = _lensIcon(l.icon || l.id);
+            const isParty = !!PARTY_LOGOS[l.icon || l.id];
+            const label = l.short || l.id;
+            return `<button class="lens-option${active}" data-lens="${l.id}" title="${l.label}">${icon}<span class="lens-option-label">${label}</span></button>`;
+          }).join('')}
+        </div>`;
+      const toggle = lensContainer.querySelector('#lens-toggle');
+      const dropdown = lensContainer.querySelector('#lens-dropdown');
+      function _returnDropdownToNav() {
+        if (dropdown.parentNode !== lensContainer) {
+          lensContainer.appendChild(dropdown);
+          dropdown.style.bottom = ''; dropdown.style.top = '';
+          dropdown.style.left = ''; dropdown.style.right = '';
+          dropdown.style.transform = '';
+          dropdown.style.marginBottom = ''; dropdown.style.marginTop = '';
+        }
+      }
+      toggle.addEventListener('click', e => { e.stopPropagation(); _returnDropdownToNav(); dropdown.classList.toggle('hidden'); });
+      document.addEventListener('click', () => dropdown.classList.add('hidden'));
+      dropdown.addEventListener('click', e => {
+        const opt = e.target.closest('.lens-option');
+        if (!opt) return;
+        const lensId = opt.dataset.lens;
+        const lens = lenses.find(l => l.id === lensId);
+        localStorage.setItem('prumo-lens', lensId);
+        toggle.innerHTML = _lensIcon(lens.icon || lens.id);
+        dropdown.querySelectorAll('.lens-option').forEach(o => o.classList.toggle('active', o.dataset.lens === lensId));
+        dropdown.classList.add('hidden');
+        window.dispatchEvent(new CustomEvent('lens-change', { detail: { lens: lensId, source: 'global' } }));
+      });
+      // Sync with lens changes from other sources (painel, metodologia)
+      window.addEventListener('lens-change', e => {
+        if (e.detail.source === 'global') return;
+        const lens = lenses.find(l => l.id === e.detail.lens);
+        if (lens) toggle.innerHTML = _lensIcon(lens.icon || lens.id);
+        dropdown.querySelectorAll('.lens-option').forEach(o => o.classList.toggle('active', o.dataset.lens === e.detail.lens));
+      });
+      // Store lenses globally for hint bar updates
+      window.__prumoLenses = lenses;
+      _updateLensHintBar(lenses);
+    }).catch(() => { lensContainer.style.display = 'none'; });
+  }
 
   // ── Global language selector (nav bar) ────────────────────────────
   const langContainer = document.getElementById('nav-lang-selector');

@@ -3,10 +3,13 @@ import time
 import threading
 
 from fastapi import FastAPI, Request
+from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
-from .config import PORT, STATIC_DIR, CAE_DB_PATH, ANALYTICS_DB_PATH
+from .config import PORT, STATIC_DIR, CAE_DB_PATH, ANALYTICS_DB_PATH, TEMPLATES_DIR, BASE_PATH
 from .routes.api import router as api_router
 from .routes.pages import router as pages_router
 
@@ -17,6 +20,22 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url=None,
 )
+
+_error_templates = Jinja2Templates(directory=TEMPLATES_DIR)
+
+
+@app.exception_handler(404)
+async def not_found_handler(request: Request, exc: HTTPException):
+    """Branded 404 page for HTML requests, JSON for API calls."""
+    if request.url.path.startswith("/api/"):
+        return JSONResponse(status_code=404, content={"detail": "Not Found"})
+    prefix = request.headers.get("X-Forwarded-Prefix", "") or BASE_PATH
+    return _error_templates.TemplateResponse(
+        "404.html",
+        {"request": request, "base_path": prefix.rstrip("/"), "path": request.url.path},
+        status_code=404,
+    )
+
 
 # CORS — allow POST for /api/track
 app.add_middleware(

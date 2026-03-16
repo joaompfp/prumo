@@ -4,6 +4,15 @@
    ═══════════════════════════════════════════════════════════════ */
 
 App.registerSection('explorador', async () => {
+  // ── Cleanup from previous init (re-init on deep-link) ──────────
+  // The hashchange listener below captures closure state; if the section
+  // re-initialises (app.js line 182 sets _initialized=false on incoming params),
+  // old listeners would fire with stale/empty catalog.  AbortController
+  // ensures only the latest listener survives.
+  if (window.__exploradorHashAbort) window.__exploradorHashAbort.abort();
+  const _hashAbort = new AbortController();
+  window.__exploradorHashAbort = _hashAbort;
+
   const container  = document.getElementById('explorador');
   const body       = container.querySelector('.section-body');
   const BASE       = window.__BASE_PATH__ || '';
@@ -105,18 +114,20 @@ App.registerSection('explorador', async () => {
       </div>
 
       <div class="analise-layout">
-        <div id="ai-panel" style="display:none">
-          <div class="ai-label">✦ Análise Automática</div>
-          <div class="ai-context" id="ai-panel-context"></div>
-          <div id="ai-panel-text"></div>
-          <div class="ai-links" id="ai-panel-links"></div>
-          <div class="ai-footer" id="ai-panel-footer"></div>
-        </div>
         <div class="explorador-chart-container" id="exp-chart-wrap">
           <div class="explorador-empty-state">
             Selecciona indicadores para visualizar
           </div>
         </div>
+        <details id="ai-panel-details" class="ai-panel-collapsible">
+          <summary class="ai-panel-summary">✦ Análise Automática</summary>
+          <div id="ai-panel">
+            <div class="ai-context" id="ai-panel-context"></div>
+            <div id="ai-panel-text"></div>
+            <div class="ai-links" id="ai-panel-links"></div>
+            <div class="ai-footer" id="ai-panel-footer"></div>
+          </div>
+        </details>
       </div>
 
       <div class="explorador-table-wrap hidden" id="exp-table-wrap">
@@ -208,10 +219,17 @@ App.registerSection('explorador', async () => {
         item.label.toLowerCase().includes(query) ||
         srcLower.includes(query) ||
         (alias && srcLower.includes(alias)) ||
-        item.indicator.toLowerCase().includes(query) ||
-        (item.description || '').toLowerCase().includes(query);
+        item.indicator.toLowerCase().includes(query);
       return matchSrc && matchQ;
     });
+    // Sort: label substring matches first, then indicator ID matches
+    if (query) {
+      filtered.sort((a, b) => {
+        const aLabel = a.label.toLowerCase().includes(query) ? 0 : 1;
+        const bLabel = b.label.toLowerCase().includes(query) ? 0 : 1;
+        return aLabel - bLabel;
+      });
+    }
 
     if (!query && !srcF) {
       elResults.classList.add('hidden');
@@ -264,8 +282,6 @@ App.registerSection('explorador', async () => {
         const unit = decodeURIComponent(el.dataset.unit);
         addIndicator(src, ind, lbl, unit);
         elSearch.value = '';
-        // Set source filter to the just-added source so user can pick another from same source
-        if (!elSrcFilter.value) elSrcFilter.value = src;
         renderResults(); // always keep open after adding
       });
     });
@@ -376,7 +392,8 @@ App.registerSection('explorador', async () => {
     }[f] || f || 'n/d');
 
     container.innerHTML = `
-      <h3 class="ficha-inline-title">Ficha técnica dos indicadores seleccionados</h3>
+      <details class="ficha-inline-details">
+      <summary class="ficha-inline-title">Ficha técnica dos indicadores seleccionados</summary>
       ${selected.map((s, i) => {
         const srcData = catalog[s.source] || {};
         const indData = (srcData.indicators || {})[s.indicator] || {};
@@ -399,7 +416,8 @@ App.registerSection('explorador', async () => {
             </div>
           </div>
         </div>`;
-      }).join('')}`;
+      }).join('')}
+      </details>`;
 
     // Click card → navigate to Ficha and scroll to that indicator's row
     container.querySelectorAll('.ficha-inline-card[data-source]').forEach(card => {
@@ -444,24 +462,47 @@ App.registerSection('explorador', async () => {
     });
   });
 
+  // ── Period change → auto-render (chart + AI with new date range) ──
+  let _periodDebounce;
+  function onPeriodChange() {
+    clearTimeout(_periodDebounce);
+    _periodDebounce = setTimeout(() => { if (selected.length > 0) render(); }, 600);
+  }
+  elFrom.addEventListener('change', onPeriodChange);
+  elTo.addEventListener('change', onPeriodChange);
+
   // ── Render button ─────────────────────────────────────────────
   elRenderBtn.addEventListener('click', () => render());
 
   // ── IA toggle button ──────────────────────────────────────────
   elAIBtn.addEventListener('click', () => {
     if (!lastSeries.length) return;
-    const panel = document.getElementById('ai-panel');
-    if (!panel) return;
-    if (panel.style.display === 'none') {
-      // Show and trigger analysis
+    const details = document.getElementById('ai-panel-details');
+    if (!details) return;
+    if (!details.open) {
+      details.open = true;
       updateAIPanel(lastSeries, elFrom.value || '', elTo.value || nowYM());
+      elAIBtn.classList.add('active');
     } else {
-      // Hide panel and cancel any in-flight request
       if (aiPanelAbort) { aiPanelAbort.abort(); aiPanelAbort = null; }
-      panel.style.display = 'none';
+      details.open = false;
       elAIBtn.classList.remove('active');
     }
   });
+
+  // ── AI panel <details> toggle — trigger analysis on expand ─────
+  const elAIDetails = body.querySelector('#ai-panel-details');
+  if (elAIDetails) {
+    elAIDetails.addEventListener('toggle', () => {
+      if (elAIDetails.open && lastSeries.length) {
+        updateAIPanel(lastSeries, elFrom.value || '', elTo.value || nowYM());
+        if (elAIBtn) elAIBtn.classList.add('active');
+      } else {
+        if (aiPanelAbort) { aiPanelAbort.abort(); aiPanelAbort = null; }
+        if (elAIBtn) elAIBtn.classList.remove('active');
+      }
+    });
+  }
 
   // ── Auto-render on selection change ──────────────────────────
   function autoRender() {
@@ -516,7 +557,6 @@ App.registerSection('explorador', async () => {
     if (footer) footer.textContent = '';
 
     text.innerHTML = '<span class="ai-loading">A gerar análise IA…</span>';
-    panel.style.display = '';
     if (elAIBtn) { elAIBtn.classList.add('active'); elAIBtn.disabled = false; }
 
     try {
@@ -547,7 +587,6 @@ App.registerSection('explorador', async () => {
       if (ctrl.signal.aborted) return;
       if (data.text) {
         text.innerHTML = _renderMd(data.text) || data.text;
-        panel.style.display = '';
         if (elAIBtn) elAIBtn.classList.add('active');
         // Links from web search
         if (linksEl) {
@@ -566,13 +605,11 @@ App.registerSection('explorador', async () => {
           ? `Análise em cache (sessão)`
           : `Análise gerada: ${new Date().toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`;
       } else {
-        panel.style.display = 'none';
         if (elAIBtn) elAIBtn.classList.remove('active');
       }
     } catch(e) {
       if (e.name === 'AbortError') return;  // cancelled by newer request — leave panel as-is
       console.warn('[ai-panel] interpret error:', e);
-      panel.style.display = 'none';
       if (elAIBtn) elAIBtn.classList.remove('active');
     }
   }
@@ -583,12 +620,14 @@ App.registerSection('explorador', async () => {
     elChartWrap.innerHTML = '<div class="explorador-empty-state">Selecciona indicadores para visualizar</div>';
     elTableWrap.classList.add('hidden');
     lastSeries = [];
-    const _aiPanel = document.getElementById('ai-panel');
-    if (_aiPanel) _aiPanel.style.display = 'none';
+    const _aiDetails = document.getElementById('ai-panel-details');
+    if (_aiDetails) _aiDetails.open = false;
     if (elAIBtn) { elAIBtn.classList.remove('active'); elAIBtn.disabled = true; }
     // M2: Remove unit warning banner when chart is cleared
     const banner = document.getElementById('exp-unit-warning');
     if (banner) banner.remove();
+    const freqNote = document.getElementById('exp-freq-note');
+    if (freqNote) freqNote.remove();
     updateURL();
   }
 
@@ -631,6 +670,40 @@ App.registerSection('explorador', async () => {
           data:      (item && Array.isArray(item.data)) ? item.data : [],
         };
       });
+
+      // ── Auto-expand date range when too few data points ─────────
+      const totalPts = lastSeries.reduce((n, s) => n + s.data.length, 0);
+      if (totalPts < 5 && (fromV || toV)) {
+        // Re-fetch without date constraints to get all available data
+        const expandedFetches = selected.map(s => {
+          const url = `${BASE}/api/series?source=${encodeURIComponent(s.source)}&indicator=${encodeURIComponent(s.indicator)}`;
+          return fetch(url).then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status} for ${s.source}/${s.indicator}`);
+            return r.json();
+          });
+        });
+        const expandedResults = await Promise.all(expandedFetches);
+        if (myVersion !== renderVersion) return;
+
+        lastSeries = expandedResults.map((arr, i) => {
+          const item = Array.isArray(arr) && arr.length ? arr[0] : null;
+          const sel  = selected[i];
+          return {
+            source:    sel.source,
+            indicator: sel.indicator,
+            label:     (item && item.label) || sel.label,
+            unit:      (item && item.unit)  || sel.unit,
+            data:      (item && Array.isArray(item.data)) ? item.data : [],
+          };
+        });
+
+        // Update date inputs to reflect the actual data range
+        const allPeriods = lastSeries.flatMap(s => s.data.map(d => d.period)).filter(Boolean).sort();
+        if (allPeriods.length) {
+          elFrom.value = allPeriods[0].slice(0, 7);  // YYYY-MM
+          elTo.value   = allPeriods[allPeriods.length - 1].slice(0, 7);
+        }
+      }
 
       // Determine Y-axis mode — normalise unit strings first (€/l === EUR/l etc.)
       // Resolve units: normalise display + convert same-family units (€/kWh + €/MWh → single axis)
@@ -682,8 +755,8 @@ App.registerSection('explorador', async () => {
           banner.textContent = `Unidades incompatíveis (${units.join(', ')}) — o gráfico pode ser enganador. Considera usar o modo Indexado.`;
         }
         const analiseLayout = elChartWrap.parentNode;
-        if (banner.parentNode !== analiseLayout.parentNode) {
-          analiseLayout.parentNode.insertBefore(banner, analiseLayout);
+        if (banner.parentNode !== analiseLayout) {
+          analiseLayout.insertBefore(banner, elChartWrap);
         }
       } else {
         const banner = document.getElementById('exp-unit-warning');
@@ -693,11 +766,38 @@ App.registerSection('explorador', async () => {
       if (viewMode === 'chart') renderChart(yMode, units);
       else                      renderTable();
 
+      // ── Fix 5: Frequency mismatch note ──────────────────────────
+      const freqs = new Set(selected.map(s => {
+        const srcData = catalog[s.source] || {};
+        const indData = (srcData.indicators || {})[s.indicator] || {};
+        return indData.frequency || '';
+      }).filter(Boolean));
+      if (freqs.size > 1) {
+        let freqNote = document.getElementById('exp-freq-note');
+        if (!freqNote) {
+          freqNote = document.createElement('div');
+          freqNote.id = 'exp-freq-note';
+          freqNote.className = 'exp-info-banner';
+        }
+        const freqLabel = f => ({ monthly: 'mensal', annual: 'anual', weekly: 'semanal', semester: 'semestral', quarterly: 'trimestral' }[f] || f);
+        freqNote.textContent = `Nota: frequências diferentes (${[...freqs].map(freqLabel).join(', ')}) — dados trimestrais ligados entre pontos`;
+        const analiseLayout = elChartWrap.parentNode;
+        if (freqNote.parentNode !== analiseLayout) {
+          analiseLayout.insertBefore(freqNote, elChartWrap);
+        }
+      } else {
+        const fn = document.getElementById('exp-freq-note');
+        if (fn) fn.remove();
+      }
+
       // Enable IA button now that we have data
       if (elAIBtn) elAIBtn.disabled = false;
 
-      // Auto-trigger AI analysis on every render (always visible)
-      updateAIPanel(lastSeries, fromV, toV);
+      // Only trigger AI analysis if the panel is already expanded
+      const aiDetails = document.getElementById('ai-panel-details');
+      if (aiDetails && aiDetails.open) {
+        updateAIPanel(lastSeries, fromV, toV);
+      }
 
       updateURL();
     } catch (e) {
@@ -759,18 +859,26 @@ App.registerSection('explorador', async () => {
       });
     }).map((s, i) => ({
       ...s,
-      connectNulls: false,
+      connectNulls: s.data.filter(v => v === null || v === undefined).length / s.data.length > 0.3,
       yAxisIndex: yMode === 'dual' ? (units.indexOf(lastSeries[i].unit) === 1 ? 1 : 0) : 0,
     }));
 
     const yAxes = [];
+    const _yNameStyle = (color) => ({
+      nameLocation: 'end',
+      nameTextStyle: { fontSize: 10, color, fontFamily: 'Inter, system-ui, sans-serif', padding: [0, 0, 0, -10] },
+    });
+    const _yNameStyleR = (color) => ({
+      nameLocation: 'end',
+      nameTextStyle: { fontSize: 10, color, fontFamily: 'Inter, system-ui, sans-serif', padding: [0, -10, 0, 0] },
+    });
     if (yMode === 'single') {
-      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0] || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: '#888' } });
+      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0] || '', ..._yNameStyle('#888') });
     } else if (yMode === 'dual') {
-      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0] || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: SERIES_COLORS[0] } });
-      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[1] || units[0] || '', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: SERIES_COLORS[1] }, position: 'right' });
+      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0] || '', ..._yNameStyle(SERIES_COLORS[0]) });
+      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[1] || units[0] || '', ..._yNameStyleR(SERIES_COLORS[1]), position: 'right' });
     } else {
-      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: 'Index (início=100)', nameLocation: 'end', nameTextStyle: { fontSize: 10, color: '#888' } });
+      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: 'Index (início=100)', ..._yNameStyle('#888') });
     }
 
     const baseOpts = SWD.baseOptions();
@@ -789,8 +897,11 @@ App.registerSection('explorador', async () => {
       },
       tooltip: { show: true },  // full name visible on hover
     };
-    // Adjust grid bottom for legend; right:180 gives room for end labels (disabled on mobile)
-    baseOpts.grid = { ...baseOpts.grid, bottom: 48, right: isMobile ? 16 : 180 };
+    // Override grid on the base object directly (ECharts deep-merges grid)
+    baseOpts.grid.top = 30;
+    baseOpts.grid.bottom = 48;
+    baseOpts.grid.left = isMobile ? 40 : 50;
+    baseOpts.grid.right = isMobile ? (yMode === 'dual' ? 45 : 16) : (yMode === 'dual' ? 55 : 180);
 
     const opts = {
       ...baseOpts,
@@ -968,7 +1079,16 @@ App.registerSection('explorador', async () => {
     clearAllIndicators();
   });
 
+  // ── Re-generate AI when global lens changes ────────────────────
+  window.addEventListener('lens-change', () => {
+    const _aiDet = document.getElementById('ai-panel-details');
+    if (lastSeries.length && _aiDet && _aiDet.open) {
+      updateAIPanel(lastSeries, elFrom.value || '', elTo.value || nowYM());
+    }
+  }, { signal: _hashAbort.signal });
+
   // ── Handle deep-link re-entry (Painel cards, Ficha links, shared URLs) ──
+  // Uses AbortController signal so old listeners are removed on re-init
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash;
     if (hash.startsWith('#explorador?')) {
@@ -982,7 +1102,7 @@ App.registerSection('explorador', async () => {
       } catch(_) {}
       restoreFromURL();
     }
-  });
+  }, { signal: _hashAbort.signal });
 
   // ── Guided exploration paths ────────────────────────────────────
   const GUIDED_PATHS = {

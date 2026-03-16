@@ -233,22 +233,16 @@
 
 /* ── C2-1: Nav-brand compacto em mobile — reduzir para não cobrir viewport ── */
 @media (max-width: 767px) {
-  /* Mostrar ícone desktop a 36px (o SVG mobile tem bug de path relativo) */
+  /* Mostrar ícone desktop — tamanho igual ao desktop */
   .nav-brand-icon-desktop {
     display: block !important;
-    width: 36px !important;
-    height: 36px !important;
   }
   .nav-brand-icon-mobile { display: none !important; }
 
   /* Esconder texto "Prumo" + tagline em mobile */
   .nav-brand-text { display: none !important; }
 
-  /* Compactar o wrapper do ícone */
-  .nav-brand-icon-wrap {
-    height: 36px;
-    width: 36px;
-  }
+  /* Ícone igual ao desktop — sem compressão */
 
   /* Compactar o link de marca */
   .nav-brand-link {

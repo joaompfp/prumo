@@ -159,10 +159,6 @@ COMPARATIVOS_CATALOG = [
      "label": "Ensino Secundário (% matrícula)","group": "Educação e Inovação","unit_label": "%"},
     {"id": "wb_tertiary",          "source": "WORLDBANK", "indicator": "tertiary_enrollment",
      "label": "Ensino Superior (% matrícula)","group": "Educação e Inovação", "unit_label": "%"},
-    {"id": "wb_literacy",          "source": "WORLDBANK", "indicator": "literacy_rate",
-     "label": "Taxa de Literacia (%)",     "group": "Educação e Inovação",    "unit_label": "%"},
-    {"id": "wb_gov_debt_wb",       "source": "WORLDBANK", "indicator": "gov_debt_pct_gdp_wb",
-     "label": "Dívida Pública % PIB (BM)", "group": "Finanças Públicas",      "unit_label": "% PIB"},
     {"id": "wb_population",        "source": "WORLDBANK", "indicator": "population",
      "label": "População (mil hab.)",      "group": "Social e Desigualdade",  "unit_label": "mil hab."},
 ]

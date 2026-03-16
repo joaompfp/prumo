@@ -42,6 +42,10 @@ def get_card_links(topic: str, context: str = "", lens: str = "cae") -> dict:
     Link 1: party-specific source for this lens.
     Links 2-3: general news sources.
     Returns {"links": [{"url":..., "title":...}], "cached": bool}"""
+    # ── LLM DISABLED: stub mode while validating charts ──
+    return {"links": [], "cached": False, "error": "LLM disabled — chart validation mode"}
+    # ── END STUB ──
+
     if not ANTHROPIC_KEY:
         return {"links": [], "cached": False, "error": "no key"}
 

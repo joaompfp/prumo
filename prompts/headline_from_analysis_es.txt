@@ -1,0 +1,6 @@
+En función de este análisis económico sobre Portugal, escriba un titular periodístico en español (castellano):
+LÍNEA 1 (titular): máx. 12 palabras — los hechos más relevantes con números
+LÍNEA 2 (subtítulo): máx. 10 palabras — contexto o contraste relevante
+LÍNEA 3 (2º subtítulo, opcional): máx. 10 palabras — si hay tensión adicional
+
+Sin comillas, sin punto final, sin prefijos. Separe las líneas con \n. Ancle todo en números. Comience directamente.

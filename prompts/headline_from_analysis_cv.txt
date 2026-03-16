@@ -1,0 +1,6 @@
+Baseadu neta analizu ekonomiku sôbri Portugál, scriva un tituláu jornalistiku em kriolu:
+LINHA 1 (tituláu): máx. 12 palavras — es factu mais merkanti ku numeru
+LINHA 2 (subtituláu): máx. 10 palavras — kontestu u kontras relevanti
+LINHA 3 (2º subtituláu, opsionál): máx. 10 palavras — se tê tensãu adisionál
+
+Sem aspa, sem prefixu, sem ponto finál. Separa na linhas ku \n. Ancra tudo na numeru. Kumesa direktamenti.

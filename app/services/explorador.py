@@ -40,7 +40,7 @@ def build_explorador_catalog():
     _BROKEN_NAMES = {"natgas_price_domestic_€_per_GJ", "natgas_price_domestic_€_per_MWh",
                      "natgas_price_industry_€_per_GJ", "natgas_price_industry_€_per_MWh"}
     # Indicators with insufficient data to be useful in charts
-    _SPARSE = {"construction_index", "industrial_eu_band_ia_excl_taxes",
+    _SPARSE = {"industrial_eu_band_ia_excl_taxes",
                "industrial_eu_band_ib_excl_taxes", "industrial_eu_band_ic_excl_taxes"}
 
     items = []
