@@ -13,9 +13,9 @@ import sys, duckdb
 from pathlib import Path
 from datetime import datetime
 
-BASE = Path(__file__).resolve().parent.parent.parent.parent
-PROD_DB    = BASE / "appdata/cae-dashboard/cae-data.duckdb"
-STAGING_DB = BASE / "appdata/cae-dashboard/cae-data-staging.duckdb"
+APPDATA = Path(__file__).resolve().parent.parent.parent.parent.parent / "appdata/prumo"
+PROD_DB    = APPDATA / "cae-data.duckdb"
+STAGING_DB = APPDATA / "cae-data-staging.duckdb"
 
 def main():
     if not STAGING_DB.exists():

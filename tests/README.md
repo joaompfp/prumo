@@ -59,7 +59,7 @@ pytest -k "test_painel" -v
 ### Phase 1.3: Database Tests (`tests/db/`)
 
 - **test_duckdb_basic.py**: Connection, read-only mode, data freshness
-- **test_indicator_counts.py**: 422+ indicators loaded
+- **test_indicator_counts.py**: 380+ indicators loaded
 - **test_period_coverage.py**: Expected periods for each source
 - **test_data_freshness.py**: Latest period within 30 days
 

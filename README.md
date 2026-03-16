@@ -27,7 +27,7 @@ prumo/
 │   ├── config.py                 # Environment variables and paths
 │   ├── database.py               # Thread-safe DuckDB connection pool
 │   ├── constants/                # Static data (catalog, events, country lists)
-│   │   ├── catalog.py            # CATALOG — 8 sources, ~60 indicators
+│   │   ├── catalog.py            # CATALOG — 9 sources, ~380 indicators
 │   │   ├── events.py             # CHART_EVENTS, BRIEFING/SUMMARY indicator lists
 │   │   ├── countries.py          # COMPARE_COUNTRIES, COMPARE_DATASETS
 │   │   └── mappings.py           # USED_IN, FRED_SERIES, WB_CODES, SOURCE_META

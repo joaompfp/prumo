@@ -61,7 +61,7 @@ All available in `conftest.py`:
 - ✅ Source label mapping (INE, Eurostat, FRED, DGEG, REN, etc.)
 - ✅ Data types (numeric values, YoY, units)
 - ✅ Data quality (no NaN/Inf, valid periods)
-- ✅ Catálogo Completo section (all 422+ indicators)
+- ✅ Catálogo Completo section (all 380+ indicators)
 - **Focus**: Ensure KPI structure consistency
 
 **`test_painel_headline.py`** (4 test classes, 14 tests):
@@ -85,7 +85,7 @@ All available in `conftest.py`:
 
 **`test_duckdb_basic.py`** (3 test classes, 15 tests):
 - ✅ Connection tests (in-memory, file-based, read-only mode)
-- ✅ Indicator catalog (422+ unique indicators, categories)
+- ✅ Indicator catalog (380+ unique indicators, categories)
 - ✅ Data freshness (latest period within 30 days)
 - ✅ Data quality (no NaN/Inf, <30% nulls)
 - **Focus**: DB integrity and data freshness

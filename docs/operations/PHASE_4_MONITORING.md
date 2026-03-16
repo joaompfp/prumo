@@ -29,7 +29,7 @@ Phase 4 focuses on **production monitoring and observability**:
   "version": "7.2",
   "services": {
     "api": { "status": "ok", "response_time_ms": 5 },
-    "database": { "status": "ok", "indicators": 422, "latest_period": "2026-01-31" },
+    "database": { "status": "ok", "indicators": 383, "latest_period": "2026-01-31" },
     "anthropic": { "status": "ok", "last_call": "2026-03-03T16:29:00Z" },
     "cache": { "status": "ok", "items": 47 }
   },

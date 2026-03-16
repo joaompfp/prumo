@@ -86,8 +86,8 @@ class TestIndicatorCatalog:
         not os.path.exists(os.getenv("CAE_DB_PATH", "/dev/null")),
         reason="Database not available in test environment"
     )
-    def test_indicators_count_near_422(self):
-        """Indicators: Database has ~422 unique indicators."""
+    def test_indicators_count_near_383(self):
+        """Indicators: Database has ~383 unique indicators."""
         db_path = os.getenv("CAE_DB_PATH")
         if not db_path or not os.path.exists(db_path):
             pytest.skip("DB path not available")

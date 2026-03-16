@@ -56,6 +56,10 @@ def _check_catalog_drift(db_stats_pt: dict, db_stats_all: dict) -> list:
 
     for src, src_info in CATALOG.items():
         for ind, meta in src_info.get("indicators", {}).items():
+            # Skip discontinued series
+            if meta.get("discontinued"):
+                continue
+
             key = (src, ind)
             # Prefer PT stats; fall back to total if indicator is PT-only source
             stats = db_stats_pt.get(key) or db_stats_all.get(key)
@@ -152,6 +156,10 @@ def _check_freshness(db_stats_pt: dict) -> list:
         for ind, meta in src_info.get("indicators", {}).items():
             stats = db_stats_pt.get((src, ind))
             if not stats or not stats.get("until"):
+                continue
+
+            # Skip discontinued series
+            if meta.get("discontinued"):
                 continue
 
             freq     = meta.get("frequency", "monthly")

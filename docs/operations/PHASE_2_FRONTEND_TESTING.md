@@ -163,7 +163,7 @@ describe('Painel Section Rendering', () => {
 
   // Catálogo section
   test('Catálogo Completo section loads', ...)
-  test('all 422+ indicators visible', ...)
+  test('all 380+ indicators visible', ...)
   test('indicators grouped by category', ...)
 })
 ```

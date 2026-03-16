@@ -98,7 +98,7 @@ class TestPanelErrorHandling:
 
 
 class TestPanelCatalogo:
-    """Test Catálogo Completo section (all 422+ indicators)."""
+    """Test Catálogo Completo section (all 380+ indicators)."""
 
     def test_catalogo_section_exists(self, client):
         """Catálogo: 'Catálogo Completo' section is present."""

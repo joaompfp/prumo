@@ -182,7 +182,7 @@
         </div>
         <div class="mf-flow-right">
           <div class="mf-flow-label mf-flow-label--t1">Dados económicos</div>
-          <div class="mf-flow-sub">Séries temporais actualizadas automaticamente a partir de APIs públicas. Cada indicador é armazenado com fonte, unidade e período.</div>
+          <div class="mf-flow-sub">Mais de 350 indicadores de 9 fontes oficiais, cobrindo 54 países (UE-27, PALOP e economias globais). Séries desde 1960 actualizadas automaticamente via APIs públicas.</div>
           <pre class="mf-flow-code"># Exemplo — INE: Índice de Produção Industrial
 {
   "source":    "INE",
@@ -199,7 +199,9 @@
             <span class="mf-pill">INE</span>
             <span class="mf-pill">Eurostat</span>
             <span class="mf-pill">Banco de Portugal</span>
+            <span class="mf-pill">OCDE</span>
             <span class="mf-pill">REN</span>
+            <span class="mf-pill">DGEG</span>
             <span class="mf-pill">ERSE</span>
             <span class="mf-pill">FRED</span>
             <span class="mf-pill">WorldBank</span>
@@ -281,13 +283,13 @@ fontes: [
         <h3 class="mf-heading" style="display:inline;margin:0">Indicadores Compostos (★)</h3>
       </summary>
       <div class="mf-step-text" style="padding:1em">
-        <p>Os indicadores compostos na secção <strong>Comparativos</strong> combinam duas fontes para maximizar a cobertura geográfica:</p>
+        <p>Os indicadores compostos na secção <strong>Comparativos</strong> combinam duas fontes para maximizar a cobertura geográfica (54 países):</p>
         <ul>
-          <li><strong>Eurostat</strong> — dados de alta frequência (mensais/trimestrais) para os 27 países da UE</li>
-          <li><strong>Banco Mundial</strong> — dados anuais com cobertura global (190+ países)</li>
+          <li><strong>Eurostat</strong> — dados de alta frequência (mensais/trimestrais) para os 27 países da UE + agregado EU-27</li>
+          <li><strong>Banco Mundial</strong> — dados anuais desde 1960 com cobertura global, incluindo PALOP (Angola, Moçambique, Cabo Verde, Guiné-Bissau, São Tomé, Timor-Leste) e grandes economias (EUA, China, Japão, Brasil, Índia, etc.)</li>
         </ul>
-        <p><strong>Método de fusão:</strong> para países EU-27, usa-se exclusivamente a série Eurostat (mais recente e granular). Para países fora da UE (ex: EUA, Brasil, PALOP), usa-se a série do Banco Mundial. Não há interpolação nem mistura de frequências — cada país tem uma única fonte autoritativa.</p>
-        <p><strong>Período de referência:</strong> o último valor disponível pode diferir entre fontes. Eurostat publica com 1-2 meses de atraso; Banco Mundial com 12-18 meses. Os gráficos mostram o período efectivo de cada ponto.</p>
+        <p><strong>Método de fusão:</strong> para países EU-27, usa-se exclusivamente a série Eurostat (mais recente e granular). Para países fora da UE, usa-se a série do Banco Mundial. Não há interpolação nem mistura de frequências — cada país tem uma única fonte autoritativa.</p>
+        <p><strong>Período de referência:</strong> o último valor disponível pode diferir entre fontes. Eurostat publica com 1-2 meses de atraso; Banco Mundial com 12-24 meses para indicadores anuais. Os gráficos mostram o período efectivo de cada ponto.</p>
         <p><strong>Equivalências de região:</strong> <code>EU27</code> e <code>EU27_2020</code> são tratados como equivalentes (composição pós-Brexit).</p>
       </div>
     </details>
@@ -345,6 +347,7 @@ fontes: [
       <a href="https://data.worldbank.org" target="_blank" rel="noopener">Banco Mundial</a> ·
       <a href="https://www.erse.pt" target="_blank" rel="noopener">ERSE</a> ·
       <a href="https://datahub.ren.pt" target="_blank" rel="noopener">REN</a> ·
+      <a href="https://www.dgeg.gov.pt" target="_blank" rel="noopener">DGEG</a> ·
       <a href="https://fred.stlouisfed.org" target="_blank" rel="noopener">FRED</a>
     </span>
     <span class="footer-sep">&middot;</span>

@@ -16,7 +16,7 @@ import sys, json, time, urllib.request, duckdb, requests
 from datetime import datetime
 from pathlib import Path
 
-STAGING_DB = Path(__file__).resolve().parent.parent.parent.parent / "appdata/cae-dashboard/cae-data-staging.duckdb"
+STAGING_DB = Path(__file__).resolve().parent.parent.parent.parent.parent / "appdata/prumo/cae-data-staging.duckdb"
 FETCHED_AT = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def ensure_db(conn):
