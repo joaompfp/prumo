@@ -1,0 +1,150 @@
+/* ── Ajuda / Sobre ──────────────────────────────────────────────── */
+.ajuda-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.ajuda-h3 {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 var(--sp-lg);
+  padding-bottom: var(--sp-sm);
+  border-bottom: 2px solid var(--c-border);
+}
+
+.ajuda-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-lg);
+}
+
+/* New: collapsible full-width cards list */
+.ajuda-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-sm);
+}
+
+.ajuda-card-collapse {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.ajuda-card-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-md) var(--sp-lg);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  border-bottom: 1px solid transparent;
+  transition: background 0.15s;
+}
+
+.ajuda-card-summary::-webkit-details-marker { display: none; }
+
+.ajuda-card-collapse[open] .ajuda-card-summary {
+  border-bottom-color: var(--c-border);
+  background: var(--c-bg);
+}
+
+.ajuda-card-summary:hover { background: var(--c-bg); }
+
+.ajuda-card-body {
+  padding: var(--sp-lg);
+}
+
+.ajuda-card-body p {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.65;
+  margin: 0 0 var(--sp-sm);
+}
+
+/* Legacy grid cards */
+.ajuda-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-lg);
+}
+
+.ajuda-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-md);
+}
+
+.ajuda-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.ajuda-card-title {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+.ajuda-card p {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.65;
+  margin: 0 0 var(--sp-sm);
+}
+
+.ajuda-tips {
+  margin: var(--sp-sm) 0 0 var(--sp-md);
+  padding: 0;
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.6;
+}
+
+.ajuda-tips li { margin-bottom: 4px; }
+
+.ajuda-faq {
+  border-top: 1px solid var(--c-border);
+}
+
+.ajuda-faq .method-accordion > p {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.65;
+}
+
+.ajuda-sobre {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--sp-xl);
+}
+
+.ajuda-sobre p {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.75;
+  margin: 0 0 var(--sp-md);
+}
+
+.ajuda-sobre p:last-child { margin-bottom: 0; }
+
+.ajuda-fontes-line {
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+  margin-top: var(--sp-lg);
+  padding-top: var(--sp-md);
+  border-top: 1px solid var(--c-border);
+}
+
+.ajuda-fontes-line a {
+  color: var(--c-pt);
+  text-decoration: none;
+}
+
+.ajuda-fontes-line a:hover { text-decoration: underline; }

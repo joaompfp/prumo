@@ -37,35 +37,11 @@ App.registerSection('explorador', async () => {
   // ── Series colour palette ─────────────────────────────────────
   const SERIES_COLORS = ['#CC0000', '#4A90D9', '#2E7D32', '#E67E22', '#9B59B6'];
 
-  // ── Date helpers ──────────────────────────────────────────────
-  function nowYM() {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-  }
-  function subtractYears(n) {
-    const d = new Date();
-    d.setFullYear(d.getFullYear() - n);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-  }
-
-  // ── Period normalisation (WP-E5) ──────────────────────────────
-  // Normalises all period formats to YYYY-MM so mixed-frequency series
-  // (e.g. annual "2024" vs monthly "2024-03") align on the same X-axis.
-  function normalisePeriod(p) {
-    if (!p) return p;
-    // Annual: "2024" → "2024-12"
-    if (/^\d{4}$/.test(p)) return `${p}-12`;
-    // Quarterly: "2025-Q3" or "2025 Q3" → "2025-09"
-    const qm = p.match(/^(\d{4})[- ]Q(\d)$/);
-    if (qm) return `${qm[1]}-${String(parseInt(qm[2]) * 3).padStart(2, '0')}`;
-    // Semi-annual: "2025 S1" or "2025-H1" → "2025-06" / "2025-12"
-    const sm = p.match(/^(\d{4})[- ][SH](\d)$/);
-    if (sm) return `${sm[1]}-${sm[2] === '1' ? '06' : '12'}`;
-    // Monthly: "2025-03" → as-is
-    return p;
-  }
-  // Returns true if the raw period string was an annual value ("YYYY")
-  function isAnnualPeriod(p) { return !!p && /^\d{4}$/.test(p); }
+  // ── Date & period helpers (from shared lib) ──────────────────
+  const nowYM = PrumoLib.nowYM;
+  const subtractYears = PrumoLib.subtractYears;
+  const normalisePeriod = PrumoLib.normalisePeriod;
+  const isAnnualPeriod = PrumoLib.isAnnualPeriod;
 
   // ── Toast — usa App.showToast (WP-5 unified) ─────────────────────
 

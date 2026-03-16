@@ -155,37 +155,11 @@ async def painel_analysis_endpoint(request: Request):
     return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology, output_language)
 
 
-_link_title_cache: dict = {}
-
 @router.get("/link-title")
 async def link_title_endpoint(url: str = ""):
     """Fetch <title> or og:title from a URL. In-memory cache (1 day TTL)."""
-    if not url or not url.startswith("http"):
-        return {"title": ""}
-    if url in _link_title_cache:
-        return {"title": _link_title_cache[url]}
-    import urllib.request, re
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; CAE-Dashboard/1.0)"})
-        with urllib.request.urlopen(req, timeout=5) as resp:
-            html = resp.read(32768).decode("utf-8", errors="replace")
-        title = ""
-        for pat in [
-            r'og:title[^>]+content=[^>]*?content=["\']([^"\'<>]+)',
-            r'content=["\']([^"\'<>]+)["\'][^>]*?og:title',
-            r'<og:title[^>]*>([^<]+)</og:title>',
-            r'<title[^>]*>([^<]+)</title>',
-        ]:
-            m = re.search(pat, html, re.I | re.S)
-            if m:
-                title = m.group(1).strip()[:120]
-                break
-        import html as _html
-        title = _html.unescape(title) if title else ""
-        _link_title_cache[url] = title
-        return {"title": title}
-    except Exception:
-        return {"title": ""}
+    from ..services.link_scraper import fetch_link_title
+    return {"title": fetch_link_title(url)}
 
 
 @router.get("/painel-card-links")

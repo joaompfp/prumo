@@ -1,0 +1,584 @@
+/* ── #europa — progressive disclosure UI (V7) ───────────────────── */
+.europa-top-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-md);
+}
+
+.europa-presets {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-sm);
+}
+
+.preset-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text-sub);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.preset-chip:hover {
+  border-color: var(--c-pt);
+  color: var(--c-pt);
+}
+
+.preset-chip.active {
+  background: var(--c-pt);
+  border-color: var(--c-pt);
+  color: #fff;
+  font-weight: 600;
+}
+
+.europa-since-select {
+  padding: 4px 8px;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+
+.share-btn {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text-sub);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.share-btn:hover {
+  border-color: var(--c-eu);
+  color: var(--c-eu);
+}
+
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--c-text);
+  color: var(--c-bg);
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease; /* m6: slightly smoother */
+  z-index: 9999;
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.europa-picker-wrap {
+  margin-bottom: var(--sp-md);
+}
+
+.europa-picker-summary {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-eu);
+  cursor: pointer;
+  padding: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.europa-picker-inner {
+  padding-top: var(--sp-sm);
+}
+
+/* ── #europa — country picker pills (moved from europa.js inline) ── */
+.country-group {
+  margin-bottom: 10px;
+}
+
+.country-group-label {
+  font-size: 10px;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.country-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.country-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  min-height: 24px;
+  border-radius: 12px;
+  border: 1.5px solid var(--c-border);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--c-surface);
+  color: var(--c-text-sub);
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.country-pill:hover {
+  border-color: var(--c-muted);
+  color: var(--c-text);
+}
+
+.country-pill.selected {
+  color: #fff;
+  border-color: transparent;
+}
+
+.country-pill.locked {
+  cursor: default;
+}
+
+/* ── #europa ────────────────────────────────────────────────────── */
+#europa .country-legend {
+  display: flex;
+  gap: var(--sp-xl);
+  margin-bottom: var(--sp-lg);
+  flex-wrap: wrap;
+}
+
+#europa .country-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+#europa .country-flag {
+  font-size: 18px;
+}
+
+#europa .country-name {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-text-sub);
+}
+
+#europa .country-value {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+
+/* ── #europa — chart height override ───────────────────────────── */
+#europa .chart-container.tall {
+  height: 800px;
+  min-height: 400px;
+}
+
+/* ── #mundo — PT vs Mundo section ──────────────────────────────── */
+.mundo-top-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-md);
+}
+
+.mundo-presets {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-sm);
+}
+
+#mundo .chart-container.tall {
+  height: 800px;
+  min-height: 400px;
+}
+
+/* ── Track B: Europa view tabs (Linhas | Snapshot | PT+UE27) ────── */
+.eu-view-tabs {
+  display: inline-flex;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.eu-view-tab {
+  padding: 5px 12px;
+  background: var(--c-surface);
+  border: none;
+  border-right: 1px solid var(--c-border);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--c-text-sub);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.eu-view-tab:last-child { border-right: none; }
+.eu-view-tab:hover { background: var(--c-bg); color: var(--c-text); }
+.eu-view-tab.active {
+  background: var(--c-pt);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Track B: PT vs Mundo — Painel subsection ────────────────────── */
+.pt-mundo-section {
+  margin-top: var(--sp-sm);
+  margin-bottom: var(--sp-2xl);
+  padding-top: var(--sp-sm);
+  border-top: 2px solid var(--c-border);
+}
+
+.pt-mundo-section .section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: var(--sp-md);
+  border-left: 2px solid var(--c-eu);
+  padding-left: 8px;
+}
+
+.pt-mundo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--sp-sm);
+}
+
+@media (max-width: 768px) {
+  .pt-mundo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .pt-mundo-grid { grid-template-columns: 1fr; }
+}
+
+/* ── PT vs Mundo cards — compact 2-line horizontal design ── */
+.pt-mundo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-sm);
+}
+
+@media (max-width: 700px) {
+  .pt-mundo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .pt-mundo-grid { grid-template-columns: 1fr; }
+}
+
+@keyframes cardFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pt-mundo-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  overflow: hidden;
+  /* Entrada staggerada */
+  opacity: 0;
+  animation: cardFadeUp 0.28s ease forwards;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+}
+.pt-mundo-card:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  border-color: #d0c8c0;
+  transform: translateY(-1px);
+}
+/* Stagger: cada card entra 40ms depois do anterior */
+.pt-mundo-card:nth-child(1)  { animation-delay: 0.00s; }
+.pt-mundo-card:nth-child(2)  { animation-delay: 0.04s; }
+.pt-mundo-card:nth-child(3)  { animation-delay: 0.08s; }
+.pt-mundo-card:nth-child(4)  { animation-delay: 0.12s; }
+.pt-mundo-card:nth-child(5)  { animation-delay: 0.16s; }
+.pt-mundo-card:nth-child(6)  { animation-delay: 0.20s; }
+.pt-mundo-card:nth-child(7)  { animation-delay: 0.24s; }
+.pt-mundo-card:nth-child(8)  { animation-delay: 0.28s; }
+.pt-mundo-card:nth-child(9)  { animation-delay: 0.32s; }
+.pt-mundo-card:nth-child(10) { animation-delay: 0.36s; }
+.pt-mundo-card:nth-child(11) { animation-delay: 0.40s; }
+.pt-mundo-card:nth-child(12) { animation-delay: 0.44s; }
+
+.pt-mundo-card-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Line 2: PT and EU values — wrap when card too narrow */
+.pt-mundo-compare-row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.pt-mundo-col {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 0;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+.pt-mundo-col-label {
+  font-size: 12px;
+  line-height: 1;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.pt-mundo-col-value {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+.pt-mundo-col.pt-col .pt-mundo-col-value { color: var(--c-pt); }
+.pt-mundo-col.ref-col .pt-mundo-col-value { color: var(--c-eu); }
+
+.pt-mundo-col-unit {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--c-text-sub);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* delta line — shown as compact % vs EU */
+.pt-mundo-delta {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.pt-mundo-delta.positive { color: var(--c-positive) !important; }
+.pt-mundo-delta.negative { color: var(--c-negative) !important; }
+
+/* period, note — hidden */
+.pt-mundo-col-period,
+.pt-mundo-note {
+  display: none;
+}
+
+/* ── #comparativos — unified PT vs Europa + PT vs Mundo ─────────── */
+.cmp-top-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-md);
+}
+
+.cmp-source-row,
+.cmp-ind-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cmp-ind-row { flex: 1; }
+
+.cmp-top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .cmp-top-bar         { flex-direction: column; align-items: stretch; gap: var(--sp-sm); }
+  .cmp-top-bar-right   { margin-left: 0; flex-wrap: nowrap; align-items: center; }
+  .cmp-ind-row select  { max-width: 100% !important; }
+  /* Tabs compact, share button natural width — not flex:1 (evita largura total) */
+  #comparativos .share-btn { flex: 0 0 auto; padding: 6px 14px; }
+  .eu-view-tabs        { flex-shrink: 0; }
+}
+
+.cmp-presets {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-sm);
+}
+
+/* Country picker: details/summary toggle */
+.cmp-picker-details {
+  margin-bottom: var(--sp-md);
+}
+
+.cmp-picker-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-eu);
+  cursor: pointer;
+  padding: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  list-style: none;
+  user-select: none;
+}
+
+.cmp-picker-summary::-webkit-details-marker { display: none; }
+
+.cmp-picker-arrow {
+  font-size: 9px;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.cmp-picker-details[open] .cmp-picker-arrow {
+  transform: rotate(90deg);
+}
+
+.cmp-picker-body {
+  padding-top: var(--sp-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: flex-start;
+}
+
+/* Grouped rows inside picker */
+.eu-picker-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1 1 auto;
+}
+
+/* REFERÊNCIA and UE 27 always span full width */
+.eu-picker-group:nth-child(1),
+.eu-picker-group:nth-child(2) {
+  flex-basis: 100%;
+}
+
+/* Smaller groups: min-width prevents excessive shrinking */
+.eu-picker-group:nth-child(n+3) {
+  min-width: 130px;
+}
+
+.eu-picker-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.eu-picker-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+/* Country chip — flag + ISO code side by side */
+.country-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 6px;
+  min-height: 22px;
+  border-radius: 11px;
+  border: 1.5px solid var(--c-border);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--c-surface);
+  color: var(--c-text-sub);
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.country-chip:hover:not(.unavailable) {
+  border-color: #999;
+  color: var(--c-text);
+}
+
+.country-chip.selected {
+  color: #fff;
+  border-color: transparent;
+}
+
+.country-chip.unavailable {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.chip-flag {
+  font-size: 12px;
+  line-height: 1;
+  font-family: 'Noto Color Emoji', sans-serif;
+}
+
+.chip-code {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+#comparativos .chart-container.tall {
+  height: 440px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  #comparativos .chart-container.tall {
+    height: 300px;
+  }
+  /* Section itself must not overflow */
+  #comparativos {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+}

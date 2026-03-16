@@ -1,0 +1,630 @@
+/* ── AI Panel — Análise com Haiku (slider acima do gráfico) ─────── */
+.analise-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+#ai-panel {
+  background: var(--c-surface-2);
+  border-left: 3px solid var(--c-pt);
+  padding: 0.65rem 1.2rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  animation: ai-slide-in 0.2s ease;
+}
+
+@keyframes ai-slide-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#ai-panel .ai-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-muted);
+  margin-bottom: 0.6rem;
+}
+
+.ai-loading {
+  color: var(--c-muted);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ai-loading::before {
+  content: '';
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--c-border);
+  border-top-color: var(--c-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── Track C: AI Panel V9 enhancements ──────────────────────────── */
+.ai-context {
+  font-size: 0.72rem;
+  color: var(--c-muted);
+  margin-bottom: 0.4rem;
+  font-style: italic;
+  line-height: 1.4;
+  border-bottom: 1px solid rgba(204,0,0,0.15);
+  padding-bottom: 0.4rem;
+}
+.ai-footer {
+  margin-top: 0.5rem;
+  font-size: 0.68rem;
+  color: var(--c-muted);
+  text-align: right;
+  font-style: italic;
+}
+#ai-panel p { margin: 0 0 0.35rem; }
+#ai-panel p:last-child { margin-bottom: 0; }
+
+/* ── Track C: Haiku Analysis Card ───────────────────────────────── */
+.haiku-analysis-section {
+  margin-top: var(--sp-xl);
+}
+
+.haiku-card {
+  background: linear-gradient(135deg, var(--c-haiku-bg-start) 0%, var(--c-haiku-bg-end) 100%);
+  border: 1px solid var(--c-haiku-border);
+  border-left: 4px solid var(--c-pt);
+  border-radius: var(--radius);
+  padding: var(--sp-md) var(--sp-lg);
+  margin-top: var(--sp-md);
+}
+
+.haiku-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-sm);
+}
+
+.haiku-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--c-pt);
+  background: var(--c-haiku-badge-bg);
+  border: 1px solid var(--c-haiku-badge-border);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.haiku-model-tag {
+  font-size: 9px;
+  color: var(--c-muted);
+  font-style: italic;
+}
+
+.haiku-text {
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.haiku-loading {
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+/* ── Painel IA panel (Sonnet one-shot analysis) ──────────────────── */
+.painel-ia-toggle {
+  margin-top: var(--sp-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.painel-ia-toggle.active {
+  background: var(--c-pt);
+  border-color: var(--c-pt);
+  color: #fff;
+}
+
+#painel-ia-panel {
+  background: var(--c-surface);
+  border-left: 3px solid var(--c-pt);
+  border-radius: 6px;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: var(--sp-xl);
+  box-shadow: var(--shadow-sm);
+  animation: ai-slide-in 0.25s ease;
+}
+
+.painel-ia-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-sm);
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.painel-ia-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c-pt);
+}
+
+.painel-ia-tagline {
+  font-size: 0.62rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--c-muted);
+  opacity: 0.7;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.painel-ia-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 4px 0 6px;
+  border-top: 1px solid var(--c-border);
+  margin-top: 6px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.painel-ia-actions:hover { opacity: 1; }
+.painel-ia-meta {
+  font-size: 0.68rem;
+  color: var(--c-muted);
+  font-style: italic;
+}
+.ia-meta-icon {
+  cursor: help;
+  font-style: normal;
+  font-size: 13px;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+  padding: 4px;
+  touch-action: manipulation;
+}
+.ia-meta-icon:hover {
+  opacity: 0.8;
+}
+.painel-ia-regen {
+  background: none;
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--c-muted);
+  display: flex; align-items: center; gap: 4px;
+  transition: color .15s, border-color .15s, background .15s;
+  flex-shrink: 0;
+  line-height: 1.4;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+.painel-ia-regen:hover { color: var(--c-pt); border-color: var(--c-pt); background: color-mix(in srgb, var(--c-pt) 6%, transparent); }
+.painel-ia-regen:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Lens selector pills ─────────────────────────────────────────── */
+.lens-selector {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.lens-pill {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1.5px solid var(--c-border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.lens-pill:hover {
+  border-color: #666;
+  color: #333;
+}
+.lens-pill.active {
+  font-weight: 700;
+  background: rgba(0,0,0,0.04);
+}
+@media (max-width: 600px) {
+  .lens-selector {
+    order: 10;
+    width: 100%;
+    margin-top: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── Custom ideology textarea ──────────────────────────────────── */
+.custom-ideology-wrap {
+  margin: 8px 0 4px;
+  width: 100%;
+}
+.custom-ideology-textarea {
+  width: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1.5px solid #9C27B0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  resize: vertical;
+  min-height: 60px;
+  max-height: 300px;
+  box-sizing: border-box;
+}
+.custom-ideology-textarea:focus {
+  outline: none;
+  border-color: #7B1FA2;
+  box-shadow: 0 0 0 2px rgba(156, 39, 176, 0.12);
+}
+.custom-ideology-textarea::placeholder {
+  color: var(--c-muted);
+  font-style: italic;
+}
+.custom-ideology-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+.custom-ideology-hint {
+  font-size: 10px;
+  color: var(--c-muted);
+  font-style: italic;
+}
+
+/* ── Lens pill party icons ────────────────────────────────────────── */
+.lens-icon {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: 2px;
+  line-height: 1;
+}
+.lens-icon svg {
+  display: block;
+}
+/* Logo-only pills: no border, no background, just the party logo */
+.lens-pill-logo {
+  border: none;
+  background: none;
+  padding: 4px 5px;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.lens-pill-logo:hover {
+  border: none;
+  opacity: 0.85;
+  transform: scale(1.15);
+  color: inherit;
+}
+.lens-pill-logo.active {
+  opacity: 1;
+  background: none;
+  transform: scale(1.1);
+}
+.lens-logo {
+  display: block;
+  max-height: 22px;
+  max-width: 48px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── Dissolve transitions for lens switching ──────────────────────── */
+.ia-dissolve-out {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+}
+.ia-dissolve-in {
+  animation: ia-dissolve-enter 0.4s ease-out;
+}
+@keyframes ia-dissolve-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.painel-ia-text {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--c-text);
+}
+
+.painel-ia-text p { margin: 0 0 1.1rem; }
+.painel-ia-text p:last-child { margin-bottom: 0; }
+.painel-ia-text ul {
+  margin: 0.3rem 0 0.6rem 1.2rem;
+  padding: 0;
+}
+
+.painel-ia-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--c-border);
+  font-size: var(--fs-xs);
+}
+
+/* ── AI disclaimer — fixed bottom-right of IA panel ────────────── */
+.painel-ia-disclaimer {
+  font-size: 9px;
+  font-style: italic;
+  color: var(--c-muted);
+  opacity: 0.7;
+  text-align: right;
+  padding: 8px 4px 2px 0;
+  letter-spacing: 0.2px;
+}
+
+.painel-ia-links-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.painel-ia-links-section > strong {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.painel-ia-links a {
+  color: var(--c-pt);
+  text-decoration: none;
+  display: block;
+}
+
+.painel-ia-links a:hover { text-decoration: underline; }
+
+.painel-ia-text li { margin-bottom: 0.2rem; }
+
+/* ── AI Analysis Cards — horizontal slider ──────────────────────── */
+.ai-cards-wrap {
+  position: relative;
+}
+
+.ai-cards-track {
+  position: relative;
+  min-height: 0;
+}
+
+@keyframes ai-fade-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ai-analysis-card {
+  display: none;
+}
+.ai-analysis-card.active {
+  display: flex;
+  flex-direction: column;
+  animation: ai-fade-in 0.25s ease;
+}
+
+.ai-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--c-pt);
+}
+.ai-card-icon { font-size: 18px; line-height: 1; }
+.ai-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--c-text);
+  flex: 1;
+}
+.ai-card-link {
+  font-size: 14px;
+  color: var(--c-pt);
+  text-decoration: none;
+  opacity: 0.7;
+}
+.ai-card-link:hover { opacity: 1; }
+.ai-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+.ai-card-body {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--c-text);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.ai-card-body p { margin: 0 0 0.6em; }
+
+/* In-card chart — full-width below text */
+.ai-card-chart-col {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  padding-bottom: 16px;
+  border-top: 1px solid var(--c-border);
+  border-left: none;
+  padding-left: 0;
+}
+.ai-card-chart-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ai-card-chart-title-link {
+  color: var(--c-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.ai-card-chart-title-link:hover {
+  color: var(--c-pt);
+}
+.ai-card-chart-box {
+  width: 100%;
+  height: 240px;
+  background: var(--c-bg);
+  border-radius: 6px;
+  overflow: visible;
+}
+.ai-card-chart-comment {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--c-muted);
+  font-style: italic;
+}
+@media (max-width: 600px) {
+  .ai-card-chart-box { height: 150px; }
+}
+
+.ai-card-links {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--c-border);
+  padding: 8px 0 4px;
+  flex-shrink: 0;
+}
+.ai-card-links-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 2px;
+}
+.ai-card-extlink {
+  font-size: 11px;
+  color: var(--c-pt);
+  text-decoration: none;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ai-card-extlink:hover { opacity: 1; text-decoration: underline; }
+.ai-link-source {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  opacity: 0.65;
+}
+.ai-link-title {
+  font-size: 11px;
+}
+
+
+/* Navigation */
+.ai-cards-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--c-border);
+}
+.ai-nav-btn {
+  background: none;
+  border: 2px solid var(--c-border);
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c-text-sub);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.ai-nav-btn:hover { background: var(--c-pt); color: #fff; border-color: var(--c-pt); }
+
+.ai-dots { display: flex; gap: 8px; align-items: center; }
+.ai-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: var(--c-border);
+  cursor: pointer;
+  padding: 0;
+  transition: background .2s, transform .2s;
+}
+.ai-dot:hover { background: var(--c-text-sub); }
+.ai-dot.active { background: var(--c-pt); transform: scale(1.25); }
+
+/* Card carousel — fade transition */
+.ai-cards-track {
+  position: relative;
+  min-height: 320px;   /* deixa crescer com conteúdo; evita corte do gráfico */
+}
+@keyframes aiCardFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ai-analysis-card.card-entering {
+  animation: aiCardFade 0.22s ease forwards;
+}
+
+/* ── AI Panel — visible by default, collapsible ─────────────────── */
+#painel-ia-panel.ia-collapsed { display: none; }
+
+/* ── AI Panel — 2-column layout ─────────────────────────────────── */
+.painel-ia-body {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 700px) {
+  .painel-ia-body { grid-template-columns: 1fr; }
+}
+
+/* painel-ia-chart-col removed — chart now embedded in each card */
+

@@ -1,0 +1,187 @@
+/* ── Painel Theme Quick-Nav ─────────────────────────────────────── */
+.painel-theme-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
+  top: calc(var(--nav-height) + 52px); /* below nav + search bar */
+  z-index: 80;
+  background: var(--c-bg);
+  margin-bottom: 8px;
+}
+.painel-theme-nav::-webkit-scrollbar { display: none; }
+
+.theme-pill {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-text-sub);
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.theme-pill:hover {
+  border-color: var(--c-pt);
+  color: var(--c-pt);
+}
+.theme-pill.active {
+  background: var(--c-pt);
+  border-color: var(--c-pt);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .painel-theme-nav {
+    padding: 8px 0;
+    gap: 4px;
+  }
+  .theme-pill {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}
+
+/* ── CLS Prevention — reserve space before JS loads ────────────── */
+.section-body:empty    { min-height: 300px; }
+.kpi-grid:empty        { min-height: 180px; }
+.chart-container       { background: var(--c-chart-loading-bg); }  /* subtle bg while loading */
+
+/* ── Painel V2 — secções temáticas ─────────────────────────────── */
+.painel-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.painel-section {
+  /* nada especial — apenas agrupa section-label + kpi-grid */
+}
+
+.painel-section .section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 10px;
+  border-left: 2px solid var(--c-pt);
+  padding-left: 8px;
+}
+
+/* ── WP-9: Painel card click affordance (deep-link to Explorador) ─ */
+.kpi-card[data-source] {
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.kpi-card[data-source]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ── #painel ────────────────────────────────────────────────────── */
+/* FIX 4: prevent horizontal overflow at ~1000px breakpoint */
+#painel {
+  overflow-x: hidden;
+}
+
+.painel-sections {
+  overflow-x: hidden;
+}
+
+#painel .kpi-grid {
+  margin-top: 0;
+  margin-bottom: 0;
+  /* Ensure 3 cols only when space allows >=280px each */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+#painel .kpi-card {
+  min-height: 160px;
+}
+
+#painel .kpi-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-xs);
+  margin-bottom: 2px;
+}
+
+#painel .kpi-source-tag {
+  flex-shrink: 0;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-top: 2px;
+}
+
+#painel .kpi-description {
+  font-size: var(--fs-xs);
+  color: var(--c-text-sub);
+  line-height: 1.45;
+  margin-top: var(--sp-xs);
+}
+
+#painel .kpi-context {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  font-style: italic;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+#painel .spark-container {
+  height: 44px;
+  margin-top: var(--sp-sm);
+}
+
+/* ── Skeleton Loaders — P0 UI Improvement ───────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.skeleton {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--c-skeleton-base) 25%, var(--c-skeleton-shine) 50%, var(--c-skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.kpi-card-skeleton {
+  pointer-events: none;
+}
+
+.kpi-card-skeleton .kpi-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.kpi-card-skeleton .kpi-value-row {
+  margin-bottom: 10px;
+}
+
+.kpi-card-skeleton .kpi-trend-row {
+  margin-top: 4px;
+}

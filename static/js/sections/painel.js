@@ -10,20 +10,7 @@ App.registerSection('painel', async () => {
 
   try {
     // Skeleton KPI cards durante loading
-    const _skeletonCard = `
-      <div class="kpi-card kpi-card-skeleton">
-        <div class="kpi-card-header">
-          <div class="skeleton" style="width:62%;height:11px"></div>
-          <div class="skeleton" style="width:30px;height:11px"></div>
-        </div>
-        <div class="kpi-value-row">
-          <div class="skeleton" style="width:45%;height:26px;margin-top:8px"></div>
-        </div>
-        <div class="kpi-trend-row">
-          <div class="skeleton" style="width:55%;height:10px;margin-top:10px"></div>
-        </div>
-      </div>`;
-    body.innerHTML = `<div class="kpi-grid">${Array.from({length: 10}, () => _skeletonCard).join('')}</div>`;
+    body.innerHTML = `<div class="kpi-grid">${Array.from({length: 10}, () => PrumoLib.skeletonCard).join('')}</div>`;
 
     // ── Try /api/painel (sections), fallback to /api/resumo (flat) ──
     let data;
@@ -133,69 +120,8 @@ App.registerSection('painel', async () => {
       _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
     });
 
-    // Source label map
-    const SOURCE_LABELS = {
-      'INE': 'INE', 'EUROSTAT': 'Eurostat', 'FRED': 'FRED',
-      'BPORTUGAL': 'Banco de Portugal', 'OECD': 'OCDE',
-      'WORLDBANK': 'Banco Mundial', 'REN': 'REN',
-      'ERSE': 'ERSE', 'DGEG': 'DGEG',
-    };
-
-    // ── KPI card template (shared) ───────────────────────────────────
-    function renderKpiCard(kpi) {
-      const sentiment = kpi.sentiment || 'neutral';
-      const yoy = kpi.yoy;
-      const yoyUnit = kpi.yoy_unit || '%';
-      const yoyText = yoy !== null && yoy !== undefined
-        ? (yoy > 0 ? '+' : '') + Number(yoy).toFixed(1) + yoyUnit
-        : 'n/d';
-      const arrow = fmt.arrow(yoy);
-      const value = kpi.value !== null && kpi.value !== undefined ? fmt.num(kpi.value) : 'n/d';
-      const unit = kpi.unit || '';
-      const context = kpi.context || '';
-      const description = kpi.description || '';
-      const label = kpi.label || kpi.id;
-      const hasSpark = kpi.spark && kpi.spark.length > 0;
-      const sourceLabel = kpi.source ? (SOURCE_LABELS[kpi.source] || kpi.source) : '';
-
-      // Base period clarity: show "Fev 2026 vs Fev 2025" instead of "vs ano anterior"
-      const period = kpi.period || '';
-      let yoyLabel = 'vs ano anterior';
-      if (period && period.length >= 7) {
-        const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-        const m = parseInt(period.slice(5, 7), 10);
-        const y = parseInt(period.slice(0, 4), 10);
-        if (m >= 1 && m <= 12 && y > 2000) {
-          yoyLabel = `${MONTHS[m-1]} ${y} vs ${MONTHS[m-1]} ${y-1}`;
-        }
-      } else if (period && period.length === 4) {
-        yoyLabel = `${period} vs ${parseInt(period, 10) - 1}`;
-      }
-
-      const dataAttrs = kpi.source && kpi.indicator
-        ? ` data-source="${kpi.source}" data-indicator="${kpi.indicator}" title="Ver ${label} no Explorador"`
-        : '';
-      return `
-      <div class="kpi-card ${sentiment}"${dataAttrs}>
-        <div class="kpi-card-header">
-          <div class="kpi-label">${label}</div>
-          ${sourceLabel ? `<span class="kpi-source-tag">${sourceLabel}</span>` : ''}
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-value">${value}</span>
-          <span class="kpi-unit">${unit}</span>
-        </div>
-        <div class="kpi-trend-row">
-          <span class="kpi-yoy ${sentiment}">${yoyText}</span>
-          <span class="kpi-arrow ${sentiment}">${arrow}</span>
-          <span class="kpi-label" style="font-size:11px;letter-spacing:0.5px;">${yoyLabel}</span>
-        </div>
-        ${description ? `<div class="kpi-description">${description}</div>` : ''}
-        ${context ? `<div class="kpi-context">${context}</div>` : ''}
-        ${hasSpark ? `<div class="spark-container" id="spark-${kpi.id}"></div>` : ''}
-        ${period ? `<div class="kpi-freshness" style="font-size:10px;opacity:.5;margin-top:4px;font-style:italic">Dados: ${period}</div>` : ''}
-      </div>`;
-    }
+    // ── KPI card template (from shared lib) ──────────────────────────
+    const renderKpiCard = PrumoLib.renderKpiCard;
 
     // ── Render ───────────────────────────────────────────────────────
     // IA button in section header
@@ -493,83 +419,8 @@ App.registerSection('painel', async () => {
 
     // ── IA button toggle logic ─────────────────────────────────────
     let iaLoading = false;
-    function _renderMiniSparkline(container, data, yoy, refData, unit, label) {
-    if (!window.echarts || !data?.length) {
-      container.style.cssText = 'display:flex;align-items:center;justify-content:center;color:var(--c-muted);font-size:12px';
-      container.textContent = 'Sem dados';
-      return;
-    }
-    const chart = window.echarts.init(container, null, { renderer: 'svg' });
-    const vals  = data.map(d => d.value ?? d.v ?? d);
-    const color = yoy >= 0 ? '#2E7D32' : '#C62828';
-    // Abbreviate long units for mini chart y-axis label
-    const _UNIT_SHORT = {
-      'Índice (2021=100)': 'Índ.',
-      'EUR/litro': '€/L',
-      'milhares': 'mil',
-    };
-    const unitStr = _UNIT_SHORT[unit] || unit || '';
-    const series = [
-      { name: 'PT', type: 'line', data: vals, smooth: true,
-        lineStyle: { color, width: 2.5 },
-        areaStyle: { color: color, opacity: 0.06 },
-        symbol: 'none' },
-    ];
-    if (refData?.length) {
-      const refVals = refData.map(d => d.value ?? d.v ?? d);
-      series.push({
-        name: 'EU', type: 'line', data: refVals, smooth: true,
-        lineStyle: { color: '#1565C0', width: 1.5, type: 'dashed' },
-        symbol: 'none',
-      });
-    }
-    chart.setOption({
-      grid: { top: 8, right: 16, bottom: 40, left: 44, containLabel: true },
-      xAxis: { type: 'category', data: data.map(d => d.period || d.p || ''),
-               axisLabel: { fontSize: 9, color: '#888',
-                 interval: 'auto',
-                 formatter: (v, i) => {
-                   const n = data.length;
-                   const MO = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-                   const fmt = (s) => {
-                     const parts = s.split('-');
-                     if (parts.length >= 2) {
-                       const mi = parseInt(parts[1], 10) - 1;
-                       return MO[mi] || s.slice(5,7);
-                     }
-                     return s;
-                   };
-                   // Always show first + last; show ~3 evenly spaced in between
-                   if (i === 0) return v.slice(0, 7);
-                   if (i === n - 1) return fmt(v);
-                   const step = Math.max(1, Math.round((n - 1) / 4));
-                   return i % step === 0 ? fmt(v) : '';
-                 }
-               },
-               axisLine: { lineStyle: { color: '#ddd' } }, axisTick: { show: false } },
-      yAxis: { type: 'value', scale: true,
-               name: unitStr, nameLocation: 'end',
-               nameTextStyle: { fontSize: 9, color: '#999', fontFamily: 'Inter, system-ui, sans-serif' },
-               axisLabel: { fontSize: 9, color: '#888',
-                 formatter: v => {
-                   if (Math.abs(v) >= 1e9) return (v / 1e9).toFixed(1) + 'B';
-                   if (Math.abs(v) >= 1e6) return (v / 1e6).toFixed(1) + 'M';
-                   if (Math.abs(v) >= 1e3) return (v / 1e3).toFixed(1) + 'k';
-                   return v % 1 === 0 ? v : v.toFixed(1);
-                 }
-               },
-               splitLine: { lineStyle: { color: '#f0f0f0' } } },
-      series,
-      tooltip: { trigger: 'axis', textStyle: { fontSize: 11 },
-        formatter: params => {
-          const period = params[0]?.axisValue || '';
-          const lines = params.map(p => `${p.marker} ${p.seriesName}: <b>${p.value}</b> ${unitStr}`);
-          return `${period}<br>${lines.join('<br>')}`;
-        }
-      },
-      ...(refData?.length ? { legend: { data: ['PT','EU'], top: 0, right: 0, itemWidth: 12, itemHeight: 8, textStyle: { fontSize: 9 } } } : {}),
-    });
-  }
+    // Use shared sparkline renderer from lib
+    const _renderMiniSparkline = PrumoLib.renderMiniSparkline;
 
     async function _loadDeferredCardLinks(container, existingLinks) {
     // For each card without links, fetch deferred from /api/painel-card-links
@@ -830,21 +681,8 @@ App.registerSection('painel', async () => {
     }, { passive: true });
   }
 
-  function _renderMd(text) {
-      // Minimal markdown: headings, **bold**, *italic*, paragraphs; strip --- separators
-      return text
-        .replace(/^---+\s*$/gm, '')          // strip horizontal rules
-        .replace(/^#{1,3}\s+(.+)$/gm, '<strong>$1</strong>')  // ### headings → bold
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/^- (.+)$/gm, '<li>$1</li>')
-        .replace(/(<li>.*<\/li>)/gs, m => `<ul>${m}</ul>`)
-        .split(/\n\n+/)
-        .map(p => p.trim())
-        .filter(Boolean)
-        .map(p => p.startsWith('<ul>') ? p : `<p>${p.replace(/\n/g, ' ')}</p>`)
-        .join('');
-    }
+  // Use shared markdown renderer from lib
+  const _renderMd = PrumoLib.renderMd;
 
     async function toggleIAPanel() {
       const panel   = document.getElementById('painel-ia-panel');
