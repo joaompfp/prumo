@@ -138,6 +138,109 @@ App.registerSection('painel', async () => {
       return i18n.t('sources.' + code) || code;
     }
 
+    // ── Translate context strings for non-PT languages ──────────────
+    // The backend generates context strings in Portuguese. This function
+    // does pattern-based replacements using i18n keys when lang !== 'pt'.
+    function _translateContext(text, kpi) {
+      if (!text || i18n.lang() === 'pt') return text;
+
+      // Annual data vintage: "Dados de YYYY (última actualização disponível)"
+      const annualMatch = text.match(/^Dados de (\d{4}) \(última actualização disponível\)$/);
+      if (annualMatch) return i18n.t('kpi.data_from_year', {year: annualMatch[1]});
+
+      // Industrial production base comparison: "X.X% abaixo/acima do nível base (2021=100)"
+      const baseMatch = text.match(/^([\d.]+)% (abaixo|acima) do nível base \(2021=100\)$/);
+      if (baseMatch) return baseMatch[1] + '% ' + i18n.t(baseMatch[2] === 'abaixo' ? 'kpi.below_base' : 'kpi.above_base');
+
+      // Saldo/pp change: "+X.X pp face ao ano anterior" or "+X.X pp face ao ano anterior (ainda negativo)"
+      const ppMatch = text.match(/^([+-]?[\d.]+) pp face ao ano anterior(\s*\(ainda negativo\))?$/);
+      if (ppMatch) {
+        let result = ppMatch[1] + ' ' + i18n.t('kpi.pp_vs_prev_year');
+        if (ppMatch[2]) result += ' (' + i18n.t('kpi.still_negative') + ')';
+        return result;
+      }
+
+      // Euribor direction: "descida/subida de X.XX pp desde MONTH YEAR"
+      const euriborMatch = text.match(/^(descida|subida) de ([\d.]+) pp desde (.+)$/);
+      if (euriborMatch) {
+        const dirKey = euriborMatch[1] === 'descida' ? 'kpi.drop_of' : 'kpi.rise_of';
+        // Translate month name if present
+        const monthsPt = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+        const monthsEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        let since = euriborMatch[3];
+        for (let mi = 0; mi < 12; mi++) {
+          if (since.includes(monthsPt[mi])) { since = since.replace(monthsPt[mi], monthsEn[mi]); break; }
+        }
+        return i18n.t(dirKey) + ' ' + euriborMatch[2] + ' ' + i18n.t('kpi.pp_since') + ' ' + since;
+      }
+
+      // Conflict pattern: "Desceu X.X% face ao ano anterior (tendência recente: subida/descida)"
+      const conflictMatch = text.match(/^Desceu ([\d.]+)% face ao ano anterior \(tendência recente: (subida|descida)\)$/);
+      if (conflictMatch) {
+        const trendKey = conflictMatch[2] === 'subida' ? 'kpi.recent_trend_up' : 'kpi.recent_trend_down';
+        return i18n.t('kpi.fell') + ' ' + conflictMatch[1] + '% ' + i18n.t('kpi.vs_prev_year_pct') + ' (' + i18n.t(trendKey) + ')';
+      }
+
+      // Consecutive months: "X.º mês consecutivo em subida/queda/estável"
+      const consecMatch = text.match(/^(\d+)\.º mês consecutivo em (subida|queda|estável)$/);
+      if (consecMatch) {
+        const n = consecMatch[1];
+        const dirMap = {'subida': 'kpi.consecutive_months_up', 'queda': 'kpi.consecutive_months_down', 'estável': 'kpi.consecutive_months_stable'};
+        return n + (n === '1' ? 'st' : n === '2' ? 'nd' : n === '3' ? 'rd' : 'th') + ' ' + i18n.t(dirMap[consecMatch[2]]);
+      }
+
+      // Simple YoY: "Subiu/Desceu X.X% face ao ano anterior"
+      const yoyMatch = text.match(/^(Subiu|Desceu) ([\d.]+)% face ao ano anterior$/);
+      if (yoyMatch) {
+        const verb = yoyMatch[1] === 'Subiu' ? i18n.t('kpi.rose') : i18n.t('kpi.fell');
+        return verb + ' ' + yoyMatch[2] + '% ' + i18n.t('kpi.vs_prev_year_pct');
+      }
+
+      return text;
+    }
+
+    // ── Translate annotation strings for non-PT languages ───────────
+    // Annotations are value-dependent strings from the backend. We map
+    // them to structured i18n keys based on the KPI id and value range.
+    function _translateAnnotation(kpi) {
+      const ann = kpi.annotation;
+      if (!ann || i18n.lang() === 'pt') return ann || '';
+      const v = kpi.value;
+      const id = kpi.id;
+      // Map KPI id + value to annotation sub-key
+      const key = _annotationKey(id, v);
+      if (key) {
+        const translated = i18n.t('kpi_annotations.' + id + '.' + key);
+        if (translated !== 'kpi_annotations.' + id + '.' + key) return translated;
+      }
+      return ann; // fallback to raw backend string
+    }
+
+    function _annotationKey(id, v) {
+      if (v === null || v === undefined) return null;
+      switch(id) {
+        case 'inflation': return v < 0 ? 'deflation' : v < 1 ? 'stable' : v < 2 ? 'on_target' : v < 4 ? 'above_target' : 'high';
+        case 'diesel': return v < 1.30 ? 'cheap' : v < 1.55 ? 'moderate' : v < 1.80 ? 'expensive' : 'very_expensive';
+        case 'gasoline_95': return v < 1.40 ? 'cheap' : v < 1.65 ? 'moderate' : v < 1.90 ? 'expensive' : 'very_expensive';
+        case 'euribor_3m': return v < 0 ? 'negative' : v < 1 ? 'low' : v < 2.5 ? 'moderate' : v < 4 ? 'high' : 'very_high';
+        case 'unemployment': return v < 5 ? 'full_employment' : v < 7 ? 'low' : v < 10 ? 'moderate' : 'high';
+        case 'employment_rate': return v > 78 ? 'high' : v > 73 ? 'reasonable' : v > 68 ? 'below_avg' : 'low';
+        case 'cli': return v > 101 ? 'strong_expansion' : v > 100 ? 'expansion' : v > 99 ? 'slowdown' : 'contraction';
+        case 'confidence': return v > 5 ? 'high' : v > 0 ? 'positive' : v > -10 ? 'mild_pessimism' : 'deep_pessimism';
+        case 'order_books': return v > 0 ? 'above_normal' : v > -15 ? 'slightly_below' : v > -30 ? 'weak' : 'very_weak';
+        case 'renewable_share': return v > 70 ? 'excellent' : v > 50 ? 'good' : v > 30 ? 'moderate' : 'low';
+        case 'energy_dependence': return v < 60 ? 'low' : v < 75 ? 'moderate' : v < 85 ? 'high' : 'very_high';
+        case 'natural_gas': return v < 2 ? 'cheap' : v < 4 ? 'moderate' : v < 7 ? 'expensive' : 'very_expensive';
+        case 'spread_pt_de': return v < 0.5 ? 'very_low' : v < 1.0 ? 'contained' : v < 2.0 ? 'moderate' : 'high';
+        case 'brent': return v < 50 ? 'cheap' : v < 75 ? 'moderate' : v < 100 ? 'expensive' : 'very_expensive';
+        case 'eur_usd': return v > 1.20 ? 'strong_euro' : v > 1.05 ? 'equilibrium' : v > 0.95 ? 'weak_euro' : 'very_weak_euro';
+        case 'ipi_total': return v > 105 ? 'expansion' : v > 95 ? 'stable' : v > 85 ? 'moderate_contraction' : 'strong_contraction';
+        case 'gdp_per_capita': return v > 30000 ? 'converging' : v > 23000 ? 'below_avg' : 'significant_gap';
+        case 'rnd_pct_gdp': return v > 2.5 ? 'strong' : v > 1.5 ? 'moderate' : 'low';
+        default: return null;
+      }
+    }
+
     // ── KPI card template (shared) ───────────────────────────────────
     function renderKpiCard(kpi) {
       const sentiment = kpi.sentiment || 'neutral';
@@ -149,8 +252,21 @@ App.registerSection('painel', async () => {
       const arrow = fmt.arrow(yoy);
       const value = kpi.value !== null && kpi.value !== undefined ? fmt.num(kpi.value) : 'n/d';
       const unit = kpi.unit || '';
-      const context = kpi.context || '';
-      const description = kpi.description || '';
+
+      // i18n: override description from translations if available
+      const descKey = 'kpi_descriptions.' + kpi.id;
+      const description = (i18n.t(descKey) !== descKey) ? i18n.t(descKey) : (kpi.description || '');
+
+      // i18n: override explain from translations if available
+      const explainKey = 'kpi_explains.' + kpi.id;
+      const explain = (i18n.t(explainKey) !== explainKey) ? i18n.t(explainKey) : (kpi.explain || '');
+
+      // i18n: translate context string
+      const context = _translateContext(kpi.context || '', kpi);
+
+      // i18n: translate annotation string
+      const annotation = _translateAnnotation(kpi);
+
       const label = i18n.t('kpi_labels.' + kpi.id) !== ('kpi_labels.' + kpi.id) ? i18n.t('kpi_labels.' + kpi.id) : (kpi.label || kpi.id);
       const hasSpark = kpi.spark && kpi.spark.length > 0;
       const sourceLabel = kpi.source ? getSourceLabel(kpi.source) : '';
@@ -189,6 +305,8 @@ App.registerSection('painel', async () => {
         </div>
         ${description ? `<div class="kpi-description">${description}</div>` : ''}
         ${context ? `<div class="kpi-context">${context}</div>` : ''}
+        ${annotation ? `<div class="kpi-annotation">${annotation}</div>` : ''}
+        ${explain ? `<button class="kpi-explain-trigger" aria-label="Explain">?</button><div class="kpi-explain hidden"><strong>${label}</strong> — ${explain}</div>` : ''}
         ${hasSpark ? `<div class="spark-container" id="spark-${kpi.id}"></div>` : ''}
         ${period ? `<div class="kpi-freshness" style="font-size:10px;opacity:.5;margin-top:4px;font-style:italic">${i18n.t('painel.data_prefix')}: ${period}</div>` : ''}
       </div>`;

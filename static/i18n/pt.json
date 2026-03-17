@@ -415,7 +415,7 @@
     "step3_sub": "Os dados do passo 1 e o enquadramento do passo 2 são combinados num único prompt estruturado. O modelo também pode pesquisar a web para contextualizar com notícias recentes.",
     "step4_label": "Análise publicada na página",
     "step4_sub": "O modelo devolve texto estruturado com análise, enquadramento e links de contexto. É apresentado como card expansível junto ao gráfico da série.",
-    "composite_title": "Indicadores Compostos",
+    "composite_title": "Indicadores Compostos (★)",
     "ficha_title": "Ficha Técnica — Fontes e Metodologia",
     "source_custom": "Fonte: Texto definido pelo utilizador",
     "source_prefix": "Fonte:",
@@ -686,7 +686,229 @@
     "data_prefix": "Dados:",
     "fell": "Desceu",
     "rose": "Subiu",
+    "vs": "vs",
     "recent_trend_up": "tendência recente: subida",
-    "recent_trend_down": "tendência recente: descida"
+    "recent_trend_down": "tendência recente: descida",
+    "consecutive_months_up": "mês consecutivo em subida",
+    "consecutive_months_down": "mês consecutivo em queda",
+    "consecutive_months_stable": "mês consecutivo estável",
+    "vs_prev_year_pct": "face ao ano anterior",
+    "pp_vs_prev_year": "pp face ao ano anterior",
+    "still_negative": "ainda negativo",
+    "drop_of": "descida de",
+    "rise_of": "subida de",
+    "pp_since": "pp desde",
+    "data_from_year": "Dados de {{year}} (última actualização disponível)",
+    "below_base": "abaixo do nível base (2021=100)",
+    "above_base": "acima do nível base (2021=100)"
+  },
+  "kpi_descriptions": {
+    "inflation": "Variação dos preços ao consumidor (IHPC). Mede a erosão do poder de compra de salários e poupanças.",
+    "diesel": "Preço médio de venda ao público. Principal combustível do transporte de mercadorias e da agricultura.",
+    "gasoline_95": "Gasolina 95 no posto — par com o gasóleo para leitura completa dos custos de mobilidade.",
+    "electricity_btn": "Tarifa simples em Baixa Tensão Normal — referência para habitações e pequenos comércios.",
+    "electricity_mt": "Tarifa de acesso à rede em Média Tensão (hora de ponta) — referência para PMEs industriais.",
+    "electricity_at": "Tarifa de acesso à rede em Alta Tensão (hora de ponta) — referência para grandes indústrias.",
+    "euribor_3m": "Euribor 3 meses — determinante das prestações de crédito habitação a taxa variável de revisão trimestral.",
+    "euribor_6m": "Euribor 6 meses — referência para créditos habitação com revisão semestral.",
+    "euribor_12m": "Euribor 12 meses — taxa usada em contratos de crédito com revisão anual.",
+    "ipi_total": "Barómetro geral da produção industrial nacional. Base 2021=100. Série dessazonalizada pelo INE.",
+    "ipi_cae_10": "Indústria Alimentar (CAE 10) — maior sector industrial português; inclui lacticínios, conservas, pastelaria industrial.",
+    "ipi_cae_20": "Química (CAE 20) — fertilizantes, plásticos, tintas, produtos farmacêuticos de base. Indicador de inputs industriais.",
+    "ipi_cae_24": "Metalurgia de Base (CAE 24) — aço, alumínio, cobre e ligas. Base para construção e indústria transformadora.",
+    "ipi_cae_25": "Produtos Metálicos (CAE 25) — estruturas, embalagens, ferramentas e componentes metálicos fabricados.",
+    "ipi_cae_28": "Máquinas e Equipamentos (CAE 28) — bens de capital para a indústria; indicador da capacidade de investimento produtivo.",
+    "ipi_cae_29": "Veículos Automóveis (CAE 29) — sector exportador-chave de Portugal (Autoeuropa, Caetano Bus).",
+    "copper": "Cobre — barómetro da economia global; essencial para construção, electrónica e electrificação.",
+    "aluminum": "Alumínio — metal estrutural transversal: automóvel, embalagem, construção. Indicador de procura industrial.",
+    "unemployment": "Taxa de desemprego harmonizada (OCDE). Percentagem da população activa sem emprego e à procura de trabalho.",
+    "industrial_employment": "Índice de volume de emprego na indústria transformadora (CAE C). Base 2021=100, série dessazonalizada.",
+    "wages_industry": "Índice de remunerações nominais na indústria. Não corrigido de inflação — para salário real, comparar com IHPC.",
+    "cli": "Indicador avançado composto da OCDE. Antecipa viragens do ciclo económico com ~6 meses de antecedência.",
+    "confidence": "Saldo de respostas positivas vs negativas dos industriais (INE). Abaixo de zero indica pessimismo predominante.",
+    "order_books": "Saldo de encomendas das empresas industriais (BTS/OCDE). Indica procura futura de produção.",
+    "energy_cost": "Preço MIBEL no mercado grossista ibérico. Referência para tarifas industriais e contratos de longo prazo.",
+    "renewable_share": "Quota de renováveis na produção eléctrica (DGEG). Portugal tem um dos melhores perfis da Europa.",
+    "energy_dependence": "Percentagem do consumo energético total importado. Alta dependência significa vulnerabilidade a preços externos.",
+    "natural_gas": "Gás Natural — crítico para indústrias energo-intensivas (vidro, cerâmica, metalurgia) e produção eléctrica.",
+    "solar": "Produção fotovoltaica injectada na rede (REN). Indicador de transição energética e da capacidade instalada solar.",
+    "wind": "Produção eólica injectada na rede (REN). Portugal entre os líderes europeus em capacidade eólica per capita.",
+    "eur_usd": "Taxa de câmbio euro/dólar. Influencia competitividade de exportações e preço de importações denominadas em USD.",
+    "spread_pt_de": "Diferencial de juro PT-DE a 10 anos. Mede o risco soberano percebido pelos mercados face à Alemanha.",
+    "brent": "Crude de referência europeu. Influencia directamente gasóleo, gasolina, petroquímica e transportes.",
+    "gdp_per_capita": "Riqueza média por habitante. PT: ~23.500€ vs UE27: ~34.000€ — gap estrutural de convergência.",
+    "rnd_pct_gdp": "Intensidade de I&D (% PIB). PT: 1,7% vs UE27: 2,3% (meta Horizonte Europa: 3%). Desvantagem a longo prazo.",
+    "employment_rate": "Taxa de emprego (% pop. 20-64 anos com emprego). Medida ampla do mercado de trabalho."
+  },
+  "kpi_explains": {
+    "inflation": "Quando a inflação sobe, o mesmo salário compra menos. Se está em 2.3%, um cabaz de 500€ em janeiro custa agora 511.50€ em dezembro.",
+    "diesel": "O preço do gasóleo afecta tudo — do pão ao transporte. Quando sobe, os preços de quase tudo sobem também.",
+    "gasoline_95": "A gasolina que abastece no posto. Se gasta 50€ por depósito, uma subida de 10% são mais 5€ por semana.",
+    "electricity_btn": "A tarifa da sua conta da luz em casa. Se sobe, paga mais no final do mês mesmo gastando o mesmo.",
+    "electricity_mt": "Tarifa para fábricas e comércios médios. Quando sobe, os custos de produção aumentam e os preços podem subir para o consumidor.",
+    "electricity_at": "Tarifa para as maiores indústrias do país. Afecta o custo de produção de aço, vidro, cerâmica e outros sectores pesados.",
+    "euribor_3m": "A Euribor 3 meses é a taxa que os bancos usam para calcular a prestação da casa. Se tem crédito a taxa variável, quando esta sobe, a sua prestação mensal sobe.",
+    "euribor_6m": "Semelhante à Euribor 3m, mas para créditos com revisão semestral. Muda a cada 6 meses — se tem este tipo de crédito, a sua prestação ajusta duas vezes por ano.",
+    "euribor_12m": "Para créditos com revisão anual. A sua prestação só muda uma vez por ano, mas a variação pode ser maior de cada vez.",
+    "ipi_total": "Mede se as fábricas portuguesas estão a produzir mais ou menos. Quando sobe, há mais actividade, mais emprego e mais exportações.",
+    "ipi_cae_10": "A indústria alimentar é o maior sector industrial de Portugal. Se cai, pode significar menos oferta e preços mais altos no supermercado.",
+    "ipi_cae_20": "A indústria química faz tintas, plásticos e fertilizantes. É um termómetro da saúde de outras indústrias que dependem destes materiais.",
+    "ipi_cae_24": "Metalurgia de base — o aço e alumínio usados na construção civil e na indústria. Se cai, pode sinalizar menos obras e menos investimento.",
+    "ipi_cae_25": "Estruturas metálicas, ferramentas e componentes. É o que transforma o metal bruto em peças úteis para a construção e a indústria.",
+    "ipi_cae_28": "Máquinas e equipamentos para fábricas. Se as empresas compram mais máquinas, estão a investir no futuro — bom sinal para a economia.",
+    "ipi_cae_29": "A produção de automóveis (Autoeuropa, Caetano Bus) é uma das maiores exportações de Portugal. Quando sobe, entra mais dinheiro no país.",
+    "copper": "O cobre é usado em tudo, de cabos eléctricos a telemóveis. O seu preço é considerado um barómetro da economia mundial.",
+    "aluminum": "O alumínio está em latas, janelas, carros e aviões. Quando o preço sobe, os produtos que o usam ficam mais caros.",
+    "unemployment": "A percentagem de pessoas que querem trabalhar mas não encontram emprego. Quanto mais baixa, melhor para as famílias.",
+    "industrial_employment": "Quantas pessoas trabalham nas fábricas portuguesas. Se sobe, a indústria está a contratar; se desce, está a cortar postos.",
+    "wages_industry": "Quanto ganham em média os trabalhadores da indústria. Note que este valor não desconta a inflação — se os preços sobem mais que os salários, perde-se poder de compra.",
+    "cli": "Um indicador que tenta prever se a economia vai melhorar ou piorar nos próximos 6 meses. Acima de 100 sugere crescimento à frente.",
+    "confidence": "Pergunta-se aos donos de fábricas se estão optimistas ou pessimistas. Abaixo de zero, a maioria está pessimista — mau sinal para investimento e emprego.",
+    "order_books": "As encomendas que as fábricas têm em carteira. Mais encomendas hoje significam mais produção e mais emprego nos próximos meses.",
+    "energy_cost": "O preço grossista da electricidade no mercado ibérico. Quando sobe, as tarifas industriais e eventualmente as domésticas tendem a seguir.",
+    "renewable_share": "Que parte da electricidade vem do sol, vento e água. Quanto mais alta, menos dependemos de combustíveis importados e menos CO2 emitimos.",
+    "energy_dependence": "Que percentagem da energia que consumimos vem do estrangeiro. Quanto maior, mais vulneráveis ficamos a crises de preços internacionais.",
+    "natural_gas": "O gás natural aquece casas, alimenta fábricas de vidro e cerâmica, e produz electricidade. Quando o preço sobe, toda a cadeia de custos sobe.",
+    "solar": "Quanta electricidade solar entrou na rede. Mais solar significa menos importação de gás e petróleo, e contas de luz potencialmente mais baixas.",
+    "wind": "Quanta electricidade os parques eólicos injectaram na rede. Portugal é um dos países europeus com mais vento aproveitável.",
+    "eur_usd": "Quando o euro sobe face ao dólar, as importações dos EUA ficam mais baratas, mas as nossas exportações ficam mais caras para americanos.",
+    "spread_pt_de": "Mede quanto mais Portugal paga de juros que a Alemanha. Quanto maior, mais os mercados consideram Portugal um risco — e mais cara fica a dívida pública.",
+    "brent": "O preço do barril de petróleo. Afecta directamente o que paga no gasóleo, na gasolina e no transporte de tudo o que compra.",
+    "gdp_per_capita": "A riqueza média produzida por cada habitante. Portugal está ainda abaixo da média europeia — fechar este fosso é o grande desafio de longo prazo.",
+    "rnd_pct_gdp": "Quanto o país investe em investigação e inovação. Mais investimento hoje significa melhores empregos e produtos mais competitivos amanhã.",
+    "employment_rate": "A percentagem de adultos (20-64) que têm emprego. Quanto mais alta, mais pessoas contribuem para a economia e para a Segurança Social."
+  },
+  "kpi_annotations": {
+    "inflation": {
+      "deflation": "Deflação — os preços estão a descer (raro e nem sempre bom).",
+      "stable": "Preços praticamente estáveis.",
+      "on_target": "Dentro da meta do BCE (2%).",
+      "above_target": "Acima da meta — poder de compra a descer.",
+      "high": "Inflação alta — pressão significativa nas famílias."
+    },
+    "diesel": {
+      "cheap": "Gasóleo barato — abaixo de 1.30€/L.",
+      "moderate": "Gasóleo em zona moderada.",
+      "expensive": "Gasóleo caro — pesa no transporte e nos preços.",
+      "very_expensive": "Gasóleo muito caro — impacto forte nos custos."
+    },
+    "gasoline_95": {
+      "cheap": "Gasolina barata — abaixo de 1.40€/L.",
+      "moderate": "Gasolina em zona moderada.",
+      "expensive": "Gasolina cara — cada depósito pesa mais.",
+      "very_expensive": "Gasolina muito cara — impacto forte na mobilidade."
+    },
+    "euribor_3m": {
+      "negative": "Taxa negativa — cenário raro, bom para quem tem crédito.",
+      "low": "Taxa baixa — prestações da casa em mínimos.",
+      "moderate": "Taxa moderada — prestações a subir para muitas famílias.",
+      "high": "Taxa elevada — prestações da casa pesam no orçamento.",
+      "very_high": "Taxa muito elevada — pressão forte sobre devedores."
+    },
+    "unemployment": {
+      "full_employment": "Pleno emprego — mercado de trabalho muito apertado.",
+      "low": "Desemprego baixo — bom para os trabalhadores.",
+      "moderate": "Desemprego moderado — ainda há margem de melhoria.",
+      "high": "Desemprego alto — muitas famílias afectadas."
+    },
+    "employment_rate": {
+      "high": "Taxa elevada — acima da média da UE.",
+      "reasonable": "Taxa razoável — próxima da média europeia.",
+      "below_avg": "Taxa abaixo da média da UE — margem para melhorar.",
+      "low": "Taxa baixa — muitos adultos fora do mercado de trabalho."
+    },
+    "cli": {
+      "strong_expansion": "Acima de 101 — forte sinal de expansão económica à frente.",
+      "expansion": "Acima de 100 — expansão económica provável.",
+      "slowdown": "Ligeiramente abaixo de 100 — abrandamento possível.",
+      "contraction": "Abaixo de 99 — sinal de contracção económica à frente."
+    },
+    "confidence": {
+      "high": "Confiança elevada — industriais optimistas.",
+      "positive": "Confiança ligeiramente positiva.",
+      "mild_pessimism": "Pessimismo ligeiro entre os industriais.",
+      "deep_pessimism": "Pessimismo acentuado — empresas retraem investimento."
+    },
+    "order_books": {
+      "above_normal": "Encomendas acima do normal — produção futura assegurada.",
+      "slightly_below": "Encomendas ligeiramente abaixo do normal.",
+      "weak": "Carteira fraca — produção pode abrandar.",
+      "very_weak": "Encomendas muito fracas — sinal de recessão industrial."
+    },
+    "renewable_share": {
+      "excellent": "Excelente — mais de 70% renovável, entre os melhores da Europa.",
+      "good": "Boa quota renovável — acima de metade da produção.",
+      "moderate": "Quota moderada — ainda muito dependente de fósseis.",
+      "low": "Quota baixa de renováveis — forte dependência de importações."
+    },
+    "energy_dependence": {
+      "low": "Dependência relativamente baixa para Portugal.",
+      "moderate": "Dependência moderada — nível típico de Portugal.",
+      "high": "Dependência elevada — vulnerável a choques de preços.",
+      "very_high": "Dependência muito elevada — risco estratégico."
+    },
+    "natural_gas": {
+      "cheap": "Gás barato — bom para indústrias energo-intensivas.",
+      "moderate": "Gás em zona moderada.",
+      "expensive": "Gás caro — pressão nos custos industriais.",
+      "very_expensive": "Gás muito caro — impacto severo nas fábricas de vidro, cerâmica e metalurgia."
+    },
+    "spread_pt_de": {
+      "very_low": "Spread muito baixo — mercados confiam em Portugal.",
+      "contained": "Spread contido — percepção de risco baixa.",
+      "moderate": "Spread moderado — alguma cautela dos mercados.",
+      "high": "Spread elevado — custo de financiamento do Estado a subir."
+    },
+    "brent": {
+      "cheap": "Petróleo barato — bom para importadores como Portugal.",
+      "moderate": "Petróleo em zona moderada.",
+      "expensive": "Petróleo caro — pressão nos combustíveis e transportes.",
+      "very_expensive": "Petróleo muito caro — impacto generalizado nos preços."
+    },
+    "eur_usd": {
+      "strong_euro": "Euro forte — importações mais baratas, exportações menos competitivas.",
+      "equilibrium": "Euro/Dólar em zona de equilíbrio.",
+      "weak_euro": "Euro fraco — exportações mais competitivas, importações mais caras.",
+      "very_weak_euro": "Euro muito fraco — energia e matérias-primas (cotadas em USD) ficam caras."
+    },
+    "ipi_total": {
+      "expansion": "Produção acima da base (2021) — indústria em expansão.",
+      "stable": "Produção próxima da base — indústria estável.",
+      "moderate_contraction": "Produção abaixo da base — contracção moderada.",
+      "strong_contraction": "Produção muito abaixo da base — contracção industrial forte."
+    },
+    "gdp_per_capita": {
+      "converging": "Acima de 30.000€ — a aproximar-se da média da UE.",
+      "below_avg": "Entre 23–30 mil€ — abaixo da média da UE, mas a convergir.",
+      "significant_gap": "Abaixo de 23.000€ — fosso significativo face à média europeia."
+    },
+    "rnd_pct_gdp": {
+      "strong": "Investimento em I&D forte — acima da média da UE.",
+      "moderate": "Investimento moderado em I&D — abaixo da meta europeia de 3%.",
+      "low": "Investimento baixo em I&D — risco de perda de competitividade a prazo."
+    }
+  },
+  "section_eyebrows": {
+    "painel": "INDICADORES ECONÓMICOS · PORTUGAL",
+    "comparativos": "COMPARATIVOS · PT VS EUROPA E MUNDO",
+    "explorador": "EXPLORADOR DE DADOS · SÉRIES TEMPORAIS · CSV",
+    "ajuda": "AJUDA · SOBRE"
+  },
+  "section_titles": {
+    "explorador": "Explorar indicadores — seleccione e visualize",
+    "explorador_sub": "Seleccione indicadores, visualize em gráfico e exporte em CSV",
+    "ajuda": "Como usar o Prumo PT",
+    "ajuda_sub": "Guia rápido de cada secção e contexto sobre o projecto",
+    "loading_indicators": "A carregar indicadores…",
+    "loading_data": "A carregar dados…",
+    "loading_comparison": "A carregar comparação…",
+    "loading_catalog": "A carregar catálogo…",
+    "loading_ficha": "A carregar ficha técnica…"
+  },
+  "footer": {
+    "data_label": "Dados:",
+    "instance_label": "Uma instância",
+    "oecd": "OCDE",
+    "worldbank": "Banco Mundial"
   }
 }
