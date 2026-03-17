@@ -848,7 +848,8 @@ App.registerSection('painel', async () => {
 
       if (titleEl) {
         const indUrl = `#explorador?s=${encodeURIComponent((kpi.source || '') + '/' + (kpi.id || ''))}`;
-        titleEl.innerHTML = `<a href="${indUrl}" class="ai-card-chart-title-link" title="${i18n.t('painel.view_in_explorador', {label: kpi.label || ''})}">${kpi.label || ''} ↗</a>`;
+        const chartLabel = (i18n.t('kpi_labels.' + kpi.id) !== 'kpi_labels.' + kpi.id) ? i18n.t('kpi_labels.' + kpi.id) : (kpi.label || '');
+        titleEl.innerHTML = `<a href="${indUrl}" class="ai-card-chart-title-link" title="${i18n.t('painel.view_in_explorador', {label: chartLabel})}">${chartLabel} ↗</a>`;
       }
       if (commentEl) {
         const period = kpi.spark?.at(-1)?.period || kpi.spark?.at(-1)?.p || '';
@@ -881,7 +882,8 @@ App.registerSection('painel', async () => {
         }
         commentEl.textContent = msg;
       }
-      _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSpark || null, kpi.unit || kpi.yoy_unit || '', kpi.label || '');
+      const sparkLabel = (i18n.t('kpi_labels.' + kpi.id) !== 'kpi_labels.' + kpi.id) ? i18n.t('kpi_labels.' + kpi.id) : (kpi.label || '');
+      _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSpark || null, kpi.unit || kpi.yoy_unit || '', sparkLabel);
     };
 
     // First pass: render all cards immediately (no EU ref)
@@ -900,7 +902,7 @@ App.registerSection('painel', async () => {
           if (chartEl) {
             // Destroy & re-render with EU ref
             try { window.echarts.getInstanceByDom(chartEl)?.dispose(); } catch(e) {}
-            _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSeries.data, kpi.unit || kpi.yoy_unit || '', kpi.label || '');
+            _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSeries.data, kpi.unit || kpi.yoy_unit || '', sparkLabel);
           }
         }
       } catch(e) { /* silent — EU ref is optional enhancement */ }
