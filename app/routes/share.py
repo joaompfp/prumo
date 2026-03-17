@@ -96,10 +96,18 @@ def share_kpi(request: Request, kpi_id: str):
         yoy_str = f" ({arrow}{abs(yoy):.1f}{yoy_unit})"
 
     og_title = f"{label}: {value_str} {unit}{yoy_str} \u2014 Prumo PT"
+    # Build description with context (trend commentary)
+    context = kpi.get("context", "")
+    annotation = kpi.get("annotation", "")
+    parts = []
+    if context:
+        parts.append(context)
+    if annotation:
+        parts.append(annotation)
     if description:
-        og_description = f"{description} Dados: {period}, Fonte: {source}."
-    else:
-        og_description = f"Dados: {period}. Fonte: {source}."
+        parts.append(description)
+    parts.append(f"Dados: {period}, Fonte: {source}.")
+    og_description = " ".join(parts)
 
     return templates.TemplateResponse("share.html", {
         "request": request,

@@ -185,108 +185,84 @@ def _draw_header(draw: ImageDraw.ImageDraw, img: Image.Image, img_w: int,
 def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
     """Generate a 1200x630 branded PNG for a single KPI.
 
-    Expected kpi dict keys:
-        id, label, value, unit, yoy, yoy_unit, sentiment,
-        period, description, source, indicator, spark (list, optional)
+    Design: CHART-DOMINANT. The sparkline fills most of the card.
+    A thin top strip shows label + value + YoY. Bottom bar shows source.
+    The OG title/description in HTML carry the textual context.
     """
     W, H = 1200, 630
     img = Image.new("RGB", (W, H), color=BG)
     draw = ImageDraw.Draw(img)
 
     # ── Fonts ───────────────────────────────────────────────────────
-    font_brand = _load_font("PlayfairDisplay-Black.ttf", 34)
-    font_section = _load_font("Inter-Bold.ttf", 16)
-    font_label = _load_font("Inter-Bold.ttf", 30)
-    font_value = _load_font("Inter-Bold.ttf", 88)
-    font_unit = _load_font("Inter-Regular.ttf", 34)
-    font_yoy = _load_font("Inter-Bold.ttf", 24)
-    font_body = _load_font("Inter-Regular.ttf", 20)
-    font_meta = _load_font("Inter-Regular.ttf", 16)
+    font_label = _load_font("Inter-Bold.ttf", 28)
+    font_value = _load_font("Inter-Bold.ttf", 52)
+    font_unit = _load_font("Inter-Regular.ttf", 28)
+    font_yoy = _load_font("Inter-Bold.ttf", 26)
+    font_meta = _load_font("Inter-Regular.ttf", 15)
+    font_brand = _load_font("PlayfairDisplay-Black.ttf", 20)
 
-    # ── Header ──────────────────────────────────────────────────────
-    _draw_header(draw, img, W, font_brand, font_meta)
-
-    # ── Decorative side stripe ──────────────────────────────────────
-    draw.rectangle([(0, 6), (4, H - 56)], fill=BORDER)
-
-    # ── Section eyebrow ─────────────────────────────────────────────
-    y_cursor = 86
-    if section_name:
-        draw.text((48, y_cursor), section_name.upper(), fill=TEXT_SECONDARY, font=font_section)
-        y_cursor += 28
-
-    # ── KPI label ───────────────────────────────────────────────────
-    label = kpi.get("label", "")
-    draw.text((48, y_cursor), label, fill=TEXT_PRIMARY, font=font_label)
-    y_cursor += 50
-
-    # ── Value + unit ────────────────────────────────────────────────
-    value = kpi.get("value")
-    unit = kpi.get("unit", "")
-    value_str = _format_value(value)
-
-    draw.text((48, y_cursor), value_str, fill=TEXT_PRIMARY, font=font_value)
-    val_bbox = draw.textbbox((48, y_cursor), value_str, font=font_value)
-    if unit:
-        draw.text(
-            (val_bbox[2] + 14, y_cursor + 40),
-            unit, fill=TEXT_SECONDARY, font=font_unit,
-        )
-    y_cursor = val_bbox[3] + 16
-
-    # ── YoY change ──────────────────────────────────────────────────
-    yoy = kpi.get("yoy")
     sentiment = kpi.get("sentiment", "neutral")
     yoy_color = _sentiment_color(sentiment)
 
+    # ── Top strip: label + value + YoY (compact, ~90px) ──────────────
+    # Red accent line
+    draw.rectangle([(0, 0), (W, 4)], fill=PT_RED)
+
+    # Logo (small)
+    _paste_logo(img, 20, 14, size=32)
+
+    # Brand
+    draw.text((60, 18), "Prumo", fill=PT_RED, font=font_brand)
+
+    # Label
+    label = kpi.get("label", "")
+    draw.text((160, 16), label, fill=TEXT_PRIMARY, font=font_label)
+
+    # Value + unit on the right
+    value = kpi.get("value")
+    unit = kpi.get("unit", "")
+    value_str = _format_value(value)
+    value_display = f"{value_str} {unit}".strip()
+    draw.text((W - 40, 12), value_display, fill=TEXT_PRIMARY, font=font_value, anchor="ra")
+
+    # YoY pill under value
+    yoy = kpi.get("yoy")
     if yoy is not None:
         arrow = "\u2191" if yoy > 0 else "\u2193" if yoy < 0 else "\u2192"
         yoy_unit = kpi.get("yoy_unit") or "%"
-        yoy_str = f"{arrow} {abs(yoy):.1f}{yoy_unit} vs ano anterior"
-        # Colored pill background
-        pill_bbox = draw.textbbox((0, 0), yoy_str, font=font_yoy)
-        pill_w = pill_bbox[2] - pill_bbox[0] + 24
-        pill_h = pill_bbox[3] - pill_bbox[1] + 14
-        pill_x, pill_y = 48, y_cursor
-        # Semi-transparent pill via lighter color fill
-        pill_fill = "#E8F5E9" if sentiment == "positive" else "#FFEBEE" if sentiment == "negative" else "#F5F5F5"
-        draw.rounded_rectangle(
-            [(pill_x, pill_y), (pill_x + pill_w, pill_y + pill_h)],
-            radius=6, fill=pill_fill,
-        )
-        draw.text((pill_x + 12, pill_y + 5), yoy_str, fill=yoy_color, font=font_yoy)
-        y_cursor += pill_h + 18
-    else:
-        y_cursor += 10
+        yoy_str = f"{arrow}{abs(yoy):.1f}{yoy_unit}"
+        draw.text((W - 40, 68), yoy_str, fill=yoy_color, font=font_yoy, anchor="ra")
 
-    # ── Sparkline — large, right-aligned chart ───────────────────────
+    # Separator line
+    top_h = 96
+    draw.line([(0, top_h), (W, top_h)], fill=BORDER, width=1)
+
+    # ── Chart area: fills the rest ────────────────────────────────────
+    chart_top = top_h + 10
+    chart_bottom = H - 44
+    chart_left = 40
+    chart_right = W - 40
+    chart_w = chart_right - chart_left
+    chart_h = chart_bottom - chart_top
+
     spark = kpi.get("spark", [])
     if spark and len(spark) >= 3:
-        # Big sparkline: right half of card, tall
-        spark_x = W // 2 + 20
-        spark_y = 86
-        spark_w = W // 2 - 80
-        spark_h = H - 86 - 56 - 30  # fill from header to bottom bar
-        _draw_sparkline(draw, spark, spark_x, spark_y, spark_w, spark_h, yoy_color)
-        # Light background for chart area
-        # (draw behind — we re-draw sparkline after)
+        _draw_sparkline(draw, spark, chart_left, chart_top, chart_w, chart_h, yoy_color)
+    else:
+        # No spark data — show value large and centered
+        big_font = _load_font("Inter-Bold.ttf", 140)
+        draw.text((W // 2, (chart_top + chart_bottom) // 2), value_display,
+                  fill=TEXT_PRIMARY, font=big_font, anchor="mm")
 
-    # ── Description ─────────────────────────────────────────────────
-    desc = kpi.get("description", "")
-    desc_max_w = (W // 2 - 30) if spark and len(spark) >= 3 else (W - 96)
-    if desc and y_cursor < H - 100:
-        remaining_h = H - 56 - y_cursor - 12
-        max_lines = max(1, remaining_h // 28)
-        _draw_wrapped_text(
-            draw, desc, 48, y_cursor, desc_max_w, font_body, TEXT_SECONDARY,
-            max_lines=min(max_lines, 3), line_spacing=28,
-        )
-
-    # ── Bottom bar ──────────────────────────────────────────────────
+    # ── Bottom bar (slim) ────────────────────────────────────────────
+    bar_h = 36
+    bar_y = H - bar_h
+    draw.rectangle([(0, bar_y), (W, H)], fill=BOTTOM_BAR)
     source = kpi.get("source", "")
     period = kpi.get("period", "")
-    meta = f"Dados: {period} \u00b7 Fonte: {source}" if period and source else f"Dados: {period}{source}"
-    _draw_bottom_bar(draw, W, H, meta, font_meta)
+    meta = f"{period} \u00b7 {source}" if period and source else f"{period}{source}"
+    draw.text((20, bar_y + 8), meta, fill=BOTTOM_TEXT, font=font_meta)
+    draw.text((W - 20, bar_y + 8), "cae.joao.date", fill=BOTTOM_TEXT, font=font_meta, anchor="ra")
 
     # ── Export ──────────────────────────────────────────────────────
     buf = BytesIO()
