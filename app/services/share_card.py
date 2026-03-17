@@ -258,12 +258,11 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
         logo_x = W // 2 - 210
         logo_y = H // 2 - 240
         img.paste(logo, (logo_x, logo_y), logo)
-        # "Portugal" text below logo — matching nav brand style
-        font_portugal = _load_font("PlayfairDisplay-Black.ttf", 42)
-        # Draw on RGBA overlay for transparency
+        # "Portugal" text below logo — Cormorant Garamond Bold Italic, same as nav
+        font_portugal = _load_font("CormorantGaramond-BoldItalic.ttf", 56)
         txt_overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         txt_draw = ImageDraw.Draw(txt_overlay)
-        txt_draw.text((W // 2, logo_y + 430), "Portugal", fill=(139, 0, 0, 105),
+        txt_draw.text((W // 2, logo_y + 435), "Portugal", fill=(139, 0, 0, 130),
                        font=font_portugal, anchor="mt")
         img.paste(txt_overlay, (0, 0), txt_overlay)
     except Exception:
