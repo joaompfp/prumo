@@ -116,7 +116,7 @@ def share_kpi(request: Request, kpi_id: str):
         "og_description": og_description,
         "og_image_url": f"{base}/s/kpi/{kpi_id}/image.png",
         "canonical_url": f"{base}/s/kpi/{kpi_id}",
-        "redirect_url": f"{base}/#painel",
+        "redirect_url": f"{base}/#explorador?s={source}%2F{kpi.get('indicator', kpi_id)}",
     })
 
 
