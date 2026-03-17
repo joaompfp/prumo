@@ -905,5 +905,14 @@
     "loading_comparison": "Loading comparison…",
     "loading_catalog": "Loading catalogue…",
     "loading_ficha": "Loading technical sheet…"
+  },
+  "share": {
+    "copy_link": "Copy link",
+    "download_image": "Download image",
+    "share_twitter": "Share on X",
+    "share_linkedin": "Share on LinkedIn",
+    "share_whatsapp": "Share on WhatsApp",
+    "copied": "Link copied!",
+    "share": "Share"
   }
 }

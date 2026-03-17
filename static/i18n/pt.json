@@ -905,5 +905,14 @@
     "loading_comparison": "A carregar comparação…",
     "loading_catalog": "A carregar catálogo…",
     "loading_ficha": "A carregar ficha técnica…"
+  },
+  "share": {
+    "copy_link": "Copiar link",
+    "download_image": "Descarregar imagem",
+    "share_twitter": "Partilhar no X",
+    "share_linkedin": "Partilhar no LinkedIn",
+    "share_whatsapp": "Partilhar no WhatsApp",
+    "copied": "Link copiado!",
+    "share": "Partilhar"
   }
 }

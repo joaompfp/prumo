@@ -3,6 +3,15 @@
    Depends on CSS vars from swd-theme.css
    ═══════════════════════════════════════════════════════════════ */
 
+/* ── Card header layout ────────────────────────────────────────── */
+#painel .kpi-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-xs, 6px);
+  margin-bottom: 2px;
+}
+
 /* ── Explain trigger button ("?") ─────────────────────────────── */
 .kpi-explain-trigger {
   width: 20px;

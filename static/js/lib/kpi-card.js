@@ -25,3 +25,28 @@ document.addEventListener('click', function (e) {
   var panel = card.querySelector('.kpi-explain');
   if (panel) panel.classList.toggle('hidden');
 });
+
+/**
+ * Global event delegation for KPI share buttons.
+ * Opens a share popover via PrumoLib.showSharePopover().
+ */
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('.kpi-share-btn');
+  if (!btn) return;
+
+  e.stopPropagation();
+  e.preventDefault();
+
+  var kpiId = btn.dataset.kpiId;
+  if (!kpiId) return;
+
+  var base = window.location.origin + (window.__BASE_PATH__ || '');
+  var shareUrl = base + '/s/kpi/' + kpiId;
+  var card = btn.closest('.kpi-card');
+  var labelEl = card ? card.querySelector('.kpi-label') : null;
+  var label = (labelEl ? labelEl.textContent : kpiId) + ' \u2014 Prumo PT';
+
+  if (window.PrumoLib && PrumoLib.showSharePopover) {
+    PrumoLib.showSharePopover(btn, { url: shareUrl, title: label, kpiId: kpiId });
+  }
+});

@@ -293,6 +293,11 @@ App.registerSection('painel', async () => {
         <div class="kpi-card-header">
           <div class="kpi-label">${label}</div>
           ${sourceLabel ? `<span class="kpi-source-tag">${sourceLabel}</span>` : ''}
+          <button class="kpi-share-btn" data-kpi-id="${kpi.id}" title="${i18n.t('share.share')}" aria-label="${i18n.t('share.share')}">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 8h8M8 4l4 4-4 4"/>
+            </svg>
+          </button>
         </div>
         <div class="kpi-value-row">
           <span class="kpi-value">${value}</span>
