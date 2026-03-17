@@ -2,7 +2,7 @@
 @import url('components/common.css');
 @import url('components/search-bar.css');
 @import url('components/hero.css');
-@import url('components/kpi-cards.css');
+@import url('components/kpi-cards.css?v=2');
 @import url('components/analysis.css');
 @import url('components/explorador.css');
 @import url('components/comparativos.css');

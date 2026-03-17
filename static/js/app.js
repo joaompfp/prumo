@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bar.innerHTML = `
           <span class="hero-compact-title">${typeof i18n !== 'undefined' ? i18n.t('hero.compact_title') : 'Economia portuguesa, verificada.'}</span>
           <span class="hero-compact-snapshot" id="hero-compact-snapshot"></span>
-          <button class="hero-compact-expand" title="${typeof i18n !== 'undefined' ? i18n.t('hero.expand_label') : 'Sobre o Prumo'}">↓ ${typeof i18n !== 'undefined' ? i18n.t('hero.expand_label') : 'Sobre o Prumo'}</button>`;
+          <button class="hero-compact-expand" title="${typeof i18n !== 'undefined' ? i18n.t('hero.expand_label') : 'About Prumo'}">↓ ${typeof i18n !== 'undefined' ? i18n.t('hero.expand_label') : 'About Prumo'}</button>`;
         hero.insertBefore(bar, hero.firstChild);
         bar.querySelector('.hero-compact-expand').addEventListener('click', () => {
           hero.classList.remove('compact', 'hidden');

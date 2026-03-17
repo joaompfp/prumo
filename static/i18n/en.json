@@ -21,7 +21,7 @@
     "expand": "↓ About Prumo",
     "sources": "INE · Eurostat · Bank of Portugal · OECD · World Bank · REN · DGEG · ERSE · FRED",
     "compact_title": "Portuguese economy, verified.",
-    "expand_label": "↓ About Prumo"
+    "expand_label": "About Prumo"
   },
   "snapshot": {
     "positive_heading": "Positive signals",
@@ -626,7 +626,9 @@
   },
   "footer": {
     "data_label": "Data:",
-    "instance_label": "An instance of"
+    "instance_label": "An instance of",
+    "oecd": "OECD",
+    "worldbank": "World Bank"
   },
   "ui_messages": {
     "lens_saved": "Custom lens saved",
@@ -904,11 +906,5 @@
     "loading_comparison": "Loading comparison…",
     "loading_catalog": "Loading catalogue…",
     "loading_ficha": "Loading technical sheet…"
-  },
-  "footer": {
-    "data_label": "Data:",
-    "instance_label": "An instance of",
-    "oecd": "OECD",
-    "worldbank": "World Bank"
   }
 }

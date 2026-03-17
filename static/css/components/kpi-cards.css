@@ -62,3 +62,75 @@
   from { opacity: 0; transform: translateY(-4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Painel Theme Quick-Nav Pills ────────────────────────────── */
+.painel-theme-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
+  top: calc(var(--nav-height) + 52px);
+  z-index: 80;
+  background: var(--c-bg);
+  margin-bottom: 8px;
+}
+.painel-theme-nav::-webkit-scrollbar { display: none; }
+
+.theme-pill {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-text-sub);
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.theme-pill:hover {
+  border-color: var(--c-pt);
+  color: var(--c-pt);
+}
+.theme-pill.active {
+  background: var(--c-pt);
+  border-color: var(--c-pt);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* ── Annotation line ─────────────────────────────────────────── */
+.kpi-annotation {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-text-sub);
+  margin-top: 4px;
+}
+
+/* ── Painel sections ─────────────────────────────────────────── */
+.painel-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── CLS Prevention ──────────────────────────────────────────── */
+.section-body:empty { min-height: 300px; }
+.kpi-grid:empty { min-height: 180px; }
+
+@media (max-width: 640px) {
+  .painel-theme-nav {
+    padding: 8px 0;
+    gap: 4px;
+  }
+  .theme-pill {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}

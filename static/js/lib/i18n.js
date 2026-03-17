@@ -144,18 +144,30 @@ window.i18n = (function() {
   _strings = _PT;
   _ready = true;
 
-  // If non-PT language was selected, load it async (PT is the fallback)
+  // If non-PT language was selected, load it SYNCHRONOUSLY so it's ready before DOMContentLoaded
   if (_lang !== 'pt') {
-    _loadLang(_lang).then(function(langData) {
-      _strings = langData;
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', _fireChange);
-      } else {
-        _fireChange();
+    try {
+      var xhr2 = new XMLHttpRequest();
+      xhr2.open('GET', BASE + '/static/i18n/' + _lang + '.json?v=3', false);
+      xhr2.send();
+      if (xhr2.status === 200) {
+        var langData = JSON.parse(xhr2.responseText);
+        _loaded[_lang] = langData;
+        _strings = langData;
       }
-    }).catch(function() {
+    } catch(e2) {
+      console.warn('[i18n] Failed to load ' + _lang + ':', e2);
       _strings = _PT;
-    });
+    }
+  }
+
+  // If non-PT, scan DOM after it's ready to apply data-i18n attributes
+  if (_lang !== 'pt') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _fireChange);
+    } else {
+      _fireChange();
+    }
   }
 
   return { t: t, setLang: setLang, months: months, countryName: countryName, lang: lang, onReady: onReady };

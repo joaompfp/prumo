@@ -21,7 +21,7 @@
     "expand": "↓ Sobre o Prumo",
     "sources": "INE · Eurostat · Banco de Portugal · OCDE · Banco Mundial · REN · DGEG · ERSE · FRED",
     "compact_title": "Economia portuguesa, verificada.",
-    "expand_label": "↓ Sobre o Prumo"
+    "expand_label": "Sobre o Prumo"
   },
   "snapshot": {
     "positive_heading": "Sinais positivos",
@@ -626,7 +626,9 @@
   },
   "footer": {
     "data_label": "Dados:",
-    "instance_label": "Uma instância"
+    "instance_label": "Uma instância",
+    "oecd": "OCDE",
+    "worldbank": "Banco Mundial"
   },
   "ui_messages": {
     "lens_saved": "Lente personalizada guardada",
@@ -904,11 +906,5 @@
     "loading_comparison": "A carregar comparação…",
     "loading_catalog": "A carregar catálogo…",
     "loading_ficha": "A carregar ficha técnica…"
-  },
-  "footer": {
-    "data_label": "Dados:",
-    "instance_label": "Uma instância",
-    "oecd": "OCDE",
-    "worldbank": "Banco Mundial"
   }
 }
