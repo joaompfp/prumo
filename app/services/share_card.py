@@ -250,12 +250,11 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
 
     # ── Prumo logo watermark (top-right, large + semi-transparent) ───
     try:
-        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((140, 140))
-        # Semi-transparent but visible (alpha 180/255 ≈ 70%)
-        alpha = logo.split()[3].point(lambda a: min(a, 180))
+        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((180, 180))
+        alpha = logo.split()[3].point(lambda a: min(a, 140))
         logo.putalpha(alpha)
-        # TOP-LEFT — WhatsApp crops right side of 1200x630 images
-        img.paste(logo, (16, 16), logo)
+        # CENTER of image — WhatsApp crops unpredictably
+        img.paste(logo, (W // 2 - 90, H // 2 - 90), logo)
     except Exception:
         pass
 
