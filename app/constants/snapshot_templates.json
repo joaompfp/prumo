@@ -1,0 +1,182 @@
+{
+  "inflation": {
+    "positive": "A inflacao recuou para {value}% — os precos estao a aliviar.",
+    "negative": "Os precos sobem {value}% ao ano — o poder de compra encolhe.",
+    "neutral": "A inflacao mantem-se em {value}%, praticamente estavel."
+  },
+  "diesel": {
+    "positive": "O gasoleo desceu para {value} EUR/L — alivio para transportes.",
+    "negative": "Gasoleo a {value} EUR/L — custos de transporte em alta.",
+    "neutral": "O gasoleo estabilizou em {value} EUR/L."
+  },
+  "gasoline_95": {
+    "positive": "Gasolina 95 desceu para {value} EUR/L — alivio no bolso.",
+    "negative": "Gasolina 95 a {value} EUR/L — encher o deposito custa mais.",
+    "neutral": "Gasolina 95 estavel em {value} EUR/L."
+  },
+  "electricity_btn": {
+    "positive": "Electricidade residencial desceu para {value} EUR/kWh.",
+    "negative": "Electricidade residencial a {value} EUR/kWh — conta da luz pesa mais.",
+    "neutral": "Tarifa residencial estavel em {value} EUR/kWh."
+  },
+  "electricity_mt": {
+    "positive": "Electricidade para PMEs desceu para {value} EUR/kWh.",
+    "negative": "Electricidade industrial (MT) subiu para {value} EUR/kWh.",
+    "neutral": "Tarifa industrial MT estavel em {value} EUR/kWh."
+  },
+  "electricity_at": {
+    "positive": "Electricidade para grandes industrias desceu para {value} EUR/kWh.",
+    "negative": "Electricidade industrial (AT) subiu para {value} EUR/kWh.",
+    "neutral": "Tarifa industrial AT estavel em {value} EUR/kWh."
+  },
+  "euribor_3m": {
+    "positive": "Euribor 3m desceu para {value}% — prestacoes da casa aliviam.",
+    "negative": "Euribor 3m subiu para {value}% — credito habitacao mais caro.",
+    "neutral": "Euribor 3m estavel em {value}%."
+  },
+  "euribor_6m": {
+    "positive": "Euribor 6m recuou para {value}% — boas noticias para quem tem credito.",
+    "negative": "Euribor 6m subiu para {value}% — prestacoes semestrais sobem.",
+    "neutral": "Euribor 6m estavel em {value}%."
+  },
+  "euribor_12m": {
+    "positive": "Euribor 12m caiu para {value}% — revisoes anuais mais baixas.",
+    "negative": "Euribor 12m subiu para {value}% — credito anual mais pesado.",
+    "neutral": "Euribor 12m mantem-se em {value}%."
+  },
+  "ipi_total": {
+    "positive": "A producao industrial cresceu — indice a {value} pontos.",
+    "negative": "A producao industrial recuou — indice a {value} pontos.",
+    "neutral": "A producao industrial estavel — indice a {value} pontos."
+  },
+  "ipi_cae_10": {
+    "positive": "Industria alimentar em crescimento — indice a {value}.",
+    "negative": "Industria alimentar em queda — indice a {value}.",
+    "neutral": "Industria alimentar estavel — indice a {value}."
+  },
+  "ipi_cae_20": {
+    "positive": "Industria quimica cresce — indice a {value}.",
+    "negative": "Industria quimica recua — indice a {value}.",
+    "neutral": "Industria quimica estavel — indice a {value}."
+  },
+  "ipi_cae_24": {
+    "positive": "Metalurgia de base em crescimento — indice a {value}.",
+    "negative": "Metalurgia de base recuou — indice a {value}.",
+    "neutral": "Metalurgia de base estavel — indice a {value}."
+  },
+  "ipi_cae_25": {
+    "positive": "Produtos metalicos em crescimento — indice a {value}.",
+    "negative": "Produtos metalicos em queda — indice a {value}.",
+    "neutral": "Produtos metalicos estaveis — indice a {value}."
+  },
+  "ipi_cae_28": {
+    "positive": "Maquinas e equipamentos em alta — indice a {value}.",
+    "negative": "Maquinas e equipamentos em queda — indice a {value}.",
+    "neutral": "Maquinas e equipamentos estaveis — indice a {value}."
+  },
+  "ipi_cae_29": {
+    "positive": "Automovel acelera — producao a {value} pontos.",
+    "negative": "Automovel trava — producao a {value} pontos.",
+    "neutral": "Sector automovel estavel — indice a {value}."
+  },
+  "copper": {
+    "positive": "Cobre em alta a {value} USD/ton — sinal de procura global.",
+    "negative": "Cobre recuou para {value} USD/ton — procura global em baixa.",
+    "neutral": "Cobre estavel em {value} USD/ton."
+  },
+  "aluminum": {
+    "positive": "Aluminio em alta a {value} USD/ton — procura industrial forte.",
+    "negative": "Aluminio recuou para {value} USD/ton — procura industrial fraca.",
+    "neutral": "Aluminio estavel em {value} USD/ton."
+  },
+  "unemployment": {
+    "positive": "O desemprego caiu para {value}% — menos {yoy_abs} pp que ha um ano.",
+    "negative": "O desemprego subiu para {value}% — mais pessoas a procura de trabalho.",
+    "neutral": "O desemprego estabilizou em {value}%."
+  },
+  "industrial_employment": {
+    "positive": "O emprego industrial subiu — indice a {value}.",
+    "negative": "O emprego industrial recuou — indice a {value}.",
+    "neutral": "Emprego industrial estavel — indice a {value}."
+  },
+  "wages_industry": {
+    "positive": "Salarios na industria subiram — indice a {value}.",
+    "negative": "Salarios na industria recuaram — indice a {value}.",
+    "neutral": "Salarios na industria estaveis — indice a {value}."
+  },
+  "cli": {
+    "positive": "Indicador avancado da OCDE subiu para {value} — expansao a vista.",
+    "negative": "Indicador avancado da OCDE caiu para {value} — abrandamento a vista.",
+    "neutral": "Indicador avancado da OCDE em {value} — sem sinais claros."
+  },
+  "confidence": {
+    "positive": "Confianca industrial melhorou — saldo a {value}.",
+    "negative": "Confianca industrial piorou — saldo a {value}.",
+    "neutral": "Confianca industrial estavel — saldo a {value}."
+  },
+  "order_books": {
+    "positive": "Carteira de encomendas melhorou — saldo a {value}.",
+    "negative": "Carteira de encomendas piorou — saldo a {value}.",
+    "neutral": "Carteira de encomendas estavel — saldo a {value}."
+  },
+  "energy_cost": {
+    "positive": "Electricidade no mercado grossista desceu para {value} EUR/MWh.",
+    "negative": "Electricidade no mercado grossista subiu para {value} EUR/MWh.",
+    "neutral": "Electricidade grossista estavel em {value} EUR/MWh."
+  },
+  "renewable_share": {
+    "positive": "Renovaveis ja representam {value}% da electricidade — recorde.",
+    "negative": "Quota de renovaveis caiu para {value}% — recuo na transicao.",
+    "neutral": "Renovaveis representam {value}% da electricidade."
+  },
+  "energy_dependence": {
+    "positive": "Dependencia energetica desceu para {value}% — mais autonomia.",
+    "negative": "Dependencia energetica subiu para {value}% — mais vulnerabilidade.",
+    "neutral": "Dependencia energetica estavel em {value}%."
+  },
+  "natural_gas": {
+    "positive": "Gas natural desceu para {value} USD/MMBtu — alivio para a industria.",
+    "negative": "Gas natural subiu para {value} USD/MMBtu — pressao nos custos.",
+    "neutral": "Gas natural estavel em {value} USD/MMBtu."
+  },
+  "solar": {
+    "positive": "Producao solar subiu para {value} GWh — energia limpa em alta.",
+    "negative": "Producao solar recuou para {value} GWh.",
+    "neutral": "Producao solar em {value} GWh."
+  },
+  "wind": {
+    "positive": "Producao eolica subiu para {value} GWh — vento sopra a favor.",
+    "negative": "Producao eolica recuou para {value} GWh.",
+    "neutral": "Producao eolica em {value} GWh."
+  },
+  "eur_usd": {
+    "positive": "Euro fortaleceu para {value} USD — importacoes mais baratas.",
+    "negative": "Euro enfraqueceu para {value} USD — importacoes mais caras.",
+    "neutral": "Euro estavel em {value} USD."
+  },
+  "spread_pt_de": {
+    "positive": "Spread Portugal-Alemanha recuou para {value} pp — risco soberano em baixa.",
+    "negative": "Spread Portugal-Alemanha subiu para {value} pp — mais risco percebido.",
+    "neutral": "Spread Portugal-Alemanha estavel em {value} pp."
+  },
+  "brent": {
+    "positive": "Petroleo Brent desceu para {value} USD/bbl — alivio nos combustiveis.",
+    "negative": "Petroleo Brent subiu para {value} USD/bbl — pressao nos precos.",
+    "neutral": "Petroleo Brent estavel em {value} USD/bbl."
+  },
+  "gdp_per_capita": {
+    "positive": "PIB per capita subiu para {value} EUR — convergencia em marcha.",
+    "negative": "PIB per capita recuou para {value} EUR — divergencia face a UE.",
+    "neutral": "PIB per capita estavel em {value} EUR."
+  },
+  "rnd_pct_gdp": {
+    "positive": "Investimento em I&D subiu para {value}% do PIB — mais inovacao.",
+    "negative": "Investimento em I&D recuou para {value}% do PIB.",
+    "neutral": "Investimento em I&D estavel em {value}% do PIB."
+  },
+  "employment_rate": {
+    "positive": "Taxa de emprego subiu para {value}% — mais pessoas a trabalhar.",
+    "negative": "Taxa de emprego recuou para {value}% — menos pessoas a trabalhar.",
+    "neutral": "Taxa de emprego estavel em {value}%."
+  }
+}

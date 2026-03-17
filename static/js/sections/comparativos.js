@@ -24,48 +24,33 @@ App.registerSection('comparativos', async () => {
     NG:'🇳🇬', EG:'🇪🇬', ID:'🇮🇩', TH:'🇹🇭', MY:'🇲🇾',
   };
 
-  const COUNTRY_NAMES = {
-    PT:'Portugal',    ES:'Espanha',     DE:'Alemanha',   FR:'França',
-    IT:'Itália',      NL:'Países Baixos',BE:'Bélgica',   AT:'Áustria',
-    LU:'Luxemburgo',  PL:'Polónia',     CZ:'Chéquia',    SK:'Eslováquia',
-    HU:'Hungria',     RO:'Roménia',     BG:'Bulgária',   HR:'Croácia',
-    SI:'Eslovénia',   EE:'Estónia',     LV:'Letónia',    LT:'Lituânia',
-    SE:'Suécia',      DK:'Dinamarca',   FI:'Finlândia',  IE:'Irlanda',
-    EL:'Grécia',      GR:'Grécia',      CY:'Chipre',     MT:'Malta',
-    EU27:'UE-27',     EU27_2020:'UE-27', EU:'UE',
-    GB:'Grã-Bretanha',NO:'Noruega',     CH:'Suíça',      TR:'Turquia',
-    US:'EUA',         CA:'Canadá',      JP:'Japão',      KR:'Coreia do Sul',
-    AU:'Austrália',   MX:'México',
-    AO:'Angola',      MZ:'Moçambique',  CV:'Cabo Verde', GW:'Guiné-Bissau',
-    ST:'São Tomé',
-    CN:'China',       IN:'Índia',       BR:'Brasil',     ZA:'África do Sul',
-    AR:'Argentina',   CL:'Chile',       RU:'Rússia',
-    NG:'Nigéria',     EG:'Egito',       ID:'Indonésia',  TH:'Tailândia',
-    MY:'Malásia',
-  };
+  // Country names — use i18n.countryName() with fallback
+  function countryName(code) {
+    return i18n.countryName(code) || code;
+  }
 
   // Country groups for picker — order matters (displayed top to bottom)
   const COUNTRY_GROUPS = [
-    { group: 'REFERÊNCIA',       countries: ['EU27_2020'] },
-    { group: 'UE 27',            countries: ['PT','DE','FR','IT','ES','NL','BE','AT','PL','CZ','SK','HU','RO','BG','HR','SI','EE','LV','LT','SE','DK','FI','IE','EL','CY','LU','MT'] },
-    { group: 'RESTO DA EUROPA',  countries: ['GB','NO','CH','TR'] },
-    { group: 'OCDE (não-EU)',    countries: ['US','CA','JP','KR','MX'] },
-    { group: 'PALOP',            countries: ['AO','MZ','CV','GW','ST'] },
-    { group: 'EMERGENTES',       countries: ['CN','IN','BR','ZA','AR','CL'] },
-    { group: 'OUTROS',           countries: ['NG','EG','ID','TH','MY'] },
+    { group: i18n.t('comparativos.group.reference'),     countries: ['EU27_2020'] },
+    { group: i18n.t('comparativos.group.eu27'),           countries: ['PT','DE','FR','IT','ES','NL','BE','AT','PL','CZ','SK','HU','RO','BG','HR','SI','EE','LV','LT','SE','DK','FI','IE','EL','CY','LU','MT'] },
+    { group: i18n.t('comparativos.group.rest_europe'),    countries: ['GB','NO','CH','TR'] },
+    { group: i18n.t('comparativos.group.oecd_non_eu'),    countries: ['US','CA','JP','KR','MX'] },
+    { group: i18n.t('comparativos.group.palop'),          countries: ['AO','MZ','CV','GW','ST'] },
+    { group: i18n.t('comparativos.group.emerging'),       countries: ['CN','IN','BR','ZA','AR','CL'] },
+    { group: i18n.t('comparativos.group.other'),          countries: ['NG','EG','ID','TH','MY'] },
   ];
 
   const ALL_COUNTRIES = COUNTRY_GROUPS.flatMap(g => g.countries);
 
   const PRESETS = [
-    { label: 'PT vs Espanha',   countries: ['PT','ES','EU27_2020'] },
-    { label: 'Mediterrâneo',    countries: ['PT','ES','IT','EL','EU27_2020'] },
-    { label: 'Nórdicos',        countries: ['PT','SE','DK','FI','NO','EU27_2020'] },
-    { label: 'Leste',           countries: ['PT','PL','CZ','HU','RO','SK','BG','EU27_2020'] },
-    { label: 'Todos EU',        countries: ['PT','DE','FR','IT','ES','NL','BE','AT','PL','CZ','SK','HU','RO','BG','HR','SI','EE','LV','LT','SE','DK','FI','IE','EL','CY','LU','MT','EU27_2020'] },
-    { label: 'G7',              countries: ['PT','US','GB','FR','DE','IT','JP','CA'] },
-    { label: 'PALOP',           countries: ['PT','AO','MZ','CV','GW','ST'] },
-    { label: 'Emergentes',      countries: ['PT','CN','IN','BR','ZA','AR','CL'] },
+    { label: i18n.t('comparativos.preset.pt_spain'),       countries: ['PT','ES','EU27_2020'] },
+    { label: i18n.t('comparativos.preset.mediterranean'),  countries: ['PT','ES','IT','EL','EU27_2020'] },
+    { label: i18n.t('comparativos.preset.nordic'),         countries: ['PT','SE','DK','FI','NO','EU27_2020'] },
+    { label: i18n.t('comparativos.preset.east'),           countries: ['PT','PL','CZ','HU','RO','SK','BG','EU27_2020'] },
+    { label: i18n.t('comparativos.preset.all_eu'),         countries: ['PT','DE','FR','IT','ES','NL','BE','AT','PL','CZ','SK','HU','RO','BG','HR','SI','EE','LV','LT','SE','DK','FI','IE','EL','CY','LU','MT','EU27_2020'] },
+    { label: i18n.t('comparativos.preset.g7'),             countries: ['PT','US','GB','FR','DE','IT','JP','CA'] },
+    { label: i18n.t('comparativos.preset.palop'),          countries: ['PT','AO','MZ','CV','GW','ST'] },
+    { label: i18n.t('comparativos.preset.emerging'),       countries: ['PT','CN','IN','BR','ZA','AR','CL'] },
   ];
 
   const LOCKED = new Set(['PT']);
@@ -84,7 +69,7 @@ App.registerSection('comparativos', async () => {
   } catch(e) { console.warn('[comparativos] catalog fetch failed', e); }
 
   if (!CATALOG.length) {
-    body.innerHTML = '<p style="padding:2rem;color:var(--c-muted)">Catálogo indisponível.</p>';
+    body.innerHTML = `<p style="padding:2rem;color:var(--c-muted)">${i18n.t('comparativos.catalog_unavailable')}</p>`;
     return;
   }
 
@@ -95,13 +80,13 @@ App.registerSection('comparativos', async () => {
   let _available   = new Set(ALL_COUNTRIES);  // countries with data for current ind
   let _startYear   = 2015;
   let _viewMode    = 'lines';
-  let _activePreset = 'PT vs Espanha';
+  let _activePreset = i18n.t('comparativos.preset.pt_spain');
 
   // Source metadata for display
   const SOURCES_META = {
-    'COMPOSITE': { label: 'Compostos ★',   desc: 'Eurostat EU27 + Banco Mundial (cobertura global)' },
-    'EUROSTAT':  { label: 'Eurostat',      desc: 'EU27 · alta frequência (mensal/trimestral)' },
-    'WORLDBANK': { label: 'Banco Mundial', desc: 'Cobertura global · dados anuais' },
+    'COMPOSITE': { label: i18n.t('comparativos.source.composite'),  desc: i18n.t('comparativos.source.composite_desc') },
+    'EUROSTAT':  { label: 'Eurostat',      desc: i18n.t('comparativos.source.eurostat_desc') },
+    'WORLDBANK': { label: i18n.t('sources.WORLDBANK'), desc: i18n.t('comparativos.source.worldbank_desc') },
   };
 
   function buildSourceSelect(active) {
@@ -117,7 +102,7 @@ App.registerSection('comparativos', async () => {
     const filtered = CATALOG.filter(i => i.source === src);
     const groups = {}, order = [];
     for (const ind of filtered) {
-      const g = ind.group || 'Outros';
+      const g = ind.group || i18n.t('comparativos.group_other');
       if (!groups[g]) { groups[g] = []; order.push(g); }
       groups[g].push(ind);
     }
@@ -184,23 +169,23 @@ App.registerSection('comparativos', async () => {
   body.innerHTML = `
     <div class="cmp-top-bar">
       <div class="cmp-source-row">
-        <label class="control-label" for="cmp-source-select">FONTE</label>
+        <label class="control-label" for="cmp-source-select">${i18n.t('comparativos.label.source')}</label>
         <select class="swd-select" id="cmp-source-select" style="min-width:220px">
           ${buildSourceSelect(_source)}
         </select>
       </div>
       <div class="cmp-ind-row">
-        <label class="control-label" for="cmp-ind-select">INDICADOR</label>
+        <label class="control-label" for="cmp-ind-select">${i18n.t('comparativos.label.indicator')}</label>
         <select class="swd-select" id="cmp-ind-select" style="flex:1;min-width:200px;max-width:420px">
           ${buildIndicatorSelect(_source, _ind.id)}
         </select>
       </div>
       <div class="cmp-top-bar-right">
         <div class="eu-view-tabs" id="cmp-view-tabs">
-          <button class="eu-view-tab ${_viewMode==='lines'?'active':''}"    data-view="lines">Linhas</button>
-          <button class="eu-view-tab ${_viewMode==='snapshot'?'active':''}" data-view="snapshot">Snapshot</button>
+          <button class="eu-view-tab ${_viewMode==='lines'?'active':''}"    data-view="lines">${i18n.t('comparativos.tab.lines')}</button>
+          <button class="eu-view-tab ${_viewMode==='snapshot'?'active':''}" data-view="snapshot">${i18n.t('comparativos.tab.snapshot')}</button>
         </div>
-        <button class="share-btn" id="cmp-share">Partilhar</button>
+        <button class="share-btn" id="cmp-share">${i18n.t('comparativos.btn.share')}</button>
       </div>
     </div>
 
@@ -209,18 +194,18 @@ App.registerSection('comparativos', async () => {
         `<button class="preset-chip${_activePreset===p.label?' active':''}" data-preset="${p.label}">${p.label}</button>`
       ).join('')}
       <select class="europa-since-select" id="cmp-since">
-        <option value="2000" ${_startYear===2000?'selected':''}>Desde 2000</option>
-        <option value="2010" ${_startYear===2010?'selected':''}>Desde 2010</option>
-        <option value="2015" ${_startYear===2015?'selected':''}>Desde 2015</option>
-        <option value="2018" ${_startYear===2018?'selected':''}>Desde 2018</option>
-        <option value="2020" ${_startYear===2020?'selected':''}>Desde 2020</option>
+        <option value="2000" ${_startYear===2000?'selected':''}>${i18n.t('comparativos.since', {year: 2000})}</option>
+        <option value="2010" ${_startYear===2010?'selected':''}>${i18n.t('comparativos.since', {year: 2010})}</option>
+        <option value="2015" ${_startYear===2015?'selected':''}>${i18n.t('comparativos.since', {year: 2015})}</option>
+        <option value="2018" ${_startYear===2018?'selected':''}>${i18n.t('comparativos.since', {year: 2018})}</option>
+        <option value="2020" ${_startYear===2020?'selected':''}>${i18n.t('comparativos.since', {year: 2020})}</option>
       </select>
     </div>
 
     <details class="cmp-picker-details" id="cmp-picker-details">
       <summary class="cmp-picker-summary">
         <span class="cmp-picker-arrow">▶</span>
-        <span class="cmp-picker-label">PAÍSES SELECCIONADOS</span>
+        <span class="cmp-picker-label">${i18n.t('comparativos.selected_countries')}</span>
       </summary>
       <div class="cmp-picker-body" id="cmp-picker-body"></div>
     </details>
@@ -257,7 +242,7 @@ App.registerSection('comparativos', async () => {
               !isAvailable ? 'unavailable' : '',
             ].filter(Boolean).join(' ');
             return `<div class="${classes}" style="${style}" data-code="${code}"
-                         title="${COUNTRY_NAMES[code] || code}${!isAvailable ? ' (sem dados)' : ''}">
+                         title="${countryName(code)}${!isAvailable ? ` (${i18n.t('comparativos.no_data')})` : ''}">
               <span class="chip-flag">${FLAGS[code] || ''}</span>
               <span class="chip-code">${code === 'EU27_2020' ? 'EU27' : code}</span>
             </div>`;
@@ -363,7 +348,7 @@ App.registerSection('comparativos', async () => {
   document.getElementById('cmp-share').addEventListener('click', () => {
     const url = location.origin + location.pathname + buildHash();
     navigator.clipboard.writeText(url).then(
-      () => App.showToast('Link copiado!'),
+      () => App.showToast(i18n.t('comparativos.link_copied')),
       () => App.showToast('Link: ' + url)
     );
   });
@@ -372,9 +357,9 @@ App.registerSection('comparativos', async () => {
     const note = document.getElementById('cmp-note');
     if (!note) return;
     if (_ind.source === 'COMPOSITE') {
-      note.textContent = `★ Indicador composto: ${_ind.note || 'Eurostat EU27 + Banco Mundial (global)'}`;
+      note.textContent = `★ ${i18n.t('comparativos.note.composite')}: ${_ind.note || i18n.t('comparativos.source.composite_desc')}`;
     } else if (_ind.source === 'WORLDBANK') {
-      note.textContent = 'Fonte: Banco Mundial · dados anuais · cobertura global';
+      note.textContent = i18n.t('comparativos.note.worldbank');
     } else {
       note.textContent = '';
     }
@@ -389,7 +374,7 @@ App.registerSection('comparativos', async () => {
     pushHash();
 
     document.getElementById('cmp-legend').innerHTML =
-      `<div class="loading-state" style="height:32px"><div class="loading-spinner"></div><span>A carregar…</span></div>`;
+      `<div class="loading-state" style="height:32px"><div class="loading-spinner"></div><span>${i18n.t('comparativos.loading')}</span></div>`;
 
     try {
       const url = `/api/comparativos/data?source=${encodeURIComponent(_ind.source)}&indicator=${encodeURIComponent(_ind.indicator)}&countries=${countriesStr}&since=${_startYear}`;
@@ -397,13 +382,13 @@ App.registerSection('comparativos', async () => {
 
       let series = (data.series || []).map(s => ({
         country: s.country,
-        label:   COUNTRY_NAMES[s.country] || s.label || s.country,
+        label:   countryName(s.country) || s.label || s.country,
         data:    (s.data || []).filter(d => parseInt((d.period || '').slice(0,4), 10) >= _startYear),
       })).filter(s => s.data.length > 0);
 
       if (!series.length) {
         document.getElementById('cmp-legend').innerHTML =
-          `<span style="color:var(--c-muted)">Sem dados para os países/indicador seleccionados.</span>`;
+          `<span style="color:var(--c-muted)">${i18n.t('comparativos.no_data_selection')}</span>`;
         return;
       }
 
@@ -414,17 +399,17 @@ App.registerSection('comparativos', async () => {
         const v = ptS.data.at(-1)?.value;
         titleEl.textContent = v != null
           ? `Portugal — ${_ind.label}: ${fmt.num(v)}${_ind.unit_label ? ' ' + _ind.unit_label : ''}`
-          : `${_ind.label} — comparação`;
+          : `${_ind.label} — ${i18n.t('comparativos.comparison')}`;
       }
 
       const fn = document.getElementById('cmp-footnote');
-      if (fn) fn.textContent = `Fonte: ${_ind.source === 'COMPOSITE' ? 'Eurostat + Banco Mundial' : _ind.source} · ${_ind.label}${_ind.unit_label ? ' · ' + _ind.unit_label : ''}`;
+      if (fn) fn.textContent = `${i18n.t('comparativos.label.source')}: ${_ind.source === 'COMPOSITE' ? 'Eurostat + ' + i18n.t('sources.WORLDBANK') : _ind.source} · ${_ind.label}${_ind.unit_label ? ' · ' + _ind.unit_label : ''}`;
 
       _viewMode === 'snapshot' ? renderSnapshot(series) : renderLines(series);
 
     } catch(e) {
       console.error('[comparativos] load error:', e);
-      document.getElementById('cmp-legend').innerHTML = App.errorHTML('Não foi possível carregar os dados. Tenta novamente.');
+      document.getElementById('cmp-legend').innerHTML = App.errorHTML(i18n.t('comparativos.error_loading'));
     }
   }
 
@@ -444,7 +429,7 @@ App.registerSection('comparativos', async () => {
         <span style="color:${color};font-weight:600">${lastStr}</span>
       </div>`;
     }).join('');
-    document.getElementById('cmp-legend').innerHTML = legendHtml || '<span style="color:var(--c-muted)">Sem dados.</span>';
+    document.getElementById('cmp-legend').innerHTML = legendHtml || `<span style="color:var(--c-muted)">${i18n.t('comparativos.no_data_short')}</span>`;
 
     const chartEl = document.getElementById('cmp-chart');
     if (_cmpChart) { SWD.destroyChart(_cmpChart); _cmpChart = null; }
@@ -497,7 +482,7 @@ App.registerSection('comparativos', async () => {
     const colors = points.map(p => countryColor(p.country));
 
     document.getElementById('cmp-legend').innerHTML =
-      `<span style="color:var(--c-muted);font-size:12px">Último valor disponível · ${points.length} países</span>`;
+      `<span style="color:var(--c-muted);font-size:12px">${i18n.t('comparativos.snapshot_last_value')} · ${points.length} ${i18n.t('comparativos.countries_count')}</span>`;
 
     const avg = values.reduce((s, v) => s + v, 0) / values.length;
     const chartEl = document.getElementById('cmp-chart');
@@ -514,7 +499,7 @@ App.registerSection('comparativos', async () => {
         markLine: values.length > 2 ? {
           silent: true, symbol: 'none',
           data: [{ xAxis: avg, lineStyle: { color: '#aaa', type: 'dashed', width: 1 } }],
-          label: { formatter: `Média: ${fmt.num(avg)}`, color: '#aaa', fontSize: 9 },
+          label: { formatter: `${i18n.t('comparativos.average')}: ${fmt.num(avg)}`, color: '#aaa', fontSize: 9 },
         } : undefined,
       }],
       grid: { containLabel: true, left: 60, right: 70, top: 10, bottom: 20 },

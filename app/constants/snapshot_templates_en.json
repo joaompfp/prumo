@@ -1,0 +1,182 @@
+{
+  "inflation": {
+    "positive": "Inflation dropped to {value}% — prices are easing.",
+    "negative": "Prices rising {value}% per year — purchasing power shrinking.",
+    "neutral": "Inflation steady at {value}%."
+  },
+  "diesel": {
+    "positive": "Diesel fell to {value} EUR/L — transport costs easing.",
+    "negative": "Diesel at {value} EUR/L — transport costs rising.",
+    "neutral": "Diesel stable at {value} EUR/L."
+  },
+  "gasoline_95": {
+    "positive": "Gasoline 95 dropped to {value} EUR/L — relief at the pump.",
+    "negative": "Gasoline 95 at {value} EUR/L — filling up costs more.",
+    "neutral": "Gasoline 95 stable at {value} EUR/L."
+  },
+  "electricity_btn": {
+    "positive": "Household electricity fell to {value} EUR/kWh.",
+    "negative": "Household electricity at {value} EUR/kWh — bills getting heavier.",
+    "neutral": "Household electricity rate stable at {value} EUR/kWh."
+  },
+  "electricity_mt": {
+    "positive": "SME electricity fell to {value} EUR/kWh.",
+    "negative": "Industrial electricity (MT) rose to {value} EUR/kWh.",
+    "neutral": "Industrial electricity stable at {value} EUR/kWh."
+  },
+  "electricity_at": {
+    "positive": "Heavy industry electricity fell to {value} EUR/kWh.",
+    "negative": "Heavy industry electricity rose to {value} EUR/kWh.",
+    "neutral": "Heavy industry electricity stable at {value} EUR/kWh."
+  },
+  "euribor_3m": {
+    "positive": "Euribor 3M fell to {value}% — mortgage payments easing.",
+    "negative": "Euribor 3M rose to {value}% — mortgages getting more expensive.",
+    "neutral": "Euribor 3M steady at {value}%."
+  },
+  "euribor_6m": {
+    "positive": "Euribor 6M dropped to {value}% — good news for mortgage holders.",
+    "negative": "Euribor 6M rose to {value}% — six-month payments increasing.",
+    "neutral": "Euribor 6M stable at {value}%."
+  },
+  "euribor_12m": {
+    "positive": "Euribor 12M fell to {value}% — annual revisions will be lower.",
+    "negative": "Euribor 12M rose to {value}% — annual mortgage cost up.",
+    "neutral": "Euribor 12M holds at {value}%."
+  },
+  "ipi_total": {
+    "positive": "Industrial production grew — index at {value} points.",
+    "negative": "Industrial production declined — index at {value} points.",
+    "neutral": "Industrial production stable — index at {value} points."
+  },
+  "ipi_cae_10": {
+    "positive": "Food industry growing — index at {value}.",
+    "negative": "Food industry declining — index at {value}.",
+    "neutral": "Food industry stable — index at {value}."
+  },
+  "ipi_cae_20": {
+    "positive": "Chemical industry growing — index at {value}.",
+    "negative": "Chemical industry declining — index at {value}.",
+    "neutral": "Chemical industry stable — index at {value}."
+  },
+  "ipi_cae_24": {
+    "positive": "Basic metals production growing — index at {value}.",
+    "negative": "Basic metals production declining — index at {value}.",
+    "neutral": "Basic metals stable — index at {value}."
+  },
+  "ipi_cae_25": {
+    "positive": "Metal products growing — index at {value}.",
+    "negative": "Metal products declining — index at {value}.",
+    "neutral": "Metal products stable — index at {value}."
+  },
+  "ipi_cae_28": {
+    "positive": "Machinery & equipment rising — index at {value}.",
+    "negative": "Machinery & equipment falling — index at {value}.",
+    "neutral": "Machinery & equipment stable — index at {value}."
+  },
+  "ipi_cae_29": {
+    "positive": "Automotive sector accelerating — index at {value} points.",
+    "negative": "Automotive sector slowing — index at {value} points.",
+    "neutral": "Automotive sector stable — index at {value}."
+  },
+  "copper": {
+    "positive": "Copper rising to {value} USD/ton — global demand signal.",
+    "negative": "Copper fell to {value} USD/ton — global demand weakening.",
+    "neutral": "Copper stable at {value} USD/ton."
+  },
+  "aluminum": {
+    "positive": "Aluminium rising to {value} USD/ton — industrial demand strong.",
+    "negative": "Aluminium fell to {value} USD/ton — industrial demand weak.",
+    "neutral": "Aluminium stable at {value} USD/ton."
+  },
+  "unemployment": {
+    "positive": "Unemployment dropped to {value}% — down {yoy_abs}pp vs last year.",
+    "negative": "Unemployment rose to {value}% — more people looking for work.",
+    "neutral": "Unemployment steady at {value}%."
+  },
+  "industrial_employment": {
+    "positive": "Industrial employment rose — index at {value}.",
+    "negative": "Industrial employment fell — index at {value}.",
+    "neutral": "Industrial employment stable — index at {value}."
+  },
+  "wages_industry": {
+    "positive": "Industrial wages rose — index at {value}.",
+    "negative": "Industrial wages declined — index at {value}.",
+    "neutral": "Industrial wages stable — index at {value}."
+  },
+  "cli": {
+    "positive": "OECD leading indicator rose to {value} — expansion ahead.",
+    "negative": "OECD leading indicator fell to {value} — slowdown ahead.",
+    "neutral": "OECD leading indicator at {value} — no clear signal."
+  },
+  "confidence": {
+    "positive": "Industrial confidence improved — balance at {value}.",
+    "negative": "Industrial confidence worsened — balance at {value}.",
+    "neutral": "Industrial confidence stable — balance at {value}."
+  },
+  "order_books": {
+    "positive": "Order books improved — balance at {value}.",
+    "negative": "Order books worsened — balance at {value}.",
+    "neutral": "Order books stable — balance at {value}."
+  },
+  "energy_cost": {
+    "positive": "Wholesale electricity fell to {value} EUR/MWh.",
+    "negative": "Wholesale electricity rose to {value} EUR/MWh.",
+    "neutral": "Wholesale electricity stable at {value} EUR/MWh."
+  },
+  "renewable_share": {
+    "positive": "Renewables now at {value}% of electricity — record share.",
+    "negative": "Renewable share fell to {value}% — transition setback.",
+    "neutral": "Renewables at {value}% of electricity."
+  },
+  "energy_dependence": {
+    "positive": "Energy dependence fell to {value}% — more self-reliance.",
+    "negative": "Energy dependence rose to {value}% — more vulnerability.",
+    "neutral": "Energy dependence stable at {value}%."
+  },
+  "natural_gas": {
+    "positive": "Natural gas fell to {value} USD/MMBtu — industry relief.",
+    "negative": "Natural gas rose to {value} USD/MMBtu — cost pressure.",
+    "neutral": "Natural gas stable at {value} USD/MMBtu."
+  },
+  "solar": {
+    "positive": "Solar output rose to {value} GWh — clean energy growing.",
+    "negative": "Solar output fell to {value} GWh.",
+    "neutral": "Solar output at {value} GWh."
+  },
+  "wind": {
+    "positive": "Wind output rose to {value} GWh — wind in our favour.",
+    "negative": "Wind output fell to {value} GWh.",
+    "neutral": "Wind output at {value} GWh."
+  },
+  "eur_usd": {
+    "positive": "Euro strengthened to {value} USD — imports cheaper.",
+    "negative": "Euro weakened to {value} USD — imports more expensive.",
+    "neutral": "Euro stable at {value} USD."
+  },
+  "spread_pt_de": {
+    "positive": "Portugal-Germany spread fell to {value}pp — sovereign risk down.",
+    "negative": "Portugal-Germany spread rose to {value}pp — more perceived risk.",
+    "neutral": "Portugal-Germany spread stable at {value}pp."
+  },
+  "brent": {
+    "positive": "Brent oil fell to {value} USD/bbl — fuel cost relief.",
+    "negative": "Brent oil rose to {value} USD/bbl — price pressure.",
+    "neutral": "Brent oil stable at {value} USD/bbl."
+  },
+  "gdp_per_capita": {
+    "positive": "GDP per capita rose to {value} EUR — convergence underway.",
+    "negative": "GDP per capita fell to {value} EUR — diverging from EU.",
+    "neutral": "GDP per capita stable at {value} EUR."
+  },
+  "rnd_pct_gdp": {
+    "positive": "R&D investment rose to {value}% of GDP — more innovation.",
+    "negative": "R&D investment fell to {value}% of GDP.",
+    "neutral": "R&D investment stable at {value}% of GDP."
+  },
+  "employment_rate": {
+    "positive": "Employment rate rose to {value}% — more people working.",
+    "negative": "Employment rate fell to {value}% — fewer people working.",
+    "neutral": "Employment rate stable at {value}%."
+  }
+}

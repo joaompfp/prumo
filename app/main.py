@@ -11,6 +11,7 @@ from fastapi.templating import Jinja2Templates
 
 from .config import PORT, STATIC_DIR, CAE_DB_PATH, ANALYTICS_DB_PATH, TEMPLATES_DIR, BASE_PATH
 from .routes.api import router as api_router
+from .routes.share import router as share_router
 from .routes.pages import router as pages_router
 
 app = FastAPI(
@@ -70,8 +71,9 @@ async def analytics_middleware(request: Request, call_next):
 # Static files
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# Routes
+# Routes — share router MUST precede pages (pages has catch-all /{full_path:path})
 app.include_router(api_router)
+app.include_router(share_router)
 app.include_router(pages_router)
 
 

@@ -13,25 +13,25 @@ const Search = (() => {
   let _items = [];
   let _catalogLoading = false;
 
-  // ── Static entries ──────────────────────────────────────────────
+  // ── Static entries (titles resolved via i18n at render time) ────
   const SECTIONS = [
-    { id: 'painel',       icon: '📊', title: 'Painel',       sub: 'Indicadores-chave de Portugal' },
-    { id: 'comparativos', icon: '🌍', title: 'Comparativos', sub: 'PT vs Europa e Mundo' },
-    { id: 'explorador',   icon: '🔍', title: 'Análise',      sub: 'Explorador de séries temporais' },
-    { id: 'metodologia',  icon: '📄', title: 'Metodologia',  sub: 'Como as análises IA são geradas' },
-    { id: 'ajuda',        icon: '❓', title: 'Ajuda',        sub: 'O que é o Prumo, guia, FAQ' },
+    { id: 'painel',       icon: '📊', titleKey: 'nav.painel',       subKey: 'search.sections.painel_sub' },
+    { id: 'comparativos', icon: '🌍', titleKey: 'nav.comparativos', subKey: 'search.sections.comparativos_sub' },
+    { id: 'explorador',   icon: '🔍', titleKey: 'nav.analise',      subKey: 'search.sections.explorador_sub' },
+    { id: 'metodologia',  icon: '📄', titleKey: 'nav.metodologia',  subKey: 'search.sections.metodologia_sub' },
+    { id: 'ajuda',        icon: '❓', titleKey: 'nav.ajuda',        subKey: 'search.sections.ajuda_sub' },
   ];
 
   const HELP_TOPICS = [
-    { q: 'O que é o Prumo PT',             section: 'ajuda' },
-    { q: 'Dados em tempo real',             section: 'ajuda' },
-    { q: 'Ajustamento sazonal',             section: 'ajuda' },
-    { q: 'Usar dados num relatório',        section: 'ajuda' },
-    { q: 'EU27_2020',                       section: 'ajuda' },
-    { q: 'Análise com IA',                  section: 'ajuda' },
-    { q: 'Países a cinzento',               section: 'ajuda' },
-    { q: 'Indicadores compostos',           section: 'ajuda' },
-    { q: 'Embed — incorporar gráfico',      section: 'metodologia' },
+    { key: 'search.help.what_is',          section: 'ajuda' },
+    { key: 'search.help.real_time',        section: 'ajuda' },
+    { key: 'search.help.seasonal',         section: 'ajuda' },
+    { key: 'search.help.use_in_report',    section: 'ajuda' },
+    { key: 'search.help.eu27',             section: 'ajuda' },
+    { key: 'search.help.ai_analysis',      section: 'ajuda' },
+    { key: 'search.help.grey_countries',   section: 'ajuda' },
+    { key: 'search.help.composite',        section: 'ajuda' },
+    { key: 'search.help.embed',            section: 'metodologia' },
   ];
 
   const SRC_ALIASES = {
@@ -278,6 +278,11 @@ const Search = (() => {
       const bar = document.getElementById('search-bar');
       if (bar && !bar.contains(e.target)) clear();
     });
+
+    // Re-render search results when UI language changes
+    window.addEventListener('i18n-change', () => {
+      if (_input && _input.value.trim()) render(_input.value);
+    });
   }
 
   // ── Lazy catalog fetch ────────────────────────────────────────
@@ -325,25 +330,25 @@ const Search = (() => {
     let count = 0;
 
     // 1. Sections
-    const secMatches = SECTIONS.filter(s =>
-      s.title.toLowerCase().includes(q) ||
-      s.sub.toLowerCase().includes(q) ||
-      s.id.includes(q)
-    );
+    const secMatches = SECTIONS.filter(s => {
+      const title = i18n.t(s.titleKey).toLowerCase();
+      const sub   = i18n.t(s.subKey).toLowerCase();
+      return title.includes(q) || sub.includes(q) || s.id.includes(q);
+    });
     if (secMatches.length) {
-      html += `<div class="search-group-label">Secções</div>`;
+      html += `<div class="search-group-label">${i18n.t('search.group_sections')}</div>`;
       for (const s of secMatches) {
-        html += itemHTML(s.icon, s.title, s.sub, null, `nav:${s.id}`);
+        html += itemHTML(s.icon, i18n.t(s.titleKey), i18n.t(s.subKey), null, `nav:${s.id}`);
         count++;
       }
     }
 
     // 2. Help topics
-    const helpMatches = HELP_TOPICS.filter(h => h.q.toLowerCase().includes(q));
+    const helpMatches = HELP_TOPICS.filter(h => i18n.t(h.key).toLowerCase().includes(q));
     if (helpMatches.length) {
-      html += `<div class="search-group-label">Ajuda</div>`;
+      html += `<div class="search-group-label">${i18n.t('search.group_help')}</div>`;
       for (const h of helpMatches) {
-        html += itemHTML('❓', h.q, '', null, `nav:${h.section}`);
+        html += itemHTML('❓', i18n.t(h.key), '', null, `nav:${h.section}`);
         count++;
       }
     }
@@ -389,7 +394,7 @@ const Search = (() => {
     const indMatches = scored.slice(0, 15).map(s => s.item);
 
     if (indMatches.length) {
-      html += `<div class="search-group-label">Indicadores</div>`;
+      html += `<div class="search-group-label">${i18n.t('search.group_indicators')}</div>`;
       for (const item of indMatches) {
         html += itemHTML('📈', item.label, item.sourceLabel, item.unit,
           `ind:${item.source}/${item.indicator}`);
@@ -398,7 +403,7 @@ const Search = (() => {
     }
 
     if (count === 0) {
-      html = `<div class="search-no-results">Sem resultados para "${esc(rawQuery)}"</div>`;
+      html = `<div class="search-no-results">${i18n.t('search.no_results', { query: esc(rawQuery) })}</div>`;
     }
 
     _results.innerHTML = html;

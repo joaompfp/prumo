@@ -1,0 +1,695 @@
+{
+  "_meta": {
+    "lang": "en",
+    "name": "English",
+    "version": 2
+  },
+  "nav": {
+    "painel": "Dashboard",
+    "comparativos": "Comparisons",
+    "analise": "Analysis",
+    "metodologia": "Methodology",
+    "ajuda": "Help",
+    "tagline": "Data. Context. Narratives."
+  },
+  "hero": {
+    "title": "Portuguese economy,<br>verified.",
+    "title_compact": "Portuguese economy, verified.",
+    "desc": "9 official sources. {{n}} indicators. AI analysis with transparent editorial framing — choose the political lens.",
+    "cta": "Explore data",
+    "link": "How it works →",
+    "expand": "↓ About Prumo",
+    "sources": "INE · Eurostat · Bank of Portugal · OECD · World Bank · REN · DGEG · ERSE · FRED",
+    "compact_title": "Portuguese economy, verified.",
+    "expand_label": "↓ About Prumo"
+  },
+  "snapshot": {
+    "positive_heading": "Positive signals",
+    "negative_heading": "Negative signals",
+    "reference": "Change vs same period last year"
+  },
+  "search": {
+    "placeholder": "Search indicators, sections, help…",
+    "no_results": "No results for \"{{query}}\"",
+    "group_sections": "Sections",
+    "group_help": "Help",
+    "group_indicators": "Indicators",
+    "sections": {
+      "painel_sub": "Key indicators for Portugal",
+      "comparativos_sub": "PT vs Europe and World",
+      "explorador_sub": "Time series explorer",
+      "metodologia_sub": "How AI analyses are generated",
+      "ajuda_sub": "What is Prumo, guide, FAQ"
+    },
+    "help": {
+      "what_is": "What is Prumo PT",
+      "real_time": "Is the data real-time?",
+      "seasonal": "Seasonal adjustment",
+      "use_in_report": "Can I use this data in a report?",
+      "eu27": "What is EU27_2020?",
+      "ai_analysis": "AI analysis",
+      "grey_countries": "Grey countries in Comparisons",
+      "composite": "Composite indicators",
+      "embed": "Embed — embed chart"
+    }
+  },
+  "fmt": {
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "nd": "n/a",
+    "vs_year_ago": "vs year ago"
+  },
+  "countries": {
+    "PT": "Portugal",
+    "ES": "Spain",
+    "DE": "Germany",
+    "FR": "France",
+    "IT": "Italy",
+    "NL": "Netherlands",
+    "BE": "Belgium",
+    "AT": "Austria",
+    "GR": "Greece",
+    "EL": "Greece",
+    "IE": "Ireland",
+    "FI": "Finland",
+    "SE": "Sweden",
+    "DK": "Denmark",
+    "PL": "Poland",
+    "CZ": "Czechia",
+    "HU": "Hungary",
+    "RO": "Romania",
+    "BG": "Bulgaria",
+    "HR": "Croatia",
+    "SK": "Slovakia",
+    "SI": "Slovenia",
+    "LT": "Lithuania",
+    "LV": "Latvia",
+    "EE": "Estonia",
+    "CY": "Cyprus",
+    "MT": "Malta",
+    "LU": "Luxembourg",
+    "EU27_2020": "EU-27",
+    "EU27": "EU-27",
+    "EU": "EU",
+    "EA": "Eurozone",
+    "US": "USA",
+    "CN": "China",
+    "JP": "Japan",
+    "GB": "United Kingdom",
+    "BR": "Brazil",
+    "IN": "India",
+    "KR": "South Korea",
+    "AO": "Angola",
+    "MZ": "Mozambique",
+    "CV": "Cabo Verde",
+    "GW": "Guinea-Bissau",
+    "ST": "Sao Tome",
+    "TL": "Timor-Leste",
+    "NO": "Norway",
+    "CH": "Switzerland",
+    "IS": "Iceland",
+    "TR": "Turkey",
+    "RU": "Russia",
+    "UA": "Ukraine",
+    "MX": "Mexico",
+    "AR": "Argentina",
+    "ZA": "South Africa",
+    "AU": "Australia",
+    "CA": "Canada",
+    "NZ": "New Zealand",
+    "CL": "Chile",
+    "NG": "Nigeria",
+    "EG": "Egypt",
+    "ID": "Indonesia",
+    "TH": "Thailand",
+    "MY": "Malaysia"
+  },
+  "sources": {
+    "INE": "INE",
+    "EUROSTAT": "Eurostat",
+    "FRED": "FRED",
+    "BPORTUGAL": "Bank of Portugal",
+    "OECD": "OECD",
+    "WORLDBANK": "World Bank",
+    "REN": "REN",
+    "ERSE": "ERSE",
+    "DGEG": "DGEG"
+  },
+  "lens": {
+    "disclaimer_party": "Simulated analysis — does not constitute an official position of {{article}} {{party}}",
+    "disclaimer_cae": "Simulated analysis — editorial perspective of this instance's operator",
+    "disclaimer_custom": "Simulated analysis — user-customised lens",
+    "disclaimer_default": "AI-generated analysis — for informational purposes only",
+    "label": "Lens",
+    "ideology_title": "Ideology lens",
+    "saved": "Custom lens saved",
+    "custom_placeholder": "Write your custom ideological framing here…",
+    "custom_hint": "Text sent as context to the AI model. Saved in browser.",
+    "source_custom": "Source: User-defined text"
+  },
+  "common": {
+    "error_title": "Could not load data",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "copied": "Copied to clipboard",
+    "share": "Share",
+    "error": "Error",
+    "timeout": "Timeout — server did not respond in 10s",
+    "lens_label": "Lens:",
+    "lens_ideology_title": "Ideological lens",
+    "lang_title": "Language / Língua / Langue",
+    "theme_toggle": "Toggle light/dark theme",
+    "choose_language": "Choose your output language",
+    "error_loading": "Could not load data",
+    "source": "Source",
+    "no_data": "No data"
+  },
+  "painel": {
+    "title_fallback": "Economic indicators overview",
+    "subtitle_updated": "Data updated: {{date}}",
+    "subtitle_sources": "Source: INE, Eurostat, World Bank",
+    "yoy_label": "vs previous year",
+    "view_in_explorador": "View {{label}} in Explorer",
+    "data_prefix": "Data",
+    "no_data": "No data",
+    "error_loading": "Could not load data",
+    "phrase": {
+      "ipi_up": "industrial production up {{pct}}%",
+      "ipi_down": "industrial production down {{pct}}%",
+      "unemployment": "unemployment at {{val}}%",
+      "employment": "employment rate at {{val}}%",
+      "confidence_up": "confidence improves {{pp}} pp",
+      "confidence_down": "confidence drops {{pp}} pp",
+      "inflation": "inflation at {{val}}%"
+    },
+    "insight": {
+      "inflation_up": "Inflation accelerated {{pct}}% year-on-year — pressure on household budgets",
+      "inflation_down": "Inflation decelerated {{pct}}% — relief in consumer prices",
+      "unemployment_down": "Unemployment fell {{pp}} pp — stronger labour market",
+      "unemployment_up": "Unemployment rose {{pp}} pp — labour market pressure",
+      "energy_down": "Cheaper energy: -{{pct}}% — relief on electricity bills",
+      "energy_up": "More expensive energy: +{{pct}}% — rising energy costs",
+      "tariff_up": "Electricity tariff up {{pct}}% — direct impact on households",
+      "tariff_down": "Electricity tariff down {{pct}}% — relief for consumers",
+      "euribor_up": "Euribor up {{pp}} pp — higher mortgage repayments",
+      "euribor_down": "Euribor down {{pp}} pp — more affordable mortgage repayments",
+      "wages_up": "Wages up {{pct}}% — nominal income gain",
+      "wages_down": "Wages down {{pct}}% — pressure on purchasing power",
+      "rnd": "R&D accounts for {{val}}% of GDP",
+      "rise": "Rise",
+      "fall": "Fall"
+    },
+    "theme": {
+      "pt_vs_europe": "PT vs Europe"
+    },
+    "pt_vs_europe": {
+      "title": "PT vs Europe",
+      "inflation": "Inflation (HICP)",
+      "unemployment": "Unemployment",
+      "gdp_growth": "GDP Growth",
+      "gdp_ppp": "GDP per Capita PPP",
+      "electricity": "Electricity (Household)",
+      "hourly_earnings": "Avg. Hourly Earnings",
+      "monthly_earnings": "Est. Monthly Earnings",
+      "price_level": "Price Level (PLI)",
+      "life_expectancy": "Life Expectancy",
+      "employment_rate": "Employment Rate",
+      "health": "Health (% GDP)",
+      "tertiary": "Tertiary Education",
+      "eu27_ref": "EU-27 Average",
+      "eu_ref": "EU Average",
+      "above": "above",
+      "below": "below",
+      "eu_average": "EU average",
+      "last_data": "Latest data",
+      "electricity_note": "Includes taxes and levies",
+      "hourly_note": "Eurostat earn_ses_pub2s — gross hourly earnings",
+      "monthly_note": "Estimate: hourly earnings × 176h (40h/week)",
+      "month_unit": "month",
+      "years_unit": "years"
+    },
+    "ia": {
+      "btn_title": "AI analysis of all themes",
+      "btn_label": "AI Analysis",
+      "panel_label": "Political Analysis",
+      "lens_prefix": "Lens",
+      "tagline": "(almost) instant, just add electricity",
+      "loading": "Generating analysis…",
+      "generating": "Generating AI analysis… {{time}}",
+      "timeout": "Timeout — analysis not generated. Try reloading.",
+      "unavailable": "Analysis unavailable — Sonnet token not configured.",
+      "generated_now": "generated now",
+      "regen": "regenerate",
+      "regen_title": "Force new analysis",
+      "regen_generating": "Generating new analysis…",
+      "read_more": "Read more",
+      "related_reading": "Related reading",
+      "lens_source": "Source",
+      "lens_custom": "Custom",
+      "custom_placeholder": "Write your ideological framing here. E.g.: 'You are an analyst who prioritises environmental sustainability and the circular economy…'",
+      "custom_hint": "This text is sent as context to the AI model. Saved locally in browser.",
+      "custom_save": "Save",
+      "custom_saved": "Custom lens saved",
+      "custom_notice": "Write your framing in the field above and generate the analysis.",
+      "disclaimer_party": "Simulated analysis — does not represent an official position of {{article}} {{party}}",
+      "disclaimer_cae": "Simulated analysis — editorial perspective of this instance's operator",
+      "disclaimer_custom": "Simulated analysis — user-customised lens",
+      "disclaimer_generic": "AI-generated analysis — for informational purposes only"
+    }
+  },
+  "comparativos": {
+    "catalog_unavailable": "Catalogue unavailable.",
+    "loading": "Loading comparison…",
+    "no_data": "no data",
+    "no_data_short": "No data.",
+    "no_data_selection": "No data for the selected countries/indicator.",
+    "link_copied": "Link copied!",
+    "comparison": "comparison",
+    "error_loading": "Could not load data. Please try again.",
+    "snapshot_last_value": "Last available value",
+    "countries_count": "countries",
+    "average": "Average",
+    "selected_countries": "SELECTED COUNTRIES",
+    "group_other": "Other",
+    "group": {
+      "reference": "REFERENCE",
+      "eu27": "EU 27",
+      "rest_europe": "REST OF EUROPE",
+      "oecd_non_eu": "OECD (non-EU)",
+      "palop": "PALOP",
+      "emerging": "EMERGING",
+      "other": "OTHER"
+    },
+    "preset": {
+      "pt_spain": "PT vs Spain",
+      "mediterranean": "Mediterranean",
+      "nordic": "Nordics",
+      "east": "Eastern",
+      "all_eu": "All EU",
+      "g7": "G7",
+      "palop": "PALOP",
+      "emerging": "Emerging"
+    },
+    "label": {
+      "source": "SOURCE",
+      "indicator": "INDICATOR"
+    },
+    "tab": {
+      "lines": "Lines",
+      "snapshot": "Snapshot"
+    },
+    "btn": {
+      "share": "Share"
+    },
+    "since": "Since {{year}}",
+    "source": {
+      "composite": "Composite",
+      "composite_desc": "Eurostat EU27 + World Bank (global coverage)",
+      "eurostat_desc": "EU27 — high frequency (monthly/quarterly)",
+      "worldbank_desc": "Global coverage — annual data"
+    },
+    "note": {
+      "composite": "Composite indicator",
+      "worldbank": "Source: World Bank · annual data · global coverage"
+    }
+  },
+  "explorador": {
+    "search_placeholder": "Search indicators…",
+    "all_sources": "All sources",
+    "no_results": "No results",
+    "chip_placeholder": "Select indicators above (max. 5)",
+    "empty_state": "Select indicators to visualise",
+    "loading_series": "Loading series…",
+    "error_catalog": "Error loading catalogue",
+    "error": "Error",
+    "more_results": "+ {{count}} more. Refine your search.",
+    "dual_axis": "Two vertical axes — left: {{left}} · right: {{right}}",
+    "incompatible_units": "Incompatible units ({{units}}) — chart may be misleading. Consider using Indexed mode.",
+    "unit_conversion": "Automatic unit conversion",
+    "freq_mismatch": "Note: different frequencies ({{freqs}}) — quarterly data connected between points",
+    "index_label": "Index (start=100)",
+    "guided": {
+      "label": "Explore",
+      "cost_of_living": "Cost of Living",
+      "employment": "Employment",
+      "energy": "Energy",
+      "industry": "Industry",
+      "macro": "Economic Outlook"
+    },
+    "label": {
+      "from": "From",
+      "to": "To"
+    },
+    "time": {
+      "all": "All"
+    },
+    "btn": {
+      "clear": "Clear",
+      "clear_all": "Clear all indicators",
+      "remove": "Remove",
+      "view": "View →",
+      "ai_title": "Automatic AI analysis",
+      "chart": "Chart",
+      "table": "Table",
+      "share": "Share"
+    },
+    "toast": {
+      "max_indicators": "Maximum of 5 indicators reached",
+      "already_selected": "Indicator already selected",
+      "select_first": "Select indicators first",
+      "link_copied": "Link copied!",
+      "citation_copied": "Citation copied!",
+      "copy_url_manually": "Copy the URL manually"
+    },
+    "ai": {
+      "title": "Automatic Analysis",
+      "loading": "Generating AI analysis…",
+      "related_reading": "Related reading",
+      "cached": "Cached analysis (session)",
+      "generated": "Analysis generated"
+    },
+    "ficha": {
+      "title": "Technical details for selected indicators",
+      "click_to_view": "Click to view in Technical Sheet",
+      "code": "Code",
+      "unit": "Unit",
+      "frequency": "Frequency",
+      "coverage": "Coverage",
+      "observations": "Observations",
+      "cite": "Cite",
+      "copy_citation": "Copy citation",
+      "citation_source": "Source",
+      "citation_accessed": "Accessed on"
+    },
+    "table": {
+      "period": "Period"
+    }
+  },
+  "metodologia": {
+    "title": "Methodology",
+    "subtitle": "How AI analyses are generated",
+    "intro": "Each analysis is generated from <strong>real socioeconomic data</strong>, combined with an <strong>explicit editorial framing</strong>. The process is fully transparent: below we show how, from official data, and applying <strong>tailored instructions as a Lens</strong>, an <a href=\"https://claude.ai\" target=\"_blank\" rel=\"noopener\">LLM model (in 2026)</a> produces tailored copy and editorial.",
+    "instance_notice": "This Prumo instance can run under any available lens. By default it uses a prompt generated by its authors. Try the available lenses to see the same data interpreted from different political perspectives.",
+    "flow_title": "Analysis flow",
+    "step1_label": "Economic data",
+    "step1_sub": "Over 350 indicators from 9 official sources, covering 54 countries (EU-27, PALOP and global economies). Series since 1960 updated automatically via public APIs.",
+    "step2_label": "Editorial framing",
+    "step2_sub": "Injected at the start of each prompt. Defines the analysis viewpoint — selectable and transparent. Each lens is derived from the respective party's electoral programme.",
+    "step3_label": "Prompt sent to model",
+    "step3_sub": "Data from step 1 and framing from step 2 are combined into a single structured prompt. The model can also search the web for recent news context.",
+    "step4_label": "Analysis published on page",
+    "step4_sub": "The model returns structured text with analysis, framing and context links. It is presented as an expandable card next to the series chart.",
+    "composite_title": "Composite Indicators",
+    "ficha_title": "Technical Sheet — Sources and Methodology",
+    "source_custom": "Source: User-defined text",
+    "source_prefix": "Source:",
+    "custom_placeholder": "Write your custom ideological framing here…",
+    "custom_hint": "Text sent as context to the AI model. Saved in browser.",
+    "custom_save": "Save",
+    "custom_placeholder_painel": "Write your ideological framing here. E.g.: 'You are an analyst who prioritises environmental sustainability and the circular economy…'",
+    "custom_hint_painel": "This text is sent as context to the AI model. Saved locally in browser."
+  },
+  "ficha": {
+    "loading": "Loading technical sheet…",
+    "summary_heading": "Technical Sheet — {{sources}} sources, {{indicators}} indicators",
+    "no_indicators": "No registered indicators.",
+    "official_site": "Official site",
+    "show_indicators": "Show indicators",
+    "hide": "Hide",
+    "n_indicators": "{{count}} indicators",
+    "link_comparativos": "View in Comparisons ({{count}} countries/regions)",
+    "link_explorador": "View in Explorer",
+    "countries_count": "{{count}} countries/regions",
+    "disclaimer": "The data presented is compiled from official sources for informational and analytical purposes. It does not replace official publications from the source organisations. For primary data, consult INE, Eurostat, Bank of Portugal and World Bank.",
+    "table": {
+      "indicator": "Indicator",
+      "unit": "Unit",
+      "freq": "Freq.",
+      "since": "From",
+      "until": "To",
+      "obs": "Obs."
+    },
+    "freq": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "annual": "Annual",
+      "weekly": "Weekly",
+      "semester": "Biannual"
+    },
+    "header": {
+      "indicators_in_sources": "{{indicators}} indicators in {{sources}} sources",
+      "last_update": "Last updated",
+      "total_obs": "Total observations",
+      "coverage": "Coverage"
+    },
+    "methodology": {
+      "title": "Methodology",
+      "seasonal": {
+        "title": "Seasonal Adjustment",
+        "body": "Many economic series have regularly repeating patterns (e.g., industrial production drops in August due to holidays). Seasonal adjustment removes these predictable patterns using the TRAMO-SEATS method, employed by INE and Eurostat. Series marked '(seas. adj.)' are treated this way, enabling month-to-month comparisons without seasonal distortion."
+      },
+      "base_index": {
+        "title": "Temporal Base (Indices)",
+        "body": "Index indicators (such as IPI or HICP) are expressed relative to a base year (e.g., 2021=100). For correct comparisons, it is essential to verify that indices use the same base. Prumo always normalises to the base published by the official source."
+      },
+      "comparability": {
+        "title": "European Comparability",
+        "body": "When comparing Portugal with the EU, we use Eurostat harmonised data whenever available. The HICP (Harmonised Index of Consumer Prices) is preferred over the national CPI because it is comparable across countries. The unemployment rate follows the ILO definition via the Labour Force Survey."
+      },
+      "gdp_differential": {
+        "title": "GDP per Capita Differential Calculation",
+        "body": "The PT vs EU convergence differential is calculated on GDP per capita in PPP (Purchasing Power Parity), which adjusts for cost-of-living differences between countries. A rising differential indicates real convergence — Portugal is catching up with the European average."
+      },
+      "eu27": {
+        "title": "EU27_2020 Aggregate",
+        "body": "EU27_2020 is the Eurostat aggregate for the current 27 EU Member States, following the UK's departure (Brexit, February 2020). Eurostat retroactively recalculates historical series excluding the UK, ensuring temporal consistency even for periods before 2020."
+      },
+      "update_freq": {
+        "title": "Update Frequency by Source",
+        "col_source": "Source",
+        "col_indicators": "Indicators",
+        "col_freq": "Frequency",
+        "col_lag": "Lag",
+        "ine_desc": "CPI, IPI, Employment, GDP, Foreign trade",
+        "ine_lag": "1–3 months",
+        "eurostat_desc": "HICP, Unemployment, Energy prices, Earnings",
+        "eurostat_freq": "Monthly/Quarterly",
+        "eurostat_lag": "1–3 months",
+        "fred_desc": "Brent, Euribor, monetary indices",
+        "fred_lag": "1–2 months",
+        "bportugal_desc": "Euribor, Sovereign spread, Balance of payments",
+        "bportugal_lag": "1–2 months",
+        "oecd_desc": "CLI, Confidence, Order books",
+        "oecd_lag": "2–3 months",
+        "ren_desc": "MIBEL electricity price, Renewable production",
+        "ren_lag": "1 day to 1 month",
+        "dgeg_desc": "Fuel prices, Energy consumption",
+        "dgeg_freq": "Weekly/Monthly",
+        "dgeg_lag": "1–4 weeks",
+        "erse_desc": "Regulated electricity/gas tariffs",
+        "erse_lag": "Annual/quarterly publication",
+        "worldbank_desc": "GDP, Life expectancy, Employment, Health, Education",
+        "worldbank_lag": "1–2 years"
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "body": "The data presented is compiled from official sources for informational and analytical purposes. Prumo PT is not an official publication and does not replace the original data. AI-generated analyses are for informational purposes only and reflect the selected editorial framing — they do not constitute economic or financial advice."
+      },
+      "interpretation": {
+        "title": "Interpretation Notes",
+        "ipi": "The IPI (Industrial Production Index) is a leading indicator of economic activity. Consecutive drops may anticipate GDP deceleration.",
+        "eu27_avg": "The EU27 average can mask large disparities between countries. Always compare with relevant peers (Southern Europe, Visegrad Group, etc.).",
+        "employment": "The employment rate and the unemployment rate measure different things: an inactive person is not counted as unemployed.",
+        "long_series": "Long series (>20 years) may have breaks due to methodological changes. Eurostat flags these in the metadata.",
+        "nominal": "Nominal values (EUR) are not adjusted for inflation. For long-term comparisons, prefer real or PPP indicators.",
+        "worldbank_lag": "World Bank data has a 1–2 year lag. For more recent data, prefer high-frequency sources (INE, Eurostat, FRED)."
+      }
+    },
+    "about": {
+      "title": "About Prumo PT",
+      "contact": "Contact",
+      "embed": "Embed anywhere:",
+      "embed_desc": "Copy the snippet below to embed an interactive Prumo PT chart in your site or article."
+    }
+  },
+  "ajuda": {
+    "what_is": {
+      "title": "What is Prumo PT",
+      "intro": "Portuguese economy dashboard with data from <strong>9 official sources</strong> and AI analysis.",
+      "indicators": "{{count}}+ indicators — production, employment, prices, energy, foreign trade",
+      "sources": "Sources: INE, Eurostat, Bank of Portugal, OECD, World Bank, REN, DGEG, ERSE, FRED",
+      "ai_analysis": "Interpretive analysis generated by LLM, with selectable editorial lens",
+      "disclaimer": "Not an official publication — it is a working tool",
+      "sources_licenses": "Sources and licences",
+      "bportugal": "Bank of Portugal",
+      "terms": "terms",
+      "oecd": "OECD",
+      "worldbank": "World Bank"
+    },
+    "guide": {
+      "title": "Section Guide"
+    },
+    "sections": {
+      "painel": {
+        "title": "Dashboard",
+        "body": "Portugal overview: 30+ indicators organised by 7 themes — Cost of Living, Industry, Employment, Economic Outlook, Energy, External and Competitiveness. Each card shows the latest value, trend and year-on-year change.",
+        "tip_click": "Click any card to open the indicator in the Analysis section.",
+        "tip_ia": "The <strong>✦ AI</strong> button at the top generates interpretive analysis of all themes, with related reading per section."
+      },
+      "comparativos": {
+        "title": "Comparisons",
+        "body": "Compare Portugal with all EU and world countries across dozens of indicators. Combines Eurostat data (EU27, high frequency) with the World Bank (global coverage, annual) in a single interface.",
+        "tip_lines": "<strong>Lines</strong>: temporal evolution of all selected countries. Hover over the legend to highlight a series.",
+        "tip_snapshot": "<strong>Snapshot</strong>: bar chart with the latest available value, sorted by country.",
+        "tip_composite": "Indicators with <strong>★</strong> are composite: Eurostat for EU27 + World Bank for the rest.",
+        "tip_grey": "Countries without data for the selected indicator appear greyed out and are not selectable.",
+        "tip_lag": "World Bank data has a 1–2 year lag; Eurostat, 1–3 months."
+      },
+      "analise": {
+        "title": "Analysis",
+        "body": "Free time series explorer. Search any indicator from 9 available sources, adjust the time range and view the chart. AI interpretation adapts focus to the horizon.",
+        "tip_multi": "You can select and overlay multiple indicators simultaneously.",
+        "tip_dual_axis": "When two indicators have incompatible units, the chart automatically uses two vertical axes.",
+        "tip_csv": "<strong>CSV</strong> button exports raw data for external analysis.",
+        "tip_share": "<strong>Share</strong> button copies the URL with the current chart state.",
+        "tip_deeplink": "Deep-link from the Technical Sheet: click on any indicator code."
+      },
+      "metodologia": {
+        "title": "Methodology and Technical Sheet",
+        "body": "The Methodology section explains how each AI analysis is generated — real data, transparent editorial framing and complete prompt. The Technical Sheet documents all sources and indicators.",
+        "tip_click_code": "Clicking on any indicator code takes you directly to the Analysis section.",
+        "tip_multi_country": "Indicators with multi-country coverage (e.g. Eurostat by nation) open in Comparisons.",
+        "tip_methodology": "The Methodology section explains seasonal adjustment, index bases and comparability."
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "realtime": {
+        "q": "Is the data real-time?",
+        "a": "No. Data is updated periodically from the official publications of each source (INE, Eurostat, Bank of Portugal, etc.). The lag varies by indicator: the IPI is released ~2 months after the reference month; quarterly GDP, ~3 months after the quarter; World Bank data arrives with a 1–2 year delay. The date of the last update is shown at the top of the Dashboard."
+      },
+      "seasonal": {
+        "q": "What does 'seasonal adjustment' mean?",
+        "a": "Many economic series have patterns that repeat regularly — industrial production always drops in August due to holidays, for example. Seasonal adjustment removes these predictable patterns so that consecutive months can be compared without distortion. Series with '(seas. adj.)' are treated this way. The method used by INE and Eurostat is TRAMO-SEATS."
+      },
+      "report": {
+        "q": "Can I use this data in a report?",
+        "a": "The data comes from official public sources (INE, Eurostat, Bank of Portugal, etc.). You may use it by citing the corresponding primary source. Prumo PT is not an official publication and does not replace the original data. For primary data, consult each entity directly."
+      },
+      "eu27": {
+        "q": "What is EU27_2020?",
+        "a": "It is the Eurostat aggregate for the current 27 EU Member States after the UK's departure (Brexit, February 2020). Eurostat retroactively recalculates historical series excluding the UK — so the 'EU27_2020' series is consistent across all years, even for periods before 2020."
+      },
+      "ai": {
+        "q": "How does the AI analysis work?",
+        "a": "The Analysis section generates an interpretive paragraph from the data visible in the chart, with web search to suggest related recent readings. The focus adapts to the time horizon: 1 year — short-term analysis; 5 years — business cycle; 10 years — structural trend. All AI-generated content is filtered through the selected ideological lens."
+      },
+      "grey_countries": {
+        "q": "Why do some countries appear grey in Comparisons?",
+        "a": "Grey countries have no data available in the database for the selected indicator. This happens because not all sources cover all countries: Eurostat mainly covers EU27; the World Bank has global coverage but with gaps in sector-specific series."
+      },
+      "composite": {
+        "q": "What are composite indicators?",
+        "a": "For some indicators of high comparative interest (such as Unemployment and Employment Rate), we combine two sources: Eurostat for EU27 countries and the World Bank for the rest of the world. The result is a single, coherent series with worldwide coverage."
+      },
+      "error": {
+        "q": "I found an error or have a suggestion. What do I do?",
+        "a": "Send an email to the author with a description of the problem (which indicator, what value seems wrong, what you would expect to see). Data errors are a priority — thank you for helping improve Prumo PT."
+      }
+    },
+    "author": {
+      "title": "Author",
+      "body": "Created by <strong><a href=\"https://joao.date\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--c-pt)\">Joao Peixoto</a></strong>, PMP — project manager and engineer. AI-assisted development (Claude, Anthropic); all editorial and architectural decisions are the author's. Open-source code (AGPL-3.0) — will be published on GitHub when stabilised.",
+      "email": "Send email"
+    }
+  },
+  "noscript": {
+    "title": "Prumo PT — Economy by the Numbers",
+    "message": "This dashboard requires JavaScript to load data and charts.",
+    "sources_label": "Direct access to sources:"
+  },
+  "footer": {
+    "data_label": "Data:",
+    "instance_label": "An instance of"
+  },
+  "ui_messages": {
+    "lens_saved": "Custom lens saved",
+    "choose_language": "Choose your output language",
+    "copy_copied": "Copied to clipboard"
+  },
+  "kpi_labels": {
+    "inflation": "Inflation",
+    "diesel": "Diesel",
+    "gasoline_95": "Gasoline 95",
+    "electricity_btn": "Electricity (Household)",
+    "electricity_mt": "Electricity (Medium)",
+    "electricity_at": "Electricity (High Voltage)",
+    "euribor_3m": "Euribor 3M",
+    "euribor_6m": "Euribor 6M",
+    "euribor_12m": "Euribor 12M",
+    "ipi_total": "Industrial Production",
+    "ipi_cae_10": "Food Industry",
+    "ipi_cae_20": "Chemicals",
+    "ipi_cae_24": "Basic Metals",
+    "ipi_cae_25": "Metal Products",
+    "ipi_cae_28": "Machinery & Equipment",
+    "ipi_cae_29": "Motor Vehicles",
+    "copper": "Copper",
+    "aluminum": "Aluminium",
+    "unemployment": "Unemployment",
+    "industrial_employment": "Industrial Employment",
+    "wages_industry": "Industrial Wages",
+    "cli": "Leading Indicator",
+    "confidence": "Industrial Confidence",
+    "order_books": "Order Books",
+    "energy_cost": "Wholesale Electricity",
+    "renewable_share": "% Renewable Energy",
+    "energy_dependence": "Energy Dependence",
+    "natural_gas": "Natural Gas",
+    "solar": "Solar",
+    "wind": "Wind",
+    "eur_usd": "EUR/USD",
+    "spread_pt_de": "Spread PT/DE",
+    "brent": "Brent Oil",
+    "gdp_per_capita": "GDP per capita",
+    "rnd_pct_gdp": "R&D % GDP",
+    "employment_rate": "Employment Rate"
+  },
+  "painel_sections": {
+    "custo_de_vida": "Cost of Living",
+    "industria": "Industry",
+    "emprego": "Employment",
+    "conjuntura": "Economic Outlook",
+    "energia": "Energy",
+    "externo": "External",
+    "competitividade": "Competitiveness",
+    "catalogo": "Full Catalogue"
+  },
+  "kpi": {
+    "vs_prev_year": "vs previous year",
+    "data_prefix": "Data:",
+    "fell": "Fell",
+    "rose": "Rose",
+    "vs": "vs",
+    "recent_trend_up": "recent trend: rising",
+    "recent_trend_down": "recent trend: falling",
+    "consecutive_months_up": "consecutive months rising",
+    "consecutive_months_down": "consecutive months falling"
+  }
+}

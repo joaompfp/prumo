@@ -20,11 +20,19 @@ from ..services.explorador import build_explorador_catalog
 from ..services.series import query_series, query_compare
 from ..services.mundo import get_mundo_data, MUNDO_INDICATORS, COUNTRY_GROUPS_MUNDO
 from ..services.briefing import build_briefing, build_summary
+from ..services.snapshot import build_snapshot
 
 router = APIRouter(prefix="/api")
 
 
 # ── Active endpoints ─────────────────────────────────────────────────
+
+
+@router.get("/snapshot")
+def api_snapshot(response: Response, lang: str = "pt"):
+    """Portugal em 60 Segundos — top KPI highlights for the hero section."""
+    response.headers["Cache-Control"] = "public, max-age=3600"  # 1h
+    return build_snapshot(lang=lang)
 
 
 @router.get("/resumo")
