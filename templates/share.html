@@ -17,10 +17,14 @@
   <meta name="twitter:title" content="{{ og_title }}">
   <meta name="twitter:description" content="{{ og_description }}">
   <meta name="twitter:image" content="{{ og_image_url }}">
-  <meta http-equiv="refresh" content="0;url={{ redirect_url }}">
   <link rel="icon" type="image/svg+xml" href="/static/images/prumo/favicon.svg">
+  <script>
+    // JS redirect — crawlers (Twitter, Facebook, LinkedIn) don't execute JS,
+    // so they read the OG meta tags above. Browsers redirect immediately.
+    window.location.replace("{{ redirect_url }}");
+  </script>
 </head>
 <body style="font-family:system-ui,sans-serif;max-width:600px;margin:40px auto;padding:20px;color:#333">
-  <p>A redirecionar para <a href="{{ redirect_url }}">Prumo PT</a>...</p>
+  <p>Redirecting to <a href="{{ redirect_url }}">Prumo PT</a>...</p>
 </body>
 </html>
