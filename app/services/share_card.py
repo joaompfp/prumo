@@ -79,40 +79,72 @@ def _format_value(value, unit: str = "") -> str:
 
 # ── Sparkline drawing ───────────────────────────────────────────────────
 
-def _draw_sparkline(draw: ImageDraw.ImageDraw, data_points, x: int, y: int,
-                    w: int, h: int, color: str):
-    """Draw a mini sparkline chart from spark data points."""
-    # Accept both list-of-dicts and list-of-numbers
+def _extract_values(data_points) -> list[float]:
+    """Extract numeric values from spark data (list of dicts or numbers)."""
     if data_points and isinstance(data_points[0], dict):
-        values = [
+        return [
             p.get("value") or p.get("v", 0)
             for p in data_points
             if isinstance(p, dict) and p.get("value") is not None
         ]
-    else:
-        values = [p for p in data_points if isinstance(p, (int, float))]
+    return [p for p in data_points if isinstance(p, (int, float))]
 
+
+def _draw_sparkline(draw: ImageDraw.ImageDraw, data_points, x: int, y: int,
+                    w: int, h: int, color: str):
+    """Draw sparkline — delegates to the supersampled version on the image."""
+    # This is a no-op stub; the real rendering happens in generate_kpi_card_fallback
+    # via _render_chart_supersampled which draws on a separate high-res canvas.
+    pass
+
+
+def _render_chart_supersampled(img: Image.Image, data_points, x: int, y: int,
+                                w: int, h: int, color: str, scale: int = 3):
+    """Render a smooth, anti-aliased area chart by supersampling.
+
+    Draws at scale*x resolution then downsamples with LANCZOS for smooth lines.
+    Includes a filled gradient area under the line for visual weight.
+    """
+    values = _extract_values(data_points)
     if len(values) < 2:
         return
 
     min_v, max_v = min(values), max(values)
     span = max_v - min_v if max_v != min_v else 1.0
-    padding_y = 4  # vertical padding so line doesn't touch edges
+    pad = 20 * scale  # padding so line doesn't touch edges
 
+    sw, sh = w * scale, h * scale
+    canvas = Image.new("RGBA", (sw, sh), (0, 0, 0, 0))
+    draw_hi = ImageDraw.Draw(canvas)
+
+    # Compute points at high resolution
     points = []
     for i, v in enumerate(values):
-        px = x + (i / (len(values) - 1)) * w
-        py = y + padding_y + (h - 2 * padding_y) - ((v - min_v) / span) * (h - 2 * padding_y)
+        px = pad + (i / (len(values) - 1)) * (sw - 2 * pad)
+        py = pad + (sh - 2 * pad) - ((v - min_v) / span) * (sh - 2 * pad)
         points.append((px, py))
 
-    if len(points) >= 2:
-        # Very thick line — must be visible at 80x42px WhatsApp thumbnail
-        draw.line(points, fill=color, width=12)
+    # ── Filled area under the line (gradient effect via opacity) ──────
+    # Create polygon: line points + bottom-right + bottom-left
+    area_points = list(points) + [(sw - pad, sh - pad), (pad, sh - pad)]
+    # Parse color to RGB
+    r_c = int(color[1:3], 16) if color.startswith("#") else 46
+    g_c = int(color[3:5], 16) if color.startswith("#") else 125
+    b_c = int(color[5:7], 16) if color.startswith("#") else 50
+    draw_hi.polygon(area_points, fill=(r_c, g_c, b_c, 40))  # very subtle fill
 
-    # Large endpoint dot
+    # ── Line ──────────────────────────────────────────────────────────
+    line_width = 8 * scale  # will become ~8px after downsampling — bold but smooth
+    draw_hi.line(points, fill=color, width=line_width, joint="curve")
+
+    # ── Endpoint dot ──────────────────────────────────────────────────
     last = points[-1]
-    r = 14
-    draw.ellipse([(last[0] - r, last[1] - r), (last[0] + r, last[1] + r)], fill=color)
+    r = 6 * scale
+    draw_hi.ellipse([(last[0] - r, last[1] - r), (last[0] + r, last[1] + r)], fill=color)
+
+    # ── Downsample with high-quality filter ───────────────────────────
+    chart = canvas.resize((w, h), Image.LANCZOS)
+    img.paste(chart, (x, y), chart)
 
 
 # ── Text wrapping ───────────────────────────────────────────────────────
@@ -200,10 +232,14 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
     draw.rectangle([(0, 0), (W, 4)], fill=PT_RED)
 
     # ── Chart fills the card with generous padding ──────────────────────
-    pad_x, pad_top, pad_bot = 60, 50, 50
+    pad_x, pad_top, pad_bot = 60, 40, 40
     spark = kpi.get("spark", [])
     if spark and len(spark) >= 3:
-        _draw_sparkline(draw, spark, pad_x, 4 + pad_top, W - 2 * pad_x, H - 4 - pad_top - pad_bot, color)
+        _render_chart_supersampled(
+            img, spark, pad_x, 4 + pad_top,
+            W - 2 * pad_x, H - 4 - pad_top - pad_bot, color,
+            scale=3,
+        )
     else:
         # No spark data — show value large and centered
         value = kpi.get("value")
