@@ -134,7 +134,7 @@ def _render_chart_supersampled(img: Image.Image, data_points, x: int, y: int,
     draw_hi.polygon(area_points, fill=(r_c, g_c, b_c, 40))  # very subtle fill
 
     # ── Line ──────────────────────────────────────────────────────────
-    line_width = 8 * scale  # will become ~8px after downsampling — bold but smooth
+    line_width = 10 * scale  # will become ~10px after downsampling — very bold
     draw_hi.line(points, fill=color, width=line_width, joint="curve")
 
     # ── Endpoint dot ──────────────────────────────────────────────────
@@ -250,11 +250,12 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
 
     # ── Prumo logo watermark (top-right, large + semi-transparent) ───
     try:
-        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((180, 180))
-        alpha = logo.split()[3].point(lambda a: min(a, 140))
+        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((240, 240))
+        alpha = logo.split()[3].point(lambda a: min(a, 160))
         logo.putalpha(alpha)
-        # CENTER of image — WhatsApp crops unpredictably
-        img.paste(logo, (W // 2 - 90, H // 2 - 90), logo)
+        # Bottom-right quadrant — visible in all crop modes,
+        # away from the chart's start point (top-left)
+        img.paste(logo, (W - 300, H - 300), logo)
     except Exception:
         pass
 
