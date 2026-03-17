@@ -61,7 +61,7 @@ def _base_url(request: Request) -> str:
 #  KPI share page + image
 # ═══════════════════════════════════════════════════════════════════════════
 
-@router.get("/kpi/{kpi_id}", response_class=HTMLResponse)
+@router.api_route("/kpi/{kpi_id}", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def share_kpi(request: Request, kpi_id: str):
     """OG-tagged HTML page for a single KPI share link."""
     base = _base_url(request)
@@ -112,7 +112,7 @@ def share_kpi(request: Request, kpi_id: str):
     })
 
 
-@router.get("/kpi/{kpi_id}/image.png")
+@router.api_route("/kpi/{kpi_id}/image.png", methods=["GET", "HEAD"])
 def share_kpi_image(kpi_id: str):
     """Serve a 1200x630 PNG card for a KPI (Playwright cache or Pillow fallback)."""
     kpi, section_name = _find_kpi(kpi_id)
@@ -150,7 +150,7 @@ def share_kpi_image(kpi_id: str):
 #  Painel share page + image
 # ═══════════════════════════════════════════════════════════════════════════
 
-@router.get("/painel", response_class=HTMLResponse)
+@router.api_route("/painel", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def share_painel(request: Request):
     """OG-tagged HTML page for the full Painel snapshot."""
     painel = _get_painel()
@@ -174,7 +174,7 @@ def share_painel(request: Request):
     })
 
 
-@router.get("/painel/image.png")
+@router.api_route("/painel/image.png", methods=["GET", "HEAD"])
 def share_painel_image():
     """Serve a 1200x630 PNG summary card for the Painel."""
     painel = _get_painel()
