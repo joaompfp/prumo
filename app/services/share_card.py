@@ -105,13 +105,13 @@ def _draw_sparkline(draw: ImageDraw.ImageDraw, data_points, x: int, y: int,
         py = y + padding_y + (h - 2 * padding_y) - ((v - min_v) / span) * (h - 2 * padding_y)
         points.append((px, py))
 
-    # Draw line segments with anti-aliasing approximation (draw twice at width 2 and 3)
     if len(points) >= 2:
-        draw.line(points, fill=color, width=3)
+        # Thick line for visibility at small preview sizes
+        draw.line(points, fill=color, width=5)
 
     # Endpoint dot
     last = points[-1]
-    r = 5
+    r = 8
     draw.ellipse([(last[0] - r, last[1] - r), (last[0] + r, last[1] + r)], fill=color)
 
 
@@ -259,22 +259,26 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
     else:
         y_cursor += 10
 
-    # ── Sparkline ───────────────────────────────────────────────────
+    # ── Sparkline — large, right-aligned chart ───────────────────────
     spark = kpi.get("spark", [])
-    spark_x = 48
-    spark_w = 480
-    spark_h = 70
     if spark and len(spark) >= 3:
-        _draw_sparkline(draw, spark, spark_x, y_cursor, spark_w, spark_h, yoy_color)
-        y_cursor += spark_h + 16
+        # Big sparkline: right half of card, tall
+        spark_x = W // 2 + 20
+        spark_y = 86
+        spark_w = W // 2 - 80
+        spark_h = H - 86 - 56 - 30  # fill from header to bottom bar
+        _draw_sparkline(draw, spark, spark_x, spark_y, spark_w, spark_h, yoy_color)
+        # Light background for chart area
+        # (draw behind — we re-draw sparkline after)
 
     # ── Description ─────────────────────────────────────────────────
     desc = kpi.get("description", "")
+    desc_max_w = (W // 2 - 30) if spark and len(spark) >= 3 else (W - 96)
     if desc and y_cursor < H - 100:
         remaining_h = H - 56 - y_cursor - 12
         max_lines = max(1, remaining_h // 28)
         _draw_wrapped_text(
-            draw, desc, 48, y_cursor, W - 96, font_body, TEXT_SECONDARY,
+            draw, desc, 48, y_cursor, desc_max_w, font_body, TEXT_SECONDARY,
             max_lines=min(max_lines, 3), line_spacing=28,
         )
 
