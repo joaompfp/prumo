@@ -250,11 +250,22 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
 
     # ── Prumo logo watermark (top-right, large + semi-transparent) ───
     try:
-        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((500, 500))
+        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((420, 420))
         # True watermark — huge, centered, semi-transparent
         alpha = logo.split()[3].point(lambda a: min(a, 105))
         logo.putalpha(alpha)
-        img.paste(logo, (W // 2 - 250, H // 2 - 250), logo)
+        # Center logo slightly above center to leave room for "Portugal" text
+        logo_x = W // 2 - 210
+        logo_y = H // 2 - 240
+        img.paste(logo, (logo_x, logo_y), logo)
+        # "Portugal" text below logo — matching nav brand style
+        font_portugal = _load_font("PlayfairDisplay-Black.ttf", 42)
+        # Draw on RGBA overlay for transparency
+        txt_overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        txt_draw = ImageDraw.Draw(txt_overlay)
+        txt_draw.text((W // 2, logo_y + 430), "Portugal", fill=(139, 0, 0, 105),
+                       font=font_portugal, anchor="mt")
+        img.paste(txt_overlay, (0, 0), txt_overlay)
     except Exception:
         pass
 
