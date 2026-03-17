@@ -464,7 +464,7 @@ App.registerSection('painel', async () => {
               <span class="section-collapse-arrow" style="font-size:16px;line-height:1;transition:transform .2s">&#9660;</span>
             </div>
             <div class="kpi-grid">
-              ${kpis.map(renderKpiCard).join('')}
+              ${kpis.filter(k => k.value !== null && k.value !== undefined && !k.error).map(renderKpiCard).join('')}
             </div>
           </div>`;
         }).join('') +
