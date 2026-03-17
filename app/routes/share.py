@@ -36,6 +36,16 @@ def _get_painel() -> dict:
     return _painel_cache["data"]
 
 
+def _explorador_url(base: str, source: str, indicator: str) -> str:
+    """Build explorador deep-link with 1-year time range."""
+    from datetime import date, timedelta
+    today = date.today()
+    one_year_ago = today - timedelta(days=365)
+    fr = one_year_ago.strftime("%Y-%m")
+    to = today.strftime("%Y-%m")
+    return f"{base}/#explorador?s={source}%2F{indicator}&from={fr}&to={to}"
+
+
 def _find_kpi(kpi_id: str) -> tuple[dict | None, str]:
     """Find a KPI by id across all painel sections. Returns (kpi, section_name)."""
     painel = _get_painel()
@@ -116,7 +126,7 @@ def share_kpi(request: Request, kpi_id: str):
         "og_description": og_description,
         "og_image_url": f"{base}/s/kpi/{kpi_id}/image.png?v=2",
         "canonical_url": f"{base}/s/kpi/{kpi_id}",
-        "redirect_url": f"{base}/#explorador?s={source}%2F{kpi.get('indicator', kpi_id)}",
+        "redirect_url": _explorador_url(base, source, kpi.get("indicator", kpi_id)),
     })
 
 
