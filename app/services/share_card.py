@@ -221,54 +221,57 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
     The image is just the trendline on a clean background, maximally visible
     even at WhatsApp/Telegram thumbnail sizes.
     """
-    W, H = 1200, 630
-    img = Image.new("RGB", (W, H), color=BG)
+    # Render at 600x315 so elements are large relative to thumbnail crop,
+    # then upscale to 1200x630 for OG spec with LANCZOS for smooth scaling.
+    WW, HH = 600, 315
+    img = Image.new("RGBA", (WW, HH), BG)
     draw = ImageDraw.Draw(img)
 
     sentiment = kpi.get("sentiment", "neutral")
     color = _sentiment_color(sentiment)
 
-    # ── Red accent line at top (4px — brand signature) ────────────────
-    draw.rectangle([(0, 0), (W, 4)], fill=PT_RED)
+    # ── Red accent line ───────────────────────────────────────────────
+    draw.rectangle([(0, 0), (WW, 3)], fill=PT_RED)
 
-    # ── Chart fills the card with generous padding ──────────────────────
-    pad_x, pad_top, pad_bot = 60, 40, 40
+    # ── Chart ─────────────────────────────────────────────────────────
+    pad = 16
     spark = kpi.get("spark", [])
     if spark and len(spark) >= 3:
         _render_chart_supersampled(
-            img, spark, pad_x, 4 + pad_top,
-            W - 2 * pad_x, H - 4 - pad_top - pad_bot, color,
-            scale=3,
+            img, spark, pad, 3 + pad,
+            WW - 2 * pad, HH - 3 - 2 * pad, color,
+            scale=2,
         )
     else:
-        # No spark data — show value large and centered
         value = kpi.get("value")
         unit = kpi.get("unit", "")
         value_str = f"{_format_value(value)} {unit}".strip()
-        big_font = _load_font("Inter-Bold.ttf", 160)
-        draw.text((W // 2, H // 2), value_str, fill=TEXT_PRIMARY, font=big_font, anchor="mm")
+        big_font = _load_font("Inter-Bold.ttf", 80)
+        draw.text((WW // 2, HH // 2), value_str, fill=TEXT_PRIMARY, font=big_font, anchor="mm")
 
-    # ── Prumo logo watermark (top-right, large + semi-transparent) ───
+    # ── Watermark: logo + "Portugal" ──────────────────────────────────
     try:
-        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((280, 280))
-        alpha = logo.split()[3].point(lambda a: min(a, 110))
+        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((120, 120))
+        alpha = logo.split()[3].point(lambda a: min(a, 130))
         logo.putalpha(alpha)
-        # Center logo above center to leave room for big "Portugal" text
-        logo_x = W // 2 - 140
-        logo_y = H // 2 - 210
+        logo_x = WW // 2 - 60
+        logo_y = HH // 2 - 90
         img.paste(logo, (logo_x, logo_y), logo)
-        # "Portugal" — BIG, bold, prominent watermark text
-        font_portugal = _load_font("CormorantGaramond-BoldItalic.ttf", 100)
-        txt_overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        txt_draw = ImageDraw.Draw(txt_overlay)
-        txt_draw.text((W // 2, logo_y + 300), "Portugal", fill=(139, 0, 0, 150),
-                       font=font_portugal, anchor="mt")
-        img.paste(txt_overlay, (0, 0), txt_overlay)
+
+        font_pt = _load_font("CormorantGaramond-BoldItalic.ttf", 46)
+        txt_layer = Image.new("RGBA", (WW, HH), (0, 0, 0, 0))
+        txt_draw = ImageDraw.Draw(txt_layer)
+        txt_draw.text((WW // 2, logo_y + 128), "Portugal",
+                       fill=(139, 0, 0, 170), font=font_pt, anchor="mt")
+        img.paste(txt_layer, (0, 0), txt_layer)
     except Exception:
         pass
 
+    # ── Upscale to 1200x630 (OG spec) with smooth interpolation ──────
+    final = img.convert("RGB").resize((1200, 630), Image.LANCZOS)
+
     buf = BytesIO()
-    img.save(buf, format="PNG", optimize=True)
+    final.save(buf, format="PNG", optimize=True)
     return buf.getvalue()
 
 
