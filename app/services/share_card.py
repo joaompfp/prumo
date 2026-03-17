@@ -106,12 +106,12 @@ def _draw_sparkline(draw: ImageDraw.ImageDraw, data_points, x: int, y: int,
         points.append((px, py))
 
     if len(points) >= 2:
-        # Thick line for visibility at small preview sizes
-        draw.line(points, fill=color, width=5)
+        # Very thick line — must be visible at 80x42px WhatsApp thumbnail
+        draw.line(points, fill=color, width=12)
 
-    # Endpoint dot
+    # Large endpoint dot
     last = points[-1]
-    r = 8
+    r = 14
     draw.ellipse([(last[0] - r, last[1] - r), (last[0] + r, last[1] + r)], fill=color)
 
 
@@ -199,11 +199,11 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
     # ── Red accent line at top (4px — brand signature) ────────────────
     draw.rectangle([(0, 0), (W, 4)], fill=PT_RED)
 
-    # ── Chart fills the entire card ───────────────────────────────────
-    margin = 30
+    # ── Chart fills the card with generous padding ──────────────────────
+    pad_x, pad_top, pad_bot = 60, 50, 50
     spark = kpi.get("spark", [])
     if spark and len(spark) >= 3:
-        _draw_sparkline(draw, spark, margin, margin + 4, W - 2 * margin, H - 2 * margin - 4, color)
+        _draw_sparkline(draw, spark, pad_x, 4 + pad_top, W - 2 * pad_x, H - 4 - pad_top - pad_bot, color)
     else:
         # No spark data — show value large and centered
         value = kpi.get("value")
