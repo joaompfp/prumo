@@ -251,18 +251,18 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
 
     # ── Watermark: logo + "Portugal" ──────────────────────────────────
     try:
-        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((120, 120))
+        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((200, 200))
         alpha = logo.split()[3].point(lambda a: min(a, 130))
         logo.putalpha(alpha)
-        logo_x = WW // 2 - 60
-        logo_y = HH // 2 - 90
+        logo_x = WW // 2 - 100
+        logo_y = HH // 2 - 130
         img.paste(logo, (logo_x, logo_y), logo)
 
-        font_pt = _load_font("CormorantGaramond-BoldItalic.ttf", 46)
+        font_pt = _load_font("CormorantGaramond-BoldItalic.ttf", 72)
         txt_layer = Image.new("RGBA", (WW, HH), (0, 0, 0, 0))
         txt_draw = ImageDraw.Draw(txt_layer)
-        txt_draw.text((WW // 2, logo_y + 128), "Portugal",
-                       fill=(139, 0, 0, 170), font=font_pt, anchor="mt")
+        txt_draw.text((WW // 2, logo_y + 210), "Portugal",
+                       fill=(139, 0, 0, 180), font=font_pt, anchor="mt")
         img.paste(txt_layer, (0, 0), txt_layer)
     except Exception:
         pass
