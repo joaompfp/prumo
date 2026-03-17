@@ -250,19 +250,18 @@ def generate_kpi_card_fallback(kpi: dict, section_name: str = "") -> bytes:
 
     # ── Prumo logo watermark (top-right, large + semi-transparent) ───
     try:
-        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((420, 420))
-        # True watermark — huge, centered, semi-transparent
-        alpha = logo.split()[3].point(lambda a: min(a, 105))
+        logo = Image.open(_LOGO_PATH).convert("RGBA").resize((280, 280))
+        alpha = logo.split()[3].point(lambda a: min(a, 110))
         logo.putalpha(alpha)
-        # Center logo slightly above center to leave room for "Portugal" text
-        logo_x = W // 2 - 210
-        logo_y = H // 2 - 240
+        # Center logo above center to leave room for big "Portugal" text
+        logo_x = W // 2 - 140
+        logo_y = H // 2 - 210
         img.paste(logo, (logo_x, logo_y), logo)
-        # "Portugal" text below logo — Cormorant Garamond Bold Italic, same as nav
-        font_portugal = _load_font("CormorantGaramond-BoldItalic.ttf", 56)
+        # "Portugal" — BIG, bold, prominent watermark text
+        font_portugal = _load_font("CormorantGaramond-BoldItalic.ttf", 100)
         txt_overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         txt_draw = ImageDraw.Draw(txt_overlay)
-        txt_draw.text((W // 2, logo_y + 435), "Portugal", fill=(139, 0, 0, 130),
+        txt_draw.text((W // 2, logo_y + 300), "Portugal", fill=(139, 0, 0, 150),
                        font=font_portugal, anchor="mt")
         img.paste(txt_overlay, (0, 0), txt_overlay)
     except Exception:
