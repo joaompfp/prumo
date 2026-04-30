@@ -11,7 +11,7 @@ Outputs:
   - Log: /tmp/prumo-chart-validation.log
 
 Usage:
-    cd stacks/jarbas/images/prumo
+    cd stacks/web/images/prumo
     source venv/bin/activate
     python docs/testing/validate_charts.py [--headless] [--resume N]
 """

@@ -1,0 +1,145 @@
+/* ═══════════════════════════════════════════════════════════════
+   kpi-cards.css — Explain / Accessibility layer styles (V9)
+   Depends on CSS vars from swd-theme.css
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Card header layout ────────────────────────────────────────── */
+#painel .kpi-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-xs, 6px);
+  margin-bottom: 2px;
+}
+
+/* ── Explain trigger button ("?") ─────────────────────────────── */
+.kpi-explain-trigger {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-text-sub);
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0;
+  line-height: 1;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.kpi-explain-trigger:hover {
+  background: var(--c-eu);
+  color: #fff;
+  border-color: var(--c-eu);
+}
+
+.kpi-explain-trigger:focus-visible {
+  outline: 2px solid var(--c-eu);
+  outline-offset: 2px;
+}
+
+/* ── Explain panel (hidden by default, toggled on click) ──────── */
+.kpi-explain {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--c-text-sub);
+  background: var(--c-surface-2);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  border-left: 3px solid var(--c-eu);
+  animation: kpi-explain-in 0.2s ease;
+}
+
+.kpi-explain.hidden {
+  display: none;
+}
+
+.kpi-explain strong {
+  color: var(--c-text);
+  display: block;
+  margin-bottom: 2px;
+}
+
+@keyframes kpi-explain-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Painel Theme Quick-Nav Pills ────────────────────────────── */
+.painel-theme-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  position: sticky;
+  top: calc(var(--nav-height) + 52px);
+  z-index: 80;
+  background: var(--c-bg);
+  margin-bottom: 8px;
+}
+.painel-theme-nav::-webkit-scrollbar { display: none; }
+
+.theme-pill {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-text-sub);
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.theme-pill:hover {
+  border-color: var(--c-pt);
+  color: var(--c-pt);
+}
+.theme-pill.active {
+  background: var(--c-pt);
+  border-color: var(--c-pt);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* ── Annotation line ─────────────────────────────────────────── */
+.kpi-annotation {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-text-sub);
+  margin-top: 4px;
+}
+
+/* ── Painel sections ─────────────────────────────────────────── */
+.painel-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── CLS Prevention ──────────────────────────────────────────── */
+.section-body:empty { min-height: 300px; }
+.kpi-grid:empty { min-height: 180px; }
+
+@media (max-width: 640px) {
+  .painel-theme-nav {
+    padding: 8px 0;
+    gap: 4px;
+  }
+  .theme-pill {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}

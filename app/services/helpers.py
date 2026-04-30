@@ -61,7 +61,7 @@ def compute_yoy(series):
                 prev_val = period_map[target]["value"]
                 if prev_val and prev_val != 0:
                     return round((latest["value"] - prev_val) / abs(prev_val) * 100, 1)
-    except:
+    except Exception:
         pass
     return None
 

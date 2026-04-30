@@ -11,7 +11,9 @@ from fastapi.templating import Jinja2Templates
 
 from .config import PORT, STATIC_DIR, CAE_DB_PATH, ANALYTICS_DB_PATH, TEMPLATES_DIR, BASE_PATH
 from .routes.api import router as api_router
+from .routes.share import router as share_router
 from .routes.pages import router as pages_router
+from .routes.london import router as london_router
 
 app = FastAPI(
     title="CAE Dashboard",
@@ -51,11 +53,12 @@ async def analytics_middleware(request: Request, call_next):
     """Log API requests to analytics DB (non-blocking, fire-and-forget)."""
     start = time.time()
     response = await call_next(request)
+    duration = round((time.time() - start) * 1000)
+    response.headers["X-Response-Time"] = f"{duration}ms"
     path = request.url.path
     if path.startswith("/api/") and not path.startswith("/api/stats"):
         try:
             from .analytics import log_event
-            duration = round((time.time() - start) * 1000)
             log_event(
                 event="api_call",
                 host=request.headers.get("host", ""),
@@ -70,39 +73,30 @@ async def analytics_middleware(request: Request, call_next):
 # Static files
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# Routes
+# Routes — share router MUST precede pages (pages has catch-all /{full_path:path})
 app.include_router(api_router)
+app.include_router(london_router)
+app.include_router(share_router)
 app.include_router(pages_router)
 
 
 @app.get("/healthz")
 def healthz():
-    return {"status": "ok"}
-
-
-def _prewarm_painel():
-    """Pre-generate Painel IA analysis in the background after startup."""
-    time.sleep(8)  # let uvicorn finish binding
+    """Health check with DB validation — returns 503 if DB is unreachable."""
+    from .database import get_db
     try:
-        from .services.painel import build_painel
-        from .services.painel_analysis import get_painel_analysis
-        data = build_painel()
-        sections = data.get("sections", [])
-        updated = data.get("updated", "")
-        if not sections or not updated:
-            print("[startup] painel pre-warm: no data available", flush=True)
-            return
-        print(f"[startup] pre-warming Painel IA for period {updated}…", flush=True)
-        result = get_painel_analysis(sections, updated)
-        if result.get("cached"):
-            print(f"[startup] Painel IA already cached for {updated}", flush=True)
-        elif result.get("text"):
-            ms = result.get("generation_ms", "?")
-            print(f"[startup] Painel IA generated in {ms}ms for {updated}", flush=True)
-        else:
-            print(f"[startup] Painel IA failed: {result.get('error')}", flush=True)
+        conn = get_db()
+        row = conn.execute("SELECT COUNT(DISTINCT indicator) AS n FROM indicators").fetchone()
+        indicator_count = row[0] if row else 0
+        # Check freshness: most recent period in DB
+        fresh = conn.execute("SELECT MAX(period) FROM indicators").fetchone()
+        latest_period = fresh[0] if fresh else None
     except Exception as e:
-        print(f"[startup] painel pre-warm error: {e}", flush=True)
+        from fastapi.responses import JSONResponse
+        return JSONResponse(status_code=503, content={"status": "error", "detail": f"DB unreachable: {e}"})
+    return {"status": "ok", "indicators": indicator_count, "latest_period": latest_period}
+
+
 
 
 @app.on_event("startup")
@@ -115,7 +109,7 @@ def startup():
         print(f"Energy DB: {energy_db}", flush=True)
     else:
         print(f"Energy DB not found, using main DB for all sources", flush=True)
-    threading.Thread(target=_prewarm_painel, daemon=True).start()
+    # Analysis is managed via batch scripts — no startup pre-warming
 
 
 if __name__ == "__main__":

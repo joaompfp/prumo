@@ -55,18 +55,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd stacks/jarbas/images/cae-dashboard
+          cd stacks/web/images/cae-dashboard
           pip install -r requirements.txt
 
       - name: Run pytest
         run: |
-          cd stacks/jarbas/images/cae-dashboard
+          cd stacks/web/images/cae-dashboard
           pytest tests/ -v --tb=short --cov=app --cov-report=xml
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
-          files: stacks/jarbas/images/cae-dashboard/coverage.xml
+          files: stacks/web/images/cae-dashboard/coverage.xml
           fail_ci_if_error: false
 
   test-frontend:
@@ -80,17 +80,17 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        working-directory: stacks/jarbas/images/cae-dashboard
+        working-directory: stacks/web/images/cae-dashboard
         run: npm install
 
       - name: Run vitest
-        working-directory: stacks/jarbas/images/cae-dashboard
+        working-directory: stacks/web/images/cae-dashboard
         run: npm run test:frontend -- --coverage
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
-          files: stacks/jarbas/images/cae-dashboard/coverage/coverage-final.json
+          files: stacks/web/images/cae-dashboard/coverage/coverage-final.json
           fail_ci_if_error: false
 ```
 
@@ -124,24 +124,24 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd stacks/jarbas/images/cae-dashboard
+          cd stacks/web/images/cae-dashboard
           pip install -r requirements.txt
           npm install
 
       - name: Run backend tests
         run: |
-          cd stacks/jarbas/images/cae-dashboard
+          cd stacks/web/images/cae-dashboard
           pytest tests/ -v --tb=short --cov=app --cov-report=json --cov-report=html
         continue-on-error: true
 
       - name: Run frontend tests
-        working-directory: stacks/jarbas/images/cae-dashboard
+        working-directory: stacks/web/images/cae-dashboard
         run: npm run test:frontend -- --coverage
         continue-on-error: true
 
       - name: Generate combined report
         run: |
-          cd stacks/jarbas/images/cae-dashboard
+          cd stacks/web/images/cae-dashboard
           python3 scripts/generate_test_report.py
 
       - name: Send email report
@@ -160,8 +160,8 @@ jobs:
         with:
           name: test-reports
           path: |
-            stacks/jarbas/images/cae-dashboard/htmlcov
-            stacks/jarbas/images/cae-dashboard/test-report.html
+            stacks/web/images/cae-dashboard/htmlcov
+            stacks/web/images/cae-dashboard/test-report.html
 ```
 
 ---
@@ -189,7 +189,7 @@ jobs:
 
       - name: Check data freshness
         run: |
-          cd stacks/jarbas/images/cae-dashboard
+          cd stacks/web/images/cae-dashboard
           pip install duckdb requests
           python3 scripts/check_data_freshness.py
 

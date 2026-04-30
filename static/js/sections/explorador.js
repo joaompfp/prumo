@@ -120,7 +120,7 @@ App.registerSection('explorador', async () => {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     catalog = await resp.json();
   } catch (e) {
-    body.innerHTML = App.errorHTML(`Erro ao carregar catálogo: ${e.message}`);
+    body.innerHTML = App.errorHTML(`Erro ao carregar catálogo: ${e.message}`, () => App.navigate('explorador'));
     return;
   }
 

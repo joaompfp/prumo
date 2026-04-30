@@ -2,8 +2,7 @@
 import os
 import json
 import time
-from .interpret import ANTHROPIC_KEY, _opener, _load_ideology
-from urllib.request import Request
+from .interpret import ANTHROPIC_KEY, _load_ideology
 
 CAE_DB_PATH = os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
 _DATA_DIR = os.path.dirname(CAE_DB_PATH)
@@ -47,10 +46,11 @@ def _get_sonnet_analysis_text(lens_key: str = None, updated: str = None) -> str 
     import os, json
     analysis_cache_path = os.path.join(_DATA_DIR, "painel-analysis-cache.json")
     try:
-        cache = json.loads(open(analysis_cache_path, encoding="utf-8").read())
+        with open(analysis_cache_path, encoding="utf-8") as _f:
+            cache = json.load(_f)
         # Try to find exact match for this lens+period
         if lens_key and updated:
-            for version in ("v21", "v20", "v19"):
+            for version in ("v23", "v21", "v20", "v19"):
                 key = f"painel:{version}:{updated}:{lens_key}"
                 if key in cache and cache[key].get("text"):
                     return cache[key]["text"]
@@ -66,22 +66,17 @@ def _get_sonnet_analysis_text(lens_key: str = None, updated: str = None) -> str 
 
 def get_painel_headline(sections: list, updated: str, force: bool = False, lens: str = None, custom_ideology: str = None, output_language: str = "pt") -> dict:
     """
-    Return Claude Opus headline derived from Sonnet analysis.
+    Return Ollama-generated headline derived from Painel analysis.
     Disk-cached per data period + lens + language, TTL 6h.
     Returns None headline on failure — JS falls back to rule-based title.
     """
-    # ── LLM DISABLED: stub mode while validating charts ──
-    return {"headline": None, "cached": False, "error": "LLM disabled — chart validation mode"}
-    # ── END STUB ──
-
-    if not ANTHROPIC_KEY:
-        return {"headline": None, "cached": False, "error": "API key not configured"}
 
     # Load cache
     cache = {}
     try:
         if os.path.exists(_CACHE_PATH):
-            cache = json.loads(open(_CACHE_PATH, encoding="utf-8").read())
+            with open(_CACHE_PATH, encoding="utf-8") as _f:
+                cache = json.load(_f)
     except Exception:
         cache = {}
 
@@ -129,38 +124,26 @@ def get_painel_headline(sections: list, updated: str, force: bool = False, lens:
             return {"headline": None, "cached": False, "error": "No data available"}
 
     try:
-        body = json.dumps({
-            "model": "claude-opus-4-6",
-            "max_tokens": 120,
-            "messages": [{"role": "user", "content": user_msg}],
-        }).encode()
-
-        req = Request(
-            "https://api.anthropic.com/v1/messages",
-            data=body,
-            headers={
-                "x-api-key": ANTHROPIC_KEY,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json",
-            },
-        )
-
-        with _opener.open(req, timeout=30) as resp:
-            data = json.loads(resp.read())
-            text_parts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
-            headline = "\n".join(text_parts).strip().strip('"').strip("'").replace("\\n", "\n")
+        from .claude_client import call_ollama
+        raw = call_ollama(user_msg, num_predict=2048, timeout=120)
+        headline = raw.strip().strip('"').strip("'").replace("\\n", "\n")
 
         generated_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         cache[cache_key] = {
             "headline": headline,
             "generated_at": generated_at,
             "ts": now,
+            "model": "kimi-k2.5:cloud",
+            "lens": lens_key,
+            "output_language": output_language,
+            "source_type": "sonnet-analysis" if sonnet_text else "raw-kpis",
         }
         source = "sonnet-analysis" if sonnet_text else "raw-kpis"
         print(f"[painel_headline] generated from {source}: {headline!r}", flush=True)
 
         try:
-            open(_CACHE_PATH, "w", encoding="utf-8").write(json.dumps(cache, ensure_ascii=False, indent=2))
+            with open(_CACHE_PATH, "w", encoding="utf-8") as _f:
+                json.dump(cache, _f, ensure_ascii=False, indent=2)
         except Exception as e:
             print(f"[painel_headline] cache write error: {e}", flush=True)
 

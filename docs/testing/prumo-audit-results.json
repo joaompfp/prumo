@@ -1,0 +1,6095 @@
+{
+  "individual": {
+    "INE/ipi_seasonal_cae_TOT": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_TOT",
+      "label": "IPI Total Indústria (dessaz.)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:43:06.783855"
+    },
+    "INE/ipi_yoy_cae": {
+      "source": "INE",
+      "indicator": "ipi_yoy_cae",
+      "label": "IPI Indústria — Variação Anual",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:43:20.523907"
+    },
+    "INE/emp_industry_cae": {
+      "source": "INE",
+      "indicator": "emp_industry_cae",
+      "label": "Emprego na Indústria",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:43:46.644865",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_emp_industry_cae.png"
+    },
+    "INE/wages_industry_cae": {
+      "source": "INE",
+      "indicator": "wages_industry_cae",
+      "label": "Salários na Indústria",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:44:02.456661"
+    },
+    "INE/conf_manufacturing": {
+      "source": "INE",
+      "indicator": "conf_manufacturing",
+      "label": "Confiança Indústria Transformadora",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:44:16.338803",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_conf_manufacturing.png"
+    },
+    "INE/hicp_yoy": {
+      "source": "INE",
+      "indicator": "hicp_yoy",
+      "label": "Inflação (IHPC) — Variação Anual",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:44:32.161858",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_hicp_yoy.png"
+    },
+    "INE/gdp_yoy": {
+      "source": "INE",
+      "indicator": "gdp_yoy",
+      "label": "PIB — Variação Anual (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:44:47.761917",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_gdp_yoy.png"
+    },
+    "INE/exports_monthly": {
+      "source": "INE",
+      "indicator": "exports_monthly",
+      "label": "Exportações — Total Mensal",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:45:03.433146"
+    },
+    "INE/imports_monthly": {
+      "source": "INE",
+      "indicator": "imports_monthly",
+      "label": "Importações — Total Mensal",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:45:17.091600",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_imports_monthly.png"
+    },
+    "INE/ipi_seasonal_cae_B": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_B",
+      "label": "IPI Ind. Extractivas (CAE-B, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:45:32.916455",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_B.png"
+    },
+    "INE/ipi_seasonal_cae_C": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_C",
+      "label": "IPI Ind. Transformadora (CAE-C, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:45:48.731959",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_C.png"
+    },
+    "INE/ipi_seasonal_cae_D": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_D",
+      "label": "IPI Electricidade e Gás (CAE-D, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:46:04.567593",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_D.png"
+    },
+    "INE/ipi_seasonal_cae_E": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_E",
+      "label": "IPI Água e Resíduos (CAE-E, dessaz.)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:46:21.428043"
+    },
+    "INE/ipi_seasonal_cae_08": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_08",
+      "label": "IPI Outras Ind. Extractivas (CAE-08, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:46:32.066111",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_08.png"
+    },
+    "INE/ipi_seasonal_cae_10": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_10",
+      "label": "IPI Ind. Alimentar (CAE-10, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:46:47.992037",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_10.png"
+    },
+    "INE/ipi_seasonal_cae_11": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_11",
+      "label": "IPI Bebidas (CAE-11, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:47:03.840272",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_11.png"
+    },
+    "INE/ipi_seasonal_cae_13": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_13",
+      "label": "IPI Têxteis (CAE-13, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:47:19.629730",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_13.png"
+    },
+    "INE/ipi_seasonal_cae_14": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_14",
+      "label": "IPI Vestuário (CAE-14, dessaz.)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:47:35.359589"
+    },
+    "INE/ipi_seasonal_cae_15": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_15",
+      "label": "IPI Curtumes e Calçado (CAE-15, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:47:48.167767",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_15.png"
+    },
+    "INE/ipi_seasonal_cae_16": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_16",
+      "label": "IPI Madeira e Cortiça (CAE-16, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:48:04.109893",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_16.png"
+    },
+    "INE/ipi_seasonal_cae_17": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_17",
+      "label": "IPI Pasta e Papel (CAE-17, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:48:19.849359",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_17.png"
+    },
+    "INE/ipi_seasonal_cae_18": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_18",
+      "label": "IPI Impressão e Suportes Gravados (CAE-18, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:48:35.652345",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_18.png"
+    },
+    "INE/ipi_seasonal_cae_20": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_20",
+      "label": "IPI Química (CAE-20, dessaz.)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:48:51.588855"
+    },
+    "INE/ipi_seasonal_cae_21": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_21",
+      "label": "IPI Farmacêutica (CAE-21, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:49:02.258740",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_21.png"
+    },
+    "INE/ipi_seasonal_cae_22": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_22",
+      "label": "IPI Borracha e Plásticos (CAE-22, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:49:18.055468",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_22.png"
+    },
+    "INE/ipi_seasonal_cae_23": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_23",
+      "label": "IPI Minerais Não Metálicos (CAE-23, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:49:33.985074",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_23.png"
+    },
+    "INE/ipi_seasonal_cae_24": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_24",
+      "label": "IPI Metalurgia (CAE-24, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:49:49.758672",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_24.png"
+    },
+    "INE/ipi_seasonal_cae_25": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_25",
+      "label": "IPI Produtos Metálicos (CAE-25, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:50:05.752210",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_25.png"
+    },
+    "INE/ipi_seasonal_cae_26": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_26",
+      "label": "IPI Electrónica e Óptica (CAE-26, dessaz.)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:50:21.719431"
+    },
+    "INE/ipi_seasonal_cae_27": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_27",
+      "label": "IPI Equipamento Eléctrico (CAE-27, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:50:31.841401",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_27.png"
+    },
+    "INE/ipi_seasonal_cae_28": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_28",
+      "label": "IPI Maquinaria e Equipamentos (CAE-28, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:50:47.909994",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_28.png"
+    },
+    "INE/ipi_seasonal_cae_29": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_29",
+      "label": "IPI Automóvel (CAE-29, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:51:03.791392",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_29.png"
+    },
+    "INE/ipi_seasonal_cae_30": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_30",
+      "label": "IPI Outro Equip. Transporte (CAE-30, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:51:19.603231",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_30.png"
+    },
+    "INE/ipi_seasonal_cae_31": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_31",
+      "label": "IPI Mobiliário (CAE-31, dessaz.)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:51:35.547534"
+    },
+    "INE/ipi_seasonal_cae_32": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_32",
+      "label": "IPI Outras Ind. Transformadoras (CAE-32, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:51:48.186681",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_32.png"
+    },
+    "INE/ipi_seasonal_cae_33": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_33",
+      "label": "IPI Reparação de Maquinaria (CAE-33, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:52:04.365177",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_33.png"
+    },
+    "INE/ipi_seasonal_cae_35": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_35",
+      "label": "IPI Electricidade, Gás e Vapor (CAE-35, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:52:20.248949",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_35.png"
+    },
+    "INE/ipi_seasonal_cae_38": {
+      "source": "INE",
+      "indicator": "ipi_seasonal_cae_38",
+      "label": "IPI Gestão de Resíduos (CAE-38, dessaz.)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:52:36.123716",
+      "screenshot": "/tmp/prumo-audit-screenshots/INE_ipi_seasonal_cae_38.png"
+    },
+    "EUROSTAT/ipi": {
+      "source": "EUROSTAT",
+      "indicator": "ipi",
+      "label": "IPI Portugal (Eurostat)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:52:52.114508"
+    },
+    "EUROSTAT/manufacturing": {
+      "source": "EUROSTAT",
+      "indicator": "manufacturing",
+      "label": "Indústria Transformadora (PT)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:53:05.283684",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_manufacturing.png"
+    },
+    "EUROSTAT/total_industry": {
+      "source": "EUROSTAT",
+      "indicator": "total_industry",
+      "label": "Total Indústria (PT)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:53:21.232022",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_total_industry.png"
+    },
+    "EUROSTAT/metals": {
+      "source": "EUROSTAT",
+      "indicator": "metals",
+      "label": "Metais e Produtos Metálicos (PT)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:53:37.201205",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_metals.png"
+    },
+    "EUROSTAT/chemicals_pharma": {
+      "source": "EUROSTAT",
+      "indicator": "chemicals_pharma",
+      "label": "Química e Farmacêutica (PT)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:53:53.137904",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_chemicals_pharma.png"
+    },
+    "EUROSTAT/machinery": {
+      "source": "EUROSTAT",
+      "indicator": "machinery",
+      "label": "Maquinaria e Equipamento (PT)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:54:09.166315"
+    },
+    "EUROSTAT/transport_eq": {
+      "source": "EUROSTAT",
+      "indicator": "transport_eq",
+      "label": "Equipamento de Transporte (PT)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:54:20.803400",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_transport_eq.png"
+    },
+    "EUROSTAT/rubber_plastics": {
+      "source": "EUROSTAT",
+      "indicator": "rubber_plastics",
+      "label": "Borracha e Plásticos (PT)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:54:37.249883",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_rubber_plastics.png"
+    },
+    "EUROSTAT/inflation": {
+      "source": "EUROSTAT",
+      "indicator": "inflation",
+      "label": "Inflação UE (Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:54:53.249452",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_inflation.png"
+    },
+    "EUROSTAT/unemployment": {
+      "source": "EUROSTAT",
+      "indicator": "unemployment",
+      "label": "Desemprego Portugal (Eurostat)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:55:09.298197"
+    },
+    "EUROSTAT/ipi_electronics": {
+      "source": "EUROSTAT",
+      "indicator": "ipi_electronics",
+      "label": "IPI Electrónica e Óptica (PT, Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:55:19.481452",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_ipi_electronics.png"
+    },
+    "EUROSTAT/ipi_food_beverage": {
+      "source": "EUROSTAT",
+      "indicator": "ipi_food_beverage",
+      "label": "IPI Alimentação e Bebidas (PT, Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:55:35.817283",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_ipi_food_beverage.png"
+    },
+    "EUROSTAT/ipi_manufacturing": {
+      "source": "EUROSTAT",
+      "indicator": "ipi_manufacturing",
+      "label": "IPI Ind. Transformadora (Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:55:51.843426",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_ipi_manufacturing.png"
+    },
+    "EUROSTAT/ipi_nonmetallic": {
+      "source": "EUROSTAT",
+      "indicator": "ipi_nonmetallic",
+      "label": "IPI Minerais Não Metálicos (PT, Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:56:07.750460",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_ipi_nonmetallic.png"
+    },
+    "EUROSTAT/ipi_textiles": {
+      "source": "EUROSTAT",
+      "indicator": "ipi_textiles",
+      "label": "IPI Têxteis e Vestuário (PT, Eurostat)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:56:23.780423"
+    },
+    "EUROSTAT/ipi_total": {
+      "source": "EUROSTAT",
+      "indicator": "ipi_total",
+      "label": "IPI Total Indústria (Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:56:36.436355",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_ipi_total.png"
+    },
+    "EUROSTAT/ipi_wood_paper": {
+      "source": "EUROSTAT",
+      "indicator": "ipi_wood_paper",
+      "label": "IPI Madeira, Papel e Impressão (PT, Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:56:52.833395",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_ipi_wood_paper.png"
+    },
+    "EUROSTAT/labour_productivity_hour": {
+      "source": "EUROSTAT",
+      "indicator": "labour_productivity_hour",
+      "label": "Produtividade por Hora Trabalhada (UE)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:57:08.872015",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_labour_productivity_hour.png"
+    },
+    "EUROSTAT/labour_productivity_hour_real": {
+      "source": "EUROSTAT",
+      "indicator": "labour_productivity_hour_real",
+      "label": "Produtividade por Hora — Real (UE)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:57:24.895600",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_labour_productivity_hour_real.png"
+    },
+    "EUROSTAT/labour_productivity_per_hour": {
+      "source": "EUROSTAT",
+      "indicator": "labour_productivity_per_hour",
+      "label": "Produtividade por Hora (UE — nível)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:57:40.972463"
+    },
+    "EUROSTAT/labour_productivity_person_real": {
+      "source": "EUROSTAT",
+      "indicator": "labour_productivity_person_real",
+      "label": "Produtividade por Trabalhador — Real (UE)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:57:51.132469",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_labour_productivity_person_real.png"
+    },
+    "EUROSTAT/unit_labour_cost": {
+      "source": "EUROSTAT",
+      "indicator": "unit_labour_cost",
+      "label": "Custo Unitário do Trabalho (UE)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:58:07.663372",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_unit_labour_cost.png"
+    },
+    "EUROSTAT/unit_labour_cost_hour": {
+      "source": "EUROSTAT",
+      "indicator": "unit_labour_cost_hour",
+      "label": "Custo Unitário por Hora (UE)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:58:23.684725",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_unit_labour_cost_hour.png"
+    },
+    "EUROSTAT/unit_labour_cost_person": {
+      "source": "EUROSTAT",
+      "indicator": "unit_labour_cost_person",
+      "label": "Custo Unitário por Trabalhador (UE)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:58:39.771484"
+    },
+    "EUROSTAT/gdp_quarterly": {
+      "source": "EUROSTAT",
+      "indicator": "gdp_quarterly",
+      "label": "PIB Trimestral (Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:58:51.371466",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_gdp_quarterly.png"
+    },
+    "EUROSTAT/gdp_per_capita_eur": {
+      "source": "EUROSTAT",
+      "indicator": "gdp_per_capita_eur",
+      "label": "PIB per capita — EUR correntes (Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:59:07.453233",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_gdp_per_capita_eur.png"
+    },
+    "EUROSTAT/gdp_per_capita_pps": {
+      "source": "EUROSTAT",
+      "indicator": "gdp_per_capita_pps",
+      "label": "PIB per capita — PPC (Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:59:23.520479",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_gdp_per_capita_pps.png"
+    },
+    "EUROSTAT/gov_debt_pct_gdp": {
+      "source": "EUROSTAT",
+      "indicator": "gov_debt_pct_gdp",
+      "label": "Dívida Pública (% PIB, Eurostat)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:59:39.622530"
+    },
+    "EUROSTAT/gov_deficit_pct_gdp": {
+      "source": "EUROSTAT",
+      "indicator": "gov_deficit_pct_gdp",
+      "label": "Défice Público (% PIB, Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T00:59:51.355027",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_gov_deficit_pct_gdp.png"
+    },
+    "EUROSTAT/employment_rate": {
+      "source": "EUROSTAT",
+      "indicator": "employment_rate",
+      "label": "Taxa de Emprego (Eurostat)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:00:08.095042",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_employment_rate.png"
+    },
+    "EUROSTAT/current_account_pct_gdp": {
+      "source": "EUROSTAT",
+      "indicator": "current_account_pct_gdp",
+      "label": "Balança Corrente (% PIB)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:00:24.292527",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_current_account_pct_gdp.png"
+    },
+    "EUROSTAT/hicp": {
+      "source": "EUROSTAT",
+      "indicator": "hicp",
+      "label": "IHPC — Índice (Eurostat, multi-país)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:00:40.419492",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_hicp.png"
+    },
+    "EUROSTAT/unemployment_m": {
+      "source": "EUROSTAT",
+      "indicator": "unemployment_m",
+      "label": "Desemprego Mensal (mil pessoas)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:00:56.689511"
+    },
+    "EUROSTAT/cci": {
+      "source": "EUROSTAT",
+      "indicator": "cci",
+      "label": "Confiança Consumidor (Eurostat, multi-país)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:01:06.374016",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_cci.png"
+    },
+    "EUROSTAT/consumer_confidence": {
+      "source": "EUROSTAT",
+      "indicator": "consumer_confidence",
+      "label": "Confiança Consumidores UE",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:01:23.070524",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_consumer_confidence.png"
+    },
+    "EUROSTAT/hourly_labour_cost_index": {
+      "source": "EUROSTAT",
+      "indicator": "hourly_labour_cost_index",
+      "label": "Índice Custo Horário do Trabalho (UE)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:01:39.311168",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_hourly_labour_cost_index.png"
+    },
+    "EUROSTAT/construction_index": {
+      "source": "EUROSTAT",
+      "indicator": "construction_index",
+      "label": "Índice Produção Construção (UE)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:01:55.796227"
+    },
+    "EUROSTAT/construction_output": {
+      "source": "EUROSTAT",
+      "indicator": "construction_output",
+      "label": "Produção na Construção (UE)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:02:08.122240",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_construction_output.png"
+    },
+    "EUROSTAT/STS_INPR_M_BD": {
+      "source": "EUROSTAT",
+      "indicator": "STS_INPR_M_BD",
+      "label": "IPI Construção (NACE F, multi-país)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:02:25.055398",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_STS_INPR_M_BD.png"
+    },
+    "EUROSTAT/STS_INPR_M_C": {
+      "source": "EUROSTAT",
+      "indicator": "STS_INPR_M_C",
+      "label": "IPI Ind. Transformadora NACE-C (multi-país, longa)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:02:41.272935",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_STS_INPR_M_C.png"
+    },
+    "EUROSTAT/STS_INPR_M_C20C21": {
+      "source": "EUROSTAT",
+      "indicator": "STS_INPR_M_C20C21",
+      "label": "IPI Química e Farmacêutica (NACE C20-C21, multi-país)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:02:57.574775"
+    },
+    "EUROSTAT/STS_INPR_M_C29C30": {
+      "source": "EUROSTAT",
+      "indicator": "STS_INPR_M_C29C30",
+      "label": "IPI Veículos e Equip. Transporte (NACE C29-C30, multi-país)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:03:07.274470",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_STS_INPR_M_C29C30.png"
+    },
+    "EUROSTAT/earn_ses_pub2s": {
+      "source": "EUROSTAT",
+      "indicator": "earn_ses_pub2s",
+      "label": "Salários Horários Médios — Sector Público (EUR)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:03:24.112247",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_earn_ses_pub2s.png"
+    },
+    "EUROSTAT/electricity_price_household": {
+      "source": "EUROSTAT",
+      "indicator": "electricity_price_household",
+      "label": "Preço Electricidade Doméstico (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:03:40.342326",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_electricity_price_household.png"
+    },
+    "EUROSTAT/price_level_index": {
+      "source": "EUROSTAT",
+      "indicator": "price_level_index",
+      "label": "Índice de Nível de Preços (UE27=100)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:03:57.913377",
+      "screenshot": "/tmp/prumo-audit-screenshots/EUROSTAT_price_level_index.png"
+    },
+    "FRED/brent_oil": {
+      "source": "FRED",
+      "indicator": "brent_oil",
+      "label": "Petróleo Brent (USD/barril)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:04:14.862975"
+    },
+    "FRED/natural_gas": {
+      "source": "FRED",
+      "indicator": "natural_gas",
+      "label": "Gás Natural (USD/MMBtu)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:04:27.097667",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_natural_gas.png"
+    },
+    "FRED/copper": {
+      "source": "FRED",
+      "indicator": "copper",
+      "label": "Cobre (USD/tonelada)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:04:44.032528",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_copper.png"
+    },
+    "FRED/aluminum": {
+      "source": "FRED",
+      "indicator": "aluminum",
+      "label": "Alumínio (USD/tonelada)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:05:00.424889",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_aluminum.png"
+    },
+    "FRED/wheat": {
+      "source": "FRED",
+      "indicator": "wheat",
+      "label": "Trigo (USD/t)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:05:16.828309",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_wheat.png"
+    },
+    "FRED/corn": {
+      "source": "FRED",
+      "indicator": "corn",
+      "label": "Milho (USD/t)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:05:33.248852"
+    },
+    "FRED/coffee": {
+      "source": "FRED",
+      "indicator": "coffee",
+      "label": "Café (USD/lb)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:05:44.466729",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_coffee.png"
+    },
+    "FRED/commodity_cotton": {
+      "source": "FRED",
+      "indicator": "commodity_cotton",
+      "label": "Algodão (USD/libra)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:06:01.716752",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_commodity_cotton.png"
+    },
+    "FRED/commodity_iron_ore": {
+      "source": "FRED",
+      "indicator": "commodity_iron_ore",
+      "label": "Minério de Ferro (USD/t seca)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:06:18.177957",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_commodity_iron_ore.png"
+    },
+    "FRED/commodity_nickel": {
+      "source": "FRED",
+      "indicator": "commodity_nickel",
+      "label": "Níquel (USD/tonelada)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:06:34.879326"
+    },
+    "FRED/commodity_soybean": {
+      "source": "FRED",
+      "indicator": "commodity_soybean",
+      "label": "Soja (USD/bushel)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:06:57.480761",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_commodity_soybean.png"
+    },
+    "FRED/commodity_steel": {
+      "source": "FRED",
+      "indicator": "commodity_steel",
+      "label": "Aço (USD/tonelada)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:07:13.830118",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_commodity_steel.png"
+    },
+    "FRED/commodity_sugar": {
+      "source": "FRED",
+      "indicator": "commodity_sugar",
+      "label": "Açúcar (USD/libra)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:07:30.108752",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_commodity_sugar.png"
+    },
+    "FRED/commodity_zinc": {
+      "source": "FRED",
+      "indicator": "commodity_zinc",
+      "label": "Zinco (USD/tonelada)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:07:46.423253"
+    },
+    "FRED/gold_price": {
+      "source": "FRED",
+      "indicator": "gold_price",
+      "label": "Ouro (USD/onça troy)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:07:57.203711",
+      "screenshot": "/tmp/prumo-audit-screenshots/FRED_gold_price.png"
+    },
+    "BPORTUGAL/euribor_1m": {
+      "source": "BPORTUGAL",
+      "indicator": "euribor_1m",
+      "label": "Euribor 1 mês",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:08:14.184355",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_euribor_1m.png"
+    },
+    "BPORTUGAL/euribor_3m": {
+      "source": "BPORTUGAL",
+      "indicator": "euribor_3m",
+      "label": "Euribor 3 meses",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:08:30.597642",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_euribor_3m.png"
+    },
+    "BPORTUGAL/euribor_6m": {
+      "source": "BPORTUGAL",
+      "indicator": "euribor_6m",
+      "label": "Euribor 6 meses",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:08:47.465472"
+    },
+    "BPORTUGAL/euribor_12m": {
+      "source": "BPORTUGAL",
+      "indicator": "euribor_12m",
+      "label": "Euribor 12 meses",
+      "status": "CHART_ONLY",
+      "chart": true,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": " AI analysis failed/timeout",
+      "timestamp": "2026-03-16T01:09:02.343152",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_euribor_12m.png"
+    },
+    "BPORTUGAL/pt_10y": {
+      "source": "BPORTUGAL",
+      "indicator": "pt_10y",
+      "label": "Yield OT Portugal 10 anos",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:09:16.235101"
+    },
+    "BPORTUGAL/de_10y": {
+      "source": "BPORTUGAL",
+      "indicator": "de_10y",
+      "label": "Yield Bund Alemão 10 anos",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:09:28.743096",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_de_10y.png"
+    },
+    "BPORTUGAL/spread_pt_de": {
+      "source": "BPORTUGAL",
+      "indicator": "spread_pt_de",
+      "label": "Spread Portugal-Alemanha (10 anos)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:09:45.207080",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_spread_pt_de.png"
+    },
+    "BPORTUGAL/credit_housing": {
+      "source": "BPORTUGAL",
+      "indicator": "credit_housing",
+      "label": "Crédito à Habitação",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:10:01.756797",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_credit_housing.png"
+    },
+    "BPORTUGAL/credit_consumer": {
+      "source": "BPORTUGAL",
+      "indicator": "credit_consumer",
+      "label": "Crédito ao Consumo",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:10:18.544954",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_credit_consumer.png"
+    },
+    "BPORTUGAL/deposits": {
+      "source": "BPORTUGAL",
+      "indicator": "deposits",
+      "label": "Depósitos Bancários",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:10:35.090440"
+    },
+    "BPORTUGAL/eur_usd": {
+      "source": "BPORTUGAL",
+      "indicator": "eur_usd",
+      "label": "Câmbio EUR/USD",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:10:45.895807",
+      "screenshot": "/tmp/prumo-audit-screenshots/BPORTUGAL_eur_usd.png"
+    },
+    "REN/electricity_price_mibel": {
+      "source": "REN",
+      "indicator": "electricity_price_mibel",
+      "label": "Preço MIBEL (EUR/MWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:11:02.422721",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_price_mibel.png"
+    },
+    "REN/electricity_hydro": {
+      "source": "REN",
+      "indicator": "electricity_hydro",
+      "label": "Produção Hídrica (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:11:18.889354",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_hydro.png"
+    },
+    "REN/electricity_wind": {
+      "source": "REN",
+      "indicator": "electricity_wind",
+      "label": "Produção Eólica (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:11:35.469038",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_wind.png"
+    },
+    "REN/electricity_solar": {
+      "source": "REN",
+      "indicator": "electricity_solar",
+      "label": "Produção Solar FV (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:11:52.188522"
+    },
+    "REN/electricity_natural_gas": {
+      "source": "REN",
+      "indicator": "electricity_natural_gas",
+      "label": "Produção Gás Natural (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:12:05.111746",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_natural_gas.png"
+    },
+    "REN/electricity_biomass": {
+      "source": "REN",
+      "indicator": "electricity_biomass",
+      "label": "Produção Biomassa (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:12:22.653705",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_biomass.png"
+    },
+    "REN/electricity_consumption": {
+      "source": "REN",
+      "indicator": "electricity_consumption",
+      "label": "Consumo Eléctrico Nacional (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:12:39.316062",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_consumption.png"
+    },
+    "REN/electricity_production_total": {
+      "source": "REN",
+      "indicator": "electricity_production_total",
+      "label": "Produção Eléctrica Total (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:12:56.397718"
+    },
+    "REN/electricity_production_renewable": {
+      "source": "REN",
+      "indicator": "electricity_production_renewable",
+      "label": "Produção Renovável (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:13:08.564302",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_production_renewable.png"
+    },
+    "REN/electricity_net_imports": {
+      "source": "REN",
+      "indicator": "electricity_net_imports",
+      "label": "Importações Líquidas (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:13:26.073319",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_net_imports.png"
+    },
+    "REN/electricity_exports": {
+      "source": "REN",
+      "indicator": "electricity_exports",
+      "label": "Exportações de Electricidade (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:13:42.896262",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_exports.png"
+    },
+    "REN/electricity_imports": {
+      "source": "REN",
+      "indicator": "electricity_imports",
+      "label": "Importações de Electricidade (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:14:01.163009"
+    },
+    "REN/electricity_natural_gas_ccgt": {
+      "source": "REN",
+      "indicator": "electricity_natural_gas_ccgt",
+      "label": "Produção Gás Natural CCGT (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:14:11.328299",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_natural_gas_ccgt.png"
+    },
+    "REN/electricity_production_non_renewable": {
+      "source": "REN",
+      "indicator": "electricity_production_non_renewable",
+      "label": "Produção Não Renovável Total (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:14:28.948469",
+      "screenshot": "/tmp/prumo-audit-screenshots/REN_electricity_production_non_renewable.png"
+    },
+    "OECD/cli": {
+      "source": "OECD",
+      "indicator": "cli",
+      "label": "CLI — Indicador Composto Avançado",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:14:45.765453",
+      "screenshot": "/tmp/prumo-audit-screenshots/OECD_cli.png"
+    },
+    "OECD/production": {
+      "source": "OECD",
+      "indicator": "production",
+      "label": "Perspectivas de Produção (BTS)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:15:02.609945"
+    },
+    "OECD/order_books": {
+      "source": "OECD",
+      "indicator": "order_books",
+      "label": "Carteira de Encomendas (BTS)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:15:18.157098",
+      "screenshot": "/tmp/prumo-audit-screenshots/OECD_order_books.png"
+    },
+    "OECD/selling_prices": {
+      "source": "OECD",
+      "indicator": "selling_prices",
+      "label": "Perspectivas de Preços de Venda (BTS)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:15:34.868657",
+      "screenshot": "/tmp/prumo-audit-screenshots/OECD_selling_prices.png"
+    },
+    "OECD/employment": {
+      "source": "OECD",
+      "indicator": "employment",
+      "label": "Perspectivas de Emprego (BTS)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:15:51.466814",
+      "screenshot": "/tmp/prumo-audit-screenshots/OECD_employment.png"
+    },
+    "OECD/unemp_m": {
+      "source": "OECD",
+      "indicator": "unemp_m",
+      "label": "Taxa de Desemprego (OCDE)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:16:08.142303"
+    },
+    "DGEG/gross_production_total": {
+      "source": "DGEG",
+      "indicator": "gross_production_total",
+      "label": "Produção Bruta Total (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:16:19.423413",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_gross_production_total.png"
+    },
+    "DGEG/gross_production_wind": {
+      "source": "DGEG",
+      "indicator": "gross_production_wind",
+      "label": "Produção Eólica Bruta (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:16:37.735366",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_gross_production_wind.png"
+    },
+    "DGEG/gross_production_hydro": {
+      "source": "DGEG",
+      "indicator": "gross_production_hydro",
+      "label": "Produção Hídrica Bruta (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:16:54.627001",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_gross_production_hydro.png"
+    },
+    "DGEG/gross_production_solar_pv": {
+      "source": "DGEG",
+      "indicator": "gross_production_solar_pv",
+      "label": "Produção Solar FV Bruta (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:17:12.033241"
+    },
+    "DGEG/gross_production_thermal": {
+      "source": "DGEG",
+      "indicator": "gross_production_thermal",
+      "label": "Produção Térmica Bruta (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:17:23.144503",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_gross_production_thermal.png"
+    },
+    "DGEG/total_consumption": {
+      "source": "DGEG",
+      "indicator": "total_consumption",
+      "label": "Consumo Total Electricidade (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:17:41.097989",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_total_consumption.png"
+    },
+    "DGEG/net_imports": {
+      "source": "DGEG",
+      "indicator": "net_imports",
+      "label": "Importações Líquidas (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:17:58.459719",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_net_imports.png"
+    },
+    "DGEG/energy_dependence": {
+      "source": "DGEG",
+      "indicator": "energy_dependence",
+      "label": "Dependência Energética (%)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:18:16.393896"
+    },
+    "DGEG/pct_renewable_real": {
+      "source": "DGEG",
+      "indicator": "pct_renewable_real",
+      "label": "Quota Renovável Electricidade — Mensal (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:18:32.617275",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_pct_renewable_real.png"
+    },
+    "DGEG/pct_renewable_directive": {
+      "source": "DGEG",
+      "indicator": "pct_renewable_directive",
+      "label": "Meta Renovável Directiva (%) — anual",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:18:49.579606",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_pct_renewable_directive.png"
+    },
+    "DGEG/renewable_share_electricity": {
+      "source": "DGEG",
+      "indicator": "renewable_share_electricity",
+      "label": "Quota Renovável Electricidade — Anual (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:19:06.418285",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_renewable_share_electricity.png"
+    },
+    "DGEG/renewable_share_total": {
+      "source": "DGEG",
+      "indicator": "renewable_share_total",
+      "label": "Quota Renovável Total (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:19:23.759298",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_renewable_share_total.png"
+    },
+    "DGEG/renewable_share_transport": {
+      "source": "DGEG",
+      "indicator": "renewable_share_transport",
+      "label": "Quota Renovável Transportes (%)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:19:40.803986"
+    },
+    "DGEG/energy_intensity": {
+      "source": "DGEG",
+      "indicator": "energy_intensity",
+      "label": "Intensidade Energética (tep/M€)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:19:52.867497",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_energy_intensity.png"
+    },
+    "DGEG/co2_emissions_total": {
+      "source": "DGEG",
+      "indicator": "co2_emissions_total",
+      "label": "Emissões CO₂ Totais (Mton)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:20:10.692455",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_co2_emissions_total.png"
+    },
+    "DGEG/co2_emissions_energy": {
+      "source": "DGEG",
+      "indicator": "co2_emissions_energy",
+      "label": "Emissões CO₂ Sector Energético (Mton)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:20:27.760362",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_co2_emissions_energy.png"
+    },
+    "DGEG/price_diesel_pvp": {
+      "source": "DGEG",
+      "indicator": "price_diesel_pvp",
+      "label": "Preço Gasóleo PVP (€/l)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:20:44.844292",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_diesel_pvp.png"
+    },
+    "DGEG/price_gasoline_95_pvp": {
+      "source": "DGEG",
+      "indicator": "price_gasoline_95_pvp",
+      "label": "Preço Gasolina 95 PVP (€/l)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:21:01.914787"
+    },
+    "DGEG/natgas_price_industry_€_per_MWh": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_€_per_MWh",
+      "label": "Preço Gás Natural Indústria (€/MWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:21:13.482038",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_EUR_per_MWh.png"
+    },
+    "DGEG/industrial_band_ic_incl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ic_incl_taxes",
+      "label": "Preço Electricidade Industrial Banda IC (€/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:21:31.461626",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ic_incl_taxes.png"
+    },
+    "DGEG/brent_usd": {
+      "source": "DGEG",
+      "indicator": "brent_usd",
+      "label": "Petróleo Brent (USD/barril) — DGEG",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:21:48.593504",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_brent_usd.png"
+    },
+    "DGEG/agricultural_diesel": {
+      "source": "DGEG",
+      "indicator": "agricultural_diesel",
+      "label": "Gasóleo Agrícola — Consumo (ktep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:22:06.120140"
+    },
+    "DGEG/aviation_gasoline": {
+      "source": "DGEG",
+      "indicator": "aviation_gasoline",
+      "label": "Gasolina de Aviação — Preço (EUR/l)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:22:18.452157",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_aviation_gasoline.png"
+    },
+    "DGEG/aviation_jet_fuel": {
+      "source": "DGEG",
+      "indicator": "aviation_jet_fuel",
+      "label": "Combustível Aviação Jet — Preço (EUR/l)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:22:35.763900",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_aviation_jet_fuel.png"
+    },
+    "DGEG/brent_eur": {
+      "source": "DGEG",
+      "indicator": "brent_eur",
+      "label": "Petróleo Brent (EUR/barril)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:22:52.950800",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_brent_eur.png"
+    },
+    "DGEG/cogeneration": {
+      "source": "DGEG",
+      "indicator": "cogeneration",
+      "label": "Cogeração — Consumo (ktep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:23:09.943153"
+    },
+    "DGEG/coloured_fuel_oil": {
+      "source": "DGEG",
+      "indicator": "coloured_fuel_oil",
+      "label": "Fuelóleo Colorido — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:23:20.076060",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_coloured_fuel_oil.png"
+    },
+    "DGEG/coloured_total": {
+      "source": "DGEG",
+      "indicator": "coloured_total",
+      "label": "Combustíveis Coloridos — Total (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:23:38.228112",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_coloured_total.png"
+    },
+    "DGEG/consumption_coal": {
+      "source": "DGEG",
+      "indicator": "consumption_coal",
+      "label": "Consumo Carvão (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:23:55.882298",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_consumption_coal.png"
+    },
+    "DGEG/consumption_industry": {
+      "source": "DGEG",
+      "indicator": "consumption_industry",
+      "label": "Consumo Energético Indústria (tep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:24:14.040815"
+    },
+    "DGEG/consumption_natural_gas": {
+      "source": "DGEG",
+      "indicator": "consumption_natural_gas",
+      "label": "Consumo Gás Natural (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:24:24.728686",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_consumption_natural_gas.png"
+    },
+    "DGEG/consumption_petroleum": {
+      "source": "DGEG",
+      "indicator": "consumption_petroleum",
+      "label": "Consumo Produtos Petrolíferos (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:24:42.981649",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_consumption_petroleum.png"
+    },
+    "DGEG/consumption_primary_total": {
+      "source": "DGEG",
+      "indicator": "consumption_primary_total",
+      "label": "Consumo Primário Total (tep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:25:00.346342",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_consumption_primary_total.png"
+    },
+    "DGEG/consumption_total": {
+      "source": "DGEG",
+      "indicator": "consumption_total",
+      "label": "Consumo Energético Total (ktep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:25:17.760328"
+    },
+    "DGEG/consumption_transport": {
+      "source": "DGEG",
+      "indicator": "consumption_transport",
+      "label": "Consumo Energético Transportes (tep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:25:28.447183",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_consumption_transport.png"
+    },
+    "DGEG/dedicated_plants": {
+      "source": "DGEG",
+      "indicator": "dedicated_plants",
+      "label": "Centrais Dedicadas — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:25:45.695991",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_dedicated_plants.png"
+    },
+    "DGEG/diesel_pretax": {
+      "source": "DGEG",
+      "indicator": "diesel_pretax",
+      "label": "Gasóleo — Preço Pré-Imposto (EUR/l)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:26:03.067266",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_diesel_pretax.png"
+    },
+    "DGEG/electricity_consumption": {
+      "source": "DGEG",
+      "indicator": "electricity_consumption",
+      "label": "Consumo Electricidade — Anual (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:26:20.405291"
+    },
+    "DGEG/energy_intensity_final": {
+      "source": "DGEG",
+      "indicator": "energy_intensity_final",
+      "label": "Intensidade Energia Final (tep/M EUR)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:26:30.636078",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_energy_intensity_final.png"
+    },
+    "DGEG/energy_intensity_industry": {
+      "source": "DGEG",
+      "indicator": "energy_intensity_industry",
+      "label": "Intensidade Energética Indústria (tep/M EUR)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:26:47.743898",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_energy_intensity_industry.png"
+    },
+    "DGEG/energy_intensity_primary": {
+      "source": "DGEG",
+      "indicator": "energy_intensity_primary",
+      "label": "Intensidade Energia Primária (tep/M EUR)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:27:04.896886",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_energy_intensity_primary.png"
+    },
+    "DGEG/energy_intensity_services": {
+      "source": "DGEG",
+      "indicator": "energy_intensity_services",
+      "label": "Intensidade Energética Serviços (tep/M EUR)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:27:22.436665",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_energy_intensity_services.png"
+    },
+    "DGEG/eur_usd_fx": {
+      "source": "DGEG",
+      "indicator": "eur_usd_fx",
+      "label": "Câmbio EUR/USD (DGEG)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:27:39.901148"
+    },
+    "DGEG/exports": {
+      "source": "DGEG",
+      "indicator": "exports",
+      "label": "Exportações Electricidade — DGEG (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:27:52.574655",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_exports.png"
+    },
+    "DGEG/final_energy_consumption": {
+      "source": "DGEG",
+      "indicator": "final_energy_consumption",
+      "label": "Consumo Final de Energia (tep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:28:10.931216",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_final_energy_consumption.png"
+    },
+    "DGEG/fuel_coal": {
+      "source": "DGEG",
+      "indicator": "fuel_coal",
+      "label": "Carvão — Consumo Eléctrico (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:28:28.410805",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_fuel_coal.png"
+    },
+    "DGEG/fuel_consumption_total": {
+      "source": "DGEG",
+      "indicator": "fuel_consumption_total",
+      "label": "Consumo Total Combustíveis Eléctricos (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:28:45.930659"
+    },
+    "DGEG/fuel_natural_gas": {
+      "source": "DGEG",
+      "indicator": "fuel_natural_gas",
+      "label": "Gás Natural — Consumo Eléctrico (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:29:01.651153",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_fuel_natural_gas.png"
+    },
+    "DGEG/fuel_other": {
+      "source": "DGEG",
+      "indicator": "fuel_other",
+      "label": "Outros Combustíveis — Consumo Eléctrico (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:29:20.286537",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_fuel_other.png"
+    },
+    "DGEG/fuel_petroleum": {
+      "source": "DGEG",
+      "indicator": "fuel_petroleum",
+      "label": "Petróleo — Consumo Eléctrico (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:29:38.014959",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_fuel_petroleum.png"
+    },
+    "DGEG/gasoline_pretax": {
+      "source": "DGEG",
+      "indicator": "gasoline_pretax",
+      "label": "Gasolina 95 — Preço Pré-Imposto (EUR/l)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:29:56.012686",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_gasoline_pretax.png"
+    },
+    "DGEG/gross_prod_net": {
+      "source": "DGEG",
+      "indicator": "gross_prod_net",
+      "label": "Produção Bruta Líquida (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:30:13.942839"
+    },
+    "DGEG/gross_production_plus_imports": {
+      "source": "DGEG",
+      "indicator": "gross_production_plus_imports",
+      "label": "Produção + Importações (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:30:29.260825",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_gross_production_plus_imports.png"
+    },
+    "DGEG/heating_diesel": {
+      "source": "DGEG",
+      "indicator": "heating_diesel",
+      "label": "Gasóleo de Aquecimento — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:30:47.820365",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_heating_diesel.png"
+    },
+    "DGEG/imports": {
+      "source": "DGEG",
+      "indicator": "imports",
+      "label": "Importações Electricidade — DGEG (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:31:05.318979",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_imports.png"
+    },
+    "DGEG/lpg_auto": {
+      "source": "DGEG",
+      "indicator": "lpg_auto",
+      "label": "GPL Auto — Consumo (ktep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:31:23.053730"
+    },
+    "DGEG/lpg_butane": {
+      "source": "DGEG",
+      "indicator": "lpg_butane",
+      "label": "GPL Butano — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:31:33.364278",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_lpg_butane.png"
+    },
+    "DGEG/lpg_propane": {
+      "source": "DGEG",
+      "indicator": "lpg_propane",
+      "label": "GPL Propano — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:31:51.993590",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_lpg_propane.png"
+    },
+    "DGEG/lpg_total": {
+      "source": "DGEG",
+      "indicator": "lpg_total",
+      "label": "GPL Total — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:32:09.842872",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_lpg_total.png"
+    },
+    "DGEG/maritime_diesel": {
+      "source": "DGEG",
+      "indicator": "maritime_diesel",
+      "label": "Gasóleo Marítimo — Consumo (ktep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:32:27.528037"
+    },
+    "DGEG/maritime_fuel_oil": {
+      "source": "DGEG",
+      "indicator": "maritime_fuel_oil",
+      "label": "Fuelóleo Marítimo — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:32:41.911877",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_maritime_fuel_oil.png"
+    },
+    "DGEG/maritime_total": {
+      "source": "DGEG",
+      "indicator": "maritime_total",
+      "label": "Combustíveis Marítimos — Total (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:33:00.634298",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_maritime_total.png"
+    },
+    "DGEG/natgas_avg_price": {
+      "source": "DGEG",
+      "indicator": "natgas_avg_price",
+      "label": "Gás Natural — Preço Médio (EUR/MWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:33:18.203519",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_avg_price.png"
+    },
+    "DGEG/natgas_cogeneration": {
+      "source": "DGEG",
+      "indicator": "natgas_cogeneration",
+      "label": "Gás Natural Cogeração — Volume (m3)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:33:35.894770"
+    },
+    "DGEG/natgas_dedicated_plants": {
+      "source": "DGEG",
+      "indicator": "natgas_dedicated_plants",
+      "label": "Gás Natural Centrais Dedicadas — Volume (m3)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:33:49.861436",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_dedicated_plants.png"
+    },
+    "DGEG/natgas_imports_pipeline": {
+      "source": "DGEG",
+      "indicator": "natgas_imports_pipeline",
+      "label": "Gás Natural — Importações Gasoduto (m3)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:34:07.607648",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_imports_pipeline.png"
+    },
+    "DGEG/natgas_imports_ship": {
+      "source": "DGEG",
+      "indicator": "natgas_imports_ship",
+      "label": "Gás Natural — Importações GNL (m3)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:34:25.193935",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_imports_ship.png"
+    },
+    "DGEG/natgas_imports_total": {
+      "source": "DGEG",
+      "indicator": "natgas_imports_total",
+      "label": "Gás Natural — Importações Total (Gm³)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:34:42.798760",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_imports_total.png"
+    },
+    "DGEG/natgas_other_sectors": {
+      "source": "DGEG",
+      "indicator": "natgas_other_sectors",
+      "label": "Gás Natural Outros Sectores — Volume (m3)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:35:00.532159"
+    },
+    "DGEG/natgas_total": {
+      "source": "DGEG",
+      "indicator": "natgas_total",
+      "label": "Gás Natural Total — Volume (m3)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:35:10.870449",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_total.png"
+    },
+    "DGEG/petroleum_coke": {
+      "source": "DGEG",
+      "indicator": "petroleum_coke",
+      "label": "Coque de Petróleo — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:35:29.565774",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_petroleum_coke.png"
+    },
+    "DGEG/petroleum_diesel": {
+      "source": "DGEG",
+      "indicator": "petroleum_diesel",
+      "label": "Gasóleo — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:35:47.264477",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_petroleum_diesel.png"
+    },
+    "DGEG/petroleum_fuel_oil": {
+      "source": "DGEG",
+      "indicator": "petroleum_fuel_oil",
+      "label": "Fuelóleo — Consumo (ktep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:36:05.477131"
+    },
+    "DGEG/petroleum_gasoline": {
+      "source": "DGEG",
+      "indicator": "petroleum_gasoline",
+      "label": "Gasolina — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:36:17.815389",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_petroleum_gasoline.png"
+    },
+    "DGEG/petroleum_lpg": {
+      "source": "DGEG",
+      "indicator": "petroleum_lpg",
+      "label": "GPL Petrolífero — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:36:35.553404",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_petroleum_lpg.png"
+    },
+    "DGEG/petroleum_total": {
+      "source": "DGEG",
+      "indicator": "petroleum_total",
+      "label": "Produtos Petrolíferos — Total (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:36:53.410636",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_petroleum_total.png"
+    },
+    "DGEG/price_agricultural_diesel": {
+      "source": "DGEG",
+      "indicator": "price_agricultural_diesel",
+      "label": "Preço Gasóleo Agrícola (EUR/l)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:37:11.409684"
+    },
+    "DGEG/price_diesel": {
+      "source": "DGEG",
+      "indicator": "price_diesel",
+      "label": "Preço Gasóleo (EUR/l) — recente",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:37:25.389554",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_diesel.png"
+    },
+    "DGEG/price_diesel_pretax": {
+      "source": "DGEG",
+      "indicator": "price_diesel_pretax",
+      "label": "Preço Gasóleo Pré-Imposto (EUR/l)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:37:44.658123",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_diesel_pretax.png"
+    },
+    "DGEG/price_fuel_oil_industry": {
+      "source": "DGEG",
+      "indicator": "price_fuel_oil_industry",
+      "label": "Preço Fuelóleo Industrial (EUR/t)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:38:02.632846",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_fuel_oil_industry.png"
+    },
+    "DGEG/price_gasoline_95_pretax": {
+      "source": "DGEG",
+      "indicator": "price_gasoline_95_pretax",
+      "label": "Preço Gasolina 95 Pré-Imposto (EUR/l)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:38:20.829876"
+    },
+    "DGEG/price_gasoline_98_pvp": {
+      "source": "DGEG",
+      "indicator": "price_gasoline_98_pvp",
+      "label": "Preço Gasolina 98 PVP (EUR/l) [histórico]",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:38:33.361268",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_gasoline_98_pvp.png"
+    },
+    "DGEG/price_gasoline_io95": {
+      "source": "DGEG",
+      "indicator": "price_gasoline_io95",
+      "label": "Preço Gasolina IO95 PVP (EUR/l) — recente",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:38:51.355796",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_gasoline_io95.png"
+    },
+    "DGEG/price_gasoline_io98": {
+      "source": "DGEG",
+      "indicator": "price_gasoline_io98",
+      "label": "Preço Gasolina IO98 PVP (EUR/l) — recente",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:39:09.247899",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_gasoline_io98.png"
+    },
+    "DGEG/price_heating_diesel": {
+      "source": "DGEG",
+      "indicator": "price_heating_diesel",
+      "label": "Preço Gasóleo de Aquecimento (EUR/l)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:39:27.157983"
+    },
+    "DGEG/price_lpg_auto": {
+      "source": "DGEG",
+      "indicator": "price_lpg_auto",
+      "label": "Preço GPL Auto (EUR/l)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:39:41.137927",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_price_lpg_auto.png"
+    },
+    "DGEG/primary_energy_consumption": {
+      "source": "DGEG",
+      "indicator": "primary_energy_consumption",
+      "label": "Consumo de Energia Primária (tep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:40:02.230578",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_primary_energy_consumption.png"
+    },
+    "DGEG/road_fuels_diesel": {
+      "source": "DGEG",
+      "indicator": "road_fuels_diesel",
+      "label": "Gasóleo Rodoviário — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:40:20.291519",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_road_fuels_diesel.png"
+    },
+    "DGEG/road_fuels_gasoline_io95": {
+      "source": "DGEG",
+      "indicator": "road_fuels_gasoline_io95",
+      "label": "Gasolina IO95 Rodoviária — Consumo (ktep)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:40:38.434389"
+    },
+    "DGEG/road_fuels_gasoline_io98": {
+      "source": "DGEG",
+      "indicator": "road_fuels_gasoline_io98",
+      "label": "Gasolina IO98 Rodoviária — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:40:51.000560",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_road_fuels_gasoline_io98.png"
+    },
+    "DGEG/road_fuels_lpg_auto": {
+      "source": "DGEG",
+      "indicator": "road_fuels_lpg_auto",
+      "label": "GPL Auto Rodoviário — Consumo (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:41:08.812727",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_road_fuels_lpg_auto.png"
+    },
+    "DGEG/road_fuels_total": {
+      "source": "DGEG",
+      "indicator": "road_fuels_total",
+      "label": "Combustíveis Rodoviários — Total (ktep)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:41:26.511450",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_road_fuels_total.png"
+    },
+    "DGEG/net_production_hydro": {
+      "source": "DGEG",
+      "indicator": "net_production_hydro",
+      "label": "Produção Hídrica Líquida (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:41:44.542840"
+    },
+    "DGEG/net_production_solar_pv": {
+      "source": "DGEG",
+      "indicator": "net_production_solar_pv",
+      "label": "Produção Solar FV Líquida (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:41:59.703259",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_net_production_solar_pv.png"
+    },
+    "DGEG/net_production_thermal": {
+      "source": "DGEG",
+      "indicator": "net_production_thermal",
+      "label": "Produção Térmica Líquida (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:42:19.743228",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_net_production_thermal.png"
+    },
+    "DGEG/net_production_total": {
+      "source": "DGEG",
+      "indicator": "net_production_total",
+      "label": "Produção Eléctrica Líquida Total (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:42:37.814233",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_net_production_total.png"
+    },
+    "DGEG/net_production_wind": {
+      "source": "DGEG",
+      "indicator": "net_production_wind",
+      "label": "Produção Eólica Líquida (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:42:56.409285"
+    },
+    "DGEG/production_biogas": {
+      "source": "DGEG",
+      "indicator": "production_biogas",
+      "label": "Produção Biogás (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:43:07.989471",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_biogas.png"
+    },
+    "DGEG/production_biomass": {
+      "source": "DGEG",
+      "indicator": "production_biomass",
+      "label": "Produção Biomassa Total (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:43:27.659896",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_biomass.png"
+    },
+    "DGEG/production_biomass_cogeneration": {
+      "source": "DGEG",
+      "indicator": "production_biomass_cogeneration",
+      "label": "Produção Biomassa Cogeração (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:43:45.681481",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_biomass_cogeneration.png"
+    },
+    "DGEG/production_biomass_no_cogeneration": {
+      "source": "DGEG",
+      "indicator": "production_biomass_no_cogeneration",
+      "label": "Produção Biomassa Centrais Dedicadas (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:44:04.308032"
+    },
+    "DGEG/production_geothermal": {
+      "source": "DGEG",
+      "indicator": "production_geothermal",
+      "label": "Produção Geotérmica (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:44:14.446820",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_geothermal.png"
+    },
+    "DGEG/production_hydro": {
+      "source": "DGEG",
+      "indicator": "production_hydro",
+      "label": "Produção Hídrica Total (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:44:32.610777",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_hydro.png"
+    },
+    "DGEG/production_hydro_10_30mw": {
+      "source": "DGEG",
+      "indicator": "production_hydro_10_30mw",
+      "label": "Produção Hídrica 10-30 MW (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:44:50.666584",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_hydro_10_30mw.png"
+    },
+    "DGEG/production_hydro_gt30mw": {
+      "source": "DGEG",
+      "indicator": "production_hydro_gt30mw",
+      "label": "Produção Hídrica maior de 30 MW (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:45:08.904130",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_hydro_gt30mw.png"
+    },
+    "DGEG/production_hydro_lt10mw": {
+      "source": "DGEG",
+      "indicator": "production_hydro_lt10mw",
+      "label": "Produção Minihídrica menor de 10 MW (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:45:27.030917"
+    },
+    "DGEG/production_hydro_lt30mw": {
+      "source": "DGEG",
+      "indicator": "production_hydro_lt30mw",
+      "label": "Produção Hídrica menor de 30 MW (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:45:43.097117",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_hydro_lt30mw.png"
+    },
+    "DGEG/production_hydro_normalized": {
+      "source": "DGEG",
+      "indicator": "production_hydro_normalized",
+      "label": "Produção Hídrica Normalizada (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:46:04.302101",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_hydro_normalized.png"
+    },
+    "DGEG/production_hydro_pumped": {
+      "source": "DGEG",
+      "indicator": "production_hydro_pumped",
+      "label": "Produção Hídrica por Bombagem (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:46:22.606710",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_hydro_pumped.png"
+    },
+    "DGEG/production_msw": {
+      "source": "DGEG",
+      "indicator": "production_msw",
+      "label": "Produção RSU (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:46:40.925116"
+    },
+    "DGEG/production_msw_renewable_fraction": {
+      "source": "DGEG",
+      "indicator": "production_msw_renewable_fraction",
+      "label": "Fracção Renovável RSU (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:46:51.973275",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_msw_renewable_fraction.png"
+    },
+    "DGEG/production_non_renewable": {
+      "source": "DGEG",
+      "indicator": "production_non_renewable",
+      "label": "Produção Não Renovável — DGEG (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:47:10.346900",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_non_renewable.png"
+    },
+    "DGEG/production_solar_pv": {
+      "source": "DGEG",
+      "indicator": "production_solar_pv",
+      "label": "Produção Solar FV — mista (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:47:28.517068",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_solar_pv.png"
+    },
+    "DGEG/production_total_normalized": {
+      "source": "DGEG",
+      "indicator": "production_total_normalized",
+      "label": "Produção Renovável Total Normalizada (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:47:46.903214"
+    },
+    "DGEG/production_total_renewable": {
+      "source": "DGEG",
+      "indicator": "production_total_renewable",
+      "label": "Produção Total Renovável (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:47:58.037765",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_total_renewable.png"
+    },
+    "DGEG/production_wind": {
+      "source": "DGEG",
+      "indicator": "production_wind",
+      "label": "Produção Eólica Total (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:48:18.707506",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_wind.png"
+    },
+    "DGEG/production_wind_normalized": {
+      "source": "DGEG",
+      "indicator": "production_wind_normalized",
+      "label": "Produção Eólica Normalizada (GWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:48:37.409033",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_production_wind_normalized.png"
+    },
+    "DGEG/pumped_storage_consumption": {
+      "source": "DGEG",
+      "indicator": "pumped_storage_consumption",
+      "label": "Consumo Bombagem Hídrica (GWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:48:56.224405"
+    },
+    "DGEG/capacity_biogas": {
+      "source": "DGEG",
+      "indicator": "capacity_biogas",
+      "label": "Capacidade Instalada Biogás (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:49:07.023531",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_biogas.png"
+    },
+    "DGEG/capacity_biomass": {
+      "source": "DGEG",
+      "indicator": "capacity_biomass",
+      "label": "Capacidade Instalada Biomassa (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:49:27.133985",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_biomass.png"
+    },
+    "DGEG/capacity_biomass_cogeneration": {
+      "source": "DGEG",
+      "indicator": "capacity_biomass_cogeneration",
+      "label": "Capacidade Biomassa Cogeração (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:49:45.383873",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_biomass_cogeneration.png"
+    },
+    "DGEG/capacity_biomass_no_cogeneration": {
+      "source": "DGEG",
+      "indicator": "capacity_biomass_no_cogeneration",
+      "label": "Capacidade Biomassa Centrais Dedicadas (MW)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:50:04.084555"
+    },
+    "DGEG/capacity_geothermal": {
+      "source": "DGEG",
+      "indicator": "capacity_geothermal",
+      "label": "Capacidade Instalada Geotérmica (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:50:15.194228",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_geothermal.png"
+    },
+    "DGEG/capacity_hydro": {
+      "source": "DGEG",
+      "indicator": "capacity_hydro",
+      "label": "Capacidade Instalada Hídrica Total (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:50:35.534689",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_hydro.png"
+    },
+    "DGEG/capacity_hydro_10_30mw": {
+      "source": "DGEG",
+      "indicator": "capacity_hydro_10_30mw",
+      "label": "Capacidade Hídrica 10-30 MW (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:50:54.054088",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_hydro_10_30mw.png"
+    },
+    "DGEG/capacity_hydro_gt30mw": {
+      "source": "DGEG",
+      "indicator": "capacity_hydro_gt30mw",
+      "label": "Capacidade Hídrica maior de 30 MW (MW)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:51:12.985431"
+    },
+    "DGEG/capacity_hydro_lt10mw": {
+      "source": "DGEG",
+      "indicator": "capacity_hydro_lt10mw",
+      "label": "Capacidade Minihídrica menor de 10 MW (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:51:23.162857",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_hydro_lt10mw.png"
+    },
+    "DGEG/capacity_hydro_pumped": {
+      "source": "DGEG",
+      "indicator": "capacity_hydro_pumped",
+      "label": "Capacidade Hídrica por Bombagem (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:51:43.449382",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_hydro_pumped.png"
+    },
+    "DGEG/capacity_msw": {
+      "source": "DGEG",
+      "indicator": "capacity_msw",
+      "label": "Capacidade Instalada RSU (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:52:04.626477",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_msw.png"
+    },
+    "DGEG/capacity_solar_pv": {
+      "source": "DGEG",
+      "indicator": "capacity_solar_pv",
+      "label": "Capacidade Instalada Solar FV (MW)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:52:23.383981"
+    },
+    "DGEG/capacity_total_renewable": {
+      "source": "DGEG",
+      "indicator": "capacity_total_renewable",
+      "label": "Capacidade Total Renovável (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:52:39.585610",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_total_renewable.png"
+    },
+    "DGEG/capacity_wind": {
+      "source": "DGEG",
+      "indicator": "capacity_wind",
+      "label": "Capacidade Instalada Eólica (MW)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:52:57.991464",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_capacity_wind.png"
+    },
+    "DGEG/industrial_band_ia_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ia_excl_taxes",
+      "label": "Electricidade Ind. Banda IA s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:53:16.293084",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ia_excl_taxes.png"
+    },
+    "DGEG/industrial_band_ia_excl_vat": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ia_excl_vat",
+      "label": "Electricidade Ind. Banda IA s/IVA (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:53:34.647348"
+    },
+    "DGEG/industrial_band_ia_incl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ia_incl_taxes",
+      "label": "Electricidade Ind. Banda IA c/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:53:44.816132",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ia_incl_taxes.png"
+    },
+    "DGEG/industrial_band_ib_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ib_excl_taxes",
+      "label": "Electricidade Ind. Banda IB s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:54:05.894239",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ib_excl_taxes.png"
+    },
+    "DGEG/industrial_band_ib_excl_vat": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ib_excl_vat",
+      "label": "Electricidade Ind. Banda IB s/IVA (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:54:24.583759",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ib_excl_vat.png"
+    },
+    "DGEG/industrial_band_ib_incl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ib_incl_taxes",
+      "label": "Electricidade Ind. Banda IB c/impostos (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:54:43.057527"
+    },
+    "DGEG/industrial_band_ic_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ic_excl_taxes",
+      "label": "Electricidade Ind. Banda IC s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:54:53.314800",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ic_excl_taxes.png"
+    },
+    "DGEG/industrial_band_ic_excl_vat": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ic_excl_vat",
+      "label": "Electricidade Ind. Banda IC s/IVA (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:55:12.208980",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ic_excl_vat.png"
+    },
+    "DGEG/industrial_band_id_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_id_excl_taxes",
+      "label": "Electricidade Ind. Banda ID s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:55:30.429804",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_id_excl_taxes.png"
+    },
+    "DGEG/industrial_band_id_excl_vat": {
+      "source": "DGEG",
+      "indicator": "industrial_band_id_excl_vat",
+      "label": "Electricidade Ind. Banda ID s/IVA (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:55:48.881084"
+    },
+    "DGEG/industrial_band_id_incl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_id_incl_taxes",
+      "label": "Electricidade Ind. Banda ID c/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:56:01.571753",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_id_incl_taxes.png"
+    },
+    "DGEG/industrial_band_ie_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ie_excl_taxes",
+      "label": "Electricidade Ind. Banda IE s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:56:20.775151",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ie_excl_taxes.png"
+    },
+    "DGEG/industrial_band_ie_excl_vat": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ie_excl_vat",
+      "label": "Electricidade Ind. Banda IE s/IVA (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:56:39.201920",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ie_excl_vat.png"
+    },
+    "DGEG/industrial_band_ie_incl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ie_incl_taxes",
+      "label": "Electricidade Ind. Banda IE c/impostos (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:56:57.769510"
+    },
+    "DGEG/industrial_band_if_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_if_excl_taxes",
+      "label": "Electricidade Ind. Banda IF s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:57:07.430766",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_if_excl_taxes.png"
+    },
+    "DGEG/industrial_band_if_excl_vat": {
+      "source": "DGEG",
+      "indicator": "industrial_band_if_excl_vat",
+      "label": "Electricidade Ind. Banda IF s/IVA (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:57:28.187033",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_if_excl_vat.png"
+    },
+    "DGEG/industrial_band_if_incl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_if_incl_taxes",
+      "label": "Electricidade Ind. Banda IF c/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:57:46.900955",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_if_incl_taxes.png"
+    },
+    "DGEG/industrial_band_ig_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ig_excl_taxes",
+      "label": "Electricidade Ind. Banda IG s/impostos (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:58:06.352678"
+    },
+    "DGEG/industrial_band_ig_excl_vat": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ig_excl_vat",
+      "label": "Electricidade Ind. Banda IG s/IVA (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:58:18.377495",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ig_excl_vat.png"
+    },
+    "DGEG/industrial_band_ig_incl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_band_ig_incl_taxes",
+      "label": "Electricidade Ind. Banda IG c/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:58:37.147804",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_band_ig_incl_taxes.png"
+    },
+    "DGEG/industrial_eu_band_ia_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_eu_band_ia_excl_taxes",
+      "label": "Electricidade UE Banda IA s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:58:55.988948",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_eu_band_ia_excl_taxes.png"
+    },
+    "DGEG/industrial_eu_band_ib_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_eu_band_ib_excl_taxes",
+      "label": "Electricidade UE Banda IB s/impostos (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:59:14.796775"
+    },
+    "DGEG/industrial_eu_band_ic_excl_taxes": {
+      "source": "DGEG",
+      "indicator": "industrial_eu_band_ic_excl_taxes",
+      "label": "Electricidade UE Banda IC s/impostos (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:59:26.719310",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_industrial_eu_band_ic_excl_taxes.png"
+    },
+    "DGEG/natgas_price_domestic_21.07": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_21.07",
+      "label": "Gas Natural Doméstico D1 21 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T01:59:47.161092",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_21.07.png"
+    },
+    "DGEG/natgas_price_domestic_21.12": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_21.12",
+      "label": "Gas Natural Doméstico D1 21.12 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:00:06.069553",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_21.12.png"
+    },
+    "DGEG/natgas_price_domestic_21.77": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_21.77",
+      "label": "Gas Natural Doméstico D1 21.77 GJ (EUR/GJ)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:00:25.225863"
+    },
+    "DGEG/natgas_price_domestic_22.19": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_22.19",
+      "label": "Gas Natural Doméstico D1 22.19 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:00:36.211872",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_22.19.png"
+    },
+    "DGEG/natgas_price_domestic_22.63": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_22.63",
+      "label": "Gas Natural Doméstico D1 22.63 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:00:55.889215",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_22.63.png"
+    },
+    "DGEG/natgas_price_domestic_75.86": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_75.86",
+      "label": "Gas Natural Doméstico D2 75.86 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:01:14.752140",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_75.86.png"
+    },
+    "DGEG/natgas_price_domestic_76.03": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_76.03",
+      "label": "Gas Natural Doméstico D2 76.03 GJ (EUR/GJ)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:01:33.586894"
+    },
+    "DGEG/natgas_price_domestic_78.37": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_78.37",
+      "label": "Gas Natural Doméstico D2 78.37 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:01:44.888376",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_78.37.png"
+    },
+    "DGEG/natgas_price_domestic_79.87": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_79.87",
+      "label": "Gas Natural Doméstico D2 79.87 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:02:06.140487",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_79.87.png"
+    },
+    "DGEG/natgas_price_domestic_81.48": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_81.48",
+      "label": "Gas Natural Doméstico D2 81.48 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:02:25.131604",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_81.48.png"
+    },
+    "DGEG/natgas_price_domestic_€_per_GJ": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_€_per_GJ",
+      "label": "Gas Natural Doméstico — Preço (EUR/GJ)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:02:43.882674"
+    },
+    "DGEG/natgas_price_domestic_€_per_MWh": {
+      "source": "DGEG",
+      "indicator": "natgas_price_domestic_€_per_MWh",
+      "label": "Gas Natural Doméstico — Preço (EUR/MWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:02:55.765856",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_domestic_EUR_per_MWh.png"
+    },
+    "DGEG/natgas_price_industry_27.08": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_27.08",
+      "label": "Gas Natural Indústria I3 27.08 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:03:14.758851",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_27.08.png"
+    },
+    "DGEG/natgas_price_industry_27.32": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_27.32",
+      "label": "Gas Natural Indústria I3 27.32 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:03:33.463089",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_27.32.png"
+    },
+    "DGEG/natgas_price_industry_27.64": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_27.64",
+      "label": "Gas Natural Indústria I3 27.64 GJ (EUR/GJ)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:03:52.302976"
+    },
+    "DGEG/natgas_price_industry_29.54": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_29.54",
+      "label": "Gas Natural Indústria I3 29.54 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:04:03.186959",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_29.54.png"
+    },
+    "DGEG/natgas_price_industry_32.56": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_32.56",
+      "label": "Gas Natural Indústria I3 32.56 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:04:24.907764",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_32.56.png"
+    },
+    "DGEG/natgas_price_industry_7.52": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_7.52",
+      "label": "Gas Natural Indústria I1 7.52 GJ (EUR/GJ)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:04:43.594223"
+    },
+    "DGEG/natgas_price_industry_7.59": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_7.59",
+      "label": "Gas Natural Indústria I1 7.59 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:04:53.941793",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_7.59.png"
+    },
+    "DGEG/natgas_price_industry_7.68": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_7.68",
+      "label": "Gas Natural Indústria I1 7.68 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:05:12.931711",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_7.68.png"
+    },
+    "DGEG/natgas_price_industry_8.21": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_8.21",
+      "label": "Gas Natural Indústria I1 8.21 GJ (EUR/GJ)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:05:31.762733"
+    },
+    "DGEG/natgas_price_industry_9.05": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_9.05",
+      "label": "Gas Natural Indústria I1 9.05 GJ (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:05:42.231269",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_9.05.png"
+    },
+    "DGEG/natgas_price_industry_€_per_GJ": {
+      "source": "DGEG",
+      "indicator": "natgas_price_industry_€_per_GJ",
+      "label": "Gas Natural Indústria — Preço (EUR/GJ)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:06:04.390015",
+      "screenshot": "/tmp/prumo-audit-screenshots/DGEG_natgas_price_industry_EUR_per_GJ.png"
+    },
+    "ERSE/tariff_mt_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_mt_peak",
+      "label": "Tarifa MT — Ponta (€/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:06:23.780313",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_mt_peak.png"
+    },
+    "ERSE/tariff_mt_off_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_mt_off_peak",
+      "label": "Tarifa MT — Vazio (€/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:06:42.803333"
+    },
+    "ERSE/tariff_at_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_at_peak",
+      "label": "Tarifa AT — Ponta (€/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:06:53.254260",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_at_peak.png"
+    },
+    "ERSE/tariff_mat_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_mat_peak",
+      "label": "Tarifa MAT — Ponta (€/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:07:14.676911",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_mat_peak.png"
+    },
+    "ERSE/btn_simple": {
+      "source": "ERSE",
+      "indicator": "btn_simple",
+      "label": "Tarifa BTN Simples (€/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:07:33.559679",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_btn_simple.png"
+    },
+    "ERSE/access_mt_peak": {
+      "source": "ERSE",
+      "indicator": "access_mt_peak",
+      "label": "Tarifa Acesso MT — Ponta (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:07:52.387990"
+    },
+    "ERSE/access_mt_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_mt_off_peak",
+      "label": "Tarifa Acesso MT — Vazio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:08:04.760946",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mt_off_peak.png"
+    },
+    "ERSE/access_mt_super_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_mt_super_off_peak",
+      "label": "Tarifa Acesso MT — Super Vazio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:08:25.766731",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mt_super_off_peak.png"
+    },
+    "ERSE/access_mt_shoulder": {
+      "source": "ERSE",
+      "indicator": "access_mt_shoulder",
+      "label": "Tarifa Acesso MT — Cheio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:08:44.404831",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mt_shoulder.png"
+    },
+    "ERSE/access_mt_power_peak": {
+      "source": "ERSE",
+      "indicator": "access_mt_power_peak",
+      "label": "Tarifa Acesso MT — Potência Ponta (EUR/kW/mês)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:09:03.434756"
+    },
+    "ERSE/access_mt_power_contracted": {
+      "source": "ERSE",
+      "indicator": "access_mt_power_contracted",
+      "label": "Tarifa Acesso MT — Potência Contratada (EUR/kW/mês)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:09:15.230144",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mt_power_contracted.png"
+    },
+    "ERSE/access_at_peak": {
+      "source": "ERSE",
+      "indicator": "access_at_peak",
+      "label": "Tarifa Acesso AT — Ponta (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:09:34.566446",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_at_peak.png"
+    },
+    "ERSE/access_at_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_at_off_peak",
+      "label": "Tarifa Acesso AT — Vazio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:09:53.493704",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_at_off_peak.png"
+    },
+    "ERSE/access_at_super_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_at_super_off_peak",
+      "label": "Tarifa Acesso AT — Super Vazio (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:10:13.063989"
+    },
+    "ERSE/access_at_shoulder": {
+      "source": "ERSE",
+      "indicator": "access_at_shoulder",
+      "label": "Tarifa Acesso AT — Cheio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:10:24.732268",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_at_shoulder.png"
+    },
+    "ERSE/access_at_power_peak": {
+      "source": "ERSE",
+      "indicator": "access_at_power_peak",
+      "label": "Tarifa Acesso AT — Potência Ponta (EUR/kW/mês)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:10:45.783857",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_at_power_peak.png"
+    },
+    "ERSE/access_at_power_contracted": {
+      "source": "ERSE",
+      "indicator": "access_at_power_contracted",
+      "label": "Tarifa Acesso AT — Potência Contratada (EUR/kW/mês)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:11:04.792495",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_at_power_contracted.png"
+    },
+    "ERSE/access_mat_peak": {
+      "source": "ERSE",
+      "indicator": "access_mat_peak",
+      "label": "Tarifa Acesso MAT — Ponta (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:11:25.809291"
+    },
+    "ERSE/access_mat_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_mat_off_peak",
+      "label": "Tarifa Acesso MAT — Vazio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:11:39.720513",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mat_off_peak.png"
+    },
+    "ERSE/access_mat_super_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_mat_super_off_peak",
+      "label": "Tarifa Acesso MAT — Super Vazio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:11:59.974046",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mat_super_off_peak.png"
+    },
+    "ERSE/access_mat_shoulder": {
+      "source": "ERSE",
+      "indicator": "access_mat_shoulder",
+      "label": "Tarifa Acesso MAT — Cheio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:12:19.672266",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mat_shoulder.png"
+    },
+    "ERSE/access_mat_power_peak": {
+      "source": "ERSE",
+      "indicator": "access_mat_power_peak",
+      "label": "Tarifa Acesso MAT — Potência Ponta (EUR/kW/mês)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:12:38.665765"
+    },
+    "ERSE/access_mat_power_contracted": {
+      "source": "ERSE",
+      "indicator": "access_mat_power_contracted",
+      "label": "Tarifa Acesso MAT — Potência Contratada (EUR/kW/mês)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:12:52.138925",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_mat_power_contracted.png"
+    },
+    "ERSE/access_bte_peak": {
+      "source": "ERSE",
+      "indicator": "access_bte_peak",
+      "label": "Tarifa Acesso BTE — Ponta (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:13:11.619068",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_bte_peak.png"
+    },
+    "ERSE/access_bte_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_bte_off_peak",
+      "label": "Tarifa Acesso BTE — Vazio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:13:30.616639",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_bte_off_peak.png"
+    },
+    "ERSE/access_bte_super_off_peak": {
+      "source": "ERSE",
+      "indicator": "access_bte_super_off_peak",
+      "label": "Tarifa Acesso BTE — Super Vazio (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:13:49.737653"
+    },
+    "ERSE/access_bte_shoulder": {
+      "source": "ERSE",
+      "indicator": "access_bte_shoulder",
+      "label": "Tarifa Acesso BTE — Cheio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:14:01.720917",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_bte_shoulder.png"
+    },
+    "ERSE/access_bte_power_peak": {
+      "source": "ERSE",
+      "indicator": "access_bte_power_peak",
+      "label": "Tarifa Acesso BTE — Potência Ponta (EUR/kW/mês)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:14:24.112928",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_bte_power_peak.png"
+    },
+    "ERSE/access_bte_power_contracted": {
+      "source": "ERSE",
+      "indicator": "access_bte_power_contracted",
+      "label": "Tarifa Acesso BTE — Potência Contratada (EUR/kW/mês)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:14:43.428684",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_bte_power_contracted.png"
+    },
+    "ERSE/access_btn_peak": {
+      "source": "ERSE",
+      "indicator": "access_btn_peak",
+      "label": "Tarifa Acesso BTN — Ponta (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:15:02.875329"
+    },
+    "ERSE/access_btn_shoulder": {
+      "source": "ERSE",
+      "indicator": "access_btn_shoulder",
+      "label": "Tarifa Acesso BTN — Cheio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:15:15.880661",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_access_btn_shoulder.png"
+    },
+    "ERSE/btn_simple_le6_9kva": {
+      "source": "ERSE",
+      "indicator": "btn_simple_le6_9kva",
+      "label": "Tarifa BTN Simples até 6,9 kVA (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:15:36.990391",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_btn_simple_le6_9kva.png"
+    },
+    "ERSE/btn_simple_gt6_9kva": {
+      "source": "ERSE",
+      "indicator": "btn_simple_gt6_9kva",
+      "label": "Tarifa BTN Simples acima de 6,9 kVA (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:15:57.759400",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_btn_simple_gt6_9kva.png"
+    },
+    "ERSE/tariff_at_off_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_at_off_peak",
+      "label": "Tarifa AT — Vazio (EUR/kWh) [hist]",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:16:18.751899"
+    },
+    "ERSE/tariff_at_shoulder": {
+      "source": "ERSE",
+      "indicator": "tariff_at_shoulder",
+      "label": "Tarifa AT — Cheio (EUR/kWh) [hist]",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:16:32.994424",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_at_shoulder.png"
+    },
+    "ERSE/tariff_at_super_off_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_at_super_off_peak",
+      "label": "Tarifa AT — Super Vazio (EUR/kWh) [hist]",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:16:52.864384",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_at_super_off_peak.png"
+    },
+    "ERSE/tariff_mat_off_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_mat_off_peak",
+      "label": "Tarifa MAT — Vazio (EUR/kWh)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:17:12.549433"
+    },
+    "ERSE/tariff_mat_shoulder": {
+      "source": "ERSE",
+      "indicator": "tariff_mat_shoulder",
+      "label": "Tarifa MAT — Cheio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:17:24.938603",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_mat_shoulder.png"
+    },
+    "ERSE/tariff_mat_super_off_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_mat_super_off_peak",
+      "label": "Tarifa MAT — Super Vazio (EUR/kWh)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:17:44.665960",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_mat_super_off_peak.png"
+    },
+    "ERSE/tariff_mt_shoulder": {
+      "source": "ERSE",
+      "indicator": "tariff_mt_shoulder",
+      "label": "Tarifa MT — Cheio (EUR/kWh) [hist]",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:18:04.691883"
+    },
+    "ERSE/tariff_mt_super_off_peak": {
+      "source": "ERSE",
+      "indicator": "tariff_mt_super_off_peak",
+      "label": "Tarifa MT — Super Vazio (EUR/kWh) [hist]",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:18:16.529589",
+      "screenshot": "/tmp/prumo-audit-screenshots/ERSE_tariff_mt_super_off_peak.png"
+    },
+    "WORLDBANK/birth_rate": {
+      "source": "WORLDBANK",
+      "indicator": "birth_rate",
+      "label": "Taxa de Natalidade",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:18:38.630333",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_birth_rate.png"
+    },
+    "WORLDBANK/rnd_pct_gdp": {
+      "source": "WORLDBANK",
+      "indicator": "rnd_pct_gdp",
+      "label": "I&D (% do PIB)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:19:00.636221"
+    },
+    "WORLDBANK/fdi_inflows_pct_gdp": {
+      "source": "WORLDBANK",
+      "indicator": "fdi_inflows_pct_gdp",
+      "label": "Investimento Directo Estrangeiro — Entradas",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:19:14.351991",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_fdi_inflows_pct_gdp.png"
+    },
+    "WORLDBANK/gdp_per_capita_ppp": {
+      "source": "WORLDBANK",
+      "indicator": "gdp_per_capita_ppp",
+      "label": "PIB per capita (PPC)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:19:36.584338",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_gdp_per_capita_ppp.png"
+    },
+    "WORLDBANK/gdp_growth": {
+      "source": "WORLDBANK",
+      "indicator": "gdp_growth",
+      "label": "Crescimento do PIB (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:19:56.969121",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_gdp_growth.png"
+    },
+    "WORLDBANK/gdp_per_capita": {
+      "source": "WORLDBANK",
+      "indicator": "gdp_per_capita",
+      "label": "PIB per capita (USD correntes)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:20:17.684503"
+    },
+    "WORLDBANK/gdp_usd": {
+      "source": "WORLDBANK",
+      "indicator": "gdp_usd",
+      "label": "PIB — Total (USD correntes)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:20:29.973338",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_gdp_usd.png"
+    },
+    "WORLDBANK/life_expectancy": {
+      "source": "WORLDBANK",
+      "indicator": "life_expectancy",
+      "label": "Esperança de Vida",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:20:49.191097",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_life_expectancy.png"
+    },
+    "WORLDBANK/death_rate": {
+      "source": "WORLDBANK",
+      "indicator": "death_rate",
+      "label": "Taxa de Mortalidade",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:21:08.384675",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_death_rate.png"
+    },
+    "WORLDBANK/employment_rate": {
+      "source": "WORLDBANK",
+      "indicator": "employment_rate",
+      "label": "Taxa de Emprego (Banco Mundial)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:21:28.120286"
+    },
+    "WORLDBANK/unemployment_wb": {
+      "source": "WORLDBANK",
+      "indicator": "unemployment_wb",
+      "label": "Taxa de Desemprego (Banco Mundial)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:21:40.542882",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_unemployment_wb.png"
+    },
+    "WORLDBANK/female_labor_participation": {
+      "source": "WORLDBANK",
+      "indicator": "female_labor_participation",
+      "label": "Participação Feminina no Mercado de Trabalho (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:22:03.361626",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_female_labor_participation.png"
+    },
+    "WORLDBANK/exports_pct_gdp": {
+      "source": "WORLDBANK",
+      "indicator": "exports_pct_gdp",
+      "label": "Exportações (% PIB)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:22:23.221884",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_exports_pct_gdp.png"
+    },
+    "WORLDBANK/imports_pct_gdp": {
+      "source": "WORLDBANK",
+      "indicator": "imports_pct_gdp",
+      "label": "Importações (% PIB)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:22:42.928163"
+    },
+    "WORLDBANK/trade_balance_pct_gdp": {
+      "source": "WORLDBANK",
+      "indicator": "trade_balance_pct_gdp",
+      "label": "Saldo Comercial (% PIB)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:22:55.115881",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_trade_balance_pct_gdp.png"
+    },
+    "WORLDBANK/gini": {
+      "source": "WORLDBANK",
+      "indicator": "gini",
+      "label": "Índice de Gini (Desigualdade)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:23:15.422864",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_gini.png"
+    },
+    "WORLDBANK/gov_debt_pct_gdp_wb": {
+      "source": "WORLDBANK",
+      "indicator": "gov_debt_pct_gdp_wb",
+      "label": "Dívida Pública (% PIB, Banco Mundial)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:23:35.006634",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_gov_debt_pct_gdp_wb.png"
+    },
+    "WORLDBANK/health_expenditure": {
+      "source": "WORLDBANK",
+      "indicator": "health_expenditure",
+      "label": "Despesa em Saúde (% PIB)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:23:55.016727"
+    },
+    "WORLDBANK/internet_users_pct": {
+      "source": "WORLDBANK",
+      "indicator": "internet_users_pct",
+      "label": "Utilizadores de Internet (% população)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:24:09.544250",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_internet_users_pct.png"
+    },
+    "WORLDBANK/population": {
+      "source": "WORLDBANK",
+      "indicator": "population",
+      "label": "População Total",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:24:32.555237",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_population.png"
+    },
+    "WORLDBANK/urbanization": {
+      "source": "WORLDBANK",
+      "indicator": "urbanization",
+      "label": "Taxa de Urbanização (% população urbana)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:24:52.256675",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_urbanization.png"
+    },
+    "WORLDBANK/school_enrollment_secondary": {
+      "source": "WORLDBANK",
+      "indicator": "school_enrollment_secondary",
+      "label": "Escolarização Secundária (%)",
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:25:12.211216"
+    },
+    "WORLDBANK/tertiary_enrollment": {
+      "source": "WORLDBANK",
+      "indicator": "tertiary_enrollment",
+      "label": "Frequência do Ensino Superior (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:25:25.089953",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_tertiary_enrollment.png"
+    },
+    "WORLDBANK/literacy_rate": {
+      "source": "WORLDBANK",
+      "indicator": "literacy_rate",
+      "label": "Taxa de Literacia (%)",
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:25:47.496695",
+      "screenshot": "/tmp/prumo-audit-screenshots/WORLDBANK_literacy_rate.png"
+    }
+  },
+  "combos": {
+    "Inflação + Euribor 12m": {
+      "name": "Inflação + Euribor 12m",
+      "indicators": [
+        "INE/hicp_yoy",
+        "BPORTUGAL/euribor_12m"
+      ],
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:26:08.333956",
+      "screenshot": "/tmp/prumo-audit-screenshots/combo_Inflação_+_Euribor_12m.png"
+    },
+    "Gasóleo + Gasolina": {
+      "name": "Gasóleo + Gasolina",
+      "indicators": [
+        "DGEG/price_diesel_pvp",
+        "DGEG/price_gasoline_95_pvp"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": true,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:26:31.127985"
+    },
+    "Inflação + Salários + Emprego": {
+      "name": "Inflação + Salários + Emprego",
+      "indicators": [
+        "INE/hicp_yoy",
+        "INE/wages_industry_cae",
+        "INE/emp_industry_cae"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:26:45.107557"
+    },
+    "Euribor 3m + 6m + 12m": {
+      "name": "Euribor 3m + 6m + 12m",
+      "indicators": [
+        "BPORTUGAL/euribor_3m",
+        "BPORTUGAL/euribor_6m",
+        "BPORTUGAL/euribor_12m"
+      ],
+      "status": "FAIL",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:27:05.447773",
+      "screenshot": "/tmp/prumo-audit-screenshots/combo_Euribor_3m_+_6m_+_12m.png"
+    },
+    "BTN Simples + Inflação + Euribor": {
+      "name": "BTN Simples + Inflação + Euribor",
+      "indicators": [
+        "ERSE/btn_simple",
+        "INE/hicp_yoy",
+        "BPORTUGAL/euribor_12m"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:27:30.531257"
+    },
+    "Eólica + Solar + Hídrica": {
+      "name": "Eólica + Solar + Hídrica",
+      "indicators": [
+        "REN/electricity_wind",
+        "REN/electricity_solar",
+        "REN/electricity_hydro"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": true,
+      "error": null,
+      "timestamp": "2026-03-16T02:27:51.090929"
+    },
+    "MIBEL + Brent + Gás Natural": {
+      "name": "MIBEL + Brent + Gás Natural",
+      "indicators": [
+        "REN/electricity_price_mibel",
+        "FRED/brent_oil",
+        "FRED/natural_gas"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:28:13.930763"
+    },
+    "Renovável % + Dependência Energética": {
+      "name": "Renovável % + Dependência Energética",
+      "indicators": [
+        "DGEG/pct_renewable_real",
+        "DGEG/energy_dependence"
+      ],
+      "status": "CHART_ONLY",
+      "chart": true,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:28:33.064834",
+      "screenshot": "/tmp/prumo-audit-screenshots/combo_Renovável_%_+_Dependência_Energética.png"
+    },
+    "Produção Total + Consumo + Importações": {
+      "name": "Produção Total + Consumo + Importações",
+      "indicators": [
+        "REN/electricity_production_total",
+        "REN/electricity_consumption",
+        "REN/electricity_net_imports"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": true,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:28:49.711697"
+    },
+    "IPI Total + Emprego Indústria": {
+      "name": "IPI Total + Emprego Indústria",
+      "indicators": [
+        "INE/ipi_seasonal_cae_TOT",
+        "INE/emp_industry_cae"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": true,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:29:04.724907"
+    },
+    "IPI Automóvel + IPI Química + IPI Metalurgia": {
+      "name": "IPI Automóvel + IPI Química + IPI Metalurgia",
+      "indicators": [
+        "INE/ipi_seasonal_cae_29",
+        "INE/ipi_seasonal_cae_20",
+        "INE/ipi_seasonal_cae_24"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:29:17.386893"
+    },
+    "Cobre + Alumínio + IPI Metalurgia": {
+      "name": "Cobre + Alumínio + IPI Metalurgia",
+      "indicators": [
+        "FRED/copper",
+        "FRED/aluminum",
+        "INE/ipi_seasonal_cae_24"
+      ],
+      "status": "CHART_ONLY",
+      "chart": true,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:29:35.504435",
+      "screenshot": "/tmp/prumo-audit-screenshots/combo_Cobre_+_Alumínio_+_IPI_Metalurgia.png"
+    },
+    "IPI PT (INE) vs IPI PT (Eurostat)": {
+      "name": "IPI PT (INE) vs IPI PT (Eurostat)",
+      "indicators": [
+        "INE/ipi_seasonal_cae_TOT",
+        "EUROSTAT/ipi_total"
+      ],
+      "status": "CHART_ONLY",
+      "chart": true,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:30:10.617024",
+      "screenshot": "/tmp/prumo-audit-screenshots/combo_IPI_PT_(INE)_vs_IPI_PT_(Eurostat).png"
+    },
+    "CLI + Confiança + Carteira Encomendas": {
+      "name": "CLI + Confiança + Carteira Encomendas",
+      "indicators": [
+        "OECD/cli",
+        "INE/conf_manufacturing",
+        "OECD/order_books"
+      ],
+      "status": "CHART_ONLY",
+      "chart": true,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:30:42.752899",
+      "screenshot": "/tmp/prumo-audit-screenshots/combo_CLI_+_Confiança_+_Carteira_Encomendas.png"
+    },
+    "Desemprego + PIB Trimestral": {
+      "name": "Desemprego + PIB Trimestral",
+      "indicators": [
+        "EUROSTAT/unemployment",
+        "EUROSTAT/gdp_quarterly"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:31:06.151556"
+    },
+    "Spread PT-DE + Dívida Pública + Défice": {
+      "name": "Spread PT-DE + Dívida Pública + Défice",
+      "indicators": [
+        "BPORTUGAL/spread_pt_de",
+        "EUROSTAT/gov_debt_pct_gdp",
+        "EUROSTAT/gov_deficit_pct_gdp"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": null,
+      "timestamp": "2026-03-16T02:31:21.513715"
+    },
+    "PIB per capita PT vs Emprego vs I&D": {
+      "name": "PIB per capita PT vs Emprego vs I&D",
+      "indicators": [
+        "WORLDBANK/gdp_per_capita_ppp",
+        "WORLDBANK/employment_rate",
+        "WORLDBANK/rnd_pct_gdp"
+      ],
+      "status": "CHART_ONLY",
+      "chart": true,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:31:39.703586"
+    },
+    "Brent + EUR/USD + Spread": {
+      "name": "Brent + EUR/USD + Spread",
+      "indicators": [
+        "FRED/brent_oil",
+        "BPORTUGAL/eur_usd",
+        "BPORTUGAL/spread_pt_de"
+      ],
+      "status": "ERROR",
+      "chart": false,
+      "ai_analysis": false,
+      "ai_cached": false,
+      "error": "Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://joao.date/dados/#explorador?s=FRED/brent_oil,BPORTUGAL/eur_usd,BPORTUGAL/spread_pt_de&from=2000-01&to=2026-12\", waiting until ",
+      "timestamp": "2026-03-16T02:34:57.275520"
+    },
+    "Ouro + Cobre + Trigo": {
+      "name": "Ouro + Cobre + Trigo",
+      "indicators": [
+        "FRED/commodity_iron_ore",
+        "FRED/copper",
+        "FRED/wheat"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:36:44.601814"
+    },
+    "Brent + Gás Natural + Carvão": {
+      "name": "Brent + Gás Natural + Carvão",
+      "indicators": [
+        "FRED/brent_oil",
+        "FRED/natural_gas",
+        "DGEG/consumption_coal"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:37:38.670522"
+    },
+    "Tarifa MT Ponta + AT Ponta + MAT Ponta": {
+      "name": "Tarifa MT Ponta + AT Ponta + MAT Ponta",
+      "indicators": [
+        "ERSE/tariff_mt_peak",
+        "ERSE/tariff_at_peak",
+        "ERSE/tariff_mat_peak"
+      ],
+      "status": "OK",
+      "chart": true,
+      "ai_analysis": true,
+      "ai_cached": false,
+      "error": "Chips not loaded",
+      "timestamp": "2026-03-16T02:38:09.597700"
+    }
+  },
+  "summary": {
+    "timestamp": "2026-03-16T02:38:28.693705",
+    "individual": {
+      "total": 372,
+      "ok": 91,
+      "chart_only": 1,
+      "fail": 280,
+      "error": 0
+    },
+    "combos": {
+      "total": 21,
+      "ok": 13,
+      "fail": 8
+    },
+    "failures": [
+      {
+        "key": "INE/emp_industry_cae",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/conf_manufacturing",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/hicp_yoy",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/gdp_yoy",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/imports_monthly",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_B",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_C",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_D",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_08",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_10",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_11",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_13",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_15",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_16",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_17",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_18",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_21",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_22",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_23",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_24",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_25",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_27",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_28",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_29",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_30",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_32",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_33",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_35",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "INE/ipi_seasonal_cae_38",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/manufacturing",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/total_industry",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/metals",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/chemicals_pharma",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/transport_eq",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/rubber_plastics",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/inflation",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/ipi_electronics",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/ipi_food_beverage",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/ipi_manufacturing",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/ipi_nonmetallic",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/ipi_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/ipi_wood_paper",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/labour_productivity_hour",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/labour_productivity_hour_real",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/labour_productivity_person_real",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/unit_labour_cost",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/unit_labour_cost_hour",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/gdp_quarterly",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/gdp_per_capita_eur",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/gdp_per_capita_pps",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/gov_deficit_pct_gdp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/employment_rate",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/current_account_pct_gdp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/hicp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/cci",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/consumer_confidence",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/hourly_labour_cost_index",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/construction_output",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/STS_INPR_M_BD",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/STS_INPR_M_C",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/STS_INPR_M_C29C30",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/earn_ses_pub2s",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/electricity_price_household",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "EUROSTAT/price_level_index",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/natural_gas",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/copper",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/aluminum",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/wheat",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/coffee",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/commodity_cotton",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/commodity_iron_ore",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/commodity_soybean",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/commodity_steel",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/commodity_sugar",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "FRED/gold_price",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "BPORTUGAL/euribor_1m",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "BPORTUGAL/euribor_3m",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "BPORTUGAL/euribor_12m",
+        "status": "CHART_ONLY",
+        "error": " AI analysis failed/timeout"
+      },
+      {
+        "key": "BPORTUGAL/de_10y",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "BPORTUGAL/spread_pt_de",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "BPORTUGAL/credit_housing",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "BPORTUGAL/credit_consumer",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "BPORTUGAL/eur_usd",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_price_mibel",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_hydro",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_wind",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_natural_gas",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_biomass",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_consumption",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_production_renewable",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_net_imports",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_exports",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_natural_gas_ccgt",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "REN/electricity_production_non_renewable",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "OECD/cli",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "OECD/order_books",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "OECD/selling_prices",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "OECD/employment",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/gross_production_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/gross_production_wind",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/gross_production_hydro",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/gross_production_thermal",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/total_consumption",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/net_imports",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/pct_renewable_real",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/pct_renewable_directive",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/renewable_share_electricity",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/renewable_share_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/energy_intensity",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/co2_emissions_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/co2_emissions_energy",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_diesel_pvp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_€_per_MWh",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ic_incl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/brent_usd",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/aviation_gasoline",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/aviation_jet_fuel",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/brent_eur",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/coloured_fuel_oil",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/coloured_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/consumption_coal",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/consumption_natural_gas",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/consumption_petroleum",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/consumption_primary_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/consumption_transport",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/dedicated_plants",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/diesel_pretax",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/energy_intensity_final",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/energy_intensity_industry",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/energy_intensity_primary",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/energy_intensity_services",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/exports",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/final_energy_consumption",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/fuel_coal",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/fuel_natural_gas",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/fuel_other",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/fuel_petroleum",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/gasoline_pretax",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/gross_production_plus_imports",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/heating_diesel",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/imports",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/lpg_butane",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/lpg_propane",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/lpg_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/maritime_fuel_oil",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/maritime_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_avg_price",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_dedicated_plants",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_imports_pipeline",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_imports_ship",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_imports_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/petroleum_coke",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/petroleum_diesel",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/petroleum_gasoline",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/petroleum_lpg",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/petroleum_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_diesel",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_diesel_pretax",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_fuel_oil_industry",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_gasoline_98_pvp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_gasoline_io95",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_gasoline_io98",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/price_lpg_auto",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/primary_energy_consumption",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/road_fuels_diesel",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/road_fuels_gasoline_io98",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/road_fuels_lpg_auto",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/road_fuels_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/net_production_solar_pv",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/net_production_thermal",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/net_production_total",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_biogas",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_biomass",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_biomass_cogeneration",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_geothermal",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_hydro",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_hydro_10_30mw",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_hydro_gt30mw",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_hydro_lt30mw",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_hydro_normalized",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_hydro_pumped",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_msw_renewable_fraction",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_non_renewable",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_solar_pv",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_total_renewable",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_wind",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/production_wind_normalized",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_biogas",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_biomass",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_biomass_cogeneration",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_geothermal",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_hydro",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_hydro_10_30mw",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_hydro_lt10mw",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_hydro_pumped",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_msw",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_total_renewable",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/capacity_wind",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ia_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ia_incl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ib_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ib_excl_vat",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ic_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ic_excl_vat",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_id_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_id_incl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ie_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ie_excl_vat",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_if_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_if_excl_vat",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_if_incl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ig_excl_vat",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_band_ig_incl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_eu_band_ia_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/industrial_eu_band_ic_excl_taxes",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_21.07",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_21.12",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_22.19",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_22.63",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_75.86",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_78.37",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_79.87",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_81.48",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_domestic_€_per_MWh",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_27.08",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_27.32",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_29.54",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_32.56",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_7.59",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_7.68",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_9.05",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "DGEG/natgas_price_industry_€_per_GJ",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_mt_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_at_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_mat_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/btn_simple",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mt_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mt_super_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mt_shoulder",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mt_power_contracted",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_at_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_at_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_at_shoulder",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_at_power_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_at_power_contracted",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mat_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mat_super_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mat_shoulder",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_mat_power_contracted",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_bte_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_bte_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_bte_shoulder",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_bte_power_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_bte_power_contracted",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/access_btn_shoulder",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/btn_simple_le6_9kva",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/btn_simple_gt6_9kva",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_at_shoulder",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_at_super_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_mat_shoulder",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_mat_super_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "ERSE/tariff_mt_super_off_peak",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/birth_rate",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/fdi_inflows_pct_gdp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/gdp_per_capita_ppp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/gdp_growth",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/gdp_usd",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/life_expectancy",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/death_rate",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/unemployment_wb",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/female_labor_participation",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/exports_pct_gdp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/trade_balance_pct_gdp",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/gini",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/gov_debt_pct_gdp_wb",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/internet_users_pct",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/population",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/urbanization",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/tertiary_enrollment",
+        "status": "FAIL",
+        "error": null
+      },
+      {
+        "key": "WORLDBANK/literacy_rate",
+        "status": "FAIL",
+        "error": null
+      }
+    ]
+  }
+}

@@ -13,7 +13,7 @@ Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**,
 
 ## Português (pt-PT)
 
-Documentação complementar em português está disponível em [`docs/`](stacks/jarbas/images/prumo/docs/) e em notas de projeto como [`SETUP_NOTES.md`](stacks/jarbas/images/prumo/SETUP_NOTES.md). O `README` principal mantém-se em inglês para o público open-source internacional.
+Documentação complementar em português está disponível em [`docs/`](stacks/web/images/prumo/docs/) e em notas de projeto como [`SETUP_NOTES.md`](stacks/web/images/prumo/SETUP_NOTES.md). O `README` principal mantém-se em inglês para o público open-source internacional.
 
 <img width="1471" height="1082" alt="image" src="https://github.com/user-attachments/assets/a2a779d1-a2ec-40c8-8e38-a47f040a7600" />
 
@@ -93,7 +93,7 @@ prumo/
 | DGEG | Direcção-Geral de Energia e Geologia | Fuel prices |
 | World Bank | World Bank Group | Long-term development indicators |
 
-For provider URLs, cadence and terms/caveats notes, see [`SOURCES.md`](stacks/jarbas/images/prumo/SOURCES.md).
+For provider URLs, cadence and terms/caveats notes, see [`SOURCES.md`](stacks/web/images/prumo/SOURCES.md).
 
 ## Dashboard Sections
 
@@ -151,7 +151,7 @@ All endpoints are under `/api/` and return JSON.
 
 ## Local `server-env` workflow (non-commit)
 
-For machine-specific setup, use a local folder at `stacks/jarbas/images/prumo/server-env/`.
+For machine-specific setup, use a local folder at `stacks/web/images/prumo/server-env/`.
 
 - `server-env/` is intentionally ignored by git and must never be committed.
 - Keep all local-only links/files inside `server-env/` (for example symlinks to root-level resources such as `.bash_aliases`, `.env`, and selected folders under `md/`).
@@ -160,10 +160,10 @@ For machine-specific setup, use a local folder at `stacks/jarbas/images/prumo/se
 Example local setup:
 
 ```bash
-mkdir -p stacks/jarbas/images/prumo/server-env
-ln -s ../../../../../.bash_aliases stacks/jarbas/images/prumo/server-env/bash_aliases
-ln -s ../../../../../.env stacks/jarbas/images/prumo/server-env/env
-ln -s ../../../../../md stacks/jarbas/images/prumo/server-env/md
+mkdir -p stacks/web/images/prumo/server-env
+ln -s ../../../../../.bash_aliases stacks/web/images/prumo/server-env/bash_aliases
+ln -s ../../../../../.env stacks/web/images/prumo/server-env/env
+ln -s ../../../../../md stacks/web/images/prumo/server-env/md
 ```
 
 This workflow is local-only and does not change compose behavior or deployment semantics.
@@ -178,12 +178,12 @@ The dashboard runs as a Docker container behind Traefik reverse proxy.
 
 ### Compose layering (Phase 2)
 
-Prumo is now split into two compose layers under [`stacks/jarbas/compose/`](stacks/jarbas/compose/):
+Prumo is now split into two compose layers under [`stacks/web/compose/`](stacks/web/compose/):
 
-- [`prumo.base.yml`](stacks/jarbas/compose/prumo.base.yml): portable/OSS app defaults (build, runtime env, healthcheck).
-- [`prumo.yml`](stacks/jarbas/compose/prumo.yml): server override (Traefik routes, proxy cert chain, server networks, bind mounts used on this host).
+- [`prumo.base.yml`](stacks/web/compose/prumo.base.yml): portable/OSS app defaults (build, runtime env, healthcheck).
+- [`prumo.yml`](stacks/web/compose/prumo.yml): server override (Traefik routes, proxy cert chain, server networks, bind mounts used on this host).
 
-The stack loader in [`stacks/jarbas/compose.yml`](stacks/jarbas/compose.yml) includes base first and override second so current server behavior remains unchanged while keeping a reusable base.
+The stack loader in [`stacks/web/compose.yml`](stacks/web/compose.yml) includes base first and override second so current server behavior remains unchanged while keeping a reusable base.
 
 ### Build and deploy
 

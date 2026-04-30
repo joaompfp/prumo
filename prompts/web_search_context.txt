@@ -1,0 +1,20 @@
+Pesquisa notícias económicas recentes (últimos 2 meses) sobre Portugal nos seguintes temas:
+{section_topics}
+
+{search_hint}
+
+Para cada tema, faz 1-2 pesquisas web e devolve:
+1. Um parágrafo curto (2-3 frases) com os factos mais relevantes encontrados
+2. As URLs dos artigos encontrados
+
+Fontes preferenciais: {link_sources}
+PROIBIDO: fpf.pt, abola.pt, record.pt, zerozero.pt, maisfutebol.iol.pt, ojogo.pt — ZERO links de desporto.
+Adiciona '-futebol -desporto' aos termos de pesquisa.
+
+Formato de resposta:
+Para cada tema, escreve:
+TEMA: [nome do tema]
+[parágrafo com factos]
+URLS: [url1], [url2]
+
+Máximo 6 pesquisas web no total.

@@ -141,7 +141,7 @@ docker exec cae-dashboard pytest --cov=app --cov-report=html
 
 ### Locally (with venv):
 ```bash
-cd stacks/jarbas/images/cae-dashboard
+cd stacks/web/images/cae-dashboard
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt

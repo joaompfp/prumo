@@ -25,7 +25,7 @@ const API = (() => {
       return data;
     } catch (e) {
       clearTimeout(timer);
-      if (e.name === 'AbortError') throw new Error('Tempo limite excedido — servidor não respondeu em 10s');
+      if (e.name === 'AbortError') throw new Error(i18n.t('common.timeout'));
       throw e;
     }
   }
@@ -104,7 +104,7 @@ const fmt = {
     const [y, m] = p.split('-');
     // Annual period collapsed to YYYY-12 by normalisePeriod → show just the year
     if (opts.annualCollapsed && m === '12') return y;
-    const months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    const months = i18n.months();
     const mIdx = parseInt(m, 10) - 1;
     if (isNaN(mIdx) || mIdx < 0 || mIdx > 11) return p; // fallback
     return `${months[mIdx]} ${y.slice(2)}`;

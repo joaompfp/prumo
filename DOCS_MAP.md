@@ -7,7 +7,7 @@ Quick visual guide to all Prumo documentation, guides, and resources organized b
 ## 📖 Documentation Structure
 
 ```
-/home/joao/docker/stacks/jarbas/images/prumo/
+/home/joao/docker/stacks/web/images/prumo/
 
 ├── README.md                          # Main project overview
 ├── .github/copilot-instructions.md    # AI agent guidelines

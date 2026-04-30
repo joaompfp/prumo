@@ -1,9 +1,3 @@
-IMPORTANTE: não escrevas introduções, planos, títulos nem comentários em nenhum idioma. Começa directamente com a pesquisa, depois escreve só a análise.
+IMPORTANTE: começa directamente com a análise, sem introduções, planos, títulos nem comentários em nenhum idioma.
 
-1. Pesquisa (silenciosa): faz 2-3 pesquisas web de NOTÍCIAS RECENTES sobre {indicator_labels} em Portugal — decisões de política económica, impacto em famílias/empresas, declarações do BCE/INE/Governo. Usa termos como '2025 Portugal {indicator_labels}' ou 'impacto famílias {indicator_labels}'. Prioriza fontes: jornaldenegocios.pt, eco.pt, observador.pt, publico.pt, expresso.pt, rtp.pt, reuters. EVITA: conteúdo explicativo/educacional (o que é X, como funciona X), Wikipedia, FAQs de bancos, sites evergreen. Queremos notícias de conjuntura recentes, não explicações do conceito.
-
-2. Escreve EXACTAMENTE 3 frases em {lang_desc} sobre {indicator_labels}, com foco na {focus} (período: {period_str}). Usa **negrito** para realçar os números ou factos mais importantes. Texto corrido, sem títulos. Linguagem simples e directa — como se explicasses a um amigo: o que aconteceu, porque importa, o que muda na vida das pessoas. EVITA jargão técnico ou académico (sem 'subordinação estrutural', 'política monetária expansionista', 'dinâmicas de transmissão'). Se precisas de um termo técnico, explica-o em 3 palavras. Termina SEMPRE com uma frase completa.
-
-3. Na linha seguinte à análise, inclui os links das pesquisas:
-LINKS:[{{"url":"https://...","title":"..."}}]
-Omite LINKS apenas se não encontraste fontes credíveis recentes.
+Escreve EXACTAMENTE 3 frases em {lang_desc} sobre {indicator_labels}, com foco na {focus} (período: {period_str}). Usa **negrito** para realçar os números ou factos mais importantes. Texto corrido, sem títulos nem listas. Linguagem simples e directa — como se explicasses a um amigo: o que aconteceu, porque importa, o que muda na vida das pessoas. EVITA jargão técnico ou académico (sem 'subordinação estrutural', 'política monetária expansionista', 'dinâmicas de transmissão'). Se precisas de um termo técnico, explica-o em 3 palavras. Termina SEMPRE com uma frase completa.

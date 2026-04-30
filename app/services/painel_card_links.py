@@ -2,9 +2,8 @@
 Called per-card after analysis renders. Results cached per topic+lens per week.
 Now lens-aware: includes party-specific source as first link."""
 import os, json, time, hashlib
-from .interpret import ANTHROPIC_KEY, _opener, _load_ideology
+from .interpret import ANTHROPIC_KEY
 from .ideology_lenses import get_lens_metadata, get_lens_link_sources
-from urllib.request import Request
 
 CAE_DB_PATH = os.environ.get("CAE_DB_PATH", "/data/cae-data.duckdb")
 _DATA_DIR = os.path.dirname(CAE_DB_PATH)
@@ -90,33 +89,16 @@ def get_card_links(topic: str, context: str = "", lens: str = "cae") -> dict:
     )
 
     try:
-        body = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
-            "max_tokens": 400,
-            "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
-            "messages": [{"role": "user", "content": prompt}],
-        }).encode()
+        from .claude_client import search_web
 
-        req = Request(
-            "https://api.anthropic.com/v1/messages",
-            data=body,
-            headers={
-                "x-api-key": ANTHROPIC_KEY,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json",
-            },
-        )
+        raw_result = search_web(prompt, max_uses=5, max_tokens=400, timeout=30)
+        raw = raw_result["text"]
 
-        with _opener.open(req, timeout=30) as resp:
-            data = json.loads(resp.read())
-            text_parts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
-            raw = " ".join(text_parts).strip()
-
-            # Parse JSON from response
-            import re
-            m = re.search(r'\[.*\]', raw, re.DOTALL)
-            links = json.loads(m.group(0)) if m else []
-            links = [l for l in links if isinstance(l, dict) and l.get("url") and l.get("title")][:3]
+        # Parse JSON from response (existing logic)
+        import re
+        m = re.search(r'\[.*\]', raw, re.DOTALL)
+        links = json.loads(m.group(0)) if m else []
+        links = [l for l in links if isinstance(l, dict) and l.get("url") and l.get("title")][:3]
 
         # Validate URLs — drop unreachable/404
         import urllib.request as _ur, concurrent.futures as _cf

@@ -1,7 +1,7 @@
 {lang_rule}Tens um orçamento ESTRITO de {token_budget} tokens para análise + links.
 NÃO escrevas notas, planos, separadores (---) nem texto em inglês. Começa directamente com a análise.
 
-PASSO 1 — Pesquisa (silenciosa): pesquisa 2 artigos recentes (últimos 2 meses) por secção. Máx. 6 pesquisas. {search_hint}
+PASSO 1 — Contexto web: usa o CONTEXTO WEB fornecido abaixo (se disponível) como base para referências e links. NÃO precisas de pesquisar — os artigos já foram recolhidos.
 
 PASSO 2 — Análise no idioma correcto (ver regra acima), período: {updated}.
 Para cada secção, escreve EXACTAMENTE 3 frases curtas com **negrito** nos conceitos-chave.

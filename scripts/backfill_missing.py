@@ -9,7 +9,7 @@ Targets:
 3. INE ipi_yoy_cae: fill missing months
 
 Run from host:
-    cd stacks/jarbas/images/prumo
+    cd stacks/web/images/prumo
     python3 scripts/backfill_missing.py [--worldbank] [--oecd] [--ine] (no args = all)
 
 Then merge:

@@ -1,6 +1,11 @@
+import asyncio
 import csv
+import html as _html
 import io
 import json
+import os
+import re
+import urllib.request
 
 import duckdb
 from fastapi import APIRouter, Query, Request, Response
@@ -20,11 +25,23 @@ from ..services.explorador import build_explorador_catalog
 from ..services.series import query_series, query_compare
 from ..services.mundo import get_mundo_data, MUNDO_INDICATORS, COUNTRY_GROUPS_MUNDO
 from ..services.briefing import build_briefing, build_summary
+from ..services.snapshot import build_snapshot
+from ..services.interpret import interpret_chart
+from ..services.painel_analysis import get_painel_analysis, _build_pt_europa_section
+from ..services.painel_headline import get_painel_headline, generate_all_headlines
+from ..services.painel_card_links import get_card_links
 
 router = APIRouter(prefix="/api")
 
 
 # ── Active endpoints ─────────────────────────────────────────────────
+
+
+@router.get("/snapshot")
+def api_snapshot(response: Response, lang: str = "pt"):
+    """Portugal em 60 Segundos — top KPI highlights for the hero section."""
+    response.headers["Cache-Control"] = "public, max-age=3600"  # 1h
+    return build_snapshot(lang=lang)
 
 
 @router.get("/resumo")
@@ -101,11 +118,15 @@ def api_mundo_meta():
 
 @router.post("/interpret")
 async def interpret_endpoint(request: Request):
-    """AI interpretation of chart series data (with web search).
+    """AI interpretation of chart series data.
     Accepts output_language param to control response language (key from site.json output_languages)."""
-    from ..services.interpret import interpret_chart
     body = await request.json()
-    result = interpret_chart(body.get("series", []), body.get("from", ""), body.get("to", ""), lens=body.get("lens"), custom_ideology=body.get("custom_ideology"), output_language=body.get("output_language"))
+    loop = asyncio.get_running_loop()
+    result = await loop.run_in_executor(None, lambda: interpret_chart(
+        body.get("series", []), body.get("from", ""), body.get("to", ""),
+        lens=body.get("lens"), custom_ideology=body.get("custom_ideology"),
+        output_language=body.get("output_language"),
+    ))
     if not result:
         return {"text": None, "links": []}
     if isinstance(result, str):  # backward compat
@@ -120,11 +141,7 @@ async def painel_analysis_endpoint(request: Request):
     Optional lens= param selects political perspective (pcp, ps, ad, il, be, neutro, custom).
     For lens=custom, POST with JSON body {"custom_ideology": "..."}.
     """
-    import asyncio
-    from ..services.painel import build_painel
-    from ..services.painel_analysis import get_painel_analysis
-    force = request.query_params.get("force") == "1"
-    bg = request.query_params.get("bg") == "1"
+    force = False  # force/bg disabled via API — analysis managed via batch scripts
     lens = request.query_params.get("lens")
     output_language = request.query_params.get("output_language")
     custom_ideology = None
@@ -142,16 +159,10 @@ async def painel_analysis_endpoint(request: Request):
     sections = data.get("sections", [])
     updated = data.get("updated", "")
     # Add PT vs Europa comparison section
-    from ..services.painel_analysis import _build_pt_europa_section
     pt_europa = _build_pt_europa_section()
     if pt_europa.get("kpis"):
         sections = sections + [pt_europa]
-    loop = asyncio.get_event_loop()
-    # If bg=1, fire and forget — return immediately
-    if bg:
-        loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology, output_language)
-        return {"status": "generating", "message": "Analysis generation started in background"}
-    # Otherwise run in thread pool — does NOT block the event loop (other requests served normally)
+    loop = asyncio.get_running_loop()
     return await loop.run_in_executor(None, get_painel_analysis, sections, updated, force, lens, custom_ideology, output_language)
 
 
@@ -164,11 +175,10 @@ async def link_title_endpoint(url: str = ""):
         return {"title": ""}
     if url in _link_title_cache:
         return {"title": _link_title_cache[url]}
-    import urllib.request, re
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; CAE-Dashboard/1.0)"})
         with urllib.request.urlopen(req, timeout=5) as resp:
-            html = resp.read(32768).decode("utf-8", errors="replace")
+            html_bytes = resp.read(32768).decode("utf-8", errors="replace")
         title = ""
         for pat in [
             r'og:title[^>]+content=[^>]*?content=["\']([^"\'<>]+)',
@@ -176,11 +186,10 @@ async def link_title_endpoint(url: str = ""):
             r'<og:title[^>]*>([^<]+)</og:title>',
             r'<title[^>]*>([^<]+)</title>',
         ]:
-            m = re.search(pat, html, re.I | re.S)
+            m = re.search(pat, html_bytes, re.I | re.S)
             if m:
                 title = m.group(1).strip()[:120]
                 break
-        import html as _html
         title = _html.unescape(title) if title else ""
         _link_title_cache[url] = title
         return {"title": title}
@@ -196,15 +205,12 @@ async def painel_card_links_endpoint(request: Request):
     lens    = request.query_params.get("lens", "cae")
     if not topic:
         return {"links": [], "error": "topic required"}
-    from ..services.painel_card_links import get_card_links
     return get_card_links(topic, context, lens)
 
 
 @router.get("/painel-headline")
 async def painel_headline_endpoint(request: Request):
-    """Claude Opus one-shot headline for Painel KPIs. Disk-cached 6h per lens + language."""
-    from ..services.painel import build_painel
-    from ..services.painel_headline import get_painel_headline
+    """Ollama one-shot headline for Painel KPIs. Disk-cached 6h per lens + language."""
     force = request.query_params.get("force") == "1"
     lens = request.query_params.get("lens")
     output_language = request.query_params.get("output_language") or "pt"
@@ -212,8 +218,7 @@ async def painel_headline_endpoint(request: Request):
     data = build_painel()
     sections = data.get("sections", [])
     updated = data.get("updated", "")
-    import asyncio
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     return await loop.run_in_executor(None, lambda: get_painel_headline(sections, updated, force=force, lens=lens, custom_ideology=custom_ideology, output_language=output_language))
 
 
@@ -222,9 +227,6 @@ async def painel_headlines_batch_endpoint(request: Request):
     """Generate all headlines (all lenses × all languages) for caching.
     Runs in background — returns immediately with job status.
     Check /painel-headline for cached results."""
-    from ..services.painel import build_painel
-    from ..services.painel_headline import generate_all_headlines
-    import asyncio
     import threading
 
     data = build_painel()
@@ -493,6 +495,64 @@ def api_audit_dashboard():
     <tbody>{rows_html or '<tr><td colspan=6>No audit data. Run: <code>python scripts/audit_nightly.py</code></td></tr>'}</tbody></table>
     </body></html>"""
     return HTMLResponse(content=html)
+
+
+@router.get("/health/report")
+def api_health_report():
+    """Operational health report: freshness per source, indicator counts, cache ages, uptime."""
+    import os, time
+    from ..database import get_db
+    from ..config import CAE_DB_PATH
+
+    data_dir = os.path.dirname(CAE_DB_PATH)
+    report = {"status": "ok", "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+
+    # DB freshness per source
+    try:
+        conn = get_db()
+        rows = conn.execute("""
+            SELECT source, COUNT(DISTINCT indicator) AS indicators,
+                   COUNT(*) AS rows, MAX(period) AS latest
+            FROM indicators GROUP BY source ORDER BY source
+        """).fetchall()
+        report["sources"] = [
+            {"source": src, "indicators": ind, "rows": r, "latest_period": latest}
+            for src, ind, r, latest in rows
+        ]
+        total = conn.execute("SELECT COUNT(DISTINCT indicator) FROM indicators").fetchone()
+        report["total_indicators"] = total[0] if total else 0
+    except Exception as e:
+        report["status"] = "degraded"
+        report["db_error"] = str(e)
+
+    # Cache freshness
+    caches = {
+        "analysis": os.path.join(data_dir, "painel-analysis-cache.json"),
+        "headline": os.path.join(data_dir, "painel-headline-cache.json"),
+        "interpret": os.path.join(data_dir, "interpret-cache.json"),
+    }
+    report["caches"] = {}
+    now = time.time()
+    for name, path in caches.items():
+        if os.path.exists(path):
+            mtime = os.path.getmtime(path)
+            size = os.path.getsize(path)
+            report["caches"][name] = {
+                "age_hours": round((now - mtime) / 3600, 1),
+                "size_kb": round(size / 1024, 1),
+            }
+        else:
+            report["caches"][name] = {"exists": False}
+
+    # Process uptime
+    try:
+        with open("/proc/uptime") as f:
+            uptime_secs = float(f.read().split()[0])
+            report["uptime_hours"] = round(uptime_secs / 3600, 1)
+    except Exception:
+        pass
+
+    return report
 
 
 @router.get("/explorador")

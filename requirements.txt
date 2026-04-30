@@ -1,9 +1,12 @@
-fastapi>=0.115,<1
+fastapi>=0.115,<0.136
+starlette>=0.40,<1
 uvicorn[standard]>=0.34,<1
 jinja2>=3.1,<4
 duckdb
 requests
 pandas
+pyarrow>=15.0
+Pillow>=10.0,<11
 
 # Testing
 pytest>=7.4,<8

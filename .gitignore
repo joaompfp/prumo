@@ -28,6 +28,9 @@ Thumbs.db
 # Local server workflow (never committed)
 server-env/
 
+# Appdata symlink (points to ../../appdata/prumo/, runtime data)
+appdata
+
 # Reference materials (large files, local only)
 docs/*.pdf
 docs/*.epub

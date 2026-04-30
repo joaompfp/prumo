@@ -31,6 +31,7 @@ ANALYTICS_DB_PATH = _paths.get("analytics_db") or os.environ.get("ANALYTICS_DB_P
 IDEOLOGIES_DIR = _paths.get("ideologies_dir") or os.path.join(os.path.dirname(CAE_DB_PATH), "ideologies")
 INTERPRET_CACHE_PATH = _paths.get("interpret_cache") or os.path.join(os.path.dirname(CAE_DB_PATH), "interpret-cache.json")
 PAINEL_CACHE_PATH = _paths.get("painel_cache") or os.path.join(os.path.dirname(CAE_DB_PATH), "painel-analysis-cache.json")
+SHARE_CARDS_DIR = _paths.get("share_cards_dir") or os.path.join(os.path.dirname(CAE_DB_PATH), "share-cards")
 
 PORT = int(os.environ.get("CAE_PORT", "8080"))
 BASE_PATH = os.environ.get("CAE_BASE_PATH", "").rstrip("/")

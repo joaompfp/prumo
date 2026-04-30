@@ -54,15 +54,15 @@ App.registerSection('painel', async () => {
       const yoy = Number(k.yoy);
       const val = Number(k.value);
       if (k.id === 'industrial_production')
-        return yoy >= 0 ? `produção industrial sobe ${yoy.toFixed(1)}%` : `produção industrial recua ${Math.abs(yoy).toFixed(1)}%`;
+        return yoy >= 0 ? i18n.t('painel.phrase.ipi_up', {pct: yoy.toFixed(1)}) : i18n.t('painel.phrase.ipi_down', {pct: Math.abs(yoy).toFixed(1)});
       if (k.id === 'unemployment')
-        return `desemprego em ${val.toFixed(1)}%`;
+        return i18n.t('painel.phrase.unemployment', {val: val.toFixed(1)});
       if (k.id === 'employment_rate')
-        return `taxa de emprego em ${val.toFixed(1)}%`;
+        return i18n.t('painel.phrase.employment', {val: val.toFixed(1)});
       if (k.id === 'confidence')
-        return yoy >= 0 ? `confiança melhora ${yoy.toFixed(1)} pp` : `confiança cede ${Math.abs(yoy).toFixed(1)} pp`;
+        return yoy >= 0 ? i18n.t('painel.phrase.confidence_up', {pp: yoy.toFixed(1)}) : i18n.t('painel.phrase.confidence_down', {pp: Math.abs(yoy).toFixed(1)});
       if (k.id === 'inflation')
-        return `inflação em ${val.toFixed(1)}%`;
+        return i18n.t('painel.phrase.inflation', {val: val.toFixed(1)});
       return `${k.label} ${yoy >= 0 ? '+' : ''}${yoy.toFixed(1)}${k.yoy_unit || '%'}`;
     }
 
@@ -78,7 +78,7 @@ App.registerSection('painel', async () => {
       const p2 = kpiPhrase(top2);
       titleMsg = p1.charAt(0).toUpperCase() + p1.slice(1) + ' · ' + p2;
     } else {
-      titleMsg = 'Panorama dos indicadores económicos';
+      titleMsg = i18n.t('painel.title_fallback');
     }
 
     const titleEl = container.querySelector('.section-title');
@@ -101,7 +101,7 @@ App.registerSection('painel', async () => {
         if (!h?.headline) {
           // API responded but no headline — apply rule-based fallback
           if (titleEl && !titleEl.textContent) titleEl.textContent = titleMsg;
-          if (subEl && !subEl.textContent) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
+          if (subEl && !subEl.textContent) subEl.textContent = `${i18n.t('painel.subtitle_updated', {date: updated})} · ${allKpis.length} KPIs · ${i18n.t('painel.subtitle_sources')}`;
           return;
         }
         const lines = h.headline.split('\n').map(l => l.trim()).filter(Boolean);
@@ -118,12 +118,12 @@ App.registerSection('painel', async () => {
           subEl.innerHTML = lines.slice(1).map(l => `<p style="margin:0.3em 0">${l}</p>`).join('')
             + `<p style="margin:0.3em 0;opacity:.6;font-size:.9em">${updated} · ${allKpis.length} KPIs</p>`;
         } else if (subEl && !subEl.innerHTML) {
-          subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
+          subEl.textContent = `${i18n.t('painel.subtitle_updated', {date: updated})} · ${allKpis.length} KPIs · ${i18n.t('painel.subtitle_sources')}`;
         }
       }).catch(() => {
         // Network/API failure — apply rule-based fallback (only if still empty)
         if (titleEl && !titleEl.textContent) titleEl.textContent = titleMsg;
-        if (subEl && !subEl.textContent) subEl.textContent = `Dados actualizados: ${updated} · ${allKpis.length} KPIs · Fonte: INE, Eurostat, WorldBank`;
+        if (subEl && !subEl.textContent) subEl.textContent = `${i18n.t('painel.subtitle_updated', {date: updated})} · ${allKpis.length} KPIs · ${i18n.t('painel.subtitle_sources')}`;
       });
     }
     _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
@@ -133,13 +133,113 @@ App.registerSection('painel', async () => {
       _fetchHeadline(localStorage.getItem('prumo-lens') || 'cae');
     });
 
-    // Source label map
-    const SOURCE_LABELS = {
-      'INE': 'INE', 'EUROSTAT': 'Eurostat', 'FRED': 'FRED',
-      'BPORTUGAL': 'Banco de Portugal', 'OECD': 'OCDE',
-      'WORLDBANK': 'Banco Mundial', 'REN': 'REN',
-      'ERSE': 'ERSE', 'DGEG': 'DGEG',
-    };
+    // Source label map — uses i18n with fallback to code
+    function getSourceLabel(code) {
+      return i18n.t('sources.' + code) || code;
+    }
+
+    // ── Translate context strings for non-PT languages ──────────────
+    // The backend generates context strings in Portuguese. This function
+    // does pattern-based replacements using i18n keys when lang !== 'pt'.
+    function _translateContext(text, kpi) {
+      if (!text || i18n.lang() === 'pt') return text;
+
+      // Annual data vintage: "Dados de YYYY (última actualização disponível)"
+      const annualMatch = text.match(/^Dados de (\d{4}) \(última actualização disponível\)$/);
+      if (annualMatch) return i18n.t('kpi.data_from_year', {year: annualMatch[1]});
+
+      // Industrial production base comparison: "X.X% abaixo/acima do nível base (2021=100)"
+      const baseMatch = text.match(/^([\d.]+)% (abaixo|acima) do nível base \(2021=100\)$/);
+      if (baseMatch) return baseMatch[1] + '% ' + i18n.t(baseMatch[2] === 'abaixo' ? 'kpi.below_base' : 'kpi.above_base');
+
+      // Saldo/pp change: "+X.X pp face ao ano anterior" or "+X.X pp face ao ano anterior (ainda negativo)"
+      const ppMatch = text.match(/^([+-]?[\d.]+) pp face ao ano anterior(\s*\(ainda negativo\))?$/);
+      if (ppMatch) {
+        let result = ppMatch[1] + ' ' + i18n.t('kpi.pp_vs_prev_year');
+        if (ppMatch[2]) result += ' (' + i18n.t('kpi.still_negative') + ')';
+        return result;
+      }
+
+      // Euribor direction: "descida/subida de X.XX pp desde MONTH YEAR"
+      const euriborMatch = text.match(/^(descida|subida) de ([\d.]+) pp desde (.+)$/);
+      if (euriborMatch) {
+        const dirKey = euriborMatch[1] === 'descida' ? 'kpi.drop_of' : 'kpi.rise_of';
+        // Translate month name if present
+        const monthsPt = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+        const monthsEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        let since = euriborMatch[3];
+        for (let mi = 0; mi < 12; mi++) {
+          if (since.includes(monthsPt[mi])) { since = since.replace(monthsPt[mi], monthsEn[mi]); break; }
+        }
+        return i18n.t(dirKey) + ' ' + euriborMatch[2] + ' ' + i18n.t('kpi.pp_since') + ' ' + since;
+      }
+
+      // Conflict pattern: "Desceu X.X% face ao ano anterior (tendência recente: subida/descida)"
+      const conflictMatch = text.match(/^Desceu ([\d.]+)% face ao ano anterior \(tendência recente: (subida|descida)\)$/);
+      if (conflictMatch) {
+        const trendKey = conflictMatch[2] === 'subida' ? 'kpi.recent_trend_up' : 'kpi.recent_trend_down';
+        return i18n.t('kpi.fell') + ' ' + conflictMatch[1] + '% ' + i18n.t('kpi.vs_prev_year_pct') + ' (' + i18n.t(trendKey) + ')';
+      }
+
+      // Consecutive months: "X.º mês consecutivo em subida/queda/estável"
+      const consecMatch = text.match(/^(\d+)\.º mês consecutivo em (subida|queda|estável)$/);
+      if (consecMatch) {
+        const n = consecMatch[1];
+        const dirMap = {'subida': 'kpi.consecutive_months_up', 'queda': 'kpi.consecutive_months_down', 'estável': 'kpi.consecutive_months_stable'};
+        return n + (n === '1' ? 'st' : n === '2' ? 'nd' : n === '3' ? 'rd' : 'th') + ' ' + i18n.t(dirMap[consecMatch[2]]);
+      }
+
+      // Simple YoY: "Subiu/Desceu X.X% face ao ano anterior"
+      const yoyMatch = text.match(/^(Subiu|Desceu) ([\d.]+)% face ao ano anterior$/);
+      if (yoyMatch) {
+        const verb = yoyMatch[1] === 'Subiu' ? i18n.t('kpi.rose') : i18n.t('kpi.fell');
+        return verb + ' ' + yoyMatch[2] + '% ' + i18n.t('kpi.vs_prev_year_pct');
+      }
+
+      return text;
+    }
+
+    // ── Translate annotation strings for non-PT languages ───────────
+    // Annotations are value-dependent strings from the backend. We map
+    // them to structured i18n keys based on the KPI id and value range.
+    function _translateAnnotation(kpi) {
+      const ann = kpi.annotation;
+      if (!ann || i18n.lang() === 'pt') return ann || '';
+      const v = kpi.value;
+      const id = kpi.id;
+      // Map KPI id + value to annotation sub-key
+      const key = _annotationKey(id, v);
+      if (key) {
+        const translated = i18n.t('kpi_annotations.' + id + '.' + key);
+        if (translated !== 'kpi_annotations.' + id + '.' + key) return translated;
+      }
+      return ann; // fallback to raw backend string
+    }
+
+    function _annotationKey(id, v) {
+      if (v === null || v === undefined) return null;
+      switch(id) {
+        case 'inflation': return v < 0 ? 'deflation' : v < 1 ? 'stable' : v < 2 ? 'on_target' : v < 4 ? 'above_target' : 'high';
+        case 'diesel': return v < 1.30 ? 'cheap' : v < 1.55 ? 'moderate' : v < 1.80 ? 'expensive' : 'very_expensive';
+        case 'gasoline_95': return v < 1.40 ? 'cheap' : v < 1.65 ? 'moderate' : v < 1.90 ? 'expensive' : 'very_expensive';
+        case 'euribor_3m': return v < 0 ? 'negative' : v < 1 ? 'low' : v < 2.5 ? 'moderate' : v < 4 ? 'high' : 'very_high';
+        case 'unemployment': return v < 5 ? 'full_employment' : v < 7 ? 'low' : v < 10 ? 'moderate' : 'high';
+        case 'employment_rate': return v > 78 ? 'high' : v > 73 ? 'reasonable' : v > 68 ? 'below_avg' : 'low';
+        case 'cli': return v > 101 ? 'strong_expansion' : v > 100 ? 'expansion' : v > 99 ? 'slowdown' : 'contraction';
+        case 'confidence': return v > 5 ? 'high' : v > 0 ? 'positive' : v > -10 ? 'mild_pessimism' : 'deep_pessimism';
+        case 'order_books': return v > 0 ? 'above_normal' : v > -15 ? 'slightly_below' : v > -30 ? 'weak' : 'very_weak';
+        case 'renewable_share': return v > 70 ? 'excellent' : v > 50 ? 'good' : v > 30 ? 'moderate' : 'low';
+        case 'energy_dependence': return v < 60 ? 'low' : v < 75 ? 'moderate' : v < 85 ? 'high' : 'very_high';
+        case 'natural_gas': return v < 2 ? 'cheap' : v < 4 ? 'moderate' : v < 7 ? 'expensive' : 'very_expensive';
+        case 'spread_pt_de': return v < 0.5 ? 'very_low' : v < 1.0 ? 'contained' : v < 2.0 ? 'moderate' : 'high';
+        case 'brent': return v < 50 ? 'cheap' : v < 75 ? 'moderate' : v < 100 ? 'expensive' : 'very_expensive';
+        case 'eur_usd': return v > 1.20 ? 'strong_euro' : v > 1.05 ? 'equilibrium' : v > 0.95 ? 'weak_euro' : 'very_weak_euro';
+        case 'ipi_total': return v > 105 ? 'expansion' : v > 95 ? 'stable' : v > 85 ? 'moderate_contraction' : 'strong_contraction';
+        case 'gdp_per_capita': return v > 30000 ? 'converging' : v > 23000 ? 'below_avg' : 'significant_gap';
+        case 'rnd_pct_gdp': return v > 2.5 ? 'strong' : v > 1.5 ? 'moderate' : 'low';
+        default: return null;
+      }
+    }
 
     // ── KPI card template (shared) ───────────────────────────────────
     function renderKpiCard(kpi) {
@@ -152,34 +252,53 @@ App.registerSection('painel', async () => {
       const arrow = fmt.arrow(yoy);
       const value = kpi.value !== null && kpi.value !== undefined ? fmt.num(kpi.value) : 'n/d';
       const unit = kpi.unit || '';
-      const context = kpi.context || '';
-      const description = kpi.description || '';
-      const label = kpi.label || kpi.id;
+
+      // i18n: override description from translations if available
+      const descKey = 'kpi_descriptions.' + kpi.id;
+      const description = (i18n.t(descKey) !== descKey) ? i18n.t(descKey) : (kpi.description || '');
+
+      // i18n: override explain from translations if available
+      const explainKey = 'kpi_explains.' + kpi.id;
+      const explain = (i18n.t(explainKey) !== explainKey) ? i18n.t(explainKey) : (kpi.explain || '');
+
+      // i18n: translate context string
+      const context = _translateContext(kpi.context || '', kpi);
+
+      // i18n: translate annotation string
+      const annotation = _translateAnnotation(kpi);
+
+      const label = i18n.t('kpi_labels.' + kpi.id) !== ('kpi_labels.' + kpi.id) ? i18n.t('kpi_labels.' + kpi.id) : (kpi.label || kpi.id);
       const hasSpark = kpi.spark && kpi.spark.length > 0;
-      const sourceLabel = kpi.source ? (SOURCE_LABELS[kpi.source] || kpi.source) : '';
+      const sourceLabel = kpi.source ? getSourceLabel(kpi.source) : '';
 
       // Base period clarity: show "Fev 2026 vs Fev 2025" instead of "vs ano anterior"
       const period = kpi.period || '';
-      let yoyLabel = 'vs ano anterior';
+      let yoyLabel = i18n.t('painel.yoy_label');
       if (period && period.length >= 7) {
-        const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+        const months = i18n.months();
         const m = parseInt(period.slice(5, 7), 10);
         const y = parseInt(period.slice(0, 4), 10);
         if (m >= 1 && m <= 12 && y > 2000) {
-          yoyLabel = `${MONTHS[m-1]} ${y} vs ${MONTHS[m-1]} ${y-1}`;
+          yoyLabel = `${months[m-1]} ${y} vs ${months[m-1]} ${y-1}`;
         }
       } else if (period && period.length === 4) {
         yoyLabel = `${period} vs ${parseInt(period, 10) - 1}`;
       }
 
       const dataAttrs = kpi.source && kpi.indicator
-        ? ` data-source="${kpi.source}" data-indicator="${kpi.indicator}" title="Ver ${label} no Explorador"`
+        ? ` data-source="${kpi.source}" data-indicator="${kpi.indicator}" title="${i18n.t('painel.view_in_explorador', {label: label})}"`
         : '';
       return `
       <div class="kpi-card ${sentiment}"${dataAttrs}>
         <div class="kpi-card-header">
           <div class="kpi-label">${label}</div>
           ${sourceLabel ? `<span class="kpi-source-tag">${sourceLabel}</span>` : ''}
+          ${kpi.stale ? `<span class="badge-source badge-stale" title="Dados com mais de 1 ano de atraso">desactualizado</span>` : ''}
+          <button class="kpi-share-btn" data-kpi-id="${kpi.id}" title="${i18n.t('share.share')}" aria-label="${i18n.t('share.share')}">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 8h8M8 4l4 4-4 4"/>
+            </svg>
+          </button>
         </div>
         <div class="kpi-value-row">
           <span class="kpi-value">${value}</span>
@@ -192,8 +311,10 @@ App.registerSection('painel', async () => {
         </div>
         ${description ? `<div class="kpi-description">${description}</div>` : ''}
         ${context ? `<div class="kpi-context">${context}</div>` : ''}
+        ${annotation ? `<div class="kpi-annotation">${annotation}</div>` : ''}
+        ${explain ? `<button class="kpi-explain-trigger" aria-label="Explain">?</button><div class="kpi-explain hidden"><strong>${label}</strong> — ${explain}</div>` : ''}
         ${hasSpark ? `<div class="spark-container" id="spark-${kpi.id}"></div>` : ''}
-        ${period ? `<div class="kpi-freshness" style="font-size:10px;opacity:.5;margin-top:4px;font-style:italic">Dados: ${period}</div>` : ''}
+        ${period ? `<div class="kpi-freshness" style="font-size:10px;opacity:.5;margin-top:4px;font-style:italic">${i18n.t('painel.data_prefix')}: ${period}</div>` : ''}
       </div>`;
     }
 
@@ -204,8 +325,8 @@ App.registerSection('painel', async () => {
       const iaBtn = document.createElement('button');
       iaBtn.id = 'painel-ia-btn';
       iaBtn.className = 'time-preset-btn painel-ia-toggle';
-      iaBtn.title = 'Análise política interpretativa com IA';
-      iaBtn.textContent = '✦ Análise IA';
+      iaBtn.title = i18n.t('painel.ia.btn_title');
+      iaBtn.textContent = '✦ ' + i18n.t('painel.ia.btn_label');
       iaBtn.classList.add('active');
       headerEl.appendChild(iaBtn);
     }
@@ -240,7 +361,7 @@ App.registerSection('painel', async () => {
         const icon = _lensIcon(l.icon || l.id);
         const isParty = !!PARTY_LOGOS[l.icon || l.id];
         const label = isParty ? '' : l.short;
-        return `<button class="lens-pill ${active} ${isParty ? 'lens-pill-logo' : ''}" data-lens="${l.id}" ${style} title="${l.label}${l.source ? '\nFonte: '+l.source : ''}">${icon}${label}</button>`;
+        return `<button class="lens-pill ${active} ${isParty ? 'lens-pill-logo' : ''}" data-lens="${l.id}" ${style} title="${l.label}${l.source ? '\n' + i18n.t('painel.ia.lens_source') + ': ' + l.source : ''}">${icon}${label}</button>`;
       }).join('');
       // Show/hide custom ideology textarea
       const existing = document.getElementById('custom-ideology-wrap');
@@ -250,18 +371,18 @@ App.registerSection('painel', async () => {
           wrap.id = 'custom-ideology-wrap';
           wrap.className = 'custom-ideology-wrap';
           wrap.innerHTML = `<textarea id="custom-ideology-text" class="custom-ideology-textarea"
-            placeholder="Escreve aqui o teu enquadramento ideológico. Ex: 'És um analista que privilegia a sustentabilidade ambiental e a economia circular…'"
+            placeholder="${i18n.t('painel.ia.custom_placeholder')}"
             rows="4">${localStorage.getItem('prumo-custom-ideology') || CUSTOM_LENS_DEFAULT}</textarea>
             <div class="custom-ideology-footer">
-              <span class="custom-ideology-hint">Este texto é enviado como contexto ao modelo de IA. Guardado localmente no browser.</span>
-              <button id="custom-ideology-save" class="lens-pill" style="border-color:#9C27B0;color:#9C27B0;font-size:10px">Guardar</button>
+              <span class="custom-ideology-hint">${i18n.t('painel.ia.custom_hint')}</span>
+              <button id="custom-ideology-save" class="lens-pill" style="border-color:#9C27B0;color:#9C27B0;font-size:10px">${i18n.t('painel.ia.custom_save')}</button>
             </div>`;
           bar.parentNode.insertBefore(wrap, bar.nextSibling);
           wrap.querySelector('#custom-ideology-save').addEventListener('click', () => {
             const txt = wrap.querySelector('#custom-ideology-text').value.trim();
             if (txt) {
               localStorage.setItem('prumo-custom-ideology', txt);
-              App.showToast('Lente personalizada guardada');
+              App.showToast(i18n.t('painel.ia.custom_saved'));
             }
           });
           // Auto-save on blur
@@ -277,7 +398,7 @@ App.registerSection('painel', async () => {
 
     // Find label for current lens (full name for header display)
     function currentLensLabel() {
-      if (currentLens === 'custom') return 'Personalizada';
+      if (currentLens === 'custom') return i18n.t('painel.ia.lens_custom');
       const l = availableLenses.find(x => x.id === currentLens);
       return l ? l.label : currentLens.toUpperCase();
     }
@@ -301,26 +422,25 @@ App.registerSection('painel', async () => {
       const partyName = l?.party;
       if (partyName) {
         const art = _PARTY_ARTICLE[partyName] || 'do';
-        el.textContent = `Análise simulada — não constitui posição oficial ${art} ${partyName}`;
+        el.textContent = i18n.t('painel.ia.disclaimer_party', {article: art, party: partyName});
       } else if (currentLens === 'cae') {
-        el.textContent = 'Análise simulada — perspectiva editorial do operador desta instância';
+        el.textContent = i18n.t('painel.ia.disclaimer_cae');
       } else if (currentLens === 'custom') {
-        el.textContent = 'Análise simulada — lente personalizada pelo utilizador';
+        el.textContent = i18n.t('painel.ia.disclaimer_custom');
       } else {
-        el.textContent = 'Análise gerada por IA — meramente indicativa';
+        el.textContent = i18n.t('painel.ia.disclaimer_generic');
       }
     }
 
     // Persistent IA panel placeholder (injected at top of body)
     const iaPanelHtml = `<div id="painel-ia-panel" class="ia-collapsed">
       <div class="painel-ia-header">
-        <span class="painel-ia-label">✦ Análise Política · Lente: <span id="painel-ia-lens-name">${currentLensLabel()}</span></span>
-        <span class="painel-ia-tagline">(quase) instantânea, só juntar electricidade</span>
+        <span class="painel-ia-label">✦ ${i18n.t('painel.ia.panel_label')} · ${i18n.t('painel.ia.lens_prefix')}: <span id="painel-ia-lens-name">${currentLensLabel()}</span></span>
+        <span class="painel-ia-tagline">${i18n.t('painel.ia.tagline')}</span>
         <div class="lens-selector" id="lens-selector"></div>
       </div>
       <div class="painel-ia-actions">
         <span class="painel-ia-meta" id="painel-ia-meta"></span>
-        ${window.__IS_ADMIN__ ? '<button class="painel-ia-regen" id="painel-ia-regen" title="Forçar nova análise">↺ regenerar</button>' : ''}
       </div>
       <div id="painel-ia-text" class="painel-ia-text"></div>
       <div id="painel-ia-links" class="painel-ia-links" style="display:none"></div>
@@ -333,8 +453,8 @@ App.registerSection('painel', async () => {
     // ── Theme quick-nav pills ─────────────────────────────────────────
     const themeNavHtml = useSections
       ? `<nav class="painel-theme-nav" id="painel-theme-nav">
-          <button class="theme-pill active" data-target="pt-mundo-top-container">PT vs Europa</button>
-          ${data.sections.map(s => `<button class="theme-pill" data-target="section-${s.id}">${s.label || s.title || s.id}</button>`).join('')}
+          <button class="theme-pill active" data-target="pt-mundo-top-container">${i18n.t('painel.theme.pt_vs_europe')}</button>
+          ${data.sections.map(s => { const tl = i18n.t('painel_sections.' + s.id); const lbl = (tl !== 'painel_sections.' + s.id) ? tl : (s.label || s.title || s.id); return `<button class="theme-pill" data-target="section-${s.id}">${lbl}</button>`; }).join('')}
         </nav>`
       : '';
 
@@ -345,11 +465,11 @@ App.registerSection('painel', async () => {
           return `
           <div class="painel-section" id="section-${section.id}" data-section-id="${section.id}">
             <div class="section-label" style="cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between">
-              <span>${section.label}</span>
+              <span>${(i18n.t('painel_sections.' + section.id) !== 'painel_sections.' + section.id) ? i18n.t('painel_sections.' + section.id) : section.label}</span>
               <span class="section-collapse-arrow" style="font-size:16px;line-height:1;transition:transform .2s">&#9660;</span>
             </div>
             <div class="kpi-grid">
-              ${kpis.map(renderKpiCard).join('')}
+              ${kpis.filter(k => k.value !== null && k.value !== undefined && !k.error).map(renderKpiCard).join('')}
             </div>
           </div>`;
         }).join('') +
@@ -455,7 +575,7 @@ App.registerSection('painel', async () => {
       const panel = document.getElementById('painel-ia-panel');
       // For custom lens without text, show notice
       if (newLens === 'custom' && !localStorage.getItem('prumo-custom-ideology') && !CUSTOM_LENS_DEFAULT) {
-        if (textEl) textEl.innerHTML = '<p style="color:var(--c-muted);font-style:italic">Escreve o teu enquadramento no campo acima e gera a análise.</p>';
+        if (textEl) textEl.innerHTML = `<p style="color:var(--c-muted);font-style:italic">${i18n.t('painel.ia.custom_notice')}</p>`;
         return;
       }
       // Dissolve out, then re-fetch
@@ -496,7 +616,7 @@ App.registerSection('painel', async () => {
     function _renderMiniSparkline(container, data, yoy, refData, unit, label) {
     if (!window.echarts || !data?.length) {
       container.style.cssText = 'display:flex;align-items:center;justify-content:center;color:var(--c-muted);font-size:12px';
-      container.textContent = 'Sem dados';
+      container.textContent = i18n.t('painel.no_data');
       return;
     }
     const chart = window.echarts.init(container, null, { renderer: 'svg' });
@@ -530,7 +650,7 @@ App.registerSection('painel', async () => {
                  interval: 'auto',
                  formatter: (v, i) => {
                    const n = data.length;
-                   const MO = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+                   const MO = i18n.months();
                    const fmt = (s) => {
                      const parts = s.split('-');
                      if (parts.length >= 2) {
@@ -594,7 +714,7 @@ App.registerSection('painel', async () => {
             a.href = d.links[0].url;
             a.target = '_blank';
             a.className = 'ai-card-link';
-            a.title = d.links[0].title || 'Leia mais';
+            a.title = d.links[0].title || i18n.t('painel.ia.read_more');
             a.textContent = '↗';
             head.appendChild(a);
           }
@@ -603,7 +723,7 @@ App.registerSection('painel', async () => {
         if (!card.querySelector('.ai-card-links')) {
           const linksDiv = document.createElement('div');
           linksDiv.className = 'ai-card-links';
-          linksDiv.innerHTML = `<div class="ai-card-links-label">Leituras relacionadas</div>` +
+          linksDiv.innerHTML = `<div class="ai-card-links-label">${i18n.t('painel.ia.related_reading')}</div>` +
             d.links.map((l, li) => {
               const url = typeof l === 'string' ? l : l.url;
               const domain = url.replace(/https?:\/\/(www\.)?/, '').split('/')[0];
@@ -661,7 +781,7 @@ App.registerSection('painel', async () => {
       const _normLink = l => typeof l === 'string' ? {url: l, title: ''} : l;
       const sectionLinks = (links[c.title] || []).map(_normLink).filter(l => l.url);
       const firstUrl  = sectionLinks[0]?.url || null;
-      const lnk = firstUrl ? `<a href="${firstUrl}" target="_blank" rel="noopener noreferrer" class="ai-card-link" title="Leia mais">↗</a>` : '';
+      const lnk = firstUrl ? `<a href="${firstUrl}" target="_blank" rel="noopener noreferrer" class="ai-card-link" title="${i18n.t('painel.ia.read_more')}">↗</a>` : '';
       // Links: show domain initially, lazy-fetch real title
       const allLinkHtml = sectionLinks.length
         ? sectionLinks.map((l, li) => {
@@ -694,7 +814,7 @@ App.registerSection('painel', async () => {
             <div class="ai-card-chart-comment" id="ai-ccm-${i}"></div>
           </div>
         </div>
-        ${allLinkHtml ? `<div class="ai-card-links"><div class="ai-card-links-label">Leituras relacionadas</div>${allLinkHtml}</div>` : ''}
+        ${allLinkHtml ? `<div class="ai-card-links"><div class="ai-card-links-label">${i18n.t('painel.ia.related_reading')}</div>${allLinkHtml}</div>` : ''}
       </div>`;
     }).join('');
 
@@ -733,7 +853,8 @@ App.registerSection('painel', async () => {
 
       if (titleEl) {
         const indUrl = `#explorador?s=${encodeURIComponent((kpi.source || '') + '/' + (kpi.id || ''))}`;
-        titleEl.innerHTML = `<a href="${indUrl}" class="ai-card-chart-title-link" title="Ver no Explorador de Análise">${kpi.label || ''} ↗</a>`;
+        const chartLabel = (i18n.t('kpi_labels.' + kpi.id) !== 'kpi_labels.' + kpi.id) ? i18n.t('kpi_labels.' + kpi.id) : (kpi.label || '');
+        titleEl.innerHTML = `<a href="${indUrl}" class="ai-card-chart-title-link" title="${i18n.t('painel.view_in_explorador', {label: chartLabel})}">${chartLabel} ↗</a>`;
       }
       if (commentEl) {
         const period = kpi.spark?.at(-1)?.period || kpi.spark?.at(-1)?.p || '';
@@ -746,27 +867,28 @@ App.registerSection('painel', async () => {
         const ind = kpi.indicator || '';
         let msg = '';
         if (ind === 'hicp_yoy' || id === 'inflation') {
-          msg = yoy > 0 ? `Preços ${abs}% acima do ano passado — poder de compra das famílias continua sob pressão` : `Inflação desce ${abs}% — algum alívio no orçamento familiar`;
+          msg = yoy > 0 ? i18n.t('painel.insight.inflation_up', {pct: abs}) : i18n.t('painel.insight.inflation_down', {pct: abs});
         } else if (ind === 'unemp_m' || id === 'unemployment') {
-          msg = yoy < 0 ? `Desemprego caiu ${abs}pp — mais famílias com rendimento de trabalho` : `Desemprego subiu ${abs}pp — mais famílias em situação vulnerável`;
+          msg = yoy < 0 ? i18n.t('painel.insight.unemployment_down', {pp: abs}) : i18n.t('painel.insight.unemployment_up', {pp: abs});
         } else if (ind === 'electricity_price_mibel' || id === 'energy_cost') {
-          msg = yoy < 0 ? `Grossista caiu ${abs}% — mas a factura doméstica ainda não reflecte a queda` : `Electricidade grossista sobe ${abs}% — custo energético das famílias em risco`;
+          msg = yoy < 0 ? i18n.t('painel.insight.energy_down', {pct: abs}) : i18n.t('painel.insight.energy_up', {pct: abs});
         } else if (/btn|electricity/i.test(ind)) {
-          msg = yoy > 0 ? `Tarifa sobe ${abs}% — mais peso na factura das famílias` : `Tarifa desce ${abs}% — algum alívio nas despesas fixas`;
+          msg = yoy > 0 ? i18n.t('painel.insight.tariff_up', {pct: abs}) : i18n.t('painel.insight.tariff_down', {pct: abs});
         } else if (/euribor/i.test(ind)) {
-          msg = yoy > 0 ? `Euribor sobe ${abs}pp — prestações de crédito habitação sobem` : `Euribor desce ${abs}pp — alívio para famílias com crédito variável`;
+          msg = yoy > 0 ? i18n.t('painel.insight.euribor_up', {pp: abs}) : i18n.t('painel.insight.euribor_down', {pp: abs});
         } else if (/wage|salar/i.test(ind) || id === 'wages_industry') {
-          msg = yoy > 0 ? `Salários industriais crescem ${abs}% — ganho real de poder de compra` : `Salários industriais caem ${abs}% — famílias operárias sob pressão`;
+          msg = yoy > 0 ? i18n.t('painel.insight.wages_up', {pct: abs}) : i18n.t('painel.insight.wages_down', {pct: abs});
         } else if (ind === 'rnd_pct_gdp') {
-          msg = `I&D em ${val}% do PIB — longe dos 3% da meta europeia; menos inovação = menos empregos qualificados`;
+          msg = i18n.t('painel.insight.rnd', {val: val});
         } else {
           // Generic fallback with direction sentiment
-          const dir = yoy >= 0 ? 'Subida' : 'Descida';
-          msg = `${dir} de ${abs}${kpi.yoy_unit || '%'} — ${val} ${unit} em ${period}`;
+          const dir = yoy >= 0 ? i18n.t('painel.insight.rise') : i18n.t('painel.insight.fall');
+          msg = `${dir} ${abs}${kpi.yoy_unit || '%'} — ${val} ${unit} ${period}`;
         }
         commentEl.textContent = msg;
       }
-      _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSpark || null, kpi.unit || kpi.yoy_unit || '', kpi.label || '');
+      const sparkLabel = (i18n.t('kpi_labels.' + kpi.id) !== 'kpi_labels.' + kpi.id) ? i18n.t('kpi_labels.' + kpi.id) : (kpi.label || '');
+      _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSpark || null, kpi.unit || kpi.yoy_unit || '', sparkLabel);
     };
 
     // First pass: render all cards immediately (no EU ref)
@@ -785,7 +907,7 @@ App.registerSection('painel', async () => {
           if (chartEl) {
             // Destroy & re-render with EU ref
             try { window.echarts.getInstanceByDom(chartEl)?.dispose(); } catch(e) {}
-            _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSeries.data, kpi.unit || kpi.yoy_unit || '', kpi.label || '');
+            _renderMiniSparkline(chartEl, kpi.spark, kpi.yoy, refSeries.data, kpi.unit || kpi.yoy_unit || '', sparkLabel);
           }
         }
       } catch(e) { /* silent — EU ref is optional enhancement */ }
@@ -868,7 +990,7 @@ App.registerSection('painel', async () => {
       // Load analysis
       if (iaLoading) return;
       iaLoading = true;
-      if (textEl) textEl.innerHTML = '<span class="ai-loading">A carregar análise IA…</span>';
+      if (textEl) textEl.innerHTML = `<span class="ai-loading">${i18n.t('painel.ia.loading')}</span>`;
 
       try {
         const BASE = window.__BASE_PATH__ || '';
@@ -898,41 +1020,42 @@ App.registerSection('painel', async () => {
           } catch(e) { clearTimeout(timer); throw e; }
         }
 
-        // Helper: fire background generation
-        function _fireBg() {
-          if (lensParam === 'custom' && customIdeology) {
-            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom&output_language=${encodeURIComponent(langParam)}`, {
-              method: 'POST', headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({custom_ideology: customIdeology}),
-            }).catch(() => {});
-          } else {
-            fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(lensParam)}&output_language=${encodeURIComponent(langParam)}`).catch(() => {});
-          }
-        }
-
-        // Try quick fetch first (15s — enough for cached results)
+        // Custom lens: long timeout (4min) — kimi generates on demand
+        // All other lenses: short timeout (15s) — cache-only, fast
+        const isCustom = lensParam === 'custom' && customIdeology;
         let result;
-        try {
-          result = await _fetchAnalysis(15000);
-        } catch(quickErr) {
-          // Cache miss or timeout — fire background generation and poll
-          console.log('[painel-ia] Quick fetch failed, starting bg generation:', quickErr.message);
-          _fireBg();
-          if (textEl) textEl.innerHTML = '<span class="ai-loading">A gerar análise IA (~90s)…</span>';
-          // Poll every 8s for up to 3 minutes
-          const maxPolls = 22;
-          for (let p = 0; p < maxPolls; p++) {
-            await new Promise(r => setTimeout(r, 8000));
-            try {
-              result = await _fetchAnalysis(10000);
-              if (result?.text) break;
-            } catch(_) { /* still generating */ }
-            if (textEl) {
-              const elapsed = (p + 1) * 8;
-              textEl.innerHTML = `<span class="ai-loading">A gerar análise IA… ${elapsed}s</span>`;
-            }
+        if (isCustom) {
+          // Show progress ticker while kimi generates (~2-3min)
+          let _secs = 0;
+          const _ticker = setInterval(() => {
+            _secs++;
+            if (textEl) textEl.innerHTML = `<span class="ai-loading">${i18n.t('painel.ia.loading')} (${_secs}s)</span>`;
+          }, 1000);
+          try {
+            result = await _fetchAnalysis(240000);
+            clearInterval(_ticker);
+          } catch(e) {
+            clearInterval(_ticker);
+            console.log('[painel-ia] Custom fetch failed:', e.message);
+            if (textEl) textEl.innerHTML = `<em style="color:var(--c-muted)">${i18n.t('painel.ia.unavailable')}</em>`;
+            iaLoading = false;
+            return;
           }
-          if (!result?.text) throw new Error('Timeout — análise não gerada. Tente recarregar.');
+        } else {
+          try {
+            result = await _fetchAnalysis(15000);
+            // Cache-only mode: if engine says not ready, show unavailable immediately
+            if (result?.error === 'analysis_not_ready') {
+              if (textEl) textEl.innerHTML = `<em style="color:var(--c-muted)">${i18n.t('painel.ia.unavailable')}</em>`;
+              iaLoading = false;
+              return;
+            }
+          } catch(quickErr) {
+            console.log('[painel-ia] Quick fetch failed:', quickErr.message);
+            if (textEl) textEl.innerHTML = `<em style="color:var(--c-muted)">${i18n.t('painel.ia.unavailable')}</em>`;
+            iaLoading = false;
+            return;
+          }
         }
         console.log('[painel-ia] Data received, chart_pick:', result.chart_pick);
         console.log('[painel-ia] Data received, chart_pick:', result.chart_pick);
@@ -1006,15 +1129,15 @@ App.registerSection('painel', async () => {
           if (metaEl) {
             const ts = result.generated_at ? new Date(result.generated_at).toLocaleDateString('pt-PT') : '';
             const genTime = result.generation_ms ? ` · ${Math.round(result.generation_ms / 1000)}s` : '';
-            const metaInfo = (result.cached ? 'cache' : `gerado agora${genTime}`) + (ts ? ` · ${ts}` : '') + ` · dados: ${result.data_period || ''}`;
+            const metaInfo = (result.cached ? 'cache' : `${i18n.t('painel.ia.generated_now')}${genTime}`) + (ts ? ` · ${ts}` : '') + ` · ${i18n.t('painel.data_prefix')}: ${result.data_period || ''}`;
             metaEl.innerHTML = `<span class="ia-meta-icon" title="${metaInfo}">ℹ</span>`;
           }
           // Global links list removed — links are shown inline per card
         } else {
-          if (textEl) textEl.innerHTML = '<em style="color:var(--c-muted)">Análise indisponível — token Sonnet não configurado.</em>';
+          if (textEl) textEl.innerHTML = `<em style="color:var(--c-muted)">${i18n.t('painel.ia.unavailable')}</em>`;
         }
       } catch(e) {
-        if (textEl) textEl.innerHTML = `<em style="color:var(--c-muted)">Erro: ${e.message}</em>`;
+        if (textEl) textEl.innerHTML = `<em style="color:var(--c-muted)">${i18n.t('painel.error_loading')}: ${e.message}</em>`;
       } finally {
         iaLoading = false;
       }
@@ -1024,38 +1147,6 @@ App.registerSection('painel', async () => {
     const iaBtnEl = container.querySelector('#painel-ia-btn');
     if (iaBtnEl) iaBtnEl.addEventListener('click', toggleIAPanel);
 
-    // Regenerar button — triggers bg generation + reloads after 75s
-    const regenBtn = container.querySelector('#painel-ia-regen');
-    if (regenBtn) {
-      regenBtn.addEventListener('click', async () => {
-        regenBtn.textContent = '↺';
-        regenBtn.disabled = true;
-        regenBtn.title = 'A gerar nova análise…';
-        const metaEl = document.getElementById('painel-ia-meta');
-        if (metaEl) metaEl.textContent = 'A gerar nova análise (~60s)…';
-        const BASE = window.__BASE_PATH__ || '';
-        const _regenLens = getLensParam();
-        const _regenCustom = getCustomIdeology();
-        const _regenLang = getOutputLanguage();
-        if (_regenLens === 'custom' && _regenCustom) {
-          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=custom&output_language=${encodeURIComponent(_regenLang)}`, {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({custom_ideology: _regenCustom}),
-          }); } catch(e) {}
-        } else {
-          try { await fetch(`${BASE}/api/painel-analysis?bg=1&force=1&lens=${encodeURIComponent(_regenLens)}&output_language=${encodeURIComponent(_regenLang)}`); } catch(e) {}
-        }
-        // Reload after 75s
-        setTimeout(() => {
-          regenBtn.disabled = false;
-          regenBtn.title = 'Forçar nova análise';
-          // Re-trigger analysis panel load
-          const textEl = document.getElementById('painel-ia-text');
-          if (textEl) textEl.innerHTML = '';
-          toggleIAPanel(); toggleIAPanel(); // close & reopen to reload
-        }, 75000);
-      });
-    }
     // Auto-open on first render
     if (!document.getElementById('painel-ia-panel')?.querySelector('.ai-analysis-card')) {
       toggleIAPanel();
@@ -1067,18 +1158,18 @@ App.registerSection('painel', async () => {
         // higherIsBetter: false = PT acima da média é MAU (vermelho)
         //                 true  = PT acima da média é BOM (verde)
         //                 null  = neutro (cinzento)
-        { label: 'Inflação (HICP)',        indicator: 'hicp',                   source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '%',    decimals: 1, higherIsBetter: false },
-        { label: 'Desemprego',             indicator: 'unemployment',           source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '%',    decimals: 1, higherIsBetter: false },
-        { label: 'Crescimento PIB',        indicator: 'gdp_growth',             source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 2, higherIsBetter: true  },
-        { label: 'PIB per Capita PPP',     indicator: 'gdp_per_capita_ppp',     source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '$',    decimals: 0, higherIsBetter: true  },
-        { label: 'Electricidade (Dom.)',   indicator: 'electricity_price_household', source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/kWh', decimals: 3, higherIsBetter: false, note: 'Fonte: Eurostat nrg_pc_204 · Semestral' },
-        { label: 'Rendimento Hora Med.',   indicator: 'earn_ses_pub2s',         source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/h',  decimals: 2, higherIsBetter: true,  note: 'Fonte: Eurostat SES · Dados de 4 em 4 anos' },
-        { label: 'Rendimento Mensal Est.', indicator: 'earn_ses_pub2s',         source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '€/mês',decimals: 0, higherIsBetter: true,  note: 'Estimado: €/h × 176h (22dias×8h)', transform: v => v * 176 },
-        { label: 'Nível de Preços (PLI)',  indicator: 'price_level_index',      source: 'EUROSTAT',  ref: 'EU27', refLabel: 'UE-27', unit: '',     decimals: 1, higherIsBetter: false, note: 'EU27=100 · 2020' },
-        { label: 'Esperança de Vida',      indicator: 'life_expectancy',        source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: 'anos', decimals: 1, higherIsBetter: true  },
-        { label: 'Taxa de Emprego',        indicator: 'employment_rate',        source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 1, higherIsBetter: true  },
-        { label: 'Saúde (% PIB)',          indicator: 'health_expenditure',     source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 1, higherIsBetter: null  },
-        { label: 'Ensino Superior',        indicator: 'tertiary_enrollment',    source: 'WORLDBANK', ref: 'EU',   refLabel: 'UE',    unit: '%',    decimals: 1, higherIsBetter: true  },
+        { label: i18n.t('painel.pt_vs_europe.inflation'),       indicator: 'hicp',                   source: 'EUROSTAT',  ref: 'EU27', refLabel: i18n.t('painel.pt_vs_europe.eu27_ref'), unit: '%',    decimals: 1, higherIsBetter: false },
+        { label: i18n.t('painel.pt_vs_europe.unemployment'),     indicator: 'unemployment',           source: 'EUROSTAT',  ref: 'EU27', refLabel: i18n.t('painel.pt_vs_europe.eu27_ref'), unit: '%',    decimals: 1, higherIsBetter: false },
+        { label: i18n.t('painel.pt_vs_europe.gdp_growth'),       indicator: 'gdp_growth',             source: 'WORLDBANK', ref: 'EU',   refLabel: i18n.t('painel.pt_vs_europe.eu_ref'),    unit: '%',    decimals: 2, higherIsBetter: true  },
+        { label: i18n.t('painel.pt_vs_europe.gdp_ppp'),          indicator: 'gdp_per_capita_ppp',     source: 'WORLDBANK', ref: 'EU',   refLabel: i18n.t('painel.pt_vs_europe.eu_ref'),    unit: '$',    decimals: 0, higherIsBetter: true  },
+        { label: i18n.t('painel.pt_vs_europe.electricity'),      indicator: 'electricity_price_household', source: 'EUROSTAT',  ref: 'EU27', refLabel: i18n.t('painel.pt_vs_europe.eu27_ref'), unit: '€/kWh', decimals: 3, higherIsBetter: false, note: i18n.t('painel.pt_vs_europe.electricity_note') },
+        { label: i18n.t('painel.pt_vs_europe.hourly_earnings'),  indicator: 'earn_ses_pub2s',         source: 'EUROSTAT',  ref: 'EU27', refLabel: i18n.t('painel.pt_vs_europe.eu27_ref'), unit: '€/h',  decimals: 2, higherIsBetter: true,  note: i18n.t('painel.pt_vs_europe.hourly_note') },
+        { label: i18n.t('painel.pt_vs_europe.monthly_earnings'), indicator: 'earn_ses_pub2s',         source: 'EUROSTAT',  ref: 'EU27', refLabel: i18n.t('painel.pt_vs_europe.eu27_ref'), unit: '€/' + i18n.t('painel.pt_vs_europe.month_unit'),decimals: 0, higherIsBetter: true,  note: i18n.t('painel.pt_vs_europe.monthly_note'), transform: v => v * 176 },
+        { label: i18n.t('painel.pt_vs_europe.price_level'),      indicator: 'price_level_index',      source: 'EUROSTAT',  ref: 'EU27', refLabel: i18n.t('painel.pt_vs_europe.eu27_ref'), unit: '',     decimals: 1, higherIsBetter: false, note: 'EU27=100 · 2020' },
+        { label: i18n.t('painel.pt_vs_europe.life_expectancy'),  indicator: 'life_expectancy',        source: 'WORLDBANK', ref: 'EU',   refLabel: i18n.t('painel.pt_vs_europe.eu_ref'),    unit: i18n.t('painel.pt_vs_europe.years_unit'), decimals: 1, higherIsBetter: true  },
+        { label: i18n.t('painel.pt_vs_europe.employment_rate'),  indicator: 'employment_rate',        source: 'WORLDBANK', ref: 'EU',   refLabel: i18n.t('painel.pt_vs_europe.eu_ref'),    unit: '%',    decimals: 1, higherIsBetter: true  },
+        { label: i18n.t('painel.pt_vs_europe.health'),           indicator: 'health_expenditure',     source: 'WORLDBANK', ref: 'EU',   refLabel: i18n.t('painel.pt_vs_europe.eu_ref'),    unit: '%',    decimals: 1, higherIsBetter: null  },
+        { label: i18n.t('painel.pt_vs_europe.tertiary'),         indicator: 'tertiary_enrollment',    source: 'WORLDBANK', ref: 'EU',   refLabel: i18n.t('painel.pt_vs_europe.eu_ref'),    unit: '%',    decimals: 1, higherIsBetter: true  },
       ];
 
       // ── Mapping to COMPARATIVOS_CATALOG ids (Feature 2) ─────────────
@@ -1097,7 +1188,7 @@ App.registerSection('painel', async () => {
       section.className = 'pt-mundo-section';
       section.innerHTML = `
         <div class="section-label pt-mundo-toggle" id="pt-mundo-label" style="cursor:pointer;user-select:none">
-          Portugal vs Europa · Comparação de Referência
+          ${i18n.t('painel.pt_vs_europe.title')}
           <span class="pt-mundo-chevron" id="pt-mundo-chevron" style="float:right;transition:transform .2s;font-size:16px;line-height:1">&#9660;</span>
         </div>
         <div class="pt-mundo-grid" id="pt-mundo-grid">
@@ -1158,7 +1249,7 @@ App.registerSection('painel', async () => {
             const pctDiff = ((ptRaw - refRaw) / Math.abs(refRaw)) * 100;
             const sign = pctDiff > 0 ? '+' : '';
             const pctStr = Math.abs(pctDiff) < 1 ? pctDiff.toFixed(1) : Math.round(pctDiff).toString();
-            const dir = pctDiff > 0 ? 'acima' : 'abaixo';
+            const dir = pctDiff > 0 ? i18n.t('painel.pt_vs_europe.above') : i18n.t('painel.pt_vs_europe.below');
             // Sentimento depende de higherIsBetter:
             //   null  → neutro (cinzento, sem conotação)
             //   true  → PT acima=verde, abaixo=vermelho
@@ -1171,7 +1262,7 @@ App.registerSection('painel', async () => {
             } else {
               cls = pctDiff > 0 ? 'negative' : (pctDiff < 0 ? 'positive' : '');
             }
-            deltaHtml = `<div class="pt-mundo-delta ${cls}">PT ${sign}${pctStr}% ${dir} da média europeia</div>`;
+            deltaHtml = `<div class="pt-mundo-delta ${cls}">PT ${sign}${pctStr}% ${dir} ${i18n.t('painel.pt_vs_europe.eu_average')}</div>`;
           }
 
           const unitDisp = cmp.unit === '€' ? '€' : cmp.unit;
@@ -1188,16 +1279,17 @@ App.registerSection('painel', async () => {
               </div>
             </div>
             ${deltaHtml}
-            ${period ? `<div class="pt-mundo-col-period">Último dado: ${period}</div>` : ''}
+            ${period ? `<div class="pt-mundo-col-period">${i18n.t('painel.pt_vs_europe.last_data')}: ${period}</div>` : ''}
             ${cmp.note ? `<div class="pt-mundo-note">${cmp.note}</div>` : ''}`;
         } catch(e) {
-          if (cardEl) cardEl.innerHTML = `<div class="pt-mundo-card-title">${cmp.label}</div><div class="error-state" style="height:60px">Erro ao carregar</div>`;
+          if (cardEl) cardEl.innerHTML = `<div class="pt-mundo-card-title">${cmp.label}</div><div class="error-state" style="height:60px">${i18n.t('painel.error_loading')}</div>`;
         }
       }));
     }
 
     // ── WP-9: Painel card → Explorador deep-link ────────────────────
     body.addEventListener('click', (e) => {
+      if (e.target.closest('.kpi-explain-trigger') || e.target.closest('.kpi-explain')) return;
       const card = e.target.closest('.kpi-card[data-source][data-indicator]');
       if (!card || !card.dataset.source || !card.dataset.indicator) return;
       window.location.hash = `#explorador?s=${encodeURIComponent(card.dataset.source + '/' + card.dataset.indicator)}`;
@@ -1218,8 +1310,15 @@ App.registerSection('painel', async () => {
     });
 
 
+    // ── Re-render on language change ────────────────────────────────
+    window.addEventListener('i18n-change', () => {
+      // Full page reload is the most reliable way to re-render all sections
+      // since section init state is private to App and API data is cached
+      window.location.reload();
+    });
+
   } catch(e) {
     console.error('[painel] init error:', e);
-    body.innerHTML = App.errorHTML(e.message);
+    body.innerHTML = App.errorHTML(e.message, () => App.navigate('painel'));
   }
 });

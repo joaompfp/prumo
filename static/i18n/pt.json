@@ -1,0 +1,918 @@
+{
+  "_meta": {
+    "lang": "pt",
+    "name": "Português",
+    "version": 2
+  },
+  "nav": {
+    "painel": "Painel",
+    "comparativos": "Comparativos",
+    "analise": "Análise",
+    "metodologia": "Metodologia",
+    "ajuda": "Ajuda",
+    "tagline": "Dados. Contexto. Narrativas."
+  },
+  "hero": {
+    "title": "Economia portuguesa,<br>verificada.",
+    "title_compact": "Economia portuguesa, verificada.",
+    "desc": "9 fontes oficiais. {{n}} indicadores. Análise IA com enquadramento editorial transparente — escolha a lente política.",
+    "cta": "Explorar dados",
+    "link": "Como funciona →",
+    "expand": "↓ Sobre o Prumo",
+    "sources": "INE · Eurostat · Banco de Portugal · OCDE · Banco Mundial · REN · DGEG · ERSE · FRED",
+    "compact_title": "Economia portuguesa, verificada.",
+    "expand_label": "Sobre o Prumo"
+  },
+  "snapshot": {
+    "positive_heading": "Sinais positivos",
+    "negative_heading": "Sinais negativos",
+    "reference": "Variação face ao mesmo período do ano anterior"
+  },
+  "search": {
+    "placeholder": "Pesquisar indicadores, secções, ajuda…",
+    "no_results": "Sem resultados para «{{query}}»",
+    "group_sections": "Secções",
+    "group_help": "Ajuda",
+    "group_indicators": "Indicadores",
+    "sections": {
+      "painel_sub": "Indicadores-chave de Portugal",
+      "comparativos_sub": "PT vs Europa e Mundo",
+      "explorador_sub": "Explorador de séries temporais",
+      "metodologia_sub": "Como as análises IA são geradas",
+      "ajuda_sub": "O que é o Prumo, guia, FAQ"
+    },
+    "help": {
+      "what_is": "O que é o Prumo PT",
+      "real_time": "Os dados são em tempo real?",
+      "seasonal": "Ajustamento sazonal",
+      "use_in_report": "Posso usar estes dados num relatório?",
+      "eu27": "O que é o EU27_2020?",
+      "ai_analysis": "Análise com IA",
+      "grey_countries": "Países a cinzento nos Comparativos",
+      "composite": "Indicadores compostos",
+      "embed": "Embed — incorporar gráfico"
+    }
+  },
+  "fmt": {
+    "months": [
+      "Jan",
+      "Fev",
+      "Mar",
+      "Abr",
+      "Mai",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Set",
+      "Out",
+      "Nov",
+      "Dez"
+    ],
+    "nd": "n/d",
+    "vs_year_ago": "vs ano anterior"
+  },
+  "countries": {
+    "PT": "Portugal",
+    "ES": "Espanha",
+    "DE": "Alemanha",
+    "FR": "França",
+    "IT": "Itália",
+    "NL": "Países Baixos",
+    "BE": "Bélgica",
+    "AT": "Áustria",
+    "GR": "Grécia",
+    "EL": "Grécia",
+    "IE": "Irlanda",
+    "FI": "Finlândia",
+    "SE": "Suécia",
+    "DK": "Dinamarca",
+    "PL": "Polónia",
+    "CZ": "Chéquia",
+    "HU": "Hungria",
+    "RO": "Roménia",
+    "BG": "Bulgária",
+    "HR": "Croácia",
+    "SK": "Eslováquia",
+    "SI": "Eslovénia",
+    "LT": "Lituânia",
+    "LV": "Letónia",
+    "EE": "Estónia",
+    "CY": "Chipre",
+    "MT": "Malta",
+    "LU": "Luxemburgo",
+    "EU27_2020": "UE-27",
+    "EU27": "UE-27",
+    "EU": "UE",
+    "EA": "Zona Euro",
+    "US": "EUA",
+    "CN": "China",
+    "JP": "Japão",
+    "GB": "Grã-Bretanha",
+    "BR": "Brasil",
+    "IN": "Índia",
+    "KR": "Coreia do Sul",
+    "AO": "Angola",
+    "MZ": "Moçambique",
+    "CV": "Cabo Verde",
+    "GW": "Guiné-Bissau",
+    "ST": "São Tomé",
+    "TL": "Timor-Leste",
+    "NO": "Noruega",
+    "CH": "Suíça",
+    "IS": "Islândia",
+    "TR": "Turquia",
+    "RU": "Rússia",
+    "UA": "Ucrânia",
+    "MX": "México",
+    "AR": "Argentina",
+    "ZA": "África do Sul",
+    "AU": "Austrália",
+    "CA": "Canadá",
+    "NZ": "Nova Zelândia",
+    "CL": "Chile",
+    "NG": "Nigéria",
+    "EG": "Egito",
+    "ID": "Indonésia",
+    "TH": "Tailândia",
+    "MY": "Malásia"
+  },
+  "sources": {
+    "INE": "INE",
+    "EUROSTAT": "Eurostat",
+    "FRED": "FRED",
+    "BPORTUGAL": "Banco de Portugal",
+    "OECD": "OCDE",
+    "WORLDBANK": "Banco Mundial",
+    "REN": "REN",
+    "ERSE": "ERSE",
+    "DGEG": "DGEG"
+  },
+  "lens": {
+    "disclaimer_party": "Análise simulada — não constitui posição oficial {{article}} {{party}}",
+    "disclaimer_cae": "Análise simulada — perspectiva editorial do operador desta instância",
+    "disclaimer_custom": "Análise simulada — lente personalizada pelo utilizador",
+    "disclaimer_default": "Análise gerada por IA — meramente indicativa",
+    "label": "Lente",
+    "ideology_title": "Lente ideológica",
+    "saved": "Lente personalizada guardada",
+    "custom_placeholder": "Escreve aqui o teu enquadramento ideológico personalizado…",
+    "custom_hint": "Texto enviado como contexto ao modelo de IA. Guardado no browser.",
+    "source_custom": "Fonte: Texto definido pelo utilizador"
+  },
+  "common": {
+    "error_title": "Não foi possível carregar os dados",
+    "retry": "Tentar novamente",
+    "loading": "A carregar…",
+    "close": "Fechar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "copy": "Copiar",
+    "copied": "Copiado para a área de transferência",
+    "share": "Partilhar",
+    "error": "Erro",
+    "timeout": "Tempo limite excedido — servidor não respondeu em 10s",
+    "lens_label": "Lente:",
+    "lens_ideology_title": "Lente ideológica",
+    "lang_title": "Língua / Language / Langue",
+    "theme_toggle": "Alternar tema claro/escuro",
+    "choose_language": "Escolha o seu idioma de saída",
+    "error_loading": "Não foi possível carregar os dados",
+    "source": "Fonte",
+    "no_data": "Sem dados"
+  },
+  "painel": {
+    "title_fallback": "Panorama dos indicadores económicos",
+    "subtitle_updated": "Dados actualizados: {{date}}",
+    "subtitle_sources": "Fonte: INE, Eurostat, Banco Mundial",
+    "yoy_label": "vs ano anterior",
+    "view_in_explorador": "Ver {{label}} no Explorador",
+    "data_prefix": "Dados",
+    "no_data": "Sem dados",
+    "error_loading": "Não foi possível carregar os dados",
+    "phrase": {
+      "ipi_up": "produção industrial sobe {{pct}}%",
+      "ipi_down": "produção industrial recua {{pct}}%",
+      "unemployment": "desemprego em {{val}}%",
+      "employment": "taxa de emprego em {{val}}%",
+      "confidence_up": "confiança melhora {{pp}} pp",
+      "confidence_down": "confiança cede {{pp}} pp",
+      "inflation": "inflação em {{val}}%"
+    },
+    "insight": {
+      "inflation_up": "Inflação acelerou {{pct}}% em termos homólogos — pressão no orçamento familiar",
+      "inflation_down": "Inflação desacelerou {{pct}}% — alívio nos preços ao consumidor",
+      "unemployment_down": "Desemprego recuou {{pp}} pp — mercado de trabalho mais robusto",
+      "unemployment_up": "Desemprego aumentou {{pp}} pp — pressão no mercado de trabalho",
+      "energy_down": "Energia mais barata: -{{pct}}% — alívio na factura eléctrica",
+      "energy_up": "Energia mais cara: +{{pct}}% — pressão nos custos de energia",
+      "tariff_up": "Tarifa de electricidade subiu {{pct}}% — impacto directo nas famílias",
+      "tariff_down": "Tarifa de electricidade desceu {{pct}}% — alívio para os consumidores",
+      "euribor_up": "Euribor subiu {{pp}} pp — prestações do crédito habitação mais caras",
+      "euribor_down": "Euribor desceu {{pp}} pp — prestações do crédito habitação mais acessíveis",
+      "wages_up": "Salários subiram {{pct}}% — ganho nominal no rendimento",
+      "wages_down": "Salários recuaram {{pct}}% — pressão no poder de compra",
+      "rnd": "I&D representa {{val}}% do PIB",
+      "rise": "Subida",
+      "fall": "Descida"
+    },
+    "theme": {
+      "pt_vs_europe": "PT vs Europa"
+    },
+    "pt_vs_europe": {
+      "title": "PT vs Europa",
+      "inflation": "Inflação (IHPC)",
+      "unemployment": "Desemprego",
+      "gdp_growth": "Crescimento PIB",
+      "gdp_ppp": "PIB per Capita PPC",
+      "electricity": "Electricidade (Dom.)",
+      "hourly_earnings": "Rendimento Hora Méd.",
+      "monthly_earnings": "Rendimento Mensal Est.",
+      "price_level": "Nível de Preços (PLI)",
+      "life_expectancy": "Esperança de Vida",
+      "employment_rate": "Taxa de Emprego",
+      "health": "Saúde (% PIB)",
+      "tertiary": "Ensino Superior",
+      "eu27_ref": "Média UE-27",
+      "eu_ref": "Média UE",
+      "above": "acima",
+      "below": "abaixo",
+      "eu_average": "média UE",
+      "last_data": "Últimos dados",
+      "electricity_note": "Inclui taxas e impostos",
+      "hourly_note": "Eurostat earn_ses_pub2s — remuneração bruta/hora",
+      "monthly_note": "Estimativa: rendimento/hora × 176h (40h/sem)",
+      "month_unit": "mês",
+      "years_unit": "anos"
+    },
+    "ia": {
+      "btn_title": "Análise IA de todos os temas",
+      "btn_label": "Análise IA",
+      "panel_label": "Análise Política",
+      "lens_prefix": "Lente",
+      "tagline": "(quase) instantânea, só juntar electricidade",
+      "loading": "A carregar análise…",
+      "generating": "A gerar análise IA… {{time}}",
+      "timeout": "Timeout — análise não gerada. Tente recarregar.",
+      "unavailable": "Análise não disponível para esta lente.",
+      "generated_now": "gerado agora",
+      "regen": "regenerar",
+      "regen_title": "Forçar nova análise",
+      "regen_generating": "A gerar nova análise…",
+      "read_more": "Leia mais",
+      "related_reading": "Leituras relacionadas",
+      "lens_source": "Fonte",
+      "lens_custom": "Personalizada",
+      "custom_placeholder": "Escreve aqui o teu enquadramento ideológico. Ex: «És um analista que privilegia a sustentabilidade ambiental e a economia circular…»",
+      "custom_hint": "Este texto é enviado como contexto ao modelo de IA. Guardado localmente no browser.",
+      "custom_save": "Guardar",
+      "custom_saved": "Lente personalizada guardada",
+      "custom_notice": "Escreve o teu enquadramento no campo acima e gera a análise.",
+      "disclaimer_party": "Análise simulada — não constitui posição oficial {{article}} {{party}}",
+      "disclaimer_cae": "Análise simulada — perspectiva editorial do operador desta instância",
+      "disclaimer_custom": "Análise simulada — lente personalizada pelo utilizador",
+      "disclaimer_generic": "Análise gerada por IA — meramente indicativa"
+    }
+  },
+  "comparativos": {
+    "catalog_unavailable": "Catálogo indisponível.",
+    "loading": "A carregar comparação…",
+    "no_data": "sem dados",
+    "no_data_short": "Sem dados.",
+    "no_data_selection": "Sem dados para os países/indicador seleccionados.",
+    "link_copied": "Link copiado!",
+    "comparison": "comparação",
+    "error_loading": "Não foi possível carregar os dados. Tenta novamente.",
+    "snapshot_last_value": "Último valor disponível",
+    "countries_count": "países",
+    "average": "Média",
+    "selected_countries": "PAÍSES SELECCIONADOS",
+    "group_other": "Outros",
+    "group": {
+      "reference": "REFERÊNCIA",
+      "eu27": "UE 27",
+      "rest_europe": "RESTO DA EUROPA",
+      "oecd_non_eu": "OCDE (não-EU)",
+      "palop": "PALOP",
+      "emerging": "EMERGENTES",
+      "other": "OUTROS"
+    },
+    "preset": {
+      "pt_spain": "PT vs Espanha",
+      "mediterranean": "Mediterrâneo",
+      "nordic": "Nórdicos",
+      "east": "Leste",
+      "all_eu": "Todos EU",
+      "g7": "G7",
+      "palop": "PALOP",
+      "emerging": "Emergentes"
+    },
+    "label": {
+      "source": "FONTE",
+      "indicator": "INDICADOR"
+    },
+    "tab": {
+      "lines": "Linhas",
+      "snapshot": "Snapshot"
+    },
+    "btn": {
+      "share": "Partilhar"
+    },
+    "since": "Desde {{year}}",
+    "source": {
+      "composite": "Compostos",
+      "composite_desc": "Eurostat EU27 + Banco Mundial (cobertura global)",
+      "eurostat_desc": "EU27 — alta frequência (mensal/trimestral)",
+      "worldbank_desc": "Cobertura global — dados anuais"
+    },
+    "note": {
+      "composite": "Indicador composto",
+      "worldbank": "Fonte: Banco Mundial · dados anuais · cobertura global"
+    }
+  },
+  "explorador": {
+    "search_placeholder": "Pesquisar indicadores…",
+    "all_sources": "Todas as fontes",
+    "no_results": "Sem resultados",
+    "chip_placeholder": "Selecciona indicadores acima (máx. 5)",
+    "empty_state": "Selecciona indicadores para visualizar",
+    "loading_series": "A carregar séries…",
+    "error_catalog": "Erro ao carregar catálogo",
+    "error": "Erro",
+    "more_results": "+ {{count}} mais. Refina a pesquisa.",
+    "dual_axis": "Dois eixos verticais — esquerdo: {{left}} · direito: {{right}}",
+    "incompatible_units": "Unidades incompatíveis ({{units}}) — o gráfico pode ser enganador. Considera usar o modo Indexado.",
+    "unit_conversion": "Conversão automática de unidades",
+    "freq_mismatch": "Nota: frequências diferentes ({{freqs}}) — dados trimestrais ligados entre pontos",
+    "index_label": "Índice (início=100)",
+    "guided": {
+      "label": "Explorar",
+      "cost_of_living": "Custo de Vida",
+      "employment": "Emprego",
+      "energy": "Energia",
+      "industry": "Indústria",
+      "macro": "Conjuntura"
+    },
+    "label": {
+      "from": "De",
+      "to": "Até"
+    },
+    "time": {
+      "all": "Tudo"
+    },
+    "btn": {
+      "clear": "Limpar",
+      "clear_all": "Limpar todos os indicadores",
+      "remove": "Remover",
+      "view": "Ver →",
+      "ai_title": "Análise automática com IA",
+      "chart": "Gráfico",
+      "table": "Tabela",
+      "share": "Partilhar"
+    },
+    "toast": {
+      "max_indicators": "Máximo de 5 indicadores atingido",
+      "already_selected": "Indicador já seleccionado",
+      "select_first": "Selecciona indicadores primeiro",
+      "link_copied": "Link copiado!",
+      "citation_copied": "Citação copiada!",
+      "copy_url_manually": "Copia o URL manualmente"
+    },
+    "ai": {
+      "title": "Análise Automática",
+      "loading": "A gerar análise IA…",
+      "related_reading": "Leitura relacionada",
+      "cached": "Análise em cache (sessão)",
+      "generated": "Análise gerada"
+    },
+    "ficha": {
+      "title": "Ficha técnica dos indicadores seleccionados",
+      "click_to_view": "Clicar para ver na Ficha Técnica",
+      "code": "Código",
+      "unit": "Unidade",
+      "frequency": "Frequência",
+      "coverage": "Cobertura",
+      "observations": "Observações",
+      "cite": "Citar",
+      "copy_citation": "Copiar citação",
+      "citation_source": "Fonte",
+      "citation_accessed": "Consultado em"
+    },
+    "table": {
+      "period": "Período"
+    }
+  },
+  "metodologia": {
+    "title": "Metodologia",
+    "subtitle": "Como as análises IA são geradas",
+    "intro": "Cada análise é gerada a partir de <strong>dados socioeconómicos reais</strong>, combinados com um <strong>enquadramento editorial explícito</strong>. O processo é totalmente transparente: em seguida mostramos como, a partir de dados oficiais, e aplicando <strong>instruções à medida como Lente</strong>, um <a href=\"https://claude.ai\" target=\"_blank\" rel=\"noopener\">modelo LLM (em 2026)</a> produz copy e editorial à medida.",
+    "instance_notice": "Esta instância do Prumo pode correr sob qualquer uma das lentes à escolha. Por defeito assume um prompt gerado pelos seus autores. Experimente as lentes disponíveis para ver os mesmos dados interpretados sob diferentes perspectivas políticas.",
+    "flow_title": "Fluxo da análise",
+    "step1_label": "Dados económicos",
+    "step1_sub": "Mais de 350 indicadores de 9 fontes oficiais, cobrindo 54 países (UE-27, PALOP e economias globais). Séries desde 1960 actualizadas automaticamente via APIs públicas.",
+    "step2_label": "Enquadramento editorial",
+    "step2_sub": "Injectado no início de cada prompt. Define o ponto de vista da análise — seleccionável e transparente. Cada lente é derivada do programa eleitoral do respectivo partido.",
+    "step3_label": "Prompt enviado ao modelo",
+    "step3_sub": "Os dados do passo 1 e o enquadramento do passo 2 são combinados num único prompt estruturado. O modelo também pode pesquisar a web para contextualizar com notícias recentes.",
+    "step4_label": "Análise publicada na página",
+    "step4_sub": "O modelo devolve texto estruturado com análise, enquadramento e links de contexto. É apresentado como card expansível junto ao gráfico da série.",
+    "composite_title": "Indicadores Compostos (★)",
+    "ficha_title": "Ficha Técnica — Fontes e Metodologia",
+    "source_custom": "Fonte: Texto definido pelo utilizador",
+    "source_prefix": "Fonte:",
+    "custom_placeholder": "Escreve aqui o teu enquadramento ideológico personalizado…",
+    "custom_hint": "Texto enviado como contexto ao modelo de IA. Guardado no browser.",
+    "custom_save": "Guardar",
+    "custom_placeholder_painel": "Escreve aqui o teu enquadramento ideológico. Ex: «És um analista que privilegia a sustentabilidade ambiental e a economia circular…»",
+    "custom_hint_painel": "Este texto é enviado como contexto ao modelo de IA. Guardado localmente no browser."
+  },
+  "ficha": {
+    "loading": "A carregar ficha técnica…",
+    "summary_heading": "Ficha Técnica — {{sources}} fontes, {{indicators}} indicadores",
+    "no_indicators": "Sem indicadores registados.",
+    "official_site": "Site oficial",
+    "show_indicators": "Ver indicadores",
+    "hide": "Ocultar",
+    "n_indicators": "{{count}} indicadores",
+    "link_comparativos": "Ver nos Comparativos ({{count}} países/regiões)",
+    "link_explorador": "Ver no Explorador",
+    "countries_count": "{{count}} países/regiões",
+    "disclaimer": "Os dados apresentados são compilados de fontes oficiais para fins informativos e de análise. Não substituem as publicações oficiais dos organismos de origem. Para dados primários, consulte INE, Eurostat, Banco de Portugal e Banco Mundial.",
+    "table": {
+      "indicator": "Indicador",
+      "unit": "Unidade",
+      "freq": "Freq.",
+      "since": "Desde",
+      "until": "Até",
+      "obs": "Obs."
+    },
+    "freq": {
+      "monthly": "Mensal",
+      "quarterly": "Trimestral",
+      "annual": "Anual",
+      "weekly": "Semanal",
+      "semester": "Semestral"
+    },
+    "header": {
+      "indicators_in_sources": "{{indicators}} indicadores em {{sources}} fontes",
+      "last_update": "Última actualização",
+      "total_obs": "Total de observações",
+      "coverage": "Cobertura"
+    },
+    "methodology": {
+      "title": "Metodologia",
+      "seasonal": {
+        "title": "Ajustamento Sazonal",
+        "body": "Muitas séries económicas têm padrões que se repetem regularmente (ex: a produção industrial cai em Agosto por férias). O ajustamento sazonal remove esses padrões previsíveis usando o método TRAMO-SEATS, utilizado pelo INE e Eurostat. Séries com «(dessaz.)» são assim tratadas, permitindo comparar meses consecutivos sem distorção sazonal."
+      },
+      "base_index": {
+        "title": "Base Temporal (Índices)",
+        "body": "Indicadores de índice (como o IPI ou IHPC) são expressos face a um ano-base (ex: 2021=100). Para comparações correctas, é essencial verificar se os índices usam a mesma base. O Prumo normaliza sempre para a base publicada pela fonte oficial."
+      },
+      "comparability": {
+        "title": "Comparabilidade Europeia",
+        "body": "Ao comparar Portugal com a UE, usamos dados harmonizados do Eurostat sempre que disponíveis. O IHPC (Índice Harmonizado de Preços no Consumidor) é preferido ao IPC nacional por ser comparável entre países. A taxa de desemprego segue a definição OIT via Labour Force Survey."
+      },
+      "gdp_differential": {
+        "title": "Cálculo do Diferencial PIB per Capita",
+        "body": "O diferencial de convergência PT vs UE é calculado sobre o PIB per capita em PPC (Paridade de Poder de Compra), que ajusta as diferenças de custo de vida entre países. Uma subida do diferencial indica convergência real — Portugal está a aproximar-se da média europeia."
+      },
+      "eu27": {
+        "title": "Agregado EU27_2020",
+        "body": "EU27_2020 é o agregado do Eurostat para os 27 Estados-membros actuais da UE, após a saída do Reino Unido (Brexit, Fevereiro de 2020). O Eurostat recalcula retroactivamente as séries históricas excluindo o UK, garantindo coerência temporal mesmo para períodos anteriores a 2020."
+      },
+      "update_freq": {
+        "title": "Frequência de Actualização por Fonte",
+        "col_source": "Fonte",
+        "col_indicators": "Indicadores",
+        "col_freq": "Frequência",
+        "col_lag": "Desfasamento",
+        "ine_desc": "IPC, IPI, Emprego, PIB, Comércio externo",
+        "ine_lag": "1–3 meses",
+        "eurostat_desc": "IHPC, Desemprego, Preços energia, Rendimentos",
+        "eurostat_freq": "Mensal/Trimestral",
+        "eurostat_lag": "1–3 meses",
+        "fred_desc": "Brent, Euribor, índices monetários",
+        "fred_lag": "1–2 meses",
+        "bportugal_desc": "Euribor, Spread soberano, Balança pagamentos",
+        "bportugal_lag": "1–2 meses",
+        "oecd_desc": "CLI, Confiança, Carteira encomendas",
+        "oecd_lag": "2–3 meses",
+        "ren_desc": "Preço electricidade MIBEL, Produção renovável",
+        "ren_lag": "1 dia a 1 mês",
+        "dgeg_desc": "Preços combustíveis, Consumo energético",
+        "dgeg_freq": "Semanal/Mensal",
+        "dgeg_lag": "1–4 semanas",
+        "erse_desc": "Tarifas reguladas electricidade/gás",
+        "erse_lag": "Publicação anual/trimestral",
+        "worldbank_desc": "PIB, Esperança vida, Emprego, Saúde, Educação",
+        "worldbank_lag": "1–2 anos"
+      },
+      "disclaimer": {
+        "title": "Isenção de Responsabilidade",
+        "body": "Os dados apresentados são compilados de fontes oficiais para fins informativos e de análise. O Prumo PT não é uma publicação oficial e não substitui os dados originais. As análises geradas por IA são meramente indicativas e reflectem o enquadramento editorial seleccionado — não constituem aconselhamento económico ou financeiro."
+      },
+      "interpretation": {
+        "title": "Notas de Interpretação",
+        "ipi": "O IPI (Índice de Produção Industrial) é um indicador avançado da actividade económica. Quedas consecutivas podem antecipar desaceleração do PIB.",
+        "eu27_avg": "A média EU27 pode mascarar grandes disparidades entre países. Compare sempre com pares relevantes (Sul da Europa, Grupo de Visegrado, etc.).",
+        "employment": "A taxa de emprego e a taxa de desemprego medem aspectos diferentes: uma pessoa inactiva não é contada como desempregada.",
+        "long_series": "Séries longas (>20 anos) podem ter quebras de série por mudanças metodológicas. O Eurostat assinala-as com flags nos metadados.",
+        "nominal": "Valores nominais (€) não são ajustados pela inflação. Para comparações temporais longas, prefira indicadores reais ou em PPC.",
+        "worldbank_lag": "Os dados do Banco Mundial têm desfasamento de 1–2 anos. Para dados mais recentes, prefira fontes de alta frequência (INE, Eurostat, FRED)."
+      }
+    },
+    "about": {
+      "title": "Sobre o Prumo PT",
+      "contact": "Contacto",
+      "embed": "Embed em qualquer página:",
+      "embed_desc": "Copie o snippet abaixo para incorporar um gráfico interactivo do Prumo PT no seu site ou artigo."
+    }
+  },
+  "ajuda": {
+    "what_is": {
+      "title": "O Que é o Prumo PT",
+      "intro": "Dashboard de economia portuguesa com dados de <strong>9 fontes oficiais</strong> e análise por IA.",
+      "indicators": "{{count}}+ indicadores — produção, emprego, preços, energia, comércio externo",
+      "sources": "Fontes: INE, Eurostat, Banco de Portugal, OCDE, Banco Mundial, REN, DGEG, ERSE, FRED",
+      "ai_analysis": "Análise interpretativa gerada por LLM, com lente editorial seleccionável",
+      "disclaimer": "Não é uma publicação oficial — é uma ferramenta de trabalho",
+      "sources_licenses": "Fontes e licenças",
+      "bportugal": "Banco de Portugal",
+      "terms": "termos",
+      "oecd": "OCDE",
+      "worldbank": "Banco Mundial"
+    },
+    "guide": {
+      "title": "Guia de Secções"
+    },
+    "sections": {
+      "painel": {
+        "title": "Painel",
+        "body": "Visão geral de Portugal: 30+ indicadores organizados em 7 temas — Custo de Vida, Indústria, Emprego, Conjuntura, Energia, Externo e Competitividade. Cada cartão mostra o valor mais recente, tendência e variação homóloga.",
+        "tip_click": "Clique em qualquer cartão para abrir o indicador na secção Análise.",
+        "tip_ia": "O botão <strong>✦ IA</strong> no início da página gera análise interpretativa de todos os temas, com leituras relacionadas por secção."
+      },
+      "comparativos": {
+        "title": "Comparativos",
+        "body": "Compara Portugal com todos os países da UE e do mundo em dezenas de indicadores. Combina dados do Eurostat (EU27, alta frequência) com o Banco Mundial (cobertura global, anual) numa única interface.",
+        "tip_lines": "<strong>Linhas</strong>: evolução temporal de todos os países seleccionados. Passe o rato sobre a legenda para destacar uma série.",
+        "tip_snapshot": "<strong>Snapshot</strong>: gráfico de barras com o último valor disponível, ordenado por país.",
+        "tip_composite": "Indicadores com <strong>★</strong> são compostos: Eurostat para EU27 + Banco Mundial para o resto.",
+        "tip_grey": "Países sem dados para o indicador seleccionado aparecem a cinzento e não são seleccionáveis.",
+        "tip_lag": "Os dados do Banco Mundial têm lag de 1–2 anos; o Eurostat, 1–3 meses."
+      },
+      "analise": {
+        "title": "Análise",
+        "body": "Explorador livre de séries temporais. Pesquise qualquer indicador das 9 fontes disponíveis, ajuste o intervalo temporal e visualize o gráfico. A interpretação por IA adapta o foco ao horizonte.",
+        "tip_multi": "Pode seleccionar e sobrepor múltiplos indicadores em simultâneo.",
+        "tip_dual_axis": "Quando dois indicadores têm unidades incompatíveis, o gráfico usa dois eixos verticais automaticamente.",
+        "tip_csv": "Botão <strong>CSV</strong> exporta os dados brutos para análise externa.",
+        "tip_share": "Botão <strong>Partilhar</strong> copia o URL com o estado actual do gráfico.",
+        "tip_deeplink": "Deep-link a partir da Ficha Técnica: clique no código de qualquer indicador."
+      },
+      "metodologia": {
+        "title": "Metodologia e Ficha Técnica",
+        "body": "A secção Metodologia explica como cada análise IA é gerada — dados reais, enquadramento editorial transparente e prompt completo. A Ficha Técnica documenta todas as fontes e indicadores.",
+        "tip_click_code": "Clicar no código de qualquer indicador leva-o directamente à secção Análise.",
+        "tip_multi_country": "Indicadores com cobertura multi-país (ex: Eurostat por nação) abrem nos Comparativos.",
+        "tip_methodology": "A secção Metodologia explica ajustamento sazonal, bases de índice e comparabilidade."
+      }
+    },
+    "faq": {
+      "title": "Perguntas Frequentes",
+      "realtime": {
+        "q": "Os dados são em tempo real?",
+        "a": "Não. Os dados são actualizados periodicamente a partir das publicações oficiais de cada fonte (INE, Eurostat, Banco de Portugal, etc.). O atraso («lag») varia por indicador: o IPI sai ~2 meses após o mês de referência; o PIB trimestral, ~3 meses após o trimestre; os dados do Banco Mundial chegam com 1–2 anos de atraso. A data da última actualização está indicada no topo do Painel."
+      },
+      "seasonal": {
+        "q": "O que significa «ajustamento sazonal»?",
+        "a": "Muitas séries económicas têm padrões que se repetem regularmente — a produção industrial cai sempre em Agosto por causa das férias, por exemplo. O ajustamento sazonal remove esses padrões previsíveis para que se possam comparar meses consecutivos sem distorção. As séries com «(dessaz.)» são assim tratadas. O método usado pelo INE e Eurostat é o TRAMO-SEATS."
+      },
+      "report": {
+        "q": "Posso usar estes dados num relatório?",
+        "a": "Os dados são provenientes de fontes oficiais públicas (INE, Eurostat, Banco de Portugal, etc.). Pode usá-los citando a fonte primária correspondente. O Prumo PT não é uma publicação oficial e não substitui os dados originais. Para dados primários, consulte directamente cada entidade."
+      },
+      "eu27": {
+        "q": "O que é o EU27_2020?",
+        "a": "É o agregado do Eurostat para os 27 Estados-membros actuais da União Europeia após a saída do Reino Unido (Brexit, Fevereiro de 2020). O Eurostat recalcula retroactivamente as séries históricas excluindo o UK — assim, a série «EU27_2020» é coerente em todos os anos, mesmo para períodos anteriores a 2020."
+      },
+      "ai": {
+        "q": "Como funciona a análise com IA?",
+        "a": "A secção Análise gera um parágrafo interpretativo a partir dos dados visíveis no gráfico, com pesquisa na web para sugerir leituras recentes relacionadas. O foco adapta-se ao horizonte temporal: 1 ano — análise conjuntural; 5 anos — ciclo económico; 10 anos — tendência estrutural. Todo o conteúdo gerado por IA é filtrado pela lente ideológica seleccionada."
+      },
+      "grey_countries": {
+        "q": "Porque é que alguns países aparecem a cinzento nos Comparativos?",
+        "a": "Os países a cinzento não têm dados disponíveis na base de dados para o indicador seleccionado. Isso acontece porque nem todas as fontes cobrem todos os países: o Eurostat cobre principalmente a EU27; o Banco Mundial tem cobertura global mas com gaps em séries sectoriais."
+      },
+      "composite": {
+        "q": "O que são os indicadores compostos?",
+        "a": "Para alguns indicadores com grande interesse comparativo (como Desemprego e Taxa de Emprego), combinamos duas fontes: o Eurostat para países da EU27 e o Banco Mundial para o restante do mundo. O resultado é uma série única e coerente com cobertura mundial."
+      },
+      "error": {
+        "q": "Encontrei um erro ou tenho uma sugestão. O que faço?",
+        "a": "Envie um e-mail ao autor com uma descrição do problema (qual indicador, que valor parece errado, o que esperaria ver). Erros de dados são prioritários — obrigado pela ajuda a melhorar o Prumo PT."
+      }
+    },
+    "author": {
+      "title": "Autor",
+      "body": "Criado por <strong><a href=\"https://joao.date\" target=\"_blank\" rel=\"noopener\" style=\"color:var(--c-pt)\">João Peixoto</a></strong>, PMP — gestor de projecto e engenheiro. Desenvolvimento assistido por IA (Claude, Anthropic); todas as decisões editoriais e de arquitectura são do autor. Código open-source (AGPL-3.0) — será publicado no GitHub quando estabilizar.",
+      "email": "Enviar e-mail"
+    }
+  },
+  "noscript": {
+    "title": "Prumo PT — Economia à Régua e Esquadro",
+    "message": "Este dashboard requer JavaScript para carregar os dados e gráficos.",
+    "sources_label": "Acesso directo às fontes:"
+  },
+  "footer": {
+    "data_label": "Dados:",
+    "instance_label": "Uma instância",
+    "oecd": "OCDE",
+    "worldbank": "Banco Mundial"
+  },
+  "ui_messages": {
+    "lens_saved": "Lente personalizada guardada",
+    "choose_language": "Escolhe o teu idioma de saída",
+    "copy_copied": "Copiado para a área de transferência"
+  },
+  "kpi_labels": {
+    "inflation": "Inflação",
+    "diesel": "Gasóleo",
+    "gasoline_95": "Gasolina 95",
+    "electricity_btn": "Electricidade BTN",
+    "electricity_mt": "Electricidade MT",
+    "electricity_at": "Electricidade AT",
+    "euribor_3m": "Euribor 3m",
+    "euribor_6m": "Euribor 6m",
+    "euribor_12m": "Euribor 12m",
+    "ipi_total": "Produção Industrial",
+    "ipi_cae_10": "Indústria Alimentar",
+    "ipi_cae_20": "Química",
+    "ipi_cae_24": "Metalurgia de Base",
+    "ipi_cae_25": "Produtos Metálicos",
+    "ipi_cae_28": "Máquinas e Equipam.",
+    "ipi_cae_29": "Veículos Automóveis",
+    "copper": "Cobre",
+    "aluminum": "Alumínio",
+    "unemployment": "Desemprego",
+    "industrial_employment": "Emprego Industrial",
+    "wages_industry": "Salários Indústria",
+    "cli": "Indicador Avançado",
+    "confidence": "Confiança Industrial",
+    "order_books": "Carteira Encomendas",
+    "energy_cost": "Electricidade Grossista",
+    "renewable_share": "% Energia Renovável",
+    "energy_dependence": "Dependência Energética",
+    "natural_gas": "Gás Natural",
+    "solar": "Solar",
+    "wind": "Eólica",
+    "eur_usd": "EUR/USD",
+    "spread_pt_de": "Spread PT/DE",
+    "brent": "Petróleo Brent",
+    "gdp_per_capita": "PIB per capita",
+    "rnd_pct_gdp": "I&D % PIB",
+    "employment_rate": "Taxa de Emprego"
+  },
+  "painel_sections": {
+    "custo_de_vida": "Custo de Vida",
+    "industria": "Indústria",
+    "emprego": "Emprego",
+    "conjuntura": "Conjuntura",
+    "energia": "Energia",
+    "externo": "Externo",
+    "competitividade": "Competitividade"
+  },
+  "kpi": {
+    "vs_prev_year": "vs ano anterior",
+    "data_prefix": "Dados:",
+    "fell": "Desceu",
+    "rose": "Subiu",
+    "vs": "vs",
+    "recent_trend_up": "tendência recente: subida",
+    "recent_trend_down": "tendência recente: descida",
+    "consecutive_months_up": "mês consecutivo em subida",
+    "consecutive_months_down": "mês consecutivo em queda",
+    "consecutive_months_stable": "mês consecutivo estável",
+    "vs_prev_year_pct": "face ao ano anterior",
+    "pp_vs_prev_year": "pp face ao ano anterior",
+    "still_negative": "ainda negativo",
+    "drop_of": "descida de",
+    "rise_of": "subida de",
+    "pp_since": "pp desde",
+    "data_from_year": "Dados de {{year}} (última actualização disponível)",
+    "below_base": "abaixo do nível base (2021=100)",
+    "above_base": "acima do nível base (2021=100)"
+  },
+  "kpi_descriptions": {
+    "inflation": "Variação dos preços ao consumidor (IHPC). Mede a erosão do poder de compra de salários e poupanças.",
+    "diesel": "Preço médio de venda ao público. Principal combustível do transporte de mercadorias e da agricultura.",
+    "gasoline_95": "Gasolina 95 no posto — par com o gasóleo para leitura completa dos custos de mobilidade.",
+    "electricity_btn": "Tarifa simples em Baixa Tensão Normal — referência para habitações e pequenos comércios.",
+    "electricity_mt": "Tarifa de acesso à rede em Média Tensão (hora de ponta) — referência para PMEs industriais.",
+    "electricity_at": "Tarifa de acesso à rede em Alta Tensão (hora de ponta) — referência para grandes indústrias.",
+    "euribor_3m": "Euribor 3 meses — determinante das prestações de crédito habitação a taxa variável de revisão trimestral.",
+    "euribor_6m": "Euribor 6 meses — referência para créditos habitação com revisão semestral.",
+    "euribor_12m": "Euribor 12 meses — taxa usada em contratos de crédito com revisão anual.",
+    "ipi_total": "Barómetro geral da produção industrial nacional. Base 2021=100. Série dessazonalizada pelo INE.",
+    "ipi_cae_10": "Indústria Alimentar (CAE 10) — maior sector industrial português; inclui lacticínios, conservas, pastelaria industrial.",
+    "ipi_cae_20": "Química (CAE 20) — fertilizantes, plásticos, tintas, produtos farmacêuticos de base. Indicador de inputs industriais.",
+    "ipi_cae_24": "Metalurgia de Base (CAE 24) — aço, alumínio, cobre e ligas. Base para construção e indústria transformadora.",
+    "ipi_cae_25": "Produtos Metálicos (CAE 25) — estruturas, embalagens, ferramentas e componentes metálicos fabricados.",
+    "ipi_cae_28": "Máquinas e Equipamentos (CAE 28) — bens de capital para a indústria; indicador da capacidade de investimento produtivo.",
+    "ipi_cae_29": "Veículos Automóveis (CAE 29) — sector exportador-chave de Portugal (Autoeuropa, Caetano Bus).",
+    "copper": "Cobre — barómetro da economia global; essencial para construção, electrónica e electrificação.",
+    "aluminum": "Alumínio — metal estrutural transversal: automóvel, embalagem, construção. Indicador de procura industrial.",
+    "unemployment": "Taxa de desemprego harmonizada (OCDE). Percentagem da população activa sem emprego e à procura de trabalho.",
+    "industrial_employment": "Índice de volume de emprego na indústria transformadora (CAE C). Base 2021=100, série dessazonalizada.",
+    "wages_industry": "Índice de remunerações nominais na indústria. Não corrigido de inflação — para salário real, comparar com IHPC.",
+    "cli": "Indicador avançado composto da OCDE. Antecipa viragens do ciclo económico com ~6 meses de antecedência.",
+    "confidence": "Saldo de respostas positivas vs negativas dos industriais (INE). Abaixo de zero indica pessimismo predominante.",
+    "order_books": "Saldo de encomendas das empresas industriais (BTS/OCDE). Indica procura futura de produção.",
+    "energy_cost": "Preço MIBEL no mercado grossista ibérico. Referência para tarifas industriais e contratos de longo prazo.",
+    "renewable_share": "Quota de renováveis na produção eléctrica (DGEG). Portugal tem um dos melhores perfis da Europa.",
+    "energy_dependence": "Percentagem do consumo energético total importado. Alta dependência significa vulnerabilidade a preços externos.",
+    "natural_gas": "Gás Natural — crítico para indústrias energo-intensivas (vidro, cerâmica, metalurgia) e produção eléctrica.",
+    "solar": "Produção fotovoltaica injectada na rede (REN). Indicador de transição energética e da capacidade instalada solar.",
+    "wind": "Produção eólica injectada na rede (REN). Portugal entre os líderes europeus em capacidade eólica per capita.",
+    "eur_usd": "Taxa de câmbio euro/dólar. Influencia competitividade de exportações e preço de importações denominadas em USD.",
+    "spread_pt_de": "Diferencial de juro PT-DE a 10 anos. Mede o risco soberano percebido pelos mercados face à Alemanha.",
+    "brent": "Crude de referência europeu. Influencia directamente gasóleo, gasolina, petroquímica e transportes.",
+    "gdp_per_capita": "Riqueza média por habitante. PT: ~23.500€ vs UE27: ~34.000€ — gap estrutural de convergência.",
+    "rnd_pct_gdp": "Intensidade de I&D (% PIB). PT: 1,7% vs UE27: 2,3% (meta Horizonte Europa: 3%). Desvantagem a longo prazo.",
+    "employment_rate": "Taxa de emprego (% pop. 20-64 anos com emprego). Medida ampla do mercado de trabalho."
+  },
+  "kpi_explains": {
+    "inflation": "Quando a inflação sobe, o mesmo salário compra menos. Se está em 2.3%, um cabaz de 500€ em janeiro custa agora 511.50€ em dezembro.",
+    "diesel": "O preço do gasóleo afecta tudo — do pão ao transporte. Quando sobe, os preços de quase tudo sobem também.",
+    "gasoline_95": "A gasolina que abastece no posto. Se gasta 50€ por depósito, uma subida de 10% são mais 5€ por semana.",
+    "electricity_btn": "A tarifa da sua conta da luz em casa. Se sobe, paga mais no final do mês mesmo gastando o mesmo.",
+    "electricity_mt": "Tarifa para fábricas e comércios médios. Quando sobe, os custos de produção aumentam e os preços podem subir para o consumidor.",
+    "electricity_at": "Tarifa para as maiores indústrias do país. Afecta o custo de produção de aço, vidro, cerâmica e outros sectores pesados.",
+    "euribor_3m": "A Euribor 3 meses é a taxa que os bancos usam para calcular a prestação da casa. Se tem crédito a taxa variável, quando esta sobe, a sua prestação mensal sobe.",
+    "euribor_6m": "Semelhante à Euribor 3m, mas para créditos com revisão semestral. Muda a cada 6 meses — se tem este tipo de crédito, a sua prestação ajusta duas vezes por ano.",
+    "euribor_12m": "Para créditos com revisão anual. A sua prestação só muda uma vez por ano, mas a variação pode ser maior de cada vez.",
+    "ipi_total": "Mede se as fábricas portuguesas estão a produzir mais ou menos. Quando sobe, há mais actividade, mais emprego e mais exportações.",
+    "ipi_cae_10": "A indústria alimentar é o maior sector industrial de Portugal. Se cai, pode significar menos oferta e preços mais altos no supermercado.",
+    "ipi_cae_20": "A indústria química faz tintas, plásticos e fertilizantes. É um termómetro da saúde de outras indústrias que dependem destes materiais.",
+    "ipi_cae_24": "Metalurgia de base — o aço e alumínio usados na construção civil e na indústria. Se cai, pode sinalizar menos obras e menos investimento.",
+    "ipi_cae_25": "Estruturas metálicas, ferramentas e componentes. É o que transforma o metal bruto em peças úteis para a construção e a indústria.",
+    "ipi_cae_28": "Máquinas e equipamentos para fábricas. Se as empresas compram mais máquinas, estão a investir no futuro — bom sinal para a economia.",
+    "ipi_cae_29": "A produção de automóveis (Autoeuropa, Caetano Bus) é uma das maiores exportações de Portugal. Quando sobe, entra mais dinheiro no país.",
+    "copper": "O cobre é usado em tudo, de cabos eléctricos a telemóveis. O seu preço é considerado um barómetro da economia mundial.",
+    "aluminum": "O alumínio está em latas, janelas, carros e aviões. Quando o preço sobe, os produtos que o usam ficam mais caros.",
+    "unemployment": "A percentagem de pessoas que querem trabalhar mas não encontram emprego. Quanto mais baixa, melhor para as famílias.",
+    "industrial_employment": "Quantas pessoas trabalham nas fábricas portuguesas. Se sobe, a indústria está a contratar; se desce, está a cortar postos.",
+    "wages_industry": "Quanto ganham em média os trabalhadores da indústria. Note que este valor não desconta a inflação — se os preços sobem mais que os salários, perde-se poder de compra.",
+    "cli": "Um indicador que tenta prever se a economia vai melhorar ou piorar nos próximos 6 meses. Acima de 100 sugere crescimento à frente.",
+    "confidence": "Pergunta-se aos donos de fábricas se estão optimistas ou pessimistas. Abaixo de zero, a maioria está pessimista — mau sinal para investimento e emprego.",
+    "order_books": "As encomendas que as fábricas têm em carteira. Mais encomendas hoje significam mais produção e mais emprego nos próximos meses.",
+    "energy_cost": "O preço grossista da electricidade no mercado ibérico. Quando sobe, as tarifas industriais e eventualmente as domésticas tendem a seguir.",
+    "renewable_share": "Que parte da electricidade vem do sol, vento e água. Quanto mais alta, menos dependemos de combustíveis importados e menos CO2 emitimos.",
+    "energy_dependence": "Que percentagem da energia que consumimos vem do estrangeiro. Quanto maior, mais vulneráveis ficamos a crises de preços internacionais.",
+    "natural_gas": "O gás natural aquece casas, alimenta fábricas de vidro e cerâmica, e produz electricidade. Quando o preço sobe, toda a cadeia de custos sobe.",
+    "solar": "Quanta electricidade solar entrou na rede. Mais solar significa menos importação de gás e petróleo, e contas de luz potencialmente mais baixas.",
+    "wind": "Quanta electricidade os parques eólicos injectaram na rede. Portugal é um dos países europeus com mais vento aproveitável.",
+    "eur_usd": "Quando o euro sobe face ao dólar, as importações dos EUA ficam mais baratas, mas as nossas exportações ficam mais caras para americanos.",
+    "spread_pt_de": "Mede quanto mais Portugal paga de juros que a Alemanha. Quanto maior, mais os mercados consideram Portugal um risco — e mais cara fica a dívida pública.",
+    "brent": "O preço do barril de petróleo. Afecta directamente o que paga no gasóleo, na gasolina e no transporte de tudo o que compra.",
+    "gdp_per_capita": "A riqueza média produzida por cada habitante. Portugal está ainda abaixo da média europeia — fechar este fosso é o grande desafio de longo prazo.",
+    "rnd_pct_gdp": "Quanto o país investe em investigação e inovação. Mais investimento hoje significa melhores empregos e produtos mais competitivos amanhã.",
+    "employment_rate": "A percentagem de adultos (20-64) que têm emprego. Quanto mais alta, mais pessoas contribuem para a economia e para a Segurança Social."
+  },
+  "kpi_annotations": {
+    "inflation": {
+      "deflation": "Deflação — os preços estão a descer (raro e nem sempre bom).",
+      "stable": "Preços praticamente estáveis.",
+      "on_target": "Dentro da meta do BCE (2%).",
+      "above_target": "Acima da meta — poder de compra a descer.",
+      "high": "Inflação alta — pressão significativa nas famílias."
+    },
+    "diesel": {
+      "cheap": "Gasóleo barato — abaixo de 1.30€/L.",
+      "moderate": "Gasóleo em zona moderada.",
+      "expensive": "Gasóleo caro — pesa no transporte e nos preços.",
+      "very_expensive": "Gasóleo muito caro — impacto forte nos custos."
+    },
+    "gasoline_95": {
+      "cheap": "Gasolina barata — abaixo de 1.40€/L.",
+      "moderate": "Gasolina em zona moderada.",
+      "expensive": "Gasolina cara — cada depósito pesa mais.",
+      "very_expensive": "Gasolina muito cara — impacto forte na mobilidade."
+    },
+    "euribor_3m": {
+      "negative": "Taxa negativa — cenário raro, bom para quem tem crédito.",
+      "low": "Taxa baixa — prestações da casa em mínimos.",
+      "moderate": "Taxa moderada — prestações a subir para muitas famílias.",
+      "high": "Taxa elevada — prestações da casa pesam no orçamento.",
+      "very_high": "Taxa muito elevada — pressão forte sobre devedores."
+    },
+    "unemployment": {
+      "full_employment": "Pleno emprego — mercado de trabalho muito apertado.",
+      "low": "Desemprego baixo — bom para os trabalhadores.",
+      "moderate": "Desemprego moderado — ainda há margem de melhoria.",
+      "high": "Desemprego alto — muitas famílias afectadas."
+    },
+    "employment_rate": {
+      "high": "Taxa elevada — acima da média da UE.",
+      "reasonable": "Taxa razoável — próxima da média europeia.",
+      "below_avg": "Taxa abaixo da média da UE — margem para melhorar.",
+      "low": "Taxa baixa — muitos adultos fora do mercado de trabalho."
+    },
+    "cli": {
+      "strong_expansion": "Acima de 101 — forte sinal de expansão económica à frente.",
+      "expansion": "Acima de 100 — expansão económica provável.",
+      "slowdown": "Ligeiramente abaixo de 100 — abrandamento possível.",
+      "contraction": "Abaixo de 99 — sinal de contracção económica à frente."
+    },
+    "confidence": {
+      "high": "Confiança elevada — industriais optimistas.",
+      "positive": "Confiança ligeiramente positiva.",
+      "mild_pessimism": "Pessimismo ligeiro entre os industriais.",
+      "deep_pessimism": "Pessimismo acentuado — empresas retraem investimento."
+    },
+    "order_books": {
+      "above_normal": "Encomendas acima do normal — produção futura assegurada.",
+      "slightly_below": "Encomendas ligeiramente abaixo do normal.",
+      "weak": "Carteira fraca — produção pode abrandar.",
+      "very_weak": "Encomendas muito fracas — sinal de recessão industrial."
+    },
+    "renewable_share": {
+      "excellent": "Excelente — mais de 70% renovável, entre os melhores da Europa.",
+      "good": "Boa quota renovável — acima de metade da produção.",
+      "moderate": "Quota moderada — ainda muito dependente de fósseis.",
+      "low": "Quota baixa de renováveis — forte dependência de importações."
+    },
+    "energy_dependence": {
+      "low": "Dependência relativamente baixa para Portugal.",
+      "moderate": "Dependência moderada — nível típico de Portugal.",
+      "high": "Dependência elevada — vulnerável a choques de preços.",
+      "very_high": "Dependência muito elevada — risco estratégico."
+    },
+    "natural_gas": {
+      "cheap": "Gás barato — bom para indústrias energo-intensivas.",
+      "moderate": "Gás em zona moderada.",
+      "expensive": "Gás caro — pressão nos custos industriais.",
+      "very_expensive": "Gás muito caro — impacto severo nas fábricas de vidro, cerâmica e metalurgia."
+    },
+    "spread_pt_de": {
+      "very_low": "Spread muito baixo — mercados confiam em Portugal.",
+      "contained": "Spread contido — percepção de risco baixa.",
+      "moderate": "Spread moderado — alguma cautela dos mercados.",
+      "high": "Spread elevado — custo de financiamento do Estado a subir."
+    },
+    "brent": {
+      "cheap": "Petróleo barato — bom para importadores como Portugal.",
+      "moderate": "Petróleo em zona moderada.",
+      "expensive": "Petróleo caro — pressão nos combustíveis e transportes.",
+      "very_expensive": "Petróleo muito caro — impacto generalizado nos preços."
+    },
+    "eur_usd": {
+      "strong_euro": "Euro forte — importações mais baratas, exportações menos competitivas.",
+      "equilibrium": "Euro/Dólar em zona de equilíbrio.",
+      "weak_euro": "Euro fraco — exportações mais competitivas, importações mais caras.",
+      "very_weak_euro": "Euro muito fraco — energia e matérias-primas (cotadas em USD) ficam caras."
+    },
+    "ipi_total": {
+      "expansion": "Produção acima da base (2021) — indústria em expansão.",
+      "stable": "Produção próxima da base — indústria estável.",
+      "moderate_contraction": "Produção abaixo da base — contracção moderada.",
+      "strong_contraction": "Produção muito abaixo da base — contracção industrial forte."
+    },
+    "gdp_per_capita": {
+      "converging": "Acima de 30.000€ — a aproximar-se da média da UE.",
+      "below_avg": "Entre 23–30 mil€ — abaixo da média da UE, mas a convergir.",
+      "significant_gap": "Abaixo de 23.000€ — fosso significativo face à média europeia."
+    },
+    "rnd_pct_gdp": {
+      "strong": "Investimento em I&D forte — acima da média da UE.",
+      "moderate": "Investimento moderado em I&D — abaixo da meta europeia de 3%.",
+      "low": "Investimento baixo em I&D — risco de perda de competitividade a prazo."
+    }
+  },
+  "section_eyebrows": {
+    "painel": "INDICADORES ECONÓMICOS · PORTUGAL",
+    "comparativos": "COMPARATIVOS · PT VS EUROPA E MUNDO",
+    "explorador": "EXPLORADOR DE DADOS · SÉRIES TEMPORAIS · CSV",
+    "ajuda": "AJUDA · SOBRE"
+  },
+  "section_titles": {
+    "explorador": "Explorar indicadores — seleccione e visualize",
+    "explorador_sub": "Seleccione indicadores, visualize em gráfico e exporte em CSV",
+    "ajuda": "Como usar o Prumo PT",
+    "ajuda_sub": "Guia rápido de cada secção e contexto sobre o projecto",
+    "loading_indicators": "A carregar indicadores…",
+    "loading_data": "A carregar dados…",
+    "loading_comparison": "A carregar comparação…",
+    "loading_catalog": "A carregar catálogo…",
+    "loading_ficha": "A carregar ficha técnica…"
+  },
+  "share": {
+    "copy_link": "Copiar link",
+    "download_image": "Descarregar imagem",
+    "share_twitter": "Partilhar no X",
+    "share_linkedin": "Partilhar no LinkedIn",
+    "share_whatsapp": "Partilhar no WhatsApp",
+    "copied": "Link copiado!",
+    "share": "Partilhar"
+  }
+}

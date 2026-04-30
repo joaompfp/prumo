@@ -1,0 +1,113 @@
+[
+  {
+    "id": "pcp",
+    "label": "PCP — Programa Eleitoral",
+    "short": "PCP",
+    "party": "Partido Comunista Português",
+    "source": "Programa Eleitoral do PCP (2024) + Resolução Política do XX Congresso",
+    "color": "#CC0000",
+    "icon": "pcp",
+    "link_sources": "pcp.pt, avante.pt, abrilabril.pt, publico.pt, rtp.pt, dn.pt"
+  },
+  {
+    "id": "cae",
+    "label": "CAE (equipa Prumo)",
+    "short": "CAE",
+    "party": null,
+    "source": "Configuração do operador desta instância (ideology.txt) — perspectiva industrial e laboral, informada pelo programa do PCP",
+    "color": "#8B0000",
+    "icon": "cae",
+    "link_sources": "pcp.pt, avante.pt, abrilabril.pt, publico.pt, rtp.pt, dn.pt",
+    "default": true
+  },
+  {
+    "id": "be",
+    "label": "BE — Esquerda Ecossocialista",
+    "short": "BE",
+    "party": "Bloco de Esquerda",
+    "source": "Programa Eleitoral do Bloco de Esquerda (2024)",
+    "color": "#D32F2F",
+    "icon": "be",
+    "link_sources": "blfranciscomiguel.pt, esquerda.net, publico.pt, rtp.pt, dn.pt, expresso.pt"
+  },
+  {
+    "id": "livre",
+    "label": "Livre — Esquerda Verde Europeísta",
+    "short": "L",
+    "party": "Livre",
+    "source": "Programa Eleitoral do Livre (2024)",
+    "color": "#00C853",
+    "icon": "livre",
+    "link_sources": "partidolivre.pt, publico.pt, rtp.pt, dn.pt, expresso.pt, observador.pt"
+  },
+  {
+    "id": "pan",
+    "label": "PAN — Pessoas-Animais-Natureza",
+    "short": "PAN",
+    "party": "Pessoas-Animais-Natureza",
+    "source": "Programa Eleitoral do PAN (2024)",
+    "color": "#1B5E20",
+    "icon": "pan",
+    "link_sources": "pan.com.pt, publico.pt, rtp.pt, dn.pt, expresso.pt, observador.pt"
+  },
+  {
+    "id": "ps",
+    "label": "PS — Social-Democracia",
+    "short": "PS",
+    "party": "Partido Socialista",
+    "source": "Programa Eleitoral do PS (2024) — 'Portugal Inteiro'",
+    "color": "#E91E63",
+    "icon": "ps",
+    "link_sources": "ps.pt, publico.pt, rtp.pt, dn.pt, expresso.pt, observador.pt"
+  },
+  {
+    "id": "ad",
+    "label": "AD — Centro-Direita Liberal",
+    "short": "AD",
+    "party": "Aliança Democrática (PSD + CDS-PP)",
+    "source": "Programa do XXIV Governo Constitucional (AD, 2024) + Programa Eleitoral AD",
+    "color": "#FF6F00",
+    "icon": "ad",
+    "link_sources": "psd.pt, observador.pt, eco.sapo.pt, jornaldenegocios.pt, publico.pt, expresso.pt"
+  },
+  {
+    "id": "il",
+    "label": "IL — Liberal",
+    "short": "IL",
+    "party": "Iniciativa Liberal",
+    "source": "Programa Eleitoral da Iniciativa Liberal (2024) — 'Portugal a Sério'",
+    "color": "#00BCD4",
+    "icon": "il",
+    "link_sources": "liberal.pt, observador.pt, eco.sapo.pt, jornaldenegocios.pt, expresso.pt, publico.pt"
+  },
+  {
+    "id": "chega",
+    "label": "Chega — Direita Nacional-Conservadora",
+    "short": "CH",
+    "party": "Chega",
+    "source": "Programa Eleitoral do Chega (2024)",
+    "color": "#1A237E",
+    "icon": "chega",
+    "link_sources": "observador.pt, cnnportugal.iol.pt, expresso.pt, publico.pt, rtp.pt, jornaldenegocios.pt"
+  },
+  {
+    "id": "neutro",
+    "label": "🙃 Neutral (eheh)",
+    "short": "🙃 Neutral",
+    "party": null,
+    "source": "Sem enquadramento editorial — análise factual dos dados",
+    "color": "#607D8B",
+    "icon": "neutro",
+    "link_sources": "publico.pt, dn.pt, rtp.pt, observador.pt, expresso.pt, eco.sapo.pt, jornaldenegocios.pt"
+  },
+  {
+    "id": "custom",
+    "label": "Lente Personalizada",
+    "short": "Custom",
+    "party": null,
+    "source": "Texto livre definido pelo utilizador no browser",
+    "color": "#9C27B0",
+    "icon": "custom",
+    "link_sources": "publico.pt, dn.pt, rtp.pt, observador.pt, expresso.pt, eco.sapo.pt, jornaldenegocios.pt"
+  }
+]

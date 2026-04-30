@@ -1,0 +1,818 @@
+/* ── m5: Ficha methodology table — unified typography ───────────── */
+.methodology-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-base);
+}
+
+.methodology-table thead tr,
+#ficha .source-card table thead tr {
+  background: var(--c-surface-2);
+}
+
+.methodology-table th {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-muted);
+  padding: var(--sp-sm) var(--sp-md);
+  border-bottom: 2px solid var(--c-border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.methodology-table td {
+  padding: 10px var(--sp-lg);
+  border-bottom: 1px solid var(--c-border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.methodology-table tr:last-child td { border-bottom: none; }
+.methodology-table tr:hover td { background: var(--c-surface); }
+
+/* Fonte, Freq., Lag: shrink to content width, never wrap */
+.methodology-table td:first-child,
+.methodology-table th:first-child,
+.methodology-table td:nth-child(3),
+.methodology-table th:nth-child(3),
+.methodology-table td:nth-child(4),
+.methodology-table th:nth-child(4) {
+  white-space: nowrap;
+  width: 1%;
+}
+
+/* Indicadores column: muted to create visual hierarchy */
+.methodology-table td:nth-child(2) {
+  color: var(--c-text-sub);
+}
+
+
+/* ── #ficha ─────────────────────────────────────────────────────── */
+#ficha .source-card {
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+  padding: var(--sp-lg);
+  margin-bottom: var(--sp-md);
+}
+
+/* Collapsible source cards */
+#ficha details.source-card > summary.source-header {
+  cursor: pointer;
+  list-style: none;
+  margin-bottom: 0;
+}
+#ficha details.source-card > summary.source-header::-webkit-details-marker,
+#ficha details.source-card > summary.source-header::marker { display: none; }
+
+#ficha details.source-card[open] > summary.source-header {
+  margin-bottom: var(--sp-sm);
+}
+
+#ficha .source-card-body { padding-top: var(--sp-xs); }
+
+/* Collapse hint text — grid stacks both spans in same cell so width is always
+   the widest text; visibility toggle avoids layout shift on open/close */
+.source-collapse-hint {
+  font-size: var(--fs-xs);
+  color: var(--c-red);
+  white-space: nowrap;
+  font-weight: 500;
+  display: inline-grid;
+}
+.source-collapse-open,
+.source-collapse-closed { grid-area: 1 / 1; }
+.source-collapse-open   { visibility: hidden; }
+.source-collapse-closed { visibility: visible; }
+details[open] .source-collapse-open   { visibility: visible; }
+details[open] .source-collapse-closed { visibility: hidden; }
+
+/* WP-6: updated to match HTML class names (.source-title/.source-desc/.source-badge/.source-url-link) */
+#ficha .source-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sp-md);
+}
+
+#ficha .source-header-meta {
+  flex: 1;
+}
+
+#ficha .source-header-right {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-sm);
+  flex-shrink: 0;
+}
+
+#ficha .source-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 4px;
+}
+
+#ficha .source-desc {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  margin: 0;
+  line-height: 1.4;
+}
+
+#ficha .source-badge {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  background: var(--c-border);
+  padding: 2px 10px;
+  border-radius: 20px;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+#ficha .source-url-link {
+  font-size: var(--fs-xs);
+  color: var(--c-eu);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+#ficha .source-url-link:hover {
+  text-decoration: underline;
+}
+
+#ficha .methodology-block {
+  background: var(--c-callout-amber-bg);
+  border: 1px solid var(--c-callout-amber-border);
+  border-radius: var(--radius);
+  padding: var(--sp-lg);
+  margin-top: var(--sp-xl);
+}
+
+#ficha .methodology-title {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  margin-bottom: var(--sp-sm);
+  color: var(--c-callout-amber-text);
+}
+
+#ficha .methodology-text {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.7;
+}
+
+#ficha .total-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  font-size: var(--fs-3xl);
+  font-weight: 800;
+  color: var(--c-pt);
+  letter-spacing: -2px;
+}
+
+#ficha .total-label {
+  font-size: var(--fs-base);
+  font-weight: 400;
+  color: var(--c-text-sub);
+  letter-spacing: 0;
+}
+
+
+/* ── Ficha — Tipografia e Legibilidade (V9) ─────────────────────── */
+
+/* Source badge com cor por fonte */
+#ficha .source-badge[data-source="INE"],
+#ficha .source-badge[data-source="EUROSTAT"] {
+  background: #E8EAF6;
+  color: #003399;
+  border: 1px solid #C5CAE9;
+}
+
+#ficha .source-badge[data-source="WORLDBANK"],
+#ficha .source-badge[data-source="OECD"] {
+  background: #E0F2F1;
+  color: #009999;
+  border: 1px solid #B2DFDB;
+}
+
+#ficha .source-badge[data-source="FRED"] {
+  background: #FFF3E0;
+  color: #E67E22;
+  border: 1px solid #FFE0B2;
+}
+
+#ficha .source-badge[data-source="DGEG"],
+#ficha .source-badge[data-source="ERSE"],
+#ficha .source-badge[data-source="REN"] {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #C8E6C9;
+}
+
+#ficha .source-badge[data-source="BPORTUGAL"] {
+  background: #FFEBEE;
+  color: #CC0000;
+  border: 1px solid #FFCDD2;
+}
+
+/* Dark mode overrides for source badges */
+[data-theme="dark"] #ficha .source-badge[data-source="INE"],
+[data-theme="dark"] #ficha .source-badge[data-source="EUROSTAT"] {
+  background: rgba(63, 81, 181, 0.15);
+  color: #7986cb;
+  border-color: rgba(63, 81, 181, 0.3);
+}
+[data-theme="dark"] #ficha .source-badge[data-source="WORLDBANK"],
+[data-theme="dark"] #ficha .source-badge[data-source="OECD"] {
+  background: rgba(0, 150, 136, 0.15);
+  color: #4db6ac;
+  border-color: rgba(0, 150, 136, 0.3);
+}
+[data-theme="dark"] #ficha .source-badge[data-source="FRED"] {
+  background: rgba(230, 126, 34, 0.15);
+  color: #f0a060;
+  border-color: rgba(230, 126, 34, 0.3);
+}
+[data-theme="dark"] #ficha .source-badge[data-source="DGEG"],
+[data-theme="dark"] #ficha .source-badge[data-source="ERSE"],
+[data-theme="dark"] #ficha .source-badge[data-source="REN"] {
+  background: rgba(76, 175, 80, 0.15);
+  color: #81c784;
+  border-color: rgba(76, 175, 80, 0.3);
+}
+[data-theme="dark"] #ficha .source-badge[data-source="BPORTUGAL"] {
+  background: rgba(231, 76, 60, 0.15);
+  color: #ef9a9a;
+  border-color: rgba(231, 76, 60, 0.3);
+}
+
+/* Hierarquia: título e metadados */
+#ficha .source-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 4px;
+}
+
+#ficha .source-desc {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  margin: 0;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Espaçamento entre source cards */
+#ficha .source-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Indicador label em destaque na tabela */
+#ficha .indicator-table td:nth-child(2) {
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+}
+
+/* Metadados em tom neutro */
+#ficha .indicator-table td:not(:nth-child(2)) {
+  color: var(--c-muted);
+  font-size: var(--fs-xs);
+}
+
+/* Coverage e observações: secondary */
+#ficha .indicator-table td:nth-child(5),
+#ficha .indicator-table td:nth-child(6),
+#ficha .indicator-table td:nth-child(7) {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+}
+
+/* Mobile: layout em coluna, sem truncações */
+@media (max-width: 768px) {
+  #ficha .source-header {
+    flex-direction: column;
+  }
+  #ficha .source-header-right {
+    justify-content: flex-start;
+    margin-top: var(--sp-xs);
+  }
+  #ficha .ficha-meta {
+    flex-direction: column;
+    gap: var(--sp-xs);
+  }
+}
+
+/* Ficha header meta */
+.ficha-header {
+  margin-bottom: var(--sp-xl);
+}
+
+.ficha-meta {
+  display: flex;
+  gap: var(--sp-lg);
+  flex-wrap: wrap;
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+}
+
+.ficha-meta strong {
+  color: var(--c-text);
+}
+
+
+/* ── Ficha indicator table — V9 typography ──────────────────────── */
+#ficha .indicator-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+#ficha .indicator-table th {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--c-muted);
+  text-align: left;
+  padding: var(--sp-xs) var(--sp-md);
+  border-bottom: 2px solid var(--c-border);
+  white-space: nowrap;
+}
+
+#ficha .indicator-table td {
+  padding: 8px var(--sp-md);
+  border-bottom: 1px solid var(--c-border);
+  vertical-align: middle;
+}
+
+#ficha .indicator-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Indicator name: prominent, wraps freely */
+#ficha .indicator-table td:nth-child(2) {
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--c-text);
+}
+
+/* All metadata columns: compact, no wrap — width determined by content */
+#ficha .indicator-table td:nth-child(1),
+#ficha .indicator-table td:nth-child(3),
+#ficha .indicator-table td:nth-child(4),
+#ficha .indicator-table td:nth-child(5),
+#ficha .indicator-table td:nth-child(6),
+#ficha .indicator-table td:nth-child(7) {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  white-space: nowrap;
+  width: 1%;  /* shrink to content; INDICADOR (col 2) fills the rest */
+}
+
+.indicator-link {
+  color: var(--c-muted);
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 10px;
+}
+
+.indicator-link:hover {
+  color: var(--c-pt);
+  text-decoration: underline;
+}
+
+/* Source cards spacing */
+.source-cards-list .source-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Methodology section styling */
+.methodology-section {
+  margin-top: var(--sp-2xl);
+  padding-top: var(--sp-xl);
+  border-top: 2px solid var(--c-border);
+}
+
+.methodology-section h3 {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--c-text);
+  margin-bottom: var(--sp-xl);
+}
+
+.methodology-section h4 {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--c-text);
+  margin: var(--sp-xl) 0 var(--sp-sm);
+  padding-bottom: var(--sp-xs);
+  border-bottom: 1px solid var(--c-border);
+}
+
+/* ── Methodology accordions ─────────────────────────────────────── */
+.method-accordion {
+  border-bottom: 1px solid var(--c-border);
+  margin-bottom: 0;
+}
+
+.method-accordion summary {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--c-text);
+  padding: var(--sp-md) 0;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  user-select: none;
+}
+
+.method-accordion summary::-webkit-details-marker { display: none; }
+
+.method-accordion summary::before {
+  content: '▸';
+  font-size: 11px;
+  color: var(--c-muted);
+  transition: transform 0.18s ease;
+  flex-shrink: 0;
+}
+
+.method-accordion[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.method-accordion > p,
+.method-accordion > ul,
+.method-accordion > .table-scroll-wrap {
+  padding-bottom: var(--sp-md);
+}
+
+.methodology-content p,
+.methodology-content li {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  line-height: 1.7;
+  margin-bottom: var(--sp-sm);
+}
+
+.methodology-content ul {
+  padding-left: var(--sp-lg);
+  margin-bottom: var(--sp-md);
+}
+
+.dashboard-info {
+  margin-top: var(--sp-2xl);
+  padding: var(--sp-lg);
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+}
+
+.dashboard-info h3 {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  margin-bottom: var(--sp-md);
+}
+
+.dashboard-info li {
+  font-size: var(--fs-sm);
+  color: var(--c-text-sub);
+  margin-bottom: var(--sp-xs);
+  list-style: disc;
+  margin-left: var(--sp-lg);
+}
+
+.dashboard-embed-code {
+  margin-top: var(--sp-sm);
+  padding: 12px 16px;
+  background: #1a1a1a;
+  color: #e0e0e0;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+  border: 1px solid #333;
+}
+
+.ficha-disclaimer {
+  margin-top: var(--sp-xl);
+  padding: var(--sp-md) var(--sp-lg);
+  background: var(--c-surface-2);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--c-border);
+}
+
+.ficha-disclaimer p {
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+
+/* ── Ficha Tipografia V9 — mobile legibility ─────────────────────── */
+@media (max-width: 768px) {
+  #ficha .source-title {
+    font-size: 1rem;
+  }
+  #ficha .source-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  #ficha .source-badge {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+  #ficha .indicator-table td:nth-child(2) {
+    font-size: 0.85rem;
+    min-width: 140px;
+  }
+  #ficha .indicator-table td {
+    padding: 8px var(--sp-sm);
+    font-size: 0.8rem;
+  }
+  #ficha .indicator-table th {
+    font-size: 0.7rem;
+    padding: var(--sp-xs) var(--sp-sm);
+  }
+  .ficha-meta {
+    font-size: 0.85rem;
+    gap: var(--sp-sm);
+  }
+}
+
+/* ── Ficha V9: Additional typography readability ─────────────────── */
+/* Larger, clearer methodology text */
+#ficha .methodology-content p,
+#ficha .methodology-content li {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--c-text-sub);
+}
+
+/* Source title more prominent */
+#ficha .source-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+/* Coverage pill for each indicator row */
+.coverage-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--c-surface-2);
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+/* ── Metodologia (legacy class names kept) ────────────────────────── */
+.manifesto-body-inner { max-width: 720px; margin: 0 auto; }
+.manifesto-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px; font-weight: 900;
+  color: var(--c-text); margin: 0 0 12px;
+}
+.manifesto-intro {
+  font-size: 14px; line-height: 1.8; color: var(--c-muted); margin: 0 0 20px;
+}
+.manifesto-intro strong { color: var(--c-text); }
+.manifesto-flow-wrap {
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 8px; padding: 20px 16px; overflow-x: auto;
+}
+.manifesto-code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px; line-height: 1.7;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 6px; padding: 16px 20px;
+  white-space: pre-wrap; word-break: break-word;
+  color: var(--c-text); margin: 0;
+}
+.manifesto-badge {
+  font-size: 11px; font-family: monospace;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 4px; padding: 2px 7px; color: var(--c-muted);
+  vertical-align: middle; margin-left: 6px;
+}
+
+/* ── Metodologia ─────────────────────────────────────────────────── */
+.mf-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 17px; font-weight: 900; color: var(--c-text); margin: 0 0 16px;
+}
+.mf-intro { font-size: 14px; line-height: 1.8; color: var(--c-muted); margin: 0 0 20px; }
+.mf-intro strong { color: var(--c-text); }
+.mf-instance-notice {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--c-text-sub);
+  background: rgba(139, 0, 0, 0.04);
+  border-left: 3px solid var(--c-pt);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 0 0 24px;
+}
+.mf-instance-notice strong { color: var(--c-pt); }
+
+/* ── Vertical flow (metodologia) ─────────────────────────────── */
+.mf-body { max-width: none; margin: 0; }
+
+.mf-flow {
+  margin: 0 0 40px;
+}
+
+.mf-flow-step {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0;
+}
+
+/* LEFT column: bubble + vertical line */
+.mf-flow-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.mf-flow-bubble {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--c-bg); border: 2px solid var(--c-border);
+  font-size: 12px; font-weight: 700; font-family: 'Inter', sans-serif;
+  color: var(--c-muted); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; z-index: 1; position: relative;
+}
+
+/* 4 progressive red tones — step 1→4 */
+.mf-flow-bubble--t1 { border-color: #E8A0A0; color: #C06060; background: #FDF5F5; }
+.mf-flow-bubble--t2 { border-color: #CC5555; color: #AA2222; background: #FBE8E8; }
+.mf-flow-bubble--t3 { border-color: #CC0000; color: #fff; background: #CC0000; }
+.mf-flow-bubble--t4 { border-color: #8B0000; color: #fff; background: #8B0000; }
+
+.mf-flow-vline {
+  width: 2px; flex: 1; min-height: 20px;
+  background: var(--c-border);
+  margin: 4px 0;
+}
+
+.mf-flow-vline--t1 { background: #E8A0A0; opacity: 0.6; }
+.mf-flow-vline--t2 { background: #CC5555; opacity: 0.5; }
+.mf-flow-vline--t3 { background: #CC0000; opacity: 0.4; }
+
+/* RIGHT column: content */
+.mf-flow-right {
+  flex: 1;
+  padding: 0 0 32px 20px;
+}
+
+.mf-flow-step--last .mf-flow-right {
+  padding-bottom: 0;
+}
+
+.mf-flow-label {
+  font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+  color: var(--c-text); line-height: 1; margin-bottom: 6px;
+  padding-top: 5px; /* align with bubble centre */
+}
+
+.mf-flow-label--t1 { color: #C06060; }
+.mf-flow-label--t2 { color: #AA2222; }
+.mf-flow-label--t3 { color: #CC0000; }
+.mf-flow-label--t4 { color: #8B0000; font-weight: 800; }
+
+.mf-flow-sub {
+  font-size: 12.5px; color: var(--c-muted); line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.mf-flow-example {
+  display: inline-flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 6px; padding: 8px 12px;
+  font-size: 12px; color: var(--c-muted); line-height: 1.5;
+}
+
+.mf-flow-example--t1 { border-color: rgba(204,0,0,0.1); background: rgba(204,0,0,0.015); }
+.mf-flow-example--t2 { border-color: rgba(204,0,0,0.18); background: rgba(204,0,0,0.03); }
+.mf-flow-example--t3 { border-color: rgba(204,0,0,0.28); background: rgba(204,0,0,0.05); }
+.mf-flow-example--t4 { border-color: rgba(139,0,0,0.35); background: rgba(139,0,0,0.06); }
+
+.mf-flow-example em {
+  font-style: normal; color: var(--c-muted);
+}
+
+.mf-ex-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  background: var(--c-border); border-radius: 3px; padding: 2px 5px;
+  color: var(--c-muted); flex-shrink: 0;
+}
+
+.mf-ex-tag--t1 { background: rgba(204,0,0,0.06); color: #C06060; }
+.mf-ex-tag--t2 { background: rgba(204,0,0,0.1); color: #AA2222; }
+.mf-ex-tag--t3 { background: rgba(204,0,0,0.15); color: #CC0000; }
+.mf-ex-tag--t4 { background: rgba(139,0,0,0.18); color: #8B0000; }
+
+/* Legacy stepper (kept for safety) */
+.mf-stepper { display: none; }
+.mf-st-line, .mf-st-line--key { display: none; }
+
+/* Code block */
+.mf-code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12.5px; line-height: 1.75;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 6px; padding: 18px 20px;
+  white-space: pre-wrap; word-break: break-word; color: var(--c-text); margin: 0;
+  max-height: 480px; overflow-y: auto;
+}
+.mf-badge {
+  font-size: 10.5px; font-family: monospace;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 4px; padding: 2px 6px; color: var(--c-muted); margin-left: 6px;
+}
+
+/* Code blocks inside flow steps */
+.mf-flow-code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px; line-height: 1.7;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 6px; padding: 14px 18px;
+  white-space: pre-wrap; word-break: break-word;
+  color: var(--c-text); margin: 8px 0 12px;
+  max-height: 400px; overflow-y: auto;
+}
+.mf-flow-code--ideology {
+  border-color: rgba(204,0,0,0.15);
+  background: rgba(204,0,0,0.02);
+}
+.mf-lens-bar {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin: 10px 0 4px;
+}
+.mf-lens-source {
+  font-size: 10px;
+  font-style: italic;
+  color: var(--c-muted);
+  margin-bottom: 6px;
+}
+
+/* Source pills */
+.mf-flow-pill-row {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+}
+.mf-pill {
+  font-size: 10.5px; font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 500; letter-spacing: 0.3px;
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: 4px; padding: 3px 8px; color: var(--c-muted);
+}
+
+/* ── Ficha Técnica (collapsed inside Metodologia) ────────────── */
+.mf-ficha-details {
+  margin-top: 40px;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  background: var(--c-surface);
+}
+.mf-ficha-summary {
+  padding: 16px 20px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mf-ficha-summary::-webkit-details-marker { display: none; }
+.mf-ficha-summary::before {
+  content: "▶";
+  font-size: 10px;
+  color: var(--c-muted);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.mf-ficha-details[open] > .mf-ficha-summary::before {
+  transform: rotate(90deg);
+}
+.mf-ficha-details[open] > .mf-ficha-summary {
+  border-bottom: 1px solid var(--c-border);
+}
+.mf-ficha-details #ficha {
+  padding: 20px;
+}
+

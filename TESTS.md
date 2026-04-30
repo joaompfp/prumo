@@ -1,7 +1,7 @@
 # CAE Dashboard: Test Suite Spec (v1)
 
 **Target:** 0% → 75% coverage
-**Stack:** stacks/jarbas/images/prumo (Python/FastAPI or Flask backend + frontend)
+**Stack:** stacks/web/images/prumo (Python/FastAPI or Flask backend + frontend)
 **App:** joao.date/dados — 422+ education indicators, multilingual, fuzzy search, batch headlines
 
 ## Priority 1 — Core Data Layer

@@ -21,7 +21,7 @@
 
 ```bash
 # Create virtual environment
-cd stacks/jarbas/images/cae-dashboard
+cd stacks/web/images/cae-dashboard
 python3 -m venv venv
 source venv/bin/activate
 

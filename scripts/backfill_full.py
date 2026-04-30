@@ -3,7 +3,7 @@
 backfill_full.py — Full data collection for PT, EU27, PALOPs.
 Uses existing collector clients. Writes to staging DuckDB.
 
-Run from host (cd stacks/jarbas/images/prumo):
+Run from host (cd stacks/web/images/prumo):
     python3 scripts/backfill_full.py [--eurostat] [--worldbank] [--oecd] [--all]
 """
 

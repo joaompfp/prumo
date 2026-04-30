@@ -2,6 +2,11 @@ from ..database import get_db
 from ..constants import CATALOG, UNIT_OVERRIDES
 from .helpers import compute_yoy, compute_trend, spark_data
 
+# Indicators where YoY is expressed as absolute pp change (saldo/index/rate)
+_PP_INDICATORS = ("confidence", "cli", "order_books", "euribor_3m", "euribor_6m", "euribor_12m")
+# Same set used for yoy_unit display
+_PP_DISPLAY = _PP_INDICATORS
+
 
 def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sentiment=False, scale_factor=1.0, unit_override=None, region=None):
     """Build a single KPI card for /api/resumo.
@@ -11,32 +16,20 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
     """
     try:
         conn = get_db(source)
-        try:
-            if region:
-                sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND region=? ORDER BY period"
-                params = [source, indicator, region]
-            else:
-                sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? ORDER BY period"
-                params = [source, indicator]
-            cursor = conn.execute(sql, params)
-            rows = cursor.fetchall()
-        finally:
-            conn.close()
-
         if detail_filter:
-            # Re-query with detail filter
-            conn = get_db(source)
-            try:
-                if region:
-                    sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND region=? AND detail LIKE ? ORDER BY period"
-                    params = [source, indicator, region, f"%{detail_filter}%"]
-                else:
-                    sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND detail LIKE ? ORDER BY period"
-                    params = [source, indicator, f"%{detail_filter}%"]
-                cursor = conn.execute(sql, params)
-                rows = cursor.fetchall()
-            finally:
-                conn.close()
+            if region:
+                sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND region=? AND detail LIKE ? ORDER BY period"
+                params = [source, indicator, region, f"%{detail_filter}%"]
+            else:
+                sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND detail LIKE ? ORDER BY period"
+                params = [source, indicator, f"%{detail_filter}%"]
+        elif region:
+            sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? AND region=? ORDER BY period"
+            params = [source, indicator, region]
+        else:
+            sql = "SELECT period, value, unit FROM indicators WHERE source=? AND indicator=? ORDER BY period"
+            params = [source, indicator]
+        rows = conn.execute(sql, params).fetchall()
 
         if not rows:
             return {"id": kpi_id, "label": label, "error": "no data"}
@@ -44,10 +37,6 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
         series = [{"period": r[0], "value": r[1], "unit": r[2]} for r in rows]
         latest = series[-1]
 
-        # Saldo/index/rate indicators — show absolute pp change, not % change
-        # Applies to: confidence (saldo), cli (OECD index ~100), order_books (saldo)
-        #             euribor_* (interest rates in % — pp delta is the meaningful metric)
-        _PP_INDICATORS = ("confidence", "cli", "order_books", "euribor_3m", "euribor_6m", "euribor_12m")
         if kpi_id in _PP_INDICATORS:
             yoy = None
             if len(series) >= 13:
@@ -58,7 +47,7 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
                         if pt["period"] == target and pt["value"] is not None:
                             yoy = round(latest["value"] - pt["value"], 2)  # absolute pp
                             break
-                except:
+                except Exception:
                     pass
         else:
             yoy = compute_yoy(series)
@@ -69,7 +58,7 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
         try:
             from datetime import datetime as _dt
             is_annual_period = len(_period_str) == 4 and int(_period_str) < _dt.now().year
-        except:
+        except Exception:
             is_annual_period = False
 
         trend_dir, trend_months = compute_trend(series)
@@ -89,7 +78,6 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
         display_spark = [{"period": pt["period"], "value": round(pt["value"], 2) if isinstance(pt["value"], float) else pt["value"]}
                          for pt in display_spark]
 
-        # Bug 3: apply human-readable unit overrides; then caller's unit_override takes precedence
         raw_unit = latest["unit"] or ""
         unit = unit_override if unit_override is not None else UNIT_OVERRIDES.get(raw_unit, raw_unit)
 
@@ -135,7 +123,7 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
                     month_name = month_names_pt[mo_prev - 1]
                     direction = "descida" if yoy < 0 else "subida"
                     context = f"{direction} de {abs(yoy):.2f} pp desde {month_name} {yr_prev}"
-                except:
+                except Exception:
                     sign = "+" if yoy >= 0 else ""
                     context = f"{sign}{yoy:.2f} pp face ao ano anterior"
         elif invert_sentiment and trend_dir == "up" and yoy is not None and yoy < 0 and trend_months >= 3:
@@ -148,8 +136,6 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
         elif yoy is not None:
             context = f"{'Subiu' if yoy > 0 else 'Desceu'} {abs(yoy):.1f}% face ao ano anterior"
 
-        # Saldo/index/rate indicators display yoy in pp
-        _PP_DISPLAY = ("confidence", "cli", "order_books", "euribor_3m", "euribor_6m", "euribor_12m")
         yoy_display_unit = "pp" if kpi_id in _PP_DISPLAY else None
 
         return {
@@ -173,7 +159,6 @@ def resumo_kpi(kpi_id, label, source, indicator, detail_filter=None, invert_sent
 def build_resumo():
     """Build /api/resumo response with 8 KPIs."""
     kpis = [
-        # Bug 5: use sector-specific indicator (complete data)
         resumo_kpi("industrial_production", "Produção Industrial",
                      "INE", "ipi_seasonal_cae_TOT"),
         resumo_kpi("unemployment", "Desemprego",

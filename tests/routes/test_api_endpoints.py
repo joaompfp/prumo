@@ -304,3 +304,114 @@ class TestExportEndpoint:
         assert resp.status_code in (200, 400, 500, 503), (
             f"Export endpoint: {resp.status_code}: {resp.text[:200]}"
         )
+
+
+class TestHealthReportEndpoint:
+    """Tests for /api/health/report endpoint (Sprint 2)."""
+
+    def test_health_report_returns_200(self, client):
+        """GET /api/health/report — always returns 200."""
+        resp = client.get("/api/health/report")
+        assert resp.status_code == 200
+
+    def test_health_report_has_status(self, client):
+        """GET /api/health/report — response has status field."""
+        resp = client.get("/api/health/report")
+        data = resp.json()
+        assert "status" in data
+        assert data["status"] in ("ok", "degraded")
+
+    def test_health_report_has_sources_list(self, client):
+        """GET /api/health/report — sources is a list."""
+        resp = client.get("/api/health/report")
+        data = resp.json()
+        if "sources" in data:
+            assert isinstance(data["sources"], list)
+            if data["sources"]:
+                entry = data["sources"][0]
+                assert "source" in entry
+                assert "indicators" in entry
+                assert "latest_period" in entry
+
+    def test_health_report_has_caches(self, client):
+        """GET /api/health/report — caches dict present."""
+        resp = client.get("/api/health/report")
+        data = resp.json()
+        assert "caches" in data
+        assert isinstance(data["caches"], dict)
+
+    def test_health_report_has_timestamp(self, client):
+        """GET /api/health/report — ts field present."""
+        resp = client.get("/api/health/report")
+        data = resp.json()
+        assert "ts" in data
+
+
+class TestCodebookEndpoint:
+    """Tests for /api/codebook endpoint (Sprint 2)."""
+
+    def test_codebook_returns_200(self, client):
+        """GET /api/codebook — returns 200."""
+        resp = client.get("/api/codebook")
+        assert resp.status_code == 200
+
+    def test_codebook_content_type_csv(self, client):
+        """GET /api/codebook — content type is text/csv."""
+        resp = client.get("/api/codebook")
+        assert "text/csv" in resp.headers.get("content-type", "")
+
+    def test_codebook_has_header_row(self, client):
+        """GET /api/codebook — first line has expected CSV columns."""
+        resp = client.get("/api/codebook")
+        lines = resp.text.strip().split("\n")
+        assert len(lines) >= 1
+        header = lines[0]
+        assert "source" in header
+        assert "indicator" in header
+        assert "label" in header
+
+
+class TestHealthzEndpoint:
+    """Tests for /healthz endpoint (Sprint 2 — DB-validated healthcheck)."""
+
+    def test_healthz_returns_response(self, client):
+        """GET /healthz — returns 200 response (may be JSON or HTML depending on route order)."""
+        resp = client.get("/healthz")
+        assert resp.status_code == 200
+        ct = resp.headers.get("content-type", "")
+        if "json" in ct:
+            data = resp.json()
+            assert "status" in data
+
+    def test_healthz_json_has_indicators(self, client):
+        """GET /healthz — JSON response has indicators count (if JSON)."""
+        resp = client.get("/healthz")
+        ct = resp.headers.get("content-type", "")
+        if "json" in ct and resp.status_code == 200:
+            data = resp.json()
+            assert "indicators" in data
+            assert isinstance(data["indicators"], int)
+
+    def test_healthz_json_has_latest_period(self, client):
+        """GET /healthz — JSON response has latest_period (if JSON)."""
+        resp = client.get("/healthz")
+        ct = resp.headers.get("content-type", "")
+        if "json" in ct and resp.status_code == 200:
+            data = resp.json()
+            assert "latest_period" in data
+
+
+class TestResponseTimingHeader:
+    """Tests for X-Response-Time header (Sprint 2)."""
+
+    def test_api_response_has_timing_header(self, client):
+        """API responses include X-Response-Time header."""
+        resp = client.get("/api/events")
+        assert "x-response-time" in resp.headers
+        timing = resp.headers["x-response-time"]
+        assert timing.endswith("ms")
+
+    def test_static_endpoint_has_timing_header(self, client):
+        """Static endpoint also has X-Response-Time header."""
+        resp = client.get("/api/lenses")
+        assert "x-response-time" in resp.headers

@@ -1,15 +1,11 @@
-"""Haiku interpretation service for Explorador/Analise charts."""
+"""Ollama interpretation service for Explorador/Analise charts."""
 import os
-import re
-import ssl as _ssl
-import urllib.request as _ur
 import hashlib
 import json
 import time
-from urllib.request import Request
 from ..config import CAE_DB_PATH, INTERPRET_CACHE_PATH, OUTPUT_LANGUAGES, DEFAULT_OUTPUT_LANGUAGE
 
-ANTHROPIC_KEY = os.environ.get("CAE_ANTHROPIC_TOKEN", "")
+ANTHROPIC_KEY = os.environ.get("CAE_ANTHROPIC_TOKEN", "")  # kept for painel_headline import compat
 _DATA_DIR = os.path.dirname(CAE_DB_PATH)
 _IDEOLOGY_PATH = os.path.join(_DATA_DIR, "ideology.txt")
 _CACHE_PATH = INTERPRET_CACHE_PATH
@@ -19,7 +15,8 @@ CACHE_TTL = 2592000  # 30 dias
 _cache: dict = {}
 try:
     if os.path.exists(_CACHE_PATH):
-        _disk = json.loads(open(_CACHE_PATH, encoding="utf-8").read())
+        with open(_CACHE_PATH, encoding="utf-8") as _f:
+            _disk = json.load(_f)
         now0 = time.time()
         _cache = {k: (v["ts"], v["result"]) for k, v in _disk.items()
                   if now0 - v["ts"] < CACHE_TTL}
@@ -31,11 +28,11 @@ except Exception as _e:
 def _save_cache() -> None:
     try:
         payload = {k: {"ts": v[0], "result": v[1]} for k, v in _cache.items()}
-        open(_CACHE_PATH, "w", encoding="utf-8").write(
-            json.dumps(payload, ensure_ascii=False, indent=2)
-        )
+        with open(_CACHE_PATH, "w", encoding="utf-8") as _f:
+            json.dump(payload, _f, ensure_ascii=False, indent=2)
     except Exception as e:
         print(f"[interpret] cache write error: {e}", flush=True)
+
 
 _IDEOLOGY_DEFAULT = (
     "És um analista económico que trabalha para a Comissão de Assuntos Económicos "
@@ -56,14 +53,6 @@ def _load_ideology() -> str:
         pass
     return _IDEOLOGY_DEFAULT
 
-# Build SSL context once at import time — explicitly loads proxy CA cert if set
-_ssl_ctx = _ssl.create_default_context()
-_cert_file = os.environ.get("SSL_CERT_FILE")
-if _cert_file and os.path.exists(_cert_file):
-    _ssl_ctx.load_verify_locations(_cert_file)
-    print(f"[interpret] SSL context loaded: {_cert_file}", flush=True)
-_opener = _ur.build_opener(_ur.HTTPSHandler(context=_ssl_ctx))
-
 
 def _parse_links(text: str) -> tuple:
     """Extract LINKS:[...] from text. Uses raw_decode for correct nested-JSON handling."""
@@ -80,25 +69,17 @@ def _parse_links(text: str) -> tuple:
 
 
 def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, custom_ideology: str = None, output_language: str = None):
-    """Call Claude Haiku (with web search) to interpret chart data.
-    Returns dict {"text": str, "links": list} or None if unconfigured.
+    """Call Ollama to interpret chart data.
+    Returns dict {"text": str, "links": list} or None on error.
     Optional lens parameter selects a political perspective (see ideology_lenses.py).
     When lens='custom', custom_ideology contains the user-provided ideology text.
     output_language selects the response language (key from site.json output_languages)."""
-    # ── LLM DISABLED: stub mode while validating charts ──
-    indicator_names = ", ".join(f"{s.get('source','?')}/{s.get('indicator','?')}" for s in series)
-    return {"text": f"[Análise IA desactivada — modo de validação de gráficos]\n\nIndicadores: {indicator_names}\nPeríodo: {from_p} → {to_p}\nLente: {lens or 'default'}", "links": []}
-    # ── END STUB ──
-
-    if not ANTHROPIC_KEY:
-        return None
-
     # Custom ideology gets its own cache key (hash of text), never 'default'
     lens_key = lens or "default"
     if lens == "custom" and custom_ideology:
         lens_key = "custom:" + hashlib.md5(custom_ideology.encode()).hexdigest()[:8]
     lang_key = output_language or DEFAULT_OUTPUT_LANGUAGE
-    # Quantize periods to quarter start for cache hits — ±1 month won't miss
+
     def _quantize(p):
         if not p or len(p) < 7:
             return p
@@ -108,6 +89,7 @@ def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, cust
             return f"{p[:5]}{q:02d}"
         except Exception:
             return p
+
     key = hashlib.md5(json.dumps(
         [{"s": s["source"], "i": s["indicator"]} for s in series] + [_quantize(from_p), _quantize(to_p), lens_key, lang_key]
     ).encode()).hexdigest()
@@ -121,33 +103,13 @@ def interpret_chart(series: list, from_p: str, to_p: str, lens: str = None, cust
         return None
 
     try:
-        body = json.dumps({
-            "model": "claude-sonnet-4-5-20251001" if lens_key == "kriolu" else "claude-haiku-4-5-20251001",
-            "max_tokens": 1400,
-            "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}],
-            "messages": [{"role": "user", "content": prompt}]
-        }).encode()
-
-        req = Request(
-            "https://api.anthropic.com/v1/messages",
-            data=body,
-            headers={
-                "x-api-key": ANTHROPIC_KEY,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json",
-            }
-        )
-
-        with _opener.open(req, timeout=35) as resp:
-            data = json.loads(resp.read())
-            # Collect text blocks (response may include server_tool_use/web_search_tool_result blocks)
-            text_parts = [b["text"] for b in data.get("content", []) if b.get("type") == "text"]
-            full_text = "\n".join(text_parts).strip()
-            text, links = _parse_links(full_text)
-            result = {"text": text, "links": links}
-            _cache[key] = (now, result)
-            _save_cache()
-            return result
+        from .claude_client import call_ollama
+        raw = call_ollama(prompt, num_predict=8000, timeout=120)
+        text, links = _parse_links(raw.strip())
+        result = {"text": text, "links": links}
+        _cache[key] = (now, result)
+        _save_cache()
+        return result
 
     except Exception as exc:
         print(f"[interpret] error: {exc}", flush=True)

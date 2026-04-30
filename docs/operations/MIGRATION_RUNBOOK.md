@@ -1,6 +1,6 @@
 # Prumo Migration Runbook (Jarbas)
 
-Purpose: safely adopt the new Prumo setup (first-run `/data` bootstrap + compose layering) on the current `stacks/jarbas` server with clear go/no-go gates and fast rollback.
+Purpose: safely adopt the new Prumo setup (first-run `/data` bootstrap + compose layering) on the current `stacks/web` server with clear go/no-go gates and fast rollback.
 
 > Scope: operational procedure only. Do not change app code or compose logic while executing this runbook.
 
@@ -9,7 +9,7 @@ Purpose: safely adopt the new Prumo setup (first-run `/data` bootstrap + compose
 ## 0) Quick go/no-go checklist (operator summary)
 
 - [ ] Confirm current service is healthy and reachable before touching anything.
-- [ ] Create timestamped backup of `stacks/jarbas/appdata/prumo` (including DB files).
+- [ ] Create timestamped backup of `stacks/web/appdata/prumo` (including DB files).
 - [ ] Validate effective compose config with stack entrypoint before cutover.
 - [ ] Rehearse with `docker compose ... config`/image inspect checks (no deploy yet).
 - [ ] During cutover, monitor startup logs and `/healthz` until healthy.
@@ -45,9 +45,9 @@ dc-jarbas-config prumo
 ```bash
 docker compose \
   --env-file /home/joao/docker/.env \
-  --env-file /home/joao/docker/stacks/jarbas/.env \
+  --env-file /home/joao/docker/stacks/web/.env \
   -p jarbas \
-  -f /home/joao/docker/stacks/jarbas/compose.yml \
+  -f /home/joao/docker/stacks/web/compose.yml \
   config
 ```
 
@@ -67,17 +67,17 @@ Decision point A (Go/No-Go):
 
 ## 2) Backup procedure (mandatory)
 
-Back up the full appdata tree and make DB-specific copies under `stacks/jarbas/appdata/prumo`.
+Back up the full appdata tree and make DB-specific copies under `stacks/web/appdata/prumo`.
 
 ```bash
 set -euo pipefail
 TS="$(date +%Y%m%d-%H%M%S)"
-SRC="/home/joao/docker/stacks/jarbas/appdata/prumo"
-DST_DIR="/home/joao/docker/stacks/jarbas/appdata/_backup_prumo"
+SRC="/home/joao/docker/stacks/web/appdata/prumo"
+DST_DIR="/home/joao/docker/stacks/web/appdata/_backup_prumo"
 mkdir -p "$DST_DIR"
 
 # Full appdata backup
-tar -C /home/joao/docker/stacks/jarbas/appdata -czf "$DST_DIR/prumo-$TS.tgz" prumo
+tar -C /home/joao/docker/stacks/web/appdata -czf "$DST_DIR/prumo-$TS.tgz" prumo
 
 # Explicit DB backups (if present)
 [ -f "$SRC/cae-data.duckdb" ] && cp -a "$SRC/cae-data.duckdb" "$DST_DIR/cae-data.duckdb.$TS"
@@ -106,7 +106,7 @@ dc-jarbas-config prumo | sed -n '/services:/,/volumes:/p'
 ```
 
 Check specifically:
-- `/home/joao/docker/stacks/jarbas/appdata/prumo:/data:rw`
+- `/home/joao/docker/stacks/web/appdata/prumo:/data:rw`
 - expected service name `prumo`
 - expected healthcheck on `/healthz`
 - expected routes (cae domain + `/dados` path labels)
@@ -114,7 +114,7 @@ Check specifically:
 2. Capture pre-cutover fingerprints of files that bootstrap could touch:
 
 ```bash
-APPDATA="/home/joao/docker/stacks/jarbas/appdata/prumo"
+APPDATA="/home/joao/docker/stacks/web/appdata/prumo"
 stat "$APPDATA/site.json" || true
 find "$APPDATA/ideologies" -maxdepth 1 -type f -print0 | xargs -0 sha256sum 2>/dev/null || true
 [ -f "$APPDATA/README-DB.txt" ] && sha256sum "$APPDATA/README-DB.txt" || true
@@ -183,7 +183,7 @@ curl -fsS https://joao.date/dados/api/ficha
 3. Confirm `/data` bootstrap did **not** overwrite existing data:
 
 ```bash
-APPDATA="/home/joao/docker/stacks/jarbas/appdata/prumo"
+APPDATA="/home/joao/docker/stacks/web/appdata/prumo"
 
 # site.json should preserve local customizations if file already existed
 stat "$APPDATA/site.json"
@@ -220,8 +220,8 @@ Example restore commands:
 ```bash
 set -euo pipefail
 TS_OR_FILE="<backup-timestamp-or-filename>"
-BACKUP_DIR="/home/joao/docker/stacks/jarbas/appdata/_backup_prumo"
-TARGET_BASE="/home/joao/docker/stacks/jarbas/appdata"
+BACKUP_DIR="/home/joao/docker/stacks/web/appdata/_backup_prumo"
+TARGET_BASE="/home/joao/docker/stacks/web/appdata"
 
 # Stop/recreate path handled by stack command later; restore files first when needed.
 # WARNING: destructive for current prumo appdata content.
@@ -236,8 +236,8 @@ If only DB must be restored:
 
 ```bash
 cp -a \
-  "/home/joao/docker/stacks/jarbas/appdata/_backup_prumo/cae-data.duckdb.<TS>" \
-  "/home/joao/docker/stacks/jarbas/appdata/prumo/cae-data.duckdb"
+  "/home/joao/docker/stacks/web/appdata/_backup_prumo/cae-data.duckdb.<TS>" \
+  "/home/joao/docker/stacks/web/appdata/prumo/cae-data.duckdb"
 source /home/joao/.bash_aliases
 dc-jarbas-rec prumo
 ```

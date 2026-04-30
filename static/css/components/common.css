@@ -1,0 +1,107 @@
+/* ═══════════════════════════════════════════════════════════════
+   Sections CSS — Layout específico por secção
+   CAE Dashboard V4
+   ═══════════════════════════════════════════════════════════════ */
+
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--c-text);
+  color: var(--c-bg);
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease; /* m6: slightly smoother */
+  z-index: 9999;
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Provenance badges ──────────────────────────────────────────── */
+.badge-source {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  line-height: 1;
+  vertical-align: middle;
+}
+.badge-oficial   { background: var(--c-badge-positive-bg); color: var(--c-positive); }
+.badge-composto  { background: var(--c-badge-neutral-bg);  color: var(--c-muted); }
+.badge-ia        { background: var(--c-badge-negative-bg); color: var(--c-pt); }
+.badge-stale     { background: var(--c-callout-warning-bg); color: var(--c-callout-warning-text); }
+
+/* ── M1: Table horizontal scroll wrapper (mobile) ───────────────── */
+.table-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 8px 0;
+}
+.table-scroll-wrap table {
+  min-width: 480px; /* ensures the table doesn't collapse, triggers scroll on mobile */
+}
+@media (max-width: 600px) {
+  .table-scroll-wrap {
+    margin: 4px -8px; /* bleed to edge to maximise usable width */
+    padding: 0 8px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CAE v9 Sprint — Track A, B, C additions
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Track A: Nav brand V9 ──────────────────────────────────────── */
+.nav-brand-cae {
+  font-weight: 800;
+  color: var(--c-text);
+  letter-spacing: -0.5px;
+}
+.nav-brand-sep {
+  color: var(--c-border);
+  margin: 0 1px;
+  font-weight: 300;
+}
+.nav-brand-pt {
+  color: var(--c-pt);
+  font-weight: 700;
+}
+
+/* ── Track A: Footer V9 ─────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--c-border);
+  padding: var(--sp-lg) var(--sp-xl);
+  margin-top: var(--sp-2xl);
+  background: var(--c-surface);
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  flex-wrap: wrap;
+  font-size: var(--fs-xs);
+  color: var(--c-muted);
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+.footer-copy { font-weight: 600; color: var(--c-text-sub); }
+.footer-sep  { color: var(--c-border); }
+.footer-link { color: var(--c-eu); text-decoration: none; }
+.footer-link:hover { text-decoration: underline; }
+.footer-sources { font-style: italic; }
+
+@media (max-width: 600px) {
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .footer-sep { display: none; }
+}

@@ -64,7 +64,7 @@ def send_telegram_alert(report: dict):
     if errors == 0:
         return
 
-    # Read bot token from openclaw config (same pattern as infisical timeout alert)
+    # Read bot token from environment (injected by dc-jarbas-up via SOPS).
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
 

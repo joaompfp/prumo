@@ -38,6 +38,7 @@ Central reference for all Prumo project documentation, organized by topic and us
 - **[content/pcp-estatutos.md](content/pcp-estatutos.md)** — PCP party platform reference
 - **[content/pcp-programa.md](content/pcp-programa.md)** — PCP political program (for ideology lenses)
 - **[research/hugo-integration-research.md](research/hugo-integration-research.md)** — Hugo CMS exploration
+- **[research/historical-energy-prices-eu-us-portugal.md](research/historical-energy-prices-eu-us-portugal.md)** — Historical energy prices reference for EU/US/Portugal
 
 ### Testing
 - **[testing/](testing/)** — Test fixtures, data, and test documentation

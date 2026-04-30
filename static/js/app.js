@@ -140,20 +140,20 @@ function _updateLensHintBar(lenses) {
   const party = lens?.party;
   if (party) {
     const art = _PARTY_ARTICLE[party] || 'do';
-    disclaimer = `Análise simulada — não constitui posição oficial ${art} ${party}`;
+    disclaimer = typeof i18n !== 'undefined' ? i18n.t('lens.disclaimer_party', { article: art, party: party }) : `Análise simulada — não constitui posição oficial ${art} ${party}`;
   } else if (lensId === 'cae') {
-    disclaimer = 'Análise simulada — perspectiva editorial do operador desta instância';
+    disclaimer = typeof i18n !== 'undefined' ? i18n.t('lens.disclaimer_cae') : 'Análise simulada — perspectiva editorial do operador desta instância';
   } else if (lensId === 'custom') {
-    disclaimer = 'Análise simulada — lente personalizada pelo utilizador';
+    disclaimer = typeof i18n !== 'undefined' ? i18n.t('lens.disclaimer_custom') : 'Análise simulada — lente personalizada pelo utilizador';
   } else {
-    disclaimer = 'Análise gerada por IA — meramente indicativa';
+    disclaimer = typeof i18n !== 'undefined' ? i18n.t('lens.disclaimer_default') : 'Análise gerada por IA — meramente indicativa';
   }
   // Preserve the dropdown if it's currently inside the bar (avoid destroying it on re-render)
   const dropdown = document.getElementById('lens-dropdown');
   const dropdownInBar = dropdown && dropdown.parentNode === bar;
   if (dropdownInBar) bar.removeChild(dropdown);
 
-  bar.innerHTML = `<span class="lens-hint-prefix">Lente:</span><span class="lens-hint-icon">${icon}</span><span class="lens-hint-label">${lens?.short || lensId}</span><span class="lens-hint-sep">·</span><span class="lens-hint-disclaimer">${disclaimer}</span>`;
+  bar.innerHTML = `<span class="lens-hint-prefix">${typeof i18n !== 'undefined' ? i18n.t('lens.label') : 'Lente'}:</span><span class="lens-hint-icon">${icon}</span><span class="lens-hint-label">${lens?.short || lensId}</span><span class="lens-hint-sep">·</span><span class="lens-hint-disclaimer">${disclaimer}</span>`;
 
   // Re-attach dropdown if it was here before
   if (dropdownInBar && dropdown) {
@@ -279,12 +279,15 @@ const App = (() => {
     navigate(currentSection());
   }
 
-  function errorHTML(msg) {
+  function errorHTML(msg, retryFn) {
+    const id = '_retry_' + Math.random().toString(36).slice(2, 8);
+    if (retryFn) window[id] = retryFn;
+    const action = retryFn ? `window['${id}']()` : 'location.reload()';
     return `<div class="error-state" style="flex-direction:column;gap:12px;height:auto;padding:40px 20px">
       <span style="font-size:28px">⚠️</span>
-      <p style="margin:0;font-size:14px;font-weight:600;color:#333">Não foi possível carregar os dados</p>
-      <p style="margin:0;font-size:12px;color:#888">${msg}</p>
-      <button onclick="location.reload()" style="margin-top:4px;padding:8px 20px;background:#CC0000;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit">
+      <p style="margin:0;font-size:14px;font-weight:600;color:var(--c-text)">Não foi possível carregar os dados</p>
+      <p style="margin:0;font-size:12px;color:var(--c-muted)">${msg}</p>
+      <button onclick="${action}" style="margin-top:4px;padding:8px 20px;background:var(--c-pt);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit">
         Tentar novamente
       </button>
     </div>`;
@@ -371,7 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── Global language selector (nav bar) ────────────────────────────
   const langContainer = document.getElementById('nav-lang-selector');
   if (langContainer) {
-    const langKeys = Object.keys(OUTPUT_LANGUAGES);
+    // Only show languages with available i18n translation files
+    const READY_LANGUAGES = new Set(['pt', 'en']);
+    const langKeys = Object.keys(OUTPUT_LANGUAGES).filter(k => READY_LANGUAGES.has(k));
     if (langKeys.length > 1) {
       const current = getOutputLanguage();
       langContainer.innerHTML = `<button class="lang-toggle" id="lang-toggle" title="Língua / Language / Langue">${_flagImg(current)}</button>
@@ -396,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === lang));
         dropdown.classList.add('hidden');
         window.dispatchEvent(new CustomEvent('language-change', { detail: { language: lang } }));
+        if (typeof i18n !== 'undefined') i18n.setLang(lang);
       });
     } else {
       langContainer.style.display = 'none';
@@ -414,8 +420,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const bar = document.createElement('div');
         bar.className = 'hero-compact-bar';
         bar.innerHTML = `
-          <span class="hero-compact-title">Economia portuguesa, verificada.</span>
-          <button class="hero-compact-expand" title="Expandir apresentação">↓ Sobre o Prumo</button>`;
+          <span class="hero-compact-title">${typeof i18n !== 'undefined' ? i18n.t('hero.compact_title') : 'Economia portuguesa, verificada.'}</span>
+          <span class="hero-compact-snapshot" id="hero-compact-snapshot"></span>
+          <button class="hero-compact-expand" title="${typeof i18n !== 'undefined' ? i18n.t('hero.expand_label') : 'About Prumo'}">↓ ${typeof i18n !== 'undefined' ? i18n.t('hero.expand_label') : 'About Prumo'}</button>`;
         hero.insertBefore(bar, hero.firstChild);
         bar.querySelector('.hero-compact-expand').addEventListener('click', () => {
           hero.classList.remove('compact', 'hidden');
@@ -431,6 +438,88 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     document.getElementById('hero-dismiss')?.addEventListener('click', dismiss);
     document.getElementById('hero-cta-explore')?.addEventListener('click', dismiss);
+
+    // ── Snapshot: fetch and render data highlights in hero ──────────
+    (function _fetchAndRenderSnapshot() {
+    const BASE = window.__BASE_PATH__ || '';
+    const container = document.getElementById('hero-snapshot');
+    const compactEl = document.getElementById('hero-compact-snapshot');
+
+    // Show loading state in full hero
+    if (container) {
+      container.innerHTML = '<div class="snapshot-loading"><div class="loading-spinner"></div><span>A carregar destaques\u2026</span></div>';
+    }
+
+    const snapshotLang = (typeof i18n !== 'undefined') ? i18n.lang() : 'pt';
+    fetch(`${BASE}/api/snapshot?lang=${snapshotLang}`)
+      .then(r => r.json())
+      .then(data => {
+        if (!data || !data.highlights || !data.highlights.length) {
+          if (container) container.innerHTML = '';
+          return;
+        }
+
+        // ── Render full hero snapshot ──────────────────────────────
+        if (container) {
+          const mood = data.mood || 'mixed';
+          const moodLabel = data.mood_label || 'Sinais mistos';
+          const icons = { positive: '+', negative: '\u2013' }; // + and – (endash)
+
+          // Split into positive and negative groups
+          const posItems = data.highlights.filter(h => h.sentiment === 'positive');
+          const negItems = data.highlights.filter(h => h.sentiment !== 'positive');
+
+          let html = '<div class="snapshot-fade-in">';
+          html += '<div class="snapshot-columns">';
+
+          // Positive column
+          html += '<div class="snapshot-col snapshot-col--positive">';
+          html += `<div class="snapshot-col-heading snapshot-col-heading--positive">${typeof i18n !== 'undefined' ? i18n.t('snapshot.positive_heading') : 'Sinais positivos'}</div>`;
+          posItems.forEach(h => {
+            html += `<div class="snapshot-item snapshot-item--positive">`;
+            html += `<span class="snapshot-icon">+</span>`;
+            html += `<span class="snapshot-sentence">${_escapeHtml(h.sentence)}</span>`;
+            html += '</div>';
+          });
+          html += '</div>';
+
+          // Negative column
+          html += '<div class="snapshot-col snapshot-col--negative">';
+          html += `<div class="snapshot-col-heading snapshot-col-heading--negative">${typeof i18n !== 'undefined' ? i18n.t('snapshot.negative_heading') : 'Sinais negativos'}</div>`;
+          negItems.forEach(h => {
+            html += `<div class="snapshot-item snapshot-item--negative">`;
+            html += `<span class="snapshot-icon">\u2013</span>`;
+            html += `<span class="snapshot-sentence">${_escapeHtml(h.sentence)}</span>`;
+            html += '</div>';
+          });
+          html += '</div>';
+
+          html += '</div>'; // close columns
+          html += '</div>';
+          const ref = data.reference || 'Variação face ao ano anterior';
+          html += `<div class="snapshot-meta">Dados: ${_escapeHtml(data.updated_label || data.updated)} · ${_escapeHtml(ref)}</div>`;
+          html += '</div>';
+          container.innerHTML = html;
+        }
+
+        // ── Render compact hero teaser (first highlight) ──────────
+        if (compactEl && data.highlights.length > 0) {
+          const first = data.highlights[0];
+          const mood = data.mood || 'mixed';
+          compactEl.innerHTML = `<span class="compact-mood-dot compact-mood-dot--${mood}"></span>${_escapeHtml(first.sentence)}`;
+        }
+      })
+      .catch(err => {
+        console.warn('[snapshot] fetch error:', err);
+        if (container) container.innerHTML = '';
+      });
+    })();
+  }
+
+  /** Minimal HTML escaping to prevent XSS in template-filled sentences. */
+  function _escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   // ── Language selector prompt — show only on first visit ──────────────────

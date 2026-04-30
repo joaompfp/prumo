@@ -74,53 +74,53 @@ App.registerSection('explorador', async () => {
     <div class="explorador-wrap">
       <!-- Guided exploration paths -->
       <div class="exp-guided-paths" id="exp-guided">
-        <span class="exp-guided-label">Explorar:</span>
-        <button class="exp-path-btn" data-path="custo_vida">Custo de Vida</button>
-        <button class="exp-path-btn" data-path="emprego">Emprego</button>
-        <button class="exp-path-btn" data-path="energia">Energia</button>
-        <button class="exp-path-btn" data-path="industria">Indústria</button>
-        <button class="exp-path-btn" data-path="macro">Conjuntura</button>
+        <span class="exp-guided-label">${i18n.t('explorador.guided.label')}:</span>
+        <button class="exp-path-btn" data-path="custo_vida">${i18n.t('explorador.guided.cost_of_living')}</button>
+        <button class="exp-path-btn" data-path="emprego">${i18n.t('explorador.guided.employment')}</button>
+        <button class="exp-path-btn" data-path="energia">${i18n.t('explorador.guided.energy')}</button>
+        <button class="exp-path-btn" data-path="industria">${i18n.t('explorador.guided.industry')}</button>
+        <button class="exp-path-btn" data-path="macro">${i18n.t('explorador.guided.macro')}</button>
       </div>
 
       <div class="explorador-search-bar">
         <input id="exp-search" class="swd-input" type="text"
-               placeholder="Pesquisar indicadores..." autocomplete="off">
+               placeholder="${i18n.t('explorador.search_placeholder')}" autocomplete="off">
         <select id="exp-source-filter" class="swd-select">
-          <option value="">Todas as fontes</option>
+          <option value="">${i18n.t('explorador.all_sources')}</option>
         </select>
       </div>
 
       <div id="exp-results" class="explorador-results hidden"></div>
 
       <div class="explorador-chips" id="exp-chips">
-        <span class="chip-placeholder" id="exp-chip-placeholder">Selecciona indicadores acima (máx. 5)</span>
-        <button class="exp-clear-btn hidden" id="exp-clear-btn" title="Limpar todos os indicadores">Limpar</button>
+        <span class="chip-placeholder" id="exp-chip-placeholder">${i18n.t('explorador.chip_placeholder')}</span>
+        <button class="exp-clear-btn hidden" id="exp-clear-btn" title="${i18n.t('explorador.btn.clear_all')}">${i18n.t('explorador.btn.clear')}</button>
       </div>
 
       <div class="explorador-timerange">
-        <label>De: <input id="exp-from" class="swd-input compact" type="text"
+        <label>${i18n.t('explorador.label.from')}: <input id="exp-from" class="swd-input compact" type="text"
                           placeholder="YYYY-MM" maxlength="7"></label>
-        <label>Até: <input id="exp-to" class="swd-input compact" type="text"
+        <label>${i18n.t('explorador.label.to')}: <input id="exp-to" class="swd-input compact" type="text"
                            placeholder="YYYY-MM" maxlength="7"></label>
         <div class="time-presets">
           <button class="time-preset-btn" data-years="1">1A</button>
           <button class="time-preset-btn" data-years="2">2A</button>
           <button class="time-preset-btn active" data-years="5">5A</button>
           <button class="time-preset-btn" data-years="10">10A</button>
-          <button class="time-preset-btn" data-years="0">Tudo</button>
+          <button class="time-preset-btn" data-years="0">${i18n.t('explorador.time.all')}</button>
         </div>
-        <button class="time-preset-btn" id="exp-render-btn">Ver →</button>
-        <button class="time-preset-btn" id="exp-ai-btn" title="Análise automática com IA" disabled>✦ IA</button>
+        <button class="time-preset-btn" id="exp-render-btn">${i18n.t('explorador.btn.view')}</button>
+        <button class="time-preset-btn" id="exp-ai-btn" title="${i18n.t('explorador.btn.ai_title')}" disabled>✦ IA</button>
       </div>
 
       <div class="analise-layout">
         <div class="explorador-chart-container" id="exp-chart-wrap">
           <div class="explorador-empty-state">
-            Selecciona indicadores para visualizar
+            ${i18n.t('explorador.empty_state')}
           </div>
         </div>
         <details id="ai-panel-details" class="ai-panel-collapsible">
-          <summary class="ai-panel-summary">✦ Análise Automática</summary>
+          <summary class="ai-panel-summary">✦ ${i18n.t('explorador.ai.title')}</summary>
           <div id="ai-panel">
             <div class="ai-context" id="ai-panel-context"></div>
             <div id="ai-panel-text"></div>
@@ -139,10 +139,10 @@ App.registerSection('explorador', async () => {
       <div id="explorador-ficha" class="explorador-ficha"></div>
 
       <div class="explorador-actions">
-        <button class="btn-toggle active" id="exp-btn-chart">Gráfico</button>
-        <button class="btn-toggle" id="exp-btn-table">Tabela</button>
+        <button class="btn-toggle active" id="exp-btn-chart">${i18n.t('explorador.btn.chart')}</button>
+        <button class="btn-toggle" id="exp-btn-table">${i18n.t('explorador.btn.table')}</button>
         <button class="btn-action" id="exp-btn-csv">CSV</button>
-        <button class="btn-action" id="exp-btn-share">Partilhar</button>
+        <button class="btn-action" id="exp-btn-share">${i18n.t('explorador.btn.share')}</button>
       </div>
     </div>`;
 
@@ -174,7 +174,7 @@ App.registerSection('explorador', async () => {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     catalog = await resp.json();
   } catch (e) {
-    body.innerHTML = App.errorHTML(`Erro ao carregar catálogo: ${e.message}`);
+    body.innerHTML = App.errorHTML(`${i18n.t('explorador.error_catalog')}: ${e.message}`, () => App.navigate('explorador'));
     return;
   }
 
@@ -237,7 +237,7 @@ App.registerSection('explorador', async () => {
     }
 
     if (!filtered.length) {
-      elResults.innerHTML = '<div class="exp-no-results">Sem resultados</div>';
+      elResults.innerHTML = `<div class="exp-no-results">${i18n.t('explorador.no_results')}</div>`;
       elResults.classList.remove('hidden');
       return;
     }
@@ -265,7 +265,7 @@ App.registerSection('explorador', async () => {
         </div>`;
       });
       if (items.length > 30) {
-        html += `<div class="exp-group-more">+ ${items.length - 30} mais. Refina a pesquisa.</div>`;
+        html += `<div class="exp-group-more">${i18n.t('explorador.more_results', {count: items.length - 30})}</div>`;
       }
       html += '</div>';
     }
@@ -318,11 +318,11 @@ App.registerSection('explorador', async () => {
   // ── Chip management ───────────────────────────────────────────
   function addIndicator(source, indicator, label, unit) {
     if (selected.length >= 5) {
-      App.showToast('Máximo de 5 indicadores atingido');
+      App.showToast(i18n.t('explorador.toast.max_indicators'));
       return;
     }
     if (selected.some(s => s.source === source && s.indicator === indicator)) {
-      App.showToast('Indicador já seleccionado');
+      App.showToast(i18n.t('explorador.toast.already_selected'));
       return;
     }
     selected.push({ source, indicator, label, unit });
@@ -369,7 +369,7 @@ App.registerSection('explorador', async () => {
         chip.innerHTML = `
           <span class="chip-dot" style="background:${SERIES_COLORS[i] || '#999'}"></span>
           <span class="chip-text">${s.source} — ${s.label}</span>
-          <button class="chip-remove" title="Remover">×</button>`;
+          <button class="chip-remove" title="${i18n.t('explorador.btn.remove')}">×</button>`;
         chip.querySelector('.chip-remove').addEventListener('click', () => {
           removeIndicator(s.source, s.indicator);
         });
@@ -387,18 +387,18 @@ App.registerSection('explorador', async () => {
     }
 
     const freqLabel = f => ({
-      monthly: 'Mensal', annual: 'Anual', weekly: 'Semanal',
-      semester: 'Semestral', quarterly: 'Trimestral',
+      monthly: i18n.t('ficha.freq.monthly'), annual: i18n.t('ficha.freq.annual'), weekly: i18n.t('ficha.freq.weekly'),
+      semester: i18n.t('ficha.freq.semester'), quarterly: i18n.t('ficha.freq.quarterly'),
     }[f] || f || 'n/d');
 
     container.innerHTML = `
       <details class="ficha-inline-details">
-      <summary class="ficha-inline-title">Ficha técnica dos indicadores seleccionados</summary>
+      <summary class="ficha-inline-title">${i18n.t('explorador.ficha.title')}</summary>
       ${selected.map((s, i) => {
         const srcData = catalog[s.source] || {};
         const indData = (srcData.indicators || {})[s.indicator] || {};
         const color = SERIES_COLORS[i % SERIES_COLORS.length];
-        return `<div class="ficha-inline-card" data-source="${s.source}" data-indicator="${s.indicator}" title="Clique para ver na Ficha Técnica">
+        return `<div class="ficha-inline-card" data-source="${s.source}" data-indicator="${s.indicator}" title="${i18n.t('explorador.ficha.click_to_view')}">
           <div class="ficha-inline-header">
             <span class="ficha-color-dot" style="background:${color}"></span>
             <strong>${s.label}</strong>
@@ -407,12 +407,12 @@ App.registerSection('explorador', async () => {
           <div class="ficha-inline-body">
             ${indData.description ? `<p class="ficha-inline-desc">${indData.description}</p>` : ''}
             <div class="ficha-inline-meta">
-              <span>Código: <code class="indicator-shortcode">${s.indicator}</code></span>
-              <span>Unidade: <strong>${s.unit || indData.unit || 'n/d'}</strong></span>
-              <span>Frequência: <strong>${freqLabel(indData.frequency)}</strong></span>
-              <span>Cobertura: <strong>${indData.since || '?'} — ${indData.until || '?'}</strong></span>
-              <span>Observações: <strong>${indData.rows_pt || indData.rows || 'n/d'}</strong></span>
-              <button class="ficha-cite-btn" data-source="${s.source}" data-indicator="${s.indicator}" data-label="${encodeURIComponent(s.label)}" data-src-label="${encodeURIComponent(srcData.label || s.source)}" title="Copiar citação">Citar</button>
+              <span>${i18n.t('explorador.ficha.code')}: <code class="indicator-shortcode">${s.indicator}</code></span>
+              <span>${i18n.t('explorador.ficha.unit')}: <strong>${s.unit || indData.unit || 'n/d'}</strong></span>
+              <span>${i18n.t('explorador.ficha.frequency')}: <strong>${freqLabel(indData.frequency)}</strong></span>
+              <span>${i18n.t('explorador.ficha.coverage')}: <strong>${indData.since || '?'} — ${indData.until || '?'}</strong></span>
+              <span>${i18n.t('explorador.ficha.observations')}: <strong>${indData.rows_pt || indData.rows || 'n/d'}</strong></span>
+              <button class="ficha-cite-btn" data-source="${s.source}" data-indicator="${s.indicator}" data-label="${encodeURIComponent(s.label)}" data-src-label="${encodeURIComponent(srcData.label || s.source)}" title="${i18n.t('explorador.ficha.copy_citation')}">${i18n.t('explorador.ficha.cite')}</button>
             </div>
           </div>
         </div>`;
@@ -442,9 +442,9 @@ App.registerSection('explorador', async () => {
         const label = decodeURIComponent(btn.dataset.label);
         const srcLabel = decodeURIComponent(btn.dataset.srcLabel);
         const today = new Date().toISOString().slice(0, 10);
-        const citation = `${label}. Fonte: ${srcLabel}. In: Prumo PT (${window.location.origin}/dados). Acedido em ${today}.`;
+        const citation = `${label}. ${i18n.t('explorador.ficha.citation_source')}: ${srcLabel}. In: Prumo PT (${window.location.origin}/dados). ${i18n.t('explorador.ficha.citation_accessed')} ${today}.`;
         navigator.clipboard.writeText(citation).then(() => {
-          App.showToast('Citação copiada!');
+          App.showToast(i18n.t('explorador.toast.citation_copied'));
         });
       });
     });
@@ -556,7 +556,7 @@ App.registerSection('explorador', async () => {
     if (linksEl) { linksEl.innerHTML = ''; linksEl.style.display = 'none'; }
     if (footer) footer.textContent = '';
 
-    text.innerHTML = '<span class="ai-loading">A gerar análise IA…</span>';
+    text.innerHTML = `<span class="ai-loading">${i18n.t('explorador.ai.loading')}</span>`;
     if (elAIBtn) { elAIBtn.classList.add('active'); elAIBtn.disabled = false; }
 
     try {
@@ -592,7 +592,7 @@ App.registerSection('explorador', async () => {
         if (linksEl) {
           const links = data.links || [];
           if (links.length) {
-            linksEl.innerHTML = `<span class="ai-links-label">🔗 Leitura relacionada:</span>` +
+            linksEl.innerHTML = `<span class="ai-links-label">🔗 ${i18n.t('explorador.ai.related_reading')}:</span>` +
               links.map(l => `<a href="${l.url}" target="_blank" rel="noopener noreferrer" title="${l.url}">${l.title || l.url}</a>`).join('');
             linksEl.style.display = '';
           } else {
@@ -602,8 +602,8 @@ App.registerSection('explorador', async () => {
         }
         // Footer with timestamp
         if (footer) footer.textContent = cached
-          ? `Análise em cache (sessão)`
-          : `Análise gerada: ${new Date().toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`;
+          ? i18n.t('explorador.ai.cached')
+          : `${i18n.t('explorador.ai.generated')}: ${new Date().toLocaleTimeString('pt-PT', {hour:'2-digit',minute:'2-digit'})}`;
       } else {
         if (elAIBtn) elAIBtn.classList.remove('active');
       }
@@ -617,7 +617,7 @@ App.registerSection('explorador', async () => {
   // ── Clear chart ───────────────────────────────────────────────
   function clearChart() {
     if (chartInst) { SWD.destroyChart(chartInst); chartInst = null; }
-    elChartWrap.innerHTML = '<div class="explorador-empty-state">Selecciona indicadores para visualizar</div>';
+    elChartWrap.innerHTML = `<div class="explorador-empty-state">${i18n.t('explorador.empty_state')}</div>`;
     elTableWrap.classList.add('hidden');
     lastSeries = [];
     const _aiDetails = document.getElementById('ai-panel-details');
@@ -638,7 +638,7 @@ App.registerSection('explorador', async () => {
     // Version guard: discard results from older concurrent renders
     const myVersion = ++renderVersion;
 
-    elChartWrap.innerHTML = '<div class="loading-state"><div class="loading-spinner"></div><span>A carregar séries…</span></div>';
+    elChartWrap.innerHTML = `<div class="loading-state"><div class="loading-spinner"></div><span>${i18n.t('explorador.loading_series')}</span></div>`;
 
     const fromV = elFrom.value || '';
     const toV   = elTo.value   || nowYM();
@@ -732,7 +732,7 @@ App.registerSection('explorador', async () => {
           convBanner.id = 'exp-conv-notice';
           convBanner.className = 'exp-info-banner';
         }
-        convBanner.textContent = `Conversão automática de unidades: ${conversions.join(' | ')}`;
+        convBanner.textContent = `${i18n.t('explorador.unit_conversion')}: ${conversions.join(' | ')}`;
         const analiseLayout = elChartWrap.parentNode;
         if (convBanner.parentNode !== analiseLayout.parentNode) {
           analiseLayout.parentNode.insertBefore(convBanner, analiseLayout);
@@ -750,9 +750,9 @@ App.registerSection('explorador', async () => {
           banner.className = 'exp-warning-banner';
         }
         if (yMode === 'dual') {
-          banner.textContent = `Dois eixos verticais — esquerdo: ${units[0]} · direito: ${units[1]}`;
+          banner.textContent = i18n.t('explorador.dual_axis', {left: units[0], right: units[1]});
         } else {
-          banner.textContent = `Unidades incompatíveis (${units.join(', ')}) — o gráfico pode ser enganador. Considera usar o modo Indexado.`;
+          banner.textContent = i18n.t('explorador.incompatible_units', {units: units.join(', ')});
         }
         const analiseLayout = elChartWrap.parentNode;
         if (banner.parentNode !== analiseLayout) {
@@ -779,8 +779,8 @@ App.registerSection('explorador', async () => {
           freqNote.id = 'exp-freq-note';
           freqNote.className = 'exp-info-banner';
         }
-        const freqLabel = f => ({ monthly: 'mensal', annual: 'anual', weekly: 'semanal', semester: 'semestral', quarterly: 'trimestral' }[f] || f);
-        freqNote.textContent = `Nota: frequências diferentes (${[...freqs].map(freqLabel).join(', ')}) — dados trimestrais ligados entre pontos`;
+        const freqLabel2 = f => ({ monthly: i18n.t('ficha.freq.monthly'), annual: i18n.t('ficha.freq.annual'), weekly: i18n.t('ficha.freq.weekly'), semester: i18n.t('ficha.freq.semester'), quarterly: i18n.t('ficha.freq.quarterly') }[f] || f);
+        freqNote.textContent = i18n.t('explorador.freq_mismatch', {freqs: [...freqs].map(freqLabel2).join(', ')});
         const analiseLayout = elChartWrap.parentNode;
         if (freqNote.parentNode !== analiseLayout) {
           analiseLayout.insertBefore(freqNote, elChartWrap);
@@ -801,7 +801,7 @@ App.registerSection('explorador', async () => {
 
       updateURL();
     } catch (e) {
-      elChartWrap.innerHTML = `<div class="error-state">Erro: ${e.message}</div>`;
+      elChartWrap.innerHTML = `<div class="error-state">${i18n.t('explorador.error')}: ${e.message}</div>`;
       console.error('[explorador] render error:', e);
     }
   }
@@ -878,7 +878,7 @@ App.registerSection('explorador', async () => {
       yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[0] || '', ..._yNameStyle(SERIES_COLORS[0]) });
       yAxes.push({ ...SWD.valueAxis({ scale: true }), name: units[1] || units[0] || '', ..._yNameStyleR(SERIES_COLORS[1]), position: 'right' });
     } else {
-      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: 'Index (início=100)', ..._yNameStyle('#888') });
+      yAxes.push({ ...SWD.valueAxis({ scale: true }), name: i18n.t('explorador.index_label'), ..._yNameStyle('#888') });
     }
 
     const baseOpts = SWD.baseOptions();
@@ -950,7 +950,7 @@ App.registerSection('explorador', async () => {
       )
     )].sort().reverse();
 
-    const headers = ['Período', ...lastSeries.map(s => `${s.source} — ${s.label}`)];
+    const headers = [i18n.t('explorador.table.period'), ...lastSeries.map(s => `${s.source} — ${s.label}`)];
     const byPeriod = lastSeries.map(s =>
       Object.fromEntries(s.data.map(d => [normPeriod(d.period), d.value]))
     );
@@ -995,7 +995,7 @@ App.registerSection('explorador', async () => {
 
   // ── CSV Export ────────────────────────────────────────────────
   elBtnCSV.addEventListener('click', () => {
-    if (!selected.length) { App.showToast('Selecciona indicadores primeiro'); return; }
+    if (!selected.length) { App.showToast(i18n.t('explorador.toast.select_first')); return; }
     const srcParam = selected.map(s => s.source).join(',');
     const indParam = selected.map(s => s.indicator).join(',');
     let url = `${BASE}/api/export?sources=${encodeURIComponent(srcParam)}&indicators=${encodeURIComponent(indParam)}`;
@@ -1009,9 +1009,9 @@ App.registerSection('explorador', async () => {
   // ── Share ─────────────────────────────────────────────────────
   elBtnShare.addEventListener('click', () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
-      App.showToast('Link copiado!');
+      App.showToast(i18n.t('explorador.toast.link_copied'));
     }).catch(() => {
-      App.showToast('Copia o URL manualmente');
+      App.showToast(i18n.t('explorador.toast.copy_url_manually'));
     });
   });
 
