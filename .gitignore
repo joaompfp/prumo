@@ -47,3 +47,12 @@ docs/design/**/*.pbix
 # Seed database (generated, not committed)
 seed_data/seed.duckdb
 .github/
+
+# Local agent/tooling state (Claude Code settings + skills, GitNexus index,
+# Playwright MCP screenshots/console logs) and audit run logs
+.claude/
+.gitnexus/
+.playwright-mcp/
+docs/testing/.claude/
+docs/testing/.playwright-mcp/
+docs/testing/*.log
