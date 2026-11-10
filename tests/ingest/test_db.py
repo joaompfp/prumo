@@ -117,3 +117,46 @@ def test_served_view_returns_latest_vintage_only(db):
     _obs(db, r3, f3, value=3.0)
     assert _served(db) == [("s1", "2025", 2.0)]
 
+
+
+def test_legacy_never_hides_verified_fetched(db):
+    _series(db, "Z")
+    r1, f1 = _run(db, "verified"), _raw(db)
+    _obs(db, r1, f1, period="2020", value=1.0, series="Z")
+    r2 = _run(db, "verified")
+    _obs(db, r2, None, period="2020", value=7.0, series="Z", kind="legacy-unverified")
+    db.conn.execute("UPDATE setting SET value='1' WHERE key='legacy_served'")
+    assert _served(db) == [("Z", "2020", 1.0)]
+
+
+def test_legacy_served_when_enabled_and_no_fetched(db):
+    _series(db)
+    run = _run(db, "verified")
+    _obs(db, run, None, value=7.0, kind="legacy-unverified")
+    db.conn.execute("UPDATE setting SET value='1' WHERE key='legacy_served'")
+    assert _served(db) == [("s1", "2025", 7.0)]
+
+
+def test_legacy_hidden_when_setting_off(db):
+    _series(db)
+    run = _run(db, "verified")
+    _obs(db, run, None, kind="legacy-unverified")
+    assert _served(db) == []
+
+
+def test_legacy_in_pending_run_hidden_even_when_enabled(db):
+    _series(db)
+    run = _run(db, "pending-verification")
+    _obs(db, run, None, kind="legacy-unverified")
+    db.conn.execute("UPDATE setting SET value='1' WHERE key='legacy_served'")
+    assert _served(db) == []
+
+
+@pytest.mark.parametrize("vt", ["NULL", "''"])
+def test_rejects_null_or_empty_value_text(db, vt):
+    _series(db)
+    run, raw = _run(db), _raw(db)
+    with pytest.raises(sqlite3.IntegrityError):
+        db.conn.execute(
+            "INSERT INTO observation(series_id,period,value_text,value,kind,dataset_run_id,raw_fetch_id,fetched_at)"
+            f" VALUES ('s1','2025',{vt},1.0,'fetched',?,?,'t')", (run, raw))

@@ -50,7 +50,7 @@ CREATE TABLE observation(
   id INTEGER PRIMARY KEY,
   series_id TEXT NOT NULL REFERENCES series(id),
   period TEXT NOT NULL,
-  value_text TEXT,
+  value_text TEXT NOT NULL CHECK (length(value_text) > 0),
   value REAL NOT NULL,
   status_flag TEXT,
   kind TEXT NOT NULL CHECK (kind IN ('fetched','legacy-unverified')),
@@ -137,7 +137,7 @@ CREATE TABLE setting(
 INSERT INTO setting(key, value) VALUES ('legacy_served', '0');
 
 -- Latest observation per (series, period) among those from verified runs;
--- legacy rows count only when legacy_served='1' (and are superseded by any later row).
+-- legacy rows count only when legacy_served='1' and never when a fetched row exists.
 CREATE VIEW served_observation AS
 WITH eligible AS (
   SELECT o.* FROM observation o
@@ -148,4 +148,6 @@ WITH eligible AS (
 SELECT e.* FROM eligible e
 WHERE NOT EXISTS (
   SELECT 1 FROM eligible n
-  WHERE n.series_id = e.series_id AND n.period = e.period AND n.id > e.id);
+  WHERE n.series_id = e.series_id AND n.period = e.period
+    AND ((e.kind = 'legacy-unverified' AND n.kind = 'fetched')
+         OR (n.kind = e.kind AND n.id > e.id)));
