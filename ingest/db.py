@@ -21,6 +21,32 @@ class Db:
         else:
             self.conn.execute("COMMIT")
 
+    def upsert_source_and_series(self, sources: list[dict], series: list[dict]) -> None:
+        """Idempotent registry sync. `series` rows reference their source by `source_name`."""
+        with self.transaction() as c:
+            for s in sources:
+                c.execute(
+                    "INSERT INTO source(name, licence, licence_url, attribution, redistribution_ok) "
+                    "VALUES (:name, :licence, :licence_url, :attribution, :redistribution_ok) "
+                    "ON CONFLICT(name) DO UPDATE SET licence=excluded.licence, "
+                    "licence_url=excluded.licence_url, attribution=excluded.attribution, "
+                    "redistribution_ok=excluded.redistribution_ok",
+                    {**s, "redistribution_ok": int(s["redistribution_ok"])})
+            for r in series:
+                c.execute(
+                    "INSERT INTO series(id, source_id, indicator_key, role, theme, geography, "
+                    "frequency, unit, multiplier, seasonal_adjustment, base_year, native_code, url, active) "
+                    "VALUES (:id, (SELECT id FROM source WHERE name = :source_name), :indicator_key, "
+                    ":role, :theme, :geography, :frequency, :unit, :multiplier, :seasonal_adjustment, "
+                    ":base_year, :native_code, :url, :active) "
+                    "ON CONFLICT(id) DO UPDATE SET source_id=excluded.source_id, "
+                    "indicator_key=excluded.indicator_key, role=excluded.role, theme=excluded.theme, "
+                    "geography=excluded.geography, frequency=excluded.frequency, unit=excluded.unit, "
+                    "multiplier=excluded.multiplier, seasonal_adjustment=excluded.seasonal_adjustment, "
+                    "base_year=excluded.base_year, native_code=excluded.native_code, "
+                    "url=excluded.url, active=excluded.active",
+                    {**r, "active": int(r["active"])})
+
     def close(self) -> None:
         self.conn.close()
 
