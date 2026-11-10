@@ -5,7 +5,7 @@ import unicodedata
 from datetime import date, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, ValidationInfo, field_validator, model_validator
 
 Frequency = Literal["A", "S", "Q", "M", "D"]
 
@@ -61,18 +61,39 @@ def normalize_period(raw: str, frequency: str) -> str:
     raise ValueError(f"cannot normalize period {raw!r} as frequency {frequency}")
 
 
-def parse_number(text: str) -> float:
-    """'1 234,5' -> 1234.5. Rejects blanks, markers (':' '..' 'n/d'), inf and nan."""
-    cleaned = re.sub(r"[\s  ]", "", str(text)).replace(",", ".")
-    if not re.fullmatch(r"[+-]?(\d+(\.\d*)?|\.\d+)", cleaned):
-        raise ValueError(f"not a number: {text!r}")
-    v = float(cleaned)
+_SPACES = " \u00a0\u202f"
+
+
+def _number_re(decimal: str) -> re.Pattern:
+    dec = re.escape(decimal)
+    thousands = (",") if decimal == "." else "."
+    sep = re.escape(thousands) + _SPACES
+    return re.compile(
+        rf"[+-]?(?:[0-9]{{1,3}}(?P<t>[{sep}])[0-9]{{3}}(?:(?P=t)[0-9]{{3}})*|[0-9]+)"
+        rf"(?:{dec}[0-9]+)?")
+
+
+_NUMBER_RES = {".": _number_re("."), ",": _number_re(",")}
+
+
+def parse_number(text: str, decimal: str = ".") -> float:
+    """Strict: `decimal` is declared, never guessed. The other of ',' / '.' and spaces are
+    accepted only as thousands separators in groups of exactly 3 digits."""
+    if decimal not in _NUMBER_RES:
+        raise ValueError(f"decimal must be '.' or ',', got {decimal!r}")
+    s = str(text).strip(_SPACES)
+    m = _NUMBER_RES[decimal].fullmatch(s)
+    if not m:
+        raise ValueError(f"not a number (decimal={decimal!r}): {text!r}")
+    clean = re.sub(rf"[^0-9{re.escape(decimal)}+-]", "", s).replace(decimal, ".")
+    v = float(clean)
     if not math.isfinite(v):
         raise ValueError(f"not finite: {text!r}")
     return v
 
 
 class Observation(BaseModel):
+    """value is always the parse of value_text; build with from_raw (or pass a consistent pair)."""
     series_id: str
     period: str
     value_text: str  # verbatim source text
@@ -80,24 +101,28 @@ class Observation(BaseModel):
     status_flag: str | None = None
     released_at: datetime | None = None
 
+    @classmethod
+    def from_raw(cls, series_id: str, period: str, value_text: str, decimal: str = ".",
+                 status_flag: str | None = None, released_at: datetime | None = None) -> "Observation":
+        return cls.model_validate(
+            dict(series_id=series_id, period=period, value_text=value_text,
+                 value=parse_number(value_text, decimal),
+                 status_flag=status_flag, released_at=released_at),
+            context={"decimal": decimal})
+
     @field_validator("value", mode="before")
     @classmethod
-    def _parse_value(cls, v):
-        return parse_number(v) if isinstance(v, str) else v
-
-    @field_validator("value")
-    @classmethod
-    def _finite(cls, v: float) -> float:
-        if not math.isfinite(v):
-            raise ValueError("value must be finite")
+    def _numeric_only(cls, v):
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            raise ValueError("value must be a number; use Observation.from_raw to parse text")
         return v
 
-    @field_validator("value_text")
-    @classmethod
-    def _nonempty(cls, v: str) -> str:
-        if not v.strip():
-            raise ValueError("value_text must be non-empty")
-        return v
+    @model_validator(mode="after")
+    def _value_matches_text(self, info: ValidationInfo):
+        decimal = (info.context or {}).get("decimal", ".")
+        if parse_number(self.value_text, decimal) != self.value:
+            raise ValueError("value does not match value_text")
+        return self
 
 
 class SourceSpec(BaseModel):
@@ -135,6 +160,7 @@ class SeriesSpec(BaseModel):
     active: bool = True
     schedule: str | None = None  # interval like "1d"/"7d"; None = default by frequency
     throttle_rps: float = 1.0
+    decimal: Literal[".", ","] = "."  # declared decimal separator of the source's numbers
 
     @field_validator("unit")
     @classmethod

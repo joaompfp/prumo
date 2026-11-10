@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ingest.models import Observation, normalize_period
+from ingest.models import Observation, normalize_period, parse_number
 
 
 @pytest.mark.parametrize("raw,freq,expected", [
@@ -29,20 +29,56 @@ def test_normalize_period_rejects_garbage(raw, freq):
         normalize_period(raw, freq)
 
 
-def _obs(**kw):
-    base = dict(series_id="s1", period="2025-09", value_text="1", value=1.0)
-    base.update(kw)
-    return Observation(**base)
-
-
-@pytest.mark.parametrize("text", [":", "..", "", "n/d", "abc", "nan", "inf"])
+@pytest.mark.parametrize("text", [":", "..", "", "n/d", "abc", "nan", "inf", "1e3", "\u22125",
+                                  "(5)", "5%", "1_000", "1,23", "1,234,56", "\u0663"])
 def test_observation_rejects_non_numeric(text):
-    with pytest.raises(ValidationError):
-        Observation(series_id="s1", period="2025-09", value_text=text, value=text)
+    with pytest.raises(ValueError):
+        Observation.from_raw("s1", "2025-09", text)
 
 
-def test_observation_parses_comma_decimal_and_keeps_text():
-    o = Observation(series_id="s1", period="2025-09", value_text="1 234,5", value="1 234,5")
-    assert o.value == 1234.5
-    assert o.value_text == "1 234,5"
+def test_observation_from_raw_keeps_text_and_parses():
+    o = Observation.from_raw("s1", "2025-09", "1 234.5")
+    assert (o.value, o.value_text) == (1234.5, "1 234.5")
+    o = Observation.from_raw("s1", "2025-09", "1.234,5", decimal=",")
+    assert (o.value, o.value_text) == (1234.5, "1.234,5")
     assert o.status_flag is None and o.released_at is None
+
+
+def test_observation_consistent_pair_accepted():
+    assert Observation(series_id="s", period="2025", value_text="1.5", value=1.5).value == 1.5
+
+
+def test_observation_mismatched_value_rejected():
+    with pytest.raises(ValidationError):
+        Observation(series_id="s", period="2025", value_text="999", value=1.0)
+
+
+def test_observation_non_numeric_text_rejected_even_with_numeric_value():
+    with pytest.raises(ValidationError):
+        Observation(series_id="s", period="2025", value_text="n/d", value=1.0)
+
+
+@pytest.mark.parametrize("v", [True, False, "1.0"])
+def test_observation_rejects_bool_and_str_value(v):
+    with pytest.raises(ValidationError):
+        Observation(series_id="s", period="2025", value_text="1", value=v)
+
+
+@pytest.mark.parametrize("text,decimal,expected", [
+    ("1.234", ".", 1.234), ("1.234", ",", 1234.0),
+    ("1,234", ".", 1234.0), ("1,234", ",", 1.234),
+    ("1,234.5", ".", 1234.5), ("1 234", ".", 1234.0), ("1\u00a0234", ".", 1234.0),
+    ("1\u202f234,5", ",", 1234.5), ("1.234,5", ",", 1234.5), ("1 234,5", ",", 1234.5),
+    ("-12,5", ",", -12.5), ("+3.5", ".", 3.5), ("0", ".", 0.0), ("1,234,567", ".", 1234567.0),
+])
+def test_parse_number_ok(text, decimal, expected):
+    assert parse_number(text, decimal) == expected
+
+
+@pytest.mark.parametrize("text,decimal", [
+    ("1,23", "."), ("1,234,56", "."), ("1,234.5", ","), ("1.23.4", ","), ("12 34", "."),
+    ("1,234 567", "."), ("", "."), ("1.", "."), ("1e3", "."), ("1_000", "."),
+])
+def test_parse_number_rejects(text, decimal):
+    with pytest.raises(ValueError):
+        parse_number(text, decimal)

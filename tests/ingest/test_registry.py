@@ -29,6 +29,14 @@ def test_registry_loads_with_defaults(tmp_path):
     specs = load_registry(_write(tmp_path, {"ine": SRC}, [_series("a")]))
     assert specs[0].source.name == "ine"
     assert specs[0].schedule is None and specs[0].throttle_rps == 1.0
+    assert specs[0].decimal == "."
+
+
+def test_registry_decimal_roundtrip_and_validation(tmp_path):
+    specs = load_registry(_write(tmp_path, {"ine": SRC}, [{**_series("a"), "decimal": ","}]))
+    assert specs[0].decimal == ","
+    with pytest.raises(ValueError):
+        load_registry(_write(tmp_path, {"ine": SRC}, [{**_series("a"), "decimal": ";"}]))
 
 
 def test_registry_exactly_one_primary_per_indicator_key(tmp_path):
