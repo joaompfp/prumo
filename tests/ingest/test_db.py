@@ -2,7 +2,7 @@ import sqlite3
 
 import pytest
 
-from ingest.db import open_db
+from ingest.db import MIGRATIONS_DIR, open_db
 
 
 def _series(db, sid="s1", frequency="A", unit="EUR"):
@@ -46,7 +46,8 @@ def test_open_applies_migrations_once(tmp_path):
     open_db(p).close()
     d = open_db(p)
     rows = d.conn.execute("SELECT version FROM schema_migration").fetchall()
-    assert len(rows) == 1
+    assert sorted(r[0] for r in rows) == sorted(f.stem for f in MIGRATIONS_DIR.glob("[0-9]*.sql"))
+    assert len(rows) >= 2
     assert d.conn.execute("PRAGMA foreign_keys").fetchone()[0] == 1
     assert d.conn.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
 
@@ -160,3 +161,10 @@ def test_rejects_null_or_empty_value_text(db, vt):
         db.conn.execute(
             "INSERT INTO observation(series_id,period,value_text,value,kind,dataset_run_id,raw_fetch_id,fetched_at)"
             f" VALUES ('s1','2025',{vt},1.0,'fetched',?,?,'t')", (run, raw))
+
+
+def test_0002_adds_dataset_key_and_raw_fetch_run_link(db):
+    cols = {r[1] for r in db.conn.execute("PRAGMA table_info(dataset_run)")}
+    assert "dataset_key" in cols
+    cols = {r[1] for r in db.conn.execute("PRAGMA table_info(raw_fetch)")}
+    assert "dataset_run_id" in cols

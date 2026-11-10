@@ -1,4 +1,5 @@
 """The only module that touches SQL. Schema lives in versioned migrations/NNNN_*.sql."""
+import json
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
@@ -46,6 +47,79 @@ class Db:
                     "base_year=excluded.base_year, native_code=excluded.native_code, "
                     "url=excluded.url, active=excluded.active",
                     {**r, "active": int(r["active"])})
+
+    # --- pipeline (Task 6) -------------------------------------------------------------------
+    # Write methods below issue plain statements: called outside `transaction()` each statement
+    # autocommits; called inside it they join that transaction.
+
+    def begin_run(self, source_name: str, dataset_key: str, started_at: str) -> int:
+        """New dataset_run in state 'running'. The source must already be registered."""
+        cur = self.conn.execute(
+            "INSERT INTO dataset_run(source_id, started_at, state, dataset_key) "
+            "VALUES ((SELECT id FROM source WHERE name = ?), ?, 'running', ?)",
+            (source_name, started_at, dataset_key))
+        return cur.lastrowid
+
+    def set_run_state(self, run_id: int, state: str, finished_at: str | None = None) -> None:
+        self.conn.execute(
+            "UPDATE dataset_run SET state = ?, finished_at = COALESCE(?, finished_at) WHERE id = ?",
+            (state, finished_at, run_id))
+
+    def run_state(self, run_id: int) -> str:
+        return self.conn.execute("SELECT state FROM dataset_run WHERE id = ?", (run_id,)).fetchone()[0]
+
+    def previous_run(self, dataset_key: str, before_run_id: int) -> tuple[int, str] | None:
+        """(id, state) of the latest dataset_run with this key and id < before_run_id."""
+        return self.conn.execute(
+            "SELECT id, state FROM dataset_run WHERE dataset_key = ? AND id < ? "
+            "ORDER BY id DESC LIMIT 1", (dataset_key, before_run_id)).fetchone()
+
+    def record_raw_fetch(self, *, source_name: str, run_id: int, url: str, params_json: str | None,
+                         fetched_at: str, http_status: int | None, sha256: str, path: str,
+                         n_bytes: int, ok: bool) -> int:
+        cur = self.conn.execute(
+            "INSERT INTO raw_fetch(source_id, dataset_run_id, url, params_json, fetched_at, "
+            "http_status, sha256, path, bytes, ok) "
+            "VALUES ((SELECT id FROM source WHERE name = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (source_name, run_id, url, params_json, fetched_at, http_status, sha256, path,
+             n_bytes, int(ok)))
+        return cur.lastrowid
+
+    def raw_fetch_shas(self, run_id: int) -> list[str]:
+        """sha256 of every raw payload fetched by the run, sorted."""
+        return [r[0] for r in self.conn.execute(
+            "SELECT sha256 FROM raw_fetch WHERE dataset_run_id = ? ORDER BY sha256", (run_id,))]
+
+    def served_fetched_values(self, series_id: str) -> dict[str, str]:
+        """period -> value_text currently served from verified *fetched* data (legacy excluded)."""
+        return dict(self.conn.execute(
+            "SELECT period, value_text FROM served_observation "
+            "WHERE series_id = ? AND kind = 'fetched'", (series_id,)))
+
+    def write_observations(self, run_id: int, raw_fetch_id: int, fetched_at: str,
+                           observations: list) -> None:
+        """Insert `ingest.models.Observation`s in order (order = vintage: highest id is latest)."""
+        self.conn.executemany(
+            "INSERT INTO observation(series_id, period, value_text, value, status_flag, kind, "
+            "dataset_run_id, raw_fetch_id, fetched_at, released_at) "
+            "VALUES (?, ?, ?, ?, ?, 'fetched', ?, ?, ?, ?)",
+            [(o.series_id, o.period, o.value_text, o.value, o.status_flag, run_id, raw_fetch_id,
+              fetched_at, o.released_at.isoformat() if o.released_at else None)
+             for o in observations])
+
+    def write_quarantine(self, run_id: int, series_id: str, rejections: list,
+                         created_at: str) -> None:
+        """Insert `ingest.validate.Rejection`s for one series."""
+        self.conn.executemany(
+            "INSERT INTO quarantine(dataset_run_id, series_id, raw_period, raw_value, reason, "
+            "created_at) VALUES (?, ?, ?, ?, ?, ?)",
+            [(run_id, series_id, r.period_raw, r.value_raw, r.reason, created_at)
+             for r in rejections])
+
+    def add_event(self, ts: str, kind: str, run_id: int | None, detail: dict | None = None) -> None:
+        self.conn.execute(
+            "INSERT INTO event(ts, dataset_run_id, kind, detail_json) VALUES (?, ?, ?, ?)",
+            (ts, run_id, kind, json.dumps(detail, sort_keys=True) if detail is not None else None))
 
     def close(self) -> None:
         self.conn.close()
