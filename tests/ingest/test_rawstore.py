@@ -66,3 +66,14 @@ def test_load_refuses_path_outside_root(tmp_path):
     outside.write_bytes(b"x")
     with pytest.raises(ValueError):
         RawStore(tmp_path / "raw").load(outside)
+
+
+@pytest.mark.parametrize("damage", [b"bad", b""], ids=["corrupt", "zero_length"])
+def test_save_repairs_corrupt_existing_file(tmp_path, damage):
+    store = RawStore(tmp_path)
+    sha, path = store.save("ine", BODY)
+    path.write_bytes(damage)
+    assert store.save("ine", BODY) == (sha, path)
+    assert path.read_bytes() == BODY
+    assert store.load(path) == BODY
+    assert [p.name for p in path.parent.iterdir()] == [sha]

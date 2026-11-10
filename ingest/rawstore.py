@@ -21,7 +21,7 @@ class RawStore:
             raise ValueError(f"invalid source name: {source!r}")
         sha = hashlib.sha256(body).hexdigest()
         path = self.root / source / sha[:2] / sha
-        if path.exists():
+        if path.is_file() and path.read_bytes() == body:
             return sha, path
         path.parent.mkdir(parents=True, exist_ok=True)
         fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=".tmp-")
