@@ -13,16 +13,26 @@ DUPLICATE_PERIOD = "duplicate_period"
 
 @dataclass(frozen=True)
 class RawRow:
-    period_raw: str
-    value_raw: str
+    """The publisher's tokens, verbatim. None in period_raw/value_raw means "no data" in the source."""
+    period_raw: str | None
+    value_raw: str | None
     unit_raw: str | None = None
     flag_raw: str | None = None
+
+    def __post_init__(self):
+        # Numbers are never coerced to str here: that would silently lose formatting ("1.10" -> "1.1").
+        for name in ("period_raw", "value_raw", "unit_raw", "flag_raw"):
+            v = getattr(self, name)
+            if v is not None and not isinstance(v, str):
+                raise TypeError(
+                    f"RawRow.{name} must be str or None, got {type(v).__name__}: adapters must pass "
+                    "the publisher's token as a str (e.g. json.loads(..., parse_float=str, parse_int=str))")
 
 
 @dataclass(frozen=True)
 class Rejection:
-    period_raw: str
-    value_raw: str
+    period_raw: str | None
+    value_raw: str | None
     reason: str
 
 
@@ -42,6 +52,8 @@ def validate(spec: SeriesSpec, rows: Iterable[RawRow]) -> tuple[list[Observation
     for row in rows:
         checked.append((row, _check(spec, row)))
 
+    # Deliberate: duplicates are evaluated only among rows that otherwise passed, so a copy that
+    # fails another check keeps that reason and does not make its valid twin a duplicate.
     # A period appearing more than once in one payload is a format anomaly we cannot arbitrate,
     # so every occurrence is rejected, even when the values are identical.
     counts = Counter(r.period for _, r in checked if isinstance(r, Observation))
@@ -59,10 +71,14 @@ def validate(spec: SeriesSpec, rows: Iterable[RawRow]) -> tuple[list[Observation
 
 
 def _check(spec: SeriesSpec, row: RawRow) -> Observation | str:
+    if row.period_raw is None:
+        return BAD_PERIOD
     try:
         period = normalize_period(row.period_raw, spec.frequency)
     except ValueError:
         return BAD_PERIOD
+    if row.value_raw is None:
+        return NON_NUMERIC
     value_text = row.value_raw.strip()
     try:
         obs = Observation.from_raw(spec.id, period, value_text, decimal=spec.decimal,

@@ -1,3 +1,5 @@
+import pytest
+
 from ingest.models import SeriesSpec, SourceSpec
 from ingest.validate import RawRow, Rejection, validate
 
@@ -123,3 +125,49 @@ def test_order_preserved_and_period_normalized():
 def test_accepts_generator():
     obs, _ = validate(make_spec(), (row(f"2024-0{i}", str(i)) for i in range(1, 4)))
     assert len(obs) == 3
+
+
+def test_none_value_is_non_numeric_and_none_period_is_bad_period():
+    obs, rej = validate(make_spec(), [row("2024-01", None), row(None, "1"), row(None, None)])
+    assert obs == []
+    assert rej == [Rejection("2024-01", None, "non_numeric"),
+                   Rejection(None, "1", "bad_period"),
+                   Rejection(None, None, "bad_period")]
+
+
+def test_none_row_does_not_abort_payload():
+    obs, rej = validate(make_spec(), [row("2024-01", "1"), row("2024-02", None), row("2024-03", "3")])
+    assert [o.period for o in obs] == ["2024-01", "2024-03"]
+    assert reasons(rej) == ["non_numeric"]
+
+
+@pytest.mark.parametrize("kwargs", [
+    dict(period_raw="2024-01", value_raw=1.5),
+    dict(period_raw="2024-01", value_raw=1),
+    dict(period_raw="2024-01", value_raw=True),
+    dict(period_raw="2024-01", value_raw=b"1"),
+    dict(period_raw=2024, value_raw="1"),
+    dict(period_raw="2024-01", value_raw="1", unit_raw=5),
+    dict(period_raw="2024-01", value_raw="1", flag_raw=1.0),
+])
+def test_non_str_token_is_contract_violation(kwargs):
+    with pytest.raises(TypeError, match="adapters must pass the publisher's token as a str"):
+        RawRow(**kwargs)
+
+
+def test_three_copies_all_duplicate():
+    obs, rej = validate(make_spec(), [row("2024-01", "1"), row("2024-01", "1"), row("2024-01", "2")])
+    assert obs == []
+    assert reasons(rej) == ["duplicate_period"] * 3
+
+
+def test_copy_failing_numeric_does_not_make_twin_duplicate():
+    obs, rej = validate(make_spec(), [row("2024-01", "1"), row("2024-01", "abc")])
+    assert [(o.period, o.value_text) for o in obs] == [("2024-01", "1")]
+    assert rej == [Rejection("2024-01", "abc", "non_numeric")]
+
+
+def test_copy_failing_unit_does_not_make_twin_duplicate():
+    obs, rej = validate(make_spec(unit="EUR"), [row("2024-01", "1", "EUR"), row("2024-01", "2", "USD")])
+    assert [(o.period, o.value_text) for o in obs] == [("2024-01", "1")]
+    assert rej == [Rejection("2024-01", "2", "unit_mismatch")]
