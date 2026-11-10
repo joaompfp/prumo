@@ -2,88 +2,40 @@
 
 ## Role
 
-Edit and maintain Prumo — FastAPI + DuckDB + ECharts economic dashboard for Portugal.
-Repo: `joaompfp/prumo` (this directory). Live: `https://cae.joao.date`
+Prumo is being rebuilt around a new `ingest/` data pipeline (see `docs/superpowers/specs/2026-11-10-base-data-pipeline-design.md`).
+The legacy UI was removed (recoverable at git tag `legacy-ui-final`); the app currently serves an "Em manutenção" page and `/healthz`.
+Repo: `joaompfp/prumo` (this directory). Live: `https://cae.joao.date`, `https://joao.date/dados`. Host: f0nix.
 
 ## Path Mapping
 
 | Location | Container Path | Notes |
 |----------|---------------|-------|
-| `.` (this dir) | `/app` | Code: Python, JS, CSS, templates |
-| `./appdata/` | `/data` | Runtime data (symlink, see below) |
+| `app/`, `static/` | `/app/...` | Bind-mounted `:ro` |
+| `appdata/` | `/data` | Runtime data, gitignored, never commit |
 
-### Appdata (`./appdata/` → `../../appdata/prumo/`)
+## Deploy Workflow (on f0nix, repo in `~/docker`)
 
-Symlink to the runtime data dir, bind-mounted as `/data` in the container. Gitignored — **never commit appdata**.
-
-| File | Purpose |
-|------|---------|
-| `cae-data.duckdb` | Main DB (read-only, 422+ indicators) |
-| `site.json` | Runtime config (languages, paths, defaults) |
-| `ideology.txt` | Active ideology lens text |
-| `ideologies/` | Political lens files (one .txt per party) |
-| `interpret-cache.json` | AI interpretation cache (30d TTL) |
-| `painel-analysis-cache.json` | Painel IA analysis cache |
-| `painel-headline-cache.json` | Headline cache (6h TTL) |
-| `analytics.db` | SQLite usage tracking |
-| `audit-log.jsonl` | Nightly audit trail |
-
-## Deploy Workflow
-
-All `dc-*` commands require aliases:
-
-```bash
-source ~/.bash_aliases
-```
+Use the `dc-web-*` aliases via `bash -lic`; never raw `docker compose` or `docker run`.
 
 | Action | Command |
 |--------|---------|
-| **Build + deploy** | `dc-jarbas-up` |
-| **Restart only** | `dc-jarbas restart prumo` |
-| **Logs** | `dc-jarbas logs -f prumo` |
-| **Shell** | `dc-jarbas exec prumo sh` |
-| **Status** | `dc-jarbas ps` |
-| **Recreate** | `dc-jarbas-rec prumo` |
+| **Build + deploy** | `bash -lic "dc-web-up prumo"` |
+| **Logs** | `bash -lic "dc-web logs -f prumo"` |
+| **Status** | `bash -lic "dc-web ps"` |
 
-**NEVER `dc-jarbas up -d`** — skips SOPS secret decryption and injection. Always `dc-jarbas-up`.
-
-## Live Reload vs Rebuild
-
-`app/`, `static/`, `templates/` are bind-mounted `:ro` — restart picks up changes:
-```bash
-source ~/.bash_aliases && dc-jarbas restart prumo
-```
-
-**Rebuild needed** (`dc-jarbas-up`) for:
-`Dockerfile`, `requirements.txt`, `prompts/`, `scripts/`, `collectors/`, `seed_data/`, `stats_lib/`
+Compose file: `~/docker/stacks/web/compose/prumo.yml`. Code: `~/docker/stacks/web/images/prumo`.
 
 ## Testing
 
 ```bash
-# In-container (production DB)
-source ~/.bash_aliases && dc-jarbas exec prumo python -m pytest tests/ -x -q --tb=short
-
-# Local (seed DB)
-source venv/bin/activate
-CAE_DB_PATH=seed_data/seed.duckdb pytest tests/ -m "not integration and not slow" -v
+pytest tests/ -v
 ```
-
-## Key Env Vars
-
-| Var | Purpose |
-|-----|---------|
-| `CAE_DB_PATH` | DuckDB path (default `/data/cae-data.duckdb`) |
-| `CAE_ANTHROPIC_TOKEN` | Claude API for AI interpretations |
-| `ANALYTICS_DB_PATH` | Analytics SQLite (default `/data/analytics.db`) |
 
 ## Reference
 
 - **`AGENTS.md`** — Local dev setup, coding constraints
-- **`.github/copilot-instructions.md`** — Architecture, conventions, data flow
-- **`TESTS.md`** — Test coverage roadmap
-- **Compose files** — `/home/joao/docker/stacks/web/compose/prumo.yml` (+ `prumo.base.yml`)
+- **`docs/superpowers/`** — Specs and plans
 
-<!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
 This project is indexed by GitNexus as **prumo** (5639 symbols, 12363 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.

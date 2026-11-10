@@ -3,10 +3,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app/ ./app/
-COPY prompts/ ./prompts/
-COPY templates/ ./templates/
 COPY static/ ./static/
-COPY stats_lib/ ./stats_lib/
 COPY collectors/ ./collectors/
 COPY scripts/ ./scripts/
 COPY seed_data/ ./seed_data/

@@ -34,4 +34,3 @@ jobs:
         run: pytest tests/ -m "not integration and not slow" --cov=app --cov-report=term-missing
         env:
           CAE_DB_PATH: seed_data/seed.duckdb
-          ANTHROPIC_API_KEY: skip
