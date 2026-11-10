@@ -39,6 +39,8 @@ This project replaces ingestion and the system of record. It is the foundation f
   data and are visible as "last verified on date X". Staleness is stated, never hidden.
 - G7. Reproducible: re-running the pipeline from the stored raw files yields the same database.
 - G8. Licence and attribution recorded per source and shown wherever its data is shown.
+- G10. Each ingested dataset is verified against its source by independent random sampling at a 100%
+  required match (section 6b).
 - G9. Catch up the missing months (2026-04 → now) first. Sources serve their *current* vintage, so the
   catch-up is a live re-fetch: the first raw payloads (and therefore real vintage history) begin on the
   day it runs. It still gives months of observations per indicator to tune collectors and validators
@@ -88,9 +90,24 @@ Runs on f0nix (container `prumo`, Tailscale `100.118.19.6:8088`; public via f3ni
 for `cae.joao.date` and `joao.date/dados`). Local Ollama on f0nix is the only AI backend;
 `claude-max-proxy` is retired and all Claude/Anthropic code, env vars and scripts are to be removed.
 
+## 6b. Truth verification (owner requirement, mandatory)
+
+Passing validators is not enough: ingested data must be shown to match what the institution publishes.
+After every ingestion of a dataset, a verification step draws a **random sample** of observations
+and checks each against the source **independently of the collector's own parser** (for example the
+source's own web table/chart, an alternative endpoint or format, or the publisher's downloadable file),
+comparing value, unit, period and status flag. The required match rate is **100%**. Any mismatch
+marks the dataset `failed-verification`: it is not served, and the whole dataset is re-fetched and
+re-verified (with the fresh sample drawn independently). Repeated failure escalates to the owner via
+the CLI report. Sample size, sampling strategy (stratified by series, period and recency) and how each
+source is independently checked are the builder's design, but the sample, seed, per-item result and
+the source evidence used are stored so an auditor can replay the verification. Verification applies to
+the replay/catch-up and to every scheduled run, and covers the `legacy-unverified` import until it is
+superseded.
+
 ## 7. Non-goals and anti-goals
 
-Non-goals (this project): preserving the current UI/API, derived numbers, AI commentary, UI redesign, backoffice UI, backups
+Non-goals (this project): push alerts, preserving the current UI/API, derived numbers, AI commentary, UI redesign, backoffice UI, backups
 (owner: "forget about backups, we're revamping anyway"), the fallback policy (§5).
 Anti-goals — failure even if it technically works: a wrong number on screen; a number correct but
 late; any number that cannot be traced and defended to an auditor.
@@ -149,10 +166,9 @@ Owner accepted that revision history starts on the first ingestion date, which i
 5. **Operations.** f0nix has ~87 GB free; raw files are kept compressed for the core set with no
    retention limit for now. The builder verifies API keys (SOPS `web.enc.env`) and rate limits work
    from f0nix before the replay and throttles it. Fetch cadence follows each source's release calendar.
-6. **Visibility until the backoffice exists.** Run log and events live in the DB; a CLI status report
-   shows last-verified dates, failures and flags. Pushing alerts to Telegram follows the existing
-   `[SILENT]`-unless-real-issue pattern and is added only after the owner agrees. `audit_nightly.py`
-   is replaced by pipeline checks and deleted once superseded.
+6. **Visibility.** Run log and events live in the DB; a CLI status report shows last-verified dates,
+   failures and flags. No Telegram (or other push) reports, by owner decision. `audit_nightly.py` is
+   replaced by pipeline checks and deleted once superseded.
 7. **AI.** All Claude/Anthropic code is removed. Existing AI features (interpretation, headlines,
    painel analysis) are switched off with the old UI; their replacement belongs to the derived layer.
 8. **Cross-check thresholds.** Chosen per indicator type and tuned from measured disagreement;
