@@ -81,3 +81,33 @@ class ListFakeSource(FakeSource):
 
     def fetch(self, specs, http):
         return list(super().fetch(specs, http))
+
+
+class FakeVerifier:
+    """Answers each check() from `truths[k]` (k = call number, the last one repeats):
+    a dict {(series_id, period): observed_text}; a missing key observes None (not found).
+    Echoes series_id/period, records every call's items, and raises `raises` if set."""
+    source_name = "fake"
+
+    def __init__(self, *truths: dict, decimal: str = ".", unit: str | None = None,
+                 flag: str | None = None, raises: BaseException | None = None):
+        self.truths = list(truths) or [{}]
+        self.decimal, self.unit, self.flag, self.raises = decimal, unit, flag, raises
+        self.calls: list[list] = []
+
+    def check(self, items, http):
+        from ingest.verifiers import ItemResult
+        self.calls.append(list(items))
+        if self.raises is not None:
+            raise self.raises
+        truth = self.truths[min(len(self.calls), len(self.truths)) - 1]
+        return [ItemResult(observed_text=truth.get((i.series_id, i.period)),
+                           evidence_url=f"http://verify.fake/{i.series_id}/{i.period}",
+                           observed_decimal=self.decimal, observed_unit=self.unit,
+                           observed_flag=self.flag, series_id=i.series_id, period=i.period)
+                for i in items]
+
+
+def truth_of(series: dict[str, list[list[str]]]) -> dict[tuple[str, str], str]:
+    """The FakeVerifier truth that agrees with payload(series)."""
+    return {(sid, p): v for sid, rows in series.items() for p, v in rows}

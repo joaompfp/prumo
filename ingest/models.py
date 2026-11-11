@@ -3,6 +3,7 @@ import math
 import re
 import unicodedata
 from datetime import date, datetime
+from decimal import Decimal
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator, model_validator
@@ -76,17 +77,26 @@ def _number_re(decimal: str) -> re.Pattern:
 _NUMBER_RES = {".": _number_re("."), ",": _number_re(",")}
 
 
-def parse_number(text: str, decimal: str = ".") -> float:
-    """Strict: `decimal` is declared, never guessed. The other of ',' / '.' and spaces are
-    accepted only as thousands separators in groups of exactly 3 digits."""
+def _canonical_number(text: str, decimal: str) -> str:
+    """The number in `text` as a plain '[+-]digits[.digits]' string (strict rules below)."""
     if decimal not in _NUMBER_RES:
         raise ValueError(f"decimal must be '.' or ',', got {decimal!r}")
     s = str(text).strip(_SPACES)
     m = _NUMBER_RES[decimal].fullmatch(s)
     if not m:
         raise ValueError(f"not a number (decimal={decimal!r}): {text!r}")
-    clean = re.sub(rf"[^0-9{re.escape(decimal)}+-]", "", s).replace(decimal, ".")
-    v = float(clean)
+    return re.sub(rf"[^0-9{re.escape(decimal)}+-]", "", s).replace(decimal, ".")
+
+
+def parse_decimal(text: str, decimal: str = ".") -> Decimal:
+    """Same strict rules as parse_number, but exact: for comparisons that must not use float."""
+    return Decimal(_canonical_number(text, decimal))
+
+
+def parse_number(text: str, decimal: str = ".") -> float:
+    """Strict: `decimal` is declared, never guessed. The other of ',' / '.' and spaces are
+    accepted only as thousands separators in groups of exactly 3 digits."""
+    v = float(_canonical_number(text, decimal))
     if not math.isfinite(v):
         raise ValueError(f"not finite: {text!r}")
     return v

@@ -82,3 +82,15 @@ def test_parse_number_ok(text, decimal, expected):
 def test_parse_number_rejects(text, decimal):
     with pytest.raises(ValueError):
         parse_number(text, decimal)
+
+
+def test_parse_decimal_is_exact_and_follows_parse_number_rules():
+    from decimal import Decimal
+
+    from ingest.models import parse_decimal
+    assert parse_decimal("1.10") == Decimal("1.1")
+    assert parse_decimal("1.234,50", ",") == Decimal("1234.5")
+    assert parse_decimal("0.30000000000000004") != Decimal("0.3")
+    for bad in ("1,23", "nan", "1e3", ""):
+        with pytest.raises(ValueError):
+            parse_decimal(bad)

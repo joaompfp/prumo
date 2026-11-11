@@ -121,6 +121,15 @@ class Db:
             "INSERT INTO event(ts, dataset_run_id, kind, detail_json) VALUES (?, ?, ?, ?)",
             (ts, run_id, kind, json.dumps(detail, sort_keys=True) if detail is not None else None))
 
+    # --- verification (Task 7) ---------------------------------------------------------------
+
+    def observations_of_run(self, run_id: int) -> list[tuple[str, str, str, str | None]]:
+        """(series_id, period, value_text, status_flag) written by the run, ordered by
+        series_id, period, id (deterministic: sampling relies on it)."""
+        return self.conn.execute(
+            "SELECT series_id, period, value_text, status_flag FROM observation "
+            "WHERE dataset_run_id = ? ORDER BY series_id, period, id", (run_id,)).fetchall()
+
     def close(self) -> None:
         self.conn.close()
 
