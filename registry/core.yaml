@@ -21,6 +21,7 @@ sources:
     licence_url: https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cont_inst&INST=3585857
     attribution: 'Source: Instituto Nacional de Estatística – Portugal (Statistics Portugal)'
     redistribution_ok: true
+    timeout_s: 300  # its JSON API takes 17-45 s per request (trade 170-236 s); client default is 30 s
   oecd:
     licence: UNVERIFIED — builder must confirm before serving
     licence_url: https://www.oecd.org/termsandconditions/

@@ -41,6 +41,29 @@ def test_registry_loads_with_defaults(tmp_path):
     assert specs[0].source.name == "ine"
     assert specs[0].schedule is None and specs[0].throttle_rps == 1.0
     assert specs[0].decimal == "."
+    assert specs[0].source.timeout_s is None
+
+
+def test_source_timeout_s_is_preserved(tmp_path):
+    src = {**SRC, "timeout_s": 300}  # INE is slow (17-45 s, trade up to 236 s): T17/18 need this
+    specs = load_registry(_write(tmp_path, {"ine": src}, [_series("a")]))
+    assert specs[0].source.timeout_s == 300.0
+
+
+@pytest.mark.parametrize("bad", [0, -5, -0.1, float("inf"), float("nan"), True, "300"])
+def test_source_timeout_s_invalid_raises(tmp_path, bad):
+    with pytest.raises(ValueError):
+        load_registry(_write(tmp_path, {"ine": {**SRC, "timeout_s": bad}}, [_series("a")]))
+
+
+def test_core_ine_source_carries_timeout(tmp_path):
+    """The committed registry gives INE a 300 s per-request timeout (its JSON API takes
+    17-45 s per request, trade 170-236 s; the 30 s RequestsHttp default would fail every run)."""
+    from pathlib import Path
+    specs = load_registry(Path(__file__).parents[2] / "registry" / "core.yaml")
+    ine = next(s for s in specs if s.source.name == "ine").source
+    assert ine.timeout_s == 300.0
+    assert next(s for s in specs if s.source.name == "eurostat").source.timeout_s is None
 
 
 def test_registry_decimal_roundtrip_and_validation(tmp_path):

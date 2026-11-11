@@ -20,7 +20,8 @@ Requests: one per (varcd, dimension names) group; each dimension is sent as the 
 sorted set of the group's codes (INE answers the cartesian product; unrequested combinations are
 ignored), Dim1=T (full history, so revisions are seen). INE caps a call at ~40k cells, far above
 any group in the registry. INE is SLOW: 17-45 s per request were measured, trade indicators
-longer (see the Task 10 report), so the caller's RequestsHttp needs a generous timeout.
+longer (see the Task 10 report), so the registry gives this source `timeout_s: 300` and fetch()
+passes it as the per-call Http timeout.
 
 Parsing: the value handed over is INE's machine token `valor` (a JSON string, '.' decimal,
 registry `decimal: '.'`), verbatim. INE also sends `ind_string`, the formatted figure as
@@ -96,9 +97,18 @@ class INESource:
     expected_format = "json"
 
     def fetch(self, specs: list[SeriesSpec], http: Http) -> Iterator[RawResponse]:
+        # Per-call timeout from the registry source (None = the client's default; the kwarg is
+        # then NOT passed, so older Http doubles with a 3-parameter get() keep working).
+        timeouts = {s.source.timeout_s for s in specs}
+        if len(timeouts) != 1:
+            raise ValueError(f"INE fetch over mixed source timeouts: {timeouts!r}")
+        (timeout,) = timeouts
         for varcd, dims, members in _groups(specs):
             params = _params(varcd, dims, members)
-            r = http.get(BASE_URL, params=params)
+            # timeout=None means the client's default: the kwarg is then NOT passed, so
+            # older Http doubles with a 3-parameter get() keep working.
+            r = http.get(BASE_URL, params=params) if timeout is None else \
+                http.get(BASE_URL, params=params, timeout=timeout)
             yield RawResponse(url=r.url, params=params, status=r.status, body=r.body)
 
     def parse(self, specs: list[SeriesSpec],

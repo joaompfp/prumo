@@ -148,12 +148,26 @@ class SourceSpec(BaseModel):
     licence_url: str
     attribution: str
     redistribution_ok: bool
+    # Per-request timeout (s) for this source's API, None = the Http client's own default.
+    # Task 17/18 configure RequestsHttp per source from this (INE needs 300: its JSON API takes
+    # 17-45 s per request, trade up to 236 s; the 30 s client default fails every INE run).
+    timeout_s: float | None = None
 
     @field_validator("name", "licence", "licence_url", "attribution")
     @classmethod
     def _nonempty(cls, v: str) -> str:
         if not v.strip():
             raise ValueError("must be non-empty")
+        return v
+
+    @field_validator("timeout_s", mode="before")
+    @classmethod
+    def _timeout(cls, v: float | None) -> float | None:
+        if v is None:
+            return None
+        if isinstance(v, bool) or not isinstance(v, (int, float)) \
+                or not (math.isfinite(v) and v > 0):
+            raise ValueError("timeout_s must be a positive finite number of seconds, or None")
         return v
 
 

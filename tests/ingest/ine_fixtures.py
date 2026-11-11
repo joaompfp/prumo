@@ -52,12 +52,14 @@ class FixtureHttp:
     def __init__(self, override: dict[str, bytes] | None = None):
         self.override = override or {}
         self.calls: list[str] = []
+        self.timeouts: list[float | None] = []
         self.routes = {_route(m["url"], None): name for name, m in MANIFEST.items()}
 
-    def get(self, url, params=None, headers=None):
+    def get(self, url, params=None, headers=None, timeout=None):
         name = self.routes.get(_route(url, params))
         if name is None:
             raise AssertionError(f"no recorded INE response for {url} {params}")
         self.calls.append(name)
+        self.timeouts.append(timeout)
         m = MANIFEST[name]
         return HttpResult(status=200, body=self.override.get(name, body(m["file"])), url=m["url"])

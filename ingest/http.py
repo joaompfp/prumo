@@ -1,7 +1,13 @@
 """HTTP client contract for source adapters, plus the production implementation.
 
 Adapters depend on the `Http` protocol only; tests pass a fake. `RequestsHttp` is the real one.
+
+`timeout`: optional per-call override (seconds; positive and finite). `None` requests use the
+client's configured default. A source whose registry sets `timeout_s` (e.g. INE's slow JSON API)
+passes it per call; callers that never learnt about timeouts keep calling `get(url, params=...,
+headers=...)` unchanged.
 """
+import math
 import time
 from dataclasses import dataclass
 from typing import Protocol
@@ -21,8 +27,8 @@ class HttpResult:
 
 
 class Http(Protocol):
-    def get(self, url: str, params: dict | None = None,
-            headers: dict | None = None) -> HttpResult: ...
+    def get(self, url: str, params: dict | None = None, headers: dict | None = None,
+            timeout: float | None = None) -> HttpResult: ...
 
 
 class RequestsHttp:
@@ -47,11 +53,15 @@ class RequestsHttp:
         self._last: float | None = None
         self._session = requests.Session()
 
-    def get(self, url: str, params: dict | None = None,
-            headers: dict | None = None) -> HttpResult:
+    def get(self, url: str, params: dict | None = None, headers: dict | None = None,
+            timeout: float | None = None) -> HttpResult:
+        if timeout is not None and (isinstance(timeout, bool)
+                                    or not (math.isfinite(timeout) and timeout > 0)):
+            raise ValueError(f"timeout must be a positive finite number of seconds, got {timeout!r}")
+        eff_timeout = self.timeout if timeout is None else timeout
         hdrs = {"User-Agent": USER_AGENT, **(headers or {})}
         for _ in range(MAX_REDIRECTS + 1):
-            resp = self._get_with_retries(url, params, hdrs)
+            resp = self._get_with_retries(url, params, hdrs, eff_timeout)
             if not resp.is_redirect:
                 return HttpResult(status=resp.status_code, body=resp.content, url=resp.url)
             url = urljoin(resp.url, resp.headers["Location"])
@@ -60,13 +70,13 @@ class RequestsHttp:
             params = None  # the Location already carries its own query
         raise ValueError(f"too many redirects (>{MAX_REDIRECTS}) from {url!r}")
 
-    def _get_with_retries(self, url, params, headers) -> requests.Response:
+    def _get_with_retries(self, url, params, headers, timeout) -> requests.Response:
         for attempt in range(self.retries + 1):
             last_try = attempt == self.retries
             self._throttle()
             try:
                 resp = self._session.get(url, params=params, headers=headers,
-                                         timeout=self.timeout, allow_redirects=False)
+                                         timeout=timeout, allow_redirects=False)
             except (requests.ConnectionError, requests.Timeout):
                 if last_try:
                     raise

@@ -120,3 +120,35 @@ def test_refuses_redirect_to_non_http_scheme(server):
     h.script["/evil"] = [(302, b"file:///etc/passwd")]
     with pytest.raises(ValueError, match="non-http"):
         RequestsHttp(throttle_rps=100).get(base + "/evil")
+
+
+# --- per-call timeout override (Task 10 fix round 1: slow sources like INE need >30 s) -----------
+
+def test_per_call_timeout_overrides_the_configured_default(server):
+    base, h = server
+    h.script["/slow2"] = [("sleep", 0.5)]
+    with pytest.raises(requests.Timeout):
+        RequestsHttp(throttle_rps=100, timeout=30, backoff=0.0).get(base + "/slow2", timeout=0.1)
+    assert len(h.calls) == 4
+
+
+def test_per_call_timeout_none_keeps_the_configured_default(server):
+    base, h = server
+    h.script["/slow3"] = [("sleep", 0.5)]
+    with pytest.raises(requests.Timeout):
+        RequestsHttp(throttle_rps=100, timeout=0.1, backoff=0.0).get(base + "/slow3", timeout=None)
+    assert len(h.calls) == 4
+
+
+def test_per_call_timeout_is_forwarded(server):
+    base, h = server
+    h.script["/fast"] = [(200, b"ok")]
+    r = RequestsHttp(throttle_rps=100, timeout=30).get(base + "/fast", timeout=300)
+    assert r.status == 200
+
+
+@pytest.mark.parametrize("bad", [0, -1, float("inf"), float("nan"), True])
+def test_per_call_timeout_must_be_positive_and_finite(server, bad):
+    base, _ = server
+    with pytest.raises(ValueError, match="timeout"):
+        RequestsHttp(throttle_rps=100).get(base + "/a", timeout=bad)

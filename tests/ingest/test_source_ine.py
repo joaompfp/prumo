@@ -13,7 +13,8 @@ from ingest.registry import load_registry, sync_registry
 from ingest.sources import RawResponse
 from ingest.sources.ine import BASE_URL, PAGE_URL, INESource, parse_native_code
 from ingest.validate import validate
-from tests.ingest.ine_fixtures import MANIFEST, FixtureHttp, body, specs_of
+from tests.ingest.fakes import FakeHttp, ok
+from tests.ingest.ine_fixtures import MANIFEST, FixtureHttp, body, registry_specs, specs_of
 
 REGISTRY = Path(__file__).resolve().parents[2] / "registry" / "core.yaml"
 SETS = [name for name in MANIFEST]
@@ -127,6 +128,36 @@ def test_fetch_asks_full_history_with_sorted_codes():
         for k, v in r.params.items():
             if k.startswith("Dim") and k != "Dim1":
                 assert v.split(",") == sorted(v.split(","))
+
+
+def test_fetch_forwards_the_source_timeout():
+    """Every INE request carries the registry's per-source timeout (core.yaml ine: 300 s)."""
+    http = FixtureHttp()
+    list(INESource().fetch(specs_of(*SETS), http))
+    assert http.timeouts and set(http.timeouts) == {300.0}
+
+
+def _spec_with_source_timeout(sid: str, timeout_s: float | None) -> SeriesSpec:
+    src = SourceSpec(name="ine", licence="CC BY 4.0", licence_url="https://l",
+                     attribution="INE", redistribution_ok=True, timeout_s=timeout_s)
+    spec = registry_specs()["ine.conf_manufacturing.PT"]
+    return spec.model_copy(update={"id": sid, "source": src})
+
+
+def test_fetch_without_configured_timeout_keeps_legacy_signature():
+    """A source with timeout_s None must call Http.get(url, params=...) exactly as before:
+    older Http doubles (three parameters) keep working."""
+    spec = _spec_with_source_timeout("ine.conf_manufacturing.PT", None)
+    http = FakeHttp(ok(b"{}"))
+    (response,) = list(INESource().fetch([spec], http))
+    assert response.url == "http://fake/data/1"
+
+
+def test_fetch_with_mixed_timeouts_in_a_group_raises():
+    a = _spec_with_source_timeout("ine.a.PT", 300)
+    b = _spec_with_source_timeout("ine.b.PT", 60)
+    with pytest.raises(ValueError, match="timeout"):
+        list(INESource().fetch([a, b], FakeHttp(ok(b"{}"))))
 
 
 # --- native_code ---------------------------------------------------------------------------------
