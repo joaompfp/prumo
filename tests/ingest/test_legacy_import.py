@@ -126,3 +126,41 @@ def test_same_period_from_two_fetches_kept_as_vintages(db, tmp_path):
             ("INE", "ipi_yoy_cae", "PT", "2025-01", "1.5", "%", "2026-02-26T03:02:13.663810")]
     import_legacy(db, write_csv(tmp_path / "l.csv", rows), [ine_spec()])
     assert q(db, "SELECT value_text FROM observation ORDER BY id") == [("1.5",), ("1.6",)]
+
+
+def test_legacy_suspect_unit_scale_quarantined_not_rescaled(db, tmp_path):
+    """Task 10 review I3: the legacy store's INE exports/imports rows for 2005-01..2024-12 are
+    MILLION euros filed under unit 'EUR' (live INE publishes EUR; the registry unit 'EUR' is
+    correct for live data). Those rows are quarantined with the legacy-only reason
+    suspect_unit_scale — never rescaled (a 10^6 factor on legacy cells would be fabricated data)
+    and never served."""
+    exports = ine_spec("exports_monthly", unit="EUR")
+    imports = ine_spec("imports_monthly", unit="EUR")
+    other = ine_spec()  # ipi_yoy_cae, unrelated series
+    rows = [("INE", "exports_monthly", "PT", "2004-12", "2300.5", "EUR"),        # before window
+            ("INE", "exports_monthly", "PT", "2005-01", "2454.109466", "EUR"),   # lower bound: in
+            ("INE", "exports_monthly", "PT", "2024-12", "5100.2", "EUR"),        # upper bound: in
+            ("INE", "exports_monthly", "PT", "2025-01", "5604681275.0", "EUR"),  # after window
+            ("INE", "imports_monthly", "PT", "2010-06", "4200.1", "EUR"),        # inside
+            ("INE", "ipi_yoy_cae", "PT", "2010-06", "3.3", "%")]                 # unrelated
+    rep = import_legacy(db, write_csv(tmp_path / "l.csv", rows), [exports, imports, other])
+    assert rep.n_imported == 3
+    assert rep.n_quarantined_by_reason == {"suspect_unit_scale": 3}
+    assert sorted(q(db, "SELECT series_id, period FROM observation")) == [
+        ("ine.exports_monthly.PT", "2004-12"), ("ine.exports_monthly.PT", "2025-01"),
+        ("ine.ipi_yoy_cae.PT", "2010-06")]
+    got = q(db, "SELECT series_id, raw_period, reason FROM quarantine ORDER BY raw_period")
+    assert got == [("ine.exports_monthly.PT", "2005-01", "suspect_unit_scale"),
+                   ("ine.imports_monthly.PT", "2010-06", "suspect_unit_scale"),
+                   ("ine.exports_monthly.PT", "2024-12", "suspect_unit_scale")]
+    assert q(db, "SELECT count(*) FROM served_observation") == [(0,)]
+
+
+def test_suspect_unit_scale_import_is_idempotent(db, tmp_path):
+    rows = [("INE", "exports_monthly", "PT", "2015-03", "4499.9", "EUR")]
+    path = write_csv(tmp_path / "l.csv", rows)
+    first = import_legacy(db, path, [ine_spec("exports_monthly", unit="EUR")])
+    second = import_legacy(db, path, [ine_spec("exports_monthly", unit="EUR")])
+    assert (first.n_quarantined_by_reason, second.n_quarantined_by_reason) == (
+        {"suspect_unit_scale": 1}, {})
+    assert q(db, "SELECT count(*) FROM quarantine") == [(1,)]

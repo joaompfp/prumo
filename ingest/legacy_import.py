@@ -23,6 +23,18 @@ NOT_IN_REGISTRY = "not_in_registry"
 # a blank unit as "the source did not say".
 MISSING_UNIT = "missing_unit"
 
+# Legacy-only reason (Task 10 review, finding I3): the legacy store's INE exports/imports rows for
+# 2005-01..2024-12 are in MILLION euros filed under unit 'EUR' — live INE publishes EUR, and the
+# registry unit 'EUR' is correct for the live data. Multiplying legacy cells by 10^6 would be
+# fabricating data, so those rows are quarantined instead (and never served, like every legacy
+# row). Generic table: series id -> (first period, last period, quarantine reason), endpoints
+# INCLUSIVE, compared on normalized periods. ids are keyed exactly like the registry.
+SUSPECT_UNIT_SCALE = "suspect_unit_scale"
+LEGACY_SUSPECT_SCALE = {
+    "ine.exports_monthly.PT": ("2005-01", "2024-12", SUSPECT_UNIT_SCALE),
+    "ine.imports_monthly.PT": ("2005-01", "2024-12", SUSPECT_UNIT_SCALE),
+}
+
 # The legacy store filed the same geography under several labels.
 _REGION_ALIASES = {"Portugal": "PT", "GLOBAL": "WORLD"}
 
@@ -86,7 +98,10 @@ def import_legacy(db: Db, csv_path: Path, registry: list[SeriesSpec] | None = No
             for fetched, spec, raw in sorted(pending[source], key=lambda t: t[0]):
                 fetched_at = _iso_z(fetched)
                 accepted, rejected = validate(spec, [raw])
-                if accepted and not raw.unit_raw.strip():
+                scale = LEGACY_SUSPECT_SCALE.get(spec.id)
+                if scale and accepted and scale[0] <= accepted[0].period <= scale[1]:
+                    accepted, rejected = [], [Rejection(raw.period_raw, raw.value_raw, scale[2])]
+                elif accepted and not raw.unit_raw.strip():
                     accepted, rejected = [], [Rejection(raw.period_raw, raw.value_raw, MISSING_UNIT)]
                 for o in accepted:
                     key = (o.series_id, o.period, o.value_text, fetched_at)

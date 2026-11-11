@@ -38,6 +38,16 @@ Status: **DONE_WITH_CONCERNS**. Commits: `4d0b4b6` (legacy_import + tests), `3be
 | **total** | **246,162** |
 
 - Second run: `n_imported=0`, `{not_in_registry: 74809}` only, still 164,825 observations, 6,528 quarantine rows and 7 dataset_runs. Idempotent.
+
+> **Amended 2026-11-11 (Task 10 fix round 1, finding I3).** The legacy INE `exports_monthly.PT` /
+> `imports_monthly.PT` rows for 2005-01..2024-12 are million EUR filed under unit 'EUR' (live INE
+> publishes EUR; the registry unit stays correct for live data). `LEGACY_SUSPECT_SCALE` in
+> `ingest/legacy_import.py` now quarantines them as `suspect_unit_scale` (never rescaled).
+> Verified re-run of the real export into a fresh temp SQLite (same CSV, current core.yaml):
+> **164,345 imported** (−480), quarantine **6,522 missing_unit + 6 non_numeric + 480
+> suspect_unit_scale** (exports 240 + imports 240, exactly 2005-01..2024-12), 74,809
+> not_in_registry, **served = 0**, second run `n_imported=0` (idempotent), all 246,162 rows
+> accounted for. `validate()` and live series are unchanged.
 - 7 synthetic runs (`legacy:<source>`), all `verified`. `served_observation` = 0 rows (`legacy_served` = '0').
 - The "11.2k nulls" in the spec are null **units**. No value is empty. Under Ruling V a blank unit is never given the registry unit: the row is quarantined as `missing_unit`. Series with no unit at all are left out of core. Every unitless row range is listed in `unclassified.md`, in the section "Legacy rows quarantined: unit missing".
 - `bad_period` is 0 because the only unparseable periods (`2022-00`, Eurostat `earn_ses_pub2s`) belong to series with no parseable period, and those are unclassified. INE free-text periods (`Setembro de 2025`) normalize to `YYYY-MM`.
