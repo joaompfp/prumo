@@ -1,0 +1,267 @@
+{
+ "fetched": "2026-11-11",
+ "user_agent": "prumo-intake-research/1.0 / prumo-task13-adapter/1.0",
+ "files": [
+  {
+   "file": "r1-pt-gdp-json.json",
+   "url": "https://api.worldbank.org/v2/country/PT/indicator/NY.GDP.MKTP.CD?format=json&per_page=5",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 1131,
+   "sha256": "a7fcd66448d5dad011e074c102171856b3945bb9b0a371f5ed56ea28f0a9c191",
+   "note": "Task13 intake r1; page 1/14 (per_page=5 paginated probe); 5 PT GDP pins 2021..2025 cross-verified vs the CSV ZIP"
+  },
+  {
+   "file": "r2-eu-pop-json.json",
+   "url": "https://api.worldbank.org/v2/country/EU/indicator/SP.POP.TOTL?format=json&per_page=5",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 1111,
+   "sha256": "744a468dae5c2e6a0909448122d9ac6de754d12419080c0624925408b39d2dac",
+   "note": "intake r2; EU aggregate geography evidence (countryiso3code EUU)"
+  },
+  {
+   "file": "r3-indicator-meta.json",
+   "url": "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.CD?format=json&per_page=5",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 937,
+   "sha256": "6d8bdd824e52b2cde11f12aa0a8b026dbeac827e5add13734b209f045ad923f9",
+   "note": "intake r3; indicator metadata shape (unit field empty)"
+  },
+  {
+   "file": "r4-indicator-csv.zip",
+   "url": "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv",
+   "status": 200,
+   "content_type": "application/zip",
+   "bytes": 142909,
+   "sha256": "48296011514a05e3183f165b7a20b5c265fd7d7ab67daf51c0ed4e17cef44018",
+   "note": "intake r4; FULL ZIP (main data CSV 297580B + Metadata_Indicator + Metadata_Country); verifier channel evidence"
+  },
+  {
+   "file": "r5-multicountry-json.json",
+   "url": "https://api.worldbank.org/v2/country/PT;ES;DE/indicator/NY.GDP.MKTP.CD?format=json&per_page=20000",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 40991,
+   "sha256": "af2fdd4720e80feb62e73f5534c0707e9fe055658aa19f5ee2565517a521ffa6",
+   "note": "intake r5; multi-geography one-page full-scope shape (198 rows)"
+  },
+  {
+   "file": "r6-gr-pop-json.json",
+   "url": "https://api.worldbank.org/v2/country/GR/indicator/SP.POP.TOTL?format=json&per_page=1",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 286,
+   "sha256": "022b1d21b620b5e354ea8b4a1de8768422cb29625452d15d5fe94575da7d9533",
+   "note": "intake r6; GR geography evidence (countryiso3code GRC), page 1/66"
+  },
+  {
+   "file": "country-metadata.json",
+   "url": "https://api.worldbank.org/v2/country?format=json&per_page=400",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 113954,
+   "sha256": "c9acf3932785191a649cbc04c3056af4cf64a236e5c3b49d49be25ddb0440bce",
+   "note": "controller probe; publisher iso2Code->ISO3 derivation for all 54 registry geographies"
+  },
+  {
+   "file": "meta-NY.GDP.PCAP.PP.CD.json",
+   "url": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.PP.CD?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 2659,
+   "sha256": "a95c4834552a80e2c6b755c22e887d401d7930c2b97453f76fc063108a4a1a8d",
+   "note": "controller probe; PROVES the unit-definition conflict (current international $ vs registry constant 2017); byte-identical to the Task13 refetch"
+  },
+  {
+   "file": "meta-NY.GDP.MKTP.CD.json",
+   "url": "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.CD?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 938,
+   "sha256": "51cec1e144a5bad8d92238630c0a305e20116e86d34ad95c7c315ed166255b28",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-NY.GDP.MKTP.KD.ZG.json",
+   "url": "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.KD.ZG?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 909,
+   "sha256": "ed7703d841d4dde2d1cb858f0dd53229fe3e841f72abb17dbc8c950ad20c88ce",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-NY.GDP.PCAP.CD.json",
+   "url": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.CD?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 1044,
+   "sha256": "96520c3a22b1f9da1c7456349a6e70b1643db88d427671faced17cb8b9eaf907",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SL.UEM.TOTL.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/SL.UEM.TOTL.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 670,
+   "sha256": "3ae370ed4bebba092338e94334c35add71490324ee57f1dfe81885dade51f52f",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SL.EMP.TOTL.SP.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/SL.EMP.TOTL.SP.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 621,
+   "sha256": "58f353c396c59d469e58a67486a5e91d5fd3821c8b7d68e0757b43a5faf7bef8",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SL.TLF.CACT.FE.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/SL.TLF.CACT.FE.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 833,
+   "sha256": "9f57a27372d29ac71a6a810096c5b73001a8ae1090db6a2fe88f06b06d4daeec",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SP.URB.TOTL.IN.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/SP.URB.TOTL.IN.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 719,
+   "sha256": "ada77d666a1469f69379933d0597cdd420299806163905af52de79d538da95e6",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-NE.EXP.GNFS.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/NE.EXP.GNFS.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 943,
+   "sha256": "2324e64be12297b7dd655312acf3581dff838c732d6c989cdfc75653956bd542",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-NE.IMP.GNFS.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/NE.IMP.GNFS.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 971,
+   "sha256": "7b4d9cbb46f5e6baca7dd719e96f2dc355bd8cd6959dccd11fa48e64ea1f15f3",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-NE.RSB.GNFS.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/NE.RSB.GNFS.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 878,
+   "sha256": "9f27b4c4cd6676a4720057088646a1279151b44b2d6addd7104c82f747f45c67",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-BX.KLT.DINV.WD.GD.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/BX.KLT.DINV.WD.GD.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 1165,
+   "sha256": "fd15df0dd9de59dd6537c0c76dbcf5656ff19af8445370700ad6b7931f192819",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-GC.DOD.TOTL.GD.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/GC.DOD.TOTL.GD.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 1440,
+   "sha256": "840db52efe87e4415fecd7d9ac7ca68f875cd8388755126e05609d2e688b5da0",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-GB.XPD.RSDV.GD.ZS.json",
+   "url": "https://api.worldbank.org/v2/indicator/GB.XPD.RSDV.GD.ZS?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 873,
+   "sha256": "8b86f8208807c1ba1fa83a27f753bc5e59e7fbec115a22aabf574d2449fe22ae",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SI.POV.GINI.json",
+   "url": "https://api.worldbank.org/v2/indicator/SI.POV.GINI?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 1494,
+   "sha256": "e377bf82b38024748153880ff90c0106a0ef0fd8cb04761146cc60a2609cab3d",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SP.POP.TOTL.json",
+   "url": "https://api.worldbank.org/v2/indicator/SP.POP.TOTL?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 1099,
+   "sha256": "2f8491efc00bf2c0995112ff8e87aba69e5e9d22d0880b22f7e3a4ec757ba05c",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SP.DYN.CBRT.IN.json",
+   "url": "https://api.worldbank.org/v2/indicator/SP.DYN.CBRT.IN?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 929,
+   "sha256": "c7dbb8d451cd548df94930b3a551d0f6bfd9c11ce08dc04b15ae4ff9080e2364",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SP.DYN.CDRT.IN.json",
+   "url": "https://api.worldbank.org/v2/indicator/SP.DYN.CDRT.IN?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 924,
+   "sha256": "a94e51d3d3db118b6b0c95cac7f60ab8b5e0bb61125b295cb5e4e7766e521415",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "meta-SP.DYN.LE00.IN.json",
+   "url": "https://api.worldbank.org/v2/indicator/SP.DYN.LE00.IN?format=json",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 969,
+   "sha256": "a39cb6fddfbbb953053690366243dffe77a266c4deae79c46ce5a06da9f5fc31",
+   "note": "Task13 unit/definition audit evidence (19-indicator metadata sweep)"
+  },
+  {
+   "file": "csv-sp-pop-totl.zip",
+   "url": "https://api.worldbank.org/v2/en/indicator/SP.POP.TOTL?downloadformat=csv",
+   "status": 200,
+   "content_type": "application/zip",
+   "bytes": 90344,
+   "sha256": "693ea67047199a041b9dc6d38d2aeefbbb12986414347714470345df68437787",
+   "note": "Task13 implementer probe; FULL ZIP verifier-channel fixture"
+  },
+  {
+   "file": "csv-sl-uem-totl-zs.zip",
+   "url": "https://api.worldbank.org/v2/en/indicator/SL.UEM.TOTL.ZS?downloadformat=csv",
+   "status": 200,
+   "content_type": "application/zip",
+   "bytes": 47588,
+   "sha256": "287eddeb52a9a7859f2745707ad83b7faa867b4a3f8ea226e98b851369374a16",
+   "note": "Task13 implementer probe; FULL ZIP verifier-channel fixture"
+  },
+  {
+   "file": "multi-eugrat-pop.json",
+   "url": "https://api.worldbank.org/v2/country/EU;GR;AT/indicator/SP.POP.TOTL?format=json&per_page=20000",
+   "status": 200,
+   "content_type": "application/json;charset=utf-8",
+   "bytes": 39272,
+   "sha256": "fec9700fdeddc6d96b80daf4318335425f23725cde30e86eeefa8b677a182f1f",
+   "note": "Task13 probe; EU;GR;AT population full page (aggregate+GR+AT identities)"
+  }
+ ]
+}
