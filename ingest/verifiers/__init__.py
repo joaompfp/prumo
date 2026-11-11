@@ -23,7 +23,10 @@ _REGISTRY: dict[str, "Verifier"] = {}
 # Ruling S: what a verifier module may import. Extending these is an explicit, reviewed change.
 VERIFIER_INGEST_IMPORTS: dict[str, frozenset[str]] = {
     "ingest.http": frozenset({"HttpResult", "Http"}),
-    "ingest.models": frozenset({"parse_number", "SeriesSpec"}),
+    # parse_number/parse_decimal for numeric comparison; normalize_period for verifiers whose
+    # channel shows period labels (e.g. INE's 'Setembro de 2026') that must be pinned to the
+    # canonical period read from the evidence, not echoed from the request.
+    "ingest.models": frozenset({"parse_number", "SeriesSpec", "normalize_period"}),
     "ingest.rawstore": frozenset({"RawStore"}),
     "ingest.sources": frozenset({"Source", "RawResponse"}),
     "ingest.verifiers": frozenset({"ItemResult", "BlindItem", "Verifier"}),

@@ -307,18 +307,21 @@ def test_pipeline_run_on_fixtures_is_pending_verification(tmp_path):
         assert res.state == "pending-verification" and res.n_written > 0
         n_q = db.conn.execute("SELECT COUNT(*) FROM quarantine WHERE reason='non_numeric'").fetchone()[0]
         assert n_q == res.n_quarantined
-        # INE has no independent verification channel: nothing becomes servable
+        # nothing is served before verify_run passes (see tests/ingest/test_verifier_ine.py for
+        # the verified end-to-end run on the independent bddXplorer channel)
         assert db.conn.execute("SELECT COUNT(*) FROM served_observation").fetchone()[0] == 0
     finally:
         db.close()
 
 
-def test_ine_is_unverifiable_and_not_served():
-    """Spec 6b / template lesson 9: INE offers one machine-readable data channel, so no INE
-    verifier exists or may be registered; registry/unverifiable.md says so."""
-    from ingest.verifiers import get_verifier
+def test_ine_has_an_independent_channel_and_a_verifier():
+    """Task 10 fix round 1 (review finding C1): INE DOES have an independent channel — the
+    bddXplorer server-rendered table (Referer header) is a different endpoint+format from the
+    collector's JSON API — and ingest/verifiers/ine.py implements it."""
+    from ingest.verifiers.ine import INEVerifier, PAGE_URL as VERIFIER_URL
     root = REGISTRY.parent
-    assert "## ine" in (root / "unverifiable.md").read_text()
-    assert not (root.parent / "ingest" / "verifiers" / "ine.py").exists()
-    with pytest.raises(KeyError):
-        get_verifier("ine")
+    assert "## ine" not in (root / "unverifiable.md").read_text()
+    assert (root.parent / "ingest" / "verifiers" / "ine.py").exists()
+    assert INEVerifier.source_name == "ine"
+    assert VERIFIER_URL.startswith("https://www.ine.pt/bddXplorer/")
+    assert VERIFIER_URL != BASE_URL  # a different endpoint than the collector's JSON API

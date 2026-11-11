@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Portugal (INE) - Official statistics of Portugal</title>
+
+    <!-- ===================== SEO (versao EN) ===================== -->
+    <meta name="description" content="Official statistics of Portugal: database, press releases, publications, Census and indicators on population, economy, territory and society.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- ATENCAO: canonical e og:url fixos na homepage EN. So podem ficar aqui se este modelo for usado apenas pela ine_main. -->
+    <link rel="canonical" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_main&amp;xlang=en">
+    <link rel="alternate" hreflang="pt-PT" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_main&amp;xlang=pt">
+    <link rel="alternate" hreflang="en" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_main&amp;xlang=en">
+    <link rel="alternate" hreflang="x-default" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_main">
+    <link rel="alternate" type="application/rss+xml" title="Statistics Portugal - RSS" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ics_feeds&amp;xlang=EN">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ===================== Open Graph (Facebook, LinkedIn, WhatsApp, Teams...) ===================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Statistics Portugal">
+    <meta property="og:title" content="Statistics Portugal (INE) - Official statistics of Portugal">
+    <meta property="og:description" content="Official statistics of Portugal: database, press releases, publications, Census and indicators on population, economy, territory and society.">
+    <meta property="og:url" content="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_main&amp;xlang=en">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:locale:alternate" content="pt_PT">
+    <!-- TODO: mesma imagem 1200x630 da versao PT (ainda por criar); confirmar o caminho -->
+    <meta property="og:image" content="https://www.ine.pt/img/og/ine_partilha_1200x630.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Statistics Portugal logo">
+
+    <!-- ===================== X / Twitter (usa og:* como fallback para titulo, descricao e imagem) ===================== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@pt_ine">
+    <meta name="twitter:image:alt" content="Statistics Portugal logo">
+
+    <!-- ===================== Dados estruturados (Google) =====================
+         Mesmo @id da versao PT: o Google trata as duas como a mesma organizacao.
+         Dentro de <script> as entidades HTML NAO sao descodificadas; usar escapes \u. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "GovernmentOrganization",
+          "@id": "https://www.ine.pt/#organizacao",
+          "name": "Statistics Portugal",
+          "alternateName": ["INE", "Instituto Nacional de EstatÃ­stica"],
+          "url": "https://www.ine.pt/",
+          "logo": "https://www.ine.pt/img/n_logotipo.gif",
+          "sameAs": [
+            "https://www.facebook.com/INEPORTUGAL/",
+            "https://www.instagram.com/pt_ine/",
+            "https://www.pinterest.pt/INE_Portugal/",
+            "https://twitter.com/pt_ine",
+            "https://www.youtube.com/channel/UCDNaM16x_CTjzs_Hg0qrzLw",
+            "https://pt.linkedin.com/company/ine"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.ine.pt/#website",
+          "name": "Statistics Portugal",
+          "url": "https://www.ine.pt/",
+          "inLanguage": ["pt-PT", "en"],
+          "publisher": { "@id": "https://www.ine.pt/#organizacao" }
+        }
+      ]
+    }
+    </script>
+    <!-- =================== fim SEO / redes sociais =================== -->
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+<style>
+    .highlight-section
+        {
+ 		   background-color: #f8f9fa;
+		    padding: 20px;
+		    border-radius: 8px;
+		    border: 2px solid #005b94;
+		    margin-top: 30px;
+		    margin-bottom: 30px;
+		    width: 80%;
+		    max-width: 1200px; /* Define uma largura mÃ¡xima */
+		    margin-left: auto;
+		    margin-right: auto;
+                    text-align: justify;
+	}
+
+
+        .highlight-section h3
+        {
+            font-size: 22px; /* TÃ­tulo maior */
+            color: #005b94; /* Azul institucional */
+            margin-bottom: 20px;
+        }
+        .highlight-section .index-list a {
+            font-size: 16px; /* Links maiores */
+            color: #005b94; /* Azul institucional */
+        }
+        .highlight-section .index-list a:hover {
+            text-decoration: underline;
+        }
+
+    .text-content p {
+    text-align: justify;
+    padding-right: 25px;  /* Adiciona 10px de padding apenas Ã  esquerda */
+}
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+}
+</style>
+
+
+      <link rel="stylesheet" href="/scripts/portal_2017/_v7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/scripts/portal_2017/_v7/css/bootstrap-datetimepicker.min.css">
+      <link rel="stylesheet" href="/scripts/portal_2017/_v7/css/bootstrap-social.css">
+      <link rel="stylesheet" href="/scripts/portal_2017/_v7/css/font-awesome.css">
+
+  <link href='https://fonts.googleapis.com/css?family=Roboto&amp;display=swap' rel='stylesheet'>
+        <style>
+           body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+                 }
+        </style>
+
+      <link rel="stylesheet" href="/scripts/portal_2017/_v7/css/personal.css">
+      <link rel="stylesheet" href="/scripts/portal_2017/_v7/css/menu_topo.css">
+      <link rel="stylesheet" href="/scripts/portal_2017/_v7/css/mainstyles.css">
+
+      <!-- Alinhamento do rodape: desktop com espacos iguais entre colunas; < 992px tudo centrado. -->
+      <style>
+        @media (min-width: 992px) {
+          #footer .rodape-col-esq { text-align: right; }
+          #footer .rodape-col-esq > ul,
+          #footer .rodape-col-dir > ul { display: inline-block; text-align: left; }
+        }
+        @media (max-width: 991px) {
+          #footer .rodape-col { text-align: center; }
+          #footer .list-unstyled { margin-bottom: 24px; }
+          #footer .rodape-centro .list-inline > li { padding-left: 2px; padding-right: 2px; }
+          .rodape-selos img { margin: 0 auto; }
+          .rodape-copyright { float: none !important; text-align: center; }
+        }
+      </style>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+      <script src="/scripts/portal_2017/_v7/js/bootstrap-datetimepicker.js"></script>
+      <script src="/scripts/portal_2017/_v7/js/locales/bootstrap-datetimepicker.pt.js"></script>
+      <script src="/scripts/portal_2017/_v7/js/canvasjs.min.js"></script>
+      <script src="/scripts/portal_2017/_v7/js/myscript.js"></script>
+
+<!-- Slider Vertical -->
+    <script src="/scripts/portal_2017/_v7/vertical_novo/carouselengine/jquery.js"></script>
+    <script src="/scripts/portal_2017/_v7/vertical_novo/carouselengine/amazingcarousel.js"></script>
+    <link rel="stylesheet" type="text/css" href="/scripts/portal_2017/_v7/vertical_novo/carouselengine/initcarousel-1.css">
+    <script src="/scripts/portal_2017/_v7/vertical_novo/carouselengine/initcarousel-1.js"></script>
+<!-- Fim Slider Vertical -->
+
+
+<!-- cookies: consentimento partilhado por todo o portal. Sem defer/async: tem de correr antes do Matomo -->
+     <script src="/scripts/Cookies/ine-consent.js?v=20261030"></script>
+<!-- fim cookies -->
+
+      <!--END_EDIT_AREA_head-->
+      <!--START_EDIT_AREA_head-->
+
+<style>
+/* == Pop Modal == */
+.myModal
+ {
+       z-index:	2 ;	/* Sit on top */
+       width: 100%;
+       height: 100%;
+       margin:0 auto;
+       display: none;
+       position: absolute;
+       left: 0;
+       right:0;
+       top: 50%; 
+       border:0px solid;
+       -webkit-transform:translateY(-50%);
+       -moz-transform:translateY(-50%);
+       -ms-transform:translateY(-50%);
+       -o-transform:translateY(-50%);
+       transform:translateY(-50%);
+
+}
+
+/* Button (x) para fechar o Pop Modal recrutamento RA2019 */
+
+.fecha_modal
+{
+  position:inherit;
+  top: 20px;
+  right: 10px;
+  color: black;
+  font-size:	 50px;
+  font-weight: bold;
+  
+}
+
+.fecha_modal:hover,
+.fecha_modal:focus {
+  color: 	#bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#myImg {
+  vertical-align:	middle ;
+  max-width:	100% ;
+  /*height:		100% ;*/
+  height:auto; 
+}
+
+</style>
+
+
+<script language=javascript type="text/javascript">
+  /* === Pop Modal === */
+
+  function abre_modal() {
+    var modal = document.getElementById( 'myModal' ) ;
+    modal.style.display   = "block";
+  }
+
+  function fecha_modal() {
+    var modal = document.getElementById( 'myModal' ) ;
+    modal.style.display   = "none";
+  }
+</script>
+
+<!-- COOKIES EN-->
+<script>
+      $(document).ready(function() {
+
+      	$.CookiesMessage({
+					messageText: "To provide higher quality and more personalized service to users browsing its Portal, Statistics Portugal uses its own and third parties <em>cookies</em>.<br> Some of these <em>cookies</em> are indispensable to properly navigate the Portal<br><br>",
+					messageBg: "#0a2847",							// Message box background color
+					messageColor: "#FFFFFF",						// Message box text color
+					messageLinkColor: "#a5c3e2",				    // Message box links color										
+					closeEnable: true,								// Show the close icon
+					closeColor: "#000000",							// Close icon color
+					closeBgColor: "#FFFFFF",						// Close icon background color
+					acceptEnable: true,								// Show the Accept button
+					acceptText: "Allow all the cookies", // Accept button text
+					infoEnable: true,								// Show the More Info button
+					infoText: "     Further information", // More Info button text
+					infoUrl: "https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cookies&xlang=en", // More Info button URL
+					cookieExpire: 90 // Cookie expire time (days)
+				});
+
+      });
+</script>
+
+<!--END_EDIT_AREA_head-->
+   </head>
+   <body>
+      <a href="#specific_content" class="skip-link">Skip to main content</a>
+      <header>
+	<h1 class="visually-hidden">Official Portal - Statistics Portugal</h1>
+      <section class="topo">
+         <div class="container">
+            <div class="row">
+               <div class="col-sm-4" id="logotipo">
+               <a href="/xportal/xmain?xpid=INE&xpgid=ine_main"><img class="img-responsive"  alt="Official Portal - Statistics Portugal" src="https://www.ine.pt/img/n_logotipo.gif"></a>
+               </div>
+               <!-- logotipo -->
+               <div class="col-sm-8">
+                 <nav class="navbar navbar-default" aria-label="Main menu">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-controls="bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+        <!-- Estatisticas-->
+	<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Menu: Statistics">Statistics<span class="caret"></span></a>
+          <ul class="dropdown-menu multi-column columns-3"><li>
+                                 <div class="row">
+                                    <div class="col-sm-6">
+                                       <ul class="multi-column-dropdown">
+					  <li class="dropdown-header" title="Statistics: Population and Society">Population and Society</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1110" title="Population and Society: Living conditions and citizenship">&nbsp;&nbsp;Living conditions and citizenship</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1111" title="Population and Society: Culture sports and recreation">&nbsp;&nbsp;Culture sports and recreation</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1112" title="Population and Society: Education, training and learning">&nbsp;&nbsp;Education, training and learning</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1113" title="Population and Society: Justice">&nbsp;&nbsp;Justice</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1114" title="Population and Society: Labour market">&nbsp;&nbsp;Labour market</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1115" title="Population and Society: Population">&nbsp;&nbsp;Population</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1116" title="Population and Society: Social protection">&nbsp;&nbsp;Social protection</a></li>
+                                         <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1117" title="Population and Society: Health">&nbsp;&nbsp;Health</a></li>
+                                          <li class="dropdown-header" title="Statistics: Territory and Environment">Territory and Environment</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema_a&tema_cod=1210" title="Territory and Environment: Environment">&nbsp;&nbsp;Environment</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema_t&tema_cod=1211" title="Territory and Environment: Territory">&nbsp;&nbsp;Territory</a></li>
+                                          <li class="dropdown-header" title="Statistics: Economy and Finances">Economy and Finances</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1310" title="Economy and Finances: General government">&nbsp;&nbsp;General government</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema_c&tema_cod=1311" title="Economy and Finances: Short-term trends" >&nbsp;&nbsp;Short-term trends</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1312" title="Economy and Finances: National and regional accounts">&nbsp;&nbsp;National and regional accounts</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1313" title="Economy and Finances: Enterprises">&nbsp;&nbsp;Enterprises</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1314" title="Economy and Finances: Prices">&nbsp;&nbsp;Prices</a></li>
+                                       </ul>
+				    </div>
+					<div class="col-sm-6">
+                                       <ul class="multi-column-dropdown">
+                                          <li class="dropdown-header" title="Statistics:International trade">International trade</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1410" title="Statistics: International trade">&nbsp;&nbsp;International trade</a></li>
+                                          <li class="dropdown-header" title="Statistics:Agriculture, forestry and fishing">Agriculture, forestry and fishing</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema_b&tema_cod=1510" title="Statistics:Agriculture, forestry and fishing">&nbsp;&nbsp;Agriculture, forestry and fishing</a></li>
+                                          <li class="dropdown-header" title="Statistics:Industry, energy and construction">Industry, energy and construction</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1610" title="Industry, energy and construction: Construction and housing">&nbsp;&nbsp;Construction and housing</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1611" title="Industry, energy and construction: Industry and energy">&nbsp;&nbsp;Industry and energy</a></li>
+                                          <li class="dropdown-header" title="Statistics:Servi&ccedil;os">Services</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1710" title="Services: Domestic trade">&nbsp;&nbsp;Domestic trade</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1711" title="Services: Services to enterprises">&nbsp;&nbsp;Services to enterprises</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1712" title="Services: Transport and communication">&nbsp;&nbsp;Transport and communication</a></li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1713" title="Services: Tourism">&nbsp;&nbsp;Tourism</a></li>
+                                          <li class="dropdown-header" title="Statistics: Research and development">Research and development</li>
+                                          <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_tema&tema_cod=1810" title="Statistics: Research and development">&nbsp;&nbsp;Research and development</a></li>
+                                       </ul>
+                                    </div>
+								</div>
+			</li></ul>
+        </li>
+	<!-- TERRITORIO -->
+		<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Menu: Territory">Territory<span class="caret"></span></a>
+          <ul class="dropdown-menu multi-column columns-3"><li>
+                                 <div class="row">
+                                    <div class="col-sm-12">
+                                       <ul class="multi-column-dropdown">
+					                     <li><a title="Territory: Statistic's Portugal Territorial Information Infrastructure (TII)" href="https://iit.ine.pt" ><strong>Statistic's Portugal Territorial Information Infrastructure (TII)</strong></a></li>
+                                         <li><a href="https://ce-sig.ine.pt/" title="Territory: CE-SIG"> &nbsp;&nbsp;&nbsp;&nbsp;CE-SIG</a></li>
+                                         <li><a href="https://iit.ine.pt/Search" title="Territory: GeoPortal">&nbsp;&nbsp;&nbsp;&nbsp;GeoPortal IIT</a></li>
+                                         <li><a href="https://www.ine.pt/scripts/siou_2023.html" title="Territory: SIOU">&nbsp;&nbsp;&nbsp;&nbsp;SIOU (Works licensed and completed)</a></li>
+                                         <li><a href="https://geoc2021.ine.pt/" title="Territory: Geo Censos">&nbsp;&nbsp;&nbsp;&nbsp;GeoCensos</a></li>
+                                         <li><a href="https://geohab.ine.pt/index.html?locale=Pt-pt" title="Territory: Geohab">&nbsp;&nbsp;&nbsp;&nbsp;Geohab (House prices for the cities)</a></li>
+                                         <li><a href="https://geoescolas.ine.pt/" title="Territory: Geoschools">&nbsp;&nbsp;&nbsp;&nbsp;Geoschools</a></li>
+										</ul>
+									</div>
+
+								</div>
+			</li></ul>
+        </li>
+     <!-- PRODUTOS-->
+	  <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products<span class="caret"></span></a>
+           <ul class="dropdown-menu multi-column columns-3"><li>
+                                 <div class="row">
+                                    <div class="col-sm-5">
+                                       <ul class="multi-column-dropdown">
+					                    <li class="dropdown-header" title="Products: Statistical Data">Statistical Data</li>
+                                         <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_base_dados&contexto=bd&selTab=tab2" title="Statistical Data: Database">&nbsp;&nbsp;Database</a></li>
+                                         <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_destaques" title="Statistical Data: Press Releases">&nbsp;&nbsp;Press Releases</a></li>
+                                         <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_publicacoes" title="Statistical Data: Publications">&nbsp;&nbsp;Publications</a></li>
+                                         <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_estudos" title="Statistical Data: Studies">&nbsp;&nbsp;Studies</a></li>
+  					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_statslab" title="Statistical Data: STATSLAB">&nbsp;&nbsp;STATSLAB</a></li>
+                                         <!--<li><a href="/xportal/xmain?xpid=INE&xpgid=ine_qa_resumo" title="Statistical Data: Quadros de apuramento">&nbsp;&nbsp;Censos: Quadros de apuramento</a></li> -->
+					                     <li><a href="https://mapas.ine.pt" title="Statistical Data: Geopackage - Censos">&nbsp;&nbsp;Geopackage - Censos</a></li>
+			          	                 <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_pufs&menuBOUI=13707095&contexto=up&selTab=tab5&xlang=pt" title="Statistical Data: Microdata">&nbsp;&nbsp;Microdata</a></li>
+                                         <li><a href="https://biblioteca.ine.pt/" title="Statistical Data: Library">&nbsp;&nbsp;Library</a></li>
+					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_infografias" title="Statistical Data: Infographics">&nbsp;&nbsp;Infographics</a></li>
+					                     <li><a href="https://www.ine.pt/scripts/hvd/en/home.html" title="Statistical Data: High-Value Data Sets (HVD)">&nbsp;&nbsp;High-Value Data Sets (HVD)</a></li>
+
+
+					                    <li class="dropdown-header" title="Products: Metadata">Metadata</li>
+					                     <li><a href="http://smi.ine.pt/" title="Metadata: Metadata System">Metadata System</a></li>
+
+					                    <li class="dropdown-header" title="Products: Interactive Applications">Interactive Applications</li>
+<li><a title="Interactive Applications: Economic Indicators" target="_blank" rel="noopener" href="https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_ind_conjuntura">&nbsp;&nbsp;Short Term Indicators<span class="sr-only"> (opens in a new window)</span></a></li>
+					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ipc" title="Interactive Applications: CPI - Values Update">&nbsp;&nbsp;CPI - Values Update</a></li>
+                                        <!-- <li><a href="https://www.ine.pt/scripts/ind_conj/ind_conj.html" title="Interactive Applications: Indicadores de Conjuntura" target="_Blank" rel="noopener" aria-label="Abre numa nova janela">&nbsp;&nbsp;Indicadores de Conjuntura</a></li>
+                                         <li><a href="https://www.ine.pt/scripts/ec/eco_cir.html" title="Interactive Applications: Economia Circular">&nbsp;&nbsp;Economia Circular</a></li>
+                                         <li><a href="https://www.ine.pt/scripts/siou_2023.html" title="Interactive Applications: Estat&iacute;sticas da Constru&ccedil;&atilde;o - Obras Licenciadas e Conclu&iacute;das">&nbsp;&nbsp;Estat&iacute;sticas da Constru&ccedil;&atilde;o - Obras Licenciadas e Conclu&iacute;das</a></li>
+                                         <li><a href="https://www.ine.pt/scripts/metro.html" title="Interactive Applications: Transporte por Metropolitano">&nbsp;&nbsp;Transporte por Metropolitano</a></li>
+                                         <li><a href="https://www.ine.pt/scripts/transp_aero.html" title="Interactive Applications: Transporte A&eacute;reo">&nbsp;&nbsp;Transporte A&eacute;reo</a></li> -->
+                                         <li><a href="https://geogrid.ine.pt" title="Interactive Applications: CensosGRID 2011">&nbsp;&nbsp;CensosGRID 2011</a></li>
+					                    <!-- <li><a href="https://censos.ine.pt/xportal/xmain?xpid=CENSOS21&xpgid=censos21_dados_finais&xlang=pt" title="Interactive Applications: Plataforma de Divulga&ccedil;&atilde;o CENSOS 2021">&nbsp;&nbsp;Plataforma de Divulga&ccedil;&atilde;o CENSOS 2021</a></li>
+					                     <li><a href="https://www.ine.pt/scripts/db_ra_2019.html" title="Interactive Applications: Plataforma de Divulga&ccedil;&atilde;o RA2019">&nbsp;&nbsp;Plataforma de Divulga&ccedil;&atilde;o RA 2019</a></li> -->
+					                     <li><a href="https://www.ine.pt/scripts/90_anos/index.html" title="Interactive Applications: What has changed in Portugal 1935-2025">&nbsp;&nbsp;What has changed in Portugal 1935-2025</a></li>
+                                       </ul>
+                                    </div>
+                                    <div class="col-sm-7">
+                                       <ul class="multi-column-dropdown">
+
+					                    <li class="dropdown-header" title="Products: Thematic Folders">Thematic Folders</li>
+					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_cnacionais" title="Thematic Folders: National Accounts">&nbsp;&nbsp;National Accounts</a></li>
+                                         <li><a target="_blank" rel="noopener" href="https://censos.ine.pt" title="Thematic Folders: CENSOS 2021">&nbsp;&nbsp;CENSOS 2021<span class="sr-only"> (opens in a new window)</span></a></li>
+                                         <li><a target="_blank" rel="noopener" href="https://ra2019.ine.pt" title="Thematic Folders: RA 2019">&nbsp;&nbsp;RA 2019<span class="sr-only"> (opens in a new window)</span></a></li>
+					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_perfterrindic" title="Thematic Folders: Territory">&nbsp;&nbsp;Territory</a></li>
+   					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_doc_municipios" title="Thematic Folders: Municipalities">&nbsp;&nbsp;Municipalities</a></li>
+					                     <li><a href="https://genero.ine.pt" title="Thematic Folders: Gender">&nbsp;&nbsp;Gender</a></li>
+					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_indbemestar" title="Thematic Folders: The Well-Being Index">&nbsp;&nbsp;The Well-Being Index</a></li>
+		  			                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_see_ieeuropeia"  title="Thematic Folders: European Statistical System">&nbsp;&nbsp;European Statistical System</a></li>
+					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_indeuropa2020" title="Thematic Folders: Indicators Europe 2020">&nbsp;&nbsp;Indicators Europe 2020</a></li>
+					                     <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_perfpt2020" title="Thematic Folders: Portugal 2020 Indicator System">&nbsp;&nbsp;Portugal 2020 Indicator System</a></li>
+                                         <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_perfsdg" title="Thematic Folders: Sustainable Development Goals">&nbsp;&nbsp;Sustainable Development Goals</a></li>
+                                        <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_covid_dossier" title="Thematic Folders: Special Statistics Portugal COVID-19">&nbsp;&nbsp;Special Statistics Portugal COVID-19</a></li>
+					                     <li class="dropdown-header" title="Products: Interactive Publications">Interactive Publications</li>
+					                     <li><a href="https://fototeca.ine.pt/" title="Interactive Publications: Photo Library">&nbsp;&nbsp;Photo Library (PT version)</a></li>
+                                         <li><a href="https://www.youtube.com/channel/UCDNaM16x_CTjzs_Hg0qrzLw" title="Interactive Publications: Videos&nbsp;[Youtube]">&nbsp;&nbsp;Videos&nbsp;[Youtube]</a></li>
+
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </li></ul>
+        </li>
+
+	  <!-- -->
+
+		                       <li><a href="http://webinq.ine.pt/home.aspx" title="Webinq : INE surveys on the Web">WebInq</a></li>
+                               <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_contactos&ine_smenu.boui=13711615&INST=56501" title="Contacts"><span class="fa fa-phone-square" style="font-size:23px" aria-hidden="true"></span><span class="sr-only">Contacts</span></a></li>
+		                       <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_calendarios" title="Calendar"><span class="glyphicon glyphicon-calendar" style="font-size:20px" aria-hidden="true"></span><span class="sr-only">Calendar</span></a></li>
+		                       <li><a href="/xportal/xmain?xpid=INE&xpgid=ics_feeds&xlang=PT" title="RSS"><span class="fa fa-rss-square" style="font-size:23px" aria-hidden="true"></span><span class="sr-only">RSS</span></a></li>
+                               <li><a href="/xportal/xmain?xpid=INE&xpgid=ine_autenticacao_login" title="Menu: Users Area"><span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:20px"></span><span class="sr-only">Users Area</span></a></li>
+                               <li><a href="http://www.ine.pt/xportal/xmain?xpgid=ine_main&amp;xpid=INE&amp;xlang=pt" lang="pt-PT" hreflang="pt-PT" title="Language">PT</a></li>
+
+	 </ul>
+
+<!-- ???? -->
+<!-- Inicio pesquisa-->
+
+
+
+
+
+
+    <div id='dpesquisa' class="input-group">
+
+      
+      <form id='frm_PesquisaSimples'
+            name='frm_PesquisaSimples'
+            action='/xportal/xmain?xpid=INE&amp;xpgid=ine_pesquisa'
+            method='get'
+            onsubmit='return valida_pesquisa_simples(this);'
+            class='navbar-form navbar-right'
+            >
+
+       <div class="form-group">
+        <div class="input-group">
+
+
+         
+         <input type='hidden'  name='xpid'              value='INE' >
+         
+         <!-- <input type='hidden'  name='xpgid'             value='ine_main' > -->
+         <input type='hidden'  name='xpgid'             value='ine_pesquisa' >
+
+         <input type='hidden'  name='frm_accao'         value='PESQUISAR' >
+
+         
+         <input type='hidden'  name='frm_show_page_num' value='1' >
+
+         <input type='hidden'  name='frm_modo_pesquisa' value='PESQUISA_SIMPLES' >
+
+         
+         <input type='hidden'  name='frm_modo_texto' value='MODO_TEXTO_ALL' >
+
+         
+         
+         <label for='frm_texto_simples' class='sr-only'>Search</label>
+         <input type='text' id='frm_texto_simples' name='frm_texto' 
+                value=''
+                maxlength='2000'
+                accesskey='1'
+                class='form-control input-sm'
+                placeholder='Search'
+                title='Word(s) to find' >
+
+         <div class="input-group-btn">
+
+           
+          <button type="submit" id="frm_imgPesquisar1" name="frm_imgPesquisar" 
+                    class="btn btn-default btn-sm"
+                    title='Submit the search'>
+            <span class="glyphicon glyphicon-search custom-glyph-color"></span>
+          </button>				
+
+          
+          <a id="apesquisa" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_pesquisa&amp;frm_modo_pesquisa=PESQUISA_AVANCADA'
+              class="btn btn-default btn-sm" 
+              role="button"
+              title='Advanced search'>
+            <span class="glyphicon glyphicon-plus"></span>
+          </a>
+
+         </div>  
+
+        </div>  
+       </div>  
+
+      </form>
+      
+
+    </div>  
+
+
+    
+  
+  <script type='text/javascript'>
+    <!--  
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    function valida_pesquisa_simples( par_form ) {
+        
+      ret_val = true ;
+
+      if ( par_form.frm_texto.value == null ) {
+        ret_val = false ;
+      } else {
+
+        
+        
+        aux_regexp = "^\\s*$" ;
+        if ( par_form.frm_texto.value.search(aux_regexp) != -1 ) {
+          
+          ret_val = false ;
+        } 
+
+      } 
+
+        
+        
+      return ret_val ;
+
+    } 
+
+
+    
+    function valida_pesquisa_avancada( par_form ) {
+        
+      
+      ret_val = true ;
+
+      aux_frm_date_ini = par_form.frm_data_ini.value ;
+      aux_frm_date_fim = par_form.frm_data_fim.value ;
+
+      
+      aux_frm_date_ini = aux_frm_date_ini.replace( /^\s*/, "" ).replace( /\s*$/, "" ) ;
+      aux_frm_date_fim = aux_frm_date_fim.replace( /^\s*/, "" ).replace( /\s*$/, "" ) ;
+        
+
+
+      
+      aux_date_ini = null ;
+      if ( aux_frm_date_ini != "" ) {
+        aux_date_ini = cal_prs_date1( aux_frm_date_ini ) ;
+        if ( aux_date_ini == null ) {
+          ret_val = false ;
+        }
+      }
+
+      
+      aux_date_fim = null ;
+      if ( aux_frm_date_fim != "" ) {
+        aux_date_fim = cal_prs_date1( aux_frm_date_fim ) ;
+        if ( aux_date_fim == null ) {
+          ret_val = false ;
+        }
+      }
+
+        
+
+
+      
+      if ( aux_date_ini != null  &&  aux_date_fim != null ) {
+        aux_time_ini = aux_date_ini.getTime() ;
+        aux_time_fim = aux_date_fim.getTime() ;
+          
+
+        if ( aux_time_ini!=0  &&  aux_time_fim!=0 ) {
+          if ( aux_time_ini > aux_time_fim ) {
+            alert( "The initial date must be prior to the final date" ) ;
+            ret_val = false ;
+          }
+        }
+
+      } 
+
+        
+      return ret_val ;      
+    } 
+
+
+    
+    function valida_data( par_form_input ) {
+        
+
+      
+      aux_trim = par_form_input.value.replace( /^\s*/, "" ).replace( /\s*$/, "" ) ;
+
+      
+      aux_valid = cal_prs_date1( aux_trim );
+      if ( !aux_valid  &&  aux_valid != '' ) {
+        par_form_input.focus();		
+      } else {
+        
+        par_form_input.value = aux_trim ;
+      }
+
+    } 
+
+
+    //-->  
+  </script>
+  
+  
+  
+
+<!-- Fim pesquisa -->
+<!-- ???? -->
+
+    </div><!-- /.navbar-collapse -->
+
+  </div><!-- /.container-fluid -->
+
+  </nav>
+               </div>
+            </div>
+         </div>
+      </section>
+      </header>
+
+<!-- User LogIn -->
+<div class="container">
+    
+
+
+
+<!--   <div align="right"> -->
+  
+<!--        <DIV id="menu_esq"> -->
+<!--     <UL id="umenu_esq"> -->
+<!-- <LI> -->
+
+<!-- <UL> -->
+
+
+<!-- </LI></UL></LI></UL> -->
+<!--     </div> -->
+<!--   </div>fim da div login -->
+
+</div>
+
+<!-- Fim User LogIn --><div id="specific_content" class="container"><!--START_EDIT_AREA_content-->
+
+<!-- =========================== -->
+<script>
+function myFunction() {
+  setTimeout(function(){ fecha_modal(); }, 8500);
+}
+</script>
+
+
+
+<!--<body onload="abre_modal();myFunction();">-->
+<!--<body>
+
+<!-- =========================== -->
+<!-- Container Pop Modal -->
+
+<!-- <div id="myModal" class="myModal">
+</div>-->
+<!--<span class="fecha_modal" onclick="fecha_modal()">&times;</span>-->
+
+   
+    
+<!-- #################################### BARRA DASH ######################### -->
+<!--<div class="container">   
+<div align="center" class="row escaparate"> -->
+<!-- <a href="https://censos.ine.pt/"><img alt="Censos 2021 - Resultados Definitivos" title="Censos 2021 - Resultados Definitivos" class="img-responsive" src="https://www.ine.pt/img/BANNER_HP_PORTAL.png" ></a> -->
+<!--</div>
+</div>    -->
+    
+    <!-- =========================== -->
+<!-- <div class="container">   
+<div align="center" class="row escaparate"> 
+<a href="https://IRCAE.INE.PT"><img class="img-responsive" src="https://www.ine.pt/img/Banner-CAE-reclassificacao_portal_1110x115.png" title ="IRCAE" alt="IRCAE"></a>
+</div>
+</div>   -->
+ 
+    
+<!--<div id="myModal" class="myModal">    
+    <span class="fecha_modal" onclick="fecha_modal()">&times;</span>
+<center>
+<p><center><b>COMUNICADO</b></center></p>
+<p><b>COVID 19</b></p>
+<p>No cumprimento da sua MissÃ£o, enquanto principal autoridade estatÃ­stica nacional 
+produtora de estatÃ­sticas oficiais, o INE efetua inquÃ©ritos a famÃ­lias, empresas 
+e a outras entidades.</p>
+<p>Nas atuais circunstÃ¢ncias, o INE decidiu suspender atÃ© ao final do mÃªs de abril, 
+com reavaliaÃ§Ã£o da situaÃ§Ã£o atÃ© essa data, as entrevistas presenciais, i.e, que 
+envolvem contatos diretos com os cidadÃ£os, devido ao risco para ambos, 
+entrevistadores e respondentes.</p>
+<p>ManterÃ¡ a inquiriÃ§Ã£o por via telefÃ³nica ou via internet, para os quais apela Ã  
+boa colaboraÃ§Ã£o dos inquiridos.</p>
+<p>
+Internamente o INE estÃ¡ a reorganizar-se no sentido de procurar assegurar a 
+produÃ§Ã£o estatÃ­stica oficial.<br>
+Relativamente ao calendÃ¡rio de divulgaÃ§Ã£o estatÃ­stica, publicado no Portal das 
+EstatÃ­sticas Oficiais, Ã© possÃ­vel que venham a observar-se alteraÃ§Ãµes para as 
+quais o INE solicita desde jÃ¡ a compreensÃ£o dos cidadÃ£os e comunicaÃ§Ã£o social.<br>
+INE</p>
+<br>
+<em>13.03.2020</em>
+	
+</center>
+</div>--><!--</div>-->
+
+<!-- =========================== -->
+<!-- #################################### BARRA COVID ######################### -->
+<!--   comentado 2022/ago/10
+<div class="container">   
+<div align="center" class="row escaparate"> 
+<a target="_blank" href="https://www.ine.pt/xportal/xmain?xpgid=ine_covid_dossier&xpid=INE"><img title="ESPECIAL INE COVID-19" alt="ESPECIAL INE COVID-19" class="img-responsive" src="/img/covid_topo.png" title="Especial - COVID-19"></a>
+    </div>
+</div>
+-->
+<!-- #################################### FIM BARRA COVID ######################### -->   
+<!-- #################################### BARRA BOAS FESTAS 2023 ######################### -->
+<!--<div class="container">   
+<div align="center" class="row escaparate"> 
+<img alt="Seasons Greetings " class="img-responsive" src="https://www.ine.pt/img/Natal-2023_Banner-Portal2.png" title="Seasons Greetings">
+</div>
+</div>-->
+<!-- #################################### FIM BOAS FESTAS 2023 ######################### --> 
+<!--########################## P Indicadores ########################################### -->
+<div class="">   
+   <div align="center" class="row escaparate"> 
+       
+
+           
+       <div class="col-md-2">
+        <div align="center">
+         <a title="Resident population (No.) by Place of residence (NUTS - 2024), Sex and Age; Annual - Statistics Portugal, Annual estimates of resident population" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0012903&amp;selTab=tab0">
+    
+               <img alt="Resident population (No.)" title="Resident population (No.)" src="/img/indic_1.png" class="img-responsive">
+               <h4>11 424 031 <span style="font-size:80%;">(No.)</span>
+               
+                  </h4>       
+               <h5><a title="Resident population (No.) by Place of residence (NUTS - 2024), Sex and Age; Annual - Statistics Portugal, Annual estimates of resident population" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0012903&amp;selTab=tab0" >Resident population</a></h5><h6>2025</h6>
+            </div>
+      </div> 
+
+           
+       <div class="col-md-2">
+        <div align="center">
+         <a title="Unemployment rate (Series 2021 - %) by Place of residence (NUTS - 2024) and Sex; Quarterly - Statistics Portugal, Labour force survey (Series 2021)" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0012136&amp;selTab=tab0">
+    
+               <img alt="Unemployment rate (Series 2021 - %)" title="Unemployment rate (Series 2021 - %)" src="/img/indic_2.png" class="img-responsive">
+               <h4>5,5 <span style="font-size:80%;">(%)</span>
+               
+                  </h4>       
+               <h5><a title="Unemployment rate (Series 2021 - %) by Place of residence (NUTS - 2024) and Sex; Quarterly - Statistics Portugal, Labour force survey (Series 2021)" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0012136&amp;selTab=tab0" >Unemployment rate</a></h5><h6>3rd Quarter 2026</h6>
+            </div>
+      </div> 
+
+           
+       <div class="col-md-2">
+        <div align="center">
+         <a title="Consumer price index (Year-on-year growth rate - Base 2025 - %) by Geographic localization and Individual consumption by purpose; Monthly - Statistics Portugal, Consumer price index" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0014647&amp;selTab=tab0">
+    
+               <img alt="Consumer price index (Year-on-year growth rate - Base 2025 - %)" title="Consumer price index (Year-on-year growth rate - Base 2025 - %)" src="/img/indic_3.png" class="img-responsive">
+               <h4>3,80 <span style="font-size:80%;">(%)</span>
+               
+                  </h4>       
+               <h5><a title="Consumer price index (Year-on-year growth rate - Base 2025 - %) by Geographic localization and Individual consumption by purpose; Monthly - Statistics Portugal, Consumer price index" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0014647&amp;selTab=tab0" >Consumer price index</a></h5><h6>October 2026</h6>
+            </div>
+      </div> 
+
+           
+       <div class="col-md-2">
+        <div align="center">
+         <a title="Balance of the General Government in the year ending in the quarter (% of GDP); Quarterly - Statistics Portugal, Quarterly national accounts" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0009797&amp;selTab=tab0">
+    
+               <img alt="Balance of the General Government in the year ending in the quarter (% of GDP)" title="Balance of the General Government in the year ending in the quarter (% of GDP)" src="/img/indic_4.png" class="img-responsive">
+               <h4>0,5 <span style="font-size:80%;">(%)</span>
+               
+                  </h4>       
+               <h5><a title="Balance of the General Government in the year ending in the quarter (% of GDP); Quarterly - Statistics Portugal, Quarterly national accounts" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0009797&amp;selTab=tab0" >Balance of the General Government in the year ending in the quarter</a></h5><h6>2nd Quarter 2026</h6>
+            </div>
+      </div> 
+
+           
+       <div class="col-md-2">
+        <div align="center">
+         <a title="Net migration (No.) by Place of residence (NUTS - 2024); Annual - Statistics Portugal, Demographic indicators" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0013179&amp;selTab=tab0">
+    
+               <img alt="Net migration (No.)" title="Net migration (No.)" src="/img/indic_5.png" class="img-responsive">
+               <h4>70 862 <span style="font-size:80%;">(No.)</span>
+               
+                  </h4>       
+               <h5><a title="Net migration (No.) by Place of residence (NUTS - 2024); Annual - Statistics Portugal, Demographic indicators" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0013179&amp;selTab=tab0" >Net migration</a></h5><h6>2025</h6>
+            </div>
+      </div> 
+
+           
+       <div class="col-md-2">
+        <div align="center">
+         <a title="Gross domestic product at prices chained volume levels (B.1*g) (Year-on-year growth rate - Base 2021 - %); Quarterly - Statistics Portugal, Quarterly national accounts" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0013431&amp;selTab=tab0">
+    
+               <img alt="Gross domestic product at prices chained volume levels (B.1*g) (Year-on-year growth rate - Base 2021 - %)" title="Gross domestic product at prices chained volume levels (B.1*g) (Year-on-year growth rate - Base 2021 - %)" src="/img/indic_6.png" class="img-responsive">
+               <h4>2,4 <span style="font-size:80%;">(%)</span>
+               
+                  </h4>       
+               <h5><a title="Gross domestic product at prices chained volume levels (B.1*g) (Year-on-year growth rate - Base 2021 - %); Quarterly - Statistics Portugal, Quarterly national accounts" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_indicadores&contecto=pi&amp;indOcorrCod=0013431&amp;selTab=tab0" >Gross domestic product chained volume levels (B.1*g)</a></h5><h6>3rd Quarter 2026</h6>
+            </div>
+      </div> 
+
+          <p>&nbsp;</p>
+          
+ 
+   </div> 
+</div>
+<!-- Fim destaques -->
+<!-- Fim p_indicadores -->
+<!--#######################Destaques 12 col ######################-->
+<div class="">
+   <div align="center" class="row escaparate">
+      
+
+
+    
+
+
+  <!-- fim da div hp_dest_header -->
+
+                     
+      <div class="col-md-2">
+              
+         <a title="From the 2nd to the 3rd quarter of 2026, 25.3% of the unemployed moved into employment - 3rd Quarter 2026" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=771917748&amp;DESTAQUESmodo=2'>
+         <img class="img-responsive publicacoes_l"  alt="From the 2nd to the 3rd quarter of 2026, 25.3% of the unemployed moved into employment - 3rd Quarter 2026" src="/ngt_server//attachfileu.jsp?look_parentBoui=639400294&amp;att_display=n&amp;att_download=y">
+           </a>
+          
+               
+            <h6>11 November 2026</h6>
+            <h5><a title="From the 2nd to the 3rd quarter of 2026, 25.3% of the unemployed moved into employment - 3rd Quarter 2026 (See detail)" 
+        href="/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=771917748&amp;DESTAQUESmodo=2">From the 2nd to the 3rd quarter of 2026, 25.3% of the unemployed moved into employment</a></h5>
+        
+        <h6>
+        <span>3rd Quarter 2026</span></h6>
+        </p>
+      </div>
+     
+
+                     
+      <div class="col-md-2">
+              
+         <a title="Production in Construction grew 1.8% - September 2026" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770603416&amp;DESTAQUESmodo=2'>
+         <img class="img-responsive publicacoes_l"  alt="Production in Construction grew 1.8% - September 2026" src="/ngt_server//attachfileu.jsp?look_parentBoui=622505205&amp;att_display=n&amp;att_download=y">
+           </a>
+          
+               
+            <h6>11 November 2026</h6>
+            <h5><a title="Production in Construction grew 1.8% - September 2026 (See detail)" 
+        href="/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770603416&amp;DESTAQUESmodo=2">Production in Construction grew 1.8%</a></h5>
+        
+        <h6>
+        <span>September 2026</span></h6>
+        </p>
+      </div>
+     
+
+                     
+      <div class="col-md-2">
+              
+         <a title="CPI annual rate of change increased to 3.8% - October 2026" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770569116&amp;DESTAQUESmodo=2'>
+         <img class="img-responsive publicacoes_l"  alt="CPI annual rate of change increased to 3.8% - October 2026" src="/ngt_server//attachfileu.jsp?look_parentBoui=825356999&amp;att_display=n&amp;att_download=y">
+           </a>
+          
+               
+            <h6>11 November 2026</h6>
+            <h5><a title="CPI annual rate of change increased to 3.8% - October 2026 (See detail)" 
+        href="/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770569116&amp;DESTAQUESmodo=2">CPI annual rate of change increased to 3.8%</a></h5>
+        
+        <h6>
+        <span>October 2026</span></h6>
+        </p>
+      </div>
+     
+
+                     
+      <div class="col-md-2">
+              
+         <a title="Services Turnover Index increased by 4.0% - September 2026" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770593290&amp;DESTAQUESmodo=2'>
+         <img class="img-responsive publicacoes_l"  alt="Services Turnover Index increased by 4.0% - September 2026" src="/ngt_server//attachfileu.jsp?look_parentBoui=827916746&amp;att_display=n&amp;att_download=y">
+           </a>
+          
+               
+            <h6>10 November 2026</h6>
+            <h5><a title="Services Turnover Index increased by 4.0% - September 2026 (See detail)" 
+        href="/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770593290&amp;DESTAQUESmodo=2">Services Turnover Index increased by 4.0%</a></h5>
+        
+        <h6>
+        <span>September 2026</span></h6>
+        </p>
+      </div>
+     
+
+                     
+      <div class="col-md-2">
+              
+         <a title="Industry Turnover increased by 7.5% - September 2026" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770608973&amp;DESTAQUESmodo=2'>
+         <img class="img-responsive publicacoes_l"  alt="Industry Turnover increased by 7.5% - September 2026" src="/ngt_server//attachfileu.jsp?look_parentBoui=735041060&amp;att_display=n&amp;att_download=y">
+           </a>
+          
+               
+            <h6>09 November 2026</h6>
+            <h5><a title="Industry Turnover increased by 7.5% - September 2026 (See detail)" 
+        href="/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770608973&amp;DESTAQUESmodo=2">Industry Turnover increased by 7.5%</a></h5>
+        
+        <h6>
+        <span>September 2026</span></h6>
+        </p>
+      </div>
+     
+
+                     
+      <div class="col-md-2">
+              
+         <a title="Exports and imports maintained growth - September 2026" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770584362&amp;DESTAQUESmodo=2'>
+         <img class="img-responsive publicacoes_l"  alt="Exports and imports maintained growth - September 2026" src="/ngt_server//attachfileu.jsp?look_parentBoui=685129073&amp;att_display=n&amp;att_download=y">
+           </a>
+          
+               
+            <h6>09 November 2026</h6>
+            <h5><a title="Exports and imports maintained growth - September 2026 (See detail)" 
+        href="/xportal/xmain?xpid=INE&amp;xpgid=ine_destaques&amp;DESTAQUESdest_boui=770584362&amp;DESTAQUESmodo=2">Exports and imports maintained growth</a></h5>
+        
+        <h6>
+        <span>September 2026</span></h6>
+        </p>
+      </div>
+     
+
+   <div class="row">
+                             <div class="col-md-12">
+                              <div style="padding:5px;" align="right">
+                                     <button type="submit" 
+                                     class="btn btn-default btn-sm" 
+                                     value="Press releases" 
+                                     title="Press releases" 
+                                     onclick="location.href='/xportal/xmain?xpid=INE&xpgid=ine_destaques'">
+                                     <span class="glyphicon glyphicon-plus"></span>
+                                     </button>
+                              </div>
+                             </div>
+                         </div>
+  
+<!-- ## FIM PORTLET DESTAQUES ## -->
+<!-- INICIO ESTATISTICA INE -->
+<script type="text/javascript">
+  _XO = '';
+  _OI = '';
+  _U  = 'PUBLIC';
+  _L  = 'EN';
+  all_ok = 0;
+</script>
+<script type="text/javascript" src="/ine_stats/stats.js"></script>
+<script type="text/javascript">
+  if(all_ok == 1)
+  {
+    process('www.ine.pt', 1, 1);
+  }
+</script>
+<!-- FIM ESTATISTICA INE --> 
+
+    
+<script>
+if (document.getElementById('DESTAQUEStema') != null)
+{
+         document.getElementById("DESTAQUEStema").value='null';
+}
+</script>    
+ 
+    </div>
+      <!-- localizaÃ§Ã£o bnt listar + -->
+      <div class="col-md-2"></div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+         <br>
+      </div>
+      <!-- localizaÃ§Ã£o bnt listar +  -->
+   </div>
+<!-- Fim destaques -->
+<!--########################## PublicaÃ§Ãµes e Slider ########################################### ---->
+<!-- Fim Pub e Slider -->
+<div class="">
+   <div class="row escaparate">
+
+      <div class="col-md-7" style="background-color:white;">
+
+         
+
+
+
+
+
+   
+          <div class="media">
+          <br>
+              <a class="pull-left" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_publicacoes&amp;PUBLICACOESpub_boui=770951439&amp;PUBLICACOESmodo=2'>
+               
+                    <img class="media-object"  title="Agriculture and Fishing" alt="Publication cover" src="/ngt_server//attachfileu.jsp?look_parentBoui=823067174&amp;att_display=n&amp;att_download=y">
+                      </a>
+                                             &nbsp;
+                      
+                       <div class="media-body">
+                      <h5 class="media-heading"><a title="Agriculture and Fishing (See detail)" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_publicacoes&amp;PUBLICACOESpub_boui=770951439&amp;PUBLICACOESmodo=2'><strong>Agriculture and Fishing                 
+                                     
+                      
+                      
+            
+                   - October 2026
+                 </strong></a></h5>
+                <h5>
+                 The purpose of Agriculture and fishing is to give a monthly overview for the primary sector. Basic results and findings are presented through a wide range of data, tables and pictures that give to users an opportunity to keep in line with these issues and also allow them to work with and interpret
+                 
+                  <a title="See detail" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_publicacoes&amp;PUBLICACOESpub_boui=770951439&amp;PUBLICACOESmodo=2">...</a></p>
+      </h5> <h6>
+                 <p>Issue year: 2026</p>
+                 </h6>   
+                 <hr class="style1">
+                </div>
+         </div>
+
+   
+          <div class="media">
+          <br>
+              <a class="pull-left" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_publicacoes&amp;PUBLICACOESpub_boui=770927546&amp;PUBLICACOESmodo=2'>
+               
+                    <img class="media-object"  title="Monthly Statistical Bulletin" alt="Publication cover" src="/ngt_server//attachfileu.jsp?look_parentBoui=822552418&amp;att_display=n&amp;att_download=y">
+                      </a>
+                                             &nbsp;
+                      
+                       <div class="media-body">
+                      <h5 class="media-heading"><a title="Monthly Statistical Bulletin (See detail)" href='/xportal/xmain?xpid=INE&amp;xpgid=ine_publicacoes&amp;PUBLICACOESpub_boui=770927546&amp;PUBLICACOESmodo=2'><strong>Monthly Statistical Bulletin                 
+                                     
+                      
+                      
+            
+                   - September 2026
+                 </strong></a></h5>
+                <h5>
+                 The Monthly Statistical Bulletin contains the main monthly statistical data, both quarterly and semi-annual, organised into the following chapters: Quarterly national accounts; Population and social conditions; Agriculture, animal production and fisheries; Industry and construction; Domestic and
+                 
+                  <a title="See detail" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_publicacoes&amp;PUBLICACOESpub_boui=770927546&amp;PUBLICACOESmodo=2">...</a></p>
+      </h5> <h6>
+                 <p>Issue year: 2026</p>
+                 </h6>   
+                 <hr class="style1">
+                </div>
+         </div>
+
+<div align="right">
+  <button type="submit" 
+  class="btn btn-default btn-sm" 
+   value="Publication" 
+   title="Publication" 
+  onclick="location.href='/xportal/xmain?xpid=INE&xpgid=ine_publicacoes';">
+     <span class="glyphicon glyphicon-plus"></span>
+  </button>
+</div> 
+<br>
+
+ 
+      </div>
+      <div class="col-md-5" style="background-color:white;">
+
+
+  <!-- $$$$$$$$$$$$$ inicio slider $$$$$$$$$$$$$$ -->	
+<div style="margin:0px auto;">   
+<!-- Insert to your webpage where you want to display the carousel -->
+   
+<!-- $$$$$$$$$$$$$ inicio slider $$$$$$$$$$$$$$ -->	
+<div style="margin:0px auto;">   
+<!-- Insert to your webpage where you want to display the carousel -->
+   
+<div id="amazingcarousel-container-1">
+    <div id="amazingcarousel-1" style="display:none;position:relative;width:100%;max-width:360px;margin:0px auto 0px;">       
+        
+        <div class="amazingcarousel-list-container">
+         <ul class="amazingcarousel-list">
+              <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+		<div class="amazingcarousel-image"><a href="/xportal/xmain?xpgid=ine_inst_infografia&xpid=INE&INST=816644910" title="National Sustainability Day"  target="_self"><img src="/ngt_server/xst_loadimg.jsp?id=816648025"  alt="National Sustainability Day" /></a></div>
+				<div class="amazingcarousel-text">
+				<div class="amazingcarousel-title">Infographics</div>
+				<div class="amazingcarousel-description">National Sustainability Day by providing information on SDG 7</div>
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+            </li>
+                <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+				<div class="amazingcarousel-image"><a href="https://www.ine.pt/ngt_server/attachfileu.jsp?look_parentBoui=456021853&amp;att_display=n&amp;att_download=y" title="Units Classified in the General Government Sector"  target="_self"><img src="/img/em%20foco.jpg"  alt="Em Foco:" /></a></div>
+				<div class="amazingcarousel-text">
+				<div class="amazingcarousel-title"></div>
+				<div class="amazingcarousel-description">Units Classified in the General Government Sector - 2025</div>
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+            </li>        
+              
+              <!-- <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+		<div class="amazingcarousel-image"><a href="/xportal/xmain?xpgid=ine_inst_infografia&xpid=INE&INST=806884857" title="Tourism Satellite Account 2025"  target="_self"><img src="/ngt_server/xst_loadimg.jsp?id=806882667"  alt="Tourism Satellite Account 2025" /></a></div>
+				<div class="amazingcarousel-text">
+				<div class="amazingcarousel-title">Infographics</div>
+				<div class="amazingcarousel-description">Tourism Satellite Account 2025</div>
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+            </li> -->
+             
+             <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+				<div class="amazingcarousel-image"><a href="https://www.ine.pt/ine_novidades/semin/INEWS66/index.html" title="INEWS - 66"  target="_self"><img src="/ngt_server/xst_loadimg.jsp?id=805257762"  alt="INEWS 66" /></a></div>
+				<div class="amazingcarousel-text">
+				<div class="amazingcarousel-title">INEWS</div>
+				<div class="amazingcarousel-description">July 2026</div>
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+            </li>
+             
+             
+              <li class="amazingcarousel-item">
+    <div class="amazingcarousel-item-container">
+        <div class="amazingcarousel-image"><a href="https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_ind_conjuntura" title="Economy and finance: Short Term Indicators" target="_Blank"><img src="https://www.ine.pt/img/ind_conjun.jpg" alt="Short Term Indicators" /></a></div>
+        <div class="amazingcarousel-text">
+            <div class="amazingcarousel-title">Interactive Application</div>
+            <div class="amazingcarousel-description">Short Term Indicators</div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</li>
+                 
+            <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+                    <div class="amazingcarousel-image"><a target="_Blank" href="https://ce-sig.ine.pt" title="Map on facilities  and services of general interest"  target="_self"><img src="/img/CE-SIG2-car.png"   alt="Map on facilities  and services of general interest" /></a></div>
+		    <div class="amazingcarousel-text">
+		    <div class="amazingcarousel-title">CE-SIG</div>
+                        <div class="amazingcarousel-description">Map on facilities  and services of general interest</div>
+		    </div>
+		    <div style="clear:both;"></div>
+		</div>
+             </li>
+            <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+				 <div class="amazingcarousel-image"><a target="_Blank" href="https://iit.ine.pt" title="Territorial Information Infrastructure"  target="_self"><img src="/img/IIT_Carrossel.png"  alt="Territorial Information Infrastructure" /></a></div>
+				<div class="amazingcarousel-text">
+				<div class="amazingcarousel-title"></div>
+				<div class="amazingcarousel-description">Territorial Information Infrastructure</div>
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+            </li>   
+             <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+                    <div class="amazingcarousel-image"><a href="/xportal/xmain?xpid=INE&xpgid=ine_inst_sgicertificacao" title="ISO 9001 Certification"  target="_self"><img src="/img/ISO9001_2.jpg"  alt="ISO 9001 Certification" /></a></div>
+		    <div class="amazingcarousel-text">
+		    <div class="amazingcarousel-title">ISO 9001</div>
+                        <div class="amazingcarousel-description">ISO 9001 Certification</div>
+		    </div>
+		    <div style="clear:both;"></div>
+		</div>
+             </li>
+            <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+                    <div class="amazingcarousel-image"><a href="https://www.ine.pt/scripts/hvd/en/home.html" title="High Value DataSet (HVD)"  target="_self"><img src="/ngt_server/xst_loadimg.jsp?id=671293124"  alt="High Value DataSet (HVD)" /></a></div>
+		    <div class="amazingcarousel-text">
+		    <div class="amazingcarousel-title"> HVD </div>
+                        <div class="amazingcarousel-description">High Value DataSet</div>
+		    </div>
+		    <div style="clear:both;"></div>
+		</div>
+             </li> 
+          
+            <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+				<div class="amazingcarousel-image"><a href="https://www.ine.pt/xportal/xmain?xpgid=IGenero_Main&xpid=IGEN&xlang=en" title="National Statistics System on Gender Equality"  target="_self"><img src="/img/em%20foco.jpg"  alt="Em Foco:" /></a></div>
+				<div class="amazingcarousel-text">
+				<div class="amazingcarousel-title"></div>
+				<div class="amazingcarousel-description">National Statistics System on Gender Equality</div>
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+            </li>   
+            <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+                    <div class="amazingcarousel-image"><a href="https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_statslab" title="Statistics in Development"  target="_self"><img src="/img/Logo_statslab_CAR.png"  alt="Statistics in Development" /></a></div>
+				<div class="amazingcarousel-text">
+				<div class="amazingcarousel-title"></div>
+				<div class="amazingcarousel-description">Statistics in Development</div>
+				</div>
+				<div style="clear:both;"></div>
+				</div>
+                </li>          
+              <li class="amazingcarousel-item">
+                    <div class="amazingcarousel-item-container">                        
+                        <div class="amazingcarousel-image"><a href="https://webinq.ine.pt/public/pages/statisticalCalendar.aspx?id=QsHhr3fbAj1MwkEj8WTwtg" title="Inqu&eacute;ritos &agrave;s Fam&iacute;lias em curso"  target="_blank"><img src="/img/inq_familia.jpg"  alt="Inqu&eacute;ritos &agrave;s Fam&iacute;lias em curso" /></a></div>
+                  <div class="amazingcarousel-text">
+                 <div class="amazingcarousel-title">Inqu&eacute;ritos &agrave;s Fam&iacute;lias</div>
+                 <div class="amazingcarousel-description">Calend&aacute;rio de resposta e informa&ccedil;&otilde;es &uacute;teis</div>
+              </div>
+               <div style="clear:both;"></div>                    </div>
+              </li>                
+ 
+                <li class="amazingcarousel-item">
+                <div class="amazingcarousel-item-container">
+                <div class="amazingcarousel-image">
+                 <a href="/xportal/xmain?xpgid=prot_dados_2018&xpid=INE" title="Data Protection "  target="_self"><img src="/img/em%20foco.jpg"  alt="Data Protection " /></a></div>
+                <div class="amazingcarousel-text">
+	          <div class="amazingcarousel-title"></div>
+	          <div class="amazingcarousel-description">Data Protection</div>
+                </div>
+                <div style="clear:both;"></div>
+                </div>
+              </li>
+            
+            </ul>
+            <div class="amazingcarousel-prev"></div>
+            <div class="amazingcarousel-next"></div>
+        </div>
+        <div class="amazingcarousel-nav"></div>
+    </div>
+</div>
+<!-- End of body section HTML codes -->
+</div>
+          <!-- $$$$$$$$$$$$$$$$$ fim slider $$$$$$$$$$$$$$$$$-->	
+      </div>
+   </div>
+</div>   
+<!-- -->	
+
+<!--- AREA VARIOS LINKS ---------------->
+<!--- AREA VARIOS LINKS ---------------->
+
+ <div align="center"> 
+    <div class="row escaparate">
+      
+				<div class="row">
+			
+			 <!-- pos1 -->
+	     <div class="col-md-2">
+	     <a href="http://webinq.ine.pt/home.aspx">
+	     <img style="padding:0px;" alt="WebInq" title="WebInq" class="img-responsive"  border="0" src="/img/1_WebInq_170x44.png">			  
+	     </a>
+	     </div>
+				
+			<!-- pos2 -->
+             <div class="col-md-2">
+             <a href="http://www.sicae.pt/">
+				<img style="padding:0px;" alt="SICAE" title="SICAE" class="img-responsive"  border="0" src="/img/sicae.gif">
+				</a>				
+				</div>
+      
+            <!-- pos3 -->
+              <div class="col-md-2">
+				<a href="/xportal/xmain?xpid=INE&xpgid=ipc">
+				<img style="padding:0px;" alt="Simulador - IPC" title="Simulador - IPC" class="img-responsive"  border="0" src="/img/5_IPC_170x44.png">			  
+				</a>
+				</div>
+            
+			<!-- pos4 -->	
+				<div class="col-md-2">
+             	<a href="/xportal/xmain?xpid=INE&xpgid=ine_perfsdg">
+				<img style="padding:0px;" alt="ODS" title="ODS" class="img-responsive"  border="0" src="/img/7_ODS_170x44.png">			  
+				</a>	
+			  </div>
+			
+      
+			<!-- pos5 --> 
+               <div class="col-md-2">
+				<a href="https://www.ine.pt/xportal/xmain?xpgid=IGenero_Main&xpid=IGEN&xlang=pt">
+				<img style="padding:0px;" alt="Sistema Estat&iacute;stico Nacional Sobre Igualdade de G&eacute;nero" title="Sistema Estat&iacute;stico Nacional Sobre Igualdade de G&eacute;nero" class="img-responsive"  border="0" src="/img/6_IgualdadeGenero_170x44.png">			  
+				</a>
+			  </div>            
+			  <!-- pos6 --> 
+                <div class="col-md-2">
+				<a href="/xportal/xmain?xpid=INE&xpgid=ine_cnacionais">
+				<img style="padding:0px;" class="img-responsive" alt="Contas Nacionais" title="Contas Nacionais"  border="0" src="/img/4_ContasNacionais_170x44.png">			  
+				</a>
+			    </div>
+			</div>
+			<div class="row">
+                            <div class="col-md-12">&nbsp;</div>
+                       </div>
+			<div class="row">
+			
+			<!-- pos1 -->
+			   <div class="col-md-2">
+				<a href="https://esc2027.ine.pt/">
+				<img style="padding:0px;" class="img-responsive" alt="ESC2027" title="ESC2027"  border="0" src="/img/esc2022_rodape.png">				  
+				</a>
+				</div>
+				
+			<!-- pos2 -->
+			   <div class="col-md-2">
+				<a href="https://posters-islp.ine.pt">
+                <img style="padding:0px;" class="img-responsive" alt="ISLP 2022/2023" title="ISLP 2022/2023"  border="0" src="/img/islp_170x44.png">			  
+				</a>
+				</div>
+      
+			<!-- pos3 -->
+			    <div class="col-md-2">
+				<a href="https://alea.ine.pt/">
+                <img style="padding:0px;" class="img-responsive" alt="A&ccedil;&atilde;o Local de Estat&iacute;stica&nbsp; Aplicada - ALEA" title="A&ccedil;&atilde;o Local de Estat&iacute;stica&nbsp; Aplicada - ALEA"  border="0" src="/img/alea2018.jpg">			  
+				</a>
+				</div>
+            
+			<!-- pos4 -->
+				 <div class="col-md-2">
+				<a href="https://cse.ine.pt/xportal/xmain?xpgid=cse_home&xpid=CSE">
+                <img style="padding:0px;" class="img-responsive" alt="Conselho Superior de Estat&iacute;stica&nbsp; - CSE" title="Conselho Superior de Estat&iacute;stica&nbsp; - CSE"  border="0" src="/img/cse_rodape.png">			  
+				</a>
+				</div>
+                        
+      
+			<!-- pos5 --> 
+				<div class="col-md-2">
+				<a href="https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_inst_see&ine_smenu.boui=133216385">
+                <img style="padding:0px;" class="img-responsive" alt="Sistema Estat&iacute;stico&nbsp; Europeu - SEE" title="Sistema Estat&iacute;stico&nbsp; Europeu - SEE"  border="0" src="/img/see.png">			  
+				</a>
+				</div>
+			<!-- pos6 -->
+				<div class="col-md-2">
+				<a target="_Blank" href="https://censos.ine.pt/">
+				<img style="padding:0px;" class="img-responsive" alt="Censos 2021" title="Censos 2021"  border="0" src="/img/2_Censos_170x44.png">			  
+				</a>
+				</div>
+
+			</div>
+
+			
+			</div>
+
+    </div>
+</div>
+ <!-- #################################### Banner BARRA DASH #########################  -->
+ <!-- <div class="container">  
+<div align="center" class="row escaparate"> 
+ <a target="_blank" href="https://iit.ine.pt"><img alt="Territorial Information Infrastructure" title="Territorial Information Infrastructure" class="img-responsive" src="https://www.ine.pt/img/IIT_Banner-ITT_ENG.png" ></a></div>
+</div> 
+</div> -->
+
+
+<!-- #################################### BARRA DASH ######################### 
+<div class="container">   
+<div align="center" class="row escaparate"> 
+<img alt="Season's Greetings And A Happy New Year" title="Season's Greetings And A Happy New Year" class="img-responsive" 
+src="https://www.ine.pt/img/Natal-2021_Banner-Portal_ENG.jpg">
+</div>
+</div>
+<!-- #################################### FIM BARRA DASH ######################### -->
+
+
+<!-- $$$$ -->
+
+
+<!--END_EDIT_AREA_content--></div><footer role="contentinfo">
+   <div class="footer" id="footer">
+      <div class="container">
+         <div class="row">
+            <br>
+
+            <!-- Coluna esquerda -->
+            <nav class="col-md-4 col-lg-3 rodape-col rodape-col-esq" aria-label="About">
+               <ul class="list-unstyled">
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_sobre_o_ine" title="Menu: About">About</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=inews&amp;INST=80066558" title="Menu: INEWS (Newsletter)">INEWS (Newsletter)</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_autenticacao_login" title="Menu: Users Area">Users Area</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_ped_informacao" title="Menu: Ask for data or Information">Ask for data or Information</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_captcha_elo_rec" title="Menu: Comments/Complaints/Compliments">Comments/Complaints/Compliments</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_denuncia" title="Menu: Whistleblowing Channel">Whistleblowing Channel</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_ligacoes&amp;INST=57965&amp;ine_smenu.boui=13711379&amp;xlang=en" title="Menu: Links">Links</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_rh_recmob" title="Menu: Join Us">Join Us</a></li>
+               </ul>
+            </nav>
+
+            <!-- Coluna central -->
+            <div class="col-md-4 col-lg-6 text-center rodape-centro">
+               <ul class="list-inline">
+                  <li><a href="https://www.facebook.com/INEPORTUGAL/"><img alt="Facebook - INE" title="Facebook - INE" style="padding:3px;" src="https://www.ine.pt/img/face_s.png"></a></li>
+                  <li><a href="https://www.instagram.com/pt_ine/"><img alt="Instagram - INE" title="Instagram - INE" style="padding:3px;" src="https://www.ine.pt/img/instaicon.png"></a></li>
+                  <li><a href="https://www.pinterest.pt/INE_Portugal/"><img alt="Pinterest - INE" title="Pinterest - INE" style="padding:3px;" src="https://www.ine.pt/img/pint_s.png"></a></li>
+                  <li><a href="https://twitter.com/pt_ine"><img alt="twitter - INE" title="twitter - INE" style="padding:3px;" src="https://www.ine.pt/img/twee_s.png"></a></li>
+                  <li><a href="https://www.youtube.com/channel/UCDNaM16x_CTjzs_Hg0qrzLw"><img alt="YouTube channel - INE" title="YouTube channel - INE" style="padding:3px;" src="https://www.ine.pt/img/you_t_s.png"></a></li>
+                  <li><a href="https://pt.linkedin.com/company/ine"><img alt="Linkedin - INE" title="Linkedin - INE" style="padding:3px;" src="https://www.ine.pt/img/in_s.png"></a></li>
+               </ul>
+               <br>
+               <nav aria-label="Statistics Portugal policies">
+                  <ul class="list-unstyled">
+                     <li class="rodape_title"><a class="blue_n" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_inst_pppdpessoais&amp;xlang=en" title="Link: Privacy Policy and Protection of Personal Data">Privacy Policy and Protection of Personal Data</a></li>
+                     <li class="rodape_title"><a class="blue_n" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_inst_psinformacao&amp;xlang=en" title="Link: Information Security Policy">Information Security Policy</a></li>
+                     <li class="rodape_title"><a class="blue_n" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_inst_pqualidade&amp;xlang=en" title="Link: Statistics Portugal's Quality Policy">Statistics Portugal's Quality Policy</a></li>
+                     <li class="rodape_title"><a class="blue_n" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_inst_confestatistica&amp;xlang=en" title="Link: Policy of Statistical Confidentiality">Policy of Statistical Confidentiality</a></li>
+                     <li class="rodape_title"><a class="blue_n" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=ine_cookies" title="Link: Use of Cookies">Use of Cookies</a></li>
+                     <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_cookies" onclick="if (window.ineCookies) { return ineCookies.abrir(); }">Change cookie preferences</a></li>
+                  </ul>
+               </nav>
+            </div>
+
+            <!-- Coluna direita -->
+            <nav class="col-md-4 col-lg-3 rodape-col rodape-col-dir" aria-label="Resources">
+               <ul class="list-unstyled">
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ics_feeds&amp;ine_smenu.boui=357197120&amp;ine_smenu.selected=357197349" title="Link: Resources (Services, Feeds and API&acute;s)">Resources (Services, Feeds and API&acute;s)</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/publicacoes/catalogo/index.html" title="Link: Catalogue of Publications">Catalogue of Publications</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_statslab" title="Link: STATSLAB - Portugal">STATSLAB</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="https://www.ine.pt/xportal/xmain?xpid=INE&amp;xpgid=prr_2023&amp;xlang=en" title="Link: Recovery and Resilience Plan (RRP) at Statistics Portugal">Recovery and Resilience Plan (RRP) at Statistics Portugal</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="https://revstat.ine.pt" title="REVSTAT">REVSTAT - Statistical Journal </a></li>
+                  <li class="rodape_title"><a class="blue_n" target="_blank" rel="noopener" href="https://metrics.ine.pt" title="METRICS">METRICS - Working Paper Series<span class="sr-only"> (opens in a new window)</span></a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_sem_lista" title="Link: Events">Events</a></li>
+                  <li class="rodape_title"><a class="blue_n" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_faqs" title="link: FAQs">FAQ</a></li>
+               </ul>
+            </nav>
+
+         </div>
+         <!--/.row-->
+      </div>
+      <!--/.container-->
+   </div>
+   <!--/.footer-->
+
+   <div class="footer-bottom">
+      <div class="container">
+         <ul class="row list-unstyled rodape-selos">
+            <li class="col-md-2 col-sm-3 col-xs-6">
+               <a title="Menu: Award - Healthy Workplaces Award 2024" href="/xportal/xmain?&amp;xpid=INE&amp;xpgid=ine_inst_hwadistincao"><img class="img-responsive" style="padding:15px;" alt="Award - Healthy Workplaces Award 2024" src="https://www.ine.pt/img/OPP_HWA24_Selos_Horizontal_RGB_policromatico_2.png"></a>
+            </li>
+            <li class="col-md-2 col-sm-3 col-xs-6">
+               <a title="Security Awards 2024 - Security Magazine" href="/xportal/xmain?&amp;xpid=INE&amp;xpgid=ine_inst_segpremio"><img class="img-responsive" style="padding:15px;" alt="Security Awards 2024 - Security Magazine" src="https://www.ine.pt/img/premio_sem%20_fundo.png"></a>
+            </li>
+            <li class="col-md-2 col-md-offset-4 col-sm-3 col-xs-6">
+               <a title="ISO/IEC 27001:2022 Certification of Statistics Portugal's Information Security Management System" href="/xportal/xmain?&amp;xpid=INE&amp;xpgid=ine_inst_sgicertificacao"><img class="img-responsive" style="padding:15px;" alt="ISO/IEC 27001:2022 Certification of Statistics Portugal's Information Security Management System" src="https://www.ine.pt/img/apcer.png"></a>
+            </li>
+            <li class="col-md-2 col-sm-3 col-xs-6">
+               <a title="Statistics Portugal Integrated Management System ISO 9001 and 27001 Certification" href="/xportal/xmain?&amp;xpid=INE&amp;xpgid=ine_inst_sgicertificacao"><img class="img-responsive" style="padding:15px;" alt="Statistics Portugal Integrated Management System ISO 9001 and 27001 Certification" src="https://www.ine.pt/img/ISO_9001_IQNET_COR.png"></a>
+            </li>
+         </ul>
+      </div>
+
+      <div class="container">
+         <br>
+         <p class="pull-right rodape-copyright"><a title="Web Accessibility" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_inst_acess_usabilidade">Accessibility</a> | <a title="Copyright &copy;" href="/xportal/xmain?xpid=INE&amp;xpgid=ine_cont_inst&amp;INST=3585857">Copyright &copy; Statistics Portugal</a></p>
+      </div>
+   </div>
+   <!--/.footer-bottom-->
+</footer>
+
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://matomo.ine.pt/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img referrerpolicy="no-referrer-when-downgrade" src="https://matomo.ine.pt/matomo.php?idsite=2&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+<!-- End Matomo Code -->
+</body>
+</html>

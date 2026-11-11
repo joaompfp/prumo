@@ -1,0 +1,220 @@
+
+
+
+
+      
+<html>
+<head>
+    <title>Indicador BDD</title>
+    
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE" /> 
+    <link rel="stylesheet" href="/css/indicadores/bddXplorer.css" type="text/css">
+    <script src="/scripts/indicadores/indicadores.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/css/zona_central.css" type="text/css">    
+    <link rel="stylesheet" href="/css/zona_formulario.css" type="text/css">    
+  
+</head>
+
+<BODY>
+<!-- onload="alert(parent.window.location);alert(self == top)" -->
+
+<DIV class="divTotal">
+
+<DIV class="divBorder">
+<!--
+<TABLE cellspacing="0" cellpadding="6" width="99%" class="border_blue">
+<TR><TD>
+-->
+
+  <!-- layer de espera -->
+    <div id="layerWait" class="areaLayerPopUpBranca">
+    <table width="100%" height="100%">
+      <tr>
+        <td class="textoMedio" height="100%" align="center">
+          <img src="/img/indicadores/wait_animated.gif" align="absmiddle" name="esperaAnim" id="esperaAnim" alt="Aguarde, por favor..."/>&nbsp;&nbsp;Aguarde, por favor...
+        </td>
+      </tr>
+    </table>
+  </div> 
+  <!-- layer de espera - fim -->   
+
+  <script language="javascript">
+      //window.history.forward(1);
+      mostraLayerPopUp('layerWait');         
+  </script>
+  <noscript>
+  </noscript>
+
+
+
+
+
+
+  <form name="frmIndicador" id="frmIndicador" action="bddXplorer04.jsp" method="post">  
+
+
+
+<TABLE class='tabelaGeral' summary="Tabela utilizada para formatar conte&uacute;dos.">
+<TR>
+  <TD style="width:100%; vertical-align:top; height:25px">
+    <!-- menu de "Passos": Inicio -->
+    
+    <table cellspacing='0' cellpadding='0'><tr><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px25' alt=''/></td><td class='borderBotao' >&nbsp;<img class='imgNormal' src='/img/indicadores/setaMenu.gif' alt=''/><input id='botaoPasso1' name='botaoPasso1' type='image' src='/img/indicadores/passo1PT.gif' class='imgNormal' alt='Incluir/retirar indicadores&nbsp;&nbsp; '></td><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px25' alt=''/></td><td class='borderBotao' >&nbsp;<img class='imgNormal' src='/img/indicadores/setaMenu.gif' alt=''/><input id='botaoPasso2' name='botaoPasso2' type='image' src='/img/indicadores/passo2PT.gif' class='imgNormal' alt='Alterar condições de seleção&nbsp;&nbsp; '></td><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px25' alt=''/></td><td class='borderBotao' >&nbsp;<img class='imgNormal' src='/img/indicadores/setaMenu.gif' alt=''/><input id='botaoPasso3' name='botaoPasso3' type='image' src='/img/indicadores/passo3PT.gif' class='imgNormal' alt='Alterar formato do quadro&nbsp;&nbsp; '></td><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px25' alt=''/></td><td class='borderBotao' colspan='2'>&nbsp;<img class='imgNormal' src='/img/indicadores/setaMenu.gif' alt=''/><img src='/img/indicadores/passo4_redPT.gif' class='imgNormal' alt=''></td></tr><tr><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px' alt=''/></td><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia' alt='' style='width:143px'/></td><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px' alt=''/></td><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia' alt='' style='width:162px'/></td><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px' alt=''/></td><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia' alt='' style='width:148px'/></td><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px' alt=''/></td><td ><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia' alt='' style='width:104px'/></td></tr><tr><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px'  alt=''/></td><td class='passosCelulaAzul'><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia'  alt=''/></td><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px'  alt=''/></td><td class='passosCelulaAzul'><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia'  alt=''/></td><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px'  alt=''/></td><td class='passosCelulaAzul'><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia'  alt=''/></td><td><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia4px'  alt=''/></td><td class='passosCelulaAzul'><img src='/img/indicadores/pontoTransparente.gif' class='imgVazia'  alt=''/></td></tr></table>
+    <!-- menu de "Passos": Fim -->
+  </TD>
+</TR>
+
+<TR>
+  <TD style="height:8px" valign="middle"><img style="height:8px; width:1px" src="/img/indicadores/pontoTransparente.gif"/></TD>
+</TR>
+
+<TR>
+  <TD style="vertical-align:top;">
+
+    <TABLE style="width:100%; height:90%;" cellpadding="0" cellspacing="0" summary="Tabela utilizada para formatar conte&uacute;dos.">
+      
+      <TR>
+        <!-- inicio: border rectangular azul -->  
+        <TD style="vertical-align:top; text-align:left; height:100%">
+       
+          <Table style="border:0px; text-align:left; width:100%; height:100%;" cellpadding="0" cellspacing="4" summary="Tabela utilizada para formatar conte&uacute;dos.">
+            <!-- inicio: barra azul de topo -->
+            <Tr>
+              <Td style="vertical-align:middle">
+                     <TABLE style="border:0px; text-align:left; width:700px; height:100%;" class="borderNone" cellpadding="0" cellspacing="0" summary="Tabela utilizada para formatar conte&uacute;dos.">
+                          <tr>                                                    
+                            <td style="white-space:nowrap;text-align:left; vertical-align:top;" nowrap="nowrap" valign="top">
+                              
+                                  <a href="minfo.jsp?var_cd=0006031&lingua=PT" target="_blank"><img src='/img/indicadores/botaoMi_on.gif' title='Metainforma&ccedil;&atilde;o (Abre uma nova janela)' alt='Metainforma&ccedil;&atilde;o (Abre uma nova janela)'/></a><img alt='Ler quadro pr&eacute;-gravado' title='Ler quadro pr&eacute;-gravado' src="/img/indicadores/botaoAbrir_off.gif"/><img title="Gravar quadro" alt ="Gravar quadro" src="/img/indicadores/botaoGravar_off.gif" /><input id="botaoPrint" name="botaoPrint" type="image" src="/img/indicadores/botaoImprimir_on.gif" title="Imprimir" alt="Imprimir"/><a href="#" onclick='changeClassDisplay(".dimensionCode"); return false' title='Mostrar/esconder c&oacute;digos (dimens&otilde;es)' alt='Mostrar/esconder c&oacute;digos (dimens&otilde;es)'><img src="/img/indicadores/botaoCodigos_on.gif" style="vertical-align: 18%;"></a><input type="image" id="botaoDownloadExcelCod" name="botaoDownloadExcelCod" value="1" type="submit" alt='Exportar quadro (com codifica&ccedil;&atilde;o das dimens&otilde;es) para formato Excel ' title='Exportar quadro (com codifica&ccedil;&atilde;o das dimens&otilde;es) para formato Excel ' src="/img/indicadores/botaoXlsCod_on.gif"/><input type="image" id="botaoDownloadExcel" name="botaoDownloadExcel" value="1" type="submit" alt='Exportar quadro para formato Excel ' title='Exportar quadro para formato Excel ' src="/img/indicadores/botaoExcel_on.gif"/><input id="botaoDownloadCsv" name="botaoDownloadCsv" value="1" type="image" alt='Exportar quadro em formato CSV' title='Exportar quadro em formato CSV' src="/img/indicadores/botaoCsv_on.gif"/><img alt='Exportar gr&aacute;fico para imagem (formato JPEG, PNG ou PDF)' title='Exportar gr&aacute;fico para imagem (formato JPEG, PNG ou PDF)' border="0" src="/img/indicadores/botaoGraficosExport_off.gif"/><a href="sinais.jsp?lang=PT" target="_blank"><img alt='Sinais convencionais (Abre uma nova janela)' title='Sinais convencionais (Abre uma nova janela)' src="/img/indicadores/botaoSinais_on.gif"/></a><!-- <a href="http://www.ine.pt/ajuda_pt/navegacao/base_dados_parte1_n.htm" target="_blank"><img alt='Ajuda geral (Abre uma nova janela)' title='Ajuda geral (Abre uma nova janela)' src="/img/indicadores/botaoAjuda_on.gif"/></a> -->
+                              
+                            </td>                        
+                            <td><img src="/img/indicadores/pontoTransparente.gif" class='imgVazia4px' alt=""></td>
+                            <td class="border_blue" style="vertical-align:top;width:90%;">
+                                
+
+                                  <!--  ***********  ***********  ***********  *********** 
+                                  Layer para Save Quadro XML 
+                                   ***********  ***********  ***********  ***********  *********** -->
+                                   
+                                <DIV id="areaMensagensAjuda" name="areaMensagensAjuda" style="visibility: visible; position: relative; width:98%; height:100%; color:#CE770C" class="textoMedio">
+                                </DIV>
+                            </td>                              
+                          </tr>
+                      </TABLE>           
+              </Td>
+            </Tr>
+            <!-- fim: barra azul -->
+          
+            <tr>
+              <td ><img src="/img/indicadores/pontoTransparente.gif" class="imgVazia" alt=""/></td>
+            </tr>
+          
+            <!-- inicio: área ÚTIL de trabalho -->
+            
+            <Tr>
+              <Td style="vertical-align:top">              
+              <table style="background-color:#ffffff; border:0px; width:100%; height:100%" cellspacing="0" cellpadding="0" summary="Tabela utilizada para formatar conte&uacute;dos.">
+                <tr>
+                  <!-- unica coluna -->
+                  <td style="vertical-align:top; ">
+                  <!-- <DIV id="indexA" style="visibility: visible; display:block; position: relative; width:100%; height:380; overflow:auto;" align="center"> -->
+                  <div style="text-align:left; padding-left:10px;">
+                                    
+                  
+                  
+                  </div>
+                  <br><table class='rebordo' style='width: 98%;' cellpadding='0' cellspacing='0'><colgroup span='5'></colgroup><tbody><tr><td><!-- inicio quadro/begin table --><table class='dados' style='border: 0px none ; width: 100%;' summary='Quadro estatístico/Statistical table'><tbody><tr><th scope='col' rowspan='8' class='THeaderIndicador' >Período de referência dos dados (<a href='#1' alt='A partir de 2021, as Estimativas Anuais de População Residente são de base administrativa. Até 2020, as Estimativas Anuais de População Residente são definitivas e assentes nos recenseamentos da população anteriores. A leitura da evolução de 2020 para 2021 deve ter presente esta alteração metodológica.' title='A partir de 2021, as Estimativas Anuais de População Residente são de base administrativa. Até 2020, as Estimativas Anuais de População Residente são definitivas e assentes nos recenseamentos da população anteriores. A leitura da evolução de 2020 para 2021 deve ter presente esta alteração metodológica.'>1</a>) </th><th scope='col' rowspan='8' class='THeaderIndicador' >Local de residência (Portugal)</th><th scope='col' colspan='3' class='THeaderIndicador' >População residente (N.º) por Sexo, Idade e Naturalidade; Anual</th></tr><tr><th scope='col' colspan='3' class='THeader' >Sexo</th></tr><tr><th scope='col' colspan='1' style='width:19%' class='THeader' ><span class='dimensionCode'>T:</span> HM</th><th scope='col' colspan='1' style='width:19%' class='THeader' ><span class='dimensionCode'>1:</span> H</th><th scope='col' colspan='1' style='width:19%' class='THeader' ><span class='dimensionCode'>2:</span> M</th></tr><tr><th scope='col' colspan='3' class='THeader' >Idade</th></tr><tr><th scope='col' colspan='3' class='THeader' ><span class='dimensionCode'>T:</span> Total</th></tr><tr><th scope='col' colspan='3' class='THeader' >Naturalidade</th></tr><tr><th scope='col' colspan='3' class='THeader' ><span class='dimensionCode'>T:</span> Total</th></tr><tr><th scope='col' class='THeader'>N.º </th><th scope='col' class='THeader'>N.º </th><th scope='col' class='THeader'>N.º </th></tr><tr class='TRow1'><td class='normal' rowspan='1'><b>2024</b></td><td class='normal' rowspan='1' style='padding-left:6px' ><b><span class='dimensionCode'>PT:</span> Portugal</b></td><td style='width:19%'>11 387 222</td><td style='width:19%'>5 564 783</td><td style='width:19%'>5 822 439</td></tr><tr><td class='TNotes' colspan='5'>População residente (N.º) por Sexo, Idade e Naturalidade; Anual - INE, Estimativas anuais da população residente</td></tr><tr><td class='TNotes' colspan='5'>Nota(s):</td></tr><tr><td class='TNotes' colspan='5'><a name='1'>(1) A partir de 2021, as Estimativas Anuais de População Residente são de base administrativa. Até 2020, as Estimativas Anuais de População Residente são definitivas e assentes nos recenseamentos da população anteriores. A leitura da evolução de 2020 para 2021 deve ter presente esta alteração metodológica.</a></td></tr></tbody></table></td></tr></tbody></table><!-- fim quadro/end table --><br><p class='textoUltimaActualizacao'><i>Última atualização destes dados: 22 de junho de 2026</i></p>
+                    <!--</div>-->
+                
+                  </td>
+                </tr>
+              </table>
+              
+              </Td>
+            </Tr>
+
+          <!-- fim: área ÚTIL de trabalho -->          
+          
+        </Table>
+        
+        </TD>
+        <!-- fim: border rectangular -->  
+      </TR>
+
+  </TABLE>
+
+
+  <input type="hidden" name="tipoSeleccao" id="tipoSeleccao" value="0"/>
+  
+  
+  
+  <input type="hidden" name="xmlDocHidden" id="xmlDocHidden" value="<Classificacoes variavCod='395;2005.01.01' indicadorOcorrCod='0006031' simbolo='N.º' potencia='0' label='População residente (N.º) por Sexo, Idade e Naturalidade; Anual' labelTotal='População residente (N.º) por Sexo, Idade e Naturalidade; Anual - INE, Estimativas anuais da população residente'><Indicadores><Indicador Id='0006031' variavCod='395;2005.01.01' indicadorOcorrCod='0006031' simbolo='N.º' potencia='0' label='População residente (N.º) por Sexo, Idade e Naturalidade; Anual' labelTotal='População residente (N.º) por Sexo, Idade e Naturalidade; Anual - INE, Estimativas anuais da população residente'/></Indicadores><CLASS_periodo Id='periodo' variav_cod='periodo' label='Período de referência dos dados' variav_dsg='Período de referência dos dados' disposicao='linha' order='1' visible='true' type='time' layout='L' categTotal='' count='18'><IndicadoresPartilha><Partilha IdRef='0006031'/></IndicadoresPartilha><Categorias><Categoria Id='periodo_S7A2025' cod_categ='S7A2025' nivel='0' order='2025-12-31' selected='false' opened='false' label='2025'/><Categoria Id='periodo_S7A2024' cod_categ='S7A2024' nivel='0' order='2024-12-31' selected='true' opened='false' label='2024'/><Categoria Id='periodo_S7A2023' cod_categ='S7A2023' nivel='0' order='2023-12-31' selected='false' opened='false' label='2023'/><Categoria Id='periodo_S7A2022' cod_categ='S7A2022' nivel='0' order='2022-12-31' selected='false' opened='false' label='2022'/><Categoria Id='periodo_S7A2021' cod_categ='S7A2021' nivel='0' order='2021-12-31' selected='false' opened='false' label='2021'/><Categoria Id='periodo_S7A2020' cod_categ='S7A2020' nivel='0' order='2020-12-31' selected='false' opened='false' label='2020'/><Categoria Id='periodo_S7A2019' cod_categ='S7A2019' nivel='0' order='2019-12-31' selected='false' opened='false' label='2019'/><Categoria Id='periodo_S7A2018' cod_categ='S7A2018' nivel='0' order='2018-12-31' selected='false' opened='false' label='2018'/><Categoria Id='periodo_S7A2017' cod_categ='S7A2017' nivel='0' order='2017-12-31' selected='false' opened='false' label='2017'/><Categoria Id='periodo_S7A2016' cod_categ='S7A2016' nivel='0' order='2016-12-31' selected='false' opened='false' label='2016'/><Categoria Id='periodo_S7A2015' cod_categ='S7A2015' nivel='0' order='2015-12-31' selected='false' opened='false' label='2015'/><Categoria Id='periodo_S7A2014' cod_categ='S7A2014' nivel='0' order='2014-12-31' selected='false' opened='false' label='2014'/><Categoria Id='periodo_S7A2013' cod_categ='S7A2013' nivel='0' order='2013-12-31' selected='false' opened='false' label='2013'/><Categoria Id='periodo_S7A2012' cod_categ='S7A2012' nivel='0' order='2012-12-31' selected='false' opened='false' label='2012'/><Categoria Id='periodo_S7A2011' cod_categ='S7A2011' nivel='0' order='2011-12-31' selected='false' opened='false' label='2011'/><Categoria Id='periodo_S7A2010' cod_categ='S7A2010' nivel='0' order='2010-12-31' selected='false' opened='false' label='2010'/><Categoria Id='periodo_S7A2009' cod_categ='S7A2009' nivel='0' order='2009-12-31' selected='false' opened='false' label='2009'/><Categoria Id='periodo_S7A2008' cod_categ='S7A2008' nivel='0' order='2008-12-31' selected='false' opened='false' label='2008'/></Categorias></CLASS_periodo><CLASS_1502001 Id='1502001' variav_cod='00013' label='Local de residência (Portugal)' variav_dsg='Geografia (PT, NUTS I)' disposicao='linha' order='1' visible='true' type='geo' layout='H' categTotal='PT' maxlevel='1' count='1'><IndicadoresPartilha><Partilha IdRef='0006031'/></IndicadoresPartilha><Categorias><Categoria Id='1502001_PT' cod_categ='PT' nivel='1' order='1' selected='true' opened='true' label='Portugal'/></Categorias></CLASS_1502001><CLASS_310000 Id='310000' variav_cod='00006' label='Sexo' variav_dsg='Sexo (difusão-HM)' disposicao='coluna' order='2' visible='true' type='dim' layout='H' categTotal='T' maxlevel='2' count='3' All='true'><IndicadoresPartilha><Partilha IdRef='0006031'/></IndicadoresPartilha><Categorias><Categoria Id='310000_T' cod_categ='T' nivel='1' order='1' selected='true' opened='false' label='HM'/></Categorias></CLASS_310000><CLASS_8143000 Id='8143000' variav_cod='00097' label='Idade' variav_dsg='Escalões de idades (demografia 3 níveis:0-4; >=85) - variante 33' disposicao='coluna' order='3' visible='true' type='dim' layout='H' categTotal='T' maxlevel='3' count='105'><IndicadoresPartilha><Partilha IdRef='0006031'/></IndicadoresPartilha><Categorias><Categoria Id='8143000_T' cod_categ='T' nivel='1' order='10' selected='true' opened='false' label='Total'/></Categorias></CLASS_8143000><CLASS_9638000 Id='9638000' variav_cod='00129' label='Naturalidade' variav_dsg='Países e agrupamentos (hierarquia cumulativa - naturalidade - população e migrações [8 registos])' disposicao='coluna' order='4' visible='true' type='dim' layout='H' categTotal='T' maxlevel='2' count='4'><IndicadoresPartilha><Partilha IdRef='0006031'/></IndicadoresPartilha><Categorias><Categoria Id='9638000_T' cod_categ='T' nivel='1' order='1' selected='true' opened='false' label='Total'/></Categorias></CLASS_9638000></Classificacoes>"/>
+  
+  
+  <input type="hidden" name="variavCod" id="variavCod" value="395;2005.01.01"/>
+      
+        <input type="hidden" name="indOcorrCod" id="indOcorrCod" value="0006031"/>
+    
+  <input type="hidden" name="xml2Download" id="xml2Download" value=""/>
+  		  
+  		<input type="hidden" name="userTableOrder" id="userTableOrder" value="0"/>
+  
+  <input type="hidden" name="userLoadSave" id="userLoadSave" value=""/>  
+  <input type="hidden" name="tipoSeleccaoUserTable" id="tipoSeleccaoUserTable" value="0"/>  
+  <input type="hidden" name="user" id="user" value="PUBLIC">     
+  <input type="hidden" name="aplicacaoId" id="aplicacaoId" value="BDDX04"/>   
+  <input type="hidden" name="lingua_cd" id="lingua_cd" value="PT">
+  
+  </TD>
+  </TR>
+  </TABLE>   
+  </form> 
+  <!--
+  <script language="javascript">
+        function mostraTooltip(evento, texto)
+        {
+               
+          var elemento = document.getElementById("t1");
+          var new_txt = document.createTextNode(texto);
+          elemento.replaceChild(new_txt, elemento.childNodes[0]);          
+          popUp(evento,'t1');
+          
+        }
+        function escondeTooltip(evento)
+        {  
+          popUp(evento,'t1');
+        }
+        
+  </script>
+  -->
+  <div id="t1" class="tip"></div>
+  
+  <!-- INICIO ESTATISTICA INE --><script language='javascript'>
+_XO='';
+_OI='0006031';
+_U='PUBLIC';
+_L='PT';
+all_ok=0;
+</script>
+<script language='javascript' src='/ine_stats/stats.js'></script>
+<script>
+if(all_ok==1)
+{
+process('www.ine.pt','1','bdd888');
+}
+</script>
+<!-- FIM ESTATISTICA INE -->
+  
+
+  <script language="javascript">
+      escondeLayerPopUp('layerWait');
+  </script>
+  <noscript></noscript>
+  
+  
+
+  </DIV>
+  </DIV>
+   
+  </body>
+</html>
