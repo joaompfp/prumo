@@ -25,7 +25,8 @@ _PATTERNS: dict[str, list[re.Pattern]] = {
     "S": [re.compile(r"(?P<y>\d{4})-?S(?P<s>\d)$", re.I),
           re.compile(r"(?P<s>\d)\.?o? semestre de (?P<y>\d{4})$")],
     "Q": [re.compile(r"(?P<y>\d{4})-?Q(?P<q>\d)$", re.I),
-          re.compile(r"(?P<q>\d)[o.]? ?trimestre de (?P<y>\d{4})$")],
+          # '3º Trimestre de 2025' and INE's '3.º Trimestre de 2025' (º folds to 'o')
+          re.compile(r"(?P<q>\d)\.?o? ?trimestre de (?P<y>\d{4})$")],
     "M": [re.compile(r"(?P<y>\d{4})-?M?(?P<m>\d{2})$", re.I),
           re.compile(r"(?P<mn>[a-z]+) de (?P<y>\d{4})$")],
     "D": [re.compile(r"(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})$")],

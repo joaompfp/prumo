@@ -81,3 +81,54 @@ def test_unknown_confidentiality_code_raises(status):
 def test_flag_mapping_refuses_an_unsplit_status():
     with pytest.raises(ValueError):
         map_eurostat_flag("|C")
+
+
+# --- INE (Statistics Portugal) conventional signs ('sinal_conv' + 'sinal_conv_desc') -------------
+from ingest.flags import INE_NO_VALUE_SIGNS, INE_VALUE_SIGNS, map_ine_flag  # noqa: E402
+
+
+def test_ine_no_sign_on_a_value_is_normal():
+    assert map_ine_flag(None, None) == "normal"
+    assert map_ine_flag("", "") == "normal"
+
+
+def test_ine_provisional_sign():
+    # live: 0007983 (monthly unemployment rate, SA) 'ind_string': '5,0 &', 'valor': '5'
+    assert map_ine_flag("&", "Dado provisório") == "provisional"
+
+
+@pytest.mark.parametrize("sign, desc", [("x", "Dado não disponível"),
+                                        ("-", "Dado nulo ou não aplicável")])
+def test_ine_no_value_signs_give_no_flag(sign, desc):
+    assert map_ine_flag(sign, desc, value_present=False) is None
+
+
+@pytest.mark.parametrize("sign, desc", [("x", "Dado não disponível"),
+                                        ("-", "Dado nulo ou não aplicável")])
+def test_ine_no_value_sign_on_a_value_raises(sign, desc):
+    with pytest.raises(ValueError):
+        map_ine_flag(sign, desc)
+
+
+def test_ine_value_sign_without_a_value_raises():
+    with pytest.raises(ValueError):
+        map_ine_flag("&", "Dado provisório", value_present=False)
+
+
+def test_ine_missing_value_without_any_sign_raises():
+    with pytest.raises(ValueError):
+        map_ine_flag(None, None, value_present=False)
+
+
+@pytest.mark.parametrize("sign, desc", [("Po", "Dado provisório"), ("?", None), ("&", None),
+                                        ("&", "Dado estimado"), ("x", "Dado confidencial"),
+                                        (None, "Dado provisório")])
+def test_ine_unknown_sign_or_changed_meaning_raises(sign, desc):
+    # a sign is only trusted together with its reviewed description
+    with pytest.raises(ValueError):
+        map_ine_flag(sign, desc, value_present=sign in INE_VALUE_SIGNS)
+
+
+def test_ine_tables_are_disjoint_and_map_into_the_vocabulary():
+    assert not set(INE_VALUE_SIGNS) & set(INE_NO_VALUE_SIGNS)
+    assert {flag for flag, _ in INE_VALUE_SIGNS.values()} <= set(FLAGS)

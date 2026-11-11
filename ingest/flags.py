@@ -92,3 +92,58 @@ def map_eurostat_flag(code: str | None, *, value_present: bool = True) -> str | 
                          "value, but a value is present")
     mapped = {EUROSTAT_VALUE_FLAGS[c] for c in codes}
     return next((f for f in PRECEDENCE if f in mapped), "normal")
+
+
+# INE — Statistics Portugal (pindica.jsp JSON). A cell carries an optional conventional sign
+# ('sinal_conv') with INE's own description ('sinal_conv_desc'); the sign is also appended to the
+# formatted 'ind_string' ('5,0 &'). Reviewed signs only, each paired with the exact description
+# observed live (2026-11-11, full-scope probe of every active INE series; see
+# docs/superpowers/handoff/reports/task-10-report.md). A known symbol arriving with a different
+# description raises: INE could reuse a symbol, and a status we did not review is never 'normal'.
+# Signs that qualify a published value -> (flag, description):
+INE_VALUE_SIGNS = {
+    "&": ("provisional", "Dado provisório"),
+}
+# Signs that stand INSTEAD of a value (the cell has no 'valor') -> description:
+INE_NO_VALUE_SIGNS = {
+    "x": "Dado não disponível",
+    "-": "Dado nulo ou não aplicável",
+}
+
+
+def map_ine_flag(sign: str | None, description: str | None, *,
+                 value_present: bool = True) -> str | None:
+    """Map an INE conventional sign onto FLAGS.
+
+    value_present=True: no sign -> 'normal'; a reviewed value sign -> its flag; a no-value sign
+        (or anything unknown) raises ValueError.
+    value_present=False: a reviewed no-value sign -> None (the row carries no value, so no
+        status); no sign at all, a value sign or anything unknown raises ValueError.
+    The description must equal the reviewed one for that sign (blank sign needs blank
+    description)."""
+    sign = (sign or "").strip()
+    description = (description or "").strip()
+    if not sign:
+        if description:
+            raise ValueError(f"INE sign description {description!r} without a sign")
+        if not value_present:
+            raise ValueError("INE cell has no value and no conventional sign explaining why")
+        return "normal"
+    if sign in INE_VALUE_SIGNS:
+        flag, expected = INE_VALUE_SIGNS[sign]
+        if description != expected:
+            raise ValueError(f"INE sign {sign!r} described as {description!r}, reviewed "
+                             f"meaning is {expected!r}")
+        if not value_present:
+            raise ValueError(f"INE sign {sign!r} ({expected}) on a cell without a value")
+        return flag
+    if sign in INE_NO_VALUE_SIGNS:
+        expected = INE_NO_VALUE_SIGNS[sign]
+        if description != expected:
+            raise ValueError(f"INE sign {sign!r} described as {description!r}, reviewed "
+                             f"meaning is {expected!r}")
+        if value_present:
+            raise ValueError(f"INE sign {sign!r} ({expected}) only replaces a value, but a "
+                             "value is present")
+        return None
+    raise ValueError(f"unknown INE conventional sign {sign!r} ({description!r})")

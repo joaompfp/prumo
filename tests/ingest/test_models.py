@@ -11,6 +11,10 @@ from ingest.models import Observation, normalize_period, parse_number
     ("2025", "A", "2025"),
     ("2025Q3", "Q", "2025-Q3"),
     ("3º Trimestre de 2025", "Q", "2025-Q3"),
+    # INE's own quarterly labels, as returned live by pindica.jsp (varcd 0010704, 2026-11-11)
+    ("1.º Trimestre de 2011", "Q", "2011-Q1"),
+    ("4.º Trimestre de 2024", "Q", "2024-Q4"),
+    ("1.º Semestre de 2024", "S", "2024-S1"),
     ("2025-S1", "S", "2025-S1"),
     ("2025M09", "M", "2025-09"),
     ("2025-09", "M", "2025-09"),
@@ -23,6 +27,7 @@ def test_normalize_period(raw, freq, expected):
 @pytest.mark.parametrize("raw,freq", [
     ("n/d", "M"), ("", "M"), ("2025-13", "M"), ("2025-Q5", "Q"),
     ("2025", "M"), ("2025-09", "A"), ("2025-02-30", "D"), ("2025-S3", "S"),
+    ("5.º Trimestre de 2024", "Q"), ("1.º Trimestre de 24", "Q"), ("Trimestre de 2024", "Q"),
 ])
 def test_normalize_period_rejects_garbage(raw, freq):
     with pytest.raises(ValueError):
