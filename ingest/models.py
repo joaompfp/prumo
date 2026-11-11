@@ -152,6 +152,10 @@ class SourceSpec(BaseModel):
     # Task 17/18 configure RequestsHttp per source from this (INE needs 300: its JSON API takes
     # 17-45 s per request, trade up to 236 s; the 30 s client default fails every INE run).
     timeout_s: float | None = None
+    # False = the source has NO independent verification channel (spec 6b): collected for the
+    # revision history but never served; run_with_refetch refuses it outright. The Task 17/18
+    # scheduler must skip such sources.
+    verifiable: bool = True
 
     @field_validator("name", "licence", "licence_url", "attribution")
     @classmethod

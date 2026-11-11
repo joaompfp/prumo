@@ -13,10 +13,11 @@ from ingest.pipeline import run_dataset
 from ingest.rawstore import RawIntegrityError, RawStore
 from ingest.registry import sync_registry
 from ingest.verifiers import BlindItem, ItemResult, get_verifier, register_verifier
-from ingest.verify import (VerificationConflict, draw_sample, replay_item, run_with_refetch,
-                           verify_run)
+from ingest.verify import (NoVerifierRegistered, SourceNotVerifiable, VerificationConflict,
+                           draw_sample, replay_item, run_with_refetch, verify_run)
 from tests.ingest.fake_verifier import FakeVerifier
 from tests.ingest.fakes import FakeHttp, FakeSource, ok, payload, spec, truth_of
+from ingest.models import SourceSpec
 
 BASE = {"s1": [["2023", "1.5"], ["2024", "2.0"]], "s2": [["2024", "10"]]}
 
@@ -548,6 +549,35 @@ def test_refetch_requires_the_registered_verifier(env):
     register_verifier(FakeVerifier(TRUTH))
     with pytest.raises(ValueError, match="registered"):  # another instance is registered
         run_with_refetch(db, store, FakeSource(), v, specs, FakeHttp(), now=clock)
+    assert q(db, "SELECT count(*) FROM dataset_run") == [(0,)]
+
+
+def test_refetch_without_a_registered_verifier_raises_before_fetching(env):
+    """Regression (Task 10 review I2): verifier=None used to slip past the identity check
+    (None is None) and crashed with AttributeError only after ~10 min of INE fetching. Now a
+    missing registration raises NoVerifierRegistered before a single request is made."""
+    db, specs, store, clock, _ = env
+    http = FakeHttp(ok(payload(BASE)))
+    with pytest.raises(NoVerifierRegistered, match="fake"):
+        run_with_refetch(db, store, FakeSource(), None, specs, http, now=clock)
+    assert http.calls == []
+    assert q(db, "SELECT count(*) FROM dataset_run") == [(0,)]
+
+
+def test_refetch_refuses_a_source_marked_unverifiable_before_fetching(db, tmp_path):
+    """verifiable: false in the registry is the machine marker of 'no independent channel'
+    (spec 6b): such a source is never served, even if a verifier were registered."""
+    clock = Clock()
+    src = SourceSpec(name="fake", licence="CC-BY-4.0", licence_url="http://l",
+                     attribution="Fake", redistribution_ok=True, verifiable=False)
+    specs = [spec("s1").model_copy(update={"source": src})]
+    sync_registry(db, specs)
+    v = FakeVerifier(truth_of(BASE))
+    register_verifier(v)
+    http = FakeHttp(ok(payload(BASE)))
+    with pytest.raises(SourceNotVerifiable, match="verifiable"):
+        run_with_refetch(db, RawStore(tmp_path / "raw"), FakeSource(), v, specs, http, now=clock)
+    assert http.calls == []
     assert q(db, "SELECT count(*) FROM dataset_run") == [(0,)]
 
 

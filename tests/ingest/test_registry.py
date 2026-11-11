@@ -50,6 +50,16 @@ def test_source_timeout_s_is_preserved(tmp_path):
     assert specs[0].source.timeout_s == 300.0
 
 
+def test_source_verifiable_marker_defaults_true_and_is_preserved(tmp_path):
+    assert load_registry(_write(tmp_path, {"ine": SRC}, [_series("a")]))[0].source.verifiable
+    specs = load_registry(_write(tmp_path, {"ine": {**SRC, "verifiable": True}}, [_series("a")]))
+    assert specs[0].source.verifiable is True
+    # core.yaml marks nothing unverifiable (INE got its independent channel in Task 10 fix 1)
+    from pathlib import Path
+    assert all(s.source.verifiable
+               for s in load_registry(Path(__file__).parents[2] / "registry" / "core.yaml"))
+
+
 @pytest.mark.parametrize("bad", [0, -5, -0.1, float("inf"), float("nan"), True, "300"])
 def test_source_timeout_s_invalid_raises(tmp_path, bad):
     with pytest.raises(ValueError):

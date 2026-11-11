@@ -34,6 +34,17 @@ class VerificationConflict(ValueError):
     worker verified it); this verification's rows were rolled back."""
 
 
+class NoVerifierRegistered(ValueError):
+    """No verifier is registered for the source. Raised by run_with_refetch BEFORE any fetch:
+    a source without a verifier can never be served, so fetching from it is wasted work (and
+    passing verifier=None used to crash deep inside verify_run after a full fetch)."""
+
+
+class SourceNotVerifiable(ValueError):
+    """The registry marks the source `verifiable: false` (no independent channel, spec 6b).
+    Raised by run_with_refetch BEFORE any fetch, even if a verifier were registered."""
+
+
 @dataclass(frozen=True)
 class SampleItem:
     """A sampled observation with its expected side. Internal: verifiers get `blind()` only."""
@@ -245,7 +256,9 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
     run is not verified), at most `max_attempts` runs in total.
 
     `verifier` must be the one registered for `source.name` (register_verifier enforces the
-    independence rule), else ValueError.
+    independence rule), else ValueError. Refuses up front (before any fetch): SourceNotVerifiable
+    if the registry marks the source `verifiable: false`; NoVerifierRegistered if the source has
+    no registered verifier.
 
     Returns the last run's result: `verified` on a pass; `failed-verification` after
     max_attempts failures (left unserved; escalation is the CLI report's business); any other
@@ -254,10 +267,17 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
     """
     if max_attempts < 1:
         raise ValueError(f"max_attempts must be >= 1, got {max_attempts}")
+    unverifiable = sorted({s.source.name for s in specs if not s.source.verifiable})
+    if unverifiable:
+        raise SourceNotVerifiable(
+            f"source(s) {unverifiable} are marked 'verifiable: false' in the registry: no "
+            f"independent verification channel (spec 6b); never served, not fetched here")
     try:
         registered = get_verifier(source.name)
     except KeyError:
-        registered = None
+        raise NoVerifierRegistered(
+            f"no verifier registered for source {source.name!r}: register_verifier() must run "
+            f"first; a source without a verifier is never served") from None
     if registered is not verifier:
         raise ValueError(f"verifier is not the one registered for source {source.name!r}")
     now = now or _utc_now
