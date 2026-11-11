@@ -199,24 +199,34 @@ class _Series:
     n: int = 0
     units: Counter = field(default_factory=Counter)  # non-empty unit -> rows
     n_no_unit: int = 0
+    unitless_periods: list = field(default_factory=list)  # periods of blank-unit rows
     freqs: Counter = field(default_factory=Counter)
     codes: Counter = field(default_factory=Counter)
-    latest: dict = field(default_factory=dict)  # normalized period -> (fetched_at, value text)
+    # normalized period -> (fetched_at, value text), latest vintage among rows WITH an explicit unit:
+    # blank-unit rows are quarantined on import (Ruling V), so they never stand for the series.
+    latest: dict = field(default_factory=dict)
 
     def add(self, r: dict) -> None:
         self.n += 1
-        if r["unit"].strip():
-            self.units[r["unit"].strip()] += 1
-        else:
-            self.n_no_unit += 1
+        has_unit = bool(r["unit"].strip())
         if r["source_id"]:
             self.codes[r["source_id"]] += 1
         fp = _row_frequency(r["period"])
+        if has_unit:
+            self.units[r["unit"].strip()] += 1
+        else:
+            self.n_no_unit += 1
+            self.unitless_periods.append(fp[1] if fp else r["period"])
         if fp:
             self.freqs[fp[0]] += 1
+        if fp and has_unit:
             fetched = fetched_at_utc(r["fetched_at"])
             if fp[1] not in self.latest or self.latest[fp[1]][0] <= fetched:
                 self.latest[fp[1]] = (fetched, r["value"])
+
+    @property
+    def n_explicit(self) -> int:
+        return self.n - self.n_no_unit
 
     @property
     def frequency(self) -> str:
@@ -276,7 +286,8 @@ def _dec(text: str) -> Decimal | None:
 
 
 def _gap(primary: _Series, other: _Series) -> tuple[int, int, Decimal | None]:
-    """(overlapping periods, exactly equal, max relative gap) on the latest legacy vintage."""
+    """(overlapping periods, exactly equal, max relative gap) on the latest legacy vintage, over
+    rows with an explicit unit only (a core series has exactly one, its registry unit)."""
     n = equal = 0
     worst: Decimal | None = None
     for period in primary.latest.keys() & other.latest.keys():
@@ -313,7 +324,7 @@ def propose(csv_path: Path, out_dir: Path) -> None:
 
     rows, overlaps = [], []
     for key in sorted(groups):
-        members = sorted(groups[key], key=lambda s: (_rank(s.source, s.geography), -s.n,
+        members = sorted(groups[key], key=lambda s: (_rank(s.source, s.geography), -s.n_explicit,
                                                      -len(s.latest), s.id))
         primary = members[0]
         for s in members:
@@ -344,10 +355,29 @@ def propose(csv_path: Path, out_dir: Path) -> None:
 
 
 def _why(primary: _Series, members: list[_Series]) -> str:
-    rule = _RULE_TEXT[_geo_class(primary.geography)]
-    if sum(_rank(m.source, m.geography) == _rank(primary.source, primary.geography) for m in members) > 1:
-        rule += f"; most observations among {primary.source} series"
-    return rule
+    """The reason that actually decided the primary (rank rule, then the same-source tie-break)."""
+    others = [m for m in members if m is not primary]
+    other_sources = sorted({m.source for m in others if m.source != primary.source})
+    same = [m for m in others if m.source == primary.source]
+    parts = []
+    if other_sources:
+        cls = _geo_class(primary.geography)
+        if cls == "pt" and primary.source in PT_INSTITUTIONS:
+            parts.append(_RULE_TEXT["pt"])
+        elif cls == "europe" and primary.source == "EUROSTAT":
+            parts.append(_RULE_TEXT["europe"])
+        elif cls == "world" and primary.source in ("WORLDBANK", "OECD", "FRED"):
+            parts.append(_RULE_TEXT["world"])
+        else:
+            parts.append(f"closest to origin by source rank: {primary.source} ahead of "
+                         + ", ".join(other_sources))
+    if same:
+        counts = f"{primary.n_explicit} vs " + ", ".join(str(m.n_explicit) for m in same)
+        decided = ("by row count" if all(m.n_explicit < primary.n_explicit for m in same)
+                   else "by period count, then series id (equal row counts)")
+        parts.append(f"same quantity under {len(same) + 1} {primary.source} legacy names; "
+                     f"tie broken {decided} ({counts})")
+    return "; ".join(parts)
 
 
 def _overlaps_md(overlaps: list) -> str:
@@ -359,7 +389,8 @@ def _overlaps_md(overlaps: list) -> str:
             large = worst is not None and worst > LARGE_GAP
             n_large += large
             rows.append([key, primary.id, _why(primary, members),
-                         f"{primary.n} / {primary.last_period}", s.id, f"{s.n} / {s.last_period}",
+                         f"{primary.n_explicit} / {primary.last_period}", s.id,
+                         f"{s.n_explicit} / {s.last_period}",
                          f"{next(iter(primary.units))} vs {next(iter(s.units))}", n, equal,
                          "—" if worst is None else f"{(worst * 100).quantize(Decimal('0.01'))}%",
                          "LARGE" if large else ""])
@@ -369,7 +400,11 @@ def _overlaps_md(overlaps: list) -> str:
             + "\n" + _table(["indicator_key", "primary", "why", "primary rows / latest", "cross_check",
                              "rows / latest", "units", "common periods", "equal", "max rel. gap",
                              f"flag (> {LARGE_GAP * 100}%)"], rows)
-            + "\nGaps compare the latest legacy vintage per period, as exact decimals. A large gap is "
+            + "\nGaps compare the latest legacy vintage per period, as exact decimals, over periods "
+              "where BOTH series' legacy rows carry an explicit unit (the proposed one). Rows with a "
+              "blank unit are excluded: they can be another base-year vintage (Ruling V) and are "
+              "quarantined as missing_unit on import, never imported. Row counts are explicit-unit "
+              "rows. A large gap is "
               "a review flag, never auto-corrected (spec §5). Units are shown as the legacy data "
               "labels them; differing labels can mean the same unit.\n")
 
@@ -394,7 +429,8 @@ def _deferred_md(items: list, n_rows: int) -> str:
 
 def _unclassified_md(items: list, core: list) -> str:
     by_reason = Counter(r.split(":")[0] for _, r in items)
-    partial = [s for s, _ in core if s.n_no_unit]
+    unitless = [(s, "core: these rows quarantined as missing_unit") for s, _ in core if s.n_no_unit]
+    unitless += [(s, "not core: no row has a unit") for s, r in items if not s.units]
     return (f"{PROVISIONAL}\n\n# Unclassified (left out of core)\n\n"
             + _table(["reason", "series"], sorted(by_reason.items()))
             + "\n" + _table(["source", "indicator", "geography", "rows", "reason"],
@@ -403,11 +439,16 @@ def _unclassified_md(items: list, core: list) -> str:
             + "\nThe legacy data cannot support a registry row for these as-is (unit or frequency "
               "unknown or inconsistent, or no theme mapping). The source adapter task that owns each "
               "one can add it with the unit and frequency taken from the publisher's metadata.\n"
-            + "\n## Included, but the legacy unit is missing on some rows\n\n"
-              "These rows are imported under the single unit the series does state.\n\n"
-            + _table(["series", "unit", "rows with unit", "rows without"],
-                     [[s.id, next(iter(s.units)), s.n - s.n_no_unit, s.n_no_unit]
-                      for s in sorted(partial, key=lambda s: s.id)]))
+            + "\n## Legacy rows quarantined: unit missing\n\n"
+              "Legacy rows with a blank unit are never given the registry unit (Ruling V): for core "
+              "series they are quarantined as `missing_unit` on import; series with no unit at all "
+              "are not core. Nothing here is imported.\n\n"
+            + _table(["series", "status", "registry unit", "rows with unit", "rows without unit",
+                      "periods without unit"],
+                     [[s.id, status, next(iter(s.units)) if len(s.units) == 1 else "—",
+                       s.n_explicit, s.n_no_unit,
+                       f"{min(s.unitless_periods)} .. {max(s.unitless_periods)}"]
+                      for s, status in sorted(unitless, key=lambda t: t[0].id)]))
 
 
 def _licences_md(used: list[str]) -> str:

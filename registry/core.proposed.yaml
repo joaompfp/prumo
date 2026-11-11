@@ -6563,7 +6563,7 @@ series:
   frequency: M
   unit: I21
   decimal: .
-- id: eurostat.transport_eq.PT
+- id: eurostat.STS_INPR_M_C29C30.PT
   source: eurostat
   indicator_key: ipi_c29_c30.PT.M
   role: primary
@@ -6572,8 +6572,7 @@ series:
   frequency: M
   unit: I21
   decimal: .
-  native_code: sts_inpr_m
-- id: eurostat.STS_INPR_M_C29C30.PT
+- id: eurostat.transport_eq.PT
   source: eurostat
   indicator_key: ipi_c29_c30.PT.M
   role: cross_check
@@ -6582,6 +6581,7 @@ series:
   frequency: M
   unit: I21
   decimal: .
+  native_code: sts_inpr_m
 - id: eurostat.STS_INPR_M_C.AT
   source: eurostat
   indicator_key: ipi_manufacturing.AT.M
@@ -6799,6 +6799,15 @@ series:
   unit: index_2021=100
   decimal: .
   native_code: 0011889
+- id: eurostat.STS_INPR_M_C.PT
+  source: eurostat
+  indicator_key: ipi_manufacturing.PT.M
+  role: cross_check
+  theme: economy
+  geography: PT
+  frequency: M
+  unit: I21
+  decimal: .
 - id: eurostat.manufacturing.PT
   source: eurostat
   indicator_key: ipi_manufacturing.PT.M
@@ -6809,15 +6818,6 @@ series:
   unit: I21
   decimal: .
   native_code: sts_inpr_m
-- id: eurostat.STS_INPR_M_C.PT
-  source: eurostat
-  indicator_key: ipi_manufacturing.PT.M
-  role: cross_check
-  theme: economy
-  geography: PT
-  frequency: M
-  unit: I21
-  decimal: .
 - id: eurostat.STS_INPR_M_C.RO
   source: eurostat
   indicator_key: ipi_manufacturing.RO.M
@@ -6911,7 +6911,7 @@ series:
   frequency: M
   unit: I21
   decimal: .
-- id: fred.iron_ore.WORLD
+- id: fred.commodity_iron_ore.WORLD
   source: fred
   indicator_key: iron_ore_price.WORLD.M
   role: primary
@@ -6920,11 +6920,20 @@ series:
   frequency: M
   unit: USD
   decimal: .
-  native_code: PIORECRUSDM
-- id: fred.commodity_iron_ore.WORLD
+- id: fred.iron_ore.WORLD
   source: fred
   indicator_key: iron_ore_price.WORLD.M
   role: cross_check
+  theme: economy
+  geography: WORLD
+  frequency: M
+  unit: USD
+  decimal: .
+  native_code: PIORECRUSDM
+- id: fred.commodity_nickel.WORLD
+  source: fred
+  indicator_key: nickel_price.WORLD.M
+  role: primary
   theme: economy
   geography: WORLD
   frequency: M
@@ -6933,22 +6942,13 @@ series:
 - id: fred.nickel.WORLD
   source: fred
   indicator_key: nickel_price.WORLD.M
-  role: primary
-  theme: economy
-  geography: WORLD
-  frequency: M
-  unit: USD
-  decimal: .
-  native_code: PNICKUSDM
-- id: fred.commodity_nickel.WORLD
-  source: fred
-  indicator_key: nickel_price.WORLD.M
   role: cross_check
   theme: economy
   geography: WORLD
   frequency: M
   unit: USD
   decimal: .
+  native_code: PNICKUSDM
 - id: oecd.cli.PT
   source: oecd
   indicator_key: oecd_cli.PT.M
@@ -7125,7 +7125,7 @@ series:
   frequency: M
   unit: GWh
   decimal: .
-- id: fred.soybean.WORLD
+- id: fred.commodity_soybean.WORLD
   source: fred
   indicator_key: soybean_price.WORLD.M
   role: primary
@@ -7134,8 +7134,7 @@ series:
   frequency: M
   unit: USD
   decimal: .
-  native_code: PSOYBUSDM
-- id: fred.commodity_soybean.WORLD
+- id: fred.soybean.WORLD
   source: fred
   indicator_key: soybean_price.WORLD.M
   role: cross_check
@@ -7144,6 +7143,7 @@ series:
   frequency: M
   unit: USD
   decimal: .
+  native_code: PSOYBUSDM
 - id: fred.steel.WORLD
   source: fred
   indicator_key: steel_price.WORLD.M
@@ -7163,7 +7163,7 @@ series:
   frequency: M
   unit: USD
   decimal: .
-- id: fred.sugar.WORLD
+- id: fred.commodity_sugar.WORLD
   source: fred
   indicator_key: sugar_price.WORLD.M
   role: primary
@@ -7172,8 +7172,7 @@ series:
   frequency: M
   unit: USD
   decimal: .
-  native_code: PSUGAISAUSDM
-- id: fred.commodity_sugar.WORLD
+- id: fred.sugar.WORLD
   source: fred
   indicator_key: sugar_price.WORLD.M
   role: cross_check
@@ -7182,6 +7181,7 @@ series:
   frequency: M
   unit: USD
   decimal: .
+  native_code: PSUGAISAUSDM
 - id: worldbank.unemployment_wb.AO
   source: worldbank
   indicator_key: unemployment_rate.AO.A
@@ -17259,7 +17259,7 @@ series:
   unit: '%'
   decimal: .
   native_code: SP.URB.TOTL.IN.ZS
-- id: fred.zinc.WORLD
+- id: fred.commodity_zinc.WORLD
   source: fred
   indicator_key: zinc_price.WORLD.M
   role: primary
@@ -17268,8 +17268,7 @@ series:
   frequency: M
   unit: USD
   decimal: .
-  native_code: PZINCUSDM
-- id: fred.commodity_zinc.WORLD
+- id: fred.zinc.WORLD
   source: fred
   indicator_key: zinc_price.WORLD.M
   role: cross_check
@@ -17278,3 +17277,4 @@ series:
   frequency: M
   unit: USD
   decimal: .
+  native_code: PZINCUSDM

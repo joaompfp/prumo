@@ -24,7 +24,7 @@ def q(db, sql, *args):
 def test_null_value_and_unit_quarantined(db, tmp_path):
     rows = [("INE", "ipi_yoy_cae", "PT", "2025-01", "1.5", "%"),
             ("INE", "ipi_yoy_cae", "PT", "2025-02", "", "%"),          # null value
-            ("INE", "ipi_yoy_cae", "PT", "2025-03", "2.5", ""),        # null unit: registry unit
+            ("INE", "ipi_yoy_cae", "PT", "2025-03", "2.5", ""),        # null unit (Ruling V)
             ("INE", "ipi_yoy_cae", "PT", "2025-04", "3.5", "EUR"),     # differs from registry
             ("INE", "ipi_yoy_cae", "PT", "2025-05", "4.4e-05", "%"),   # DOUBLE text, not a token
             ("INE", "not_core", "PT", "2025-01", "9", "%")]
@@ -32,17 +32,32 @@ def test_null_value_and_unit_quarantined(db, tmp_path):
     rows += [("INE", "ipi_yoy_cae", "PT", f"{1990 + i // 12}-{i % 12 + 1:02d}", "", "")
              for i in range(60)]
     rep = import_legacy(db, write_csv(tmp_path / "l.csv", rows), [ine_spec()])
-    assert rep.n_imported == 2
-    assert rep.n_quarantined_by_reason == {"non_numeric": 62, "unit_mismatch": 1,
+    assert rep.n_imported == 1
+    assert rep.n_quarantined_by_reason == {"non_numeric": 62, "unit_mismatch": 1, "missing_unit": 1,
                                            "not_in_registry": 1}
     sid = legacy_series_id("INE", "ipi_yoy_cae", "PT")
     assert sorted(q(db, "SELECT period, value_text FROM observation")) == [
-        ("2025-01", "1.5"), ("2025-03", "2.5")]
+        ("2025-01", "1.5")]
     quarantined = q(db, "SELECT series_id, raw_period, raw_value, reason FROM quarantine "
                         "WHERE raw_period LIKE '2025%' ORDER BY raw_period")
-    assert quarantined == [(sid, "2025-02", "", "non_numeric"), (sid, "2025-04", "3.5", "unit_mismatch"),
+    assert quarantined == [(sid, "2025-02", "", "non_numeric"), (sid, "2025-03", "2.5", "missing_unit"),
+                           (sid, "2025-04", "3.5", "unit_mismatch"),
                            (sid, "2025-05", "4.4e-05", "non_numeric")]
-    assert q(db, "SELECT count(*) FROM quarantine")[0][0] == 63  # not_in_registry is not quarantined
+    assert q(db, "SELECT count(*) FROM quarantine")[0][0] == 64  # not_in_registry is not quarantined
+
+
+def test_empty_unit_row_never_takes_the_registry_unit(db, tmp_path):
+    """Ruling V: a blank legacy unit is quarantined as missing_unit, even though the series has a
+    registry unit and the row is otherwise valid (it may be another base-year vintage)."""
+    rows = [("INE", "ipi_yoy_cae", "PT", "2010-01", "98.7", ""),
+            ("INE", "ipi_yoy_cae", "PT", "2010-02", "99.1", "  "),
+            ("INE", "ipi_yoy_cae", "PT", "2018-01", "108.2", "%")]
+    rep = import_legacy(db, write_csv(tmp_path / "l.csv", rows), [ine_spec()])
+    assert rep.n_imported == 1
+    assert rep.n_quarantined_by_reason == {"missing_unit": 2}
+    assert q(db, "SELECT period FROM observation") == [("2018-01",)]
+    assert sorted(q(db, "SELECT raw_period, raw_value, reason FROM quarantine")) == [
+        ("2010-01", "98.7", "missing_unit"), ("2010-02", "99.1", "missing_unit")]
 
 
 def test_ine_free_text_period_normalized_or_quarantined(db, tmp_path):
@@ -92,6 +107,16 @@ def test_import_is_idempotent(db, tmp_path):
     assert (first.n_imported, second.n_imported) == (1, 0)
     assert first.n_quarantined_by_reason == {"non_numeric": 1, "not_in_registry": 1}
     assert second.n_quarantined_by_reason == {"not_in_registry": 1}
+
+
+def test_identical_quarantined_rows_from_two_fetches_both_counted(db, tmp_path):
+    """Every CSV row is accounted for once; a re-run still writes nothing."""
+    rows = [("INE", "ipi_yoy_cae", "Portugal", "2025-01", "1.6", "", "2026-04-06T01:47:04Z"),
+            ("INE", "ipi_yoy_cae", "PT", "2025-01", "1.6", "", "2026-02-26T03:02:13.663810")]
+    path = write_csv(tmp_path / "l.csv", rows)
+    assert import_legacy(db, path, [ine_spec()]).n_quarantined_by_reason == {"missing_unit": 2}
+    assert import_legacy(db, path, [ine_spec()]).n_quarantined_by_reason == {}
+    assert q(db, "SELECT count(*) FROM quarantine") == [(2,)]
 
 
 def test_same_period_from_two_fetches_kept_as_vintages(db, tmp_path):

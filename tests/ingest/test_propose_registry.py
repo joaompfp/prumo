@@ -106,6 +106,49 @@ def test_proposal_licences_not_invented(tmp_path):
 
 
 
+def test_overlap_gap_uses_only_rows_with_an_explicit_unit(tmp_path):
+    """Unitless legacy rows (another base-year vintage) never enter the gap; they are listed as
+    quarantined in unclassified.md instead."""
+    rows = []
+    for p in _months(3, 2010):  # unitless Eurostat vintage: far from INE
+        rows += [("EUROSTAT", "ipi", "PT", p, "98.7", ""),
+                 ("INE", "ipi_seasonal_cae_TOT", "PT", p, "105.96", "index_2021=100")]
+    for p in _months(3, 2018):  # explicit I21: agrees with INE
+        rows += [("EUROSTAT", "ipi", "PT", p, "108.2", "I21"),
+                 ("INE", "ipi_seasonal_cae_TOT", "PT", p, "108.16", "index_2021=100")]
+    out = tmp_path / "registry"
+    propose(write_csv(tmp_path / "l.csv", rows), out)
+    overlaps = (out / "overlaps.md").read_text()
+    line = next(x for x in overlaps.splitlines() if x.startswith("| ipi_total.PT.M"))
+    assert "| 3 |" in line and "LARGE" not in line  # only the 3 explicit-unit periods compared
+    unclassified = (out / "unclassified.md").read_text()
+    section = unclassified.split("## Legacy rows quarantined: unit missing")[1]
+    assert "eurostat.ipi.PT" in section and "2010-01 .. 2010-03" in section
+
+
+def test_series_without_any_explicit_unit_not_core_and_listed(tmp_path):
+    rows = [("BPORTUGAL", "euribor_3m", "PT", p, "0.1", "") for p in _months(4)]
+    out = tmp_path / "registry"
+    propose(write_csv(tmp_path / "l.csv", rows), out)
+    assert load_registry(out / "core.yaml") == []
+    section = (out / "unclassified.md").read_text().split("## Legacy rows quarantined: unit missing")[1]
+    assert "bportugal.euribor_3m.PT" in section and "| 4 |" in section
+
+
+def test_why_is_truthful(tmp_path):
+    rows = []
+    for p in _months(4):
+        rows += [("EUROSTAT", "cci", "PT", p, "-10", "balance"),
+                 ("EUROSTAT", "consumer_confidence", "PT", p, "-10", "balance %")]
+    rows += [("EUROSTAT", "cci", "PT", "2021-01", "-9", "balance")]
+    out = tmp_path / "registry"
+    propose(write_csv(tmp_path / "l.csv", rows), out)
+    line = next(x for x in (out / "overlaps.md").read_text().splitlines()
+                if x.startswith("| consumer_confidence.PT.M"))
+    assert "Portuguese institution" not in line
+    assert "tie broken by row count (5 vs 4)" in line
+
+
 # --- the real export, when present (slow) ------------------------------------------------------
 
 @pytest.mark.slow

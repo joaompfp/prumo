@@ -298,38 +298,68 @@
 
 The legacy data cannot support a registry row for these as-is (unit or frequency unknown or inconsistent, or no theme mapping). The source adapter task that owns each one can add it with the unit and frequency taken from the publisher's metadata.
 
-## Included, but the legacy unit is missing on some rows
+## Legacy rows quarantined: unit missing
 
-These rows are imported under the single unit the series does state.
+Legacy rows with a blank unit are never given the registry unit (Ruling V): for core series they are quarantined as `missing_unit` on import; series with no unit at all are not core. Nothing here is imported.
 
-| series | unit | rows with unit | rows without |
-|---|---|---|---|
-| eurostat.chemicals_pharma.PT | I21 | 84 | 229 |
-| eurostat.ipi.PT | I21 | 97 | 216 |
-| eurostat.machinery.PT | I21 | 83 | 229 |
-| eurostat.manufacturing.PT | I21 | 84 | 229 |
-| eurostat.metals.PT | I21 | 83 | 229 |
-| eurostat.rubber_plastics.PT | I21 | 84 | 229 |
-| eurostat.total_industry.PT | I21 | 84 | 229 |
-| eurostat.transport_eq.PT | I21 | 81 | 229 |
-| fred.aluminum.WORLD | USD | 277 | 287 |
-| fred.brent_oil.WORLD | USD | 277 | 287 |
-| fred.coffee.WORLD | USD | 277 | 287 |
-| fred.copper.WORLD | USD | 277 | 287 |
-| fred.corn.WORLD | USD | 277 | 287 |
-| fred.cotton.WORLD | USD | 277 | 277 |
-| fred.iron_ore.WORLD | USD | 133 | 133 |
-| fred.natural_gas.WORLD | USD | 350 | 324 |
-| fred.nickel.WORLD | USD | 277 | 277 |
-| fred.soybean.WORLD | USD | 277 | 277 |
-| fred.steel.WORLD | USD | 1201 | 313 |
-| fred.sugar.WORLD | USD | 179 | 179 |
-| fred.wheat.WORLD | USD | 277 | 287 |
-| fred.zinc.WORLD | USD | 277 | 277 |
-| ine.conf_manufacturing.PT | % | 13 | 312 |
-| ine.hicp_yoy.PT | % | 13 | 312 |
-| ine.ipi_yoy_cae.PT | % | 241 | 240 |
-| worldbank.gdp_growth.PT | % | 49 | 15 |
-| worldbank.gdp_per_capita.PT | USD | 50 | 15 |
-| worldbank.gdp_per_capita_ppp.PT | USD (2017 PPC) | 20 | 15 |
-| worldbank.population.PT | hab. | 50 | 15 |
+| series | status | registry unit | rows with unit | rows without unit | periods without unit |
+|---|---|---|---|---|---|
+| bportugal.credit_consumer.PT | not core: no row has a unit | — | 0 | 315 | 1999-12 .. 2026-02 |
+| bportugal.credit_housing.PT | not core: no row has a unit | — | 0 | 315 | 1999-12 .. 2026-02 |
+| bportugal.de_10y.PT | not core: no row has a unit | — | 0 | 315 | 2000-01 .. 2026-03 |
+| bportugal.deposits.PT | not core: no row has a unit | — | 0 | 315 | 1999-12 .. 2026-02 |
+| bportugal.eur_usd.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_12m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_1m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_3m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_6m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.pt_10y.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.spread_pt_de.PT | not core: no row has a unit | — | 0 | 315 | 2000-01 .. 2026-03 |
+| eurostat.chemicals_pharma.PT | core: these rows quarantined as missing_unit | I21 | 84 | 229 | 2000-01 .. 2023-12 |
+| eurostat.inflation.PT | not core: no row has a unit | — | 0 | 312 | 2000-01 .. 2025-12 |
+| eurostat.ipi.PT | core: these rows quarantined as missing_unit | I21 | 97 | 216 | 2000-01 .. 2017-12 |
+| eurostat.machinery.PT | core: these rows quarantined as missing_unit | I21 | 83 | 229 | 2000-01 .. 2023-11 |
+| eurostat.manufacturing.PT | core: these rows quarantined as missing_unit | I21 | 84 | 229 | 2000-01 .. 2023-12 |
+| eurostat.metals.PT | core: these rows quarantined as missing_unit | I21 | 83 | 229 | 2000-01 .. 2023-11 |
+| eurostat.rubber_plastics.PT | core: these rows quarantined as missing_unit | I21 | 84 | 229 | 2000-01 .. 2023-12 |
+| eurostat.total_industry.PT | core: these rows quarantined as missing_unit | I21 | 84 | 229 | 2000-01 .. 2023-12 |
+| eurostat.transport_eq.PT | core: these rows quarantined as missing_unit | I21 | 81 | 229 | 2000-01 .. 2022-10 |
+| fred.aluminum.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 287 | 2003-01 .. 2026-02 |
+| fred.brent_oil.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 287 | 2003-01 .. 2026-02 |
+| fred.coffee.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 287 | 2003-01 .. 2026-02 |
+| fred.copper.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 287 | 2003-01 .. 2026-02 |
+| fred.corn.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 287 | 2003-01 .. 2026-02 |
+| fred.cotton.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 277 | 2003-01 .. 2026-01 |
+| fred.iron_ore.WORLD | core: these rows quarantined as missing_unit | USD | 133 | 133 | 2015-01 .. 2026-01 |
+| fred.natural_gas.WORLD | core: these rows quarantined as missing_unit | USD | 350 | 324 | 2000-01 .. 2026-03 |
+| fred.nickel.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 277 | 2003-01 .. 2026-01 |
+| fred.soybean.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 277 | 2003-01 .. 2026-01 |
+| fred.steel.WORLD | core: these rows quarantined as missing_unit | USD | 1201 | 313 | 2000-01 .. 2026-01 |
+| fred.sugar.WORLD | core: these rows quarantined as missing_unit | USD | 179 | 179 | 2011-03 .. 2026-01 |
+| fred.wheat.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 287 | 2003-01 .. 2026-02 |
+| fred.zinc.WORLD | core: these rows quarantined as missing_unit | USD | 277 | 277 | 2003-01 .. 2026-01 |
+| ine.conf_manufacturing.PT | core: these rows quarantined as missing_unit | % | 13 | 312 | 2000-01 .. 2025-12 |
+| ine.hicp_yoy.PT | core: these rows quarantined as missing_unit | % | 13 | 312 | 2000-01 .. 2025-12 |
+| ine.ipi_yoy_cae.PT | core: these rows quarantined as missing_unit | % | 241 | 240 | 2006-01 .. 2025-12 |
+| ine.wages_industry_cae.PT | not core: no row has a unit | — | 0 | 252 | 2005-01 .. 2025-12 |
+| worldbank.electricity.PT | not core: no row has a unit | — | 0 | 14 | 2010 .. 2023 |
+| worldbank.energy_use.PT | not core: no row has a unit | — | 0 | 14 | 2010 .. 2023 |
+| worldbank.exports.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
+| worldbank.exports_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
+| worldbank.fdi_inflows_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
+| worldbank.female_labor_participation.EL | not core: no row has a unit | — | 0 | 26 | 2000 .. 2025 |
+| worldbank.gdp.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
+| worldbank.gdp_growth.PT | core: these rows quarantined as missing_unit | % | 49 | 15 | 2010 .. 2024 |
+| worldbank.gdp_per_capita.PT | core: these rows quarantined as missing_unit | USD | 50 | 15 | 2010 .. 2024 |
+| worldbank.gdp_per_capita_ppp.PT | core: these rows quarantined as missing_unit | USD (2017 PPC) | 20 | 15 | 2010 .. 2024 |
+| worldbank.gini.EL | not core: no row has a unit | — | 0 | 23 | 2000 .. 2023 |
+| worldbank.gini.GR | not core: no row has a unit | — | 0 | 23 | 2000 .. 2023 |
+| worldbank.imports.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
+| worldbank.imports_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
+| worldbank.inflation.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
+| worldbank.labor_force.PT | not core: no row has a unit | — | 0 | 16 | 2010 .. 2025 |
+| worldbank.population.PT | core: these rows quarantined as missing_unit | hab. | 50 | 15 | 2010 .. 2024 |
+| worldbank.rnd_pct_gdp.EL | not core: no row has a unit | — | 0 | 21 | 2001 .. 2022 |
+| worldbank.trade_balance.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
+| worldbank.trade_balance_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
+| worldbank.unemployment.PT | not core: no row has a unit | — | 0 | 16 | 2010 .. 2025 |

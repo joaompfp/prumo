@@ -1,7 +1,7 @@
 """One-off import of the legacy `indicators` export (CSV, Ruling U) as `legacy-unverified` rows.
 
-Every CSV row lands in exactly one bucket: imported, quarantined (reason from `ingest.validate`),
-or skipped as `not_in_registry`. Legacy rows go to one synthetic `verified` run per source
+Every CSV row lands in exactly one bucket: imported, quarantined (reason from `ingest.validate`,
+or `missing_unit` when an otherwise valid row has a blank unit), or skipped as `not_in_registry`. Legacy rows go to one synthetic `verified` run per source
 (dataset_key `legacy:<source>`) and are never served unless the `legacy_served` setting is '1'.
 Re-running is a no-op: rows already present in that run are not written again (Ruling E).
 """
@@ -14,10 +14,14 @@ from pathlib import Path
 from ingest.db import Db
 from ingest.models import SeriesSpec
 from ingest.registry import load_registry, sync_registry
-from ingest.validate import RawRow, validate
+from ingest.validate import RawRow, Rejection, validate
 
 DEFAULT_REGISTRY = Path(__file__).parents[1] / "registry" / "core.yaml"
 NOT_IN_REGISTRY = "not_in_registry"
+# Legacy-only reason (Ruling V): a blank legacy unit is never replaced by the registry unit, since
+# unitless legacy rows can be another base-year vintage. The live pipeline's validate() still treats
+# a blank unit as "the source did not say".
+MISSING_UNIT = "missing_unit"
 
 # The legacy store filed the same geography under several labels.
 _REGION_ALIASES = {"Portugal": "PT", "GLOBAL": "WORLD"}
@@ -82,15 +86,17 @@ def import_legacy(db: Db, csv_path: Path, registry: list[SeriesSpec] | None = No
             for fetched, spec, raw in sorted(pending[source], key=lambda t: t[0]):
                 fetched_at = _iso_z(fetched)
                 accepted, rejected = validate(spec, [raw])
+                if accepted and not raw.unit_raw.strip():
+                    accepted, rejected = [], [Rejection(raw.period_raw, raw.value_raw, MISSING_UNIT)]
                 for o in accepted:
                     key = (o.series_id, o.period, o.value_text, fetched_at)
                     if key not in have_obs:
                         have_obs.add(key)
                         new_obs.append((o, fetched_at))
                 for rej in rejected:
-                    key = (spec.id, rej.period_raw, rej.value_raw, rej.reason)
-                    if key not in have_q:
-                        have_q.add(key)
+                    # Compared with what earlier calls wrote only: the quarantine table has no
+                    # fetched_at, so identical rows from two legacy fetches are both kept.
+                    if (spec.id, rej.period_raw, rej.value_raw, rej.reason) not in have_q:
                         new_q[spec.id].append(rej)
                         counts[rej.reason] += 1
             db.write_legacy_observations(run_id, new_obs)
