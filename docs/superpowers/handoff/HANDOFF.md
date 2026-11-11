@@ -27,7 +27,7 @@ Rebuild of Prumo's data layer: a new `ingest/` package (raw → validated → se
 | 6 pipeline core + http client | complete |
 | 7 verification framework (+ independence guard) | complete (4 fix rounds) |
 | 8 legacy import + registry proposal | complete (commits ..8dbf715): provisional `registry/core.yaml` (1,774 series / 1,751 keys), overlaps.md, deferred-tail.md, unclassified.md, licences-todo.md; legacy import verified on the real export (164,825 imported, 6,522 missing_unit + 6 non_numeric quarantined, 74,809 not_in_registry, 0 served) |
-| 9 Eurostat adapter + verifier | implemented (444bb3d), IN REVIEW |
+| 9 Eurostat adapter + verifier | implemented (444bb3d); review found Critical C1 + 3 Important; FIX ROUND 1 IN PROGRESS (see ledger; implementer resumes from reports/task-9-report.md) |
 | 10–16 source adapters | not started (Eurostat, INE, Banco de Portugal, REN(+DGEG/ERSE), World Bank, FRED, OECD, E-REDES/dadosgov) |
 | 17 CLI/status/replay + delete old collectors | not started |
 | 18 scheduler service + compose + deploy | not started |
