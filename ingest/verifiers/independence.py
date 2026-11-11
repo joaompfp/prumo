@@ -10,7 +10,7 @@ then imports the verifier module and calls an entrypoint that exercises it. The 
   - the child failed, or did not produce exactly one report line,
   - any loaded `ingest.*` module NAME is blocked or outside the shared infrastructure (the
     allowlist the static check uses, plus what those modules import inside `ingest`, e.g.
-    ingest.validate via ingest.sources), or
+    ingest.validate via ingest.sources; the verifier module itself excepted), or
   - any module in sys.modules, under ANY name, has a FILE ORIGIN inside the collectors'
     directory `ingest/sources/` (other than its `__init__.py`) or inside a blocked prefix's
     location, or any such file (source or its __pycache__ bytecode) was OPENED at all. This
@@ -123,7 +123,9 @@ def assert_verifier_independent(verifier_module: str, entrypoint: str, *, source
         m == p or m.startswith(p + ".") for p in blocked_prefixes))
     if blocked:
         raise AssertionError(f"verifier {verifier_module} loaded blocked modules: {blocked}")
-    extra = sorted(loaded - _shared_runtime_modules())
+    # The verifier module itself (ingest/verifiers/<source>.py for real adapters) is loaded by
+    # definition; anything else in ingest outside the shared infrastructure is not allowed.
+    extra = sorted(loaded - _shared_runtime_modules() - {verifier_module})
     if extra:
         raise AssertionError(f"verifier {verifier_module} loaded non-shared ingest modules: "
                              f"{extra}")

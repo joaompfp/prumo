@@ -64,6 +64,26 @@ def test_clean_verifier_passes(layout):
     check("clean_verifier", "entry_clean:run")
 
 
+def test_verifier_inside_the_ingest_package_passes(layout):
+    """Real verifiers live at ingest/verifiers/<source>.py: the verifier module itself is loaded
+    by definition and is not a 'non-shared ingest module'."""
+    _, check, repo, mods = layout
+    (repo / "ingest" / "verifiers" / "acme.py").write_text(
+        CLEAN + "\n\ndef run():\n    assert V().check([], None) == []\n")
+    (mods / "entry_pkg.py").write_text(ENTRY.format(verifier="ingest.verifiers.acme"))
+    check("ingest.verifiers.acme")
+    check("ingest.verifiers.acme", "entry_pkg:run")
+
+
+def test_a_second_ingest_verifier_module_is_still_non_shared(layout):
+    _, check, repo, _ = layout
+    (repo / "ingest" / "verifiers" / "other.py").write_text("X = 1\n")
+    (repo / "ingest" / "verifiers" / "acme.py").write_text(
+        "import ingest.verifiers.other\n" + CLEAN + "\n\ndef run():\n    pass\n")
+    with pytest.raises(AssertionError, match="non-shared ingest modules.*ingest.verifiers.other"):
+        check("ingest.verifiers.acme")
+
+
 def test_helper_importing_the_parser_fails(layout):
     """The hole the static check cannot see: a non-ingest helper imports the parser."""
     write, check, repo, mods = layout

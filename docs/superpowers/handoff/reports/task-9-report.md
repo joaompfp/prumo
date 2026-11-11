@@ -4,5 +4,5 @@
 - [x] `ingest/flags.py` + `tests/ingest/test_flags.py` (RED: ModuleNotFoundError at collection; GREEN: 45 passed)
 - [x] registry mapping (native_code/url) + unmapped-eurostat.md (598 active / 99 inactive) — commit f467b5d
 - [x] `ingest/sources/eurostat.py` + fixtures + tests (RED: collection error with module moved aside; GREEN: 36 passed); flag 'i' (imputed) added -> estimated
-- [ ] `ingest/verifiers/eurostat.py` + tests
+- [x] `ingest/verifiers/eurostat.py` + tests (RED: collection error with module moved aside; GREEN: 16 passed). Guard fix: independence.py treated the verifier module itself as a non-shared ingest module (RED test added in test_independence.py, then fixed)
 - [ ] live test
