@@ -76,6 +76,20 @@ def test_core_ine_source_carries_timeout(tmp_path):
     assert next(s for s in specs if s.source.name == "eurostat").source.timeout_s is None
 
 
+def test_core_ine_attribution_is_the_authoritative_portuguese_wording(tmp_path):
+    """Task 10 review M1: INE's CC BY 4.0 terms page prescribes this exact acknowledgement."""
+    from pathlib import Path
+    specs = load_registry(Path(__file__).parents[2] / "registry" / "core.yaml")
+    ine = next(s for s in specs if s.source.name == "ine").source
+    assert ine.attribution == ("Fonte: Instituto Nacional de Estatística, IP – Portugal "
+                               "(identificação da informação estatística referida, período de "
+                               "referência da informação)")
+    assert ine.redistribution_ok is True
+    assert ine.licence == "CC BY 4.0"
+    assert ine.licence_url == ("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cont_inst"
+                               "&INST=3585857")
+
+
 def test_registry_decimal_roundtrip_and_validation(tmp_path):
     specs = load_registry(_write(tmp_path, {"ine": SRC}, [{**_series("a"), "decimal": ","}]))
     assert specs[0].decimal == ","

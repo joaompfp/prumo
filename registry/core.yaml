@@ -19,7 +19,11 @@ sources:
   ine:
     licence: CC BY 4.0
     licence_url: https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cont_inst&INST=3585857
-    attribution: 'Source: Instituto Nacional de Estatística – Portugal (Statistics Portugal)'
+    # INE's terms page gives this authoritative Portuguese acknowledgement wording;
+    # English variant kept for reference: 'Source: Instituto Nacional de Estatística – Portugal
+    # (Statistics Portugal) (identification of the statistical information mentioned; reference
+    # period of the information)'
+    attribution: 'Fonte: Instituto Nacional de Estatística, IP – Portugal (identificação da informação estatística referida, período de referência da informação)'
     redistribution_ok: true
     timeout_s: 300  # its JSON API takes 17-45 s per request (trade 170-236 s); client default is 30 s
     verifiable: true  # independent channel exists: bddXplorer HTML table (verifier ingest.verifiers.ine)
