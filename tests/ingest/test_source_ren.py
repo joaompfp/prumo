@@ -204,6 +204,48 @@ def test_non_numeric_value_token_raises():
                                                   "month": "09"}, body=json.dumps(doc).encode())])
 
 
+def _tampered_balance(tampered: bytes) -> RawResponse:
+    return RawResponse(url=f"{API_BASE}/{BALANCE_ENDPOINT}", status=200,
+                       params={"culture": "pt-PT", "year": "2026", "month": "09"},
+                       body=tampered)
+
+
+def test_quoted_number_token_raises_even_when_numeric_shaped():
+    """A JSON string is NOT a publisher number, even with valid token grammar: with the
+    primitive type erased by the number loader, '"04442"' would parse as the token '04442' — stored
+    verbatim as the publisher's number AND still Decimal-verifying against the CSV channel
+    (04442 == 4442), a silent type flip neither layer detects. The payload must fail closed."""
+    tampered = body("balance_2026-09.json").replace(
+        b'{"monthly_Accumulation":4442,"type":"CONSUMO"}',
+        b'{"monthly_Accumulation":"04442","type":"CONSUMO"}', 1)
+    with pytest.raises(ValueError, match="number token"):
+        RenSource(periods=("2026-09",)).parse(balance_specs(), [_tampered_balance(tampered)])
+
+
+def test_numeric_type_label_raises():
+    """The balance 'type' label must be a genuine JSON string: a JSON number is not a label
+    (type confusion must fail closed, not slip through a number-as-string loader). Tampered on
+    an UNMAPPED row so no other guard (missing selected type) can trip first."""
+    tampered = body("balance_2026-09.json").replace(
+        b'{"monthly_Accumulation":535,"type":"CONSUMO_ARMAZENAMENTO"}',
+        b'{"monthly_Accumulation":535,"type":535}', 1)
+    with pytest.raises(ValueError, match="type"):
+        RenSource(periods=("2026-09",)).parse(balance_specs(), [_tampered_balance(tampered)])
+
+
+def test_price_quoted_token_raises():
+    """Every price surface (PT/ES metrics, capacity, scalars) routes through the same number
+    gate: a QUOTED 'Preço Médio' is a format change, not a token."""
+    tampered = body("prices_2026-09.json").replace(
+        b'"Pre\xc3\xa7o M\xc3\xa9dio":143.9', b'"Pre\xc3\xa7o M\xc3\xa9dio":"143.9"', 1)
+    with pytest.raises(ValueError, match="number token"):
+        RenSource(periods=("2026-09",)).parse(
+            [s for s in all_specs() if (s.native_code or "").startswith(PRICES_ENDPOINT)],
+            [RawResponse(url=f"{API_BASE}/{PRICES_ENDPOINT}", status=200,
+                         params={"culture": "pt-PT", "year": "2026", "month": "09"},
+                         body=tampered)])
+
+
 def test_price_month_key_must_match_the_requested_month():
     tampered = body("prices_2026-09.json").replace('"setembro"'.encode(), '"agosto"'.encode(), 1)
     with pytest.raises(ValueError, match="month key"):
@@ -297,6 +339,37 @@ def test_validate_roundtrip_units_and_flags():
         obs, rej = validate(by_id[sid], rows)
         assert not rej and {o.status_flag for o in obs} == {"normal"}
         assert obs[0].value_text == EXPECTED_2026_09[sid]
+
+
+def test_pipeline_quoted_number_fails_validation_and_writes_nothing(tmp_path):
+    """End to end: a QUOTED (JSON string) number token in the balance payload is a format
+    change -> failed-validation, zero written rows (fail closed at the parse boundary;
+    the quoted token would otherwise store AND verify)."""
+
+    class Quoted(FixtureHttp):
+        def get(self, url, params=None, headers=None, timeout=None):
+            r = super().get(url, params=params, headers=headers, timeout=timeout)
+            if self.calls[-1] == "balance_2026-09":
+                from ingest.http import HttpResult
+                return HttpResult(
+                    status=r.status,
+                    body=r.body.replace(b'{"monthly_Accumulation":4442,"type":"CONSUMO"}',
+                                        b'{"monthly_Accumulation":"04442","type":"CONSUMO"}', 1),
+                    url=r.url)
+            return r
+
+    specs = all_specs()
+    db = open_db(tmp_path / "t.db")
+    try:
+        sync_registry(db, specs)
+        r = run_dataset(db, RawStore(tmp_path / "raw"), RenSource(periods=("2026-09",)), specs,
+                        Quoted())
+        assert r.state == "failed-validation" and r.n_written == 0
+        assert db.conn.execute("SELECT COUNT(*) FROM observation WHERE dataset_run_id=?",
+                               (r.run_id,)).fetchone()[0] == 0
+        assert db.conn.execute("SELECT COUNT(*) FROM served_observation").fetchone()[0] == 0
+    finally:
+        db.close()
 
 
 def test_pipeline_run_on_fixtures_writes_but_licence_gate_withholds(tmp_path):

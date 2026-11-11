@@ -26,9 +26,13 @@ Response shapes (fail-closed):
     period or status field anywhere (the three surfaces are absent, not guessed): the period is
     taken from the validated request, the unit from the registry (publisher unit evidence: the
     portal page and CSV header "[GWh]"), and every row's flag is 'normal' by declaration.
-    Values are preserved as publisher tokens via json.loads(parse_int/parse_float=str); the
-    selected types must each appear exactly once; UNSELECTED type rows (e.g. retired CARVAO in
-    2010) are skipped, never rejected for not being in our map.
+    Values are preserved as publisher tokens via json.loads with parse_int/parse_float TAGGING
+    JSON numbers as _Num (a str subclass internal to this module): a JSON string is NEVER a
+    number token ('"04442"' would otherwise parse as '04442' and even Decimal-verify against
+    the independent channel). Balance 'type' labels must be genuine JSON strings, and tokens
+    leave this module only as plain str. The selected types must each appear exactly once;
+    UNSELECTED type rows (e.g. retired CARVAO in 2010) are skipped, never rejected for not
+    being in our map.
   prices: a JSON object with exactly one key — the lowercase Portuguese month name ("setembro")
     cross-checked against the requested month — whose block holds per-country dicts
     {"PT": {"Fora Vazio": ..., "Preço Médio": ..., "Vazio": ...}, "ES": {...}} plus the observed
@@ -36,8 +40,9 @@ Response shapes (fail-closed):
   unpublished month: HTTP 404 {"message":"No data available"} — fail closed like every non-2xx.
 
 Raises on: markup/invalid JSON, duplicate JSON keys, wrong top-level structure, missing/unknown
-entry fields, non-numeric or duplicate types, a missing selected type, month-key/request
-mismatch, unknown block surfaces and any non-2xx response handed to parse.
+entry fields, quoted (JSON string) or non-numeric value tokens, numeric or duplicate type
+labels, a missing selected type, month-key/request mismatch, unknown block surfaces and any
+non-2xx response handed to parse.
 """
 import json
 import re
@@ -93,7 +98,7 @@ def parse_native_code(code: str | None) -> Key:
 
 def completed_months(today: date, count: int = DEFAULT_MONTHS) -> list[str]:
     """The `count` most recent COMPLETED months, ascending 'YYYY-MM'; the running month is
-    excluded (it is partial). 2026-11-11 -> ['2025-11', ..., '2026-10']."""
+    excluded (it is partial). 2026-11-11 -> ['2025-10', ..., '2026-10'] (13 completed months)."""
     if count < 1:
         raise ValueError(f"count must be >= 1, got {count}")
     out = []
@@ -133,23 +138,31 @@ def _no_duplicate_keys(pairs: list) -> dict:
     return dict(pairs)
 
 
+class _Num(str):
+    """Internal JSON-number tag: json.loads(parse_int=parse_float=_Num) marks real JSON number
+    tokens so a quoted string can never be confused with a publisher number. Never leaves this
+    module as a subclass: _token coerces to plain str before any RawRow is built."""
+
+
 def _loads(body: bytes, what: str):
     head = body[:64].lstrip(b"\xef\xbb\xbf \t\r\n").lower()
     if head.startswith(b"<"):
         raise ValueError(f"REN {what} answered markup, not JSON: {body[:80]!r}")
     try:
-        return json.loads(body, parse_int=str, parse_float=str,
+        return json.loads(body, parse_int=_Num, parse_float=_Num,
                           object_pairs_hook=_no_duplicate_keys)
     except (ValueError, UnicodeDecodeError) as e:
         raise ValueError(f"REN {what} is not valid JSON: {e}") from e
 
 
 def _token(v, what: str) -> str:
-    """A publisher number token: a JSON number loaded as str via parse_int/parse_float=str,
-    strict decimal-'.' grammar (evidence: integers, '143.9', negative '-263')."""
-    if not isinstance(v, str) or not _NUMBER.fullmatch(v):
+    """A publisher number token: a JSON NUMBER (tagged _Num by _loads; a raw JSON string is
+    rejected even when numeric-shaped), strict decimal-'.' grammar (evidence: integers,
+    '143.9', negative '-263'). Returned as a plain str (the subclass must not leak: only
+    genuine str values reach RawRow/validation)."""
+    if type(v) is not _Num or not _NUMBER.fullmatch(v):
         raise ValueError(f"{what} must be a number token, got {v!r}")
-    return v
+    return str(v)
 
 
 def _check_non2xx(resp: RawResponse) -> None:
@@ -171,8 +184,8 @@ def parse_balance_body(body: bytes) -> list[tuple[str, str]]:
                              f"{{'monthly_Accumulation', 'type'}}, got {entry!r}")
         token = _token(entry["monthly_Accumulation"], "monthly_Accumulation")
         rtype = entry["type"]
-        if not isinstance(rtype, str) or not rtype.strip():
-            raise ValueError(f"REN balance type must be a non-empty string, got {rtype!r}")
+        if type(rtype) is not str or not rtype.strip():  # a JSON number is not a label
+            raise ValueError(f"REN balance type must be a non-empty JSON string, got {rtype!r}")
         if rtype in seen:
             raise ValueError(f"REN balance payload repeats type {rtype!r}")
         seen.add(rtype)
@@ -212,7 +225,8 @@ def parse_prices_body(body: bytes, period: str) -> str:
             _token(value, f"Capacidade [MW].{name}")
     for name in _PRICE_SCALAR_KEYS & set(block):
         _token(block[name], name)
-    return block["PT"]["Preço Médio"]  # y is echoed in neither payload nor answer; see docstring
+    return _token(block["PT"]["Preço Médio"], "PT.Preço Médio")  # plain str; y is echoed in
+    # neither payload nor answer; see docstring
 
 
 class RenSource:
@@ -261,6 +275,13 @@ class RenSource:
 
     def parse(self, specs: list[SeriesSpec],
               responses: list[RawResponse]) -> dict[str, list[RawRow]]:
+        """Parse archived responses. Each response's period is reconstructed from its VALIDATED
+        REQUEST params (the payloads carry no period surface) and deliberately NOT re-checked
+        against self.periods: parse() must also replay recorded/archived response sets, while
+        requested-range coverage is guaranteed by fetch() (exactly one response per
+        (endpoint, requested month)) plus the pipeline's failed-fetch on any mid-stream
+        exception. Ambiguity still fails closed: two responses for the same (endpoint, month)
+        raise."""
         wanted = {parse_native_code(s.native_code): s for s in specs}
         if len(wanted) != len(specs):
             raise ValueError("duplicate native_code among REN specs")
