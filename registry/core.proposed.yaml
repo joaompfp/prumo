@@ -17,10 +17,10 @@ sources:
     attribution: 'Source: IMF Primary Commodity Prices, via FRED (Federal Reserve Bank of St. Louis)'
     redistribution_ok: false
   ine:
-    licence: UNVERIFIED — builder must confirm before serving
-    licence_url: https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_condicoes_utilizacao
-    attribution: 'Source: INE — Statistics Portugal'
-    redistribution_ok: false
+    licence: CC BY 4.0
+    licence_url: https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cont_inst&INST=3585857
+    attribution: 'Source: Instituto Nacional de Estatística – Portugal (Statistics Portugal)'
+    redistribution_ok: true
   oecd:
     licence: UNVERIFIED — builder must confirm before serving
     licence_url: https://www.oecd.org/termsandconditions/
@@ -7440,7 +7440,9 @@ series:
   frequency: M
   unit: '%'
   decimal: .
-  native_code: '0000110'
+  native_code: 0014655:Dim2=PT,Dim3=T
+  url: https://www.ine.pt/xurl/indx/0014655
+  active: true
 - id: ine.conf_manufacturing.PT
   source: ine
   indicator_key: ine_conf_manufacturing.PT.M
@@ -7450,7 +7452,9 @@ series:
   frequency: M
   unit: '%'
   decimal: .
-  native_code: 0001188
+  native_code: 0001188:Dim2=PT
+  url: https://www.ine.pt/xurl/indx/0001188
+  active: true
 - id: ine.exports_monthly.PT
   source: ine
   indicator_key: ine_exports_monthly.PT.M
@@ -7460,7 +7464,9 @@ series:
   frequency: M
   unit: EUR
   decimal: .
-  native_code: '0001400'
+  native_code: 0001400:Dim2=MUNDO,Dim3=T
+  url: https://www.ine.pt/xurl/indx/0001400
+  active: true
 - id: ine.imports_monthly.PT
   source: ine
   indicator_key: ine_imports_monthly.PT.M
@@ -7470,7 +7476,9 @@ series:
   frequency: M
   unit: EUR
   decimal: .
-  native_code: 0001397
+  native_code: 0001397:Dim2=MUNDO,Dim3=T
+  url: https://www.ine.pt/xurl/indx/0001397
+  active: true
 - id: ine.ipc_yoy.Continente
   source: ine
   indicator_key: ine_ipc_yoy.Continente.M
@@ -7480,7 +7488,9 @@ series:
   frequency: M
   unit: '%'
   decimal: .
-  native_code: 0002386
+  native_code: 0014647:Dim2=1,Dim3=T
+  url: https://www.ine.pt/xurl/indx/0014647
+  active: true
 - id: ine.ipc_yoy.PT
   source: ine
   indicator_key: ine_ipc_yoy.PT.M
@@ -7490,7 +7500,9 @@ series:
   frequency: M
   unit: '%'
   decimal: .
-  native_code: 0002386
+  native_code: 0014647:Dim2=PT,Dim3=T
+  url: https://www.ine.pt/xurl/indx/0014647
+  active: true
 - id: ine.ipi_seasonal_cae.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae.PT.M
@@ -7500,7 +7512,7 @@ series:
   frequency: M
   unit: '%'
   decimal: .
-  native_code: 0011889
+  active: false
 - id: ine.ipi_seasonal_cae_08.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_08.PT.M
@@ -7510,7 +7522,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=08
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_10.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_10.PT.M
@@ -7520,7 +7534,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=10
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_11.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_11.PT.M
@@ -7530,7 +7546,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=11
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_13.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_13.PT.M
@@ -7540,7 +7558,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=13
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_14.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_14.PT.M
@@ -7550,7 +7570,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=14
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_15.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_15.PT.M
@@ -7560,7 +7582,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=15
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_16.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_16.PT.M
@@ -7570,7 +7594,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=16
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_17.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_17.PT.M
@@ -7580,7 +7606,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=17
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_18.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_18.PT.M
@@ -7590,7 +7618,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=18
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_20.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_20.PT.M
@@ -7600,7 +7630,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=20
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_21.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_21.PT.M
@@ -7610,7 +7642,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=21
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_23.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_23.PT.M
@@ -7620,7 +7654,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=23
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_24.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_24.PT.M
@@ -7630,7 +7666,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=24
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_25.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_25.PT.M
@@ -7640,7 +7678,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=25
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_26.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_26.PT.M
@@ -7650,7 +7690,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=26
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_27.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_27.PT.M
@@ -7660,7 +7702,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=27
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_29.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_29.PT.M
@@ -7670,7 +7714,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=29
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_30.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_30.PT.M
@@ -7680,7 +7726,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=30
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_31.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_31.PT.M
@@ -7690,7 +7738,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=31
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_32.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_32.PT.M
@@ -7700,7 +7750,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=32
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_33.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_33.PT.M
@@ -7710,7 +7762,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=33
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_35.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_35.PT.M
@@ -7720,7 +7774,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=35
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_38.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_38.PT.M
@@ -7730,7 +7786,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=38
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_B.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_B.PT.M
@@ -7740,7 +7798,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=B
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_D.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_D.PT.M
@@ -7750,7 +7810,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=D
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_seasonal_cae_E.PT
   source: ine
   indicator_key: ine_ipi_seasonal_cae_E.PT.M
@@ -7760,7 +7822,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=E
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: ine.ipi_yoy_cae.PT
   source: ine
   indicator_key: ine_ipi_yoy_cae.PT.M
@@ -7770,7 +7834,9 @@ series:
   frequency: M
   unit: '%'
   decimal: .
-  native_code: 0011897
+  native_code: 0011897:Dim2=PT,Dim3=C
+  url: https://www.ine.pt/xurl/indx/0011897
+  active: true
 - id: eurostat.STS_INPR_M_C20C21.CZ
   source: eurostat
   indicator_key: ipi_c20_c21.CZ.M
@@ -7828,7 +7894,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=22
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: eurostat.rubber_plastics.PT
   source: eurostat
   indicator_key: ipi_c22.PT.M
@@ -7850,7 +7918,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=28
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: eurostat.machinery.PT
   source: eurostat
   indicator_key: ipi_c28.PT.M
@@ -8256,7 +8326,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=C
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: eurostat.STS_INPR_M_C.PT
   source: eurostat
   indicator_key: ipi_manufacturing.PT.M
@@ -8360,7 +8432,9 @@ series:
   frequency: M
   unit: index_2021=100
   decimal: .
-  native_code: 0011889
+  native_code: 0011889:Dim2=PT,Dim3=TOT
+  url: https://www.ine.pt/xurl/indx/0011889
+  active: true
 - id: eurostat.ipi.PT
   source: eurostat
   indicator_key: ipi_total.PT.M
@@ -9381,10 +9455,22 @@ series:
   unit: '%'
   decimal: .
   native_code: SL.UEM.TOTL.ZS
+- id: ine.unemployment_monthly.PT
+  source: ine
+  indicator_key: unemployment_rate.PT.M
+  role: primary
+  theme: economy
+  geography: PT
+  frequency: M
+  unit: '%'
+  decimal: .
+  native_code: 0007983:Dim2=PT,Dim3=T
+  url: https://www.ine.pt/xurl/indx/0007983
+  active: true
 - id: oecd.unemp_m.PT
   source: oecd
   indicator_key: unemployment_rate.PT.M
-  role: primary
+  role: cross_check
   theme: economy
   geography: PT
   frequency: M
@@ -18819,3 +18905,39 @@ series:
   unit: USD
   decimal: .
   native_code: PZINCUSDM
+- id: ine.population.PT
+  source: ine
+  indicator_key: ine_population.PT.A
+  role: primary
+  theme: demography
+  geography: PT
+  frequency: A
+  unit: N.º
+  decimal: .
+  native_code: 0006031:Dim2=PT,Dim3=T,Dim4=T,Dim5=T
+  url: https://www.ine.pt/xurl/indx/0006031
+  active: true
+- id: ine.live_births.PT
+  source: ine
+  indicator_key: ine_live_births.PT.A
+  role: primary
+  theme: demography
+  geography: PT
+  frequency: A
+  unit: N.º
+  decimal: .
+  native_code: 0001346:Dim2=PT,Dim3=T
+  url: https://www.ine.pt/xurl/indx/0001346
+  active: true
+- id: ine.deaths.PT
+  source: ine
+  indicator_key: ine_deaths.PT.A
+  role: primary
+  theme: demography
+  geography: PT
+  frequency: A
+  unit: N.º
+  decimal: .
+  native_code: 0005605:Dim2=PT,Dim3=T,Dim4=T
+  url: https://www.ine.pt/xurl/indx/0005605
+  active: true

@@ -4,7 +4,7 @@
 
 | indicators | cross-checks | large gaps |
 |---|---|---|
-| 20 | 23 | 0 |
+| 21 | 24 | 1 |
 
 | indicator_key | primary | why | primary rows / latest | cross_check | rows / latest | units | common periods | equal | max rel. gap | flag (> 2.00%) |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -25,6 +25,7 @@
 | ipi_total.PT.M | ine.ipi_seasonal_cae_TOT.PT | Portuguese institution for Portuguese data | 252 / 2025-12 | eurostat.ipi.PT | 97 / 2026-01 | index_2021=100 vs I21 | 96 | 7 | 0.69% |  |
 | ipi_total.PT.M | ine.ipi_seasonal_cae_TOT.PT | Portuguese institution for Portuguese data | 252 / 2025-12 | eurostat.total_industry.PT | 84 / 2026-01 | index_2021=100 vs I21 | 83 | 7 | 0.69% |  |
 | ipi_total.PT.M | ine.ipi_seasonal_cae_TOT.PT | Portuguese institution for Portuguese data | 252 / 2025-12 | eurostat.STS_INPR_M_BD.PT | 22 / 2025-12 | index_2021=100 vs I21 | 22 | 1 | 0.17% |  |
+| unemployment_rate.PT.M | ine.unemployment_monthly.PT | Portuguese institution for Portuguese data (Task 10, Ruling Y: INE monthly estimate, seasonally adjusted, 16-74; OECD moved to cross_check) | 344 live (2026-11-11) / 2026-09 | oecd.unemp_m.PT | 517 / 2026-01 | % vs % | 336 | 186 | 3.45% | yes |
 | iron_ore_price.WORLD.M | fred.commodity_iron_ore.WORLD | same quantity under 2 FRED legacy names; tie broken by period count, then series id (equal row counts) (133 vs 133) | 133 / 2026-01 | fred.iron_ore.WORLD | 133 / 2026-01 | USD vs USD | 133 | 133 | 0.00% |  |
 | nickel_price.WORLD.M | fred.commodity_nickel.WORLD | same quantity under 2 FRED legacy names; tie broken by period count, then series id (equal row counts) (277 vs 277) | 277 / 2026-01 | fred.nickel.WORLD | 277 / 2026-01 | USD vs USD | 277 | 277 | 0.00% |  |
 | soybean_price.WORLD.M | fred.commodity_soybean.WORLD | same quantity under 2 FRED legacy names; tie broken by period count, then series id (equal row counts) (277 vs 277) | 277 / 2026-01 | fred.soybean.WORLD | 277 / 2026-01 | USD vs USD | 277 | 277 | 0.00% |  |
@@ -33,3 +34,6 @@
 | zinc_price.WORLD.M | fred.commodity_zinc.WORLD | same quantity under 2 FRED legacy names; tie broken by period count, then series id (equal row counts) (277 vs 277) | 277 / 2026-01 | fred.zinc.WORLD | 277 / 2026-01 | USD vs USD | 277 | 277 | 0.00% |  |
 
 Gaps compare the latest legacy vintage per period, as exact decimals, over periods where BOTH series' legacy rows carry an explicit unit (the proposed one). Rows with a blank unit are excluded: they can be another base-year vintage (Ruling V) and are quarantined as missing_unit on import, never imported. Row counts are explicit-unit rows. A large gap is a review flag, never auto-corrected (spec §5). Units are shown as the legacy data labels them; differing labels can mean the same unit.
+
+
+Task 10 note: the `unemployment_rate.PT.M` row compares OECD legacy rows with the LIVE INE series (fetched 2026-11-11; INE had no legacy monthly series). OECD's monthly rate is 15-74 and an older vintage, INE's is 16-74 (provisional latest month): differences up to 0.2 pp (3.45% relative) are expected, flagged for review, never auto-corrected.
