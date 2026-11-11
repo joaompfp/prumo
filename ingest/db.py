@@ -176,6 +176,43 @@ class Db:
                                 (to_state, run_id, from_state))
         return cur.rowcount == 1
 
+    # --- legacy import (Task 8) ---------------------------------------------------------------
+
+    def legacy_run(self, source_name: str, dataset_key: str, started_at: str) -> int:
+        """The synthetic run that holds a source's legacy rows: created on first use in state
+        'verified' (legacy rows are still served only when setting legacy_served = '1')."""
+        row = self.conn.execute("SELECT id FROM dataset_run WHERE dataset_key = ? ORDER BY id LIMIT 1",
+                                (dataset_key,)).fetchone()
+        if row:
+            return row[0]
+        cur = self.conn.execute(
+            "INSERT INTO dataset_run(source_id, started_at, finished_at, state, dataset_key) "
+            "VALUES ((SELECT id FROM source WHERE name = ?), ?, ?, 'verified', ?)",
+            (source_name, started_at, started_at, dataset_key))
+        return cur.lastrowid
+
+    def legacy_observation_keys(self, run_id: int) -> set[tuple[str, str, str, str]]:
+        """(series_id, period, value_text, fetched_at) of the run's legacy rows (import dedupe)."""
+        return set(self.conn.execute(
+            "SELECT series_id, period, value_text, fetched_at FROM observation "
+            "WHERE dataset_run_id = ? AND kind = 'legacy-unverified'", (run_id,)))
+
+    def quarantine_keys(self, run_id: int) -> set[tuple]:
+        """(series_id, raw_period, raw_value, reason) already quarantined for the run."""
+        return set(self.conn.execute(
+            "SELECT series_id, raw_period, raw_value, reason FROM quarantine WHERE dataset_run_id = ?",
+            (run_id,)))
+
+    def write_legacy_observations(self, run_id: int, rows: list[tuple]) -> None:
+        """Insert (`ingest.models.Observation`, fetched_at) pairs as kind 'legacy-unverified' with no
+        raw payload, in order (later vintages last, so they get the higher id)."""
+        self.conn.executemany(
+            "INSERT INTO observation(series_id, period, value_text, value, status_flag, kind, "
+            "dataset_run_id, raw_fetch_id, fetched_at, released_at) "
+            "VALUES (?, ?, ?, ?, ?, 'legacy-unverified', ?, NULL, ?, NULL)",
+            [(o.series_id, o.period, o.value_text, o.value, o.status_flag, run_id, fetched_at)
+             for o, fetched_at in rows])
+
     def close(self) -> None:
         self.conn.close()
 
