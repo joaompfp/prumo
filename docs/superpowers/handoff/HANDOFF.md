@@ -26,14 +26,14 @@ Rebuild of Prumo's data layer: a new `ingest/` package (raw → validated → se
 | 5 validators | complete |
 | 6 pipeline core + http client | complete |
 | 7 verification framework (+ independence guard) | complete (4 fix rounds) |
-| 8 legacy import + registry proposal | **IN PROGRESS**: `ingest/legacy_import.py` committed (4d0b4b6); `ingest/propose_registry.py` + `tests/ingest/test_propose_registry.py` checkpoint-committed as WIP, NOT yet reviewed. Still to do: run propose against the real CSV to generate `registry/core.proposed.yaml` + copy to `registry/core.yaml` (both headed `# PROVISIONAL — owner review pending`), `registry/overlaps.md`, `registry/deferred-tail.md`, `registry/unclassified.md`, `registry/licences-todo.md`; run `import_legacy` against the real CSV into a temp SQLite and record the numbers; then task review (spec+quality) and fix loop. See `reports/task-8-brief.md` and the Task 8 dispatch rulings (E, T, U) in the ledger. |
+| 8 legacy import + registry proposal | complete (commits ..8dbf715): provisional `registry/core.yaml` (1,774 series / 1,751 keys), overlaps.md, deferred-tail.md, unclassified.md, licences-todo.md; legacy import verified on the real export (164,825 imported, 6,522 missing_unit + 6 non_numeric quarantined, 74,809 not_in_registry, 0 served) |
 | 9–16 source adapters | not started (Eurostat, INE, Banco de Portugal, REN(+DGEG/ERSE), World Bank, FRED, OECD, E-REDES/dadosgov) |
 | 17 CLI/status/replay + delete old collectors | not started |
 | 18 scheduler service + compose + deploy | not started |
 | 19 docs + final audit pack | not started |
 | Final whole-branch review (most capable model) → `superpowers:finishing-a-development-branch` | not started |
 
-Last full test run: `pytest tests/ingest` → 376 passed.
+Last full test run: `pytest tests/ingest` → 381 passed.
 
 ## Obligations carried into EVERY adapter task (9–16) — from rulings I, J, N, O, Q, R, S
 1. Adapter = `ingest/sources/<name>.py` (implements `Source`, `fetch` returns an Iterable of `RawResponse`; `parse` returns `dict[series_id, list[RawRow]]` with `RawRow.response_index` pointing at the response each row came from) + independent verifier `ingest/verifiers/<name>.py`. Verifier uses a DIFFERENT endpoint/format than the collector, shares NO helper module with the parser, and passes the static allowlist in `register_verifier` (only `from ingest.http|models|rawstore|sources|verifiers import <allowlisted names>` + stdlib allowlist).
@@ -48,3 +48,6 @@ Public site = "Em manutenção" until the UI revamp (project 4). No Telegram/pus
 
 ## Known deferred minors (details in ledger)
 Per-task minors are listed in `progress-ledger.md`. Notable: T17 must delete `scripts/audit_nightly.py` + the entrypoint cron block and clean `ci.yml`/`pytest.ini`/`tests/README.md`/`tests/conftest.py`; T17 CLI status must list stale `pending-verification` runs; `verify_run` itself accepts an unregistered verifier (only `run_with_refetch` enforces registration) so CLIs must call `run_with_refetch`; HEAD requests to the maintenance page return 405 (uptime probes).
+
+## Next step (resume here)
+Task 9 (Eurostat adapter + verifier, also creates `ingest/flags.py`). The plan's tasks 9–16 are one combined section: write each dispatch from the plan table + the adapter obligations above + the series of that source in `registry/core.yaml`. Open registry issues for adapters: Banco de Portugal has 0 core series (legacy had no units; Task 11 must add them with BPstat units); INE/OECD/REN/DGEG/FRED licences UNVERIFIED (`registry/licences-todo.md`, redistribution_ok=0 → must be confirmed before serving); PT unemployment primary is OECD until Task 10 adds INE monthly; single-source keys are source-qualified (no auto-merge).
