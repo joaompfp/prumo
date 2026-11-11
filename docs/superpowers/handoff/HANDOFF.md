@@ -27,7 +27,8 @@ Rebuild of Prumo's data layer: a new `ingest/` package (raw → validated → se
 | 6 pipeline core + http client | complete |
 | 7 verification framework (+ independence guard) | complete (4 fix rounds) |
 | 8 legacy import + registry proposal | complete (commits ..8dbf715): provisional `registry/core.yaml` (1,774 series / 1,751 keys), overlaps.md, deferred-tail.md, unclassified.md, licences-todo.md; legacy import verified on the real export (164,825 imported, 6,522 missing_unit + 6 non_numeric quarantined, 74,809 not_in_registry, 0 served) |
-| 9–16 source adapters | not started (Eurostat, INE, Banco de Portugal, REN(+DGEG/ERSE), World Bank, FRED, OECD, E-REDES/dadosgov) |
+| 9 Eurostat adapter + verifier | implemented (444bb3d), IN REVIEW |
+| 10–16 source adapters | not started (Eurostat, INE, Banco de Portugal, REN(+DGEG/ERSE), World Bank, FRED, OECD, E-REDES/dadosgov) |
 | 17 CLI/status/replay + delete old collectors | not started |
 | 18 scheduler service + compose + deploy | not started |
 | 19 docs + final audit pack | not started |
@@ -51,3 +52,6 @@ Per-task minors are listed in `progress-ledger.md`. Notable: T17 must delete `sc
 
 ## Next step (resume here)
 Task 9 (Eurostat adapter + verifier, also creates `ingest/flags.py`). The plan's tasks 9–16 are one combined section: write each dispatch from the plan table + the adapter obligations above + the series of that source in `registry/core.yaml`. Open registry issues for adapters: Banco de Portugal has 0 core series (legacy had no units; Task 11 must add them with BPstat units); INE/OECD/REN/DGEG/FRED licences UNVERIFIED (`registry/licences-todo.md`, redistribution_ok=0 → must be confirmed before serving); PT unemployment primary is OECD until Task 10 adds INE monthly; single-source keys are source-qualified (no auto-merge).
+
+## Registry note (important)
+`registry/core.yaml` is now AUTHORITATIVE: Task 9 added hand-derived `native_code`/`url` for Eurostat series (and later adapters add theirs). Do NOT re-run `propose_registry` over it (it would wipe them). Inactive series are explained in `registry/unmapped-eurostat.md` (and later `unmapped-<source>.md`). Verifiers are registered by the Task 17 CLI via `register_verifier(<Source>Verifier())`.
