@@ -12,7 +12,7 @@ def test_vocabulary_is_closed_and_ordered():
     (None, "normal"), ("", "normal"), (" ", "normal"),
     ("p", "provisional"),
     ("e", "estimated"), ("s", "estimated"), ("f", "estimated"), ("u", "estimated"),
-    ("n", "estimated"),
+    ("n", "estimated"), ("i", "estimated"),
     ("r", "revised"),
     ("b", "break"), ("d", "break"),
 ])
@@ -29,7 +29,7 @@ def test_combined_codes_take_the_strongest(code, flag):
     assert map_eurostat_flag(code) == flag
 
 
-@pytest.mark.parametrize("code", ["x", "i", "P", "pq", "1", "p,"])
+@pytest.mark.parametrize("code", ["x", "P", "pq", "1", "p,", "a"])
 def test_unknown_codes_raise(code):
     with pytest.raises(ValueError):
         map_eurostat_flag(code)
@@ -47,12 +47,12 @@ def test_missing_value_rows_accept_known_codes_and_return_none(code):
     assert map_eurostat_flag(code, value_present=False) is None
 
 
-@pytest.mark.parametrize("code", ["x", "i", ": q"])
+@pytest.mark.parametrize("code", ["x", "w", ": q"])
 def test_missing_value_rows_still_reject_unknown_codes(code):
     with pytest.raises(ValueError):
         map_eurostat_flag(code, value_present=False)
 
 
 def test_every_mapped_result_is_in_the_vocabulary():
-    for code in "pesfunrbd":
+    for code in "pesfunirbd":
         assert map_eurostat_flag(code) in FLAGS

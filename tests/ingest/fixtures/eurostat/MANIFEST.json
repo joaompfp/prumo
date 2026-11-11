@@ -1,0 +1,39 @@
+{
+ "monthly_sts_inpr_m": {
+  "series": [
+   "eurostat.STS_INPR_M_BD.CZ",
+   "eurostat.STS_INPR_M_BD.DE",
+   "eurostat.STS_INPR_M_BD.PT",
+   "eurostat.ipi.PT",
+   "eurostat.total_industry.PT",
+   "eurostat.ipi_total.EU27"
+  ],
+  "json_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?freq=M&indic_bt=PRD&nace_r2=B-D&s_adj=SCA&unit=I21&geo=CZ&geo=DE&geo=EU27_2020&geo=PT",
+  "tsv_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/sts_inpr_m/M.PRD.B-D.SCA.I21.CZ+DE+EU27_2020+PT?format=TSV"
+ },
+ "annual_nama_10_pc": {
+  "series": [
+   "eurostat.gdp_per_capita_eur.PT",
+   "eurostat.gdp_per_capita_eur.DE",
+   "eurostat.gdp_per_capita_eur.EU27_2020"
+  ],
+  "json_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nama_10_pc?freq=A&unit=CP_EUR_HAB&na_item=B1GQ&geo=DE&geo=EU27_2020&geo=PT",
+  "tsv_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/nama_10_pc/A.CP_EUR_HAB.B1GQ.DE+EU27_2020+PT?format=TSV"
+ },
+ "quarterly_namq_10_gdp": {
+  "series": [
+   "eurostat.gdp_quarterly.EU27"
+  ],
+  "json_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/namq_10_gdp?freq=Q&unit=CLV10_MEUR&s_adj=SCA&na_item=B1GQ&geo=EU27_2020",
+  "tsv_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/namq_10_gdp/Q.CLV10_MEUR.SCA.B1GQ.EU27_2020?format=TSV"
+ },
+ "semester_nrg_pc_204": {
+  "series": [
+   "eurostat.electricity_price_household.PT",
+   "eurostat.electricity_price_household.ES",
+   "eurostat.electricity_price_household.GR"
+  ],
+  "json_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nrg_pc_204?freq=S&siec=E7000&nrg_cons=KWH2500-4999&unit=KWH&tax=I_TAX&currency=EUR&geo=EL&geo=ES&geo=PT",
+  "tsv_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/nrg_pc_204/S.E7000.KWH2500-4999.KWH.I_TAX.EUR.EL+ES+PT?format=TSV"
+ }
+}

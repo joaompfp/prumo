@@ -36,13 +36,14 @@ EUROSTAT_VALUE_FLAGS = {
     "f": "estimated",    # forecast: a model value, not a measurement
     "u": "estimated",    # low reliability
     "n": "estimated",    # not significant
+    "i": "estimated",    # value imputed by Eurostat or other receiving agencies (API label)
     "r": "revised",      # revised (pre-2023)
 }
 # Markers that only ever accompany a MISSING value: ':' not available, 'c' confidential,
 # 'z' not applicable. Seen on a row that has a value, they mean we misread the payload.
 EUROSTAT_NO_VALUE_MARKERS = frozenset({":", "c", "z"})
-# Deliberately unmapped (raise): 'i' (old "see metadata": its meaning is in free-text metadata,
-# so no status can be derived without guessing) and anything else.
+# Anything else raises (the API publishes each code's meaning in extension.status.label; a new
+# code must be reviewed and added here, never defaulted).
 
 
 def map_eurostat_flag(code: str | None, *, value_present: bool = True) -> str | None:
