@@ -344,3 +344,73 @@ def test_malformed_result_fields_are_failure_not_crash(env):
     assert passed is False and db.run_state(run_id) == "failed-verification"
     rows = items_of(db, run_id)
     assert all(r[3] is None and r[4] is None and r[5] == 0 and r[6] for r in rows)
+
+
+# --- registration ------------------------------------------------------------------------------
+
+@pytest.fixture
+def make_verifier(tmp_path, monkeypatch):
+    """Write a verifier module with `imports` to tmp_path, import it, return an instance."""
+    import importlib
+    import uuid
+
+    from ingest import verifiers
+    monkeypatch.setattr(verifiers, "_REGISTRY", {})
+    monkeypatch.syspath_prepend(str(tmp_path))
+
+    def make(imports: str, source_name: str = "acme"):
+        name = f"tmp_verifier_{uuid.uuid4().hex}"  # unique: sys.modules outlives tmp_path
+        (tmp_path / f"{name}.py").write_text(
+            # imports sit in a function body: never executed, but visible to the AST check
+            f"def _unused():\n" + "".join(f"    {line}\n" for line in imports.splitlines() or ["pass"])
+            + f"\n\nclass V:\n    source_name = {source_name!r}\n\n"
+              f"    def check(self, items, http):\n        return []\n")
+        return importlib.import_module(name).V()
+    return make
+
+
+@pytest.mark.parametrize("imports", [
+    "import ingest.sources.acme",
+    "from ingest.sources.acme import parse",
+    "from ingest.sources import acme",
+    "from ingest.sources import eurostat",
+    "import ingest.sources.eurostat as e",
+    "import acme",
+    "from vendor.acme import parse",
+    "from vendor import acme",
+])
+def test_verifier_importing_parser_is_rejected(make_verifier, imports):
+    from ingest.verifiers import get_verifier, register_verifier
+    v = make_verifier(imports)
+    with pytest.raises(ValueError, match="import"):
+        register_verifier(v)
+    with pytest.raises(KeyError):
+        get_verifier("acme")
+
+
+@pytest.mark.parametrize("imports", [
+    "",
+    "from ingest.sources import RawResponse",
+    "import ingest.sources",
+    "from ingest.http import Http\nfrom ingest.models import parse_decimal\nimport json",
+    "from ingest.verifiers import ItemResult, SampleItem",
+])
+def test_independent_verifier_is_registered(make_verifier, imports):
+    from ingest.verifiers import get_verifier, register_verifier
+    v = make_verifier(imports)
+    register_verifier(v)
+    assert get_verifier("acme") is v
+
+
+def test_duplicate_registration_is_rejected(make_verifier):
+    from ingest.verifiers import register_verifier
+    register_verifier(make_verifier(""))
+    with pytest.raises(ValueError, match="already registered"):
+        register_verifier(make_verifier(""))
+
+
+def test_fake_verifier_module_passes_the_rule(monkeypatch):
+    from ingest import verifiers
+    monkeypatch.setattr(verifiers, "_REGISTRY", {})
+    verifiers.register_verifier(FakeVerifier())
+    assert verifiers.get_verifier("fake").source_name == "fake"
