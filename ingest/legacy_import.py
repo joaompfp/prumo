@@ -44,7 +44,7 @@ class LegacyImportReport:
     n_quarantined_by_reason: dict[str, int] = field(default_factory=dict)
 
 
-def _utc(ts: str) -> datetime:
+def fetched_at_utc(ts: str) -> datetime:
     dt = datetime.fromisoformat(ts)
     # Naive legacy timestamps were written by the collectors on f0nix in UTC.
     return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt.astimezone(timezone.utc)
@@ -68,7 +68,7 @@ def import_legacy(db: Db, csv_path: Path, registry: list[SeriesSpec] | None = No
                 counts[NOT_IN_REGISTRY] += 1
                 continue
             pending[spec.source.name].append(
-                (_utc(r["fetched_at"]), spec, RawRow(r["period"], r["value"], r["unit"])))
+                (fetched_at_utc(r["fetched_at"]), spec, RawRow(r["period"], r["value"], r["unit"])))
 
     now = _iso_z(datetime.now(timezone.utc))
     n_imported = 0
