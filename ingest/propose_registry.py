@@ -310,7 +310,14 @@ def _table(header: list[str], rows: list[list]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def propose(csv_path: Path, out_dir: Path) -> None:
+def propose(csv_path: Path, out_dir: Path, *, force: bool = False) -> None:
+    """Write the proposal into `out_dir`. Refuses (FileExistsError) when `out_dir/core.yaml`
+    already carries `native_code` entries (hand-curated source mappings since Task 9, which a
+    regeneration would drop) unless force=True."""
+    existing = Path(out_dir) / "core.yaml"
+    if not force and existing.exists() and "native_code:" in existing.read_text():
+        raise FileExistsError(f"{existing} contains native_code entries (curated source mappings);"
+                              " regenerating would drop them. Pass force=True to overwrite.")
     series, n_rows = _read(csv_path)
     buckets: dict[str, list[tuple[_Series, str]]] = defaultdict(list)
     for s in series.values():

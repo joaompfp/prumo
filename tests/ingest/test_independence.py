@@ -178,3 +178,12 @@ def test_clean_verifier_importing_sources_package_passes(layout):
     write("pkg_verifier", "from ingest.sources import Source, RawResponse\n" + CLEAN
           + "\n\ndef run():\n    assert V().check([], None) == []\n")
     check("pkg_verifier")
+
+
+@pytest.mark.parametrize("module", ["ingest.flags", "ingest.db", "ingest.pipeline"])
+def test_exemption_is_only_for_a_verifier_module(module):
+    """Only `ingest.verifiers.<x>` (not the package, not the guard) is exempt as 'the verifier
+    itself'; passing another ingest module as the 'verifier' must not whitelist it.
+    (entrypoint time:time loads nothing else, so the module named is the only suspect)"""
+    with pytest.raises(AssertionError, match=f"non-shared ingest modules: .*'{module}'"):
+        assert_verifier_independent(module, "time:time", source_name="eurostat")

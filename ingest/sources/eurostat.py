@@ -124,6 +124,19 @@ def _load(body: bytes) -> dict:
     return doc
 
 
+def _check_extent(name: str, table: dict | list, total: int) -> None:
+    """A truncated payload must not silently lose cells (e.g. the newest periods): an array
+    must cover the whole cube (an empty status array means no status at all); an object's
+    keys must be flat indices inside it."""
+    if isinstance(table, list):
+        if len(table) != total and not (name == "status" and not table):
+            raise ValueError(f"JSON-stat {name} array has {len(table)} cells, cube has {total}")
+        return
+    for key in table:
+        if not (isinstance(key, str) and key.isdigit() and int(key) < total):
+            raise ValueError(f"JSON-stat {name} key {key!r} outside the cube of {total} cells")
+
+
 class _Cube:
     """A JSON-stat 2.0 dataset: values flattened row-major over `id` (last dimension fastest),
     `value`/`status` either arrays or {"<flat index>": ...} objects (sparse)."""
@@ -153,10 +166,13 @@ class _Cube:
         self.status = doc.get("status") or {}
         if not isinstance(self.value, (dict, list)) or not isinstance(self.status, (dict, list)):
             raise ValueError("JSON-stat value/status must be an array or an object")
+        total = self.stride[0] * self.size[0] if self.size else 0
+        for name, table in (("value", self.value), ("status", self.status)):
+            _check_extent(name, table, total)
 
     def _cell(self, table, flat: int):
         if isinstance(table, list):
-            return table[flat] if flat < len(table) else None
+            return table[flat]
         return table.get(str(flat))
 
     def rows(self, key: Key, response_index: int) -> list[RawRow]:

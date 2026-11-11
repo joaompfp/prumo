@@ -125,7 +125,7 @@ def assert_verifier_independent(verifier_module: str, entrypoint: str, *, source
         raise AssertionError(f"verifier {verifier_module} loaded blocked modules: {blocked}")
     # The verifier module itself (ingest/verifiers/<source>.py for real adapters) is loaded by
     # definition; anything else in ingest outside the shared infrastructure is not allowed.
-    extra = sorted(loaded - _shared_runtime_modules() - {verifier_module})
+    extra = sorted(loaded - _shared_runtime_modules() - _own_module(verifier_module))
     if extra:
         raise AssertionError(f"verifier {verifier_module} loaded non-shared ingest modules: "
                              f"{extra}")
@@ -144,6 +144,15 @@ def assert_verifier_independent(verifier_module: str, entrypoint: str, *, source
     if opened:
         raise AssertionError(f"verifier {verifier_module} opened collector/blocked files: "
                              f"{opened}")
+
+
+def _own_module(verifier_module: str) -> set[str]:
+    """{verifier_module} if it is a verifier, i.e. `ingest.verifiers.<x>` (one level, not the
+    package itself nor this guard); otherwise nothing is exempt."""
+    package, _, leaf = verifier_module.rpartition(".")
+    if package == "ingest.verifiers" and leaf and verifier_module != __name__:
+        return {verifier_module}
+    return set()
 
 
 def _in_collectors(p: Path, sources_dir: Path | None) -> bool:

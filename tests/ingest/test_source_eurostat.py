@@ -337,3 +337,17 @@ def test_active_native_codes_are_unique():
 
 def test_fixtures_are_small():
     assert all(f.stat().st_size <= 200_000 for f in FIX.iterdir())
+
+
+@pytest.mark.parametrize("value, status", [
+    ([1, 2, 3], None),              # array shorter than size product (4): newest period dropped
+    ([1, 2, 3, 4, 5], None),        # longer
+    ([], None),                     # empty value array for a non-empty cube
+    ({"0": 1, "4": 2}, None),       # sparse key beyond the cube
+    ({"0": 1, "x": 2}, None),       # non-index key
+    ({"3": 1}, ["", ""]),           # status array truncated
+    ({"3": 1}, {"9": "p"}),         # status key beyond the cube
+])
+def test_truncated_or_out_of_range_payload_raises(value, status):
+    with pytest.raises(ValueError, match="JSON-stat"):
+        _parse_toy(_cube(value, status))

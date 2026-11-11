@@ -166,3 +166,25 @@ def test_real_export_proposal_and_import():
             assert db.conn.execute("SELECT count(*) FROM served_observation").fetchone()[0] == 0
         finally:
             db.close()
+
+
+def test_propose_refuses_to_overwrite_a_curated_registry(tmp_path):
+    """registry/core.yaml carries hand-curated native_codes since Task 9: regenerating it from
+    the legacy export would silently drop them, so propose refuses unless force=True."""
+    out = tmp_path / "registry"
+    out.mkdir()
+    curated = "# PROVISIONAL\nseries:\n- id: x\n  native_code: ds:geo=PT\n"
+    (out / "core.yaml").write_text(curated)
+    with pytest.raises(FileExistsError, match="native_code"):
+        propose(write_csv(tmp_path / "l.csv", overlap_rows()), out)
+    assert (out / "core.yaml").read_text() == curated  # untouched
+    propose(write_csv(tmp_path / "l.csv", overlap_rows()), out, force=True)
+    assert (out / "core.yaml").read_text() != curated
+
+
+def test_propose_writes_into_a_registry_without_native_codes(tmp_path):
+    out = tmp_path / "registry"
+    out.mkdir()
+    (out / "core.yaml").write_text("# PROVISIONAL\nseries: []\n")
+    propose(write_csv(tmp_path / "l.csv", overlap_rows()), out)
+    assert load_registry(out / "core.yaml")
