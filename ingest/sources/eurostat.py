@@ -23,8 +23,10 @@ above a cell-count threshold, and the unrequested cartesian product of codes wou
 Parsing: numbers are the publisher's tokens (`json.loads(parse_float=str, parse_int=str)`),
 periods are Eurostat's own time codes ('2024', '2024-S1', '2024-Q1', '2024-03'; validate()
 normalises them), status flags are mapped by `ingest.flags.map_eurostat_flag` onto the shared
-vocabulary ('normal' stored explicitly). A cell that has a status but no value (':' with 'c',
-'z', ...) is handed over with value None (validate() quarantines it as non_numeric, so the
+vocabulary ('normal' stored explicitly). A status is '<flags>|<confidentiality>'
+(`ingest.flags.split_eurostat_status`); a cell with a confidentiality code ('|C' confidential,
+'|N' not for publication) has no publishable value whatever the payload holds. Such a cell, and
+any cell that has a status but no value, is handed over with value None (validate() quarantines it as non_numeric, so the
 publisher's "no value" stays on record). `unit_raw` is None: the cell is located by the unit code
 pinned in native_code, so the registry unit is authoritative (validate() semantics).
 Raises on anything unexpected: HTML or non-JSON body, a JSON error object, a JSON-stat structure
@@ -34,7 +36,7 @@ import json
 from collections.abc import Iterator
 from urllib.parse import urlsplit
 
-from ingest.flags import map_eurostat_flag
+from ingest.flags import map_eurostat_flag, split_eurostat_status
 from ingest.http import Http
 from ingest.models import SeriesSpec
 from ingest.sources import RawResponse
@@ -181,7 +183,10 @@ class _Cube:
                 raise ValueError(f"unexpected JSON-stat status {status!r} at {flat}")
             if value is None and status is None:
                 continue  # nothing published for this period
-            flag = map_eurostat_flag(status, value_present=value is not None)
+            flags, confidentiality = split_eurostat_status(status)
+            if confidentiality is not None:
+                value = None  # confidential / not for publication: no publishable value
+            flag = map_eurostat_flag(flags, value_present=value is not None)
             rows.append(RawRow(period_raw=period, value_raw=value, flag_raw=flag,
                                response_index=response_index))
         return rows

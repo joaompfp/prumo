@@ -19,7 +19,8 @@ from tests.ingest.eurostat_fixtures import MANIFEST, FixtureHttp, body, registry
 from tests.ingest.eurostat_verifier_entry import CASES
 from tests.ingest.fakes import FakeHttp, ok
 
-ALL = list(MANIFEST)
+# the four base sets (one per frequency); the confidential_* sets are tested on their own
+ALL = ["monthly_sts_inpr_m", "annual_nama_10_pc", "quarterly_namq_10_gdp", "semester_nrg_pc_204"]
 
 
 class Clock:
@@ -52,7 +53,7 @@ def test_verifier_reads_tsv_values_and_flags():
         assert r.observed_decimal == "." and r.observed_unit is None
         assert "/sdmx/2.1/data/" in r.evidence_url and r.evidence_url.endswith("format=TSV")
         assert r.evidence in {body(f"{n}.tsv") for n in ALL}
-    assert sorted(set(http.calls)) == sorted(m["tsv_url"] for m in MANIFEST.values())
+    assert sorted(set(http.calls)) == sorted(MANIFEST[n]["tsv_url"] for n in ALL)
     # '28560 p' in the TSV -> token '28560' + flag 'provisional'
     assert b"28560 p" in body("annual_nama_10_pc.tsv")
 
@@ -90,6 +91,54 @@ def test_verifier_rejects_unknown_flag_on_a_value():
     item = BlindItem("eurostat.gdp_per_capita_eur.PT", "2025", reg["eurostat.gdp_per_capita_eur.PT"])
     with pytest.raises(ValueError, match="unknown Eurostat flag"):
         EurostatVerifier().check([item], FixtureHttp({url: raw}))
+
+
+@pytest.mark.parametrize("name, sid, conf_period, ok_period", [
+    ("confidential_c_sts_inpr_m", "eurostat.STS_INPR_M_C.IE", "2014-12", "2024-01"),
+    ("confidential_n_sts_inpr_m", "eurostat.metals.PT", "2026-09", "2026-07"),
+])
+def test_confidential_tsv_cell_is_not_found(name, sid, conf_period, ok_period):
+    assert b": @" in body(f"{name}.tsv")
+    reg = registry_specs()
+    a, b = EurostatVerifier().check([BlindItem(sid, conf_period, reg[sid]),
+                                     BlindItem(sid, ok_period, reg[sid])], FixtureHttp())
+    assert (a.observed_text, a.observed_flag) == (None, None)  # would be a mismatch if sampled
+    assert b.observed_text is not None and b.observed_flag == "normal"
+
+
+@pytest.mark.parametrize("cell", [": @X", "1.0 @Q"])
+def test_unknown_tsv_confidentiality_code_raises(cell):
+    url = MANIFEST["annual_nama_10_pc"]["tsv_url"]
+    raw = body("annual_nama_10_pc.tsv").replace(b"28560 p", cell.encode())
+    reg = registry_specs()
+    item = BlindItem("eurostat.gdp_per_capita_eur.PT", "2025", reg["eurostat.gdp_per_capita_eur.PT"])
+    with pytest.raises(ValueError, match="confidentiality"):
+        EurostatVerifier().check([item], FixtureHttp({url: raw}))
+
+
+def test_conflicting_duplicate_tsv_rows_raise():
+    url = MANIFEST["annual_nama_10_pc"]["tsv_url"]
+    raw = body("annual_nama_10_pc.tsv")
+    pt_row = next(ln for ln in raw.split(b"\n") if ln.startswith(b"A,CP_EUR_HAB,B1GQ,PT"))
+    raw = raw.rstrip(b"\n") + b"\n" + pt_row.replace(b"28560 p", b"99999 p") + b"\n"
+    reg = registry_specs()
+    item = BlindItem("eurostat.gdp_per_capita_eur.PT", "2025", reg["eurostat.gdp_per_capita_eur.PT"])
+    with pytest.raises(ValueError, match="conflicting rows"):
+        EurostatVerifier().check([item], FixtureHttp({url: raw}))
+
+
+def test_confidential_cells_are_never_sampled(db, tmp_path):
+    """Confidential cells are quarantined (no observation), and the sample is drawn from written
+    observations only, so the verifier's 'not found' for ': @C' can never fail a clean run."""
+    specs = specs_of("confidential_c_sts_inpr_m", "confidential_n_sts_inpr_m")
+    sync_registry(db, specs)
+    store, clock = RawStore(tmp_path / "raw"), Clock()
+    r = run_dataset(db, store, EurostatSource(), specs, FixtureHttp(), clock)
+    assert r.state == "pending-verification" and r.n_quarantined == 62
+    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=5, size=10_000,
+                      specs=specs, store=store, now=clock)
+    [(n,)] = q(db, "SELECT sample_size FROM verification WHERE dataset_run_id=?", r.run_id)
+    assert n == r.n_written
 
 
 # --- registration and independence ---------------------------------------------------------------

@@ -38,6 +38,9 @@ _FLAG_OF = {"b": "break", "d": "break", "p": "provisional", "e": "estimated", "s
             "r": "revised"}
 _STRONGEST_FIRST = ("break", "provisional", "estimated", "revised")
 _NO_VALUE = frozenset({"c", "z"})
+# Duplicate of ingest/flags.py's EUROSTAT_CONFIDENTIALITY, on purpose. The TSV renders the
+# JSON-stat status '|C' as ': @C': a cell with one of these has no publishable value.
+_CONFIDENTIALITY = frozenset({"C", "N"})  # confidential, not for publication
 
 
 def _key(native_code: str | None) -> tuple[str, list[tuple[str, str]]]:
@@ -63,14 +66,18 @@ def _vocabulary(letters: str) -> str:
 
 
 def _cell(text: str) -> tuple[str | None, str]:
-    """'12.3 p' -> ('12.3', 'p'); ': c' -> (None, 'c'); '6.0 ' -> ('6.0', '')."""
+    """'12.3 p' -> ('12.3', 'p'); ': c' -> (None, 'c'); '6.0 ' -> ('6.0', '');
+    ': @C' -> (None, '') (confidential: no publishable value)."""
     parts = text.split()
     if not parts:
         return None, ""
-    token, letters = parts[0], "".join(parts[1:])
-    if token == ":":
-        if set(letters) - _NO_VALUE - set(_FLAG_OF):
-            raise ValueError(f"unknown Eurostat flag in {text!r}")
+    letters, at, conf = "".join(parts[1:]).partition("@")
+    if at and conf not in _CONFIDENTIALITY:
+        raise ValueError(f"unknown Eurostat confidentiality code in {text!r}")
+    if set(letters) - _NO_VALUE - set(_FLAG_OF):
+        raise ValueError(f"unknown Eurostat flag in {text!r}")
+    token = parts[0]
+    if token == ":" or at:
         return None, letters
     if not token[0].isdigit() and token[0] not in "+-.":
         raise ValueError(f"unexpected TSV cell {text!r}")
@@ -98,7 +105,10 @@ def _table(body: bytes) -> tuple[list[str], dict[tuple[str, ...], dict[str, str]
         codes = tuple(line[0].split(","))
         if len(codes) != len(dims) or len(line) - 1 != len(periods):
             raise ValueError(f"malformed TSV row {line[:2]!r}")
-        rows[codes] = dict(zip(periods, line[1:]))
+        cells = dict(zip(periods, line[1:]))
+        if codes in rows and rows[codes] != cells:
+            raise ValueError(f"TSV has conflicting rows for series {line[0]!r}")
+        rows[codes] = cells
     return dims, rows
 
 

@@ -56,3 +56,28 @@ def test_missing_value_rows_still_reject_unknown_codes(code):
 def test_every_mapped_result_is_in_the_vocabulary():
     for code in "pesfunirbd":
         assert map_eurostat_flag(code) in FLAGS
+
+
+# --- confidentiality part (SDMX CONF_STATUS, after '|') ----------------------------------------
+
+from ingest.flags import split_eurostat_status  # noqa: E402
+
+
+@pytest.mark.parametrize("status, parts", [
+    (None, ("", None)), ("", ("", None)), ("p", ("p", None)), ("bp", ("bp", None)),
+    ("|C", ("", "C")), ("|N", ("", "N")), ("b|C", ("b", "C")), ("pe|N", ("pe", "N")),
+    ("p|", ("p", None)),
+])
+def test_split_status(status, parts):
+    assert split_eurostat_status(status) == parts
+
+
+@pytest.mark.parametrize("status", ["|X", "|c", "p|CC", "|C|N", "b|Z"])
+def test_unknown_confidentiality_code_raises(status):
+    with pytest.raises(ValueError, match="confidentiality"):
+        split_eurostat_status(status)
+
+
+def test_flag_mapping_refuses_an_unsplit_status():
+    with pytest.raises(ValueError):
+        map_eurostat_flag("|C")

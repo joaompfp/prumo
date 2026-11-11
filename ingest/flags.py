@@ -45,6 +45,29 @@ EUROSTAT_NO_VALUE_MARKERS = frozenset({":", "c", "z"})
 # Anything else raises (the API publishes each code's meaning in extension.status.label; a new
 # code must be reviewed and added here, never defaulted).
 
+# A Eurostat status string is '<observation flags>|<confidentiality>' (JSON-stat labels '|C',
+# '|N'; the SDMX TSV renders the same cell as ': @C'). The confidentiality part is the SDMX
+# CONF_STATUS. Reviewed codes (both seen in live sts_inpr_m payloads, 2026-11-11); each means the
+# cell has NO publishable value. Any other code raises.
+EUROSTAT_CONFIDENTIALITY = {
+    "C": "confidential",
+    "N": "not for publication",
+}
+
+
+def split_eurostat_status(status: str | None) -> tuple[str, str | None]:
+    """'b|C' -> ('b', 'C'); 'p' -> ('p', None); '|N' -> ('', 'N'); None -> ('', None).
+    The second part is a reviewed confidentiality code (EUROSTAT_CONFIDENTIALITY) or None;
+    an unknown or repeated one raises ValueError. The first part still goes through
+    map_eurostat_flag."""
+    flags, bar, conf = (status or "").partition("|")
+    conf = conf.strip()
+    if not bar or not conf:
+        return flags, None
+    if conf not in EUROSTAT_CONFIDENTIALITY:
+        raise ValueError(f"unknown Eurostat confidentiality code {conf!r} in {status!r}")
+    return flags, conf
+
 
 def map_eurostat_flag(code: str | None, *, value_present: bool = True) -> str | None:
     """Map a Eurostat flag string (one or more single-letter codes, spaces ignored, e.g. 'p',

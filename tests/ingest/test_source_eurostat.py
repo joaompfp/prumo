@@ -16,7 +16,8 @@ from ingest.validate import validate
 from tests.ingest.eurostat_fixtures import FIX, MANIFEST, FixtureHttp, body, specs_of
 from tests.ingest.fakes import FakeHttp, ok
 
-ALL = list(MANIFEST)
+# the four base sets (one per frequency); the confidential_* sets are tested on their own
+ALL = ["monthly_sts_inpr_m", "annual_nama_10_pc", "quarterly_namq_10_gdp", "semester_nrg_pc_204"]
 REGISTRY = Path(__file__).resolve().parents[2] / "registry"
 
 
@@ -110,13 +111,48 @@ def test_parse_preserves_status_flags():
         "normal", "provisional", "provisional", "provisional")
 
 
+@pytest.mark.parametrize("name, sid, code, n_conf, example", [
+    # STS_INPR_M_C.IE: 60 cells labelled '|C' (confidential), e.g. 2014-12
+    ("confidential_c_sts_inpr_m", "eurostat.STS_INPR_M_C.IE", "|C", 60, "2014-12"),
+    # metals.PT (C24_C25): 2 cells labelled '|N' (not for publication), e.g. 2026-09
+    ("confidential_n_sts_inpr_m", "eurostat.metals.PT", "|N", 2, "2026-09"),
+])
+def test_confidential_cells_become_value_none_rows(name, sid, code, n_conf, example):
+    doc = json.loads(body(f"{name}.json"))
+    assert list(doc["status"].values()).count(code) == n_conf
+    assert doc["extension"]["status"]["label"][code] in ("|confidential", "|not for publication")
+    specs, out = parsed(name)
+    rows = out[sid]
+    none_rows = [r for r in rows if r.value_raw is None]
+    assert len(none_rows) == n_conf and all(r.flag_raw is None for r in none_rows)
+    assert one(rows, example).value_raw is None
+    others = [r for r in rows if r.value_raw is not None]
+    assert others and all(r.flag_raw in FLAGS for r in others)
+    obs, rejected = validate(specs[sid], rows)
+    assert len(rejected) == n_conf and {x.reason for x in rejected} == {"non_numeric"}
+    assert len(obs) == len(others)
+
+
+@pytest.mark.parametrize("status", ["b|C", "p|N", "|C"])
+def test_confidentiality_hides_the_value_whatever_the_flag(status):
+    rows = _parse_toy(_cube({"2": 9, "3": 5}, {"2": status}))
+    assert [(r.period_raw, r.value_raw, r.flag_raw) for r in rows] == [
+        ("2023", None, None), ("2024", "5", "normal")]
+
+
+@pytest.mark.parametrize("status", ["|X", "b|Q", "x|C"])
+def test_unknown_confidentiality_or_flag_raises(status):
+    with pytest.raises(ValueError):
+        _parse_toy(_cube({"3": 5}, {"2": status}))
+
+
 # --- fetch ---------------------------------------------------------------------------------------
 
 def test_fetch_one_request_per_dataset_key_with_all_geos():
     http = FixtureHttp()
     responses = list(EurostatSource().fetch(specs_of(*ALL), http))
     assert len(responses) == 4 == len(http.calls)
-    assert sorted(r.url for r in responses) == sorted(m["json_url"] for m in MANIFEST.values())
+    assert sorted(r.url for r in responses) == sorted(MANIFEST[n]["json_url"] for n in ALL)
     sts = next(r for r in responses if "sts_inpr_m" in r.url)
     assert sts.params == {"freq": "M", "indic_bt": "PRD", "nace_r2": "B-D", "s_adj": "SCA",
                           "unit": "I21", "geo": ["CZ", "DE", "EU27_2020", "PT"]}

@@ -35,5 +35,19 @@
   ],
   "json_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nrg_pc_204?freq=S&siec=E7000&nrg_cons=KWH2500-4999&unit=KWH&tax=I_TAX&currency=EUR&geo=EL&geo=ES&geo=PT",
   "tsv_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/nrg_pc_204/S.E7000.KWH2500-4999.KWH.I_TAX.EUR.EL+ES+PT?format=TSV"
+ },
+ "confidential_c_sts_inpr_m": {
+  "series": [
+   "eurostat.STS_INPR_M_C.IE"
+  ],
+  "json_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?freq=M&indic_bt=PRD&nace_r2=C&s_adj=SCA&unit=I21&geo=IE",
+  "tsv_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/sts_inpr_m/M.PRD.C.SCA.I21.IE?format=TSV"
+ },
+ "confidential_n_sts_inpr_m": {
+  "series": [
+   "eurostat.metals.PT"
+  ],
+  "json_url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/sts_inpr_m?freq=M&indic_bt=PRD&nace_r2=C24_C25&s_adj=SCA&unit=I21&geo=PT",
+  "tsv_url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/sts_inpr_m/M.PRD.C24_C25.SCA.I21.PT?format=TSV"
  }
 }

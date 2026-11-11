@@ -144,3 +144,6 @@ Verified on the first attempt (no refetch), sample 50, 0 mismatches.
    larger evidence files for long monthly series (~25 KB for 4 geos).
 8. GitNexus impact tools were not available in this session (no MCP); the only edit to existing
    code is the one-line guard change above (callers: adapter tests only).
+
+## Fix round 1 (running log)
+- [x] C1 confidentiality ('|C', '|N'): `split_eurostat_status` in ingest/flags.py, parser + verifier (': @C'), fixtures confidential_c/n_sts_inpr_m. Probe before: `PARSE RAISES: unknown Eurostat flag code(s) ['C', '|'] in '|C'`; after: 0 empty series, 964 non_numeric, flags normal 82871 / estimated 21988 / provisional 6156 / break 142.
