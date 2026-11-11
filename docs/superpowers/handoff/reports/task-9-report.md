@@ -147,3 +147,4 @@ Verified on the first attempt (no refetch), sample 50, 0 mismatches.
 
 ## Fix round 1 (running log)
 - [x] C1 confidentiality ('|C', '|N'): `split_eurostat_status` in ingest/flags.py, parser + verifier (': @C'), fixtures confidential_c/n_sts_inpr_m. Probe before: `PARSE RAISES: unknown Eurostat flag code(s) ['C', '|'] in '|C'`; after: 0 empty series, 964 non_numeric, flags normal 82871 / estimated 21988 / provisional 6156 / break 142.
+- [x] I1 discontinued (195 I15 series -> inactive) + I2 duplicates (18 duplicate, 56 not established: labour_productivity_hour x28, unit_labour_cost x28) -> 329 active, all native_codes unique. RED for test_active_native_codes_are_unique on the pre-fix registry: 74 duplicate codes.

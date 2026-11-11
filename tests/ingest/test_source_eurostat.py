@@ -323,8 +323,16 @@ def test_registry_native_codes_complete():
         dataset = doc["extension"]["id"].lower()
         assert dims_of[dataset] == [d for d in doc["id"] if d != "time"]
     active = [s for s in specs if s.active]
-    assert len(active) == 598 and len(specs) - len(active) == 99
-    assert len({s.id for s in active}) == len(active)
+    assert len(active) == 329 and len(specs) - len(active) == 368
+
+
+def test_active_native_codes_are_unique():
+    """One Eurostat series is one active registry series: duplicates are inactive (I2), and a
+    cross_check is never the same Eurostat series as its primary."""
+    specs = [s for s in load_registry(REGISTRY / "core.yaml") if s.source.name == "eurostat"]
+    codes = [s.native_code for s in specs if s.active]
+    dup = sorted(c for c in set(codes) if codes.count(c) > 1)
+    assert not dup, dup
 
 
 def test_fixtures_are_small():

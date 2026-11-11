@@ -84,7 +84,7 @@ series:
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.cci.CY
   source: eurostat
   indicator_key: consumer_confidence.CY.M
@@ -108,7 +108,7 @@ series:
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=CY
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.cci.CZ
   source: eurostat
   indicator_key: consumer_confidence.CZ.M
@@ -296,7 +296,7 @@ series:
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=LT
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.cci.LU
   source: eurostat
   indicator_key: consumer_confidence.LU.M
@@ -320,7 +320,7 @@ series:
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=LU
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.cci.LV
   source: eurostat
   indicator_key: consumer_confidence.LV.M
@@ -420,7 +420,7 @@ series:
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.cci.SE
   source: eurostat
   indicator_key: consumer_confidence.SE.M
@@ -638,7 +638,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=AT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_index.BE
   source: eurostat
   indicator_key: eurostat_construction_index.BE.M
@@ -650,7 +650,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_index.BG
   source: eurostat
   indicator_key: eurostat_construction_index.BG.M
@@ -662,7 +662,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_index.CZ
   source: eurostat
   indicator_key: eurostat_construction_index.CZ.M
@@ -674,7 +674,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_index.DE
   source: eurostat
   indicator_key: eurostat_construction_index.DE.M
@@ -686,7 +686,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_index.DK
   source: eurostat
   indicator_key: eurostat_construction_index.DK.M
@@ -698,7 +698,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_index.ES
   source: eurostat
   indicator_key: eurostat_construction_index.ES.M
@@ -710,7 +710,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.AT
   source: eurostat
   indicator_key: eurostat_construction_output.AT.M
@@ -722,7 +722,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=AT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.BE
   source: eurostat
   indicator_key: eurostat_construction_output.BE.M
@@ -734,7 +734,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.BG
   source: eurostat
   indicator_key: eurostat_construction_output.BG.M
@@ -746,7 +746,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.CZ
   source: eurostat
   indicator_key: eurostat_construction_output.CZ.M
@@ -758,7 +758,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.DE
   source: eurostat
   indicator_key: eurostat_construction_output.DE.M
@@ -770,7 +770,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.DK
   source: eurostat
   indicator_key: eurostat_construction_output.DK.M
@@ -782,7 +782,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.ES
   source: eurostat
   indicator_key: eurostat_construction_output.ES.M
@@ -794,7 +794,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.EU27_2020
   source: eurostat
   indicator_key: eurostat_construction_output.EU27_2020.M
@@ -806,7 +806,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.FI
   source: eurostat
   indicator_key: eurostat_construction_output.FI.M
@@ -818,7 +818,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=FI
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.FR
   source: eurostat
   indicator_key: eurostat_construction_output.FR.M
@@ -830,7 +830,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.HR
   source: eurostat
   indicator_key: eurostat_construction_output.HR.M
@@ -842,7 +842,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=HR
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.HU
   source: eurostat
   indicator_key: eurostat_construction_output.HU.M
@@ -854,7 +854,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.IT
   source: eurostat
   indicator_key: eurostat_construction_output.IT.M
@@ -866,7 +866,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=IT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.LU
   source: eurostat
   indicator_key: eurostat_construction_output.LU.M
@@ -878,7 +878,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=LU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.NL
   source: eurostat
   indicator_key: eurostat_construction_output.NL.M
@@ -890,7 +890,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.PL
   source: eurostat
   indicator_key: eurostat_construction_output.PL.M
@@ -902,7 +902,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.RO
   source: eurostat
   indicator_key: eurostat_construction_output.RO.M
@@ -914,7 +914,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.SE
   source: eurostat
   indicator_key: eurostat_construction_output.SE.M
@@ -926,7 +926,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.SI
   source: eurostat
   indicator_key: eurostat_construction_output.SI.M
@@ -938,7 +938,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=SI
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.construction_output.SK
   source: eurostat
   indicator_key: eurostat_construction_output.SK.M
@@ -950,7 +950,7 @@ series:
   decimal: .
   native_code: sts_copr_m:freq=M,indic_bt=PRD,nace_r2=F,s_adj=SCA,unit=I15,geo=SK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_copr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.current_account_pct_gdp.AT
   source: eurostat
   indicator_key: eurostat_current_account_pct_gdp.AT.Q
@@ -2958,7 +2958,7 @@ series:
   decimal: .
   native_code: prc_hicp_midx:freq=M,unit=I15,coicop=CP00,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.hicp.EU27_2020
   source: eurostat
   indicator_key: eurostat_hicp.EU27_2020.M
@@ -3054,7 +3054,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=AT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.BE
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.BE.M
@@ -3066,7 +3066,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.BG
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.BG.M
@@ -3078,7 +3078,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.CZ
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.CZ.M
@@ -3090,7 +3090,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.DE
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.DE.M
@@ -3102,7 +3102,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.DK
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.DK.M
@@ -3114,7 +3114,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.EE
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.EE.M
@@ -3126,7 +3126,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.EL
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.EL.M
@@ -3138,7 +3138,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.ES
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.ES.M
@@ -3150,7 +3150,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.EU27_2020
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.EU27_2020.M
@@ -3162,7 +3162,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.FR
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.FR.M
@@ -3174,7 +3174,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.HU
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.HU.M
@@ -3186,7 +3186,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.IE
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.IE.M
@@ -3198,7 +3198,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=IE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.IT
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.IT.M
@@ -3210,7 +3210,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=IT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.LT
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.LT.M
@@ -3222,7 +3222,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=LT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.LV
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.LV.M
@@ -3234,7 +3234,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.NL
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.NL.M
@@ -3246,7 +3246,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.PL
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.PL.M
@@ -3258,7 +3258,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.PT
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.PT.M
@@ -3270,7 +3270,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.RO
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.RO.M
@@ -3282,7 +3282,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_chemicals_pharma.SE
   source: eurostat
   indicator_key: eurostat_ipi_chemicals_pharma.SE.M
@@ -3294,7 +3294,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.BE
   source: eurostat
   indicator_key: eurostat_ipi_electronics.BE.M
@@ -3306,7 +3306,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.BG
   source: eurostat
   indicator_key: eurostat_ipi_electronics.BG.M
@@ -3318,7 +3318,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.CZ
   source: eurostat
   indicator_key: eurostat_ipi_electronics.CZ.M
@@ -3330,7 +3330,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.DK
   source: eurostat
   indicator_key: eurostat_ipi_electronics.DK.M
@@ -3342,7 +3342,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.EE
   source: eurostat
   indicator_key: eurostat_ipi_electronics.EE.M
@@ -3354,7 +3354,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.EL
   source: eurostat
   indicator_key: eurostat_ipi_electronics.EL.M
@@ -3366,7 +3366,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.HU
   source: eurostat
   indicator_key: eurostat_ipi_electronics.HU.M
@@ -3378,7 +3378,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.LV
   source: eurostat
   indicator_key: eurostat_ipi_electronics.LV.M
@@ -3390,7 +3390,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.NL
   source: eurostat
   indicator_key: eurostat_ipi_electronics.NL.M
@@ -3402,7 +3402,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.PL
   source: eurostat
   indicator_key: eurostat_ipi_electronics.PL.M
@@ -3414,7 +3414,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.RO
   source: eurostat
   indicator_key: eurostat_ipi_electronics.RO.M
@@ -3426,7 +3426,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_electronics.SE
   source: eurostat
   indicator_key: eurostat_ipi_electronics.SE.M
@@ -3438,7 +3438,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C26_C27,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.BE
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.BE.M
@@ -3450,7 +3450,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.BG
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.BG.M
@@ -3462,7 +3462,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.DK
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.DK.M
@@ -3474,7 +3474,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.EE
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.EE.M
@@ -3486,7 +3486,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.EL
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.EL.M
@@ -3498,7 +3498,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.HU
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.HU.M
@@ -3510,7 +3510,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.LV
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.LV.M
@@ -3522,7 +3522,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.NL
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.NL.M
@@ -3534,7 +3534,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.PL
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.PL.M
@@ -3546,7 +3546,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.RO
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.RO.M
@@ -3558,7 +3558,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_food_beverage.SE
   source: eurostat
   indicator_key: eurostat_ipi_food_beverage.SE.M
@@ -3570,7 +3570,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C10-C12,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.AT
   source: eurostat
   indicator_key: eurostat_ipi_machinery.AT.M
@@ -3582,7 +3582,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=AT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.BE
   source: eurostat
   indicator_key: eurostat_ipi_machinery.BE.M
@@ -3594,7 +3594,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.BG
   source: eurostat
   indicator_key: eurostat_ipi_machinery.BG.M
@@ -3606,7 +3606,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.CZ
   source: eurostat
   indicator_key: eurostat_ipi_machinery.CZ.M
@@ -3618,7 +3618,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.DE
   source: eurostat
   indicator_key: eurostat_ipi_machinery.DE.M
@@ -3630,7 +3630,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.DK
   source: eurostat
   indicator_key: eurostat_ipi_machinery.DK.M
@@ -3642,7 +3642,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.EE
   source: eurostat
   indicator_key: eurostat_ipi_machinery.EE.M
@@ -3654,7 +3654,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.EL
   source: eurostat
   indicator_key: eurostat_ipi_machinery.EL.M
@@ -3666,7 +3666,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.ES
   source: eurostat
   indicator_key: eurostat_ipi_machinery.ES.M
@@ -3678,7 +3678,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.EU27_2020
   source: eurostat
   indicator_key: eurostat_ipi_machinery.EU27_2020.M
@@ -3690,7 +3690,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.FI
   source: eurostat
   indicator_key: eurostat_ipi_machinery.FI.M
@@ -3702,7 +3702,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=FI
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.FR
   source: eurostat
   indicator_key: eurostat_ipi_machinery.FR.M
@@ -3714,7 +3714,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.HU
   source: eurostat
   indicator_key: eurostat_ipi_machinery.HU.M
@@ -3726,7 +3726,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.IE
   source: eurostat
   indicator_key: eurostat_ipi_machinery.IE.M
@@ -3738,7 +3738,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=IE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.IT
   source: eurostat
   indicator_key: eurostat_ipi_machinery.IT.M
@@ -3750,7 +3750,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=IT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.LT
   source: eurostat
   indicator_key: eurostat_ipi_machinery.LT.M
@@ -3762,7 +3762,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=LT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.LV
   source: eurostat
   indicator_key: eurostat_ipi_machinery.LV.M
@@ -3774,7 +3774,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.NL
   source: eurostat
   indicator_key: eurostat_ipi_machinery.NL.M
@@ -3786,7 +3786,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.PL
   source: eurostat
   indicator_key: eurostat_ipi_machinery.PL.M
@@ -3798,7 +3798,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.PT
   source: eurostat
   indicator_key: eurostat_ipi_machinery.PT.M
@@ -3810,7 +3810,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.RO
   source: eurostat
   indicator_key: eurostat_ipi_machinery.RO.M
@@ -3822,7 +3822,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_machinery.SE
   source: eurostat
   indicator_key: eurostat_ipi_machinery.SE.M
@@ -3834,7 +3834,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C28,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_manufacturing.EU27
   source: eurostat
   indicator_key: eurostat_ipi_manufacturing.EU27.M
@@ -3846,7 +3846,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C,s_adj=SCA,unit=I21,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_manufacturing.EU27_2020
   source: eurostat
   indicator_key: eurostat_ipi_manufacturing.EU27_2020.M
@@ -3858,7 +3858,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.AT
   source: eurostat
   indicator_key: eurostat_ipi_metals.AT.M
@@ -3870,7 +3870,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=AT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.BE
   source: eurostat
   indicator_key: eurostat_ipi_metals.BE.M
@@ -3882,7 +3882,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.BG
   source: eurostat
   indicator_key: eurostat_ipi_metals.BG.M
@@ -3894,7 +3894,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.CZ
   source: eurostat
   indicator_key: eurostat_ipi_metals.CZ.M
@@ -3906,7 +3906,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.DE
   source: eurostat
   indicator_key: eurostat_ipi_metals.DE.M
@@ -3918,7 +3918,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.DK
   source: eurostat
   indicator_key: eurostat_ipi_metals.DK.M
@@ -3930,7 +3930,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.EE
   source: eurostat
   indicator_key: eurostat_ipi_metals.EE.M
@@ -3942,7 +3942,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.EL
   source: eurostat
   indicator_key: eurostat_ipi_metals.EL.M
@@ -3954,7 +3954,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.ES
   source: eurostat
   indicator_key: eurostat_ipi_metals.ES.M
@@ -3966,7 +3966,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.EU27_2020
   source: eurostat
   indicator_key: eurostat_ipi_metals.EU27_2020.M
@@ -3978,7 +3978,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.FI
   source: eurostat
   indicator_key: eurostat_ipi_metals.FI.M
@@ -3990,7 +3990,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=FI
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.FR
   source: eurostat
   indicator_key: eurostat_ipi_metals.FR.M
@@ -4002,7 +4002,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.HU
   source: eurostat
   indicator_key: eurostat_ipi_metals.HU.M
@@ -4014,7 +4014,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.IE
   source: eurostat
   indicator_key: eurostat_ipi_metals.IE.M
@@ -4026,7 +4026,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=IE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.IT
   source: eurostat
   indicator_key: eurostat_ipi_metals.IT.M
@@ -4038,7 +4038,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=IT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.LT
   source: eurostat
   indicator_key: eurostat_ipi_metals.LT.M
@@ -4050,7 +4050,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=LT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.LV
   source: eurostat
   indicator_key: eurostat_ipi_metals.LV.M
@@ -4062,7 +4062,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.NL
   source: eurostat
   indicator_key: eurostat_ipi_metals.NL.M
@@ -4074,7 +4074,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.PL
   source: eurostat
   indicator_key: eurostat_ipi_metals.PL.M
@@ -4086,7 +4086,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.PT
   source: eurostat
   indicator_key: eurostat_ipi_metals.PT.M
@@ -4098,7 +4098,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.RO
   source: eurostat
   indicator_key: eurostat_ipi_metals.RO.M
@@ -4110,7 +4110,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_metals.SE
   source: eurostat
   indicator_key: eurostat_ipi_metals.SE.M
@@ -4122,7 +4122,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C24_C25,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.BE
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.BE.M
@@ -4134,7 +4134,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.BG
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.BG.M
@@ -4146,7 +4146,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.CZ
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.CZ.M
@@ -4158,7 +4158,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.DK
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.DK.M
@@ -4170,7 +4170,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.EE
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.EE.M
@@ -4182,7 +4182,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.EL
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.EL.M
@@ -4194,7 +4194,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.EU27_2020
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.EU27_2020.M
@@ -4206,7 +4206,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.HU
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.HU.M
@@ -4218,7 +4218,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.IT
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.IT.M
@@ -4230,7 +4230,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=IT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.LV
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.LV.M
@@ -4242,7 +4242,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.NL
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.NL.M
@@ -4254,7 +4254,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.PL
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.PL.M
@@ -4266,7 +4266,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.RO
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.RO.M
@@ -4278,7 +4278,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_nonmetallic.SE
   source: eurostat
   indicator_key: eurostat_ipi_nonmetallic.SE.M
@@ -4290,7 +4290,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C23,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.AT
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.AT.M
@@ -4302,7 +4302,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=AT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.BE
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.BE.M
@@ -4314,7 +4314,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.BG
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.BG.M
@@ -4326,7 +4326,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.CZ
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.CZ.M
@@ -4338,7 +4338,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.DE
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.DE.M
@@ -4350,7 +4350,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.DK
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.DK.M
@@ -4362,7 +4362,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.EE
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.EE.M
@@ -4374,7 +4374,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.EL
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.EL.M
@@ -4386,7 +4386,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.ES
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.ES.M
@@ -4398,7 +4398,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.EU27_2020
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.EU27_2020.M
@@ -4410,7 +4410,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.FR
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.FR.M
@@ -4422,7 +4422,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.HU
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.HU.M
@@ -4434,7 +4434,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.IE
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.IE.M
@@ -4446,7 +4446,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=IE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.IT
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.IT.M
@@ -4458,7 +4458,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=IT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.LT
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.LT.M
@@ -4470,7 +4470,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=LT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.LV
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.LV.M
@@ -4482,7 +4482,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.NL
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.NL.M
@@ -4494,7 +4494,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.PL
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.PL.M
@@ -4506,7 +4506,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.PT
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.PT.M
@@ -4518,7 +4518,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.RO
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.RO.M
@@ -4530,7 +4530,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_rubber_plastics.SE
   source: eurostat
   indicator_key: eurostat_ipi_rubber_plastics.SE.M
@@ -4542,7 +4542,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C22,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.BE
   source: eurostat
   indicator_key: eurostat_ipi_textiles.BE.M
@@ -4554,7 +4554,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.BG
   source: eurostat
   indicator_key: eurostat_ipi_textiles.BG.M
@@ -4566,7 +4566,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.CZ
   source: eurostat
   indicator_key: eurostat_ipi_textiles.CZ.M
@@ -4578,7 +4578,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.DK
   source: eurostat
   indicator_key: eurostat_ipi_textiles.DK.M
@@ -4590,7 +4590,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.EE
   source: eurostat
   indicator_key: eurostat_ipi_textiles.EE.M
@@ -4602,7 +4602,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.EL
   source: eurostat
   indicator_key: eurostat_ipi_textiles.EL.M
@@ -4614,7 +4614,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.HU
   source: eurostat
   indicator_key: eurostat_ipi_textiles.HU.M
@@ -4626,7 +4626,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.LV
   source: eurostat
   indicator_key: eurostat_ipi_textiles.LV.M
@@ -4638,7 +4638,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.PL
   source: eurostat
   indicator_key: eurostat_ipi_textiles.PL.M
@@ -4650,7 +4650,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.RO
   source: eurostat
   indicator_key: eurostat_ipi_textiles.RO.M
@@ -4662,7 +4662,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_textiles.SE
   source: eurostat
   indicator_key: eurostat_ipi_textiles.SE.M
@@ -4674,7 +4674,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C13-C15,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_total.EU27
   source: eurostat
   indicator_key: eurostat_ipi_total.EU27.M
@@ -4698,7 +4698,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=B-D,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.AT
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.AT.M
@@ -4710,7 +4710,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=AT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.BE
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.BE.M
@@ -4722,7 +4722,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.BG
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.BG.M
@@ -4734,7 +4734,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.CZ
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.CZ.M
@@ -4746,7 +4746,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.DE
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.DE.M
@@ -4758,7 +4758,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.DK
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.DK.M
@@ -4770,7 +4770,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.EE
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.EE.M
@@ -4782,7 +4782,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.EL
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.EL.M
@@ -4794,7 +4794,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.ES
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.ES.M
@@ -4806,7 +4806,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.EU27_2020
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.EU27_2020.M
@@ -4818,7 +4818,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.FR
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.FR.M
@@ -4830,7 +4830,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.HU
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.HU.M
@@ -4842,7 +4842,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.IE
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.IE.M
@@ -4854,7 +4854,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=IE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.IT
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.IT.M
@@ -4866,7 +4866,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=IT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.LT
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.LT.M
@@ -4878,7 +4878,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=LT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.LV
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.LV.M
@@ -4890,7 +4890,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.NL
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.NL.M
@@ -4902,7 +4902,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=NL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.PL
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.PL.M
@@ -4914,7 +4914,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.PT
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.PT.M
@@ -4926,7 +4926,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.RO
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.RO.M
@@ -4938,7 +4938,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_transport_eq.SE
   source: eurostat
   indicator_key: eurostat_ipi_transport_eq.SE.M
@@ -4950,7 +4950,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.BE
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.BE.M
@@ -4962,7 +4962,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=BE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.BG
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.BG.M
@@ -4974,7 +4974,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.CZ
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.CZ.M
@@ -4986,7 +4986,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=CZ
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.DK
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.DK.M
@@ -4998,7 +4998,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=DK
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.EE
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.EE.M
@@ -5010,7 +5010,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=EE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.EL
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.EL.M
@@ -5022,7 +5022,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=EL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.HU
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.HU.M
@@ -5034,7 +5034,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=HU
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.LV
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.LV.M
@@ -5046,7 +5046,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=LV
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.PL
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.PL.M
@@ -5058,7 +5058,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.RO
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.RO.M
@@ -5070,7 +5070,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.ipi_wood_paper.SE
   source: eurostat
   indicator_key: eurostat_ipi_wood_paper.SE.M
@@ -5082,7 +5082,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I15,geo=SE
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.AT
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.AT.A
@@ -5092,9 +5092,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=AT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.BE
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.BE.A
@@ -5104,9 +5102,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=BE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.BG
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.BG.A
@@ -5116,9 +5112,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=BG
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.CY
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.CY.A
@@ -5128,9 +5122,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=CY
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.CZ
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.CZ.A
@@ -5140,9 +5132,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=CZ
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.DE
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.DE.A
@@ -5152,9 +5142,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=DE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.DK
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.DK.A
@@ -5164,9 +5152,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=DK
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.EE
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.EE.A
@@ -5176,9 +5162,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=EE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.EL
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.EL.A
@@ -5188,9 +5172,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=EL
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.ES
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.ES.A
@@ -5200,9 +5182,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=ES
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.EU27_2020
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.EU27_2020.A
@@ -5212,9 +5192,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=EU27_2020
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.FI
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.FI.A
@@ -5224,9 +5202,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=FI
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.FR
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.FR.A
@@ -5236,9 +5212,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=FR
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.HR
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.HR.A
@@ -5248,9 +5222,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=HR
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.HU
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.HU.A
@@ -5260,9 +5232,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=HU
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.IE
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.IE.A
@@ -5272,9 +5242,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=IE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.IT
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.IT.A
@@ -5284,9 +5252,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=IT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.LT
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.LT.A
@@ -5296,9 +5262,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=LT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.LU
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.LU.A
@@ -5308,9 +5272,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=LU
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.LV
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.LV.A
@@ -5320,9 +5282,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=LV
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.MT
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.MT.A
@@ -5332,9 +5292,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=MT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.NL
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.NL.A
@@ -5344,9 +5302,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=NL
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.PL
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.PL.A
@@ -5356,9 +5312,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=PL
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.PT
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.PT.A
@@ -5368,9 +5322,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=PT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.RO
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.RO.A
@@ -5380,9 +5332,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=RO
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.SE
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.SE.A
@@ -5392,9 +5342,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=SE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.SI
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.SI.A
@@ -5404,9 +5352,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=SI
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour.SK
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour.SK.A
@@ -5416,9 +5362,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=SK
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_hour_real.AT
   source: eurostat
   indicator_key: eurostat_labour_productivity_hour_real.AT.A
@@ -5766,7 +5710,7 @@ series:
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_per_hour.ES
   source: eurostat
   indicator_key: eurostat_labour_productivity_per_hour.ES.A
@@ -5778,7 +5722,7 @@ series:
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_per_hour.EU27_2020
   source: eurostat
   indicator_key: eurostat_labour_productivity_per_hour.EU27_2020.A
@@ -5790,7 +5734,7 @@ series:
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_per_hour.FR
   source: eurostat
   indicator_key: eurostat_labour_productivity_per_hour.FR.A
@@ -5802,7 +5746,7 @@ series:
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_per_hour.PL
   source: eurostat
   indicator_key: eurostat_labour_productivity_per_hour.PL.A
@@ -5814,7 +5758,7 @@ series:
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_per_hour.PT
   source: eurostat
   indicator_key: eurostat_labour_productivity_per_hour.PT.A
@@ -5826,7 +5770,7 @@ series:
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.labour_productivity_person_real.AT
   source: eurostat
   indicator_key: eurostat_labour_productivity_person_real.AT.A
@@ -6464,9 +6408,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=AT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.BE
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.BE.A
@@ -6476,9 +6418,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=BE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.BG
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.BG.A
@@ -6488,9 +6428,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=BG
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.CY
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.CY.A
@@ -6500,9 +6438,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=CY
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.CZ
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.CZ.A
@@ -6512,9 +6448,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=CZ
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.DE
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.DE.A
@@ -6524,9 +6458,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=DE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.DK
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.DK.A
@@ -6536,9 +6468,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=DK
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.EE
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.EE.A
@@ -6548,9 +6478,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=EE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.EL
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.EL.A
@@ -6560,9 +6488,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=EL
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.ES
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.ES.A
@@ -6572,9 +6498,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=ES
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.EU27_2020
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.EU27_2020.A
@@ -6584,9 +6508,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=EU27_2020
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.FI
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.FI.A
@@ -6596,9 +6518,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=FI
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.FR
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.FR.A
@@ -6608,9 +6528,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=FR
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.HR
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.HR.A
@@ -6620,9 +6538,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=HR
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.HU
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.HU.A
@@ -6632,9 +6548,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=HU
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.IE
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.IE.A
@@ -6644,9 +6558,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=IE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.IT
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.IT.A
@@ -6656,9 +6568,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=IT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.LT
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.LT.A
@@ -6668,9 +6578,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=LT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.LU
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.LU.A
@@ -6680,9 +6588,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=LU
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.LV
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.LV.A
@@ -6692,9 +6598,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=LV
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.MT
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.MT.A
@@ -6704,9 +6608,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=MT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.NL
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.NL.A
@@ -6716,9 +6618,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=NL
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.PL
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.PL.A
@@ -6728,9 +6628,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=PL
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.PT
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.PT.A
@@ -6740,9 +6638,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=PT
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.RO
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.RO.A
@@ -6752,9 +6648,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=RO
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.SE
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.SE.A
@@ -6764,9 +6658,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=SE
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.SI
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.SI.A
@@ -6776,9 +6668,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=SI
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost.SK
   source: eurostat
   indicator_key: eurostat_unit_labour_cost.SK.A
@@ -6788,9 +6678,7 @@ series:
   frequency: A
   unit: I10_2010
   decimal: .
-  native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW,geo=SK
-  url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.unit_labour_cost_hour.AT
   source: eurostat
   indicator_key: eurostat_unit_labour_cost_hour.AT.A
@@ -7930,7 +7818,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I21,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: ine.ipi_seasonal_cae_22.PT
   source: ine
   indicator_key: ipi_c22.PT.M
@@ -8082,7 +7970,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I21,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.STS_INPR_M_C.AT
   source: eurostat
   indicator_key: ipi_manufacturing.AT.M
@@ -8380,7 +8268,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C,s_adj=SCA,unit=I21,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.manufacturing.PT
   source: eurostat
   indicator_key: ipi_manufacturing.PT.M
@@ -8496,7 +8384,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=B-D,s_adj=SCA,unit=I21,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: eurostat.STS_INPR_M_BD.PT
   source: eurostat
   indicator_key: ipi_total.PT.M
@@ -8508,7 +8396,7 @@ series:
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=B-D,s_adj=SCA,unit=I21,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
-  active: true
+  active: false
 - id: fred.commodity_iron_ore.WORLD
   source: fred
   indicator_key: iron_ore_price.WORLD.M

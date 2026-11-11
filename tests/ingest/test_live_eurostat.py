@@ -13,7 +13,7 @@ from ingest.verifiers.eurostat import EurostatVerifier
 from ingest.verify import run_with_refetch
 from tests.ingest.eurostat_fixtures import ROOT
 
-LIVE_SERIES = ["eurostat.STS_INPR_M_C.PT",           # PT monthly industrial production index
+LIVE_SERIES = ["eurostat.manufacturing.PT",           # PT monthly industrial production index
                "eurostat.gov_debt_pct_gdp.EU27_2020",  # EU annual government debt
                "eurostat.gdp_quarterly.EU27"]          # EU quarterly GDP (chain-linked volumes)
 
