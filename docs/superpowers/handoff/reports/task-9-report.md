@@ -48,7 +48,7 @@ code, in the dataset's own order (JSON-stat `id` order = SDMX key order), `geo` 
 series; the source turns it into query params, the verifier into the SDMX key `M.SA.TOTAL.PC_ACT.T.PT`.
 `url` = `https://ec.europa.eu/eurostat/databrowser/view/<dataset>/default/table?lang=en`.
 
-## Registry: 697 Eurostat series → 598 active, 99 inactive (registry/unmapped-eurostat.md)
+## Registry: 697 Eurostat series → 598 active, 99 inactive after round 0 (round 1 below: 329 active)
 
 Mapping rule: dataset + filters taken from the legacy collector code (collectors/eurostat.py,
 scripts/backfill_*.py, scripts/collectors/*.py) or the legacy rows' own `source_id`/`detail`, AND
@@ -145,8 +145,101 @@ Verified on the first attempt (no refetch), sample 50, 0 mismatches.
 8. GitNexus impact tools were not available in this session (no MCP); the only edit to existing
    code is the one-line guard change above (callers: adapter tests only).
 
-## Fix round 1 (running log)
-- [x] C1 confidentiality ('|C', '|N'): `split_eurostat_status` in ingest/flags.py, parser + verifier (': @C'), fixtures confidential_c/n_sts_inpr_m. Probe before: `PARSE RAISES: unknown Eurostat flag code(s) ['C', '|'] in '|C'`; after: 0 empty series, 964 non_numeric, flags normal 82871 / estimated 21988 / provisional 6156 / break 142.
-- [x] I1 discontinued (195 I15 series -> inactive) + I2 duplicates (18 duplicate, 56 not established: labour_productivity_hour x28, unit_labour_cost x28) -> 329 active, all native_codes unique. RED for test_active_native_codes_are_unique on the pre-fix registry: 74 duplicate codes.
-- [x] I3 tests/ingest/test_registry_eurostat_units.py (10 codes; mislabel demo on a registry copy caught: gdp_per_capita_eur.AT CP_EUR_HAB '% GDP'). Inconsistent labels for one code: I21 'I21'/'index_2021'; I15 'I15'/'Index (2015=100)'/'index_2015'; BAL 'balance'/'balance %'; I10 'I10_2010'/'index_2010=100'.
-- [x] Hardening M1 (exemption only ingest.verifiers.<x>; RED: 3 failures for ingest.flags/db/pipeline), M3 (truncated/out-of-range value/status raise; RED 7), M5 (conflicting duplicate TSV rows raise), M6 (propose refuses curated core.yaml unless force=True; RED 1).
+## Fix round 1 (review: C1, I1, I2, I3, M1, M3, M5, M6)
+
+Commits: b06aee6 (C1), c5f5e39 (I1+I2), 9f277bf (I3), 3e201ca (M1/M3/M5/M6), plus this report.
+
+### C1 — confidentiality status (Ruling X)
+Real payloads carry `'|C'` (confidential) and `'|N'` (not for publication). `ingest/flags.py` now has
+`EUROSTAT_CONFIDENTIALITY = {'C': 'confidential', 'N': 'not for publication'}` and
+`split_eurostat_status(status) -> (flags, confidentiality | None)`: the status is split on `|`; a reviewed
+confidentiality code makes the cell value None (quarantined `non_numeric`, one per cell) and its flag part is
+ignored (still checked to be known); an unknown confidentiality code raises. The verifier mirrors it
+(duplicated on purpose): the TSV renders the cell as `': @C'` → `observed_text=None`. Such a cell is never
+sampled (sampling draws only from written observations) — `test_confidential_cells_are_never_sampled` runs
+the real pipeline on the fixture (62 quarantined, every written observation verified).
+New real fixtures: `confidential_c_sts_inpr_m` (STS_INPR_M_C.IE, 60 `|C` cells) and
+`confidential_n_sts_inpr_m` (metals.PT C24_C25 I21, 2 `|N` cells).
+
+Probe (`probe_full.py` logic without the monkeypatch, live, all 598 then-active series, 33 requests):
+- before: `PARSE RAISES: unknown Eurostat flag code(s) ['C', '|'] in '|C'`
+- after: `empty series: 0`, `rejections: non_numeric 964`, `flags: normal 82871, estimated 21988,
+  provisional 6156, break 142`; 195 series with last value before 2025 (sts_inpr_m/I15 168, sts_copr_m/I15 27)
+- after round 1 (329 active, 20 requests, live): `empty series: 0`, `non_numeric 62`, `flags: normal 42142,
+  estimated 1778, provisional 1461, break 110`, latest year 2025: 203 series, 2026: 126; none before 2025.
+
+### I1 — discontinued (Ruling W)
+Rule (mechanical, from the live fetch): an active series whose last period with a value is before 2024 is
+discontinued. All 195 are base-2015 (I15) indices of sts_inpr_m (168) / sts_copr_m (27), superseded by
+Eurostat's 2021=100 rebase. For each, the same key with `unit=I21` was fetched live: 180 have I21 values to
+2026; 15 have no I21 values for that geo (listed as 'no values'); 16 have a successor series in the
+registry. Last-value years: 2023 ×178, 2020 ×10, 2022 ×2, 2013 ×2, 2009 ×2, 2004 ×1. Section 'Discontinued /
+rebased (last value year)' in registry/unmapped-eurostat.md. Nothing else deactivated on this ground.
+(The reviewer's sibling condition "an active sibling with a newer base" holds for only 16 of the 195 because
+the registry has few I21 series; I used Eurostat's own I21 key as the sibling and report the registry one.)
+
+### I2 — duplicates: exactly one active series per native_code
+Re-derived from the legacy code:
+- `labour_productivity_hour` ×28 → inactive, not established: scripts/backfill_full.py defines it as NOMINAL
+  (NLPR, EUR_HW, 'EUR/hour'), contradicting the registry unit I10_2010 and its own values (= real RLPR_HW I10).
+- `unit_labour_cost` ×28 → inactive, not established: legacy code uses na_item 'NULC' + unit I15 (neither
+  per hour nor per person), values identical to `unit_labour_cost_hour`.
+- the others → `duplicate of <kept id>`; kept = the id whose legacy code defines that exact key
+  (collect_stale_data.py / collectors/eurostat.py), else the primary / the family with most geos.
+
+| kept family | inactive families | groups | Eurostat key |
+|---|---|---|---|
+| STS_INPR_M_C | ipi_manufacturing | 1 | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C,s_adj=SCA,unit=I21` |
+| STS_INPR_M_C29C30 | transport_eq | 1 | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C29_C30,s_adj=SCA,unit=I21` |
+| cci | consumer_confidence | 5 | `ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL` |
+| chemicals_pharma | STS_INPR_M_C20C21 | 1 | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C20_C21,s_adj=SCA,unit=I21` |
+| hicp | hicp | 1 | `prc_hicp_midx:freq=M,unit=I15,coicop=CP00` |
+| ipi | STS_INPR_M_BD, total_industry | 1 | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=B-D,s_adj=SCA,unit=I21` |
+| labour_productivity_hour_real | labour_productivity_per_hour | 6 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW` |
+| manufacturing | STS_INPR_M_C | 1 | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C,s_adj=SCA,unit=I21` |
+| — | labour_productivity_hour | 28 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW` |
+| — | unit_labour_cost | 28 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW` |
+
+`test_active_native_codes_are_unique` (RED on the pre-fix registry: 74 duplicate codes). No active
+cross_check is the same Eurostat series as its primary (the remaining Eurostat cross_checks are cross-checks
+of INE primaries).
+
+### Counts now (697 Eurostat series)
+active 329; inactive 368 = discontinued 195 + duplicate 18 + unit conflict 35 + not established 120
+(current_account 27, employment_rate 28, labour_productivity_hour 28, unit_labour_cost 28, per-series 9).
+Discontinued and duplicate series keep their native_code/url in the registry (for the record);
+the others have none.
+
+### I3 — unit label ↔ code
+`tests/ingest/test_registry_eurostat_units.py`: reviewed table of 10 (unit code[, currency]) → allowed
+labels; asserts every active series' code is paired with an allowed label, every label in use is in the
+table and no code in the table is stale. A mislabel in a registry copy is caught
+(`gdp_per_capita_eur.AT CP_EUR_HAB '% GDP'`). Finding for the owner (registry not edited): one code, several
+labels — I21: 'I21' / 'index_2021'; I15: 'I15' / 'Index (2015=100)' / 'index_2015'; BAL: 'balance' /
+'balance %'; I10: 'I10_2010' / 'index_2010=100'.
+
+### Hardening
+- M1: `independence.py` exempts only `ingest.verifiers.<x>` (not the package, not the guard): RED 3 failures
+  (`ingest.flags`, `ingest.db`, `ingest.pipeline` passed as "verifier"), GREEN after `_own_module`.
+- M3: JSON-stat `value`/`status` arrays must cover the cube (empty status array allowed), object keys must be
+  flat indices inside it; 7 cases raise.
+- M5: verifier TSV: two rows for one series key with different cells raise (identical copies tolerated).
+- M6: `propose(..., force=False)` raises FileExistsError if `out_dir/core.yaml` contains `native_code:`.
+  Note: propose's own output also contains native_code (legacy codes), so re-running it into the same
+  directory now needs force=True.
+
+### Live test (re-run, 2026-11-11)
+```
+final state: verified  run_id=1  written=474  quarantined=0
+verification of run 1: sample 50, passed=True, mismatches=0
+  eurostat.gdp_quarterly.EU27: 127 observations 1995-Q1..2026-Q3
+  eurostat.gov_debt_pct_gdp.EU27_2020: 26 observations 2000..2025
+  eurostat.manufacturing.PT: 321 observations 2000-01..2026-09
+```
+(live series switched from STS_INPR_M_C.PT, now a duplicate of manufacturing.PT — same Eurostat key.)
+
+### Test run
+```
+.venv-ci/bin/python -m pytest tests/ingest -q
+================= 525 passed, 1 deselected in 72.85s (0:01:12) =================
+```
