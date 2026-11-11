@@ -67,3 +67,9 @@ Subagent-driven: (a) dispatch an implementer (opus for adapters/judgement tasks,
 2. Eurostat unit labels are inconsistent for the same code (see ledger Task 9).
 3. Licences UNVERIFIED for OECD, REN, DGEG, FRED (`registry/licences-todo.md`); INE licence verified (CC BY 4.0).
 4. INE `value_text`: keep INE's `valor` token (drops trailing zeros: '2' where INE publishes '2,0'; 169/2472 cells) with a numeric verifier [default, Ruling AB], or switch to the published `ind_string` with `decimal: ','` (would quarantine the legacy INE import).
+
+## Deployed state / environment notes (2026-11-11)
+- f0nix runs container `prumo` = the Task 1 maintenance page (prumo repo checkout at `~/docker/stacks/web/images/prumo` on f0nix is on branch `pipeline-rebuild` at the Task 1 commit `031eb3b`; infra repo `~/docker` branch `f0nix`, commits 00c9596 + 63b0af1). The `ingest/` package is NOT deployed yet (Task 18). After Task 18 the f0nix checkout must be updated (`git fetch && git checkout pipeline-rebuild && git pull`) before `bash -lic "dc-web-up prumo-ingest"`.
+- Unrelated pre-existing dirt in the infra repos (f0nix: `stacks/office/compose.yml`, untracked `feynman/`, `ifc-viewer/`, `compose.yml.bak-*`; f3nix: nested-repo pointer `stacks/web/images/prumo`) is NOT part of this work — do not commit it blindly.
+- f3nix infra repo (branch f3nix): commit 538e66d moved Prumo routing to f0nix (`router-prumo-f0nix.yml`, force-added; Traefik needs a restart to reload file rules).
+- Worktree `~/projects/prumo-pipeline` (branch `pipeline-rebuild`, pushed to origin) is the working copy; the original clone `~/docker/stacks/web/images/prumo` is on `main` — do not merge to main without the owner. Local temp files (probe scripts) live under `/tmp/claude-1000/...` and may disappear; everything needed is in this folder.
