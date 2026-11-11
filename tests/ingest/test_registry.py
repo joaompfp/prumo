@@ -20,9 +20,20 @@ def _write(tmp_path, sources, series):
     return p
 
 
-def test_core_skeleton_loads():
+def test_core_registry_loads_and_syncs(tmp_path):
+    """The committed (provisional) core registry is valid and syncs into a fresh DB."""
     from pathlib import Path
-    assert load_registry(Path(__file__).parents[2] / "registry" / "core.yaml") == []
+    root = Path(__file__).parents[2] / "registry"
+    assert (root / "core.yaml").read_text() == (root / "core.proposed.yaml").read_text()
+    assert (root / "core.yaml").read_text().startswith("# PROVISIONAL — owner review pending")
+    specs = load_registry(root / "core.yaml")
+    assert specs
+    db = open_db(tmp_path / "fresh.db")
+    try:
+        sync_registry(db, specs)
+        assert db.conn.execute("SELECT count(*) FROM series").fetchone()[0] == len(specs)
+    finally:
+        db.close()
 
 
 def test_registry_loads_with_defaults(tmp_path):
