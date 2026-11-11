@@ -18,8 +18,14 @@ class RawRow:
     value_raw: str | None
     unit_raw: str | None = None
     flag_raw: str | None = None
+    # Index (in fetch order) of the response this row was parsed from; 0 for single-response
+    # sources. Carried to the Observation so the pipeline links it to that exact raw payload.
+    response_index: int = 0
 
     def __post_init__(self):
+        ri = self.response_index
+        if isinstance(ri, bool) or not isinstance(ri, int) or ri < 0:
+            raise TypeError(f"RawRow.response_index must be an int >= 0, got {ri!r}")
         # Numbers are never coerced to str here: that would silently lose formatting ("1.10" -> "1.1").
         for name in ("period_raw", "value_raw", "unit_raw", "flag_raw"):
             v = getattr(self, name)
@@ -82,7 +88,8 @@ def _check(spec: SeriesSpec, row: RawRow) -> Observation | str:
     value_text = row.value_raw.strip()
     try:
         obs = Observation.from_raw(spec.id, period, value_text, decimal=spec.decimal,
-                                   status_flag=_blank_to_none(row.flag_raw))
+                                   status_flag=_blank_to_none(row.flag_raw),
+                                   response_index=row.response_index)
     except ValueError:
         return NON_NUMERIC
     unit = _blank_to_none(row.unit_raw)

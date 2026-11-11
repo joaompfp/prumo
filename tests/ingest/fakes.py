@@ -46,12 +46,14 @@ class FakeHttp:
         return item
 
 
-def ok(body: bytes, status: int = 200, url: str = "http://fake/data") -> HttpResult:
+def ok(body: bytes, status: int = 200, url: str = "http://fake/data/1") -> HttpResult:
     return HttpResult(status=status, body=body, url=url)
 
 
 class FakeSource:
-    """Fetches `pages` pages (page=1..n) from http://fake/data; each page is a JSON payload()."""
+    """Yields `pages` pages (page=1..n) from http://fake/data/<page>, one at a time (a generator,
+    like a real paginating adapter); each page is a JSON payload(). Rows carry their page's
+    response_index."""
     name = "fake"
     expected_format = "json"
 
@@ -59,18 +61,23 @@ class FakeSource:
         self.pages = pages
 
     def fetch(self, specs, http):
-        out = []
         for page in range(1, self.pages + 1):
             params = {"page": page}
-            r = http.get("http://fake/data", params=params)
-            out.append(RawResponse(url=r.url, params=params, status=r.status, body=r.body))
-        return out
+            r = http.get(f"http://fake/data/{page}", params=params)
+            yield RawResponse(url=r.url, params=params, status=r.status, body=r.body)
 
     def parse(self, specs, responses):
         rows: dict[str, list[RawRow]] = {s.id: [] for s in specs}
-        for resp in responses:
+        for i, resp in enumerate(responses):
             doc = json.loads(resp.body, parse_float=str, parse_int=str)
             for sid, pairs in doc["series"].items():
                 rows.setdefault(sid, []).extend(
-                    RawRow(period_raw=p, value_raw=v) for p, v in pairs)
+                    RawRow(period_raw=p, value_raw=v, response_index=i) for p, v in pairs)
         return rows
+
+
+class ListFakeSource(FakeSource):
+    """Same as FakeSource, but fetch returns a plain list (the other allowed shape)."""
+
+    def fetch(self, specs, http):
+        return list(super().fetch(specs, http))

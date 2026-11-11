@@ -9,7 +9,8 @@ import requests
 from ingest.pipeline import DatasetRunResult, dataset_key, run_dataset
 from ingest.rawstore import RawStore
 from ingest.registry import sync_registry
-from tests.ingest.fakes import FakeHttp, FakeSource, ok, payload, spec
+from ingest.validate import RawRow
+from tests.ingest.fakes import FakeHttp, FakeSource, ListFakeSource, ok, payload, spec
 
 BASE = {"s1": [["2023", "1.5"], ["2024", "2.0"]], "s2": [["2024", "10"]]}
 
@@ -126,7 +127,7 @@ def test_non_2xx_is_failed_fetch(env):
     r = run(ok(b'{"error": "nope"}', status=503))
     assert r.state == "failed-fetch"
     assert json.loads(events(db)[0][2])["problems"][0] == {
-        "url": "http://fake/data", "status": 503, "reason": "http_status"}
+        "url": "http://fake/data/1", "status": 503, "reason": "http_status"}
 
 
 def test_truncated_json_is_failed_validation(env):
@@ -139,12 +140,42 @@ def test_truncated_json_is_failed_validation(env):
     assert q(db, "SELECT ok FROM raw_fetch") == [(1,)]  # the fetch itself was fine
 
 
-def test_series_without_rows_is_failed_validation(env):
+def format_changes(db):
+    return [json.loads(d) for _, _, d in events(db, "format_change")]
+
+
+def test_zero_row_series_emits_format_change_run_continues(env):
     db, _, run = env
-    r = run(ok(payload({"s1": BASE["s1"]})))  # s2 missing from the payload
-    assert r.state == "failed-validation"
+    r = run(ok(payload({"s1": BASE["s1"]})))  # s2 absent from the payload
+    assert (r.state, r.n_written) == ("pending-verification", 2)
+    assert format_changes(db) == [{"series_id": "s2", "reason": "no_valid_observations",
+                                   "n_raw_rows": 0, "n_quarantined": 0}]
+    assert events(db, "format_change")[0][1] == r.run_id
+
+
+def test_all_quarantined_series_emits_format_change_but_run_continues(env):
+    db, _, run = env
+    verified_baseline(db, run)
+    # s2 changed its period format: every row is bad_period
+    r = run(ok(payload({"s1": BASE["s1"], "s2": [["24", "10"], ["25", "11"]]})))
+    assert (r.state, r.n_written, r.n_quarantined) == ("pending-verification", 2, 2)
+    assert format_changes(db) == [{"series_id": "s2", "reason": "no_valid_observations",
+                                   "n_raw_rows": 2, "n_quarantined": 2}]
+    assert q(db, "SELECT reason FROM quarantine WHERE series_id='s2'") == [("bad_period",)] * 2
+    verify(db, r.run_id)
+    assert served(db)[("s2", "2024")] == "10"  # previously verified s2 data still served
+
+
+def test_run_fails_when_every_series_empty(env):
+    db, _, run = env
+    r = run(ok(payload({"s1": [["x", "1"]], "s3": [["2024", "1"]]})))  # s1 all bad, s2 absent
+    assert (r.state, r.n_written, r.n_quarantined) == ("failed-validation", 0, 0)
+    assert db.run_state(r.run_id) == "failed-validation"
     assert n_obs(db) == 0
-    assert json.loads(events(db, "format_change")[0][2])["series_without_rows"] == ["s2"]
+    assert q(db, "SELECT count(*) FROM quarantine") == [(0,)]
+    assert format_changes(db) == [
+        {"series_id": "s1", "reason": "no_valid_observations", "n_raw_rows": 1, "n_quarantined": 1},
+        {"series_id": "s2", "reason": "no_valid_observations", "n_raw_rows": 0, "n_quarantined": 0}]
 
 
 def test_identical_payload_is_idempotent(env):
@@ -219,6 +250,19 @@ def test_midway_failure_commits_nothing(env):
     assert q(db, "SELECT count(*) FROM quarantine") == [(0,)]
     (kind, _, detail), = events(db)
     assert kind == "fetch_failure" and "page 2" in json.loads(detail)["error"]
+
+
+def test_midway_failure_keeps_received_pages_as_evidence(env):
+    db, _, run = env
+    page1 = payload({"s1": BASE["s1"]})
+    r = run(ok(page1, url="http://fake/data/1"), requests.ConnectionError("reset on page 2"),
+            source=FakeSource(pages=2))
+    assert r.state == "failed-fetch"
+    (url, ok_, sha, path, run_id), = q(db, "SELECT url, ok, sha256, path, dataset_run_id FROM raw_fetch")
+    assert (url, ok_, run_id) == ("http://fake/data/1", 1, r.run_id)
+    assert open(path, "rb").read() == page1
+    assert sha == hashlib.sha256(page1).hexdigest()
+    assert n_obs(db) == 0
 
 
 def test_failure_inside_write_transaction_commits_nothing(env, monkeypatch):
@@ -324,3 +368,47 @@ def test_rejects_naive_clock_and_foreign_specs(env, db, tmp_path):
         run_dataset(db, store, Other(), specs, FakeHttp(), Clock())
     with pytest.raises(ValueError, match="specs"):
         run_dataset(db, store, FakeSource(), [], FakeHttp(), Clock())
+
+
+def test_observation_links_to_the_raw_fetch_of_its_own_page(env):
+    db, _, run = env
+    r = run(ok(payload({"s1": BASE["s1"]}), url="http://fake/data/1"),
+            ok(payload({"s2": BASE["s2"]}), url="http://fake/data/2"),
+            source=FakeSource(pages=2))
+    assert r.state == "pending-verification"
+    rows = q(db, "SELECT o.series_id, o.period, f.url, o.fetched_at = f.fetched_at FROM observation o "
+                 "JOIN raw_fetch f ON f.id = o.raw_fetch_id ORDER BY o.id")
+    assert rows == [("s1", "2023", "http://fake/data/1", 1), ("s1", "2024", "http://fake/data/1", 1),
+                    ("s2", "2024", "http://fake/data/2", 1)]
+
+
+def test_duplicate_period_across_pages_is_still_rejected(env):
+    db, _, run = env
+    r = run(ok(payload({"s1": [["2023", "1.5"]], "s2": BASE["s2"]}), url="http://fake/data/1"),
+            ok(payload({"s1": [["2023", "1.5"], ["2024", "2.0"]]}), url="http://fake/data/2"),
+            source=FakeSource(pages=2))
+    assert (r.state, r.n_written, r.n_quarantined) == ("pending-verification", 2, 2)
+    assert q(db, "SELECT raw_period, reason FROM quarantine ORDER BY id") == [
+        ("2023", "duplicate_period"), ("2023", "duplicate_period")]
+    assert q(db, "SELECT series_id, period FROM observation ORDER BY id") == [
+        ("s1", "2024"), ("s2", "2024")]
+
+
+def test_out_of_range_response_index_is_failed_validation(env):
+    db, _, run = env
+
+    class Liar(FakeSource):
+        def parse(self, specs, responses):
+            out = super().parse(specs, responses)
+            out["s1"] = [RawRow("2023", "1.5", response_index=5)]
+            return out
+    r = run(ok(payload(BASE)), source=Liar())
+    assert r.state == "failed-validation"
+    assert n_obs(db) == 0
+    assert "response_index" in format_changes(db)[0]["error"]
+
+
+def test_fetch_returning_a_plain_list_still_works(env):
+    db, _, run = env
+    r = run(ok(payload(BASE)), source=ListFakeSource())
+    assert (r.state, r.n_written) == ("pending-verification", 3)

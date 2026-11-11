@@ -96,16 +96,16 @@ class Db:
             "SELECT period, value_text FROM served_observation "
             "WHERE series_id = ? AND kind = 'fetched'", (series_id,)))
 
-    def write_observations(self, run_id: int, raw_fetch_id: int, fetched_at: str,
-                           observations: list) -> None:
-        """Insert `ingest.models.Observation`s in order (order = vintage: highest id is latest)."""
+    def write_observations(self, run_id: int, rows: list[tuple]) -> None:
+        """Insert (`ingest.models.Observation`, raw_fetch_id, fetched_at) triples in order
+        (order = vintage: highest id is latest); raw_fetch_id is the payload the row came from."""
         self.conn.executemany(
             "INSERT INTO observation(series_id, period, value_text, value, status_flag, kind, "
             "dataset_run_id, raw_fetch_id, fetched_at, released_at) "
             "VALUES (?, ?, ?, ?, ?, 'fetched', ?, ?, ?, ?)",
             [(o.series_id, o.period, o.value_text, o.value, o.status_flag, run_id, raw_fetch_id,
               fetched_at, o.released_at.isoformat() if o.released_at else None)
-             for o in observations])
+             for o, raw_fetch_id, fetched_at in rows])
 
     def write_quarantine(self, run_id: int, series_id: str, rejections: list,
                          created_at: str) -> None:

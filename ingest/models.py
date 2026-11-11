@@ -5,7 +5,7 @@ import unicodedata
 from datetime import date, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, ValidationInfo, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator, model_validator
 
 Frequency = Literal["A", "S", "Q", "M", "D"]
 
@@ -100,14 +100,19 @@ class Observation(BaseModel):
     value: float
     status_flag: str | None = None
     released_at: datetime | None = None
+    # Provenance hint, not data: index of the source response (page) the row came from.
+    # The pipeline maps it to that response's raw_fetch row; excluded from dumps.
+    response_index: int = Field(default=0, ge=0, exclude=True)
 
     @classmethod
     def from_raw(cls, series_id: str, period: str, value_text: str, decimal: str = ".",
-                 status_flag: str | None = None, released_at: datetime | None = None) -> "Observation":
+                 status_flag: str | None = None, released_at: datetime | None = None,
+                 response_index: int = 0) -> "Observation":
         return cls.model_validate(
             dict(series_id=series_id, period=period, value_text=value_text,
                  value=parse_number(value_text, decimal),
-                 status_flag=status_flag, released_at=released_at),
+                 status_flag=status_flag, released_at=released_at,
+                 response_index=response_index),
             context={"decimal": decimal})
 
     @field_validator("value", mode="before")

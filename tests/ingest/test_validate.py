@@ -171,3 +171,18 @@ def test_copy_failing_unit_does_not_make_twin_duplicate():
     obs, rej = validate(make_spec(unit="EUR"), [row("2024-01", "1", "EUR"), row("2024-01", "2", "USD")])
     assert [(o.period, o.value_text) for o in obs] == [("2024-01", "1")]
     assert rej == [Rejection("2024-01", "2", "unit_mismatch")]
+
+
+@pytest.mark.parametrize("bad", [-1, True, "0", 1.0])
+def test_rawrow_response_index_must_be_non_negative_int(bad):
+    with pytest.raises(TypeError, match="response_index"):
+        RawRow(period_raw="2024-01", value_raw="1", response_index=bad)
+
+
+def test_response_index_is_carried_to_observation_and_duplicates_span_pages():
+    rows = [RawRow("2024-01", "1", response_index=0), RawRow("2024-02", "2", response_index=1),
+            RawRow("2024-03", "3", response_index=0), RawRow("2024-03", "3", response_index=1)]
+    obs, rej = validate(make_spec(), rows)
+    assert [(o.period, o.response_index) for o in obs] == [("2024-01", 0), ("2024-02", 1)]
+    assert reasons(rej) == ["duplicate_period", "duplicate_period"]
+    assert "response_index" not in obs[0].model_dump()
