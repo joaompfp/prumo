@@ -350,6 +350,41 @@ def test_malformed_result_fields_are_failure_not_crash(env):
         assert passed is False and all(r[5] == 0 and r[6] for r in items_of(db, run_id))
 
 
+class LyingStr(str):
+    def __eq__(self, other):
+        return True
+
+    __hash__ = str.__hash__
+
+
+@pytest.mark.parametrize("field", ["observed_text", "observed_unit", "series_id"])
+def test_str_subclass_fields_are_failure(env, field):
+    db = env[0]
+
+    def lie(items):
+        out = []
+        for r in echo(items):
+            kw = {field: LyingStr(getattr(r, field) or "x")}
+            out.append(ItemResult(**{**r.__dict__, **kw}))
+        return out
+
+    run_id, passed = vrun(env, ScriptedVerifier(lie))
+    assert passed is False
+    rows = items_of(db, run_id)
+    assert all(r[5] == 0 and f"exact str: {field}: LyingStr" in r[6] for r in rows)
+
+
+def test_replay_refuses_legacy_item(env):
+    db, _, store, _, _ = env
+    run_id, _ = vrun(env, FakeVerifier(TRUTH))
+    (vid,), = q(db, "SELECT id FROM verification")
+    cur = db.conn.execute(
+        "INSERT INTO verification_item(verification_id, series_id, period, expected_text, "
+        "observed_text, evidence_url, match) VALUES (?, 's1', '2024', '2.0', '2.0', 'u', 1)", (vid,))
+    with pytest.raises(ValueError, match="legacy item"):
+        replay_item(db, store, cur.lastrowid)
+
+
 # --- I1: concurrent verification (compare-and-set) ---------------------------------------------
 
 @pytest.mark.parametrize("inner_truth,final", [({}, "failed-verification"),
@@ -585,7 +620,11 @@ def test_verifier_importing_parser_is_rejected(make_verifier, code):
     "from ingest.sources import RawResponse, Source",
     "from ingest.http import Http\nfrom ingest.models import parse_decimal\nimport json",
     "from ingest.verifiers import ItemResult, BlindItem",
-    "import ingest.rawstore",
+    "from ingest.rawstore import RawStore",
+    "from ingest.http import HttpResult\nfrom ingest.models import parse_number\n"
+    "from ingest.rawstore import RawStore\nfrom ingest.sources import Source, RawResponse\n"
+    "from ingest.verifiers import ItemResult, BlindItem",
+    "import re\nP = re.compile('x')\nwith open('f') as f:\n    pass",
 ])
 def test_independent_verifier_is_registered(make_verifier, code):
     v = make_verifier(code)
@@ -597,7 +636,8 @@ def test_shared_helper_with_parser_is_rejected(make_verifier, fake_ingest):
     fake_ingest({"sources/acme.py": "from ingest import sdmx\nfrom ingest.models import x\n",
                  "sdmx.py": "import json\n",
                  "wrapper.py": "from . import sdmx\n"})
-    for code in ("import ingest.sdmx", "from ingest import sdmx", "from ingest.wrapper import f"):
+    for code in ("from ingest.sdmx import f", "from ingest import sdmx",
+                 "from ingest.wrapper import f"):
         with pytest.raises(ValueError, match="shares code.*ingest.sdmx"):
             register_verifier(make_verifier(code))
 
@@ -607,9 +647,58 @@ def test_only_allow_listed_shared_modules_is_accepted(make_verifier, fake_ingest
                                     "from ingest.sources import RawResponse\nimport ingest.sdmx\n",
                  "sdmx.py": "", "own_helper.py": "from ingest.models import y\n"})
     v = make_verifier("from ingest.models import x\nfrom ingest.http import Http\n"
-                      "import ingest.rawstore\nimport ingest.own_helper")
+                      "from ingest.rawstore import RawStore\nfrom ingest.own_helper import y")
     register_verifier(v)
     assert get_verifier("acme") is v
+
+
+@pytest.mark.parametrize("code,rule", [
+    # plain `import ingest...` binds the name `ingest` -> ingest.sources.<x> by attribute
+    ("import ingest.http\nP = ingest.sources.acme.parse_rows", "plain import binds 'ingest'"),
+    ("import ingest.models\nP = ingest.sources.acme", "plain import binds 'ingest'"),
+    ("import ingest.rawstore", "plain import binds 'ingest'"),
+    ("import ingest.http as h", "plain import binds 'ingest'"),
+    ("import ingest", "plain import binds 'ingest'"),
+    ("from ingest.verifiers import ingest as i", "name binds 'ingest'"),
+    # defence in depth: attribute chains, even without the import line
+    ("P = ingest.sources.acme.parse_rows", "attribute access to collector: ingest.sources.acme"),
+    ("from ingest.verifiers import ingest as i\nP = i.sources", "attribute access to collector"),
+    # dynamic import / introspection, any alias form
+    ("import sys as s\nP = s.modules['ingest.sources.acme']", "dynamic import/DB access"),
+    ("from sys import modules", "dynamic import/DB access"),
+    ("from ingest.verifiers import sys", "dynamic import/DB access"),
+    ("import builtins\nP = builtins.__import__('ingest.sources.acme')", "dynamic import/DB access"),
+    ("from builtins import __import__ as imp\nP = imp('x')", "dynamic import/DB access"),
+    ("import runpy\nruns = runpy.run_module", "dynamic import/DB access"),
+    ("import pkgutil\nP = pkgutil.resolve_name('ingest.sources.acme:parse_rows')",
+     "dynamic import/DB access"),
+    ("import importlib", "dynamic import/DB access"),
+    ("from importlib import import_module", "dynamic import/DB access"),
+    ("P = __import__('ingest.sources.acme')", "dynamic code: __import__"),
+    ("x = object().__import__", "dynamic code: .__import__"),
+    ("P = vars(ingest)['sources']", "dynamic code: vars"),
+    ("P = globals()['__builtins__']['__imp' + 'ort__']", "dynamic code: globals"),
+    ("P = locals()", "dynamic code: locals"),
+    ("P = __builtins__", "dynamic code: __builtins__"),
+    ("exec('import ingest.sources.acme')", "dynamic code: exec"),
+    ("eval('1')", "dynamic code: eval"),
+    ("P = compile('1', 'f', 'eval')", "dynamic code: compile"),
+    # reading expected values from the database
+    ("from ingest.db import open_db", "dynamic import/DB access: from ingest.db"),
+    ("from ingest import db", "dynamic import/DB access: from ingest import db"),
+    ("import sqlite3", "dynamic import/DB access: import sqlite3"),
+    # collector imports and source-named modules
+    ("from ingest.sources import acme", "collector import"),
+    ("from ingest.sources.acme import parse_rows", "collector import"),
+    ("from ingest import sources", "collector import"),
+    ("import ACME", "source-named import"),
+])
+def test_registration_bypasses_are_rejected(make_verifier, code, rule):
+    with pytest.raises(ValueError, match="independent") as e:
+        register_verifier(make_verifier(code))
+    assert rule in str(e.value)
+    with pytest.raises(KeyError):
+        get_verifier("acme")
 
 
 def test_duplicate_registration_is_rejected(make_verifier):

@@ -148,8 +148,9 @@ def verify_run(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | 
 
 
 def _str(x: object) -> str | None:
-    """Only real strings are stored; anything else a verifier returns is recorded as None."""
-    return x if isinstance(x, str) else None
+    """Only exact `str` is stored (no subclasses, whose dunders could lie in comparisons);
+    anything else a verifier returns is recorded as None."""
+    return x if type(x) is str else None
 
 
 def _item_row(item: SampleItem, res: object, store: RawStore | None,
@@ -164,7 +165,8 @@ def _item_row(item: SampleItem, res: object, store: RawStore | None,
            "evidence_url": None, "evidence_sha256": None}
     if res is None:
         return row, None
-    if not isinstance(res, ItemResult) or not isinstance(res.evidence, (bytes, type(None))):
+    if type(res) is not ItemResult or (res.evidence is not None
+                                       and type(res.evidence) is not bytes):
         return row, f"malformed result: {type(res).__name__}"
     if res.evidence is not None:
         if store is None:
@@ -173,13 +175,17 @@ def _item_row(item: SampleItem, res: object, store: RawStore | None,
     row.update(observed_series_id=_str(res.series_id), observed_period=_str(res.period),
                observed_text=_str(res.observed_text),
                observed_decimal=(res.observed_decimal
-                                 if res.observed_decimal in (".", ",") else None),
+                                 if _str(res.observed_decimal) in (".", ",") else None),
                observed_unit=_str(res.observed_unit), observed_flag=_str(res.observed_flag),
                evidence_url=_str(res.evidence_url))
-    note = None
-    if res.observed_text is not None and row["observed_text"] is None:  # e.g. a float
-        note = f"observed_text must be the publisher's text, got {type(res.observed_text).__name__}"
-    return row, note
+    wrong = [f"{f}: {type(getattr(res, f)).__name__}" for f in _TEXT_FIELDS
+             if getattr(res, f) is not None and _str(getattr(res, f)) is None]
+    # e.g. a float observed_text (would bypass exact comparison) or a str subclass
+    return row, (f"result fields must be exact str: {', '.join(wrong)}" if wrong else None)
+
+
+_TEXT_FIELDS = ("series_id", "period", "observed_text", "evidence_url", "observed_decimal",
+                "observed_unit", "observed_flag")
 
 
 def _blank(s: str | None) -> str | None:
@@ -217,9 +223,13 @@ def _row_mismatch(row: dict) -> str | None:
 
 def replay_item(db: Db, store: RawStore, verification_item_id: int) -> bool:
     """Re-decide a stored verification_item from its stored fields only (no registry, no
-    network) and return the match. If evidence bytes were kept, their file is loaded from
-    `store` and integrity-checked (RawIntegrityError if altered)."""
+    network) and return the match. ValueError for a legacy (pre-0004) item. If evidence bytes
+    were kept, their file is loaded from `store` and integrity-checked (RawIntegrityError if
+    altered)."""
     row = db.verification_item(verification_item_id)
+    if row["expected_decimal"] is None:  # always set since 0004 (spec.decimal is never None)
+        raise ValueError(f"verification_item {verification_item_id} is a legacy item "
+                         "(pre-0004): its comparison fields were not stored, cannot replay")
     if row["evidence_sha256"] is not None:
         sha = row["evidence_sha256"]
         source = db.verification_item_source(verification_item_id)
