@@ -1,0 +1,231 @@
+[ {
+  "IndicadorCod" : "0006031",
+  "IndicadorDsg" : "População residente (N.º) por Sexo, Idade e Naturalidade; Anual - INE, Estimativas anuais da população residente",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0006031&lingua=PT",
+  "DataExtracao" : "2026-11-11T03:41:55.529Z",
+  "DataUltimoAtualizacao" : "2026-06-22",
+  "UltimoPref" : "2025",
+  "Dados" : {
+    "2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 563 014",
+      "valor" : "10563014"
+    } ],
+    "2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 573 479",
+      "valor" : "10573479"
+    } ],
+    "2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 572 721",
+      "valor" : "10572721"
+    } ],
+    "2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 558 950",
+      "valor" : "10558950"
+    } ],
+    "2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 503 889",
+      "valor" : "10503889"
+    } ],
+    "2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 444 092",
+      "valor" : "10444092"
+    } ],
+    "2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 395 121",
+      "valor" : "10395121"
+    } ],
+    "2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 368 554",
+      "valor" : "10368554"
+    } ],
+    "2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 344 478",
+      "valor" : "10344478"
+    } ],
+    "2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 335 770",
+      "valor" : "10335770"
+    } ],
+    "2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 333 496",
+      "valor" : "10333496"
+    } ],
+    "2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 375 395",
+      "valor" : "10375395"
+    } ],
+    "2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 394 297",
+      "valor" : "10394297"
+    } ],
+    "2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 599 117",
+      "valor" : "10599117"
+    } ],
+    "2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "10 929 704",
+      "valor" : "10929704"
+    } ],
+    "2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "11 204 347",
+      "valor" : "11204347"
+    } ],
+    "2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "11 387 222",
+      "valor" : "11387222"
+    } ],
+    "2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "dim_4" : "T",
+      "dim_4_t" : "Total",
+      "dim_5" : "T",
+      "dim_5_t" : "Total",
+      "ind_string" : "11 424 031",
+      "valor" : "11424031"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]

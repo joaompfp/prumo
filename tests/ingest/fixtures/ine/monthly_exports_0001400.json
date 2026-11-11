@@ -1,0 +1,3267 @@
+[ {
+  "IndicadorCod" : "0001400",
+  "IndicadorDsg" : "Exportações (€) de bens por Local de destino e Tipo de bens (CGCE); Mensal - INE, Estatísticas do comércio internacional de bens",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0001400&lingua=PT",
+  "DataExtracao" : "2026-11-11T03:37:56.161Z",
+  "DataUltimoAtualizacao" : "2026-11-09",
+  "UltimoPref" : "Setembro de 2026",
+  "Dados" : {
+    "Janeiro de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "984 218 635",
+      "valor" : "984218635"
+    } ],
+    "Fevereiro de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "972 616 386",
+      "valor" : "972616386"
+    } ],
+    "Março de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 180 384 227",
+      "valor" : "1180384227"
+    } ],
+    "Abril de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 045 897 218",
+      "valor" : "1045897218"
+    } ],
+    "Maio de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 031 439 010",
+      "valor" : "1031439010"
+    } ],
+    "Junho de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 109 042 234",
+      "valor" : "1109042234"
+    } ],
+    "Julho de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 329 802 942",
+      "valor" : "1329802942"
+    } ],
+    "Agosto de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "713 383 873",
+      "valor" : "713383873"
+    } ],
+    "Setembro de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 142 044 347",
+      "valor" : "1142044347"
+    } ],
+    "Outubro de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 190 287 061",
+      "valor" : "1190287061"
+    } ],
+    "Novembro de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 241 651 979",
+      "valor" : "1241651979"
+    } ],
+    "Dezembro de 1993" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 144 088 977",
+      "valor" : "1144088977"
+    } ],
+    "Janeiro de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 193 184 615",
+      "valor" : "1193184615"
+    } ],
+    "Fevereiro de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 166 527 118",
+      "valor" : "1166527118"
+    } ],
+    "Março de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 418 327 156",
+      "valor" : "1418327156"
+    } ],
+    "Abril de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 160 020 157",
+      "valor" : "1160020157"
+    } ],
+    "Maio de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 329 260 022",
+      "valor" : "1329260022"
+    } ],
+    "Junho de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 347 732 805",
+      "valor" : "1347732805"
+    } ],
+    "Julho de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 520 547 291",
+      "valor" : "1520547291"
+    } ],
+    "Agosto de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "912 458 754",
+      "valor" : "912458754"
+    } ],
+    "Setembro de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 438 277 669",
+      "valor" : "1438277669"
+    } ],
+    "Outubro de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 403 836 742",
+      "valor" : "1403836742"
+    } ],
+    "Novembro de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 562 829 651",
+      "valor" : "1562829651"
+    } ],
+    "Dezembro de 1994" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 294 813 044",
+      "valor" : "1294813044"
+    } ],
+    "Janeiro de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 432 317 951",
+      "valor" : "1432317951"
+    } ],
+    "Fevereiro de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 375 364 131",
+      "valor" : "1375364131"
+    } ],
+    "Março de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 653 593 869",
+      "valor" : "1653593869"
+    } ],
+    "Abril de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 231 901 168",
+      "valor" : "1231901168"
+    } ],
+    "Maio de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 502 083 753",
+      "valor" : "1502083753"
+    } ],
+    "Junho de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 590 331 884",
+      "valor" : "1590331884"
+    } ],
+    "Julho de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 595 915 972",
+      "valor" : "1595915972"
+    } ],
+    "Agosto de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 048 360 503",
+      "valor" : "1048360503"
+    } ],
+    "Setembro de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 527 766 549",
+      "valor" : "1527766549"
+    } ],
+    "Outubro de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 658 010 534",
+      "valor" : "1658010534"
+    } ],
+    "Novembro de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 729 879 351",
+      "valor" : "1729879351"
+    } ],
+    "Dezembro de 1995" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 453 512 704",
+      "valor" : "1453512704"
+    } ],
+    "Janeiro de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 557 612 570",
+      "valor" : "1557612570"
+    } ],
+    "Fevereiro de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 598 474 676",
+      "valor" : "1598474676"
+    } ],
+    "Março de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 741 010 926",
+      "valor" : "1741010926"
+    } ],
+    "Abril de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 556 943 942",
+      "valor" : "1556943942"
+    } ],
+    "Maio de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 749 895 272",
+      "valor" : "1749895272"
+    } ],
+    "Junho de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 562 974 205",
+      "valor" : "1562974205"
+    } ],
+    "Julho de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 884 305 427",
+      "valor" : "1884305427"
+    } ],
+    "Agosto de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 097 777 432",
+      "valor" : "1097777432"
+    } ],
+    "Setembro de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 587 473 841",
+      "valor" : "1587473841"
+    } ],
+    "Outubro de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 820 370 942",
+      "valor" : "1820370942"
+    } ],
+    "Novembro de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 679 280 170",
+      "valor" : "1679280170"
+    } ],
+    "Dezembro de 1996" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 486 757 248",
+      "valor" : "1486757248"
+    } ],
+    "Janeiro de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 676 905 787",
+      "valor" : "1676905787"
+    } ],
+    "Fevereiro de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 626 016 973",
+      "valor" : "1626016973"
+    } ],
+    "Março de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 736 113 998",
+      "valor" : "1736113998"
+    } ],
+    "Abril de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 766 327 893",
+      "valor" : "1766327893"
+    } ],
+    "Maio de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 709 228 946",
+      "valor" : "1709228946"
+    } ],
+    "Junho de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 862 573 296",
+      "valor" : "1862573296"
+    } ],
+    "Julho de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 145 535 693",
+      "valor" : "2145535693"
+    } ],
+    "Agosto de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 214 828 451",
+      "valor" : "1214828451"
+    } ],
+    "Setembro de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 797 130 122",
+      "valor" : "1797130122"
+    } ],
+    "Outubro de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 142 153 653",
+      "valor" : "2142153653"
+    } ],
+    "Novembro de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 963 574 091",
+      "valor" : "1963574091"
+    } ],
+    "Dezembro de 1997" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 754 767 521",
+      "valor" : "1754767521"
+    } ],
+    "Janeiro de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 792 367 223",
+      "valor" : "1792367223"
+    } ],
+    "Fevereiro de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 795 025 705",
+      "valor" : "1795025705"
+    } ],
+    "Março de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 088 937 241",
+      "valor" : "2088937241"
+    } ],
+    "Abril de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 968 431 039",
+      "valor" : "1968431039"
+    } ],
+    "Maio de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 947 981 238",
+      "valor" : "1947981238"
+    } ],
+    "Junho de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 938 901 893",
+      "valor" : "1938901893"
+    } ],
+    "Julho de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 299 140 831",
+      "valor" : "2299140831"
+    } ],
+    "Agosto de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 230 251 065",
+      "valor" : "1230251065"
+    } ],
+    "Setembro de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 933 439 196",
+      "valor" : "1933439196"
+    } ],
+    "Outubro de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 086 440 584",
+      "valor" : "2086440584"
+    } ],
+    "Novembro de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 018 375 366",
+      "valor" : "2018375366"
+    } ],
+    "Dezembro de 1998" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 730 926 316",
+      "valor" : "1730926316"
+    } ],
+    "Janeiro de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 821 739 262",
+      "valor" : "1821739262"
+    } ],
+    "Fevereiro de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 806 469 640",
+      "valor" : "1806469640"
+    } ],
+    "Março de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 115 972 933",
+      "valor" : "2115972933"
+    } ],
+    "Abril de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 925 624 435",
+      "valor" : "1925624435"
+    } ],
+    "Maio de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 976 353 020",
+      "valor" : "1976353020"
+    } ],
+    "Junho de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 971 041 130",
+      "valor" : "1971041130"
+    } ],
+    "Julho de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 289 354 535",
+      "valor" : "2289354535"
+    } ],
+    "Agosto de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 361 262 340",
+      "valor" : "1361262340"
+    } ],
+    "Setembro de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 061 906 283",
+      "valor" : "2061906283"
+    } ],
+    "Outubro de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 149 212 599",
+      "valor" : "2149212599"
+    } ],
+    "Novembro de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 224 672 272",
+      "valor" : "2224672272"
+    } ],
+    "Dezembro de 1999" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 007 086 826",
+      "valor" : "2007086826"
+    } ],
+    "Janeiro de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 104 895 591",
+      "valor" : "2104895591"
+    } ],
+    "Fevereiro de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 220 932 145",
+      "valor" : "2220932145"
+    } ],
+    "Março de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 280 765 198",
+      "valor" : "2280765198"
+    } ],
+    "Abril de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 867 028 107",
+      "valor" : "1867028107"
+    } ],
+    "Maio de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 286 710 203",
+      "valor" : "2286710203"
+    } ],
+    "Junho de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 383 578 661",
+      "valor" : "2383578661"
+    } ],
+    "Julho de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 500 683 567",
+      "valor" : "2500683567"
+    } ],
+    "Agosto de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 723 822 693",
+      "valor" : "1723822693"
+    } ],
+    "Setembro de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 392 677 388",
+      "valor" : "2392677388"
+    } ],
+    "Outubro de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 529 292 188",
+      "valor" : "2529292188"
+    } ],
+    "Novembro de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 619 535 586",
+      "valor" : "2619535586"
+    } ],
+    "Dezembro de 2000" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 304 842 147",
+      "valor" : "2304842147"
+    } ],
+    "Janeiro de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 313 228 570",
+      "valor" : "2313228570"
+    } ],
+    "Fevereiro de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 235 261 989",
+      "valor" : "2235261989"
+    } ],
+    "Março de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 550 670 164",
+      "valor" : "2550670164"
+    } ],
+    "Abril de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 244 268 002",
+      "valor" : "2244268002"
+    } ],
+    "Maio de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 544 794 240",
+      "valor" : "2544794240"
+    } ],
+    "Junho de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 437 599 847",
+      "valor" : "2437599847"
+    } ],
+    "Julho de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 581 604 992",
+      "valor" : "2581604992"
+    } ],
+    "Agosto de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 628 019 537",
+      "valor" : "1628019537"
+    } ],
+    "Setembro de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 169 246 417",
+      "valor" : "2169246417"
+    } ],
+    "Outubro de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 558 843 141",
+      "valor" : "2558843141"
+    } ],
+    "Novembro de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 453 611 937",
+      "valor" : "2453611937"
+    } ],
+    "Dezembro de 2001" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 141 708 783",
+      "valor" : "2141708783"
+    } ],
+    "Janeiro de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 261 937 573",
+      "valor" : "2261937573"
+    } ],
+    "Fevereiro de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 212 532 741",
+      "valor" : "2212532741"
+    } ],
+    "Março de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 408 618 392",
+      "valor" : "2408618392"
+    } ],
+    "Abril de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 502 108 227",
+      "valor" : "2502108227"
+    } ],
+    "Maio de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 522 942 779",
+      "valor" : "2522942779"
+    } ],
+    "Junho de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 368 440 249",
+      "valor" : "2368440249"
+    } ],
+    "Julho de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 687 171 345",
+      "valor" : "2687171345"
+    } ],
+    "Agosto de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 707 880 049",
+      "valor" : "1707880049"
+    } ],
+    "Setembro de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 353 394 588",
+      "valor" : "2353394588"
+    } ],
+    "Outubro de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 738 438 105",
+      "valor" : "2738438105"
+    } ],
+    "Novembro de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 512 897 473",
+      "valor" : "2512897473"
+    } ],
+    "Dezembro de 2002" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 184 488 769",
+      "valor" : "2184488769"
+    } ],
+    "Janeiro de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 452 955 833",
+      "valor" : "2452955833"
+    } ],
+    "Fevereiro de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 422 544 380",
+      "valor" : "2422544380"
+    } ],
+    "Março de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 512 284 554",
+      "valor" : "2512284554"
+    } ],
+    "Abril de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 405 356 178",
+      "valor" : "2405356178"
+    } ],
+    "Maio de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 519 657 401",
+      "valor" : "2519657401"
+    } ],
+    "Junho de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 314 854 044",
+      "valor" : "2314854044"
+    } ],
+    "Julho de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 829 281 289",
+      "valor" : "2829281289"
+    } ],
+    "Agosto de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 673 536 685",
+      "valor" : "1673536685"
+    } ],
+    "Setembro de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 498 334 805",
+      "valor" : "2498334805"
+    } ],
+    "Outubro de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 751 264 498",
+      "valor" : "2751264498"
+    } ],
+    "Novembro de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 598 884 710",
+      "valor" : "2598884710"
+    } ],
+    "Dezembro de 2003" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 281 318 687",
+      "valor" : "2281318687"
+    } ],
+    "Janeiro de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 402 513 906",
+      "valor" : "2402513906"
+    } ],
+    "Fevereiro de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 353 799 879",
+      "valor" : "2353799879"
+    } ],
+    "Março de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 767 925 225",
+      "valor" : "2767925225"
+    } ],
+    "Abril de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 581 654 303",
+      "valor" : "2581654303"
+    } ],
+    "Maio de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 677 955 889",
+      "valor" : "2677955889"
+    } ],
+    "Junho de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 623 513 216",
+      "valor" : "2623513216"
+    } ],
+    "Julho de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 892 637 223",
+      "valor" : "2892637223"
+    } ],
+    "Agosto de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 766 621 340",
+      "valor" : "1766621340"
+    } ],
+    "Setembro de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 697 057 295",
+      "valor" : "2697057295"
+    } ],
+    "Outubro de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 785 017 934",
+      "valor" : "2785017934"
+    } ],
+    "Novembro de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 830 227 016",
+      "valor" : "2830227016"
+    } ],
+    "Dezembro de 2004" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 541 174 358",
+      "valor" : "2541174358"
+    } ],
+    "Janeiro de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 454 109 466",
+      "valor" : "2454109466"
+    } ],
+    "Fevereiro de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 497 994 889",
+      "valor" : "2497994889"
+    } ],
+    "Março de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 627 597 232",
+      "valor" : "2627597232"
+    } ],
+    "Abril de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 572 437 516",
+      "valor" : "2572437516"
+    } ],
+    "Maio de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 586 695 070",
+      "valor" : "2586695070"
+    } ],
+    "Junho de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 696 568 221",
+      "valor" : "2696568221"
+    } ],
+    "Julho de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 760 050 684",
+      "valor" : "2760050684"
+    } ],
+    "Agosto de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 954 333 930",
+      "valor" : "1954333930"
+    } ],
+    "Setembro de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 854 576 522",
+      "valor" : "2854576522"
+    } ],
+    "Outubro de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 760 423 201",
+      "valor" : "2760423201"
+    } ],
+    "Novembro de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 856 616 181",
+      "valor" : "2856616181"
+    } ],
+    "Dezembro de 2005" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 515 681 453",
+      "valor" : "2515681453"
+    } ],
+    "Janeiro de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 691 410 500",
+      "valor" : "2691410500"
+    } ],
+    "Fevereiro de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 649 903 520",
+      "valor" : "2649903520"
+    } ],
+    "Março de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 240 973 741",
+      "valor" : "3240973741"
+    } ],
+    "Abril de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 598 798 093",
+      "valor" : "2598798093"
+    } ],
+    "Maio de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 199 881 236",
+      "valor" : "3199881236"
+    } ],
+    "Junho de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 186 104 059",
+      "valor" : "3186104059"
+    } ],
+    "Julho de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 174 189 398",
+      "valor" : "3174189398"
+    } ],
+    "Agosto de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 446 381 040",
+      "valor" : "2446381040"
+    } ],
+    "Setembro de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 123 923 917",
+      "valor" : "3123923917"
+    } ],
+    "Outubro de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 201 557 039",
+      "valor" : "3201557039"
+    } ],
+    "Novembro de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 306 763 179",
+      "valor" : "3306763179"
+    } ],
+    "Dezembro de 2006" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 820 587 750",
+      "valor" : "2820587750"
+    } ],
+    "Janeiro de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 141 146 575",
+      "valor" : "3141146575"
+    } ],
+    "Fevereiro de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 016 210 312",
+      "valor" : "3016210312"
+    } ],
+    "Março de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 519 008 531",
+      "valor" : "3519008531"
+    } ],
+    "Abril de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 990 541 077",
+      "valor" : "2990541077"
+    } ],
+    "Maio de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 342 071 812",
+      "valor" : "3342071812"
+    } ],
+    "Junho de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 402 989 440",
+      "valor" : "3402989440"
+    } ],
+    "Julho de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 486 575 486",
+      "valor" : "3486575486"
+    } ],
+    "Agosto de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 486 105 301",
+      "valor" : "2486105301"
+    } ],
+    "Setembro de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 184 424 716",
+      "valor" : "3184424716"
+    } ],
+    "Outubro de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 485 713 636",
+      "valor" : "3485713636"
+    } ],
+    "Novembro de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 443 952 816",
+      "valor" : "3443952816"
+    } ],
+    "Dezembro de 2007" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 795 321 842",
+      "valor" : "2795321842"
+    } ],
+    "Janeiro de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 405 719 108",
+      "valor" : "3405719108"
+    } ],
+    "Fevereiro de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 461 716 431",
+      "valor" : "3461716431"
+    } ],
+    "Março de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 359 139 746",
+      "valor" : "3359139746"
+    } ],
+    "Abril de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 484 320 305",
+      "valor" : "3484320305"
+    } ],
+    "Maio de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 381 691 787",
+      "valor" : "3381691787"
+    } ],
+    "Junho de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 365 378 325",
+      "valor" : "3365378325"
+    } ],
+    "Julho de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 894 486 460",
+      "valor" : "3894486460"
+    } ],
+    "Agosto de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 438 279 334",
+      "valor" : "2438279334"
+    } ],
+    "Setembro de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 344 715 397",
+      "valor" : "3344715397"
+    } ],
+    "Outubro de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 334 052 939",
+      "valor" : "3334052939"
+    } ],
+    "Novembro de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 975 221 174",
+      "valor" : "2975221174"
+    } ],
+    "Dezembro de 2008" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 402 625 192",
+      "valor" : "2402625192"
+    } ],
+    "Janeiro de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 453 561 282",
+      "valor" : "2453561282"
+    } ],
+    "Fevereiro de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 403 903 905",
+      "valor" : "2403903905"
+    } ],
+    "Março de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 643 516 435",
+      "valor" : "2643516435"
+    } ],
+    "Abril de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 513 575 905",
+      "valor" : "2513575905"
+    } ],
+    "Maio de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 562 230 240",
+      "valor" : "2562230240"
+    } ],
+    "Junho de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 696 696 931",
+      "valor" : "2696696931"
+    } ],
+    "Julho de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 112 782 928",
+      "valor" : "3112782928"
+    } ],
+    "Agosto de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 035 283 930",
+      "valor" : "2035283930"
+    } ],
+    "Setembro de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 840 634 438",
+      "valor" : "2840634438"
+    } ],
+    "Outubro de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 992 535 915",
+      "valor" : "2992535915"
+    } ],
+    "Novembro de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 929 192 169",
+      "valor" : "2929192169"
+    } ],
+    "Dezembro de 2009" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 512 849 324",
+      "valor" : "2512849324"
+    } ],
+    "Janeiro de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 644 134 191",
+      "valor" : "2644134191"
+    } ],
+    "Fevereiro de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 769 034 173",
+      "valor" : "2769034173"
+    } ],
+    "Março de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 371 516 911",
+      "valor" : "3371516911"
+    } ],
+    "Abril de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 020 033 512",
+      "valor" : "3020033512"
+    } ],
+    "Maio de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 117 563 833",
+      "valor" : "3117563833"
+    } ],
+    "Junho de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 195 763 607",
+      "valor" : "3195763607"
+    } ],
+    "Julho de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 440 629 456",
+      "valor" : "3440629456"
+    } ],
+    "Agosto de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 548 311 681",
+      "valor" : "2548311681"
+    } ],
+    "Setembro de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 335 800 305",
+      "valor" : "3335800305"
+    } ],
+    "Outubro de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 300 147 768",
+      "valor" : "3300147768"
+    } ],
+    "Novembro de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 340 397 150",
+      "valor" : "3340397150"
+    } ],
+    "Dezembro de 2010" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 184 573 921",
+      "valor" : "3184573921"
+    } ],
+    "Janeiro de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 195 714 314",
+      "valor" : "3195714314"
+    } ],
+    "Fevereiro de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 364 390 850",
+      "valor" : "3364390850"
+    } ],
+    "Março de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 806 046 456",
+      "valor" : "3806046456"
+    } ],
+    "Abril de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 468 148 834",
+      "valor" : "3468148834"
+    } ],
+    "Maio de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 764 604 853",
+      "valor" : "3764604853"
+    } ],
+    "Junho de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 639 136 671",
+      "valor" : "3639136671"
+    } ],
+    "Julho de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 830 798 006",
+      "valor" : "3830798006"
+    } ],
+    "Agosto de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 947 684 010",
+      "valor" : "2947684010"
+    } ],
+    "Setembro de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 816 117 010",
+      "valor" : "3816117010"
+    } ],
+    "Outubro de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 818 787 063",
+      "valor" : "3818787063"
+    } ],
+    "Novembro de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 902 149 373",
+      "valor" : "3902149373"
+    } ],
+    "Dezembro de 2011" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 274 455 952",
+      "valor" : "3274455952"
+    } ],
+    "Janeiro de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 593 402 818",
+      "valor" : "3593402818"
+    } ],
+    "Fevereiro de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 783 201 655",
+      "valor" : "3783201655"
+    } ],
+    "Março de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 139 118 366",
+      "valor" : "4139118366"
+    } ],
+    "Abril de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 538 484 399",
+      "valor" : "3538484399"
+    } ],
+    "Maio de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 027 961 211",
+      "valor" : "4027961211"
+    } ],
+    "Junho de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 966 654 797",
+      "valor" : "3966654797"
+    } ],
+    "Julho de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 065 672 782",
+      "valor" : "4065672782"
+    } ],
+    "Agosto de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 326 478 237",
+      "valor" : "3326478237"
+    } ],
+    "Setembro de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 580 720 188",
+      "valor" : "3580720188"
+    } ],
+    "Outubro de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 040 390 061",
+      "valor" : "4040390061"
+    } ],
+    "Novembro de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 915 316 277",
+      "valor" : "3915316277"
+    } ],
+    "Dezembro de 2012" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 235 614 837",
+      "valor" : "3235614837"
+    } ],
+    "Janeiro de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 810 579 222",
+      "valor" : "3810579222"
+    } ],
+    "Fevereiro de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 662 226 109",
+      "valor" : "3662226109"
+    } ],
+    "Março de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 984 504 294",
+      "valor" : "3984504294"
+    } ],
+    "Abril de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 083 648 058",
+      "valor" : "4083648058"
+    } ],
+    "Maio de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 243 873 385",
+      "valor" : "4243873385"
+    } ],
+    "Junho de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 933 513 273",
+      "valor" : "3933513273"
+    } ],
+    "Julho de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 378 132 057",
+      "valor" : "4378132057"
+    } ],
+    "Agosto de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 319 399 358",
+      "valor" : "3319399358"
+    } ],
+    "Setembro de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 933 887 064",
+      "valor" : "3933887064"
+    } ],
+    "Outubro de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 239 557 506",
+      "valor" : "4239557506"
+    } ],
+    "Novembro de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 161 085 141",
+      "valor" : "4161085141"
+    } ],
+    "Dezembro de 2013" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 552 507 852",
+      "valor" : "3552507852"
+    } ],
+    "Janeiro de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 920 120 445",
+      "valor" : "3920120445"
+    } ],
+    "Fevereiro de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 814 211 693",
+      "valor" : "3814211693"
+    } ],
+    "Março de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 939 885 042",
+      "valor" : "3939885042"
+    } ],
+    "Abril de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 880 385 653",
+      "valor" : "3880385653"
+    } ],
+    "Maio de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 079 076 272",
+      "valor" : "4079076272"
+    } ],
+    "Junho de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 183 006 506",
+      "valor" : "4183006506"
+    } ],
+    "Julho de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 481 146 853",
+      "valor" : "4481146853"
+    } ],
+    "Agosto de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 235 340 809",
+      "valor" : "3235340809"
+    } ],
+    "Setembro de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 067 480 864",
+      "valor" : "4067480864"
+    } ],
+    "Outubro de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 636 641 740",
+      "valor" : "4636641740"
+    } ],
+    "Novembro de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 125 290 223",
+      "valor" : "4125290223"
+    } ],
+    "Dezembro de 2014" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 691 109 544",
+      "valor" : "3691109544"
+    } ],
+    "Janeiro de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "3 759 332 416",
+      "valor" : "3759332416"
+    } ],
+    "Fevereiro de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "3 941 272 280",
+      "valor" : "3941272280"
+    } ],
+    "Março de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 388 098 555",
+      "valor" : "4388098555"
+    } ],
+    "Abril de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 223 772 116",
+      "valor" : "4223772116"
+    } ],
+    "Maio de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 223 407 973",
+      "valor" : "4223407973"
+    } ],
+    "Junho de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 538 884 272",
+      "valor" : "4538884272"
+    } ],
+    "Julho de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 689 010 640",
+      "valor" : "4689010640"
+    } ],
+    "Agosto de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "3 302 743 251",
+      "valor" : "3302743251"
+    } ],
+    "Setembro de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 123 314 912",
+      "valor" : "4123314912"
+    } ],
+    "Outubro de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 495 968 004",
+      "valor" : "4495968004"
+    } ],
+    "Novembro de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "4 315 511 089",
+      "valor" : "4315511089"
+    } ],
+    "Dezembro de 2015" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_note" : "Os dados relativos a 2015 foram alvo de uma atualização extraordinária a 08/09/2017, que resulta numa alteração dos valores das exportações (Intra-UE).",
+      "ind_string" : "3 632 685 855",
+      "valor" : "3632685855"
+    } ],
+    "Janeiro de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 657 326 353",
+      "valor" : "3657326353"
+    } ],
+    "Fevereiro de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 010 811 839",
+      "valor" : "4010811839"
+    } ],
+    "Março de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 223 597 699",
+      "valor" : "4223597699"
+    } ],
+    "Abril de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 114 779 184",
+      "valor" : "4114779184"
+    } ],
+    "Maio de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 197 454 841",
+      "valor" : "4197454841"
+    } ],
+    "Junho de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 463 097 769",
+      "valor" : "4463097769"
+    } ],
+    "Julho de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 462 716 347",
+      "valor" : "4462716347"
+    } ],
+    "Agosto de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 462 725 752",
+      "valor" : "3462725752"
+    } ],
+    "Setembro de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 392 181 764",
+      "valor" : "4392181764"
+    } ],
+    "Outubro de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 327 349 028",
+      "valor" : "4327349028"
+    } ],
+    "Novembro de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 663 945 575",
+      "valor" : "4663945575"
+    } ],
+    "Dezembro de 2016" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 062 855 079",
+      "valor" : "4062855079"
+    } ],
+    "Janeiro de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 337 480 669",
+      "valor" : "4337480669"
+    } ],
+    "Fevereiro de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 347 631 444",
+      "valor" : "4347631444"
+    } ],
+    "Março de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 228 057 695",
+      "valor" : "5228057695"
+    } ],
+    "Abril de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 110 560 286",
+      "valor" : "4110560286"
+    } ],
+    "Maio de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 855 699 808",
+      "valor" : "4855699808"
+    } ],
+    "Junho de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 740 410 954",
+      "valor" : "4740410954"
+    } ],
+    "Julho de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 661 074 966",
+      "valor" : "4661074966"
+    } ],
+    "Agosto de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 953 114 115",
+      "valor" : "3953114115"
+    } ],
+    "Setembro de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 645 534 850",
+      "valor" : "4645534850"
+    } ],
+    "Outubro de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 867 052 438",
+      "valor" : "4867052438"
+    } ],
+    "Novembro de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 202 207 745",
+      "valor" : "5202207745"
+    } ],
+    "Dezembro de 2017" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 069 162 727",
+      "valor" : "4069162727"
+    } ],
+    "Janeiro de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 756 802 330",
+      "valor" : "4756802330"
+    } ],
+    "Fevereiro de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 589 467 812",
+      "valor" : "4589467812"
+    } ],
+    "Março de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 933 902 749",
+      "valor" : "4933902749"
+    } ],
+    "Abril de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 841 397 561",
+      "valor" : "4841397561"
+    } ],
+    "Maio de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 166 409 571",
+      "valor" : "5166409571"
+    } ],
+    "Junho de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 165 490 664",
+      "valor" : "5165490664"
+    } ],
+    "Julho de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 312 246 617",
+      "valor" : "5312246617"
+    } ],
+    "Agosto de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 034 938 075",
+      "valor" : "4034938075"
+    } ],
+    "Setembro de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 694 752 793",
+      "valor" : "4694752793"
+    } ],
+    "Outubro de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 167 459 574",
+      "valor" : "5167459574"
+    } ],
+    "Novembro de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 830 170 915",
+      "valor" : "4830170915"
+    } ],
+    "Dezembro de 2018" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 356 952 957",
+      "valor" : "4356952957"
+    } ],
+    "Janeiro de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 957 591 851",
+      "valor" : "4957591851"
+    } ],
+    "Fevereiro de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 851 510 240",
+      "valor" : "4851510240"
+    } ],
+    "Março de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 174 195 724",
+      "valor" : "5174195724"
+    } ],
+    "Abril de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 987 542 051",
+      "valor" : "4987542051"
+    } ],
+    "Maio de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 591 267 388",
+      "valor" : "5591267388"
+    } ],
+    "Junho de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 743 102 219",
+      "valor" : "4743102219"
+    } ],
+    "Julho de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 400 877 215",
+      "valor" : "5400877215"
+    } ],
+    "Agosto de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 824 882 656",
+      "valor" : "3824882656"
+    } ],
+    "Setembro de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 991 639 352",
+      "valor" : "4991639352"
+    } ],
+    "Outubro de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 574 244 990",
+      "valor" : "5574244990"
+    } ],
+    "Novembro de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 219 442 994",
+      "valor" : "5219442994"
+    } ],
+    "Dezembro de 2019" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 586 513 264",
+      "valor" : "4586513264"
+    } ],
+    "Janeiro de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 131 792 879",
+      "valor" : "5131792879"
+    } ],
+    "Fevereiro de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 861 690 406",
+      "valor" : "4861690406"
+    } ],
+    "Março de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 492 618 008",
+      "valor" : "4492618008"
+    } ],
+    "Abril de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "2 919 718 969",
+      "valor" : "2919718969"
+    } ],
+    "Maio de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 426 579 716",
+      "valor" : "3426579716"
+    } ],
+    "Junho de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 240 158 587",
+      "valor" : "4240158587"
+    } ],
+    "Julho de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 032 500 415",
+      "valor" : "5032500415"
+    } ],
+    "Agosto de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "3 742 406 916",
+      "valor" : "3742406916"
+    } ],
+    "Setembro de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 011 103 145",
+      "valor" : "5011103145"
+    } ],
+    "Outubro de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 449 234 842",
+      "valor" : "5449234842"
+    } ],
+    "Novembro de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 194 662 683",
+      "valor" : "5194662683"
+    } ],
+    "Dezembro de 2020" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 254 925 998",
+      "valor" : "4254925998"
+    } ],
+    "Janeiro de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 615 570 140",
+      "valor" : "4615570140"
+    } ],
+    "Fevereiro de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 987 340 594",
+      "valor" : "4987340594"
+    } ],
+    "Março de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 848 076 521",
+      "valor" : "5848076521"
+    } ],
+    "Abril de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 341 213 136",
+      "valor" : "5341213136"
+    } ],
+    "Maio de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 310 622 530",
+      "valor" : "5310622530"
+    } ],
+    "Junho de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 143 561 293",
+      "valor" : "5143561293"
+    } ],
+    "Julho de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 579 655 004",
+      "valor" : "5579655004"
+    } ],
+    "Agosto de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "4 357 804 920",
+      "valor" : "4357804920"
+    } ],
+    "Setembro de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 491 776 007",
+      "valor" : "5491776007"
+    } ],
+    "Outubro de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 567 918 094",
+      "valor" : "5567918094"
+    } ],
+    "Novembro de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 060 495 560",
+      "valor" : "6060495560"
+    } ],
+    "Dezembro de 2021" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 314 491 489",
+      "valor" : "5314491489"
+    } ],
+    "Janeiro de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 624 859 032",
+      "valor" : "5624859032"
+    } ],
+    "Fevereiro de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 985 085 819",
+      "valor" : "5985085819"
+    } ],
+    "Março de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 621 305 549",
+      "valor" : "6621305549"
+    } ],
+    "Abril de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 202 207 386",
+      "valor" : "6202207386"
+    } ],
+    "Maio de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 472 921 431",
+      "valor" : "7472921431"
+    } ],
+    "Junho de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 058 334 791",
+      "valor" : "7058334791"
+    } ],
+    "Julho de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 161 533 846",
+      "valor" : "7161533846"
+    } ],
+    "Agosto de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 769 953 602",
+      "valor" : "5769953602"
+    } ],
+    "Setembro de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 873 440 340",
+      "valor" : "6873440340"
+    } ],
+    "Outubro de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 703 496 341",
+      "valor" : "6703496341"
+    } ],
+    "Novembro de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 148 597 273",
+      "valor" : "7148597273"
+    } ],
+    "Dezembro de 2022" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 781 002 961",
+      "valor" : "5781002961"
+    } ],
+    "Janeiro de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 380 675 798",
+      "valor" : "6380675798"
+    } ],
+    "Fevereiro de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 406 086 749",
+      "valor" : "6406086749"
+    } ],
+    "Março de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 837 672 104",
+      "valor" : "7837672104"
+    } ],
+    "Abril de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 962 508 205",
+      "valor" : "5962508205"
+    } ],
+    "Maio de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 915 555 318",
+      "valor" : "6915555318"
+    } ],
+    "Junho de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 886 346 721",
+      "valor" : "6886346721"
+    } ],
+    "Julho de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 405 418 717",
+      "valor" : "6405418717"
+    } ],
+    "Agosto de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 316 331 536",
+      "valor" : "5316331536"
+    } ],
+    "Setembro de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 174 790 253",
+      "valor" : "6174790253"
+    } ],
+    "Outubro de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 335 737 925",
+      "valor" : "6335737925"
+    } ],
+    "Novembro de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 923 247 731",
+      "valor" : "6923247731"
+    } ],
+    "Dezembro de 2023" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 795 790 336",
+      "valor" : "5795790336"
+    } ],
+    "Janeiro de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 323 179 749",
+      "valor" : "6323179749"
+    } ],
+    "Fevereiro de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 504 779 607",
+      "valor" : "6504779607"
+    } ],
+    "Março de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 777 039 193",
+      "valor" : "6777039193"
+    } ],
+    "Abril de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 853 884 634",
+      "valor" : "6853884634"
+    } ],
+    "Maio de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 831 919 986",
+      "valor" : "6831919986"
+    } ],
+    "Junho de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 551 581 826",
+      "valor" : "6551581826"
+    } ],
+    "Julho de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 882 041 009",
+      "valor" : "7882041009"
+    } ],
+    "Agosto de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 164 270 017",
+      "valor" : "5164270017"
+    } ],
+    "Setembro de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 333 358 193",
+      "valor" : "6333358193"
+    } ],
+    "Outubro de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 245 707 982",
+      "valor" : "7245707982"
+    } ],
+    "Novembro de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 781 712 050",
+      "valor" : "6781712050"
+    } ],
+    "Dezembro de 2024" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 645 594 514",
+      "valor" : "5645594514"
+    } ],
+    "Janeiro de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 980 412 519",
+      "valor" : "6980412519"
+    } ],
+    "Fevereiro de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 187 100 601",
+      "valor" : "7187100601"
+    } ],
+    "Março de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 715 054 242",
+      "valor" : "6715054242"
+    } ],
+    "Abril de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 340 658 442",
+      "valor" : "6340658442"
+    } ],
+    "Maio de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 913 776 267",
+      "valor" : "6913776267"
+    } ],
+    "Junho de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 514 573 212",
+      "valor" : "6514573212"
+    } ],
+    "Julho de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 947 732 955",
+      "valor" : "6947732955"
+    } ],
+    "Agosto de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 021 906 856",
+      "valor" : "5021906856"
+    } ],
+    "Setembro de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 200 550 867",
+      "valor" : "7200550867"
+    } ],
+    "Outubro de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 813 823 727",
+      "valor" : "6813823727"
+    } ],
+    "Novembro de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 679 405 221",
+      "valor" : "6679405221"
+    } ],
+    "Dezembro de 2025" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 652 560 322",
+      "valor" : "5652560322"
+    } ],
+    "Janeiro de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 965 056 138",
+      "valor" : "5965056138"
+    } ],
+    "Fevereiro de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "6 113 571 921",
+      "valor" : "6113571921"
+    } ],
+    "Março de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 459 295 800",
+      "valor" : "7459295800"
+    } ],
+    "Abril de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 352 455 588",
+      "valor" : "7352455588"
+    } ],
+    "Maio de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 212 065 060",
+      "valor" : "7212065060"
+    } ],
+    "Junho de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 129 816 900",
+      "valor" : "7129816900"
+    } ],
+    "Julho de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 464 953 489",
+      "valor" : "7464953489"
+    } ],
+    "Agosto de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "5 326 843 075",
+      "valor" : "5326843075"
+    } ],
+    "Setembro de 2026" : [ {
+      "geocod" : "MUNDO",
+      "geodsg" : "Mundo",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "7 609 586 380",
+      "valor" : "7609586380"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]

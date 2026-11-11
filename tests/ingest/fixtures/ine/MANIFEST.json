@@ -1,0 +1,68 @@
+{
+ "monthly_confidence_0001188": {
+  "series": [
+   "ine.conf_manufacturing.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0001188&lang=PT&Dim1=T&Dim2=PT",
+  "file": "monthly_confidence_0001188.json",
+  "fetched": "2026-11-11"
+ },
+ "annual_births_0001346": {
+  "series": [
+   "ine.live_births.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0001346&lang=PT&Dim1=T&Dim2=PT&Dim3=T",
+  "file": "annual_births_0001346.json",
+  "fetched": "2026-11-11"
+ },
+ "monthly_exports_0001400": {
+  "series": [
+   "ine.exports_monthly.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0001400&lang=PT&Dim1=T&Dim2=MUNDO&Dim3=T",
+  "file": "monthly_exports_0001400.json",
+  "fetched": "2026-11-11"
+ },
+ "annual_deaths_0005605": {
+  "series": [
+   "ine.deaths.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0005605&lang=PT&Dim1=T&Dim2=PT&Dim3=T&Dim4=T",
+  "file": "annual_deaths_0005605.json",
+  "fetched": "2026-11-11"
+ },
+ "annual_population_0006031": {
+  "series": [
+   "ine.population.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0006031&lang=PT&Dim1=T&Dim2=PT&Dim3=T&Dim4=T&Dim5=T",
+  "file": "annual_population_0006031.json",
+  "fetched": "2026-11-11"
+ },
+ "monthly_unemployment_0007983": {
+  "series": [
+   "ine.unemployment_monthly.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0007983&lang=PT&Dim1=T&Dim2=PT&Dim3=T",
+  "file": "monthly_unemployment_0007983.json",
+  "fetched": "2026-11-11"
+ },
+ "monthly_hicp_0014655": {
+  "series": [
+   "ine.hicp_yoy.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014655&lang=PT&Dim1=T&Dim2=PT&Dim3=T",
+  "file": "monthly_hicp_0014655.json",
+  "fetched": "2026-11-11"
+ },
+ "monthly_ipi_0011889": {
+  "series": [
+   "ine.ipi_seasonal_cae_10.PT",
+   "ine.ipi_seasonal_cae_C.PT",
+   "ine.ipi_seasonal_cae_TOT.PT"
+  ],
+  "url": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0011889&lang=PT&Dim1=T&Dim2=PT&Dim3=10%2CC%2CTOT",
+  "file": "monthly_ipi_0011889.json",
+  "fetched": "2026-11-11"
+ }
+}
