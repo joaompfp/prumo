@@ -145,6 +145,16 @@ stored fields returns True for sampled items.
 5. `§` maps to `normal` (quality caveat lost by design); `“E` (Eurostat estimate), `»` (foreseen),
    `o`, `∞`, `i` raise everywhere until first observation triggers a mapping review.
 
+## TDD evidence — fix round 1
+
+Each commit was written tests-first: failing tests were added and run before the implementation
+(M2 sign tests RED 7 failed → GREEN; timeouts RED 11 failed → GREEN; I2 RED (import error on
+`NoVerifierRegistered`) → GREEN; I3 RED 2 failed → GREEN; C1 was built from live-channel
+reverse-engineering, then its 18 verifier tests ran RED (fixtures/verifier absent) → fixtures
+recorded live → GREEN 18/18, subprocess independence included). The clean recorded pipeline run
+ends `verified` with served rows; the tamper test fails verification with exactly
+`value differs` on births 2025.
+
 ## First pass (superseded narrative)
 
 The first pass probed channels and concluded INE had one machine-readable channel; its probing
