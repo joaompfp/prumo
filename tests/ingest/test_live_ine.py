@@ -28,7 +28,8 @@ LIVE_SERIES = ["ine.unemployment_monthly.PT",   # monthly, latest month provisio
 def test_live_run_with_refetch_is_verified_and_served(tmp_path, monkeypatch):
     from ingest import verifiers
     monkeypatch.setattr(verifiers, "_REGISTRY", {})
-    register_verifier(INEVerifier())
+    verifier = INEVerifier()
+    register_verifier(verifier)
 
     reg = {s.id: s for s in load_registry(ROOT / "registry" / "core.yaml")}
     specs = [reg[i] for i in LIVE_SERIES]
@@ -37,7 +38,7 @@ def test_live_run_with_refetch_is_verified_and_served(tmp_path, monkeypatch):
         sync_registry(db, specs)
         # INE's JSON API answers in 15-45 s per request (registry ine.timeout_s: 300);
         # the bddXplorer table is fast, and RequestsHttp throttles to <=1 req/s
-        result = run_with_refetch(db, RawStore(tmp_path / "raw"), INESource(), INEVerifier(),
+        result = run_with_refetch(db, RawStore(tmp_path / "raw"), INESource(), verifier,
                                   specs, RequestsHttp(throttle_rps=1.0), size=24)
         per_series = db.conn.execute(
             "SELECT series_id, COUNT(*), MIN(period), MAX(period), "
