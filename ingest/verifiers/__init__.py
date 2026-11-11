@@ -6,6 +6,7 @@ sampled observation (`BlindItem`), never the stored value, unit or flag; `ingest
 `register_verifier` enforces the independence rule (Ruling Q) on the verifier's module.
 """
 import ast
+import importlib
 import inspect
 import sys
 from dataclasses import dataclass
@@ -19,17 +20,30 @@ from ingest.models import SeriesSpec
 _INGEST_ROOT = Path(ingest.__file__).parent  # module files are resolved here, never executed
 _REGISTRY: dict[str, "Verifier"] = {}
 
-# Shared infrastructure a verifier and its source's parser may both depend on. The root package
-# `ingest` (an empty __init__) is necessarily imported by both.
-SHARED_ALLOWED = frozenset({"ingest", "ingest.models", "ingest.http", "ingest.sources",
-                            "ingest.verifiers", "ingest.rawstore"})
-_SOURCES_BASE_NAMES = frozenset({"Source", "RawResponse"})
-# Modules that give dynamic import / introspection / direct DB access; rejected in any import
-# form and as names. ingest.db and sqlite3: a verifier must not read expected values from the DB.
-_DENY_MODULES = frozenset({"importlib", "builtins", "runpy", "pkgutil", "sys", "sqlite3"})
-_DENY_NAMES = frozenset({"__import__", "exec", "eval", "compile", "vars", "globals", "locals",
-                         "__builtins__"})
-_DENY_ATTRS = frozenset({"__import__", "__builtins__"})
+# Ruling S: what a verifier module may import. Extending these is an explicit, reviewed change.
+VERIFIER_INGEST_IMPORTS: dict[str, frozenset[str]] = {
+    "ingest.http": frozenset({"HttpResult", "Http"}),
+    "ingest.models": frozenset({"parse_number", "SeriesSpec"}),
+    "ingest.rawstore": frozenset({"RawStore"}),
+    "ingest.sources": frozenset({"Source", "RawResponse"}),
+    "ingest.verifiers": frozenset({"ItemResult", "BlindItem", "Verifier"}),
+}
+VERIFIER_STDLIB_IMPORTS = frozenset({
+    "__future__", "typing", "dataclasses", "decimal", "re", "json", "csv", "io", "gzip",
+    "zipfile", "datetime", "urllib.parse", "collections", "itertools", "functools", "math",
+    "html.parser", "xml.etree.ElementTree", "hashlib", "base64", "unicodedata", "enum", "logging"})
+_FORBIDDEN_NAMES = frozenset({
+    "__import__", "__builtins__", "__loader__", "__spec__", "__globals__", "exec", "eval",
+    "compile", "vars", "globals", "locals", "getattr", "setattr", "delattr", "type", "super",
+    "open"})
+
+# Shared infrastructure a verifier and its source's parser may both depend on: the allow-listed
+# ingest modules plus the root package `ingest` (an empty __init__ both necessarily import).
+SHARED_ALLOWED = frozenset({"ingest", *VERIFIER_INGEST_IMPORTS})
+# Modules an attribute chain may pass through: the allowlists and their parent packages.
+_REACHABLE_MODULES = frozenset(
+    ".".join(m.split(".")[:i]) for m in VERIFIER_STDLIB_IMPORTS | SHARED_ALLOWED
+    for i in range(1, len(m.split(".")) + 1))
 
 
 @dataclass(frozen=True)
@@ -75,27 +89,29 @@ def register_verifier(verifier: Verifier) -> None:
     """Register the verifier of `verifier.source_name` (ValueError if already registered or if
     the independence rule fails).
 
-    (a) The module defining the verifier's class (whole AST, relative imports resolved):
-        - imports from the `ingest` package only as `from ingest.<module> import <names>`; any
-          plain `import ingest...` (aliased or not) is rejected, so the name `ingest` is never
-          bound; `from ingest import sources|db|*` and importing a name `ingest` are rejected;
-        - from `ingest.sources` only `Source` / `RawResponse`; never `ingest.sources.<x>`;
-        - no attribute chain resolving (through import aliases) to `ingest.sources.<x>`, and
-          no `.sources` on a name bound to the ingest package;
-        - no import of or reference to importlib, builtins, runpy, pkgutil, sys, sqlite3 or
-          ingest.db (any alias form, including importing those names from another module), no
-          use of __import__, exec, eval, compile, vars, globals, locals, __builtins__;
+    (a) Static allowlist check (Ruling S) on the module defining the verifier's class, whole
+        AST (also imports inside functions, `if TYPE_CHECKING:` and `try:` blocks):
+        - from `ingest`, only `from ingest.<module> import <names>` with module and names in
+          VERIFIER_INGEST_IMPORTS; any plain `import ingest...`, `from ingest import x`, other
+          modules or names (private ones included) are rejected;
+        - other imports only from VERIFIER_STDLIB_IMPORTS (import or from-import); a name
+          imported from them must not be a module or private;
+        - no star imports and no relative imports from any module;
+        - no attribute whose name starts with `__`, none of the bare names in
+          _FORBIDDEN_NAMES (exec, eval, getattr, type, open, __import__, ...), and no
+          attribute chain on an imported name that reaches a module outside the allowlists
+          (e.g. `logging.sys`);
         - no import whose dotted name has a component equal to the source name
-          (case-insensitive; `ingest.verifiers.*` excepted).
+          (case-insensitive).
     (b) The `ingest.*` modules the verifier module reaches transitively and those the parser
         module `ingest/sources/<source_name>.py` reaches (followed through their source files,
         not executed; descent stops at SHARED_ALLOWED) must not share anything outside
         SHARED_ALLOWED: a helper used by both parser and verifier is shared parsing code.
 
-    Still undetectable: non-`ingest` helper modules (local or third-party) are not followed, and
-    code constructed at runtime beyond the denylist (e.g. getattr with computed strings on an
-    object that leads to a module) cannot be seen statically. Each adapter task therefore also
-    carries a subprocess independence test.
+    This static check is a lint-level guard: Python can reach any loaded module at runtime in
+    ways no static rule enumerates, and non-`ingest` helper modules are not followed. The
+    guarantee is the runtime test `ingest.verifiers.independence.assert_verifier_independent`
+    (a subprocess that blocks the collector's modules), which every adapter task must run.
     """
     name = verifier.source_name
     if name in _REGISTRY:
@@ -106,17 +122,13 @@ def register_verifier(verifier: Verifier) -> None:
         raise ValueError(f"cannot inspect {type(verifier).__module__!r} (no source file)")
     tree = _parse(Path(path))
     package = module.__package__ or ""
-    bad = _direct_violations(tree, package, name)
-    if bad:
-        raise ValueError(f"verifier for {name!r} must be independent of the collector, but its "
-                         f"module imports/uses {bad}")
-    parser = _module_file(f"ingest.sources.{name}")
-    if parser is not None:
+    bad = _static_violations(tree, name)
+    if _module_file(f"ingest.sources.{name}") is not None:
         shared = (_closure(_ingest_imports(tree, package))
                   & _closure({f"ingest.sources.{name}"})) - SHARED_ALLOWED
-        if shared:
-            raise ValueError(f"verifier for {name!r} shares code with its parser through "
-                             f"imports of {sorted(shared)}")
+        bad += [f"shares code with its parser: {m}" for m in sorted(shared)]
+    if bad:
+        raise ValueError(f"verifier for {name!r} must be independent of the collector: {bad}")
     _REGISTRY[name] = verifier
 
 
@@ -151,80 +163,94 @@ def _imported_names(tree: ast.Module, package: str) -> list[tuple[str, str | Non
     return out
 
 
-def _direct_violations(tree: ast.Module, package: str, source_name: str) -> list[str]:
+def _static_violations(tree: ast.Module, source_name: str) -> list[str]:
     bad: set[str] = set()
     src = source_name.lower()
-    aliases: dict[str, str] = {}  # name bound in the module -> dotted thing it refers to
+    bound: dict[str, str] = {}  # name bound by an allowed import -> dotted object it names
 
-    def named_like_source(dotted: str) -> bool:
-        return (src in dotted.lower().split(".")) and not dotted.startswith("ingest.verifiers")
-
-    def denied_module(dotted: str) -> bool:
-        return (dotted.split(".")[0] in _DENY_MODULES
-                or dotted == "ingest.db" or dotted.startswith("ingest.db."))
+    def named_like_source(dotted: str) -> None:
+        if src in dotted.lower().split("."):
+            bad.add(f"source-named import: {dotted}")
 
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for a in node.names:
-                top = a.name.split(".")[0]  # `import a.b` binds `a`; `import a.b as c` binds c
-                aliases[a.asname or top] = a.name if a.asname else top
+                named_like_source(a.name)
                 if a.name == "ingest" or a.name.startswith("ingest."):
-                    bad.add(f"plain import binds 'ingest': import {a.name}")
-                if denied_module(a.name):
-                    bad.add(f"dynamic import/DB access: import {a.name}")
-                if named_like_source(a.name):
-                    bad.add(f"source-named import: {a.name}")
+                    bad.add(f"import not allowed (use 'from ingest.<module> import <name>'): "
+                            f"import {a.name}")
+                elif a.name not in VERIFIER_STDLIB_IMPORTS:
+                    bad.add(f"module not in stdlib allowlist: import {a.name}")
+                elif a.asname:
+                    bound[a.asname] = a.name
+                else:
+                    top = a.name.split(".")[0]
+                    bound[top] = top
         elif isinstance(node, ast.ImportFrom):
-            base = _resolve(node, package)
-            for a in node.names:
-                full = f"{base}.{a.name}"
-                aliases[a.asname or a.name] = "ingest" if a.name == "ingest" else full
-                if base.startswith("ingest.sources.") or (
-                        base == "ingest.sources" and a.name not in _SOURCES_BASE_NAMES):
-                    bad.add(f"collector import: from {base} import {a.name}")
-                elif base == "ingest" and a.name in ("sources", "*"):
-                    bad.add(f"collector import: from ingest import {a.name}")
-                if a.name == "ingest":
-                    bad.add(f"name binds 'ingest': from {base} import ingest")
-                if denied_module(base) or denied_module(full if base == "ingest" else a.name):
-                    bad.add(f"dynamic import/DB access: from {base} import {a.name}")
-                if a.name in _DENY_NAMES:
-                    bad.add(f"dynamic code: from {base} import {a.name}")
-                if named_like_source(base) or named_like_source(full):
-                    bad.add(f"source-named import: {full}")
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Name):
-            if node.id in _DENY_NAMES or node.id in _DENY_MODULES:
-                bad.add(f"dynamic code: {node.id}")
-        elif isinstance(node, ast.Attribute):
-            if node.attr in _DENY_ATTRS:
-                bad.add(f"dynamic code: .{node.attr}")
-            dotted = _dotted(node, aliases)
-            if dotted is None:
+            base = node.module or ""
+            stmt = f"from {'.' * node.level}{base} import {', '.join(a.name for a in node.names)}"
+            named_like_source(base)
+            if node.level:
+                bad.add(f"relative import not allowed: {stmt}")
                 continue
-            if dotted.startswith("ingest.sources."):
-                rest = dotted[len("ingest.sources."):].split(".")[0]
-                if rest not in _SOURCES_BASE_NAMES:
-                    bad.add(f"attribute access to collector: {dotted}")
-            elif dotted == "ingest.sources":
-                bad.add("attribute access to collector: ingest.sources")
-            if denied_module(dotted):
-                bad.add(f"dynamic import/DB access: {dotted}")
+            if any(a.name == "*" for a in node.names):
+                bad.add(f"star import not allowed: {stmt}")
+                continue
+            for a in node.names:
+                named_like_source(f"{base}.{a.name}")
+                full = f"{base}.{a.name}"
+                if base == "ingest" or base.startswith("ingest."):
+                    allowed = VERIFIER_INGEST_IMPORTS.get(base)
+                    if allowed is None:
+                        bad.add(f"ingest module not in allowlist: from {base} import {a.name}")
+                    elif a.name not in allowed:
+                        bad.add(f"name not in allowlist for {base}: {a.name}")
+                    else:
+                        bound[a.asname or a.name] = full
+                elif base not in VERIFIER_STDLIB_IMPORTS:
+                    bad.add(f"module not in stdlib allowlist: from {base} import {a.name}")
+                elif a.name.startswith("_"):
+                    bad.add(f"private name not allowed: from {base} import {a.name}")
+                elif (inspect.ismodule(getattr(importlib.import_module(base), a.name, None))
+                      and full not in VERIFIER_STDLIB_IMPORTS):
+                    bad.add(f"module not in stdlib allowlist: from {base} import {a.name}")
+                else:
+                    bound[a.asname or a.name] = full
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and node.id in _FORBIDDEN_NAMES:
+            bad.add(f"forbidden name: {node.id}")
+        elif isinstance(node, ast.Attribute):
+            if node.attr.startswith("__"):
+                bad.add(f"dunder attribute: .{node.attr}")
+            else:
+                reached = _module_reached(node, bound)
+                if reached:
+                    bad.add(f"attribute chain reaches module not in allowlist: {reached}")
     return sorted(bad)
 
 
-def _dotted(node: ast.Attribute, aliases: dict[str, str]) -> str | None:
-    """`a.b.c` with the root name resolved through the module's import aliases (an unbound root
-    named `ingest` is taken literally); None if the chain is not rooted at a plain name."""
-    parts = []
+def _module_reached(node: ast.Attribute, bound: dict[str, str]) -> str | None:
+    """Follow `name.a.b` from an allowed import (objects of already allow-listed modules) and
+    return the name of the first module reached that is not allow-listed."""
+    attrs = []
     cur: ast.expr = node
     while isinstance(cur, ast.Attribute):
-        parts.append(cur.attr)
+        attrs.append(cur.attr)
         cur = cur.value
-    if not isinstance(cur, ast.Name):
+    if not isinstance(cur, ast.Name) or cur.id not in bound:
         return None
-    root = aliases.get(cur.id, cur.id)
-    return ".".join([root, *reversed(parts)])
+    module, _, name = bound[cur.id].rpartition(".")
+    try:
+        obj = importlib.import_module(bound[cur.id])
+    except ImportError:
+        obj = getattr(importlib.import_module(module), name, None)
+    for attr in reversed(attrs):
+        obj = getattr(obj, attr, None)
+        if obj is None:
+            return None
+        if inspect.ismodule(obj) and obj.__name__ not in _REACHABLE_MODULES:
+            return obj.__name__
+    return None
 
 
 def _module_file(dotted: str) -> Path | None:

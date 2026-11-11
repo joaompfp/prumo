@@ -380,7 +380,8 @@ def test_replay_refuses_legacy_item(env):
     (vid,), = q(db, "SELECT id FROM verification")
     cur = db.conn.execute(
         "INSERT INTO verification_item(verification_id, series_id, period, expected_text, "
-        "observed_text, evidence_url, match) VALUES (?, 's1', '2024', '2.0', '2.0', 'u', 1)", (vid,))
+        "observed_text, evidence_url, match) VALUES (?, 's1', '2024', '2.0', '2.0', 'u', 1)",
+        (vid,))
     with pytest.raises(ValueError, match="legacy item"):
         replay_item(db, store, cur.lastrowid)
 
@@ -550,7 +551,7 @@ def test_refetch_requires_the_registered_verifier(env):
     assert q(db, "SELECT count(*) FROM dataset_run") == [(0,)]
 
 
-# --- registration (Ruling Q) -------------------------------------------------------------------
+# --- registration (Rulings Q, S) ----------------------------------------------------------------
 
 @pytest.fixture
 def fake_ingest(tmp_path, monkeypatch):
@@ -572,12 +573,14 @@ def make_verifier(tmp_path, monkeypatch):
     mods.mkdir()
     monkeypatch.syspath_prepend(str(mods))
 
-    def make(code: str, source_name: str = "acme"):
+    def make(code: str, source_name: str = "acme", top: bool = False):
         name = f"tmp_verifier_{uuid.uuid4().hex}"  # unique: sys.modules outlives tmp_path
+        # by default the code sits in a function body: never executed, but visible to the AST
+        # check; top=True puts it at module level (star imports are only legal there)
+        body = (code + "\n" if top else "def _unused():\n"
+                + "".join(f"    {line}\n" for line in code.splitlines() or ["pass"]))
         (mods / f"{name}.py").write_text(
-            # the code sits in a function body: never executed, but visible to the AST check
-            "def _unused():\n" + "".join(f"    {line}\n" for line in code.splitlines() or ["pass"])
-            + f"\n\nclass V:\n    source_name = {source_name!r}\n\n"
+            body + f"\n\nclass V:\n    source_name = {source_name!r}\n\n"
               f"    def check(self, items, http):\n        return []\n")
         importlib.invalidate_caches()
         return importlib.import_module(name).V()
@@ -617,14 +620,15 @@ def test_verifier_importing_parser_is_rejected(make_verifier, code):
 
 @pytest.mark.parametrize("code", [
     "",
-    "from ingest.sources import RawResponse, Source",
-    "from ingest.http import Http\nfrom ingest.models import parse_decimal\nimport json",
-    "from ingest.verifiers import ItemResult, BlindItem",
-    "from ingest.rawstore import RawStore",
-    "from ingest.http import HttpResult\nfrom ingest.models import parse_number\n"
+    "from ingest.http import HttpResult, Http\nfrom ingest.models import parse_number, SeriesSpec\n"
     "from ingest.rawstore import RawStore\nfrom ingest.sources import Source, RawResponse\n"
-    "from ingest.verifiers import ItemResult, BlindItem",
-    "import re\nP = re.compile('x')\nwith open('f') as f:\n    pass",
+    "from ingest.verifiers import ItemResult, BlindItem, Verifier",
+    "import re\nP = re.compile('x')",
+    "import json\nimport csv\nfrom decimal import Decimal\nfrom dataclasses import dataclass",
+    "import urllib.parse\nP = urllib.parse.urlencode({})",
+    "import xml.etree.ElementTree as ET\nP = ET.fromstring",
+    "import logging\nlog = logging.getLogger('x')",
+    "from typing import TYPE_CHECKING\nif TYPE_CHECKING:\n    from ingest.http import Http",
 ])
 def test_independent_verifier_is_registered(make_verifier, code):
     v = make_verifier(code)
@@ -633,65 +637,115 @@ def test_independent_verifier_is_registered(make_verifier, code):
 
 
 def test_shared_helper_with_parser_is_rejected(make_verifier, fake_ingest):
+    """The transitive shared-module check still runs (defence in depth behind the allowlist)."""
     fake_ingest({"sources/acme.py": "from ingest import sdmx\nfrom ingest.models import x\n",
                  "sdmx.py": "import json\n",
                  "wrapper.py": "from . import sdmx\n"})
     for code in ("from ingest.sdmx import f", "from ingest import sdmx",
                  "from ingest.wrapper import f"):
-        with pytest.raises(ValueError, match="shares code.*ingest.sdmx"):
+        with pytest.raises(ValueError, match="shares code with its parser: ingest.sdmx") as e:
             register_verifier(make_verifier(code))
+        assert "ingest module not in allowlist" in str(e.value)
 
 
 def test_only_allow_listed_shared_modules_is_accepted(make_verifier, fake_ingest):
     fake_ingest({"sources/acme.py": "from ingest.models import x\nfrom ingest import http\n"
                                     "from ingest.sources import RawResponse\nimport ingest.sdmx\n",
-                 "sdmx.py": "", "own_helper.py": "from ingest.models import y\n"})
-    v = make_verifier("from ingest.models import x\nfrom ingest.http import Http\n"
-                      "from ingest.rawstore import RawStore\nfrom ingest.own_helper import y")
+                 "sdmx.py": ""})
+    v = make_verifier("from ingest.models import parse_number\nfrom ingest.http import Http\n"
+                      "from ingest.rawstore import RawStore")
     register_verifier(v)
     assert get_verifier("acme") is v
 
 
+PLAIN = "import not allowed (use 'from ingest.<module> import <name>')"
+INGEST_MOD = "ingest module not in allowlist"
+NAME = "name not in allowlist for"
+STDLIB = "module not in stdlib allowlist"
+PRIVATE = "private name not allowed"
+STAR = "star import not allowed"
+RELATIVE = "relative import not allowed"
+DUNDER = "dunder attribute"
+FORBIDDEN = "forbidden name"
+CHAIN = "attribute chain reaches module not in allowlist"
+SOURCE_NAMED = "source-named import"
+
+
 @pytest.mark.parametrize("code,rule", [
-    # plain `import ingest...` binds the name `ingest` -> ingest.sources.<x> by attribute
-    ("import ingest.http\nP = ingest.sources.acme.parse_rows", "plain import binds 'ingest'"),
-    ("import ingest.models\nP = ingest.sources.acme", "plain import binds 'ingest'"),
-    ("import ingest.rawstore", "plain import binds 'ingest'"),
-    ("import ingest.http as h", "plain import binds 'ingest'"),
-    ("import ingest", "plain import binds 'ingest'"),
-    ("from ingest.verifiers import ingest as i", "name binds 'ingest'"),
-    # defence in depth: attribute chains, even without the import line
-    ("P = ingest.sources.acme.parse_rows", "attribute access to collector: ingest.sources.acme"),
-    ("from ingest.verifiers import ingest as i\nP = i.sources", "attribute access to collector"),
-    # dynamic import / introspection, any alias form
-    ("import sys as s\nP = s.modules['ingest.sources.acme']", "dynamic import/DB access"),
-    ("from sys import modules", "dynamic import/DB access"),
-    ("from ingest.verifiers import sys", "dynamic import/DB access"),
-    ("import builtins\nP = builtins.__import__('ingest.sources.acme')", "dynamic import/DB access"),
-    ("from builtins import __import__ as imp\nP = imp('x')", "dynamic import/DB access"),
-    ("import runpy\nruns = runpy.run_module", "dynamic import/DB access"),
-    ("import pkgutil\nP = pkgutil.resolve_name('ingest.sources.acme:parse_rows')",
-     "dynamic import/DB access"),
-    ("import importlib", "dynamic import/DB access"),
-    ("from importlib import import_module", "dynamic import/DB access"),
-    ("P = __import__('ingest.sources.acme')", "dynamic code: __import__"),
-    ("x = object().__import__", "dynamic code: .__import__"),
-    ("P = vars(ingest)['sources']", "dynamic code: vars"),
-    ("P = globals()['__builtins__']['__imp' + 'ort__']", "dynamic code: globals"),
-    ("P = locals()", "dynamic code: locals"),
-    ("P = __builtins__", "dynamic code: __builtins__"),
-    ("exec('import ingest.sources.acme')", "dynamic code: exec"),
-    ("eval('1')", "dynamic code: eval"),
-    ("P = compile('1', 'f', 'eval')", "dynamic code: compile"),
-    # reading expected values from the database
-    ("from ingest.db import open_db", "dynamic import/DB access: from ingest.db"),
-    ("from ingest import db", "dynamic import/DB access: from ingest import db"),
-    ("import sqlite3", "dynamic import/DB access: import sqlite3"),
-    # collector imports and source-named modules
-    ("from ingest.sources import acme", "collector import"),
-    ("from ingest.sources.acme import parse_rows", "collector import"),
-    ("from ingest import sources", "collector import"),
-    ("import ACME", "source-named import"),
+    # earlier rounds: plain imports bind `ingest`, dynamic import, DB access, collector imports
+    ("import ingest.http\nP = ingest.sources.acme.parse_rows", PLAIN),
+    ("import ingest.models\nP = ingest.sources.acme", PLAIN),
+    ("import ingest.rawstore", PLAIN),
+    ("import ingest.http as h", PLAIN),
+    ("import ingest", PLAIN),
+    ("from ingest.verifiers import ingest as i\nP = i.sources", NAME),
+    ("import sys as s\nP = s.modules['ingest.sources.acme']", STDLIB),
+    ("from sys import modules", STDLIB),
+    ("import builtins\nP = builtins.__import__('ingest.sources.acme')", STDLIB),
+    ("from builtins import __import__ as imp", STDLIB),
+    ("import runpy", STDLIB),
+    ("import pkgutil\nP = pkgutil.resolve_name('ingest.sources.acme:parse_rows')", STDLIB),
+    ("import importlib", STDLIB),
+    ("from importlib import import_module", STDLIB),
+    ("import sqlite3", STDLIB),
+    ("import requests", STDLIB),
+    ("import os", STDLIB),
+    ("from ingest.db import open_db", INGEST_MOD),
+    ("from ingest import db", INGEST_MOD),
+    ("from ingest.sources.acme import parse_rows", INGEST_MOD),
+    ("from ingest import sources", INGEST_MOD),
+    ("from ingest.sources import acme", NAME),
+    ("from typing import TYPE_CHECKING\nif TYPE_CHECKING:\n"
+     "    from ingest.sources.acme import parse_rows", INGEST_MOD),
+    ("try:\n    from ingest.sources import acme\nexcept ImportError:\n    pass", NAME),
+    ("import ACME", SOURCE_NAMED),
+    # A: module attributes re-exported by allowed modules
+    ("from ingest import verifiers as v\nP = v.ingest.sources.acme", INGEST_MOD),
+    ("from ingest import verifiers as v\nP = v.sys.modules['ingest.sources.acme']", INGEST_MOD),
+    ("from ingest import models as m\nP = m.re", INGEST_MOD),
+    ("from ingest import http as h\nP = h.requests", INGEST_MOD),
+    ("from ingest.http import requests", NAME),
+    ("from ingest.http import time", NAME),
+    ("from ingest.verifiers import sys", NAME),
+    ("import logging\nP = logging.sys.modules", CHAIN),
+    ("import urllib.parse\nP = urllib.request", CHAIN),
+    ("from logging import sys", STDLIB),
+    ("from collections import _collections_abc", PRIVATE),
+    # B: dunder walks and introspection builtins
+    ("from ingest.models import parse_number\n"
+     "P = parse_number.__globals__['__builtins__']['__import__']('ingest.sources.acme')", DUNDER),
+    ("from ingest.models import parse_number\nP = parse_number.__builtins__", DUNDER),
+    ("from ingest.sources import RawResponse\nP = RawResponse.__init__", DUNDER),
+    ("from ingest.verifiers import BlindItem\nP = type(BlindItem).__mro__", FORBIDDEN),
+    ("from ingest.verifiers import BlindItem\nP = BlindItem.__mro__", DUNDER),
+    ("x = object().__import__", DUNDER),
+    ("P = __loader__", FORBIDDEN),
+    ("P = __spec__", FORBIDDEN),
+    ("P = __globals__", FORBIDDEN),
+    ("P = __import__('ingest.sources.acme')", FORBIDDEN),
+    ("P = __builtins__", FORBIDDEN),
+    ("P = vars(object)", FORBIDDEN),
+    ("P = globals()['__builtins__']", FORBIDDEN),
+    ("P = locals()", FORBIDDEN),
+    ("exec('import ingest.sources.acme')", FORBIDDEN),
+    ("eval('1')", FORBIDDEN),
+    ("P = compile('1', 'f', 'eval')", FORBIDDEN),
+    ("P = getattr(object, 'x')", FORBIDDEN),
+    ("setattr(object, 'x', 1)", FORBIDDEN),
+    ("delattr(object, 'x')", FORBIDDEN),
+    ("P = super", FORBIDDEN),
+    ("P = open('f')", FORBIDDEN),
+    # C: other names/private names of allowed modules, star and relative imports
+    ("from ingest.verifiers import _REGISTRY", NAME),
+    ("from ingest.verifiers import get_verifier", NAME),
+    ("from ingest.verifiers import inspect", NAME),
+    ("from ingest.verifiers import ast", NAME),
+    ("from ingest.verifiers import dataclass", NAME),
+    ("from ingest.http import urljoin", NAME),
+    ("from ingest.models import Observation", NAME),
+    ("from ingest.rawstore import Path", NAME),
+    ("from . import acme", RELATIVE),
+    ("from .. import sources", RELATIVE),
 ])
 def test_registration_bypasses_are_rejected(make_verifier, code, rule):
     with pytest.raises(ValueError, match="independent") as e:
@@ -699,6 +753,14 @@ def test_registration_bypasses_are_rejected(make_verifier, code, rule):
     assert rule in str(e.value)
     with pytest.raises(KeyError):
         get_verifier("acme")
+
+
+@pytest.mark.parametrize("code", ["from ingest.http import *", "from ingest.models import *",
+                                  "from ingest.verifiers import *", "from ingest.sources import *",
+                                  "from json import *"])
+def test_star_imports_are_rejected(make_verifier, code):
+    with pytest.raises(ValueError, match=STAR):
+        register_verifier(make_verifier(code, top=True))
 
 
 def test_duplicate_registration_is_rejected(make_verifier):
