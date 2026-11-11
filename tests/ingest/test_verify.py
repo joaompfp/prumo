@@ -9,15 +9,22 @@ import pytest
 
 from ingest import verifiers
 from ingest.db import open_db
+from ingest.models import SourceSpec
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawIntegrityError, RawStore
 from ingest.registry import sync_registry
 from ingest.verifiers import BlindItem, ItemResult, get_verifier, register_verifier
-from ingest.verify import (NoVerifierRegistered, SourceNotVerifiable, VerificationConflict,
-                           draw_sample, replay_item, run_with_refetch, verify_run)
+from ingest.verify import (
+    NoVerifierRegistered,
+    SourceNotVerifiable,
+    VerificationConflict,
+    draw_sample,
+    replay_item,
+    run_with_refetch,
+    verify_run,
+)
 from tests.ingest.fake_verifier import FakeVerifier
 from tests.ingest.fakes import FakeHttp, FakeSource, ok, payload, spec, truth_of
-from ingest.models import SourceSpec
 
 BASE = {"s1": [["2023", "1.5"], ["2024", "2.0"]], "s2": [["2024", "10"]]}
 

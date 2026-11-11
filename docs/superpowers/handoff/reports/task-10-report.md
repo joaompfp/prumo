@@ -1,139 +1,156 @@
-# Task 10 report — INE adapter (verifier STOPPED: no independent channel)
+# Task 10 report — INE adapter + independent verifier (bddXplorer table channel)
 
-Status: DONE_WITH_CONCERNS. Adapter, flags mapping, registry, fixtures and tests done; the verifier part
-was STOPPED per the brief/spec §6b because INE exposes a single machine-readable data channel. INE series
-are collected but NOT SERVED until the owner decides (registry/unverifiable.md).
-Commits on `pipeline-rebuild`: 02205b5 (period labels + flags), e42b8d6 (registry), 445dad4 (adapter +
-fixtures + tests), 22148da (live test), + this report.
-Tests: `pytest tests/ingest -q` → 604 passed, 2 deselected (the two live tests).
+Status: fix round 1 complete — adapter, verifier, registry, fixtures, legacy-scale quarantine and
+tests all done; INE runs now verify and serve. The first pass's central claim ("INE has no
+independent channel") was FALSE (the review found the channel); this report replaces it.
 
-## Key finding — INE has ONE machine-readable data channel
-Probed live 2026-11-11 (f3nix, UA `prumo-ingest/1.0`, ≤1 req/s):
-| channel | result |
-|---|---|
-| `json_indicador/pindica.jsp?op=2` | the data API (collector) |
-| `pindica.jsp?op=1` | latest value repeated for every period (0001188: '-5.2' for every month 1990..2026) — unusable |
-| `pindicaMeta.jsp` | metadata only |
-| `xml_indic.jsp?opc=1/2/3` | catalogue (metadata + links to the same JSON API) |
-| INE API v2 doc page | lists exactly three APIs: Catalog, Database, Metadata |
-| HVD DCAT-AP catalogue `catalogo_hvd_json.jsp` | all 50 distributions = the same `pindica.jsp?op=2` |
-| indicator page `xurl/indx/<varcd>` → `bddXplorer04.jsp` (the "indicator page export" in the plan) | browser-only app; plain HTTP client gets an empty body; not pursued (would need browser emulation) |
-| short-term indicators / HVD statistics | Power BI embeds |
-| web search | no public INE SDMX/CSV bulk endpoint |
-Eurostat republishes some INE-produced series (HICP, IPI, demography) — a cross-check of the same
-publisher's figures, not independence (brief), so not built. → `registry/unverifiable.md` (options a/b/c
-for the owner); no `ingest/verifiers/ine.py`; `get_verifier('ine')` raises, `run_with_refetch` refuses INE,
-`run_dataset` runs end `pending-verification`, `served_observation` stays empty (tested).
-Not built because of the STOP: test_verifier_detects_tampered_value, test_verifier_registers_and_passes_allowlist,
-test_subprocess_independence (assert_verifier_independent) — they need a verifier.
+Commits on `pipeline-rebuild` (fix round 1, on top of 02205b5..2b8198a):
+- `5c2c78c` M2: full INE conventional-sign mapping from the official legend (`sinais.jsp`,
+  recorded fixture) — `//`→provisional, `*`→revised, `┴`→break, `“`→estimated, `§`→normal
+  (quality caveat lost by decision), `…`→no-value (confidential); `o`, `∞`, `»`, `i`, `“E`
+  reviewed but deliberately unmapped → raise.
+- `456d36d` timeouts: `SourceSpec.timeout_s` (YAML under `sources:`, validated positive finite,
+  default None), per-call `timeout=` on `Http.get`/`RequestsHttp` (None = client default; invalid
+  values rejected), `INESource.fetch` forwards it and omits the kwarg when unset (older Http
+  doubles with a 3-parameter `get` keep working); registry `ine: timeout_s: 300`.
+- `a2ce708` I2: `NoVerifierRegistered(ValueError)` — `run_with_refetch` raises BEFORE any fetch
+  when no verifier is registered (previously `verifier=None` slipped the identity check and
+  crashed with AttributeError after a ~10 min fetch); `SourceSpec.verifiable: bool = True`
+  machine marker; `SourceNotVerifiable` refuses a `verifiable: false` source even when a verifier
+  is registered. No source is marked false today (`ine` explicitly true).
+- `4162efc` I3: `LEGACY_SUSPECT_SCALE` in `ingest/legacy_import.py` quarantines legacy INE
+  `exports_monthly.PT`/`imports_monthly.PT` rows 2005-01..2024-12 (inclusive) as legacy-only
+  `suspect_unit_scale` (million EUR filed as EUR; live INE publishes EUR; registry unit stays
+  `EUR` for live data; rows never rescaled, never served).
+- `14f0aee` M1: INE attribution = authoritative Portuguese wording (terms page kept in
+  `licence_url`; English variant retained as a YAML comment).
+- `5efd6e3` C1: `ingest/verifiers/ine.py` — the independent verifier (below).
+- `246325c` live smoke rewritten to run verified end-to-end; false "unverifiable" test assertions
+  flipped.
 
-## Licence (redistribution_ok 0 → 1)
-INE "Terms and conditions of use" — https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cont_inst&INST=3585857
-(read 2026-11-11): "The statistical data made available on this website is free of charge and can be used
-and reused by the users in accordance with the Creative Commons CC BY Attribuition 4.0 license provided that
-the source is acknowledged, as follows: Source: Instituto Nacional de Estatística – Portugal (Statistics
-Portugal) (identification of the statistical information mentioned; reference period of the information)"
-… "Should the user modify the original data, it must be explicitly mentioned." (The HVD pages also state
-CC BY 4.0.) Registry `ine`: licence `CC BY 4.0`, that URL, attribution `Source: Instituto Nacional de
-Estatística – Portugal (Statistics Portugal)`, `redistribution_ok: true`; licences-todo.md updated. The old
-URL (`ine_condicoes_utilizacao`) still answers "em manutenção". Note: `ingest/propose_registry.py` still
-has INE as UNVERIFIED in code (propose must not be re-run over core.yaml anyway).
+Tests: `.venv-ci/bin/python -m pytest tests/ingest -q` → **660 passed, 2 deselected** (the two
+live tests). Ruff (0.17.4, repo `ruff.toml`) clean on every touched file (pre-existing
+F401/I001 in untouched files — `tests/conftest.py`, `test_verifier_eurostat.py`,
+`ingest/verifiers/independence.py` — left alone).
 
-## What was built
-- `ingest/flags.py`: `INE_VALUE_SIGNS = {'&': ('provisional','Dado provisório')}`,
-  `INE_NO_VALUE_SIGNS = {'x': 'Dado não disponível', '-': 'Dado nulo ou não aplicável'}`,
-  `map_ine_flag(sign, description, *, value_present=True) -> str | None` — sign must come with its exact
-  reviewed description; value sign without value, no-value sign on a value, missing value without sign,
-  unknown sign → ValueError.
-- `ingest/models.py::normalize_period`: quarterly regex now accepts INE's '1.º Trimestre de 2011'
-  (live label of 0010704; was rejected). Only widens accepted input (callers: validate, legacy import).
-- `ingest/sources/ine.py`: `BASE_URL`, `PAGE_URL`, `parse_native_code(code) -> (varcd, (("Dim2",c),...))`,
-  `INESource(name='ine', expected_format='json')`; `fetch` = one GET per (varcd, dim names) group:
-  `op=2&varcd=..&lang=PT&Dim1=T&DimN=<sorted comma-joined codes>`; `parse` → rows keyed by series id,
-  `response_index` = group index, period label as-is, value = INE `valor` token (JSON string), flag via
-  map_ine_flag, `unit_raw` None. Raises on: markup, non-JSON, not a 1-record list, `Sucesso` without
-  `Verdadeiro`/with `Falso`, other `IndicadorCod`, duplicate JSON keys (period labels), duplicate cells,
-  cell dimensions ≠ native_code dims, `UltimoPref` missing from `Dados` (truncation guard), bare JSON
-  numbers where strings are expected, `valor` vs `ind_string` disagreement, unknown signs.
-- native_code format: `<7-digit varcd>:Dim2=<code>,Dim3=<code>,...` — every dimension but Dim1 (period)
-  pinned, in order, no gaps; payload field of Dim2 is `geocod`, DimN is `dim_N`. url =
-  `https://www.ine.pt/xurl/indx/<varcd>`.
-- Tests: `test_flags.py` (+11 INE), `test_models.py` (+5 labels), `test_source_ine.py` (55: fixture rows,
-  label normalisation, status flags, no-value cells, tokens, response_index, fetch params, native_code
-  parse/reject, `test_registry_native_codes_complete`, `test_active_native_codes_are_unique`, 23 malformed
-  payloads, duplicate keys, `test_parse_html_error_page_raises` (real INE HTML error), real INE error
-  objects (unknown varcd, bad Dim code), pipeline run on fixtures → pending-verification + 0 served,
-  `test_ine_is_unverifiable_and_not_served`), `test_registry_ine_units.py` (3), `test_live_ine.py` (live).
-- Fixtures `tests/ingest/fixtures/ine/` (8 real sets ≤145 KB + 3 real error bodies, MANIFEST.json).
+## C1 — the independent channel and the verifier
 
-## Decisions (documented in docstrings) — concerns for adapters 11–16 / T17-18
-1. Token = `valor` ('.' decimal), not `ind_string` (published rendering, ',' decimal, spaces, sign
-   appended). `valor` DROPS TRAILING ZEROS ('2' for published '2,0'; '2.4' for '2,40'). Using
-   `ind_string` would require `decimal: ','` and would re-quarantine the whole legacy INE import (legacy
-   values are '.'), so `ind_string` is only a consistency check. Owner may want the published precision.
-2. INE is slow: 17–45 s per request; trade (0001397/0001400, Dim1=T) 170–236 s. The full INE scope
-   takes ~10 min. The T17/T18 RequestsHttp for INE needs `timeout` ≥ 300 s (default 30 s would fail every
-   INE run); the registry has no per-source timeout field (smallest choice: none added; flagged).
-3. One request per varcd group with comma-joined codes (INE validates every code: one bad code fails the
-   whole request with 'Código(s) em Dim2 não válido(s)' — fails loudly, no partial data).
-4. INE series are collected but not served (no verifier). T17 status will show INE runs as stale
-   `pending-verification`; it should cite registry/unverifiable.md.
-5. Registry: series kept `active: true` (collected for revision history) although not served; an owner
-   who prefers not to collect at all should set them inactive.
+`GET https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=<varcd>&contexto=bd&lang=PT`
+with header `Referer: https://www.ine.pt/` returns the full statistical table page in ~0.2 s
+(a plain client without the header gets 302 + empty body — that 302 is what the first pass had
+misread as "browser-only"). This is a different endpoint family AND a different format (a
+server-rendered HTML table) from the collector's `pindica.jsp` JSON, showing INE's published
+rendering: `,` decimal, space thousands separators, trailing zeros kept (`2,0` where the JSON
+`valor` says `2`), the conventional sign appended to the figure (`5,6 &`), and the unit symbol in
+the table header.
 
-## Registry (registry/core.yaml + core.proposed.yaml, identical bodies)
-38 legacy INE series → 37 active + 1 inactive; + 4 new (Ruling Y) → 42 INE series, 41 active, unique
-native codes. Details and per-series notes in `registry/unmapped-ine.md`. Highlights:
-- legacy HICP 0000110 and CPI 0002386 NO LONGER EXIST → base-2025 successors 0014655 / 0014647
-  (HICP 305/312 legacy months equal, 7 differ by 0.1 pp rebasing rounding; CPI PT and Continente 13/13).
-- `ine.ipi_seasonal_cae.PT` inactive: unit '%' but values are the CAE-C index (= `ine.ipi_seasonal_cae_C.PT`).
-- trade: LEGACY DATA PROBLEM — legacy rows 2005–2024 are MILLION EUR under unit 'EUR' (2025 rows EUR);
-  INE publishes EUR; 240/252 equal after scaling. Task 8 imported them as EUR (legacy-unverified).
-- IPI ≥95% equal each (rest = recent revisions); `_35` ≡ `_D` and `_38` ≡ `_E` in all 261 months
-  (INE's D/E contain only those divisions) — both kept (distinct INE cells); owner may drop one per pair.
-- Ruling Y: `ine.unemployment_monthly.PT` (`0007983:Dim2=PT,Dim3=T`, SA, 16–74, '%') is now primary of
-  `unemployment_rate.PT.M`; `oecd.unemp_m.PT` → cross_check (overlaps.md row: 336 common months, 186
-  equal, max gap 3.45% flagged — OECD 15–74/older vintage). Demography (theme demography, unit 'N.º' =
-  INE 'Número (N.º)', source-qualified keys): `ine.population.PT` (`0006031:Dim2=PT,Dim3=T,Dim4=T,Dim5=T`,
-  31 Dec estimates 2008–2025), `ine.live_births.PT` (`0001346:Dim2=PT,Dim3=T`, 1970–2025),
-  `ine.deaths.PT` (`0005605:Dim2=PT,Dim3=T,Dim4=T`, 1995–2025). Nothing requested was left out.
-- Unit labels ↔ INE `UnidadeMedida`: '%' ↔ Percentagem (%); 'EUR' ↔ Euro (€); 'index_2021=100' ↔
-  Não aplicável (-) + "Base 2021" in the name; 'N.º' ↔ Número (N.º).
+Selection protocol (derived live 2026-11-11, this fix round): the page form's hidden input
+`xmlDocHidden` is a `Classificacoes` XML document — the indicator's dimensions and their category
+trees with `selected` flags. To read a cell, set `selected='true'` only on the wanted period
+category (matched by its PT label AND the `order` end-date, both must agree) and on the pinned
+category of every other dimension — Dim2 = the `type='geo'` class, Dim3.. = the `type='dim'`
+classes in ascending `order` — and send the whole form back as the GET query (12-185 kB URLs work;
+Tomcat accepts them). The response is the table of exactly that cut.
 
-## Full-scope live probe (all 41 active + candidates, via INESource + RequestsHttp, 2026-11-11)
-11 requests, ~10 min. All HTTP 200; parse raised nothing; validate:
-- series with no data: 0; exceptions: 0
-- flags: normal 12030, provisional 1 (`&` on unemployment 2026-09)
-- signs observed: `&` 'Dado provisório' (with value), `x` 'Dado não disponível' (no value; 9 cells in
-  our series: latest IPI months of divisions 08,10,14,24,25,26×2,31,32), `-` 'Dado nulo ou não aplicável'
-  (HICP COICOP sub-indices, not in our series). No other sign in 0014655/0014647 full cubes (~1.1M cells).
-- quarantine: non_numeric 9 (the `x` cells), nothing else
-- period labels: monthly '<Mês> de AAAA' (all 12 month names), annual 'AAAA'; quarterly
-  '<n>.º Trimestre de AAAA' only in 0010704 (not registered) — normalize_period fixed for it
-- timings: 0001188 30 s, 0001346 4 s, 0001397 170 s, 0001400 236 s, 0005605 3 s, 0006031 2 s,
-  0007983 23 s, 0011889 (31 codes, 1.7 MB) 18 s, 0011897 15 s, 0014647 75 s, 0014655 25 s.
+- **Deep categories**: the shipped tree lacks CAE *divisions* for 0011889 (only sections B-E ship,
+  `maxlevel=3` truncated). A missing `cod_categ` is selected by inserting one `<Categoria>` node
+  as a direct child of the class's root category (`nivel` 2, `order` 999). Validated live against
+  the JSON channel on divisions 08/10/35/38 (e.g. 10@2026-06: table `114,57` = JSON `114.57`;
+  08@2026-06: `124,88` = JSON `124.88` fetched during recording). Injecting under a wrong deeper
+  parent renders `x` dummy rows (found live; avoided) — the cut assertions make this fail-closed.
+- **Assertions on the response** (anything odd raises → run fails, never a false pass): echoed
+  selection equals the pinned cut per class; exactly one period offered/visible and it normalizes
+  to the item's period via `spec.frequency`; exactly one matching table cell
+  (row-dimension codes + period label in rows, dimension codes + period label + unit symbol in
+  grid columns honouring rowspan/colspan); the table unit symbol equals the document `simbolo`
+  and `potencia='0'`; the unit symbol maps fail-closed (`%`→`%`, `€`→`EUR`, `N.º`→`N.º`,
+  `-`→`index_<base>=100` with the base year from the table title's `Base - 2021`); sign tokens
+  are the reviewed set only (`&`,`//`,`*`,`┴`,`“`,`§`; a cell that is only `…`,`x` or `-` is a
+  no-value cell → `observed_text=None`, i.e. "not found", a mismatch if sampled); thousands
+  spaces kept verbatim in `observed_text` (`,` decimal — `ingest.verify` compares exact
+  Decimals, Ruling AB, so `2` ≡ `2,0`).
+- **evidence**: `ItemResult.evidence` = the raw selection-response HTML (kept in the raw store
+  under `verify-ine/`), `evidence_url` = the full selection URL. The table's own period label (not
+  the request) fills `ItemResult.period`.
+- html.parser is NOT subclassed (the independence allowlist bans `super().__init__`/dunder
+  attrs): the table substring is sanitized (footnote anchors and `Nota(s)` rows removed — the
+  only constructs that break well-formedness there) and parsed with `xml.etree`; hidden inputs
+  by template regex. Empirically, recorded pages contain only XML-native `&amp;` inside the
+  table.
+- Pacing: delegated to the injected `Http` — `RequestsHttp` throttles every request (≤1 req/s
+  default); the verifier itself never sleeps so fixture tests stay fast. Requests: 1 indicator
+  page per varcd + 1 selection per sampled item.
 
-## Fixtures hand-checked via a third channel (Eurostat SDMX 2.1 SDMX-CSV, 2026-11-11)
-demo_gind A.LBIRTH.PT 2024 = 84642 ✓; A.DEATH.PT 2024 = 118396 ✓; A.JAN.PT 2025 = 11387222 = INE 2024 ✓;
-prc_hicp_manr M.RCH_A.CP00.PT 2025-10 = 2.0 (INE valor '2', ind_string '2,0') ✓, 2025-12 = 2.4 ✓;
-sts_inpr_m M.PRD.C.SCA.I21.PT 2026-09 = 96.6 (INE 96.57, Eurostat rounds) ✓. (HICP 2023-01: Eurostat
-8.6 vs INE base-2025 8.7 — the rebasing difference noted above.) Unemployment, confidence and trade have
-no third channel with the same definition: fixture-only.
+## Fixtures and cross-checks (all real, recorded 2026-11-11)
 
-## Live test (run once, f3nix, 2026-11-11)
-```
-pytest tests/ingest/test_live_ine.py -m live -s
-final state: pending-verification  run_id=1  written=1139  quarantined=0  served=0
-  ine.conf_manufacturing.PT: 478 observations 1987-01..2026-10 (provisional: 0)
-  ine.ipi_seasonal_cae_C.PT: 261 observations 2005-01..2026-09 (provisional: 0)
-  ine.live_births.PT: 56 observations 1970..2025 (provisional: 0)
-  ine.unemployment_monthly.PT: 344 observations 1998-02..2026-09 (provisional: 1)
-1 passed in 85.95s
-```
+`tests/ingest/fixtures/ine/verify/`: 9 indicator pages + 20 selection responses (each ≤ 200 KB),
+`MANIFEST.json` with per-case series/period/expected observation/provenance/cross-check note,
+plus `sinais_PT.html` (official sign legend), `error_page_ora.html` (real INE 'Ocorreu um erro'
+page for a malformed selection) and `home_no_referer.html` (the 302 destination without Referer).
 
-## TDD evidence
-- periods: RED 2 failed ('1.º Trimestre de 2011', '4.º Trimestre de 2024') → GREEN 71.
-- flags: RED collection error (no map_ine_flag) → GREEN 76.
-- adapter: first run 53/54 — a bare JSON number as `valor` was accepted → `_JsonNumber` marker → 55/55.
-- GitNexus MCP tools were not available in this session; edits to existing code: normalize_period regex
-  (widening), flags.py (append-only).
+Every recorded case was cross-checked: **20/20 agree** —
+- 18 cases vs the collector's own recorded JSON fixtures (exact Decimal value + sign-mapped flag),
+  including trailing-zero pairs (`140.3`/`140,30`, `2`/`2,0`), thousands-spaced EUR
+  (`7 609 586 380`), a negative balance (`-31,0`), and a provisional cell (`5,6` + `&`);
+- 2 vs live JSON fetches taken at recording time (CPI Continente 2025-10 = `2,32`; IPI division 08
+  2026-06 = `124,88` — the deep-injection path);
+- 4 additionally vs Eurostat SDMX 2.1 TSV (a third channel, this run): births 2024 = 84 642
+  (Eurostat 84642), deaths 2024 = 118 396 (118 396), population 2024 = 11 387 222 (11 387 222),
+  HICP 2025-10 = `2,0` (2.0).
+
+## Live smoke (run once, 2026-11-11, f3nix)
+
+`pytest tests/ingest/test_live_ine.py -m live -s` (deselected by default):
+`run_with_refetch` over 5 series (a CAE division `ipi_seasonal_cae_10.PT` included, so the
+injection path ran live) → **verified**, 1,399 written, 1 quarantined (the `x` IPI-division cell),
+**served = 1,399**, verification sample 24/24 matched, 110-130 s total. Audit artifacts:
+`live-audit.db` + `audit.json` + raw evidence under the session scratch dir; `replay_item` on
+stored fields returns True for sampled items.
+
+## What the fix round changed vs the first pass
+
+- INE series are collected, verified and SERVED (the 41 active series; 1 quarantined `x` cell in
+  the smoke scope). `registry/unverifiable.md` corrected — it now lists no source and explains
+  the mechanism (`run_with_refetch` raises `NoVerifierRegistered` before fetching; a
+  `verifiable: false` marker refuses outright). Owner decision #1 is moot.
+- Legacy trade rows 2005-01..2024-12 are quarantined (I3), not imported as EUR: verified re-run of
+  the real 246,162-row export into a fresh temp SQLite: **164,345 imported** (−480 vs the Task 8
+  figure), quarantine **6,522 missing_unit + 6 non_numeric + 480 suspect_unit_scale**
+  (exports 240 + imports 240, both exactly 2005-01..2024-12), 74,809 not_in_registry, served = 0,
+  second run `n_imported = 0` (idempotent). Task 8 report amended.
+- `ine.timeout_s: 300` in the registry; `INESource.fetch` uses it (the earlier concern "T17/18
+  needs ≥300 s" is now resolved for fetch; the scheduler should read the same field).
+
+## Verification semantics carried over from the first pass
+
+- Token stays INE's `valor` ('.' decimal); the verifier compares numerically (Ruling AB) and
+  additionally compares the unit symbol and the sign; `ind_string` stays in the raw payload and
+  as the adapter's consistency check.
+- 169/2,472 valued cells: `valor` drops trailing zeros vs the published string (`4`/`4,0`,
+  `140.3`/`140,30`) — the numeric comparison absorbs it. Owner decision #4 unchanged.
+- IPI `_35`≡`_D`, `_38`≡`_E` pairs untouched (owner flag). Registry units/ids/roles untouched.
+
+## Decisions / notes for adapters 11-16 and T17-18
+
+1. `run_with_refetch` fails fast: no registered verifier → `NoVerifierRegistered` before fetch;
+   `verifiable: false` → `SourceNotVerifiable` even with a verifier. CLIs must register verifiers
+   (`register_verifier(EurostatVerifier())`, `register_verifier(INEVerifier())`).
+2. Sources must pass their registry `timeout_s` per call (pattern in `INESource.fetch`); the
+   scheduler (T17/18) should construct/configure clients from it.
+3. bddXplorer tables paginate nothing we use but every structural deviation raises — the verifier
+   is deliberately strict; when INE changes a template the run fails loudly for review.
+4. `sinais.jsp` descriptions are used verbatim in `ingest/flags.py`; the JSON channel's
+   `sinal_conv_desc` for the newly mapped signs has never been observed live — a wording mismatch
+   raises at parse, forcing review (observed vocabulary so far: `&`, `x`, `-`).
+5. `§` maps to `normal` (quality caveat lost by design); `“E` (Eurostat estimate), `»` (foreseen),
+   `o`, `∞`, `i` raise everywhere until first observation triggers a mapping review.
+
+## First pass (superseded narrative)
+
+The first pass probed channels and concluded INE had one machine-readable channel; its probing
+missed the Referer-header requirement on the indicator table. Everything else from the first pass
+still stands: adapter (`pindica.jsp` op=2, `valor` tokens, sign mapping, dim-pinning
+`<varcd>:Dim2=..` native codes), registry INE section (42 series: successor HICP/CPI base-2025
+codes, Ruling Y unemployment primary, demography trio), the full-scope live parse of all 41
+active series (17-45 s per request, trade 170-236 s, 9 `x` no-value cells), licence
+(CC BY 4.0, `redistribution_ok: true`).

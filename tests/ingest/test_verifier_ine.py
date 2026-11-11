@@ -7,21 +7,19 @@ tests/ingest/fixtures/ine/verify/MANIFEST.json): 18/20 against the collector's o
 fixtures (value as exact Decimal + sign-mapped flag), 2 against a live JSON fetch taken during
 recording, and births/deaths/population/HICP additionally against Eurostat's SDMX TSV.
 """
-import json
 import re
 from datetime import datetime, timedelta, timezone
 
 import pytest
 
 from ingest import verifiers
-from ingest.db import open_db
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawStore
 from ingest.registry import sync_registry
 from ingest.sources.ine import INESource
 from ingest.verifiers import BlindItem, get_verifier, register_verifier
-from ingest.verifiers.ine import INEVerifier
 from ingest.verifiers.independence import assert_verifier_independent
+from ingest.verifiers.ine import INEVerifier
 from ingest.verify import run_with_refetch, verify_run
 from tests.ingest.fakes import FakeHttp, ok
 from tests.ingest.ine_fixtures import FixtureHttp, body, registry_specs, specs_of
