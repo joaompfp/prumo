@@ -57,7 +57,7 @@ def test_live_run_with_refetch_verifies_and_serves_cc_by(tmp_path, monkeypatch, 
             "SELECT reason, COUNT(*) FROM quarantine WHERE dataset_run_id=? GROUP BY reason",
             (result.run_id,)).fetchall()
         events = db.conn.execute(
-            "SELECT type, json_extract(detail,'$.series_id') FROM event "
+            "SELECT kind, json_extract(detail_json,'$.series_id') FROM event "
             "WHERE dataset_run_id=? ORDER BY id", (result.run_id,)).fetchall()
         verifs = db.conn.execute(
             "SELECT seed, sample_size, passed FROM verification WHERE dataset_run_id=?",
@@ -78,9 +78,14 @@ def test_live_run_with_refetch_verifies_and_serves_cc_by(tmp_path, monkeypatch, 
         print(f"verification rows (seed, sample_size, passed): {verifs}")
         for t, sid in events[:30]:
             print(f"  event {t}: {sid}")
+        bad = db.conn.execute(
+            "SELECT series_id, period, note FROM verification_item WHERE match=0 LIMIT 10"
+        ).fetchall()
+        if bad:
+            print("first failing verification items:", *["  " + str(b) for b in bad], sep="\n")
         assert result.state == "verified"
         assert verifs and all(p == 1 for _, _, p in verifs)
-        assert n_raw == 19  # one JSON page per indicator
+        assert n_raw == 18  # one JSON page per active indicator (PPP indicator is inactive)
         # served: CC BY 4.0 redistribution_ok=1 gates nothing
         assert served == result.n_written > 0
         # archived verifier evidence recovers offline (no HTTP), exact deciding-ZIP bytes
