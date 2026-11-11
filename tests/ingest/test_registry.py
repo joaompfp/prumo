@@ -53,10 +53,12 @@ def test_source_verifiable_marker_defaults_true_and_is_preserved(tmp_path):
     assert load_registry(_write(tmp_path, {"ine": SRC}, [_series("a")]))[0].source.verifiable
     specs = load_registry(_write(tmp_path, {"ine": {**SRC, "verifiable": True}}, [_series("a")]))
     assert specs[0].source.verifiable is True
-    # core.yaml marks nothing unverifiable (INE got its independent channel in Task 10 fix 1)
+    # core.yaml marks exactly dgeg unverifiable (Task 12B scoped disposition marker, see
+    # registry/unverifiable.md + unmapped-dgeg.md); every other source stays verifiable:true.
     from pathlib import Path
-    assert all(s.source.verifiable
-               for s in load_registry(Path(__file__).parents[2] / "registry" / "core.yaml"))
+    flagged = {s.source.name for s in load_registry(Path(__file__).parents[2] / "registry" / "core.yaml")
+               if not s.source.verifiable}
+    assert flagged == {"dgeg"}
 
 
 @pytest.mark.parametrize("bad", [0, -5, -0.1, float("inf"), float("nan"), True, "300"])

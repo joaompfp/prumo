@@ -1,15 +1,31 @@
-# Sources with no independent verification channel (spec §6b) — NOT SERVED
+# Sources with no established independent verification channel (spec §6b) — NOT SERVED
 
-A source listed here has an adapter (fetch → raw store → validation) but no channel independent
-of the collector's own parser through which a sample can be re-read. Its runs therefore never
-reach `verified` (no verifier is registered for it: `run_with_refetch` raises
-`NoVerifierRegistered` before fetching, and a `verifiable: false` marker under `sources:` in
-`registry/core.yaml` makes `run_with_refetch` refuse it outright), so `served_observation` never
-shows its data. Data and raw evidence are still collected, so revision history starts at the
-first ingestion. Owner decision needed.
+A source listed here cannot pass verification **as currently configured in the registry**, so its
+runs must never happen or never reach `verified`: `run_with_refetch` raises
+`NoVerifierRegistered` when no verifier is registered for the source, and raises
+`SourceNotVerifiable` up front — before any fetch, parse or HTTP request — when the source is
+marked `verifiable: false` under `sources:` in `registry/core.yaml`. Inactive series
+(`active: false`) are additionally excluded from T17/T18 scheduling altogether.
 
-**No source is unverifiable today.** INE was listed here provisionally (Task 10 first pass) but
-the review found the channel: `bddXplorer/htdocs/bddXplorer04.jsp`, INE's server-rendered
-statistical table, works over plain HTTP with a `Referer: https://www.ine.pt/` header (a plain
-client without it gets 302 + empty body, which had been misread as "browser-only"). INE is
-verified by `ingest/verifiers/ine.py` (Task 10 fix round 1) and is served normally.
+## dgeg — `verifiable: false` since Task 12B (2026-11-11), a SCOPED marker
+
+DGEG today has **no ingest adapter and no verifier**, and the pipeline has collected **no** DGEG
+data — nothing was fetched, parsed or quarantined. The marker is an eligibility block on the 17
+DGEG series **with their current core definitions** (units, coordinates, concepts): under those
+definitions no independent exact verification channel is established. It is not a claim that an
+independent channel is impossible or that DGEG "has no source": the bounded 2026-11-11 research
+(controller-verified hashes, `docs/superpowers/handoff/evidence/task-12-dgeg/`) found genuine
+partial same-publisher channels (APN/AEN PDFs and a same-format quick-stats workbook) with per
+series unit conflicts, vintage drift, base-year mismatches, representation-policy and coverage
+gaps. Per-series coordinates, findings and resumption criteria: `registry/unmapped-dgeg.md`.
+An earlier Task-10-era wording here implied such sources "still collect data and raw evidence" —
+that was never true of DGEG and is corrected: nothing exists to collect with until an adapter and
+verifier are explicitly implemented and reviewed.
+
+## Status of the other core sources
+
+- **ine** — verified (`ingest/verifiers/ine.py`, bddXplorer table channel) and served normally.
+- **bportugal, eurostat** — `verifiable: true` with registered verifiers.
+- **ren** — independently **verifiable** (`ingest/verifiers/ren.py` CSV export channel) but
+  licence-withheld: `redistribution_ok: false` keeps every verified row at served=0 under the
+  0005 gate. Withheld ≠ unverifiable — REN does not belong in this register.

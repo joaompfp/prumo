@@ -18,6 +18,14 @@ sources:
     licence_url: https://www.dgeg.gov.pt/
     attribution: 'Source: DGEG'
     redistribution_ok: false
+    # Task 12B disposition (2026-11-11), registry/unmapped-dgeg.md: SCOPED eligibility flag only —
+    # the 17 DGEG series below, WITH THEIR CURRENT core definitions (units, coordinates, concepts),
+    # have no established independent exact verification channel, and there is no DGEG ingest
+    # adapter or verifier at all. This blocks a normal run (run_with_refetch raises before any
+    # fetch); it is NOT a claim that DGEG data can never be verified: partial same-publisher
+    # channels exist (APN/AEN PDFs — see unmapped-dgeg.md per-series resumption criteria). No DGEG
+    # data has been ingested; all 17 series are active:false and stay out of T17/T18 scheduling.
+    verifiable: false
   eurostat:
     licence: CC BY 4.0
     licence_url: https://ec.europa.eu/eurostat/web/main/help/copyright-notice
@@ -496,6 +504,7 @@ series:
   unit: Mton CO2e
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.co2_emissions_total.PT
   source: dgeg
   indicator_key: dgeg_co2_emissions_total.PT.A
@@ -506,6 +515,7 @@ series:
   unit: Mton CO2e
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.consumption_industry.PT
   source: dgeg
   indicator_key: dgeg_consumption_industry.PT.A
@@ -516,6 +526,7 @@ series:
   unit: ktep
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.consumption_primary_total.PT
   source: dgeg
   indicator_key: dgeg_consumption_primary_total.PT.A
@@ -526,6 +537,7 @@ series:
   unit: ktep
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.consumption_transport.PT
   source: dgeg
   indicator_key: dgeg_consumption_transport.PT.A
@@ -536,6 +548,7 @@ series:
   unit: ktep
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.electricity_consumption.PT
   source: dgeg
   indicator_key: dgeg_electricity_consumption.PT.A
@@ -546,6 +559,7 @@ series:
   unit: TWh
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.energy_dependence.PT
   source: dgeg
   indicator_key: dgeg_energy_dependence.PT.A
@@ -556,6 +570,7 @@ series:
   unit: '%'
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.energy_intensity.PT
   source: dgeg
   indicator_key: dgeg_energy_intensity.PT.A
@@ -566,6 +581,7 @@ series:
   unit: tep/M€
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.energy_intensity_final.PT
   source: dgeg
   indicator_key: dgeg_energy_intensity_final.PT.A
@@ -576,6 +592,7 @@ series:
   unit: tep/M€'2021
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.energy_intensity_industry.PT
   source: dgeg
   indicator_key: dgeg_energy_intensity_industry.PT.A
@@ -586,6 +603,7 @@ series:
   unit: tep/M€'2021
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.energy_intensity_primary.PT
   source: dgeg
   indicator_key: dgeg_energy_intensity_primary.PT.A
@@ -596,6 +614,7 @@ series:
   unit: tep/M€2021
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.energy_intensity_services.PT
   source: dgeg
   indicator_key: dgeg_energy_intensity_services.PT.A
@@ -606,6 +625,7 @@ series:
   unit: tep/M€'2021
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.final_energy_consumption.PT
   source: dgeg
   indicator_key: dgeg_final_energy_consumption.PT.A
@@ -616,6 +636,7 @@ series:
   unit: Mtep
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.primary_energy_consumption.PT
   source: dgeg
   indicator_key: dgeg_primary_energy_consumption.PT.A
@@ -626,6 +647,7 @@ series:
   unit: Mtep
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.renewable_share_electricity.PT
   source: dgeg
   indicator_key: dgeg_renewable_share_electricity.PT.A
@@ -636,6 +658,7 @@ series:
   unit: '%'
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.renewable_share_total.PT
   source: dgeg
   indicator_key: dgeg_renewable_share_total.PT.A
@@ -646,6 +669,7 @@ series:
   unit: '%'
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: dgeg.renewable_share_transport.PT
   source: dgeg
   indicator_key: dgeg_renewable_share_transport.PT.A
@@ -656,6 +680,7 @@ series:
   unit: '%'
   decimal: .
   native_code: energy-data.db
+  active: false
 - id: eurostat.construction_index.AT
   source: eurostat
   indicator_key: eurostat_construction_index.AT.M
