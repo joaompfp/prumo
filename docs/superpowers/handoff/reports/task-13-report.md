@@ -56,7 +56,7 @@ dispositions), `173638c` (source + verifier + tests + fixtures), report commit f
 
 ## Evidence
 
-28 real publisher fixtures ≤200 KB each under `tests/ingest/fixtures/worldbank/`
+29 real publisher fixtures ≤200 KB each under `tests/ingest/fixtures/worldbank/`
 (sha256-pinned MANIFEST.json; the 6 intake files are byte-identical to the
 controller-reverified bundle — hashes recomputed here; PPP/country metadata byte-identical to
 the controller pins; the 5 PT-GDP-2021..2025 cross-channel pins re-derived: 5/5 exact token
@@ -199,6 +199,6 @@ failing closed exactly as designed; nothing from those runs is served.
 - `173638c` ingest/sources/worldbank.py, ingest/verifiers/worldbank.py, tests/ingest/
   {worldbank_fixtures.py, worldbank_verifier_fixtures.py, worldbank_verifier_entry.py,
   test_source_worldbank.py, test_verifier_worldbank.py, test_registry_worldbank_units.py,
-  test_live_worldbank.py, fixtures/worldbank/**} (28 fixture files, sha256-pinned)
+  test_live_worldbank.py, fixtures/worldbank/**} (29 fixture files, sha256-pinned)
 - report commit: this file + test_live_worldbank.py diagnostics fix (event.kind/detail_json
   columns; n_raw 18=active-indicator responses)
