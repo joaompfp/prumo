@@ -34,7 +34,14 @@ curl AND a 40 s live pipeline run — no JS/auth/cookies/Referer needed:
   series' own Unit of measure ('Percentage'/'Millions of euros'/'Currency'), Reference territory
   (Portugal/Germany/Euro Area - Changing composition; the EUR/USD series has none and is pinned by
   its currency pair reference EUR + counterparty USD), Periodicity Monthly + recurrence 'M'
-  (both surfaces must agree). observed_flag=None: the portal exposes no observation status.
+  (both surfaces must agree). observed_flag=None: the portal exposes no observation status —
+  honestly None, never echoed from the spec, and ingest.verify therefore skips the flag
+  comparison (asserted: observed_flag IS NULL for every stored item).
+- **Evidence envelope (fix round 1, commit 4d7107e):** an item's decision reads BOTH responses,
+  so ItemResult.evidence is a versioned JSON envelope (schema 'bportugal-portal-evidence', v1)
+  carrying metadata + observations wire records — final URL, HTTP status, raw body
+  base64-encoded, byte-for-byte recoverable from the raw store with no HTTP (Ruling R/G7).
+  evidence_url stays the observations URL; request counts unchanged (metadata once per series).
 
 ### Identity proof of the two channels
 Flattening order of the JSON-stat arrays (last dimension fastest) was adjudicated BY the portal:
@@ -70,17 +77,28 @@ additive): 'F'→normal; any other code / status on a valueless cell / missing s
 cell raise (fail-closed; first sighting forces a review). Valueless cells (de_10y 1993-07..
 1999-12, 78 cells) → value-None rows → non_numeric quarantine.
 
-## Tests (TDD: flags RED import-error; source RED module-missing 26 failed; then GREEN)
-- 39 source tests: 18 named cells (exact token/period/flag, ALL cross-checked live through the
+## Tests (TDD: flags RED import-error; source RED module-missing 26 failed; then GREEN; fix
+round 1 below RED first as well)
+- 48 source tests: 18 named cells (exact token/period/flag, ALL cross-checked live through the
   portal channel at fixture recording, 27/27 agree), trailing-zero tokens, status battery,
-  html/JSON/error-body rejection, truncated/sparse/duplicate-period/double-mapped/wrong-series/
+  html/JSON/error-body rejection, truncated/duplicate-period/double-mapped/wrong-series/
   wrong-unit/wrong-frequency/wrong-territory payloads, native-code parser, fetch grouping/params,
-  legacy 3-param Http doubles, recorded pipeline run (4,318 written + 78 quarantined non_numeric).
-- 19 verifier tests: every recorded case, vintage rule, empty-month not-found, per-series unit
+  legacy 3-param Http doubles, recorded pipeline run (4,318 written + 78 quarantined
+  non_numeric). **Sparse cell columns (real coverage — the earlier draft listed "sparse" here
+  with no actual test):** dense↔canonical-sparse fixture equivalence parses IDENTICALLY (values
+  AND statuses, the 78 DE value-None cells included), non-canonical alias keys
+  ('00', '01', '+1', ' 1', '٣', '1_0') raise fail-closed before any row is written
+  (pipeline-level failed-validation, 0 observation/quarantine rows), out-of-bounds keys raise.
+- 22 verifier tests: every recorded case, vintage rule, empty-month not-found, per-series unit
   surfaces {'%','MEUR','USD/EUR'}, tamper/misroute/privacy/description/recurrence/markup
   batteries, register_verifier allowlist, **subprocess independence** (collector+flags blocked),
   recorded end-to-end verified (seed=7, size=16) with served=4,318, and tamper detection
   (pt_10y 2026-10 '3.92'→'3.93' → failed-verification, exactly `value differs`, 0 served).
+  **Evidence envelope:** each item's evidence decodes offline to BOTH recorded portal wire
+  records (metadata + observations, exact URL/status/body vs fixtures); cached metadata shared
+  across a series' items while each envelope carries its own observations body; the pipeline's
+  archived evidence_sha256 reloads from the raw store (integrity-checked, no HTTP) into both
+  responses for all 16 sampled items.
 - Registry unit/territory/frequency tables cover all 10 active series keyed by native id;
   native-code uniqueness/completeness tests included.
 
@@ -97,8 +115,36 @@ x-throttle: 1000 — public access confirmed from the edge host.
 ## Notes for the controller / T17-18
 - Scheduler: register BPortugalVerifier; bportugal carries no timeout_s (sub-second API);
   RequestsHttp default 30 s is ample; keep <=1 rps pacing.
+- Evidence tooling (replay/audit): since commit 4d7107e the archived verify-bportugal evidence is
+  the 'bportugal-portal-evidence' v1 JSON envelope, not the bare observations body — decode
+  {metadata, observations}[].body_b64 to recover the exact publisher bytes.
 - Portal rows expose `pub_date` per vintage — a future revision-history task can mine
   /api/observations/ wide windows (61 months = 61 rows + vintages seen).
 - 'Currency' unit + EA geography for eur_usd are reviewed conventions (documented in both code
   and test tables); a different currency pair fails closed, forcing review.
 - flags.py got one additive block (gitnexus risk LOW); no other shared-framework edits.
+
+## Fix round 1 (2026-11-11, independent-review follow-up; commits cc094b9 + 4d7107e + this one)
+
+Two tightly scoped findings, both implemented TDD (regression tests RED first, then GREEN):
+
+- **I1 — audit evidence gap (verifier).** The metadata cache kept only the parsed unit string and
+  ItemResult.evidence held only the /api/observations/ body, so the unit verification was not
+  auditable from the archived bytes. Now: cache keeps (unit, exact HttpResult); evidence is the
+  versioned envelope described above (stdlib json+base64 only — base64 was already in
+  VERIFIER_STDLIB_IMPORTS, no allowlist/schema change; ItemResult.evidence stays arbitrary
+  bytes). No expected values echoed, no parser helpers shared; compare/tamper semantics
+  unchanged (tamper batteries green). Request counts unchanged.
+- **I2 — actual data corruption (source).** _cells_column accepted sparse aliases: '0' and '00'
+  int()-fold onto the same cell and the later key silently overwrote the earlier
+  (repro: {'0':'1.10','00':'2.20'} → ['2.20', None, None]). Now every sparse key must be the
+  canonical ASCII decimal str(int(k))==k; '00', '01', '+1', ' 1', Unicode digit aliases
+  ('٣'), '1_0' all raise before any row is written. Also makes the report's sparse-coverage
+  claim true (it previously described no real test).
+
+Verification: full suite **751 passed, 3 live deselected** (739 at 8c31802 + 12 new tests);
+Ruff 0.17.4 clean on the four touched files; verifier allowlist and subprocess-independence
+tests still pass. GitNexus detect-changes on the diff: affected processes exactly
+`BPortugalVerifier.check` and `parse → _cells_column`, nothing else. Fixture-based only; no new
+endpoint research or live calls. Deferred minors untouched (naive/aware pub_date diagnostic,
+raw-missing pin-category diagnostic). No shared files, no push/merge.
