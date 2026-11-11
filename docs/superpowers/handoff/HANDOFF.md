@@ -30,13 +30,14 @@ Rebuild of Prumo's data layer: a new `ingest/` package (raw → validated → se
 | 9 Eurostat adapter + verifier | complete (..954a89e): 329 active series (live-parsed OK), 368 inactive with reasons in registry/unmapped-eurostat.md |
 | 10 INE adapter + verifier | complete through 16ee533; fix round 1 passed independent spec and quality reviews; controller live smoke verified 1,399 served / 24 of 24 sampled matches (isolated test DB, not deployment) |
 | 11 Banco de Portugal adapter + verifier | complete through 550ad90; independent spec and quality reviews plus scoped fix re-review PASS; all 10 active series exercised live, 4,318 served / 78 missing-value quarantines / 24 of 24 sampled matches in isolated test DB |
-| 12-16 source adapters | not started: REN (+DGEG/ERSE), World Bank, FRED, OECD, E-REDES/dadosgov |
+| 12 REN (+ DGEG/ERSE if core) | PARTIAL: REN + licence-gate Phase A complete through 7f58a21, independent gates passed; 182 live observations verified / 50 of 50 sampled matches / served=0 (restrictive licence). DGEG ingestion blocked by unit/representation/vintage/channel conflicts; safe disposition brief ready, not yet implemented. ERSE has zero core series. |
+| 13-16 source adapters | not started: World Bank, FRED, OECD, E-REDES/dadosgov |
 | 17 CLI/status/replay + delete old collectors | not started |
 | 18 scheduler service + compose + deploy | not started |
 | 19 docs + final audit pack | not started |
 | Final whole-branch review (most capable model) → `superpowers:finishing-a-development-branch` | not started |
 
-Last full controller test run: `.venv-ci/bin/python -m pytest tests -q` -> 751 passed, 3 live deselected, 1 warning (115.75 s). Final Banco de Portugal live smoke -> 1 passed (40.92 s), verified, 4,318 served in isolated test DB, 78 non_numeric quarantines, 24/24 matched. All 24 archived evidence bundles contain exact metadata and observations responses. INE live smoke -> verified, 1,399 served, 1 quarantined, 24/24 matched (112.16 s). Reviews: `reports/task-10-review.md`, `reports/task-11-review.md`. No pipeline deployment.
+Last full controller test run after REN fixes: `.venv-ci/bin/python -m pytest tests -q` -> 830 passed, 4 live deselected, 1 warning (125.43 s). `.venv-ci/bin/ruff` touched paths clean. Final REN live smoke -> verified, all 14 active series over 13 completed months (2025-10..2026-10), 182 written / 0 quarantines / 50 of 50 sampled matches / 0 served with the real restrictive licence (42.56 s); status-bearing evidence recovered offline. Independent spec and quality reviews plus scoped fix re-reviews passed; reports/task-12-ren-*.md. Previous BPstat smoke: 4,318 served / 78 missing-value quarantines / 24 of 24 matches. INE: 1,399 served / 1 quarantine / 24 of 24 matches. All live runs used isolated scratch DBs, no pipeline deployment.
 
 ## Obligations carried into EVERY adapter task (9–16) — from rulings I, J, N, O, Q, R, S
 1. Adapter = `ingest/sources/<name>.py` (implements `Source`, `fetch` returns an Iterable of `RawResponse`; `parse` returns `dict[series_id, list[RawRow]]` with `RawRow.response_index` pointing at the response each row came from) + independent verifier `ingest/verifiers/<name>.py`. Verifier uses a DIFFERENT endpoint/format than the collector, shares NO helper module with the parser, and passes the static allowlist in `register_verifier` (only `from ingest.http|models|rawstore|sources|verifiers import <allowlisted names>` + stdlib allowlist).
@@ -54,7 +55,7 @@ Per-task minors are listed in `progress-ledger.md`. Notable: T17 must delete `sc
 
 ## Next step (resume here)
 1. Tasks 10 and 11 are complete, including their independent reviews and fix-round re-reviews. Do not re-dispatch their completed briefs.
-2. Resume Task 12 REN (+DGEG/ERSE if core), then 13 World Bank, 14 FRED (no key in SOPS: NEEDS_CONTEXT to owner), 15 OECD, 16 E-REDES/dadosgov (only if core). Use `adapter-dispatch-template.md`, preserve every ruling, and implement one source task at a time. A fresh implementer and independent specification then quality gates remain mandatory.
+2. Task12 Phase A REN/licence gate is complete, including independent fix reviews. Do not re-dispatch it. Resume the safe DGEG disposition in `reports/task-12-dgeg-disposition-brief.md` (17 current core entries; no completed DGEG ingestion). Research found partial PDF channels but unresolved unit/scale, precision, vintage and coverage conflicts; no silent conversion or blanket no-channel claim. Complete its independent spec then quality reviews, preserve blocked status, then proceed to 13 World Bank, 14 FRED (no key in SOPS: NEEDS_CONTEXT if needed), 15 OECD, 16 E-REDES/dadosgov (only if core). One implementer at a time, using adapter-dispatch-template.md and all rulings.
 3. Task 17 (CLI/status/replay + delete old collectors; must register EurostatVerifier, INEVerifier and BPortugalVerifier via register_verifier; use run_with_refetch, per-source timeouts and SourceSpec.verifiable; list stale pending runs; ignore inactive series), 18 (scheduler + compose + f0nix deploy), 19 (docs), final whole-branch review on the most capable model, then `superpowers:finishing-a-development-branch` (merge to main is the owner's call).
 
 ## Method (how each task was run — keep doing the same)
@@ -68,6 +69,8 @@ Subagent-driven: dispatch a fresh implementer with a complete brief and binding 
 2. Eurostat unit labels are inconsistent for the same code (see ledger Task 9).
 3. Licences UNVERIFIED for OECD, REN, DGEG, FRED (`registry/licences-todo.md`); INE licence verified (CC BY 4.0).
 4. INE `value_text`: keep INE's `valor` token (drops trailing zeros: '2' where INE publishes '2,0'; 169/2472 cells) with a numeric verifier [default, Ruling AB], or switch to the published `ind_string` with `decimal: ','` (would quarantine the legacy INE import).
+5. REN terms restrict reuse (clauses 2/3.2): internally verified but redistribution_ok=false and served=0 under migration0005. No consent or legal exception established; owner resolution required before serving.
+6. DGEG current core has native unit/concept, percent-storage/display, publication-vintage and exact-channel coverage blockers. No new DGEG adapter/ingestion yet. Preserve original registry definitions until explicit reconciliation; safe inactive/blocked disposition is not completed ingestion. Reuse grant for the energy workbook remains unconfirmed.
 
 ## Deployed state / environment notes (2026-11-11)
 - f0nix runs container `prumo` = the Task 1 maintenance page (prumo repo checkout at `~/docker/stacks/web/images/prumo` on f0nix is on branch `pipeline-rebuild` at the Task 1 commit `031eb3b`; infra repo `~/docker` branch `f0nix`, commits 00c9596 + 63b0af1). The `ingest/` package is NOT deployed yet (Task 18). After Task 18 the f0nix checkout must be updated (`git fetch && git checkout pipeline-rebuild && git pull`) before `bash -lic "dc-web-up prumo-ingest"`.
