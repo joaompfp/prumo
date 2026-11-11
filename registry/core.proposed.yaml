@@ -45,10 +45,21 @@ sources:
     attribution: 'Source: OECD'
     redistribution_ok: false
   ren:
-    licence: UNVERIFIED — builder must confirm before serving
-    licence_url: https://www.ren.pt/
+    # REN DataHub "Termos Legais e Condições Gerais" (licence_url), read live 2026-11-11
+    # (Task 12 discovery archive terms/datahub-termos.body): clause 2 reserves all exploitation
+    # rights ("sem que se possa considerar cedido ao Utilizador nenhum dos direitos de
+    # exploração") and clause 3.2 makes the user abstain from "Reproduzir, copiar, distribuir,
+    # colocar à disposição, comunicar publicamente, transformar ou alterar os Conteúdos, salvo
+    # nos casos autorizados na lei ou expressamente consentidos pela REN" and from extracting or
+    # reusing "a totalidade ou uma parte substancial dos Conteúdos ... assim como as bases de
+    # dados". No open reuse grant exists -> redistribution_ok stays FALSE: data may be verified
+    # internally but served=0 (licence gate, migration 0005) until the owner resolves terms with
+    # REN. See registry/licences-todo.md.
+    licence: REN DataHub Termos Legais — no open reuse grant (clauses 2/3.2 reserve reproduction, distribution and substantial extraction to express REN consent)
+    licence_url: https://datahub.ren.pt/pt/termos-legais-e-condicoes-gerais/
     attribution: 'Source: REN — Redes Energéticas Nacionais'
     redistribution_ok: false
+    verifiable: true  # independent channel: datahub.ren.pt /service/exports/csv chart export (verifier ingest.verifiers.ren)
   worldbank:
     licence: CC BY 4.0
     licence_url: https://datacatalog.worldbank.org/public-licenses
@@ -8586,6 +8597,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:BIOMASSA
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_consumption.PT
   source: ren
   indicator_key: ren_electricity_consumption.PT.M
@@ -8595,6 +8609,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:CONSUMO
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_exports.PT
   source: ren
   indicator_key: ren_electricity_exports.PT.M
@@ -8604,6 +8621,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:EXPORTACAO
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_hydro.PT
   source: ren
   indicator_key: ren_electricity_hydro.PT.M
@@ -8613,6 +8633,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:HIDRICA
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_imports.PT
   source: ren
   indicator_key: ren_electricity_imports.PT.M
@@ -8622,6 +8645,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:IMPORTACAO
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_natural_gas.PT
   source: ren
   indicator_key: ren_electricity_natural_gas.PT.M
@@ -8631,6 +8657,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:GAS_NATURAL
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_natural_gas_ccgt.PT
   source: ren
   indicator_key: ren_electricity_natural_gas_ccgt.PT.M
@@ -8640,6 +8669,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:GAS_NATURAL_CICLO_COMBINADO
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_net_imports.PT
   source: ren
   indicator_key: ren_electricity_net_imports.PT.M
@@ -8649,6 +8681,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:SALDO_IMPORTADOR
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_price_mibel.PT
   source: ren
   indicator_key: ren_electricity_price_mibel.PT.M
@@ -8658,6 +8693,9 @@ series:
   frequency: M
   unit: EUR/MWh
   decimal: .
+  native_code: ElectricityMarketPricesMonthly:PT.Preço Médio
+  url: https://datahub.ren.pt/pt/eletricidade/mercado/
+  active: true
 - id: ren.electricity_production_non_renewable.PT
   source: ren
   indicator_key: ren_electricity_production_non_renewable.PT.M
@@ -8667,6 +8705,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:PRODUCAO_NAO_RENOVAVEL
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_production_renewable.PT
   source: ren
   indicator_key: ren_electricity_production_renewable.PT.M
@@ -8676,6 +8717,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:PRODUCAO_RENOVAVEL
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_production_total.PT
   source: ren
   indicator_key: ren_electricity_production_total.PT.M
@@ -8685,6 +8729,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:PRODUCAO_TOTAL
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_solar.PT
   source: ren
   indicator_key: ren_electricity_solar.PT.M
@@ -8694,6 +8741,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:SOLAR
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: ren.electricity_wind.PT
   source: ren
   indicator_key: ren_electricity_wind.PT.M
@@ -8703,6 +8753,9 @@ series:
   frequency: M
   unit: GWh
   decimal: .
+  native_code: ElectricityConsumptionSupplyMonthly:EOLICA
+  url: https://datahub.ren.pt/pt/eletricidade/balanco-mensal/
+  active: true
 - id: fred.commodity_soybean.WORLD
   source: fred
   indicator_key: soybean_price.WORLD.M
