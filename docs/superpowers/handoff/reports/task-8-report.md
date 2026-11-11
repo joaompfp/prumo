@@ -1,6 +1,6 @@
 # Task 8 report: legacy import and registry proposal
 
-Status: **DONE_WITH_CONCERNS**. Commits: `4d0b4b6` (legacy_import + tests), `3bec761` (controller WIP checkpoint of propose_registry + tests, written by this task), `d0d2bc5` (generated registry files + core-registry test), plus the report commit.
+Status: **DONE_WITH_CONCERNS**. Commits: `4d0b4b6` (legacy_import + tests), `3bec761` (controller WIP checkpoint of propose_registry + tests, written by this task), `d0d2bc5` (generated registry files + core-registry test), `261d99c` (report), `864d054` (fix round 1: Ruling V missing_unit, truthful gaps and reasons), plus this report update.
 
 ## Summary numbers (real export, 246,162 rows)
 
@@ -19,24 +19,27 @@ Status: **DONE_WITH_CONCERNS**. Commits: `4d0b4b6` (legacy_import + tests), `3be
 | ERSE | 0 | 517 | 0 |
 | **total** | **171,353** | **74,809** | **1,774** |
 
+"In core" means the row's series is in the registry. 6,522 of those rows are then quarantined as `missing_unit` (see below).
+
 - Registry: 1,774 series, 1,751 indicator_keys (one primary each), 23 cross_checks. Themes: economy 1,441, demography 270, energy 63.
-- Overlaps: 20 indicator_keys with more than one series (23 cross-checks), 6 flagged LARGE (relative gap above 2%).
+- Overlaps: 20 indicator_keys with more than one series (23 cross-checks), 0 flagged LARGE (relative gap above 2%) after fix round 1. The earlier 6 were artefacts of unitless rows, see the fix section.
 - Left out: 429 deferred series (DGEG long tail 179, World Bank non-core themes 250), 282 unclassified series (several units 178, several period formats 41, no unit 30, no parseable period 28, legacy data problem 3, quarterly stored as months 2).
 
 ### `import_legacy` against the real export (temp SQLite in the scratchpad, deleted afterwards)
 
 | outcome | rows |
 |---|---|
-| imported (`legacy-unverified`) | 171,347 |
+| imported (`legacy-unverified`) | 164,825 |
+| quarantined `missing_unit` (blank legacy unit, Ruling V): Eurostat 1,819, FRED 3,779, INE 864, World Bank 60 | 6,522 |
 | quarantined `non_numeric` (DOUBLE text in scientific notation, e.g. `5.22e-05`, all World Bank) | 6 |
 | quarantined `bad_period` | 0 |
 | quarantined `unit_mismatch` | 0 |
 | skipped `not_in_registry` | 74,809 |
 | **total** | **246,162** |
 
-- Second run: `n_imported=0`, no new quarantine rows, still 7 dataset_runs. Idempotent.
+- Second run: `n_imported=0`, `{not_in_registry: 74809}` only, still 164,825 observations, 6,528 quarantine rows and 7 dataset_runs. Idempotent.
 - 7 synthetic runs (`legacy:<source>`), all `verified`. `served_observation` = 0 rows (`legacy_served` = '0').
-- The "11.2k nulls" in the spec are null **units**. No value is empty. Empty units take the registry unit. Series with no unit at all are left out of core (see unclassified).
+- The "11.2k nulls" in the spec are null **units**. No value is empty. Under Ruling V a blank unit is never given the registry unit: the row is quarantined as `missing_unit`. Series with no unit at all are left out of core. Every unitless row range is listed in `unclassified.md`, in the section "Legacy rows quarantined: unit missing".
 - `bad_period` is 0 because the only unparseable periods (`2022-00`, Eurostat `earn_ses_pub2s`) belong to series with no parseable period, and those are unclassified. INE free-text periods (`Setembro de 2025`) normalize to `YYYY-MM`.
 - Runtime is about 23 s for proposal + import together.
 
@@ -130,8 +133,29 @@ pytest tests/ingest -q  ->  376 passed in 56.81s
 
 1. **Banco de Portugal has zero core series.** The legacy data has no unit for any BPstat series, and I did not invent units. Task 11 must add euribor, yields, credit, deposits and EUR/USD to the registry with units from BPstat metadata. Similar gaps: Eurostat `gdp_quarterly`, `hicp`, `ipi_total`, `ipi_manufacturing` (several units, rebasing across vintages); INE `gdp_yoy` and `unemployment` (quarterly stored as months); World Bank PT-only `gdp`, `inflation` and others (no unit). See `unclassified.md`.
 2. **No core series is servable yet except Eurostat and World Bank.** INE, OECD, REN, DGEG and FRED are `UNVERIFIED` with `redistribution_ok: false` until a person confirms their terms (`licences-todo.md`).
-3. **Partial units.** In 29 core series, some legacy rows have no unit and are imported under the single unit the series does state. Example: Eurostat PT sector IPIs have 229 unit-less rows from 2000–2023, written by an older collector, imported as `I21`; their base year is unverified. These rows are listed in `unclassified.md`. They are legacy-only and never served.
-4. **Large IPI gaps.** INE (index_2021=100) vs Eurostat `ipi`/`total_industry`/`manufacturing` (I21) differ by 8–12%, likely a seasonal-adjustment difference. INE vs Eurostat `STS_INPR_M_*` agree within 0.2%. The owner should decide which Eurostat series stays as the cross-check. `seasonal_adjustment` is left empty everywhere because the legacy data does not state it reliably.
+3. **Superseded by fix round 1 (Ruling V).** Unitless legacy rows are now quarantined as `missing_unit` and never imported (6,522 rows; ranges in `unclassified.md`).
+4. **Superseded by fix round 1.** The "8–12% INE vs Eurostat IPI gap" was not a disagreement between sources. It came from unitless Eurostat rows (2000–2017), which are an older base-year vintage and had been labelled I21. Over explicit-I21 periods (2018 on), INE and Eurostat agree within 0.7% (`ipi_total`: 0.69%, `ipi_manufacturing`: 0.06–0.67%, `ipi_c22`: 0.09%, `ipi_c28`: 0.47%). `seasonal_adjustment` is still left empty everywhere.
+8. **Owner note (F4).** Six tiny World Bank values written in scientific notation (for example `5.22e-05`) are quarantined as `non_numeric` by design. They are DOUBLE text from the old store, not publisher tokens. The World Bank adapter will re-fetch them.
 5. **PT unemployment primary is OECD** (`unemployment_rate.PT.M`), because INE's legacy series is quarterly and Eurostat's PT monthly series has several units. Task 10 (INE) should add the INE monthly series as primary.
 6. **Naive legacy `fetched_at` values are assumed to be UTC.**
 7. The CLAUDE.md GitNexus impact and detect_changes steps were not run, because no GitNexus tools were available in this session.
+
+## Fix round 1 (review F1, F2, F4; Ruling V)
+
+| finding | fix |
+|---|---|
+| F1: blank legacy units were imported under the registry unit, which invents a unit | `legacy_import`: an otherwise-valid row whose CSV unit is blank is quarantined as `missing_unit`. This is a legacy-only reason, local to `legacy_import.py`; `validate()` and the live pipeline are unchanged. A non-empty unit that differs from the registry unit is still `unit_mismatch`. Identical quarantined rows from two legacy fetches are each written (the quarantine table has no fetched_at), so all 246,162 rows are accounted for. Re-runs still write nothing. |
+| F1 in proposal | `overlaps.md` gaps and row counts use only rows with an explicit unit, and the file says why. The `unclassified.md` section is now "Legacy rows quarantined: unit missing": per series, the count and period range of unitless rows, covering both core series (rows quarantined) and series with no unit at all (not core, for example BdP). Tie-breaks use explicit-row counts. |
+| F2: `_why` claimed "Portuguese institution" for Eurostat-vs-Eurostat ties | `_why` states the rule that actually decided: the PT, Eurostat or world rule only when the primary really is that kind of source; otherwise "closest to origin by source rank: X ahead of Y". For same-source names it says "tie broken by row count (n vs m)", or "by period count, then series id (equal row counts)" when the counts are equal. |
+| F4 | owner note added as concern 8 |
+
+Effect: large gaps went from 6 to 0. The FRED primaries of three pairs moved to the `commodity_*` names because the unitless copies no longer count. The registry still has 1,774 series and 1,751 keys with one primary each, loads, and syncs into a fresh DB (1,774 series).
+
+Tests:
+- RED: `test_null_value_and_unit_quarantined`, `test_empty_unit_row_never_takes_the_registry_unit`, `test_overlap_gap_uses_only_rows_with_an_explicit_unit`, `test_series_without_any_explicit_unit_not_core_and_listed` and `test_why_is_truthful` failed (5 failed, 8 passed) before the fix.
+- `test_identical_quarantined_rows_from_two_fetches_both_counted` was written together with its fix. The bug it pins was found by the real-export total check, which first summed to 246,108.
+
+```
+$ .venv-ci/bin/python -m pytest tests/ingest -q
+============================= 381 passed in 57.01s =============================
+```
