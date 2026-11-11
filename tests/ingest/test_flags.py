@@ -202,3 +202,38 @@ def test_ine_mapped_pairs_are_the_official_legend():
         assert added[sign] == desc, sign
     unmapped = {"o", "∞", "»", "i", "“E"}
     assert (set(absent) | set(added)) - set(INE_VALUE_SIGNS) - set(INE_NO_VALUE_SIGNS) == unmapped
+
+
+# --- Banco de Portugal (BPstat JSON-stat `status`) ------------------------------------------------
+# Vocabulary observed live (2026-11-11): every valued cell of all 10 core series (full history,
+# ~33,400 cells over the 5 datasets) and of a national-accounts probe carries 'F'; valueless
+# cells (e.g. DE 10y before 2000-01) carry status null. No code legend is published in the API
+# docs (OpenAPI types status as a nullable string), so the mapping is fail-closed: 'F' -> normal;
+# anything else raises for review, on valued AND valueless cells alike.
+
+from ingest.flags import map_bportugal_flag  # noqa: E402
+
+
+def test_bportugal_final_status_maps_to_normal():
+    assert map_bportugal_flag("F") == "normal"
+
+
+def test_bportugal_valueless_cells_have_no_status():
+    assert map_bportugal_flag(None, value_present=False) is None
+
+
+@pytest.mark.parametrize("status", ["P", "E", "B", "R", "C", "N", "f", "Provisional", ""])
+def test_bportugal_unknown_status_codes_raise(status):
+    with pytest.raises(ValueError, match="BPstat"):
+        map_bportugal_flag(status)
+
+
+def test_bportugal_valued_cell_without_status_raises():
+    with pytest.raises(ValueError, match="BPstat"):
+        map_bportugal_flag(None)
+
+
+def test_bportugal_status_on_a_valueless_cell_raises():
+    # 'F' claims a published state for a value that is not there: misread or format change.
+    with pytest.raises(ValueError, match="BPstat"):
+        map_bportugal_flag("F", value_present=False)

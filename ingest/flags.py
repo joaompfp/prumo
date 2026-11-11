@@ -94,6 +94,35 @@ def map_eurostat_flag(code: str | None, *, value_present: bool = True) -> str | 
     return next((f for f in PRECEDENCE if f in mapped), "normal")
 
 
+# Banco de Portugal (BPstat). The JSON-stat 2.0 payloads of the public data API carry a `status`
+# array parallel to `value`. Observed vocabulary (2026-11-11, full history of all 10 core series
+# — ~33,400 valued cells — and a quarterly national-accounts probe): every valued cell is 'F'
+# (the published/final state); valueless cells (e.g. DE 10y yields before 2000-01) carry status
+# null. BPstat publishes no per-code legend (OpenAPI types status as a nullable string), so the
+# mapping is fail-closed: 'F' -> normal; any other code raises for review, on valued and
+# valueless cells alike.
+BPORTUGAL_FINAL_STATUS = "F"
+
+
+def map_bportugal_flag(status: str | None, *, value_present: bool = True) -> str | None:
+    """Map a BPstat JSON-stat status token onto FLAGS.
+
+    value_present=True: 'F' -> 'normal'; None/blank or any other code raises ValueError.
+    value_present=False: None -> None (the row carries no value, so there is no status); a real
+        code on a valueless cell means we misread the payload (or BPstat began annotating missing
+        values): raises, never silently dropped.
+    """
+    code = (status or "").strip() if isinstance(status, str) else status
+    if not value_present:
+        if code in (None, ""):
+            return None
+        raise ValueError(f"BPstat status code {status!r} on a cell without value")
+    if code == BPORTUGAL_FINAL_STATUS:
+        return "normal"
+    raise ValueError(f"unknown BPstat status code {status!r} on a valued cell "
+                     f"(observed vocabulary so far: 'F' only; review before mapping)")
+
+
 # INE — Statistics Portugal. A cell carries an optional conventional sign ('sinal_conv') with
 # INE's own description ('sinal_conv_desc'); the sign is also appended to the formatted
 # 'ind_string' ('5,0 &'). Reviewed signs only, each paired with INE's exact description: '&', 'x'
