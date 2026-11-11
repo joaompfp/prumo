@@ -28,14 +28,14 @@ Rebuild of Prumo's data layer: a new `ingest/` package (raw → validated → se
 | 7 verification framework (+ independence guard) | complete (4 fix rounds) |
 | 8 legacy import + registry proposal | complete (commits ..8dbf715): provisional `registry/core.yaml` (1,774 series / 1,751 keys), overlaps.md, deferred-tail.md, unclassified.md, licences-todo.md; legacy import verified on the real export (164,825 imported, 6,522 missing_unit + 6 non_numeric quarantined, 74,809 not_in_registry, 0 served) |
 | 9 Eurostat adapter + verifier | complete (..954a89e): 329 active series (live-parsed OK), 368 inactive with reasons in registry/unmapped-eurostat.md |
-| 10 INE adapter | implemented (..2b8198a), IN REVIEW; **no independent verification channel exists → INE unserved; owner decision pending (see ledger Task 10)** |
+| 10 INE adapter | implemented (..2b8198a); review ❌: CRITICAL — INE DOES have an independent channel (bddXplorer HTML table with a `Referer` header) so the verifier must be built; + 3 Important. **Fix round 1 NOT yet dispatched: ready-to-dispatch instructions in `docs/superpowers/handoff/task-10-fix-round-1.md`** |
 | 11–16 source adapters | not started (Eurostat, INE, Banco de Portugal, REN(+DGEG/ERSE), World Bank, FRED, OECD, E-REDES/dadosgov) |
 | 17 CLI/status/replay + delete old collectors | not started |
 | 18 scheduler service + compose + deploy | not started |
 | 19 docs + final audit pack | not started |
 | Final whole-branch review (most capable model) → `superpowers:finishing-a-development-branch` | not started |
 
-Last full test run: `pytest tests/ingest` → 525 passed (1 live deselected).
+Last full test run: `pytest tests/ingest -q` → 604 passed (2 live deselected).
 
 ## Obligations carried into EVERY adapter task (9–16) — from rulings I, J, N, O, Q, R, S
 1. Adapter = `ingest/sources/<name>.py` (implements `Source`, `fetch` returns an Iterable of `RawResponse`; `parse` returns `dict[series_id, list[RawRow]]` with `RawRow.response_index` pointing at the response each row came from) + independent verifier `ingest/verifiers/<name>.py`. Verifier uses a DIFFERENT endpoint/format than the collector, shares NO helper module with the parser, and passes the static allowlist in `register_verifier` (only `from ingest.http|models|rawstore|sources|verifiers import <allowlisted names>` + stdlib allowlist).
@@ -52,13 +52,18 @@ Public site = "Em manutenção" until the UI revamp (project 4). No Telegram/pus
 Per-task minors are listed in `progress-ledger.md`. Notable: T17 must delete `scripts/audit_nightly.py` + the entrypoint cron block and clean `ci.yml`/`pytest.ini`/`tests/README.md`/`tests/conftest.py`; T17 CLI status must list stale `pending-verification` runs; `verify_run` itself accepts an unregistered verifier (only `run_with_refetch` enforces registration) so CLIs must call `run_with_refetch`; HEAD requests to the maintenance page return 405 (uptime probes).
 
 ## Next step (resume here)
-Task 11 (Banco de Portugal; add units from BPstat) — then 12–16 (10 is implemented, in review). Use `docs/superpowers/handoff/adapter-dispatch-template.md` (lessons from Task 9) for every adapter dispatch.
-(Task 9 text kept for history:) Task 9 (Eurostat adapter + verifier, also creates `ingest/flags.py`). The plan's tasks 9–16 are one combined section: write each dispatch from the plan table + the adapter obligations above + the series of that source in `registry/core.yaml`. Open registry issues for adapters: Banco de Portugal has 0 core series (legacy had no units; Task 11 must add them with BPstat units); INE/OECD/REN/DGEG/FRED licences UNVERIFIED (`registry/licences-todo.md`, redistribution_ok=0 → must be confirmed before serving); PT unemployment primary is OECD until Task 10 adds INE monthly; single-source keys are source-qualified (no auto-merge).
+1. Dispatch Task 10 fix round 1 from `docs/superpowers/handoff/task-10-fix-round-1.md` (fresh implementer; the earlier agents' ids are gone), then a scoped re-review.
+2. Task 11 Banco de Portugal (BPstat; add units — legacy had none → 0 core series today), then 12 REN(+DGEG/ERSE), 13 World Bank, 14 FRED (no key in SOPS: NEEDS_CONTEXT to owner), 15 OECD, 16 E-REDES/dadosgov (only if the registry marks core). Use `adapter-dispatch-template.md` for each dispatch.
+3. Task 17 (CLI/status/replay + delete old collectors; must register verifiers: `register_verifier(EurostatVerifier())` etc.; per-source timeouts; list stale pending runs; ignore inactive series; machine-readable unverifiable marker), 18 (scheduler + compose + f0nix deploy), 19 (docs), final whole-branch review on the most capable model, then `superpowers:finishing-a-development-branch` (merge to main is the owner's call).
+
+## Method (how each task was run — keep doing the same)
+Subagent-driven: (a) dispatch an implementer (opus for adapters/judgement tasks, sonnet for mechanical) with the task brief + rulings, told to commit as it goes; (b) generate the review package: `bash ~/.claude/plugins/cache/claude-plugins-official/superpowers/7.0.0/skills/subagent-driven-development/scripts/review-package docs/superpowers/plans/2026-11-10-base-data-pipeline.md <BASE_SHA> HEAD`; (c) dispatch an ADVERSARIAL reviewer (opus for adapters/verification; sonnet for small tasks) that probes live/with scratch scripts; (d) fix loop ≤5 rounds with scoped re-reviews of each fix diff; (e) record every finding/ruling in `.superpowers/sdd/2026-11-10-base-data-pipeline/progress.md` and copy it to `docs/superpowers/handoff/progress-ledger.md` + commit + push after each step. Never fix findings in the controller session; never run implementers in parallel. Use `command cp -f` (the shell aliases `cp -i`).
 
 ## Registry note (important)
 `registry/core.yaml` is now AUTHORITATIVE: Task 9 added hand-derived `native_code`/`url` for Eurostat series (and later adapters add theirs). Do NOT re-run `propose_registry` over it (it would wipe them). Inactive series are explained in `registry/unmapped-eurostat.md` (and later `unmapped-<source>.md`). Verifiers are registered by the Task 17 CLI via `register_verifier(<Source>Verifier())`.
 
 ## OWNER DECISIONS PENDING
-1. INE verification: no independent channel exists (spec §6b). Options: Eurostat cross-check (not independent of INE), headless-browser verification of the INE page, or keep INE unserved. Until decided INE stays unserved.
+1. (RESOLVED by review: INE has an independent channel — bddXplorer HTML with Referer; see Task 10 fix round.)
 2. Eurostat unit labels are inconsistent for the same code (see ledger Task 9).
-3. Licences UNVERIFIED for OECD, REN, DGEG, FRED (`registry/licences-todo.md`).
+3. Licences UNVERIFIED for OECD, REN, DGEG, FRED (`registry/licences-todo.md`); INE licence verified (CC BY 4.0).
+4. INE `value_text`: keep INE's `valor` token (drops trailing zeros: '2' where INE publishes '2,0'; 169/2472 cells) with a numeric verifier [default, Ruling AB], or switch to the published `ind_string` with `decimal: ','` (would quarantine the legacy INE import).
