@@ -23,8 +23,9 @@ sources:
     # have no established independent exact verification channel, and there is no DGEG ingest
     # adapter or verifier at all. This blocks a normal run (run_with_refetch raises before any
     # fetch); it is NOT a claim that DGEG data can never be verified: partial same-publisher
-    # channels exist (APN/AEN PDFs — see unmapped-dgeg.md per-series resumption criteria). No DGEG
-    # data has been ingested; all 17 series are active:false and stay out of T17/T18 scheduling.
+    # channels exist (APN/AEN PDFs; see unmapped-dgeg.md per-series resumption criteria). No new
+    # live DGEG collection has run; Task-8 legacy imports remain unchanged. All 17 series are
+    # active:false and stay out of T17/T18 scheduling.
     verifiable: false
   eurostat:
     licence: CC BY 4.0

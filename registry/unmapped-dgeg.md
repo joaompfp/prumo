@@ -3,8 +3,9 @@
 All 17 DGEG annual PT series (the complete DGEG set in `core.yaml`) keep their original ids,
 units, frequencies, geographies, roles and indicator_keys but are `active: false`, and the `dgeg`
 source is `verifiable: false` + `redistribution_ok: false`. This is a **safe disposition, not an
-ingestion**: there is no DGEG ingest adapter and no verifier, no DGEG data has been collected by
-the pipeline, and no unit conversion or display-rounding policy is applied or implied. It is
+ingestion**: there is no DGEG ingest adapter and no verifier, and no new live DGEG collection
+has run. Task-8 legacy imports remain unchanged; no unit conversion or display-rounding policy
+is applied or implied. It is
 also **not** a claim that DGEG as a source has no independent channel: the bounded 2026-11-11
 follow-up research (hashes controller-verified) found real partial same-publisher channels,
 recorded per row below. "Inactive" here = ineligible until the row's resumption criteria are met
@@ -42,7 +43,7 @@ Independent-channel references (same publisher, different endpoint/format):
 | 8 | dgeg.energy_intensity.PT (tep/M€) | — duplicate of registry `energy_intensity_primary` (sheet1 row 28) with a lossy unit string; no distinct native mapping exists | duplicate concept | nothing independent can map to an ambiguous duplicate; legacy values equal row 28's | owner reconciliation (retire-alias or redefine); until then inactive |
 | 9 | dgeg.energy_intensity_final.PT (tep/M€'2021) | sheet1 row 29, base 2021, 1995–2024p | base-year/definition mismatch | AEN annex intensities are base **2016**; APN publishes index form `2021=100` — neither matches the current base-2021 workbook definition | a same-base (2021) same-unit independent channel |
 | 10 | dgeg.energy_intensity_industry.PT (tep/M€'2021) | sheet1 row 38, base 2021, 1995–2024p | base-year/definition mismatch | same as #9 | same as #9 |
-| 11 | dgeg.energy_intensity_primary.PT (tep/M€2021) | sheet1 row 28, base 2021, 1995–2024p (registry unit string `tep/M€2021` lacks the apostrophe the publisher prints — preserved exactly as-is) | base-year/definition mismatch | same as #9 | same as #9 |
+| 11 | dgeg.energy_intensity_primary.PT (tep/M€2021) | sheet1 row 28, base 2021, 1995–2024p (publisher cell C28 and registry both print `tep/M€2021`; rows 29/38/39 include an apostrophe, an original publisher spelling inconsistency) | base-year/definition mismatch | same as #9 | same as #9 |
 | 12 | dgeg.energy_intensity_services.PT (tep/M€'2021) | sheet1 row 39, base 2021, 1995–2024p | base-year/definition mismatch | same as #9 | same as #9 |
 | 13 | dgeg.final_energy_consumption.PT (Mtep) | publisher row is sheet2 row 17 `Consumo Total de Energia Final` in **ktep** (2024 `16713`; sheet1 row 18 2024p holds unrounded `16712.810000000001`), 1995–2024p | registry-unit conflict (Mtep vs publisher ktep) with a real exact channel | APN total-final table is token-exact 10/10 in **ktep** (2015–2024): the channel exists but validates the publisher-unit representation, not the registry's Mtep unit — inactivate for the conflict, not for "no channel" | owner unit reconciliation (Mtep→ktep correction), then an APN-PDF verifier is implementable |
 | 14 | dgeg.primary_energy_consumption.PT (Mtep) | legacy values are actually sheet1 row 13 `% da produção doméstica no CEP` (unit %, publisher pre-rounded 2-dp fractions, 2024p `0.39405298811534401`) — a domestic-production share, NOT an Mtep consumption | legacy misassignment (wrong concept/scale) | AEN annex %-production row conflicts with workbook row 13 even at display precision (17/18 mismatches) — the surfaces disagree and neither is the registry concept | owner concept/scale reconciliation and an explicit approved remap; preserved (not silently corrected) per quarantine rules |

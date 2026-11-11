@@ -9,8 +9,9 @@ marked `verifiable: false` under `sources:` in `registry/core.yaml`. Inactive se
 
 ## dgeg — `verifiable: false` since Task 12B (2026-11-11), a SCOPED marker
 
-DGEG today has **no ingest adapter and no verifier**, and the pipeline has collected **no** DGEG
-data — nothing was fetched, parsed or quarantined. The marker is an eligibility block on the 17
+DGEG today has **no ingest adapter and no verifier**, and **no new live DGEG collection** has
+run. The Task-8 legacy import is retained unchanged and remains legacy-unverified. The marker
+is an eligibility block on the 17
 DGEG series **with their current core definitions** (units, coordinates, concepts): under those
 definitions no independent exact verification channel is established. It is not a claim that an
 independent channel is impossible or that DGEG "has no source": the bounded 2026-11-11 research
@@ -19,8 +20,8 @@ partial same-publisher channels (APN/AEN PDFs and a same-format quick-stats work
 series unit conflicts, vintage drift, base-year mismatches, representation-policy and coverage
 gaps. Per-series coordinates, findings and resumption criteria: `registry/unmapped-dgeg.md`.
 An earlier Task-10-era wording here implied such sources "still collect data and raw evidence" —
-that was never true of DGEG and is corrected: nothing exists to collect with until an adapter and
-verifier are explicitly implemented and reviewed.
+that did not describe live DGEG collection and is corrected: an adapter and verifier must be
+explicitly implemented and reviewed before new live collection; the legacy import is separate.
 
 ## Status of the other core sources
 
