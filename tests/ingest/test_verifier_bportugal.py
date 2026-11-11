@@ -1,5 +1,7 @@
 """Banco de Portugal verifier tests — recorded portal-API fixtures
 (tests/ingest/fixtures/bportugal/verify/, 2026-11-11)."""
+import base64
+import json
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -145,6 +147,45 @@ def test_verifier_unknown_unit_label_raises():
                                   VerifyFixtureHttp({"12099464": tampered}))
 
 
+# --- evidence: the archived bytes must carry BOTH portal responses (Ruling R/G7) -------------
+
+def _decode_evidence(evidence: bytes) -> dict:
+    """Offline (no HTTP) read of the versioned evidence envelope: the exact wire record of the
+    metadata and the observations responses, each body recovered byte-for-byte."""
+    doc = json.loads(evidence)
+    assert doc["schema"] == "bportugal-portal-evidence" and doc["version"] == 1
+    return {k: {"url": v["url"], "status": v["status"],
+                "body": base64.b64decode(v["body_b64"], validate=True)}
+            for k, v in doc.items() if k in ("metadata", "observations")}
+
+
+def test_verifier_evidence_bundles_metadata_and_observation_responses():
+    """The unit decision used the /api/series/ response; the value decision used the
+    /api/observations/ response. The archived evidence must carry BOTH exact wire records —
+    observations body alone is not auditable for the unit verification."""
+    (r,) = BPortugalVerifier().check([_item("bportugal.pt_10y.PT", "2026-10")],
+                                     VerifyFixtureHttp())
+    meta, case = VMANIFEST["meta"]["12099464"], VMANIFEST["cases"]["12099464@2026-10"]
+    doc = _decode_evidence(r.evidence)
+    assert doc["metadata"] == {"url": meta["url"], "status": 200, "body": vbody(meta["file"])}
+    assert doc["observations"] == {"url": case["url"], "status": 200,
+                                   "body": vbody(case["file"])}
+    assert r.evidence_url == case["url"]  # continuity: evidence_url stays the observations URL
+
+
+def test_verifier_evidence_shares_cached_metadata_but_bundles_each_observation():
+    http = VerifyFixtureHttp()
+    results = BPortugalVerifier().check([_item("bportugal.euribor_3m.EA", "1994-01"),
+                                         _item("bportugal.euribor_3m.EA", "2026-10")], http)
+    assert http.calls.count(("meta", "13168436")) == 1  # metadata still fetched once per series
+    meta = VMANIFEST["meta"]["13168436"]
+    for r, key in zip(results, ("13168436@1994-01", "13168436@2026-10")):
+        doc = _decode_evidence(r.evidence)
+        assert doc["metadata"] == {"url": meta["url"], "status": 200,
+                                   "body": vbody(meta["file"])}
+        assert doc["observations"]["body"] == vbody(VMANIFEST["cases"][key]["file"])
+
+
 def test_verifier_recurrence_mismatch_raises():
     tampered = vbody("series_full_12099464.json").replace(b'"recurrence":"M"',
                                                           b'"recurrence":"Q"', 1)
@@ -205,6 +246,26 @@ def test_verifier_matches_clean_run(env):
     assert units == {"%", "MEUR", "USD/EUR"}
     served = q(db, "SELECT COUNT(*) FROM served_observation WHERE series_id LIKE 'bportugal.%'")
     assert served[0][0] == 4318
+
+
+def test_archived_evidence_decodes_to_both_portal_responses_without_http(env):
+    """Every sampled item's archived evidence_sha256 reloads from the raw store (integrity
+    checked, no HTTP) and decodes to the exact portal metadata AND observations wire bytes."""
+    db, specs, store, clock = env
+    r = run_dataset(db, store, BPortugalSource(), specs, FixtureHttp(), clock)
+    assert verify_run(db, r.run_id, BPortugalVerifier(), VerifyFixtureHttp(), seed=7, size=16,
+                      specs=specs, store=store, now=clock)
+    native = {s.id: (s.native_code or "").split(":")[0] for s in specs}
+    rows = q(db, "SELECT series_id, period, evidence_url, evidence_sha256 FROM "
+                 "verification_item")
+    assert len(rows) == 16
+    for series_id, period, url, sha in rows:
+        blob = store.load(store.root / "verify-bportugal" / sha[:2] / sha)  # raises if altered
+        doc = _decode_evidence(blob)
+        meta, case = VMANIFEST["meta"][native[series_id]], \
+            VMANIFEST["cases"][f"{native[series_id]}@{period}"]
+        assert doc["observations"] == {"url": url, "status": 200, "body": vbody(case["file"])}
+        assert doc["metadata"] == {"url": meta["url"], "status": 200, "body": vbody(meta["file"])}
 
 
 def test_verifier_detects_tampered_value(env):

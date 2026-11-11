@@ -33,17 +33,26 @@ Channel mechanics (recorded live in tests/ingest/fixtures/bportugal/verify/):
     an empty description only), so observed_flag is None and the flag is not compared —
     documented, never echoed from the spec.
 
+EVIDENCE (Ruling R/G7): one item's decision reads TWO publisher responses — the series-metadata
+record (observed_unit) and the month-window observations (observed_text). ItemResult.evidence
+therefore bundles both exact wire records in a versioned JSON envelope (schema
+'bportugal-portal-evidence', v1: per response the final URL, HTTP status and the raw body
+base64-encoded, byte-for-byte recoverable from the raw store with no HTTP); the metadata body
+is the response the unit was parsed from, bundled per item even though fetched once per series.
+evidence_url stays the observations URL for continuity.
+
 INDEPENDENCE: this module shares NO code with the collector (enforced by register_verifier and
 by assert_verifier_independent). The tiny native_code parsing and the unit/territory/
 periodicity maps are DUPLICATED ON PURPOSE: if the two copies ever disagree, verification fails
 loudly. Requests are paced by the injected Http client (RequestsHttp throttles to <=1 req/s);
 the verifier adds no sleeping of its own so recorded tests stay fast.
 """
+import base64
 import json
 import re
 from datetime import date, datetime, timedelta
 
-from ingest.http import Http
+from ingest.http import Http, HttpResult
 from ingest.models import SeriesSpec
 from ingest.verifiers import BlindItem, ItemResult
 
@@ -199,14 +208,38 @@ def _current(doc: dict, sid: int, period: str) -> str | None:
     return published[max(published)]
 
 
+EVIDENCE_SCHEMA = "bportugal-portal-evidence"
+EVIDENCE_VERSION = 1
+
+
+def _wire_record(r: HttpResult) -> dict:
+    """One portal response exactly as received: final URL (with query), status, raw body
+    base64-encoded so the original bytes are recoverable byte-for-byte."""
+    return {"url": r.url, "status": r.status,
+            "body_b64": base64.b64encode(r.body).decode("ascii")}
+
+
+def _envelope(meta: HttpResult, observations: HttpResult) -> bytes:
+    """The evidence bytes of one item: a small versioned JSON document bundling the TWO portal
+    responses the decision used (series metadata and month-window observations)."""
+    doc = {"schema": EVIDENCE_SCHEMA, "version": EVIDENCE_VERSION,
+           "metadata": _wire_record(meta), "observations": _wire_record(observations)}
+    return json.dumps(doc, ensure_ascii=True, separators=(",", ":")).encode("ascii")
+
+
 class BPortugalVerifier:
     """See the module docstring. One /api/series/ metadata fetch per series per check() call,
-    plus one month-window /api/observations/ fetch per sampled item; the observations payload is
-    kept as evidence bytes and its URL as evidence_url."""
+    plus one month-window /api/observations/ fetch per sampled item. An item's decision uses
+    BOTH portal responses (metadata -> observed_unit, observations -> observed_text), so
+    ItemResult.evidence is a small VERSIONED JSON envelope (schema 'bportugal-portal-evidence',
+    version 1) bundling both wire records — exact final URL, HTTP status and the raw body
+    base64-encoded (byte-for-byte recoverable from the raw store, no HTTP needed; Ruling R/G7).
+    evidence_url stays the observations URL; observed_flag is honestly None (this channel
+    exposes no observation status, so ingest.verify skips the flag comparison)."""
     source_name = "bportugal"
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
-        meta: dict[int, str] = {}
+        meta: dict[int, tuple[str, HttpResult]] = {}  # sid -> (observed_unit, wire record)
         results: list[ItemResult] = []
         for item in items:
             sid = _native(item.spec.native_code)
@@ -215,7 +248,8 @@ class BPortugalVerifier:
                                                  "series_ids": str(sid)})
                 if not 200 <= r.status < 300:
                     raise ValueError(f"portal series metadata for {sid} answered HTTP {r.status}")
-                meta[sid] = _meta_of(r.body, item.spec, sid)
+                meta[sid] = (_meta_of(r.body, item.spec, sid), r)
+            unit, meta_r = meta[sid]
             start, end = _window(item.period)
             params = {"series_ids": str(sid), "start_date": start, "end_date": end}
             r = http.get(OBS_URL, params=params)
@@ -225,6 +259,6 @@ class BPortugalVerifier:
             observed = _current(_load(r.body, "observations"), sid, item.period)
             results.append(ItemResult(
                 series_id=item.series_id, period=item.period, observed_text=observed,
-                evidence_url=r.url, observed_decimal=".", observed_unit=meta[sid],
-                observed_flag=None, evidence=r.body))
+                evidence_url=r.url, observed_decimal=".", observed_unit=unit,
+                observed_flag=None, evidence=_envelope(meta_r, r)))
         return results
