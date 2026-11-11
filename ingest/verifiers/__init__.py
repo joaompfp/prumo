@@ -36,6 +36,10 @@ _FORBIDDEN_NAMES = frozenset({
     "__import__", "__builtins__", "__loader__", "__spec__", "__globals__", "exec", "eval",
     "compile", "vars", "globals", "locals", "getattr", "setattr", "delattr", "type", "super",
     "open"})
+# Names that evaluate strings (typing evaluates string annotations with eval()) or resolve
+# objects by name; rejected as bare names, as attributes and as imported names.
+_EVALUATING_NAMES = frozenset({"get_type_hints", "ForwardRef", "_eval_type", "_evaluate",
+                               "register", "evaluate", "resolve_name"})
 
 # Shared infrastructure a verifier and its source's parser may both depend on: the allow-listed
 # ingest modules plus the root package `ingest` (an empty __init__ both necessarily import).
@@ -98,9 +102,12 @@ def register_verifier(verifier: Verifier) -> None:
           imported from them must not be a module or private;
         - no star imports and no relative imports from any module;
         - no attribute whose name starts with `__`, none of the bare names in
-          _FORBIDDEN_NAMES (exec, eval, getattr, type, open, __import__, ...), and no
-          attribute chain on an imported name that reaches a module outside the allowlists
-          (e.g. `logging.sys`);
+          _FORBIDDEN_NAMES (exec, eval, getattr, type, open, __import__, ...), none of the
+          string-evaluating names in _EVALUATING_NAMES (get_type_hints, ForwardRef, register,
+          resolve_name, ...) as name, attribute or import, no quoted (string-constant)
+          annotation (unquoted ones, also under `from __future__ import annotations`, are
+          fine), and no attribute chain on an imported name that reaches a module outside the
+          allowlists (e.g. `logging.sys`);
         - no import whose dotted name has a component equal to the source name
           (case-insensitive).
     (b) The `ingest.*` modules the verifier module reaches transitively and those the parser
@@ -108,10 +115,13 @@ def register_verifier(verifier: Verifier) -> None:
         not executed; descent stops at SHARED_ALLOWED) must not share anything outside
         SHARED_ALLOWED: a helper used by both parser and verifier is shared parsing code.
 
-    This static check is a lint-level guard: Python can reach any loaded module at runtime in
-    ways no static rule enumerates, and non-`ingest` helper modules are not followed. The
-    guarantee is the runtime test `ingest.verifiers.independence.assert_verifier_independent`
-    (a subprocess that blocks the collector's modules), which every adapter task must run.
+    This static check is lint: Python can reach code at runtime in ways no static rule
+    enumerates, and non-`ingest` helper modules are not followed. The guarantee is the runtime
+    test `ingest.verifiers.independence.assert_verifier_independent`, a subprocess that blocks
+    the collector's modules by name and checks module names AND file origins (and files
+    opened), which every adapter task must run. Neither can detect a verifier that embeds a
+    re-implementation of the parser's logic; adapter reviewers must confirm the verifier reads
+    the independent channel.
     """
     name = verifier.source_name
     if name in _REGISTRY:
@@ -209,6 +219,8 @@ def _static_violations(tree: ast.Module, source_name: str) -> list[str]:
                         bound[a.asname or a.name] = full
                 elif base not in VERIFIER_STDLIB_IMPORTS:
                     bad.add(f"module not in stdlib allowlist: from {base} import {a.name}")
+                elif a.name in _FORBIDDEN_NAMES | _EVALUATING_NAMES:
+                    bad.add(f"forbidden name: from {base} import {a.name}")
                 elif a.name.startswith("_"):
                     bad.add(f"private name not allowed: from {base} import {a.name}")
                 elif (inspect.ismodule(getattr(importlib.import_module(base), a.name, None))
@@ -217,15 +229,22 @@ def _static_violations(tree: ast.Module, source_name: str) -> list[str]:
                 else:
                     bound[a.asname or a.name] = full
     for node in ast.walk(tree):
-        if isinstance(node, ast.Name) and node.id in _FORBIDDEN_NAMES:
+        if isinstance(node, ast.Name) and node.id in _FORBIDDEN_NAMES | _EVALUATING_NAMES:
             bad.add(f"forbidden name: {node.id}")
         elif isinstance(node, ast.Attribute):
             if node.attr.startswith("__"):
                 bad.add(f"dunder attribute: .{node.attr}")
+            elif node.attr in _EVALUATING_NAMES:
+                bad.add(f"forbidden attribute: .{node.attr}")
             else:
                 reached = _module_reached(node, bound)
                 if reached:
                     bad.add(f"attribute chain reaches module not in allowlist: {reached}")
+        annotation = (node.annotation if isinstance(node, (ast.arg, ast.AnnAssign)) else
+                      node.returns if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                      else None)
+        if isinstance(annotation, ast.Constant) and isinstance(annotation.value, str):
+            bad.add(f"string annotation not allowed: {annotation.value!r}")
     return sorted(bad)
 
 

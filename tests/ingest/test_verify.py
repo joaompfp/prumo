@@ -629,9 +629,25 @@ def test_verifier_importing_parser_is_rejected(make_verifier, code):
     "import xml.etree.ElementTree as ET\nP = ET.fromstring",
     "import logging\nlog = logging.getLogger('x')",
     "from typing import TYPE_CHECKING\nif TYPE_CHECKING:\n    from ingest.http import Http",
+    "from dataclasses import dataclass, field\nfrom typing import Literal\n\n"
+    "@dataclass(frozen=True)\nclass Row:\n    period: str\n    value: int = 0\n"
+    "    decimal: Literal['.', ','] = '.'\n    tags: list[str] = field(default_factory=list)\n\n"
+    "def f(x: int, *a: str, **k: float) -> list[int]:\n    y: dict[str, int] = {}\n"
+    "    return [x]",
 ])
 def test_independent_verifier_is_registered(make_verifier, code):
     v = make_verifier(code)
+    register_verifier(v)
+    assert get_verifier("acme") is v
+
+
+def test_future_annotations_module_with_dataclass_is_registered(make_verifier):
+    code = ("from __future__ import annotations\nfrom dataclasses import dataclass\n"
+            "from ingest.verifiers import ItemResult\n\n\n@dataclass\nclass Row:\n"
+            "    period: str\n    value: Row | None = None\n\n\n"
+            "def to_result(r: Row) -> ItemResult:\n"
+            "    return ItemResult('s', r.period, '1', 'u')\n")
+    v = make_verifier(code, top=True)
     register_verifier(v)
     assert get_verifier("acme") is v
 
@@ -669,6 +685,8 @@ DUNDER = "dunder attribute"
 FORBIDDEN = "forbidden name"
 CHAIN = "attribute chain reaches module not in allowlist"
 SOURCE_NAMED = "source-named import"
+FORBIDDEN_ATTR = "forbidden attribute"
+STRING_ANNOTATION = "string annotation not allowed"
 
 
 @pytest.mark.parametrize("code,rule", [
@@ -735,6 +753,27 @@ SOURCE_NAMED = "source-named import"
     ("delattr(object, 'x')", FORBIDDEN),
     ("P = super", FORBIDDEN),
     ("P = open('f')", FORBIDDEN),
+    # round 4: string-evaluating gadgets (typing evaluates string annotations with eval())
+    ("from typing import get_type_hints", FORBIDDEN),
+    ("from typing import get_type_hints as g\nP = g", FORBIDDEN),
+    ("from typing import ForwardRef", FORBIDDEN),
+    ("P = get_type_hints", FORBIDDEN),
+    ("P = ForwardRef", FORBIDDEN),
+    ("P = register", FORBIDDEN),
+    ("P = evaluate", FORBIDDEN),
+    ("P = resolve_name", FORBIDDEN),
+    ("import typing\nP = typing.get_type_hints", FORBIDDEN_ATTR),
+    ("import typing\nP = typing.ForwardRef('x')", FORBIDDEN_ATTR),
+    ("import typing\nP = typing._eval_type", FORBIDDEN_ATTR),
+    ("x = object()\nP = x._evaluate", FORBIDDEN_ATTR),
+    ("from functools import singledispatch\nP = singledispatch(len).register", FORBIDDEN_ATTR),
+    ("x = object()\nP = x.evaluate", FORBIDDEN_ATTR),
+    ("x = object()\nP = x.resolve_name", FORBIDDEN_ATTR),
+    ("def f(x: '__import__(\"os\")'):\n    pass", STRING_ANNOTATION),
+    ("def f(*a: 'int', **k: 'int'):\n    pass", STRING_ANNOTATION),
+    ("def f() -> 'int':\n    pass", STRING_ANNOTATION),
+    ("async def f() -> 'int':\n    pass", STRING_ANNOTATION),
+    ("x: 'int' = 1", STRING_ANNOTATION),
     # C: other names/private names of allowed modules, star and relative imports
     ("from ingest.verifiers import _REGISTRY", NAME),
     ("from ingest.verifiers import get_verifier", NAME),

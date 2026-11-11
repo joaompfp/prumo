@@ -102,3 +102,59 @@ def test_entrypoint_exception_is_readable(layout):
     with pytest.raises(AssertionError, match=r"(?s)failed under the independence guard.*"
                                              r"RuntimeError: boom in check"):
         check("boom_verifier")
+
+
+GADGET = '''
+import importlib.util
+import sys
+from typing import get_type_hints
+
+from ingest.verifiers import ItemResult
+
+
+def _load():
+    spec = importlib.util.spec_from_file_location("zz", {parser!r})
+    module = importlib.util.module_from_spec(spec)
+    if {register}:
+        sys.modules["zz"] = module
+    spec.loader.exec_module(module)  # runs the parser under a non-ingest name
+    return int
+
+
+def f(x: "_load()"):  # typing evaluates string annotations with eval()
+    pass
+
+
+class V:
+    source_name = "acme"
+
+    def check(self, items, http):
+        return [ItemResult(i.series_id, i.period, "1.5", "u") for i in items]
+
+
+def run():
+    get_type_hints(f)
+'''
+
+
+@pytest.mark.parametrize("register,message", [
+    (True, r"loaded collector/blocked code under another name: \['zz from .*/ingest/sources/"
+           r"acme\.py'\]"),
+    (False, r"opened collector/blocked files: \['.*/ingest/sources/acme\.py'"),
+])
+def test_parser_loaded_by_path_under_another_name_fails(layout, register, message):
+    write, check, repo, _ = layout
+    parser = repo / "ingest" / "sources" / "acme.py"
+    parser.write_text(parser.read_text() + f"\nopen({str(repo / 'LEAK')!r}, 'w').write('ran')\n")
+    write("gadget_verifier", GADGET.format(parser=str(parser), register=register))
+    with pytest.raises(AssertionError, match=message):
+        check("gadget_verifier")
+    assert (repo / "LEAK").read_text() == "ran"  # the gadget really executed the parser
+
+
+def test_clean_verifier_importing_sources_package_passes(layout):
+    """ingest/sources/__init__.py is shared infrastructure: importing Source is fine."""
+    write, check, _, _ = layout
+    write("pkg_verifier", "from ingest.sources import Source, RawResponse\n" + CLEAN
+          + "\n\ndef run():\n    assert V().check([], None) == []\n")
+    check("pkg_verifier")
