@@ -28,14 +28,14 @@ Rebuild of Prumo's data layer: a new `ingest/` package (raw → validated → se
 | 7 verification framework (+ independence guard) | complete (4 fix rounds) |
 | 8 legacy import + registry proposal | complete (commits ..8dbf715): provisional `registry/core.yaml` (1,774 series / 1,751 keys), overlaps.md, deferred-tail.md, unclassified.md, licences-todo.md; legacy import verified on the real export (164,825 imported, 6,522 missing_unit + 6 non_numeric quarantined, 74,809 not_in_registry, 0 served) |
 | 9 Eurostat adapter + verifier | complete (..954a89e): 329 active series (live-parsed OK), 368 inactive with reasons in registry/unmapped-eurostat.md |
-| 10 INE adapter | implemented (..2b8198a); review ❌: CRITICAL — INE DOES have an independent channel (bddXplorer HTML table with a `Referer` header) so the verifier must be built; + 3 Important. **Fix round 1 NOT yet dispatched: ready-to-dispatch instructions in `docs/superpowers/handoff/task-10-fix-round-1.md`** |
+| 10 INE adapter + verifier | complete through 16ee533; fix round 1 passed independent spec and quality reviews; controller live smoke verified 1,399 served / 24 of 24 sampled matches (isolated test DB, not deployment) |
 | 11–16 source adapters | not started (Eurostat, INE, Banco de Portugal, REN(+DGEG/ERSE), World Bank, FRED, OECD, E-REDES/dadosgov) |
 | 17 CLI/status/replay + delete old collectors | not started |
 | 18 scheduler service + compose + deploy | not started |
 | 19 docs + final audit pack | not started |
 | Final whole-branch review (most capable model) → `superpowers:finishing-a-development-branch` | not started |
 
-Last full test run: `pytest tests/ingest -q` → 604 passed (2 live deselected).
+Last full controller test run: `.venv-ci/bin/python -m pytest tests/ingest -q` -> 660 passed, 2 live deselected (96.69 s). Controller INE live smoke -> 1 passed (112.16 s), verified, 1,399 observations served in isolated test DB, 1 quarantined, 24/24 matched. Scoped reviews: `reports/task-10-review.md`.
 
 ## Obligations carried into EVERY adapter task (9–16) — from rulings I, J, N, O, Q, R, S
 1. Adapter = `ingest/sources/<name>.py` (implements `Source`, `fetch` returns an Iterable of `RawResponse`; `parse` returns `dict[series_id, list[RawRow]]` with `RawRow.response_index` pointing at the response each row came from) + independent verifier `ingest/verifiers/<name>.py`. Verifier uses a DIFFERENT endpoint/format than the collector, shares NO helper module with the parser, and passes the static allowlist in `register_verifier` (only `from ingest.http|models|rawstore|sources|verifiers import <allowlisted names>` + stdlib allowlist).
@@ -52,7 +52,7 @@ Public site = "Em manutenção" until the UI revamp (project 4). No Telegram/pus
 Per-task minors are listed in `progress-ledger.md`. Notable: T17 must delete `scripts/audit_nightly.py` + the entrypoint cron block and clean `ci.yml`/`pytest.ini`/`tests/README.md`/`tests/conftest.py`; T17 CLI status must list stale `pending-verification` runs; `verify_run` itself accepts an unregistered verifier (only `run_with_refetch` enforces registration) so CLIs must call `run_with_refetch`; HEAD requests to the maintenance page return 405 (uptime probes).
 
 ## Next step (resume here)
-1. Dispatch Task 10 fix round 1 from `docs/superpowers/handoff/task-10-fix-round-1.md` (fresh implementer; the earlier agents' ids are gone), then a scoped re-review.
+1. Task 10 fix round 1 is complete. Continue Task 11 Banco de Portugal with a fresh implementer and independent spec then quality reviews. Do not re-dispatch the already completed INE fix brief.
 2. Task 11 Banco de Portugal (BPstat; add units — legacy had none → 0 core series today), then 12 REN(+DGEG/ERSE), 13 World Bank, 14 FRED (no key in SOPS: NEEDS_CONTEXT to owner), 15 OECD, 16 E-REDES/dadosgov (only if the registry marks core). Use `adapter-dispatch-template.md` for each dispatch.
 3. Task 17 (CLI/status/replay + delete old collectors; must register verifiers: `register_verifier(EurostatVerifier())` etc.; per-source timeouts; list stale pending runs; ignore inactive series; machine-readable unverifiable marker), 18 (scheduler + compose + f0nix deploy), 19 (docs), final whole-branch review on the most capable model, then `superpowers:finishing-a-development-branch` (merge to main is the owner's call).
 
