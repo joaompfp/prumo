@@ -282,6 +282,71 @@ def test_parse_native_code():
         (12099464, 26, "690b7b36fd36c0dbe249c48cbbc39524")
 
 
+# --- sparse JSON-stat cell columns (value/status as dicts) ----------------------------------
+
+def _sparse(doc: dict) -> dict:
+    """Payload -> the equivalent JSON-stat sparse-dict form: non-null cells only, keyed by the
+    canonical flat index."""
+    out = dict(doc)
+    for key in ("value", "status"):
+        if isinstance(doc.get(key), list):
+            out[key] = {str(i): v for i, v in enumerate(doc[key]) if v is not None}
+    return out
+
+
+def _parse_payload(raw: bytes):
+    return BPortugalSource().parse(specs_of("yields"),
+                                   [RawResponse(url="", params={}, status=200, body=raw)])
+
+
+def test_sparse_form_parses_identically_to_dense():
+    """Dense list and canonical sparse dict are two spellings of the same cells; parse results
+    must be identical (values AND statuses, the 78 DE value-None cells included)."""
+    dense = body("yields.json")
+    sparse_body = json.dumps(_sparse(json.loads(dense))).encode()
+    assert _parse_payload(sparse_body) == _parse_payload(dense)
+
+
+def _alias_payload(alias: str) -> bytes:
+    doc = _sparse(json.loads(body("yields.json")))
+    doc["value"][alias] = "9.99"  # collides with a canonical cell if int() folding is accepted
+    return json.dumps(doc).encode()
+
+
+@pytest.mark.parametrize("alias", ["00", "01", "+1", " 1", "٣", "1_0"])
+def test_sparse_noncanonical_alias_keys_raise(alias):
+    """'00' and '0' address the SAME cell: accepting both silently overwrites data (review
+    finding, 2026-11-11: _cells_column({'0': '1.10', '00': '2.20'}, ...) kept only '2.20').
+    Only the canonical ASCII decimal spelling of a flat index is legal — no leading zeros,
+    signs, whitespace, Unicode digit aliases or other int() foldings."""
+    with pytest.raises(ValueError, match="sparse value key"):
+        _parse_payload(_alias_payload(alias))
+
+
+def test_sparse_out_of_bounds_key_still_raises():
+    doc = _sparse(json.loads(body("yields.json")))
+    doc["value"][str(len(json.loads(body("yields.json"))["value"]))] = "9.99"  # past the end
+    with pytest.raises(ValueError, match="outside"):
+        _parse_payload(json.dumps(doc).encode())
+
+
+def test_sparse_alias_payload_fails_validation_before_any_row_is_written(tmp_path):
+    """Through the pipeline: the aliased payload is a failed-validation (format_change), zero
+    observations and zero quarantine rows committed."""
+    specs = all_specs()
+    db = open_db(tmp_path / "t.db")
+    try:
+        from ingest.registry import sync_registry
+        sync_registry(db, specs)
+        r = run_dataset(db, RawStore(tmp_path / "raw"), BPortugalSource(), specs,
+                        FixtureHttp({"yields": _alias_payload("00")}))
+        assert r.state == "failed-validation" and r.n_written == 0 and r.n_quarantined == 0
+        assert db.conn.execute("SELECT COUNT(*) FROM observation").fetchone()[0] == 0
+        assert db.conn.execute("SELECT COUNT(*) FROM quarantine").fetchone()[0] == 0
+    finally:
+        db.close()
+
+
 @pytest.mark.parametrize("code", [None, "", "12099464", "12099464:",
                                   "12099464/690b7b36fd36c0dbe249c48cbbc39524",
                                   "abc:26/690b7b36fd36c0dbe249c48cbbc39524",

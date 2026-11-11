@@ -25,11 +25,12 @@ LAST dimension (`reference_date`, the time axis) fastest — empirically cross-c
 portal channel on 2026-11-11 (value[394] is Euribor 3m@1994-01, '6.9100', not value[1]). Each
 requested series is located through `extension.series[].dimension_category` pins (never by list
 position: the Euribor payload's category order did not follow the request order), with strict
-checks: dense or sparse arrays sized to the declared dims, unique increasing timestamps, no
-duplicate keys, every requested series present exactly once and mapping to its own cell block,
-the pinned category present in the dimension's index. Publisher labels are checked against the
-registry spec and raise on drift (fail-closed maps): unit ("Unit of measure" ->
-Percentage='%', 'Millions of euros'=MEUR, 'Currency' only as the EUR/USD pair='USD/EUR'),
+checks: dense or canonical-key sparse arrays sized to the declared dims, unique increasing
+timestamps, no duplicate keys, every requested series present exactly once and mapping to its
+own cell block, the pinned category present in the dimension's index. Publisher labels are
+checked against the registry spec and raise on drift (fail-closed maps): unit ('Unit of
+measure' -> Percentage='%', 'Millions of euros'=MEUR, 'Currency' only as the EUR/USD
+pair='USD/EUR'),
 periodicity 'Monthly'='M', territory ('Reference territory' -> Portugal='PT', Germany='DE',
 'Euro Area - Changing composition'='EA'; the EUR/USD series has no territory dimension and is
 identified by its currency pair, geography EA by reviewed convention).
@@ -186,7 +187,10 @@ def _index_of(dim: dict) -> list[str]:
 
 
 def _cells_column(col: object, size: int, what: str) -> list:
-    """`value`/`status` as a per-flat-index list; dense list or sparse dict (keyed by str(int))."""
+    """`value`/`status` as a per-flat-index list; dense list or sparse dict keyed by the
+    CANONICAL ASCII decimal of the flat index ('0', '1', ...). Alias spellings that int()
+    would fold onto the same cell ('00', '+1', Unicode digit aliases) raise: two keys for one
+    cell is a silent overwrite, i.e. data corruption."""
     if isinstance(col, list):
         if len(col) != size:
             raise ValueError(f"{what} has {len(col)} cells but the dimensions declare {size} "
@@ -196,9 +200,15 @@ def _cells_column(col: object, size: int, what: str) -> list:
         out = [None] * size
         for k, v in col.items():
             kk = str(k)
-            if not kk.isdigit() or not 0 <= int(kk) < size:
+            if not (kk.isascii() and kk.isdigit()):
+                raise ValueError(f"sparse {what} key {kk!r} is not an ASCII decimal index")
+            i = int(kk)
+            if str(i) != kk:
+                raise ValueError(f"sparse {what} key {kk!r} is a non-canonical alias of cell "
+                                 f"{i} (would silently overwrite it)")
+            if i >= size:
                 raise ValueError(f"sparse {what} key {kk!r} outside 0..{size - 1}")
-            out[int(kk)] = v
+            out[i] = v
         return out
     raise ValueError(f"{what} is neither a list nor a sparse dict: {type(col).__name__}")
 
