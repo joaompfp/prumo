@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200;300;400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+
+
+<title>Eletricidade - Mercado</title>
+<meta name="description" content="" />
+<meta property="og:description" content="" />
+
+<meta property="og:site_name" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Eletricidade - Mercado" />
+
+
+<meta property="og:url" content="https://datahub.ren.pt/pt/eletricidade/mercado/" />
+<link rel="canonical" href="" />
+
+    <link rel="alternate" hreflang="x-default" href="https://datahub.ren.pt/pt/eletricidade/mercado/" />
+    <link rel="alternate" hreflang="pt-PT" href="https://datahub.ren.pt/pt/eletricidade/mercado/" />
+
+
+
+
+    <link rel="stylesheet" href="/css/app.min.css?v=Sp-lRAd2KPKXpodX0YhIaL69_uTRzQj6q1iZ0QOGoxg" />
+</head>
+<body data-lang="pt" data-culture="pt-PT" data-id="1528" data-site-template="page">
+    
+<header class="main-header ">
+    <a href="/pt/">
+        <img class="logo" src="/images/logos/ren-datahub.svg" alt="REN DataHub" />
+    </a>
+    <nav class="main-nav">
+        <ul class="nav-list">
+                            <li class="nav-item is-active">
+                                <a class="nav-btn js-nav-btn" href="/pt/eletricidade/balanco-diario/">Eletricidade</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-btn js-nav-btn" href="/pt/gas/balanco-diario/">G&#xE1;s</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-btn js-nav-btn" href="/pt/redes/rede-eletrica/">Territ&#xF3;rio</a>
+                            </li>
+                            <li class="nav-item" data-action="toggleSubNav">
+                                <button class="nav-btn js-nav-btn">
+                                    Mais
+                                    <i class="icon arrow-simple js-placeIcon" data-id="arrow-simple"></i>
+                                </button>
+                                <ul class="subnav">
+                                            <li class="subnav-item">
+                                                <a class="nav-btn" href="/pt/sobre/">Sobre</a>
+                                            </li>
+                                            <li class="subnav-item">
+                                                <a class="nav-btn" href="/pt/ajuda/">Ajuda</a>
+                                            </li>
+                                            <li class="subnav-item">
+                                                <a class="nav-btn" href="/pt/publicacoes/">Publica&#xE7;&#xF5;es</a>
+                                            </li>
+                                            <li class="subnav-item">
+                                                <a class="nav-btn" href="/pt/instrucoes-api/">API</a>
+                                            </li>
+                                </ul>
+                            </li>
+        </ul>
+    </nav>
+    <div class="buttons-wrapper">
+        <button class="btn-search" data-action="toggleSearchBar">
+            <i class="icon icon-color-main search js-placeIcon icon-is-loaded" data-id="search">
+                <svg viewBox="0 0 22 23" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.23 20.312l-5.314-5.518a8.973 8.973 0 0 0 2.116-5.79C18.032 4.039 13.987 0 9.015 0 4.045 0 0 4.04 0 9.004c0 4.966 4.044 9.005 9.015 9.005a8.916 8.916 0 0 0 5.165-1.63l5.356 5.562c.224.233.524.361.848.361a1.174 1.174 0 0 0 .846-1.99zM9.015 2.35c3.674 0 6.664 2.987 6.664 6.655 0 3.67-2.99 6.656-6.664 6.656-3.673 0-6.663-2.986-6.663-6.656 0-3.668 2.99-6.655 6.663-6.655z"></path>
+                </svg>
+            </i>
+        </button>
+        
+<div class="toggle-popup-container" data-action="togglePopup">
+    <button class="btn-share has-bg js-share">
+        <i class="icon icon-color-white share js-placeIcon" data-id="share"></i>
+    </button>
+    <div class="toggle-popup-wrapper js-toggle-popup">
+        <div class="toggle-popup-options">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="facebook" target="_blank">
+                <i class="icon icon-color-grey-dark facebook js-placeIcon" data-id="facebook"></i>
+            </a>
+            <a href="https://twitter.com/share?text=&url=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="twitter" target="_blank">
+                <i class="icon icon-color-grey-dark twitter js-placeIcon" data-id="twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="linkedin" target="_blank">
+                <i class="icon icon-color-grey-dark linkedin js-placeIcon" data-id="linkedin"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+        <div class="lang-wrapper">
+            <button class="btn-lang is-active">
+                PT
+                <i class="icon icon-color-main arrow-simple js-placeIcon" data-id="arrow-simple"></i>
+            </button>
+                        <a class="btn-lang" href="/en/electricity/market/">EN</a>
+        </div>
+        <button class="btn-burger hamburger hamburger--spring" data-action="toggleHeaderNav" type="button">
+            <span class="burger-text">Menu</span>
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+    </div>
+    <div class="search-overflow">
+        <div class="searchbar-container js-searchbar ">
+            <form action="/pt/pesquisa">
+                <input type="text" 
+                       name="searchText" 
+                       class="input-search" 
+                       autocomplete="off" 
+                       placeholder="Pesquisar"
+                       value=""
+                       data-autocomplete="/service/search/autocomplete/pt" 
+                       data-submit="/pt/pesquisa?searchText=">
+            </form>
+            <button class="btn-close" data-action="toggleSearchBar">
+                <i class="icon icon-color-white cross js-placeIcon" data-id="cross"></i>
+            </button>
+            <ul class="search-results js-search-results"></ul>
+        </div>
+    </div>
+</header>
+
+
+    <main class="main-content">
+        
+                            <!--subMenuModule 2756-->
+
+<section class="sub-menu" data-section-id="2756" id="section-2756">
+    <div class="container">
+            <h1 class="title-lg">Eletricidade</h1>
+            <form class="js-form-filter calendar-form ">
+                    <div class="calendar-container">
+                        <div class="input-container">
+                            <input type="text" class="input-calendar js-datepicker" readonly
+                                   data-input-type="single"
+                                   value="2026-11-11" data-onchange="true"
+                                   data-start-date="2010-01-01"
+                                   data-end-date="2026-11-12">
+                            <i class="icon icon-color-white calendar js-placeIcon" data-id="calendar"></i>
+                            <i class="icon icon-color-white arrow-simple js-placeIcon" data-id="arrow-simple"></i>
+                        </div>
+                    </div>
+                <input type="hidden" val="" name="date" class="js-input-calendar">
+            </form>
+            <ul class="list-menu js-slider" data-type-slider="subMenu">
+                    <li class="list-menu-item">
+                        <a href="/pt/eletricidade/balanco-diario/"
+                           class=""
+                           >
+                            Balan&#xE7;o di&#xE1;rio
+                        </a>
+                    </li>
+                    <li class="list-menu-item">
+                        <a href="/pt/eletricidade/balanco-mensal/"
+                           class=""
+                           >
+                            Balan&#xE7;o Mensal
+                        </a>
+                    </li>
+                    <li class="list-menu-item">
+                        <a href="/pt/eletricidade/evolucao-do-consumo/"
+                           class=""
+                           >
+                            Evolu&#xE7;&#xE3;o do Consumo
+                        </a>
+                    </li>
+                    <li class="list-menu-item">
+                        <a href="/pt/eletricidade/regimes/"
+                           class=""
+                           >
+                            Regimes
+                        </a>
+                    </li>
+                    <li class="list-menu-item">
+                        <a href="/pt/eletricidade/mercado/"
+                           class="is-active"
+                           >
+                            Mercado
+                        </a>
+                    </li>
+            </ul>
+    </div>
+</section>
+
+                    <!--headerHighlight 2922-->
+
+<section class="module page-content-header line-bg " data-section-id="2922" id="section-2922">
+    <div class="container">
+        <h1 class="title">Mercado</h1>
+                <div class="text-editor">
+                    <p>O preço médio do mercado diário situou-se em <strong>210.40€/MWh</strong>, variando entre <strong>158.50€/MWh</strong> e <strong>255.40€/MWh</strong>. Este mês o preço médio situa-se em <strong>199.63€/MWh</strong>. <br />Em <strong>novembro</strong> o preço médio ponderado situou-se em <strong>199.82€/MWh</strong>, face a <strong>59.09€/MWh</strong> no mesmo mês do ano anterior. <br />O preço acumulado anual situa-se em <strong>88.17€/MWh</strong>, face a <strong>66.10€/MWh</strong> no mesmo período do ano anterior.</p>
+                </div>
+        <div class="wrapper-info wrapper-highlight ">
+
+<div class="highlight">
+    <div class="title-lg">
+        210.40
+            <span class="unit">&#x20AC;/MWh</span>
+    </div>
+    <div class="title-sm">
+        Pre&#xE7;o M&#xE9;dio Di&#xE1;rio (Fonte: OMIE)
+    </div>
+</div>
+
+<div class="highlight">
+    <div class="title-lg">
+        83.06
+            <span class="unit">&#x20AC;/MWh</span>
+    </div>
+    <div class="title-sm">
+        Pre&#xE7;o M&#xE9;dio Anual (Fonte: OMIE)
+    </div>
+</div>
+        </div>
+    </div>
+</section>
+
+                    <!--chartModule 1531-->
+
+
+<section class="module chart  full-chart  has-bg " data-section-id="1531" id="section-1531">
+    
+    <div class="container">
+            <div class="content-header has-line">
+            </div>
+
+                <div class="flex-container">
+                    <div class="chart-container">
+                        <div class="chart-wrapper   js-chart-wrapper">
+                            <div class="chart-header ">
+                                <h3 class="title-lg">
+                                    Pre&#xE7;os do Mercado Di&#xE1;rio
+
+    <div class="btn-info-container" data-action="togglePopup" data-variable-height="true">
+        <button class="btn-info">
+            <i class="icon icon-color-blue-grey-light info js-placeIcon" data-id="info"></i>
+        </button>
+        <div class="info-content js-toggle-popup">
+                <div class="rte"><p>Preços do mercado SPOT diário, negociados no dia D-1. Antes de 1 de outubro de 2025, os valores são horários, sendo as horas correspondentes às horas de mercado (valores da hora 1 à hora 25 de mercado, quando aplicável). A partir dessa data, o mercado passou a ter discriminação em intervalos de 15 minutos, e para facilidade de leitura do gráfico, optou-se pelas horas de Portugal continental.</p></div>
+        </div>
+    </div>
+
+                                </h3>
+                                <div class="content-right">
+
+<div class="toggle-popup-container" data-action="togglePopup">
+    <button class="btn-share has-bg js-share">
+        <i class="icon icon-color-white share js-placeIcon" data-id="share"></i>
+    </button>
+    <div class="toggle-popup-wrapper js-toggle-popup">
+        <div class="toggle-popup-options">
+                <button data-action="share" data-share-type="embed">Embed</button>
+                <a href="mailto:?subject=REN Data Hub Pre&#xE7;os do Mercado Di&#xE1;rio&body=https://datahub.ren.pt:443/pt/eletricidade/mercado/modules/market-prices/market-prices/?date=2026-11-11" data-action="share" data-share-type="email" target="_blank">
+                    <i class="icon icon-color-grey-dark email js-placeIcon" data-id="email"></i>
+                </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2Fmodules%2Fmarket-prices%2Fmarket-prices%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="facebook" target="_blank">
+                <i class="icon icon-color-grey-dark facebook js-placeIcon" data-id="facebook"></i>
+            </a>
+            <a href="https://twitter.com/share?text=REN Data Hub Pre&#xE7;os do Mercado Di&#xE1;rio&url=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2Fmodules%2Fmarket-prices%2Fmarket-prices%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="twitter" target="_blank">
+                <i class="icon icon-color-grey-dark twitter js-placeIcon" data-id="twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2Fmodules%2Fmarket-prices%2Fmarket-prices%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="linkedin" target="_blank">
+                <i class="icon icon-color-grey-dark linkedin js-placeIcon" data-id="linkedin"></i>
+            </a>
+        </div>
+            <div class="overlay js-close-embed"></div>
+            <div class="modal-embed">
+                <button class="button-close js-close-embed" aria-label="Fechar">
+                    <i class="icon icon-color-main cross js-placeIcon" data-id="cross"></i>
+                </button>
+                <span class="title">Embed</span>
+                <textarea><iframe style="width:calc(100% - 40px);height:500px;border: 1px solid #333;padding:20px;" src="https://datahub.ren.pt:443/pt/eletricidade/mercado/modules/market-prices/market-prices/?date=2026-11-11"></iframe></textarea>
+                <button class="button-gradient js-copy-embed">Copiar</button>
+            </div>
+    </div>
+</div>
+
+<div class="toggle-popup-container" data-action="togglePopup">
+    <button class="btn-download" data-action="downloadChart">
+        <i class="icon icon-color-white arrow rotate-90 js-placeIcon" data-id="arrow"></i>
+    </button>
+    <div class="toggle-popup-wrapper js-toggle-popup">
+        <div class="toggle-popup-options">
+                <button data-url="/service/electricity/DiaryMarketPrices/1534?dayToSearchString=639300150440691039&culture=pt-PT" data-action="export" data-export-type="json">JSON</button>
+                <a href="/service/chart-export/1534?download=true&date=2026-11-11" target="_blank">JPEG</a>
+                <a href="/service/chart-export/1534?print=true&date=2026-11-11" target="_blank">PRINT</a>
+                <a href="/service/chart-export/1534?pdf=true&date=2026-11-11" target="_blank">PDF</a>
+                <a data-share-type="embed" data-action="export" data-url="/service/exports/csv" data-export-type="csv" data-model-id="1534">CSV</a>
+                <a data-share-type="embed" data-action="export" data-url="/service/exports/excel" data-export-type="excel" data-model-id="1534">EXCEL</a>
+        </div>
+
+        <div class="overlay js-close-embed"></div>
+        <div class="modal-embed" data-country="PT">
+            <button class="button-close js-close-embed" aria-label="Fechar">
+                <i class="icon icon-color-main cross js-placeIcon" data-id="cross"></i>
+            </button>
+            <span class="title">Download de dados</span>
+            <form class="js-form-filter ">
+                    <div class="calendar-container normal-input">
+                        <div class="input-container">
+                            <input type="text" class="input-calendar js-datepicker isDownload" readonly data-onchange="true" placeholder="Data Inicial" data-input-type="range" data-start-date="2026-11-11" data-end-date="2026-11-11" data-end-input="#endInput1534">
+                            <i class="icon icon-color-white calendar js-placeIcon" data-id="calendar"></i>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" class="input-calendar" id="endInput1534" readonly placeholder="Data Final">
+                            <i class="icon icon-color-white calendar js-placeIcon" data-id="calendar"></i>
+                        </div>
+                    </div>
+
+                <input type="hidden" value="2026-11-11,2026-11-11" name="datePeriod" class="js-input-calendar" readonly>
+            </form>
+            <button class="button-gradient align-left js-download-embed">Fazer Download</button>
+        </div>
+    </div>
+</div>
+                                </div>
+                                    <div class="title-sm">Fonte: OMIE</div>
+                            </div>
+                                <div class="plot-container">
+                                    <div id="chart-1534" data-id="Electricity/DiaryMarketPrices/1534?culture=pt-PT&dayToSearchString=639300150440691039&useGasDate=true" class="chart-item  js-chart js-lazyload"  data-chart-type="line" data-chart-decimals="2"></div>
+                                    <div class="loader-overlay js-loader">
+                                        <div class="loader"></div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+</section>
+                    <!-- TableModule: render directly so partial output is not lost when captured by WithGlossary (partial writes to ViewContext.Writer, not the StringWriter used by ToHtmlString) -->
+
+<section class="module table-wrapper js-table-wrapper   desktop-margin-bottom-200" data-section-id="2649" id="section-2649">
+    <div class="container">
+
+        <div class="toggle-wrapper is-visible js-toggle-wrapper" data-toggle-id="0">
+            <div class="chart-header ">
+                <h3 class="title-lg">
+                    Mercado Di&#xE1;rio
+
+    <div class="btn-info-container" data-action="togglePopup" data-variable-height="true">
+        <button class="btn-info">
+            <i class="icon icon-color-blue-grey-light info js-placeIcon" data-id="info"></i>
+        </button>
+        <div class="info-content js-toggle-popup">
+                <div class="rte"><p>Para o mês selecionado, indicação dos valores médios mensais do mercado SPOT diário verificados em Portugal e Espanha, com separação entre os períodos de vazio e fora de vazio, assim como dos valores acumulados desde o início do ano. Indicação também da percentagem dos períodos em que os mercados estiveram separados, ou seja, com preços diferentes entre Portugal e Espanha. Indicação das capacidades médias mensais de importação e exportação.</p></div>
+        </div>
+    </div>
+
+                </h3>
+                    <div class="content-right">
+
+<div class="toggle-popup-container" data-action="togglePopup">
+    <button class="btn-share has-bg js-share">
+        <i class="icon icon-color-white share js-placeIcon" data-id="share"></i>
+    </button>
+    <div class="toggle-popup-wrapper js-toggle-popup">
+        <div class="toggle-popup-options">
+                <button data-action="share" data-share-type="embed">Embed</button>
+                <a href="mailto:?subject=REN Data Hub Mercado Di&#xE1;rio&body=https://datahub.ren.pt:443/pt/eletricidade/mercado/modules/mercado-diario/?date=2026-11-11" data-action="share" data-share-type="email" target="_blank">
+                    <i class="icon icon-color-grey-dark email js-placeIcon" data-id="email"></i>
+                </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2Fmodules%2Fmercado-diario%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="facebook" target="_blank">
+                <i class="icon icon-color-grey-dark facebook js-placeIcon" data-id="facebook"></i>
+            </a>
+            <a href="https://twitter.com/share?text=REN Data Hub Mercado Di&#xE1;rio&url=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2Fmodules%2Fmercado-diario%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="twitter" target="_blank">
+                <i class="icon icon-color-grey-dark twitter js-placeIcon" data-id="twitter"></i>
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fdatahub.ren.pt%3A443%2Fpt%2Feletricidade%2Fmercado%2Fmodules%2Fmercado-diario%2F%3Fdate%3D2026-11-11" data-action="share" data-share-type="linkedin" target="_blank">
+                <i class="icon icon-color-grey-dark linkedin js-placeIcon" data-id="linkedin"></i>
+            </a>
+        </div>
+            <div class="overlay js-close-embed"></div>
+            <div class="modal-embed">
+                <button class="button-close js-close-embed" aria-label="Fechar">
+                    <i class="icon icon-color-main cross js-placeIcon" data-id="cross"></i>
+                </button>
+                <span class="title">Embed</span>
+                <textarea><iframe style="width:calc(100% - 40px);height:500px;border: 1px solid #333;padding:20px;" src="https://datahub.ren.pt:443/pt/eletricidade/mercado/modules/mercado-diario/?date=2026-11-11"></iframe></textarea>
+                <button class="button-gradient js-copy-embed">Copiar</button>
+            </div>
+    </div>
+</div>
+
+<div class="toggle-popup-container" data-action="togglePopup">
+    <button class="btn-download" data-action="downloadChart">
+        <i class="icon icon-color-white arrow rotate-90 js-placeIcon" data-id="arrow"></i>
+    </button>
+    <div class="toggle-popup-wrapper js-toggle-popup">
+        <div class="toggle-popup-options">
+                <a href="/service/exports/csv?startDateString=2026-11-11&endDateString=2026-11-11&culture=pt-PT&country=PT&modelId=2649" target="_blank" data-export-type="csv">CSV</a>
+                <a href="/service/exports/excel?startDateString=2026-11-11&endDateString=2026-11-11&culture=pt-PT&country=PT&modelId=2649" target="_blank" data-export-type="excel">EXCEL</a>
+        </div>
+
+        <div class="overlay js-close-embed"></div>
+        <div class="modal-embed" data-country="PT">
+            <button class="button-close js-close-embed" aria-label="Fechar">
+                <i class="icon icon-color-main cross js-placeIcon" data-id="cross"></i>
+            </button>
+            <span class="title">Download de dados</span>
+            <form class="js-form-filter ">
+                    <div class="calendar-container normal-input">
+                        <div class="input-container">
+                            <input type="text" class="input-calendar js-datepicker isDownload" readonly data-onchange="true" placeholder="Data Inicial" data-input-type="range" data-start-date="2026-11-11" data-end-date="2026-11-11" data-end-input="#endInput2649">
+                            <i class="icon icon-color-white calendar js-placeIcon" data-id="calendar"></i>
+                        </div>
+                        <div class="input-container">
+                            <input type="text" class="input-calendar" id="endInput2649" readonly placeholder="Data Final">
+                            <i class="icon icon-color-white calendar js-placeIcon" data-id="calendar"></i>
+                        </div>
+                    </div>
+
+                <input type="hidden" value="2026-11-11,2026-11-11" name="datePeriod" class="js-input-calendar" readonly>
+            </form>
+            <button class="button-gradient align-left js-download-embed">Fazer Download</button>
+        </div>
+    </div>
+</div>
+                    </div>
+            </div>
+            <div class="module module-table table-scroll  js-moduleTable th-align-right ">
+                <div class="table-body column-width-60 ">
+                    <table border="1" style="border-collapse: collapse; width: 100%; height: 288px;">
+<tbody>
+<tr style="height: 24px;">
+<td style="width: 20%; height: 24px;"> </td>
+<td class="table-heading col-highlight" colspan="2" style="height: 24px; width: 40%;"><span class="title-lg">novembro</span></td>
+<td class="table-heading" colspan="2" style="height: 24px; width: 40%;"><span class="title-lg">2026</span></td>
+</tr>
+<tr class="sub-heading" style="height: 48px;">
+<td style="width: 20%; height: 48px;"> </td>
+<td style="width: 20%; height: 48px;"><span class="unit center-cell">PT</span></td>
+<td style="width: 20%; height: 48px;"><span class="unit center-cell">ES</span></td>
+<td style="width: 20%; height: 48px;"><span class="unit center-cell">PT</span></td>
+<td style="width: 20%; height: 48px;"><span class="unit center-cell">ES</span></td>
+</tr>
+
+<tr class="row-level-1" style="height: 24px;">
+<td style="width: 20%; height: 24px;"><strong>Preço Médio</strong></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">199.82</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">197.32</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">88.17</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">87.87</span></td>
+</tr>
+<tr class="row-level-1 indent-20" style="height: 24px;">
+<td style="width: 20%; height: 24px;">Vazio</td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">198.72</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">198.72</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">91.98</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">92.55</span></td>
+</tr>
+<tr class="row-level-1 indent-20" style="height: 24px;">
+<td style="width: 20%; height: 24px;">Fora Vazio</td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">200.71</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">196.18</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">84.82</span></td>
+<td style="width: 20%; height: 24px;"><span class="center-cell">83.76</span></td>
+</tr>
+<tr class="row-level-1" style="height: 24px;">
+<td style="width: 20%; height: 24px;"><strong>Separação de mercados [%]</strong></td>
+<td colspan="2" style="width: 40%; height: 24px; text-align: center;"><em><span class="center-cell">8.4</span></em></td>
+<td colspan="2" style="width: 40%; height: 24px; text-align: center;"><em><span class="center-cell">11.7</span></em></td>
+</tr>
+
+<tr class="row-level-1 indent-20" style="height: 24px;">
+<td style="width: 20%; height: 24px;"><strong>Importação</strong></td>
+<td colspan="2" style="width: 40%; height: 24px; text-align: center;"><span class="center-cell">4 634</span></td>
+<td colspan="2" style="width: 40%; height: 24px; text-align: center;"><span class="center-cell">3 542</span></td>
+</tr>
+<tr class="row-level-1 indent-20" style="height: 24px;">
+<td style="width: 20%; height: 24px;"><strong>Exportação</strong></td>
+<td colspan="2" style="width: 40%; height: 24px; text-align: center;"><span class="center-cell">3 518</span></td>
+<td colspan="2" style="width: 40%; height: 24px; text-align: center;"><span class="center-cell">2 718</span></td>
+</tr>
+</tbody>
+</table>
+<em><sup>1 </sup>Fonte: OMIE </em>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+                    <!--cardsLinkModule 2887-->
+
+<section class="module module-cards " data-section-id="2887" id="section-2887">
+    <div class="container">
+            <h3 class="title-lg">N&#xFA;meros &#xE0; Lupa</h3>
+        <div class="cards-info has-shadow is-link-card js-slider" data-type-slider="cardsInfo">
+
+<div class="item-wrapper">
+        <a class="cards-info-item" href="/pt/eletricidade/balanco-diario/" >
+            <h2 class="title-md">Balan&#xE7;o di&#xE1;rio de eletricidade</h2>
+                <div class="description"><p>Saiba mais sobre os balanços da eletricidade.</p></div>
+            <span class="item-link">
+                Balan&#xE7;o Di&#xE1;rio
+                <i class="icon icon-color-orange arrow js-placeIcon" data-id="arrow"></i>
+            </span>
+        </a>
+</div>
+
+
+<div class="item-wrapper">
+        <a class="cards-info-item" href="/pt/eletricidade/evolucao-do-consumo/" >
+            <h2 class="title-md">Evolu&#xE7;&#xE3;o do Consumo</h2>
+                <div class="description"><p>Saiba mais sobre a evolução do consumo de eletricidade.</p></div>
+            <span class="item-link">
+                Evolu&#xE7;&#xE3;o do Consumo
+                <i class="icon icon-color-orange arrow js-placeIcon" data-id="arrow"></i>
+            </span>
+        </a>
+</div>
+
+
+<div class="item-wrapper">
+        <a class="cards-info-item" href="/pt/eletricidade/regimes/" >
+            <h2 class="title-md">Regimes</h2>
+                <div class="description"><p>Saiba mais sobre os índices de produtibilidade das renováveis.</p></div>
+            <span class="item-link">
+                Regimes
+                <i class="icon icon-color-orange arrow js-placeIcon" data-id="arrow"></i>
+            </span>
+        </a>
+</div>
+
+        </div>
+    </div>
+</section>
+
+
+
+
+    </main>
+
+    
+<footer class="module main-footer full-bg">
+
+    <div class="wrapper-footer">
+        <div class="inline-desktop">
+            <a class="logo" href="/">
+                <img src="/images/logos/logo-ren-white.png" alt="REN" />
+            </a>
+            <ul class="links-footer">
+                            <li>
+                                <a href="/pt/instrucoes-api/">API</a>
+                            </li>
+                            <li>
+                                <a href="/pt/glossario/">Gloss&#xE1;rio</a>
+                            </li>
+                            <li>
+                                <a href="/pt/ligacoes/">Liga&#xE7;&#xF5;es Externas</a>
+                            </li>
+                            <li>
+                                <a href="/pt/contactos/">Contactos</a>
+                            </li>
+            </ul>
+        </div>
+        <ul class="links-social">
+                        <li>
+                            <a href="https://www.linkedin.com/company/ren/" target=&quot;_blank&quot;>
+                                    <i class="icon icon-color-white LinkedIn js-placeIcon" data-id="LinkedIn"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/ren_pt" target=&quot;_blank&quot;>
+                                    <i class="icon icon-color-white Twitter js-placeIcon" data-id="Twitter"></i>
+                            </a>
+                        </li>
+        </ul>
+        <ul class="links-apps">
+                        <li>
+                            <a href="https://www.ren.pt/pt-PT/quem_somos/app_ren_energia" target=&quot;_blank&quot;>
+                                    <img src="/media/4rmjfhlr/app-ren-energy.png" alt="REN Energia" />
+                                REN Energia
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.ren.pt/pt-PT/investidores/app_ir_e_media" target=&quot;_blank&quot;>
+                                    <img src="/media/pwtdk1xl/app-ren-investors.png" alt="REN Investidores" />
+                                REN Investidores
+                            </a>
+                        </li>
+        </ul>
+        <div class="wrapper-links-subfooter">
+            <div class="size-desktop">
+                <ul class="links-subfooter">
+                                <li>
+                                    <a href="https://www.ren.pt/pt-pt/privacidade-na-ren">Termos de uso e pol&#xED;tica de privacidade</a>
+                                </li>
+                                <li>
+                                    <a href="/pt/politica-de-cookies/">Pol&#xED;tica de Cookies</a>
+                                </li>
+                </ul>
+                <span class="copyright">&#xA9; 2021 REN Todos os direitos reservados</span>
+            </div>
+        </div>
+
+        <div class="overlay" data-action="backToForm"></div>
+    </div>
+</footer>
+
+
+    <template data-tpl-id="tableHeader">
+    <div>
+        <div class="table-header">
+            <div class="header-wrapper">
+                <div class="header-content">
+                    <div class="header-item"></div>
+                </div>
+            </div>
+            <div class="controls" aria-label="Carousel Navigation" tabindex="0">
+                <button class="btn-prev is-active" data-controls="prev">
+                    <i class="icon icon-color-blue-grey-light arrow js-placeIcon" data-id="arrow"></i>
+                </button>
+                <button class="btn-next is-active" data-controls="next">
+                    <i class="icon icon-color-blue-grey-light arrow js-placeIcon" data-id="arrow"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template data-tpl-id="tableScroll">
+    <div>
+        <div class="scrollOuter table">
+            <div class="fixColumn">
+                <table border="0" class="nowidth fixWidth propagationHover js-tableColumnFixed"></table>
+            </div>
+            <div class="needScrollH">
+                <table border="0" class="nowidth rendered fixWidth propagationHover js-tableContent" style="width: 2500px"></table>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template data-tpl-id="chart-comparison">
+    <div class="chart-comparison-wrapper js-chart-wrapper">
+        <button class="btn-close" data-action="removeChart">
+            <span class="btn-label">Fechar</span>
+            <i class="icon icon-color-blue-grey cross js-placeIcon" data-id="cross"></i>
+        </button>
+        <div class="chart-wrapper js-chart-wrapper">
+            <div class="chart-header has-line">
+                <h3 class="title-lg">
+                    Chart
+                    <div class="btn-info-container" data-action="togglePopup" data-variable-height="true">
+                        <button class="btn-info">
+                            <i class="icon icon-color-blue-grey-light info js-placeIcon" data-id="info"></i>
+                        </button>
+                        <div class="info-content js-toggle-popup">
+                            <div class="title">Repartição da produção de eletricidade</div>
+                            <div class="rte">
+                                <p>Repartição da produção por fonte primária – carvão, gás natural, água, vento, sol, ondas, biomassa e outros. Representa-se ainda a importação, caso exista.</p>
+                                <p>A linha mais grossa representa o consumo de electricidade e a linha mais fina indica a soma deste com o consumo em bombagem (consumo das centrais hidroeléctricas reversíveis, utilizado para bombear água de um reservatório para outro mais elevado e que será turbinada posteriormente).</p>
+                                <p>Caso a produção seja maior que o consumo, significa que se está a exportar electricidade, sendo a exportação a diferença entre a produção e o consumo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </h3>
+                <div class="calendar-container">
+                    <label>Data de Análise</label>
+                    <div class="input-container">
+                        <input type="text" class="input-calendar js-datepicker" readonly data-input-type="comparison">
+                        <i class="icon icon-color-white calendar js-placeIcon" data-id="calendar"></i>
+                        <i class="icon icon-color-white arrow-simple js-placeIcon" data-id="arrow-simple"></i>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="toggle-popup-container" data-action="togglePopup">
+                        <button class="btn-share has-bg js-share">
+                            <i class="icon icon-color-white share js-placeIcon" data-id="share"></i>
+                        </button>
+                        <div class="toggle-popup-wrapper js-toggle-popup">
+                            <div class="toggle-popup-options">
+                                <button data-action="share" data-share-type="embed">Embed</button>
+                                <a href="mailto:info@example.com?&subject=&body=https://www.rendatahub.com" data-action="share" data-share-type="email" target="_blank">
+                                    <i class="icon icon-color-grey-dark email js-placeIcon" data-id="email"></i>
+                                </a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.rendatahub.com" data-action="share" data-share-type="facebook" target="_blank">
+                                    <i class="icon icon-color-grey-dark facebook js-placeIcon" data-id="facebook"></i>
+                                </a>
+                                <a href="https://twitter.com/home?status=https://www.rendatahub.com" data-action="share" data-share-type="twitter" target="_blank">
+                                    <i class="icon icon-color-grey-dark twitter js-placeIcon" data-id="twitter"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.rendatahub.com&title=&summary=&source=" data-action="share" data-share-type="linkedin" target="_blank">
+                                    <i class="icon icon-color-grey-dark linkedin js-placeIcon" data-id="linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="overlay js-close-embed"></div>
+                        <div class="modal-embed">
+                            <button class="button-close js-close-embed" aria-label="Fechar">
+                                <i class="icon icon-color-main cross js-placeIcon" data-id="cross"></i>
+                            </button>
+                            <span class="title">Embed Cenas</span>
+                            <textarea></textarea>
+                            <button class="button-gradient js-copy-embed">Copiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="plot-container">
+                <div id="" data-id="" class="chart-item js-chart">
+                </div>
+                <div class="loader-overlay js-loader">
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+
+    <script src="/scripts/vendor.min.js?v=AHbzxbdfMB3p4jsJDyKsl6tkfXmgKQ4PMtqMO_g0GE0"></script>
+    <script src="/scripts/app.min.js?v=dEIER-clHjtxFXhocl4ckxt7bvtMEPQvIjTZXKz6MU4"></script>
+
+    <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                var hasSubMenu = document.querySelector('section.sub-menu');
+                if(hasSubMenu && !document.body.classList.contains('has-sub-menu')){
+                    document.body.classList.add('has-sub-menu');
+                }
+            });
+    </script>
+
+    
+</body>
+</html>

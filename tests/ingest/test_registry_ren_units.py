@@ -2,14 +2,19 @@
 test_registry_bportugal_units.py).
 
 The REN servicebus JSON API exposes NO unit field; publisher unit evidence is the independent
-portal surface, read live 2026-11-11 and archived in the Task 12 discovery package:
-  - balance page https://datahub.ren.pt/pt/eletricidade/balanco-mensal/ narrative "(...) o
-    consumo totalizou 4 362 GWh (...)" and the chart CSV export header 'set 26 [GWh]' -> GWh;
-  - market page https://datahub.ren.pt/pt/eletricidade/mercado/ narrative "(...) situou-se em
-    199.82€/MWh" -> EUR/MWh (the market CSV export carries no unit annotation).
+portal surface, read live 2026-11-11 and archived as COMMITTED fixtures
+(tests/ingest/fixtures/ren/, sha256-pinned by MANIFEST.json):
+  - balance page https://datahub.ren.pt/pt/eletricidade/balanco-mensal/ narrative "GWh" and
+    the chart CSV export header 'set 26 [GWh]' -> GWh;
+  - market page https://datahub.ren.pt/pt/eletricidade/mercado/ narrative
+    " situou-se em <strong>210.40€/MWh</strong>" (page body committed at
+    fixtures/ren/portal/mercado.body, MANIFEST.json 'unit_evidence') -> EUR/MWh (the market
+    CSV export carries no unit annotation, so the verifier honestly reads observed_unit=None).
 REN_PUBLISHER_UNIT records, per native_code, the unit read from that evidence; it is not echoed
 from the registry.
 """
+import hashlib
+import json
 from pathlib import Path
 
 from ingest.registry import load_registry
@@ -17,8 +22,9 @@ from ingest.sources.ren import BALANCE_ENDPOINT, PRICES_ENDPOINT, parse_native_c
 
 REGISTRY = Path(__file__).resolve().parents[2] / "registry" / "core.yaml"
 
-# native_code -> unit read from the publisher's own pages/CSV export on 2026-11-11 (fixtures in
-# tests/ingest/fixtures/ren/, archive /home/joao/.hermes/cache/scratch/prumo-task12-ren-discovery).
+# native_code -> unit read from the publisher's own pages/CSV export on 2026-11-11 (committed
+# fixtures tests/ingest/fixtures/ren/ incl. portal/mercado.body, sha256-pinned by MANIFEST.json
+# 'unit_evidence'; origin: the controller-reviewed Task 12 discovery archive).
 REN_PUBLISHER_UNIT = {
     "ElectricityConsumptionSupplyMonthly:BIOMASSA": "GWh",
     "ElectricityConsumptionSupplyMonthly:CONSUMO": "GWh",
@@ -70,6 +76,19 @@ def test_every_active_ren_series_is_in_the_table_with_matching_unit():
 def test_table_has_no_stale_entries():
     used = {s.native_code for s, _ in _pairs() if s.active}
     assert used == set(REN_PUBLISHER_UNIT)
+
+
+def test_market_unit_evidence_is_committed_and_hash_pinned():
+    """The EUR/MWh unit evidence is the committed market page body (the market CSV export
+    exposes no unit, so the verifier's observed_unit=None stays honest): sha256-pinned by
+    MANIFEST.json 'unit_evidence' with the recorded final URL and status, and the '€/MWh'
+    narrative really present — durable beyond the expiring scratch discovery archive."""
+    fix = Path(__file__).parent / "fixtures" / "ren"
+    ev = json.loads((fix / "MANIFEST.json").read_text())["unit_evidence"]["market_page"]
+    body = (fix / ev["file"]).read_bytes()
+    assert hashlib.sha256(body).hexdigest() == ev["sha256"]
+    assert ev["status"] == 200 and ev["url"] == "https://datahub.ren.pt/pt/eletricidade/mercado/"
+    assert "€/MWh" in body.decode("utf-8", errors="replace")
 
 
 def test_endpoints_and_units_consistent():

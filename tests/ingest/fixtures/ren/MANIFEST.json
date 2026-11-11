@@ -78,5 +78,14 @@
       "period": "2026-09",
       "note": "modelId 2649 market chart; header ',setembro,,2026,' then ',PT,ES,PT,ES'; PT 'Preço Médio' 143.9"
     }
+  },
+  "unit_evidence": {
+    "market_page": {
+      "file": "portal/mercado.body",
+      "url": "https://datahub.ren.pt/pt/eletricidade/mercado/",
+      "status": 200,
+      "sha256": "a27cc396ff5bfc06b46feb71892077a3a170d010933900ede4ea6265b3270da2",
+      "note": "market page narrative ('€/MWh' x8) — the EUR/MWh unit evidence; the market CSV export exposes no unit annotation. Byte-identical copy of the controller-reviewed discovery archive portal/mercado.body (fetched 2026-11-11, GET, no auth)"
+    }
   }
 }
