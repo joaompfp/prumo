@@ -23,6 +23,7 @@ from ingest.verifiers import register_verifier
 from ingest.verifiers.ren import RenVerifier
 from ingest.verify import run_with_refetch
 from tests.ingest.ren_fixtures import ROOT
+from tests.ingest.ren_verifier_fixtures import decode_evidence
 
 LIVE_SERIES = [
     "ren.electricity_biomass.PT",
@@ -85,12 +86,17 @@ def test_live_run_with_refetch_is_verified_but_legally_withheld(tmp_path, monkey
         assert verifs and all(p == 1 for _, _, p in verifs)
         # technical verification passed AND the licence gate keeps everything withheld
         assert served == 0
-        # archived evidence recovers offline (no HTTP): integrity-checked raw payloads
-        rows = db.conn.execute("SELECT id, evidence_sha256 FROM verification_item WHERE "
-                               "evidence_sha256 IS NOT NULL").fetchall()
+        # archived evidence recovers offline (no HTTP): integrity-checked raw payloads, and the
+        # envelope decodes to the deciding response's exact bytes + FINAL url + ACTUAL status
+        rows = db.conn.execute("SELECT id, evidence_url, evidence_sha256 FROM verification_item "
+                               "WHERE evidence_sha256 IS NOT NULL").fetchall()
         store = RawStore(tmp_path / "raw")
-        n_loaded = sum(1 for _, sha in rows
-                       if store.load(store.root / "verify-ren" / sha[:2] / sha) is not None)
+        n_loaded = 0
+        for _, url, sha in rows:
+            blob = store.load(store.root / "verify-ren" / sha[:2] / sha)
+            (rec,) = decode_evidence(blob)
+            assert rec["url"] == url and 200 <= rec["status"] < 300 and rec["body"]
+            n_loaded += 1
         assert rows and n_loaded == len(rows)
         n_raw = db.conn.execute("SELECT COUNT(*) FROM raw_fetch WHERE dataset_run_id=? AND ok=1",
                                 (result.run_id,)).fetchone()[0]

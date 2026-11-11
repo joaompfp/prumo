@@ -14,7 +14,7 @@ from ingest.verifiers.independence import assert_verifier_independent
 from ingest.verifiers.ren import RenVerifier
 from ingest.verify import replay_item, run_with_refetch, verify_run
 from tests.ingest.ren_fixtures import FixtureHttp, all_specs, registry_specs
-from tests.ingest.ren_verifier_fixtures import VMANIFEST, VerifyFixtureHttp, vbody
+from tests.ingest.ren_verifier_fixtures import VMANIFEST, VerifyFixtureHttp, decode_evidence, vbody
 
 
 class Clock:
@@ -70,11 +70,17 @@ def test_verifier_caches_one_fetch_per_chart_and_month():
     assert http.calls == ["balance_2026-09", "market_2026-09"]
 
 
-def test_verifier_evidence_is_the_exact_csv_bytes():
+def test_verifier_evidence_envelope_carries_exact_bytes_url_and_status():
+    """ItemResult.evidence is the versioned 'ren-portal-evidence' v1 envelope: the ONE deciding
+    CSV response's exact bytes, FINAL url and ACTUAL http status, recoverable offline (no HTTP);
+    ItemResult.evidence_url stays that response's final URL."""
     (r,) = RenVerifier().check([_item("ren.electricity_hydro.PT", "2026-09")],
                                VerifyFixtureHttp())
-    assert r.evidence == vbody(VMANIFEST["balance_2026-09"]["file"])
-    assert r.evidence_url == VMANIFEST["balance_2026-09"]["url"]
+    m = VMANIFEST["balance_2026-09"]
+    assert r.evidence_url == m["url"]
+    (rec,) = decode_evidence(r.evidence)  # exactly one deciding response
+    assert rec == {"url": m["url"], "status": m["status"], "body": vbody(m["file"])}
+    assert m["status"] == 200
     assert r.observed_text == "645" and r.observed_unit == "GWh"
 
 
@@ -120,6 +126,65 @@ def test_verifier_missing_target_row_raises():
     tampered = vbody(VMANIFEST["balance_2026-09"]["file"]).replace(
         b"\r\nCONSUMO,8275,4442,40433,4164,39153,6.7,3.3\r\n", b"\r\n", 1)
     with pytest.raises(ValueError, match="0 rows"):
+        RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
+                            VerifyFixtureHttp({"balance_2026-09": tampered}))
+
+
+# --- malformed-channel guards: markup, garbage and blank-row probes fail closed --------------
+
+def test_verifier_permanent_html_page_raises():
+    """The export service answering an HTML page (error/consent/maintenance) is not a table."""
+    tampered = b"<!DOCTYPE html><html><body>Service Unavailable</body></html>"
+    with pytest.raises(ValueError, match="markup"):
+        RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
+                            VerifyFixtureHttp({"balance_2026-09": tampered}))
+
+
+def test_verifier_non_utf8_csv_raises():
+    with pytest.raises(ValueError, match="UTF-8"):
+        RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
+                            VerifyFixtureHttp({"balance_2026-09": b"\xff\xfe\x00not utf-8"}))
+
+
+def test_verifier_empty_csv_raises():
+    with pytest.raises(ValueError, match="no data rows"):
+        RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
+                            VerifyFixtureHttp({"balance_2026-09": b""}))
+
+
+def test_verifier_interior_empty_line_raises():
+    """A bare CRLF inside the table (a ZERO-CELL row) is an interior blank: an unreviewed table
+    break, fail closed. A row filter that drops zero-cell lines BEFORE the blank-row analysis
+    would hide this break — the guard runs on the unfiltered CSV rows."""
+    tampered = vbody(VMANIFEST["balance_2026-09"]["file"]).replace(
+        b"\r\nH\xc3\xaddrica 1,", b"\r\n\r\nH\xc3\xaddrica 1,", 1)
+    with pytest.raises(ValueError, match="interior blank"):
+        RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
+                            VerifyFixtureHttp({"balance_2026-09": tampered}))
+
+
+def test_verifier_interior_comma_blank_line_raises():
+    tampered = vbody(VMANIFEST["balance_2026-09"]["file"]).replace(
+        b"\r\nCONSUMO,8275,", b"\r\n,,,,,,,\r\nCONSUMO,8275,", 1)
+    with pytest.raises(ValueError, match="interior blank"):
+        RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
+                            VerifyFixtureHttp({"balance_2026-09": tampered}))
+
+
+def test_verifier_trailing_blank_lines_tolerated():
+    """The archived shape ends with blank line(s): a blank SUFFIX is tolerated (read from
+    evidence), interior blanks are not."""
+    tampered = vbody(VMANIFEST["balance_2026-09"]["file"]) + b"\r\n\r\n\r\n"
+    (r,) = RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
+                               VerifyFixtureHttp({"balance_2026-09": tampered}))
+    assert r.observed_text == "4442"
+
+
+def test_verifier_malformed_quote_fails_closed():
+    """A stray quote must fail closed (strict CSV parse), never be re-assembled into an altered
+    table that otherwise passes the mapped-label checks."""
+    tampered = vbody(VMANIFEST["balance_2026-09"]["file"]) + b'"unterminated\r\n'
+    with pytest.raises(ValueError, match="malformed"):
         RenVerifier().check([_item("ren.electricity_consumption.PT", "2026-09")],
                             VerifyFixtureHttp({"balance_2026-09": tampered}))
 
@@ -206,7 +271,8 @@ def test_verifier_matches_clean_run_but_licence_gate_serves_nothing(env):
 
 def test_archived_evidence_recovers_offline_and_replays(env):
     """Every item's evidence_sha256 reloads from the raw store (integrity checked, no HTTP) and
-    equals the recorded CSV bytes; replay_item re-decides each stored comparison offline."""
+    decodes to the deciding CSV response's exact bytes + final URL + ACTUAL status (read from
+    the archive, not implied); replay_item re-decides each stored comparison offline."""
     db, specs, store, r, ok = _run(env)
     assert ok
     rows = q(db, "SELECT id, series_id, evidence_url, evidence_sha256 FROM verification_item")
@@ -214,7 +280,9 @@ def test_archived_evidence_recovers_offline_and_replays(env):
     for item_id, sid, url, sha in rows:
         blob = store.load(store.root / "verify-ren" / sha[:2] / sha)  # raises if altered
         key = "market_2026-09" if "price" in sid else "balance_2026-09"
-        assert blob == vbody(VMANIFEST[key]["file"])
+        (rec,) = decode_evidence(blob)
+        assert rec == {"url": url, "status": VMANIFEST[key]["status"],
+                       "body": vbody(VMANIFEST[key]["file"])}
         assert url == VMANIFEST[key]["url"]
         assert replay_item(db, store, item_id) is True
 

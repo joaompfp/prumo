@@ -4,7 +4,7 @@ Imports nothing from the collector side."""
 from ingest.verifiers import BlindItem
 from ingest.verifiers.ren import RenVerifier
 from tests.ingest.ren_fixtures import registry_specs
-from tests.ingest.ren_verifier_fixtures import VerifyFixtureHttp
+from tests.ingest.ren_verifier_fixtures import VMANIFEST, VerifyFixtureHttp, decode_evidence, vbody
 
 # (series, period, observed_text, observed_unit) — every token read from the archived CSV bytes
 # fixtures/ren/verify/ and cross-checked against the servicebus JSON payload at recording time
@@ -37,5 +37,15 @@ def run():
     assert got == [(s, p, v, u) for s, p, v, u in CASES], got
     assert all(r.observed_decimal == "." and r.evidence and r.observed_flag is None
                for r in results)
+    # every evidence envelope decodes offline: exact deciding-response bytes, final URL and
+    # the ACTUAL archived HTTP status
+    for r in results:
+        key = ("market_2026-09" if "price" in r.series_id else
+               "balance_2020-06" if r.period == "2020-06" else "balance_2026-09")
+        assert r.evidence is not None
+        (rec,) = decode_evidence(r.evidence)
+        assert rec == {"url": VMANIFEST[key]["url"], "status": VMANIFEST[key]["status"],
+                       "body": vbody(VMANIFEST[key]["file"])}
+        assert r.evidence_url == VMANIFEST[key]["url"]
     # cache: one fetch per (chart, month) — 13 2026-09 balance items share one response
     assert http.calls == ["balance_2026-09", "balance_2020-06", "market_2026-09"]

@@ -23,23 +23,32 @@ Channel mechanics (recorded live 2026-11-11 in tests/ingest/fixtures/ren/verify/
   surface -> observed_flag=None honestly.
 - Market (modelId 2649): 8-row CSV ",setembro,,2026," / ",PT,ES,PT,ES", then 'Preço Médio'
   (unique), Vazio, Fora Vazio, 'Separação de mercados [%]', Importação, Exportação; columns 1/2
-  are the CURRENT period PT/ES, 3/4 the previous year's (by archived shape). The period is read
-  from the header (full month name + 4-digit year), geographies from the 'PT,ES,PT,ES' row;
-  observed row: current-period PT value (column 1). The market CSV exposes NO unit annotation ->
-  observed_unit=None (honest; price unit evidence is the market page narrative, recorded in the
-  unit table). No status surface -> observed_flag=None.
+  are the requested month's PT/ES values, columns 3/4 belong to the CURRENT-YEAR block under
+  the 4-digit-year header cell (validated to be the requested year, never read — archived
+  2026-09: month PT 143.9 vs year-block PT 74.08). The period is read from the header (full
+  month name + 4-digit year), geographies from the 'PT,ES,PT,ES' row; observed row:
+  current-period PT value (column 1). The market CSV exposes NO unit annotation ->
+  observed_unit=None (honest; price unit evidence is the market page narrative, committed under
+  tests/ingest/fixtures/ren/portal/ + MANIFEST.json 'unit_evidence'). No status surface ->
+  observed_flag=None.
 
-EVIDENCE (Ruling R/AC/G7): ONE response decides each item (the CSV export of its chart+month),
-so ItemResult.evidence is that response's exact body and evidence_url its final URL — no
-envelope needed. Requests are one GET per (endpoint, month), cached inside a single check()
-call; the verifier adds no sleeping (the injected Http throttles).
+EVIDENCE (Ruling R/AC/G7): ONE response decides each item (the CSV export of its chart+month);
+ItemResult.evidence is that response archived in a SMALL VERSIONED JSON ENVELOPE (schema
+'ren-portal-evidence', version 1: {"responses": [{"url", "status", "body_base64"}]}) so the
+deciding response's exact bytes, FINAL url and ACTUAL http status are all preserved and
+byte-for-byte recoverable from the raw store without HTTP; evidence_url stays the final URL.
+The envelope format is REN-local to this module — no shared collector/helper code (the BPstat
+precedent lives in its own module too). Requests are one GET per (endpoint, month), cached
+inside a single check() call; the verifier adds no sleeping (the injected Http throttles).
 
 INDEPENDENCE: this module shares NO code with the collector (enforced by register_verifier and
 assert_verifier_independent). The TYPE<->CSV-label and selector maps are DUPLICATED ON PURPOSE:
 if the two copies ever disagree, verification fails loudly.
 """
+import base64
 import csv
 import io
+import json
 import re
 from datetime import date
 
@@ -82,6 +91,20 @@ _MARKET_KNOWN_LABELS = frozenset(
     {"Preço Médio", "Vazio", "Fora Vazio", "Separação de mercados [%]", "Importação",
      "Exportação"})
 
+EVIDENCE_SCHEMA = "ren-portal-evidence"
+EVIDENCE_VERSION = 1
+
+
+def _envelope(url: str, status: int, body: bytes) -> bytes:
+    """The evidence bytes of one item: the ONE deciding CSV-export response in a small
+    versioned JSON envelope — final URL, ACTUAL http status (recorded from the received
+    HttpResult, never implied) and the raw body base64-encoded (byte-for-byte recoverable
+    from the raw store without HTTP)."""
+    doc = {"schema": EVIDENCE_SCHEMA, "version": EVIDENCE_VERSION,
+           "responses": [{"url": url, "status": status,
+                          "body_base64": base64.b64encode(body).decode("ascii")}]}
+    return json.dumps(doc, ensure_ascii=True, separators=(",", ":")).encode("ascii")
+
 
 def _endpoint_and_selector(code: str | None) -> tuple[str, str]:
     """'<endpoint>:<selector>' -> for the balance the TYPE token, for the market the only
@@ -123,13 +146,19 @@ def _rows(body: bytes, what: str) -> list[list[str]]:
         text = body.decode("utf-8-sig")
     except UnicodeDecodeError as e:
         raise ValueError(f"REN portal CSV export for {what} is not UTF-8: {e}") from e
-    rows = [row for row in csv.reader(io.StringIO(text)) if row]
-    # blank rows are only tolerated at the very end (archived shape); an interior blank row is
-    # an unreviewed table break
-    seen = [i for i, row in enumerate(rows) if all(not c.strip() for c in row)]
-    if seen and seen != list(range(seen[0], len(rows))):
-        raise ValueError(f"REN portal CSV export for {what} has an interior blank row")
-    rows = [row for row in rows if any(c.strip() for c in row)]
+    try:
+        all_rows = list(csv.reader(io.StringIO(text), strict=True))
+    except csv.Error as e:  # a stray quote must fail closed, never re-shape the table
+        raise ValueError(f"REN portal CSV export for {what} is malformed CSV: {e}") from e
+    # blank rows (zero-cell lines OR all-empty cells) are only tolerated at the very end
+    # (archived shape); an interior blank row is an unreviewed table break. The analysis runs
+    # on the UNFILTERED rows so a bare CRLF line cannot hide inside the table.
+    blank = [not row or all(not c.strip() for c in row) for row in all_rows]
+    if any(blank):
+        first = blank.index(True)
+        if not all(blank[first:]):
+            raise ValueError(f"REN portal CSV export for {what} has an interior blank row")
+    rows = [row for row, b in zip(all_rows, blank) if not b]
     if len(rows) < 2:
         raise ValueError(f"REN portal CSV export for {what} has no data rows: {body[:80]!r}")
     return rows
@@ -208,11 +237,14 @@ def _parse_market_csv(body: bytes, period: str) -> str:
 
 class RenVerifier:
     """See the module docstring: one CSV export request per (chart endpoint, month), period/
-    unit/geography read from the evidence, observed_flag honestly None (no status surface)."""
+    unit/geography read from the evidence, observed_flag honestly None (no status surface);
+    evidence = the deciding response's versioned envelope (exact bytes + final URL + actual
+    HTTP status)."""
+
     source_name = "ren"
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
-        cache: dict[tuple[str, str], tuple[bytes, str]] = {}  # per (chart model, month)
+        cache: dict[tuple[str, str], tuple[bytes, str, int]] = {}  # per (chart model, month)
         results: list[ItemResult] = []
         for item in items:
             endpoint, selector = _endpoint_and_selector(item.spec.native_code)
@@ -231,8 +263,8 @@ class RenVerifier:
                 if not 200 <= r.status < 300:
                     raise ValueError(f"REN portal CSV export for {item.spec.id} {item.period} "
                                      f"answered HTTP {r.status} (fail closed on every non-2xx)")
-                cache[cache_key] = (r.body, r.url)
-            body, url = cache[cache_key]
+                cache[cache_key] = (r.body, r.url, r.status)
+            body, url, status = cache[cache_key]
             if endpoint == BALANCE_ENDPOINT:
                 token, unit = _parse_balance_csv(body, _BALANCE_LABEL[selector], item.period)
             else:
@@ -240,5 +272,5 @@ class RenVerifier:
             results.append(ItemResult(
                 series_id=item.series_id, period=item.period, observed_text=token,
                 evidence_url=url, observed_decimal=".", observed_unit=unit,
-                observed_flag=None, evidence=body))
+                observed_flag=None, evidence=_envelope(url, status, body)))
         return results
