@@ -1,15 +1,22 @@
 """Truth verification (spec 6b) against a real SQLite file, real RawStore, fake source/verifier."""
+import hashlib
+import importlib
 import json
+import uuid
 from datetime import datetime, timedelta, timezone
 
 import pytest
 
+from ingest import verifiers
+from ingest.db import open_db
 from ingest.pipeline import run_dataset
-from ingest.rawstore import RawStore
+from ingest.rawstore import RawIntegrityError, RawStore
 from ingest.registry import sync_registry
-from ingest.verifiers import ItemResult
-from ingest.verify import draw_sample, run_with_refetch, verify_run
-from tests.ingest.fakes import FakeHttp, FakeSource, FakeVerifier, ok, payload, spec, truth_of
+from ingest.verifiers import BlindItem, ItemResult, get_verifier, register_verifier
+from ingest.verify import (VerificationConflict, draw_sample, replay_item, run_with_refetch,
+                           verify_run)
+from tests.ingest.fake_verifier import FakeVerifier
+from tests.ingest.fakes import FakeHttp, FakeSource, ok, payload, spec, truth_of
 
 BASE = {"s1": [["2023", "1.5"], ["2024", "2.0"]], "s2": [["2024", "10"]]}
 
@@ -21,6 +28,11 @@ class Clock:
     def __call__(self):
         self.t += timedelta(seconds=1)
         return self.t
+
+
+@pytest.fixture(autouse=True)
+def empty_registry(monkeypatch):
+    monkeypatch.setattr(verifiers, "_REGISTRY", {})
 
 
 @pytest.fixture
@@ -116,7 +128,7 @@ def served(db):
 
 def items_of(db, run_id):
     return q(db, "SELECT i.series_id, i.period, i.expected_text, i.observed_text, i.evidence_url, "
-                 "i.match, i.note FROM verification_item i JOIN verification v "
+                 "i.match, i.note, i.id FROM verification_item i JOIN verification v "
                  "ON v.id = i.verification_id WHERE v.dataset_run_id = ? ORDER BY i.id", run_id)
 
 
@@ -126,11 +138,26 @@ def failure_events(db):
 
 
 def vrun(env, verifier, series=BASE, seed=1, size=50):
-    db, specs, _, clock, run = env
+    db, specs, store, clock, run = env
     r = run(series)
     assert r.state == "pending-verification"
     return r.run_id, verify_run(db, r.run_id, verifier, None, seed=seed, size=size, specs=specs,
-                                now=clock)
+                                store=store, now=clock)
+
+
+class ScriptedVerifier:
+    source_name = "fake"
+
+    def __init__(self, results):
+        self.results = results
+
+    def check(self, items, http):
+        return self.results(items)
+
+
+def echo(items, truth=TRUTH, **kw):
+    return [ItemResult(i.series_id, i.period, truth.get((i.series_id, i.period)), "u", **kw)
+            for i in items]
 
 
 def test_all_match_marks_verified(env):
@@ -218,40 +245,79 @@ def test_verifier_exception_is_failure_not_pass(env):
     assert served(db) == {}
 
 
-class ScriptedVerifier:
-    source_name = "fake"
-
-    def __init__(self, results):
-        self.results = results
-
-    def check(self, items, http):
-        return self.results(items)
-
-
 def test_wrong_result_count_is_failure(env):
     db = env[0]
-    short = ScriptedVerifier(lambda items: [ItemResult(TRUTH[(i.series_id, i.period)], "u")
-                                            for i in items[:-1]])
-    run_id, passed = vrun(env, short)
-    assert passed is False and db.run_state(run_id) == "failed-verification"
-    assert all(r[5] == 0 and "2 results for 3 items" in r[6] for r in items_of(db, run_id))
+    for results, n in ((lambda items: echo(items)[:-1], 2), (lambda items: echo(items) * 2, 6)):
+        run_id, passed = vrun(env, ScriptedVerifier(results))
+        assert passed is False and db.run_state(run_id) == "failed-verification"
+        assert all(r[5] == 0 and f"{n} results for 3 items" in r[6] for r in items_of(db, run_id))
 
 
 def test_out_of_order_result_is_failure(env):
     db = env[0]
-    swapped = ScriptedVerifier(lambda items: [
-        ItemResult(TRUTH[(i.series_id, i.period)], "u", series_id=i.series_id, period=i.period)
-        for i in reversed(items)])
-    run_id, passed = vrun(env, swapped)
+    run_id, passed = vrun(env, ScriptedVerifier(lambda items: echo(list(reversed(items)))))
     assert passed is False and db.run_state(run_id) == "failed-verification"
     notes = [r[6] for r in items_of(db, run_id)]
     assert "result is for s2/2024" in notes[0]
 
 
+def test_duplicate_key_result_is_failure(env):
+    db = env[0]
+    run_id, passed = vrun(env, ScriptedVerifier(lambda items: echo([items[0]] * len(items))))
+    assert passed is False
+    assert [r[5] for r in items_of(db, run_id)] == [1, 0, 0]
+
+
+def test_parser_swapped_periods_with_reordered_verifier_fails(env):
+    """Probe 2: the parser swapped two periods of s1 (stored 2023=2.0, 2024=1.5); a verifier
+    that iterates its table by period DESC returns the right values in the wrong order."""
+    db = env[0]
+    swapped = {"s1": [["2023", "2.0"], ["2024", "1.5"]], "s2": [["2024", "10"]]}
+
+    def desc(items):
+        s1 = [i for i in items if i.series_id == "s1"]
+        reordered = [s1[len(s1) - 1 - s1.index(i)] if i.series_id == "s1" else i for i in items]
+        return echo(reordered)
+
+    run_id, passed = vrun(env, ScriptedVerifier(desc), series=swapped)
+    assert passed is False and db.run_state(run_id) == "failed-verification"
+    assert served(db) == {}
+    # the same swap with an honest, ordered verifier fails on value
+    run_id, passed = vrun(env, ScriptedVerifier(echo), series=swapped)
+    assert passed is False
+    assert [r[6] for r in items_of(db, run_id)][:2] == ["value differs", "value differs"]
+
+
+def test_verifier_gets_blinded_items(env):
+    db = env[0]
+    v = FakeVerifier(TRUTH)
+    vrun(env, v)
+    item = v.calls[0][0]
+    assert type(item) is BlindItem
+    for attr in ("expected_text", "expected_unit", "expected_flag"):
+        with pytest.raises(AttributeError):
+            getattr(item, attr)
+    with pytest.raises(AttributeError):
+        item.expected_text = "1"  # frozen: cannot be smuggled in either
+
+    peek = ScriptedVerifier(lambda items: [ItemResult(i.series_id, i.period, i.expected_text, "u")
+                                           for i in items])
+    run_id, passed = vrun(env, peek, series={"s1": [["2024", "3"]], "s2": [["2024", "4"]]})
+    assert passed is False and "AttributeError" in items_of(db, run_id)[0][6]
+
+
+def test_echoing_what_it_is_given_cannot_pass(env):
+    db = env[0]
+    parrot = ScriptedVerifier(lambda items: [
+        ItemResult(i.series_id, i.period, getattr(i, "expected_text", None), "u") for i in items])
+    run_id, passed = vrun(env, parrot, series={"s1": [["2024", "999"]], "s2": [["2024", "1"]]})
+    assert passed is False and served(db) == {}
+
+
 def test_refuses_to_verify_non_pending_run(env):
-    db, specs, _, clock, run = env
+    db, specs, store, clock, run = env
     r = run()
-    verify_run(db, r.run_id, FakeVerifier(TRUTH), None, specs=specs, now=clock)
+    verify_run(db, r.run_id, FakeVerifier(TRUTH), None, specs=specs, store=store, now=clock)
     for state in ("verified", "failed-verification", "failed-validation", "running"):
         db.set_run_state(r.run_id, state)
         with pytest.raises(ValueError):
@@ -260,7 +326,7 @@ def test_refuses_to_verify_non_pending_run(env):
 
 
 def test_random_seed_is_stored_when_not_given(env):
-    db, specs, _, clock, run = env
+    db, specs, store, clock, run = env
     r = run()
     assert verify_run(db, r.run_id, FakeVerifier(TRUTH), None, specs=specs, now=clock)
     (seed,), = q(db, "SELECT seed FROM verification")
@@ -268,10 +334,111 @@ def test_random_seed_is_stored_when_not_given(env):
         tuple(x[:2]) for x in items_of(db, r.run_id)]
 
 
+def test_malformed_result_fields_are_failure_not_crash(env):
+    db = env[0]
+    sloppy = ScriptedVerifier(lambda items: [
+        ItemResult(i.series_id, i.period, float(TRUTH[(i.series_id, i.period)]), 42,
+                   observed_unit=7) for i in items])
+    run_id, passed = vrun(env, sloppy)
+    assert passed is False and db.run_state(run_id) == "failed-verification"
+    rows = items_of(db, run_id)
+    assert all(r[3] is None and r[4] is None and r[5] == 0 and r[6] for r in rows)
+    for bad in (lambda items: [None] * len(items),
+                lambda items: [{"observed_text": "1"}] * len(items),
+                lambda items: echo(items, evidence="not bytes")):
+        run_id, passed = vrun(env, ScriptedVerifier(bad))
+        assert passed is False and all(r[5] == 0 and r[6] for r in items_of(db, run_id))
+
+
+# --- I1: concurrent verification (compare-and-set) ---------------------------------------------
+
+@pytest.mark.parametrize("inner_truth,final", [({}, "failed-verification"),
+                                                (TRUTH, "verified")])
+def test_concurrent_verify_loser_is_rolled_back(env, tmp_path, inner_truth, final):
+    """Probe 8: while worker 1's verifier is checking, worker 2 (another connection to the same
+    file) verifies the same run to completion. Worker 1 must not overwrite that outcome."""
+    db, specs, store, clock, run = env
+    r = run()
+    db2 = open_db(tmp_path / "prumo.db")
+    try:
+        def inner(items):
+            verify_run(db2, r.run_id, FakeVerifier(inner_truth), None, specs=specs,
+                       store=store, now=clock)
+            outer_truth = TRUTH if inner_truth == {} else {}
+            return echo(items, outer_truth)
+
+        with pytest.raises(VerificationConflict):
+            verify_run(db, r.run_id, ScriptedVerifier(inner), None, specs=specs, store=store,
+                       now=clock)
+    finally:
+        db2.close()
+    assert db.run_state(r.run_id) == final
+    assert q(db, "SELECT passed FROM verification") == [(int(final == "verified"),)]
+    assert q(db, "SELECT count(*) FROM verification_item") == [(3,)]
+    n_fail = 0 if final == "verified" else 1
+    assert len(failure_events(db)) == n_fail
+    assert served(db) == (SERVED_BASE if final == "verified" else {})
+
+
+# --- I6: evidence and replay -------------------------------------------------------------------
+
+def test_evidence_bytes_saved_and_items_replayable(env):
+    db, specs, store, clock, _ = env
+    truth = {**TRUTH, ("s1", "2023"): "1,6"}
+    run_id, passed = vrun(env, FakeVerifier(truth, evidence=True))
+    assert passed is False
+    rows = q(db, "SELECT id, series_id, period, observed_text, expected_decimal, expected_unit, "
+                 "expected_flag, evidence_sha256, match FROM verification_item ORDER BY id")
+    for item_id, sid, period, observed, dec, unit, flag, sha, match in rows:
+        body = f"{sid},{period},{observed}".encode()
+        assert sha == hashlib.sha256(body).hexdigest()
+        assert (store.root / "verify-fake" / sha[:2] / sha).read_bytes() == body
+        assert (dec, unit, flag) == (".", "EUR", None)
+        assert replay_item(db, store, item_id) is bool(match)
+    assert [r[-1] for r in rows] == [0, 1, 1]
+
+
+def test_replay_needs_no_registry_and_reproduces_every_outcome(env):
+    db = env[0]
+    store = env[2]
+    outcomes = []
+    # every verifier but the last fails, so no run is short-circuited by an identical payload
+    for v in (FakeVerifier({}), FakeVerifier(TRUTH, unit="USD"),
+              FakeVerifier(raises=RuntimeError("x")),
+              ScriptedVerifier(lambda items: echo(list(reversed(items)))),
+              FakeVerifier({("s1", "2023"): "1,5", ("s1", "2024"): "2,1", ("s2", "2024"): "10"},
+                           decimal=","),
+              FakeVerifier(TRUTH)):
+        run_id, _ = vrun(env, v)
+        outcomes += [(r[7], bool(r[5])) for r in items_of(db, run_id)]
+    assert {m for _, m in outcomes} == {True, False}
+    assert all(replay_item(db, store, item_id) is match for item_id, match in outcomes)
+
+
+def test_replay_detects_tampered_evidence(env):
+    db, _, store, _, _ = env
+    run_id, _ = vrun(env, FakeVerifier(TRUTH, evidence=True))
+    item_id = items_of(db, run_id)[0][7]
+    (sha,), = q(db, "SELECT evidence_sha256 FROM verification_item WHERE id = ?", item_id)
+    (store.root / "verify-fake" / sha[:2] / sha).write_bytes(b"forged")
+    with pytest.raises(RawIntegrityError):
+        replay_item(db, store, item_id)
+
+
+def test_evidence_without_store_is_refused(env):
+    db, specs, _, clock, run = env
+    r = run()
+    with pytest.raises(ValueError, match="store"):
+        verify_run(db, r.run_id, FakeVerifier(TRUTH, evidence=True), None, specs=specs,
+                   now=clock)
+
+
 # --- run_with_refetch --------------------------------------------------------------------------
 
 def refetch(env, verifier, *pages, max_attempts=3, size=50):
     db, specs, store, clock, _ = env
+    if verifiers._REGISTRY.get(verifier.source_name) is not verifier:
+        register_verifier(verifier)
     http = FakeHttp(*[ok(payload(p)) for p in pages])
     return run_with_refetch(db, store, FakeSource(), verifier, specs, http,
                             max_attempts=max_attempts, size=size, now=clock)
@@ -308,9 +475,10 @@ def test_gives_up_after_max_attempts_and_stays_unserved(env):
 
 def test_previously_verified_data_still_served_after_failed_verification(env):
     db = env[0]
-    assert refetch(env, FakeVerifier(TRUTH), BASE).state == "verified"
+    v = FakeVerifier(TRUTH)
+    assert refetch(env, v, BASE).state == "verified"
     revised = {"s1": [["2023", "1.5"], ["2024", "2.5"]], "s2": [["2024", "10"]]}
-    r = refetch(env, FakeVerifier(TRUTH), revised, max_attempts=1)  # verifier still sees 2.0
+    r = refetch(env, v, revised, max_attempts=1)  # verifier still sees 2.0
     assert r.state == "failed-verification"
     assert served(db) == SERVED_BASE
 
@@ -329,88 +497,127 @@ def test_short_circuit_run_gets_no_verification_row(env):
 def test_failed_fetch_is_returned_without_verification(env):
     db, specs, store, clock, _ = env
     v = FakeVerifier(TRUTH)
+    register_verifier(v)
     r = run_with_refetch(db, store, FakeSource(), v, specs, FakeHttp(ok(b"", status=500)),
                          now=clock)
     assert r.state == "failed-fetch" and v.calls == []
     assert q(db, "SELECT count(*) FROM verification") == [(0,)]
 
 
-def test_malformed_result_fields_are_failure_not_crash(env):
-    db = env[0]
-    sloppy = ScriptedVerifier(lambda items: [
-        ItemResult(float(TRUTH[(i.series_id, i.period)]), 42, observed_unit=7,
-                   series_id=i.series_id, period=i.period) for i in items])
-    run_id, passed = vrun(env, sloppy)
-    assert passed is False and db.run_state(run_id) == "failed-verification"
-    rows = items_of(db, run_id)
-    assert all(r[3] is None and r[4] is None and r[5] == 0 and r[6] for r in rows)
+def test_refetch_requires_the_registered_verifier(env):
+    db, specs, store, clock, _ = env
+    v = FakeVerifier(TRUTH)
+    with pytest.raises(ValueError, match="registered"):  # not registered at all
+        run_with_refetch(db, store, FakeSource(), v, specs, FakeHttp(), now=clock)
+    register_verifier(FakeVerifier(TRUTH))
+    with pytest.raises(ValueError, match="registered"):  # another instance is registered
+        run_with_refetch(db, store, FakeSource(), v, specs, FakeHttp(), now=clock)
+    assert q(db, "SELECT count(*) FROM dataset_run") == [(0,)]
 
 
-# --- registration ------------------------------------------------------------------------------
+# --- registration (Ruling Q) -------------------------------------------------------------------
+
+@pytest.fixture
+def fake_ingest(tmp_path, monkeypatch):
+    """A throwaway `ingest` source tree (files only, never imported) for the transitive check."""
+    root = tmp_path / "ingest_tree"
+    monkeypatch.setattr(verifiers, "_INGEST_ROOT", root)
+
+    def write(files: dict[str, str]):
+        for rel, text in {"__init__.py": "", "sources/__init__.py": "", **files}.items():
+            (root / rel).parent.mkdir(parents=True, exist_ok=True)
+            (root / rel).write_text(text)
+    return write
+
 
 @pytest.fixture
 def make_verifier(tmp_path, monkeypatch):
-    """Write a verifier module with `imports` to tmp_path, import it, return an instance."""
-    import importlib
-    import uuid
+    """Write a verifier module with `code` to tmp_path, import it, return an instance."""
+    mods = tmp_path / "mods"
+    mods.mkdir()
+    monkeypatch.syspath_prepend(str(mods))
 
-    from ingest import verifiers
-    monkeypatch.setattr(verifiers, "_REGISTRY", {})
-    monkeypatch.syspath_prepend(str(tmp_path))
-
-    def make(imports: str, source_name: str = "acme"):
+    def make(code: str, source_name: str = "acme"):
         name = f"tmp_verifier_{uuid.uuid4().hex}"  # unique: sys.modules outlives tmp_path
-        (tmp_path / f"{name}.py").write_text(
-            # imports sit in a function body: never executed, but visible to the AST check
-            f"def _unused():\n" + "".join(f"    {line}\n" for line in imports.splitlines() or ["pass"])
+        (mods / f"{name}.py").write_text(
+            # the code sits in a function body: never executed, but visible to the AST check
+            "def _unused():\n" + "".join(f"    {line}\n" for line in code.splitlines() or ["pass"])
             + f"\n\nclass V:\n    source_name = {source_name!r}\n\n"
               f"    def check(self, items, http):\n        return []\n")
+        importlib.invalidate_caches()
         return importlib.import_module(name).V()
     return make
 
 
-@pytest.mark.parametrize("imports", [
+@pytest.mark.parametrize("code", [
     "import ingest.sources.acme",
     "from ingest.sources.acme import parse",
     "from ingest.sources import acme",
     "from ingest.sources import eurostat",
     "import ingest.sources.eurostat as e",
+    "from ingest.sources import validate_helper",
+    "import importlib\nP = importlib.import_module('ingest.sources.acme')",
+    "from importlib import import_module",
+    "P = __import__('ingest.sources.acme')",
+    "from ingest import sources\nP = sources.acme",
+    "from ingest import sources as s",
+    "import ingest.sources\nP = ingest.sources.acme",
+    "import ingest\nP = ingest.sources.acme",
+    "exec('from ingest.sources.acme import parse')",
+    "eval('1')",
+    "import sys\nP = sys.modules['ingest.sources.acme']",
+    "from sys import modules",
+    "import ACME",
     "import acme",
-    "from vendor.acme import parse",
+    "from vendor.Acme import parse",
     "from vendor import acme",
 ])
-def test_verifier_importing_parser_is_rejected(make_verifier, imports):
-    from ingest.verifiers import get_verifier, register_verifier
-    v = make_verifier(imports)
-    with pytest.raises(ValueError, match="import"):
+def test_verifier_importing_parser_is_rejected(make_verifier, code):
+    v = make_verifier(code)
+    with pytest.raises(ValueError, match="independent"):
         register_verifier(v)
     with pytest.raises(KeyError):
         get_verifier("acme")
 
 
-@pytest.mark.parametrize("imports", [
+@pytest.mark.parametrize("code", [
     "",
-    "from ingest.sources import RawResponse",
-    "import ingest.sources",
+    "from ingest.sources import RawResponse, Source",
     "from ingest.http import Http\nfrom ingest.models import parse_decimal\nimport json",
-    "from ingest.verifiers import ItemResult, SampleItem",
+    "from ingest.verifiers import ItemResult, BlindItem",
+    "import ingest.rawstore",
 ])
-def test_independent_verifier_is_registered(make_verifier, imports):
-    from ingest.verifiers import get_verifier, register_verifier
-    v = make_verifier(imports)
+def test_independent_verifier_is_registered(make_verifier, code):
+    v = make_verifier(code)
+    register_verifier(v)
+    assert get_verifier("acme") is v
+
+
+def test_shared_helper_with_parser_is_rejected(make_verifier, fake_ingest):
+    fake_ingest({"sources/acme.py": "from ingest import sdmx\nfrom ingest.models import x\n",
+                 "sdmx.py": "import json\n",
+                 "wrapper.py": "from . import sdmx\n"})
+    for code in ("import ingest.sdmx", "from ingest import sdmx", "from ingest.wrapper import f"):
+        with pytest.raises(ValueError, match="shares code.*ingest.sdmx"):
+            register_verifier(make_verifier(code))
+
+
+def test_only_allow_listed_shared_modules_is_accepted(make_verifier, fake_ingest):
+    fake_ingest({"sources/acme.py": "from ingest.models import x\nfrom ingest import http\n"
+                                    "from ingest.sources import RawResponse\nimport ingest.sdmx\n",
+                 "sdmx.py": "", "own_helper.py": "from ingest.models import y\n"})
+    v = make_verifier("from ingest.models import x\nfrom ingest.http import Http\n"
+                      "import ingest.rawstore\nimport ingest.own_helper")
     register_verifier(v)
     assert get_verifier("acme") is v
 
 
 def test_duplicate_registration_is_rejected(make_verifier):
-    from ingest.verifiers import register_verifier
     register_verifier(make_verifier(""))
     with pytest.raises(ValueError, match="already registered"):
         register_verifier(make_verifier(""))
 
 
-def test_fake_verifier_module_passes_the_rule(monkeypatch):
-    from ingest import verifiers
-    monkeypatch.setattr(verifiers, "_REGISTRY", {})
-    verifiers.register_verifier(FakeVerifier())
-    assert verifiers.get_verifier("fake").source_name == "fake"
+def test_fake_verifier_module_passes_the_rule():
+    register_verifier(FakeVerifier())
+    assert get_verifier("fake").source_name == "fake"

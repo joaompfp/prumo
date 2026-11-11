@@ -137,17 +137,44 @@ class Db:
             "VALUES (?, ?, ?, ?, ?)", (run_id, seed, sample_size, int(passed), created_at))
         return cur.lastrowid
 
-    def add_verification_item(self, verification_id: int, *, series_id: str, period: str,
-                              expected_text: str, observed_text: str | None,
-                              evidence_url: str | None, match: bool,
-                              observed_decimal: str | None, observed_unit: str | None,
-                              observed_flag: str | None, note: str | None) -> None:
+    _ITEM_COLUMNS = ("series_id", "period", "expected_text", "expected_decimal", "expected_unit",
+                     "expected_flag", "observed_series_id", "observed_period", "observed_text",
+                     "observed_decimal", "observed_unit", "observed_flag", "evidence_url",
+                     "evidence_sha256", "match", "note")
+
+    def add_verification_item(self, verification_id: int, item: dict) -> None:
+        """`item` has exactly the keys of _ITEM_COLUMNS (match as bool)."""
+        cols = self._ITEM_COLUMNS
+        if set(item) != set(cols):
+            raise ValueError(f"verification item keys {sorted(item)} != {sorted(cols)}")
         self.conn.execute(
-            "INSERT INTO verification_item(verification_id, series_id, period, expected_text, "
-            "observed_text, evidence_url, match, observed_decimal, observed_unit, observed_flag, "
-            "note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (verification_id, series_id, period, expected_text, observed_text, evidence_url,
-             int(match), observed_decimal, observed_unit, observed_flag, note))
+            f"INSERT INTO verification_item(verification_id, {', '.join(cols)}) "
+            f"VALUES (?, {', '.join('?' * len(cols))})",
+            (verification_id, *[int(item[c]) if c == "match" else item[c] for c in cols]))
+
+    def verification_item(self, item_id: int) -> dict:
+        """The stored verification_item (all _ITEM_COLUMNS, match as bool); KeyError if absent."""
+        row = self.conn.execute(
+            f"SELECT {', '.join(self._ITEM_COLUMNS)} FROM verification_item WHERE id = ?",
+            (item_id,)).fetchone()
+        if row is None:
+            raise KeyError(item_id)
+        item = dict(zip(self._ITEM_COLUMNS, row))
+        item["match"] = bool(item["match"])
+        return item
+
+    def verification_item_source(self, item_id: int) -> str:
+        """Name of the source whose run the verification_item belongs to."""
+        return self.conn.execute(
+            "SELECT s.name FROM verification_item i JOIN verification v ON v.id = i.verification_id "
+            "JOIN dataset_run r ON r.id = v.dataset_run_id JOIN source s ON s.id = r.source_id "
+            "WHERE i.id = ?", (item_id,)).fetchone()[0]
+
+    def transition_run_state(self, run_id: int, from_state: str, to_state: str) -> bool:
+        """Compare-and-set: move the run to `to_state` only if it is in `from_state`."""
+        cur = self.conn.execute("UPDATE dataset_run SET state = ? WHERE id = ? AND state = ?",
+                                (to_state, run_id, from_state))
+        return cur.rowcount == 1
 
     def close(self) -> None:
         self.conn.close()
