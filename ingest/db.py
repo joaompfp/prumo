@@ -130,6 +130,25 @@ class Db:
             "SELECT series_id, period, value_text, status_flag FROM observation "
             "WHERE dataset_run_id = ? ORDER BY series_id, period, id", (run_id,)).fetchall()
 
+    def add_verification(self, run_id: int, seed: int, sample_size: int, passed: bool,
+                         created_at: str) -> int:
+        cur = self.conn.execute(
+            "INSERT INTO verification(dataset_run_id, seed, sample_size, passed, created_at) "
+            "VALUES (?, ?, ?, ?, ?)", (run_id, seed, sample_size, int(passed), created_at))
+        return cur.lastrowid
+
+    def add_verification_item(self, verification_id: int, *, series_id: str, period: str,
+                              expected_text: str, observed_text: str | None,
+                              evidence_url: str | None, match: bool,
+                              observed_decimal: str | None, observed_unit: str | None,
+                              observed_flag: str | None, note: str | None) -> None:
+        self.conn.execute(
+            "INSERT INTO verification_item(verification_id, series_id, period, expected_text, "
+            "observed_text, evidence_url, match, observed_decimal, observed_unit, observed_flag, "
+            "note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (verification_id, series_id, period, expected_text, observed_text, evidence_url,
+             int(match), observed_decimal, observed_unit, observed_flag, note))
+
     def close(self) -> None:
         self.conn.close()
 
