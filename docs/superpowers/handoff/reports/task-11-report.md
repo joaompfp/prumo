@@ -2,7 +2,7 @@
 
 Status: **implementation complete; every acceptance item verified with real evidence.** Baseline
 e382ecd → commits `0737a44` (registry), `f6ea108` (source), `b1660e1` (verifier), plus this
-report commit. Suite: **735 passed, 3 live deselected** (was 660+2); Ruff 0.17.4 clean on every
+report commit. After fix round 1: controller `.venv-ci/bin/python -m pytest tests -q` -> **751 passed, 3 live deselected**, 1 warning (115.75 s). Original ingestion-only baseline was 735 passed, 3 live deselected. Ruff 0.17.4 clean on every
 touched file (pre-existing I001 in untouched ingest/verifiers/independence.py left alone, as in
 Task 10). GitNexus: flags.py impact LOW (2 importers), detect-changes risk LOW, no HIGH/CRITICAL.
 No push / merge / deploy / shared-file edits.
