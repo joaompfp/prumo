@@ -94,21 +94,38 @@ def map_eurostat_flag(code: str | None, *, value_present: bool = True) -> str | 
     return next((f for f in PRECEDENCE if f in mapped), "normal")
 
 
-# INE — Statistics Portugal (pindica.jsp JSON). A cell carries an optional conventional sign
-# ('sinal_conv') with INE's own description ('sinal_conv_desc'); the sign is also appended to the
-# formatted 'ind_string' ('5,0 &'). Reviewed signs only, each paired with the exact description
-# observed live (2026-11-11, full-scope probe of every active INE series; see
-# docs/superpowers/handoff/reports/task-10-report.md). A known symbol arriving with a different
-# description raises: INE could reuse a symbol, and a status we did not review is never 'normal'.
+# INE — Statistics Portugal. A cell carries an optional conventional sign ('sinal_conv') with
+# INE's own description ('sinal_conv_desc'); the sign is also appended to the formatted
+# 'ind_string' ('5,0 &'). Reviewed signs only, each paired with INE's exact description: '&', 'x'
+# and '-' were observed in live JSON payloads (2026-11-11 full-scope probe); every other pair is
+# the official legend of https://www.ine.pt/bddXplorer/htdocs/sinais.jsp (recorded in
+# tests/ingest/fixtures/ine/verify/sinais_PT.html; the pairings are tested against it in
+# tests/ingest/test_flags.py). A known symbol arriving with a different description raises: INE
+# could reuse a symbol, and a status we did not review is never 'normal'.
 # Signs that qualify a published value -> (flag, description):
 INE_VALUE_SIGNS = {
     "&": ("provisional", "Dado provisório"),
+    "//": ("provisional", "Dado preliminar"),
+    "*": ("revised", "Dado rectificado"),
+    "\u2534": ("break", "Quebra de série/comparabilidade"),  # ┴
+    "\u201c": ("estimated", "Estimativa"),  # “
+    # § marks a quality caveat (deviation from the quality standard / high coefficient of
+    # variation). The FLAGS vocabulary has no slot for an accuracy caveat on a published,
+    # comparable value, so by review decision (Task 10 fix round 1, finding M2) it maps to
+    # 'normal' and the caveat is DELIBERATELY LOST.
+    "\u00a7": ("normal", "Desvio do padrão de qualidade/Coeficiente de variação elevado"),  # §
 }
 # Signs that stand INSTEAD of a value (the cell has no 'valor') -> description:
 INE_NO_VALUE_SIGNS = {
     "x": "Dado não disponível",
     "-": "Dado nulo ou não aplicável",
+    "\u2026": "Dado confidencial",  # …
 }
+# Reviewed but deliberately UNMAPPED legend signs (all in sinais.jsp): 'o' (below half of the
+# unit's module), '∞' (infinite), '»' (foreseen value), 'i' (more information in annex) and
+# '“E' (estimated by Eurostat). They raise like any unknown sign: when one is first observed the
+# mapping must be reviewed, never defaulted. The 'diversos' section of the legend ('µ', '=',
+# '>', ...) is not an observation status and is not mapped either.
 
 
 def map_ine_flag(sign: str | None, description: str | None, *,

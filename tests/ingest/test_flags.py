@@ -132,3 +132,73 @@ def test_ine_unknown_sign_or_changed_meaning_raises(sign, desc):
 def test_ine_tables_are_disjoint_and_map_into_the_vocabulary():
     assert not set(INE_VALUE_SIGNS) & set(INE_NO_VALUE_SIGNS)
     assert {flag for flag, _ in INE_VALUE_SIGNS.values()} <= set(FLAGS)
+
+
+# --- the full official legend (M2, fix round 1) -------------------------------------------------
+# Sign/description pairs below are the official legend of
+# https://www.ine.pt/bddXplorer/htdocs/sinais.jsp (recorded live 2026-11-11 in
+# tests/ingest/fixtures/ine/verify/sinais_PT.html); '&', 'x' and '-' were also observed in live
+# JSON payloads (sinal_conv_desc 'Dado provisório'/'Dado não disponível'/'Dado nulo ou não
+# aplicável').
+import re  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+LEGEND = Path(__file__).resolve().parent / "fixtures" / "ine" / "verify" / "sinais_PT.html"
+
+
+def _legend() -> dict[str, list[tuple[str, str]]]:
+    """sinais.jsp -> {section title: [(sign, description)]}, verbatim."""
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", LEGEND.read_text(encoding="utf-8"), re.S)
+    out: dict[str, list[tuple[str, str]]] = {}
+    section = None
+    for row in rows:
+        cells = [re.sub(r"<[^>]+>", "", c).strip()
+                 for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, re.S)]
+        cells = [c for c in cells if c]
+        if len(cells) == 1:
+            section = cells[0]
+        elif len(cells) == 2 and section:
+            out.setdefault(section, []).append((cells[0], cells[1]))
+    return out
+
+
+@pytest.mark.parametrize("sign, desc, flag", [
+    ("//", "Dado preliminar", "provisional"),
+    ("*", "Dado rectificado", "revised"),
+    ("┴", "Quebra de série/comparabilidade", "break"),
+    ("“", "Estimativa", "estimated"),
+    # quality caveat: mapped to 'normal' BY DECISION (M2); the caveat text is lost
+    ("§", "Desvio do padrão de qualidade/Coeficiente de variação elevado", "normal"),
+])
+def test_ine_additional_value_signs(sign, desc, flag):
+    assert map_ine_flag(sign, desc) == flag
+
+
+def test_ine_confidential_sign_stands_for_a_missing_value():
+    assert map_ine_flag("…", "Dado confidencial", value_present=False) is None
+    with pytest.raises(ValueError):  # a no-value sign never qualifies a published value
+        map_ine_flag("…", "Dado confidencial")
+
+
+@pytest.mark.parametrize("sign", ["o", "∞", "»", "i", "“E"])
+def test_ine_reviewed_but_unmapped_signs_raise(sign):
+    # in the official legend but deliberately UNMAPPED: the first live observation must fail
+    # loudly and force a mapping review, never silently pass as a normal value
+    with pytest.raises(ValueError, match="unknown INE"):
+        map_ine_flag(sign, "qualquer descrição")
+    with pytest.raises(ValueError, match="unknown INE"):
+        map_ine_flag(sign, "qualquer descrição", value_present=False)
+
+
+def test_ine_mapped_pairs_are_the_official_legend():
+    """Every mapped sign appears in sinais.jsp with exactly the mapped description, in the right
+    absence-of-value/additional-to-value section; every sign in those two sections is either
+    mapped or in the explicit reviewed-but-unmapped set above."""
+    legend = _legend()
+    absent = dict(legend["Sinais convencionais por ausência de valor"])
+    added = dict(legend["Sinais convencionais adicionais ao valor"])
+    assert INE_NO_VALUE_SIGNS == {s: absent[s] for s in INE_NO_VALUE_SIGNS}
+    for sign, (_, desc) in INE_VALUE_SIGNS.items():
+        assert added[sign] == desc, sign
+    unmapped = {"o", "∞", "»", "i", "“E"}
+    assert (set(absent) | set(added)) - set(INE_VALUE_SIGNS) - set(INE_NO_VALUE_SIGNS) == unmapped
