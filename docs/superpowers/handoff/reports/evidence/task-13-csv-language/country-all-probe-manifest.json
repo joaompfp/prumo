@@ -1,0 +1,48 @@
+[
+  {
+    "requested_url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.CBRT.IN?downloadformat=csv",
+    "start": "2026-11-12T10:52:59.968945+00:00",
+    "url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.CBRT.IN?downloadformat=csv",
+    "status": 502,
+    "headers": {
+      "Date": "Thu, 12 Nov 2026 10:53:00 GMT",
+      "Content-Type": "text/plain; charset=UTF-8",
+      "Content-Length": "16",
+      "Connection": "close",
+      "CF-Ray": "a594fd8b5d296ec9-CDG",
+      "Cache-Control": "private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0",
+      "Expires": "Thu, 01 Jan 1970 00:00:01 GMT",
+      "Server": "cloudflare",
+      "Referrer-Policy": "same-origin",
+      "X-Frame-Options": "SAMEORIGIN"
+    },
+    "seconds": 0.24,
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-country-all-probe/0.body",
+    "bytes": 16,
+    "sha256": "bb2fb7b51f18478e3ccde6376dc39285b20472f0394e7034fd2e0bdf6a5716e2",
+    "zip": false
+  },
+  {
+    "requested_url": "https://api.worldbank.org/v2/en/country/all/indicator/SP.DYN.CBRT.IN?downloadformat=csv",
+    "start": "2026-11-12T10:52:59.970086+00:00",
+    "url": "https://api.worldbank.org/v2/en/country/all/indicator/SP.DYN.CBRT.IN?downloadformat=csv",
+    "status": 502,
+    "headers": {
+      "Date": "Thu, 12 Nov 2026 10:53:00 GMT",
+      "Content-Type": "text/plain; charset=UTF-8",
+      "Content-Length": "16",
+      "Connection": "close",
+      "CF-Ray": "a594fd8b6d71701a-CDG",
+      "Cache-Control": "private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0",
+      "Expires": "Thu, 01 Jan 1970 00:00:01 GMT",
+      "Server": "cloudflare",
+      "Referrer-Policy": "same-origin",
+      "X-Frame-Options": "SAMEORIGIN"
+    },
+    "seconds": 0.23,
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-country-all-probe/1.body",
+    "bytes": 16,
+    "sha256": "bb2fb7b51f18478e3ccde6376dc39285b20472f0394e7034fd2e0bdf6a5716e2",
+    "zip": false
+  }
+]

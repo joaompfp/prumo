@@ -1,4 +1,4 @@
-# Task 13 — CSV export language configuration (implementer report)
+# Task 13 - CSV export language configuration (implementer report)
 
 2026-11-12, worktree `~/projects/prumo-pipeline`, branch `pipeline-rebuild`.
 Scope: scoped World Bank CSV export **language configuration** with strict evidence identity,
@@ -53,7 +53,7 @@ Copied unmodified from the 2026-11-12 recovery probes; sha256 verified before an
 MANIFEST.json entries carry sanitized request metadata only (url/status/content_type/bytes/
 sha256); **ephemeral Cloudflare `Set-Cookie` auth and trace headers were deliberately NOT
 recorded** (they are not evidence). Full request accounting lives in the controller recovery
-manifests (scratch `prumo-task13-unemp-recovery/manifest.json` — with sibling raw body — and
+manifests (scratch `prumo-task13-unemp-recovery/manifest.json` - with sibling raw body - and
 `prumo-task13-recovery-controller/manifest.json`); the committed fixtures + hashes are the
 durable record. Both ZIPs: 3 members `DS2_es_csv_v2_13960` / `DS2_es_csv_v2_1937` (shared rev),
 title 'Indicadores del desarrollo mundial', English column labels, no unit/status cell
@@ -102,5 +102,5 @@ surface, '.'-decimal tokens.
   any CLI (Task 17 scope); no registry/collector/licence changes; nothing deployed or pushed
   to main.
 - Existing en timeout behavior of the publisher's /en/ routes is unchanged; the es channel's
-  observed 200s are route/time dependent (Cloudflare) per the recovery evidence — the live
+  observed 200s are route/time dependent (Cloudflare) per the recovery evidence - the live
   gate will re-probe from f0nix.
