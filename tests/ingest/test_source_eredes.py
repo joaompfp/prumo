@@ -276,14 +276,34 @@ def test_parse_rejects_noncanonical_timestamp():
                                                            b"2026-11-10 00:15:00+00:00"))
 
 
-def test_parse_rejects_duplicate_timestamp():
-    # mutate record 2's datahora AND its time echo consistently so the duplicate itself fires
+def test_parse_duplicate_timestamp_hands_both_copies_to_quarantine():
+    # mutate record 2's datahora AND its time echo consistently: a canonical equal-stamp
+    # duplicate. The ADAPTER never arbitrates conflicting duplicates and never picks one copy:
+    # both reach validate(), whose duplicate_period rule quarantines EVERY occurrence (the only
+    # authority on duplicate periods). Genuine evidence: fixtures/eredes/nov1_window_json.body.
     old = (b'"datahora": "2026-11-10T00:15:00+00:00", "dia": "10", "mes": "11", '
            b'"ano": "2026", "date": "2026-11-10", "time": "00:15"')
     new = (b'"datahora": "2026-11-10T00:00:00+00:00", "dia": "10", "mes": "11", '
            b'"ano": "2026", "date": "2026-11-10", "time": "00:00"')
-    with pytest.raises(ValueError, match="ascending|duplicate"):
-        _window_source().parse(all_specs(), _mutate_window(old, new))
+    rows = _window_source().parse(all_specs(), _mutate_window(old, new))
+    spec = registry_specs()["eredes.production_market.PT"]
+    obs, rej = validate(spec, rows[spec.id])
+    dup = [r for r in rej if r.period_raw == "2026-11-10T00:00:00+00:00"]
+    assert len(dup) == 2 and all(r.reason == "duplicate_period" for r in dup)
+    assert {r.value_raw for r in dup} == {"925741.0", "927869.0"}  # BOTH copies quarantined
+    assert len(obs) == 94 and all(o.period != "2026-11-10T00:00:00+00:00" for o in obs)
+
+
+def test_parse_rejects_out_of_order_records():
+    """Backward ordering (< previous stamp) is still a hard parse failure; only an EQUAL next
+    stamp flows to the validator."""
+    doc = json.loads(body("window_json"))
+    r0, r1 = doc["results"][0], doc["results"][1]
+    doc["results"] = [r1, r0] + doc["results"][2:]
+    with pytest.raises(ValueError, match="ascending"):
+        _window_source().parse(all_specs(), [
+            _responses()[0], RawResponse(url=_responses()[1].url, params=_responses()[1].params,
+                                         status=200, body=json.dumps(doc).encode())])
 
 
 def test_parse_rejects_unknown_record_key():

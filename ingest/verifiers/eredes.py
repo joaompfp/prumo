@@ -35,7 +35,10 @@ and unchanged from the one-day form, so previously archived one-day evidence sti
 INDEPENDENCE: this module shares NO code with the collector (enforced by register_verifier and
 assert_verifier_independent); the dataset/field/label constants are DUPLICATED ON PURPOSE - if
 the two copies ever disagree, verification fails loudly. Items whose period is missing from the
-export answer observed_text=None (a mismatch), never an invented value.
+export - OR whose stamp is REPEATED in that day's export (the portal genuinely doubles
+01:00-01:45 UTC across the fall-back boundary with conflicting values; such a stamp is
+AMBIGUOUS: neither copy is served, no row overwrites another, the rest of the day file still
+verifies) - answer observed_text=None (a mismatch), never an invented value.
 """
 import base64
 import csv
@@ -172,7 +175,6 @@ class EredesVerifier:
                                          f"'<name> (<unit>)': {f.get('label')!r}")
                     labels[f["name"]] = (m.group(1), f.get("type"))
             day_state: dict[str, dict] = {}
-            seen_ts: set[str] = set()  # a datahora seen in ANY of this dataset's day files
             for day_s in days:
                 day = date.fromisoformat(day_s)
                 where = f'datahora >= "{day.isoformat()}" AND ' \
@@ -181,6 +183,7 @@ class EredesVerifier:
                                                     {"lang": "pt", "timezone": "UTC",
                                                      "where": where})
                 by_ts = {}
+                ambiguous: set[str] = set()  # stamps repeated in THIS day file
                 for row in _csv_rows(csv_body, dataset):
                     if len(row) != len(EXPECTED_HEADER):
                         raise ValueError(f"E-REDES CSV row has {len(row)} cells: {row!r}")
@@ -189,15 +192,21 @@ class EredesVerifier:
                         raise ValueError(f"E-REDES CSV datahora is not the canonical UTC "
                                          f"spelling: {ts!r}")
                     _wall_cells(row)
-                    if ts in seen_ts:
-                        raise ValueError(f"E-REDES CSV export repeats datahora {ts!r}")
-                    seen_ts.add(ts)
                     if ts[:10] != day.isoformat():
                         raise ValueError(f"E-REDES CSV row {ts!r} outside the requested day "
                                          f"window {where!r}")
+                    if ts in by_ts or ts in ambiguous:
+                        # a REPEATED stamp (the portal genuinely doubles 01:00-01:45 UTC across
+                        # the fall-back boundary with conflicting values): neither copy is
+                        # served and no later row overwrites an earlier one - the stamp is
+                        # ambiguous for every item of this day; the rest of the file is
+                        # unaffected.
+                        by_ts.pop(ts, None)
+                        ambiguous.add(ts)
+                        continue
                     by_ts[ts] = row
                 day_state[day.isoformat()] = {
-                    "by_ts": by_ts, "csv_url": csv_url,
+                    "by_ts": by_ts, "ambiguous": ambiguous, "csv_url": csv_url,
                     "evidence": _envelope([
                         {"url": csv_url, "status": csv_status, "body": csv_body},
                         {"url": meta_url, "status": meta_status, "body": meta_body}])}
@@ -210,8 +219,10 @@ class EredesVerifier:
                 raise ValueError(f"E-REDES metadata field {field!r} missing or not double")
             unit = st["labels"][field][0]
             d = st["days"][item.period[:10]]  # every sampled day was fetched above
-            row = d["by_ts"].get(item.period)
+            row = None if item.period in d["ambiguous"] else d["by_ts"].get(item.period)
             if row is None:
+                # absent OR ambiguous (a duplicated stamp is 'not found', never a coin flip
+                # between conflicting copies): observed_text=None is a mismatch, not a guess
                 results.append(ItemResult(item.series_id, item.period, None,
                                           d["csv_url"], ".", unit, None, d["evidence"]))
                 continue

@@ -28,8 +28,13 @@ Fetch yields every response verbatim (metadata included); parse() rebuilds windo
 VALIDATED request params (where), asserts per-window completeness/order/identity, reads numbers
 as tagged JSON number tokens (a quoted string is never a number token; the exact publisher
 token reaches RawRow as a plain str, float tails preserved), and fail-closes on metadata drift
-(dataset id, field types/labels, licence, publisher), unknown record keys, a non-canonical or
-duplicated datahora, or a malformed dia/mes/ano/date/time wall-time echo. The echo columns are
+(dataset id, field types/labels, licence, publisher), unknown record keys, a non-canonical
+datahora, records out of strict ascending order, or a malformed dia/mes/ano/date/time
+wall-time echo. A REPEATED canonical datahora (the portal genuinely doubles the 01:00-01:45
+UTC hour across the fall-back boundary, e.g. 2026-11-01 with CONFLICTING values per copy) is
+NOT a parse error and is never arbitrated here: both copies are handed unchanged as RawRows to
+validate(), whose duplicate_period rule quarantines EVERY occurrence - the only place with
+authoritative knowledge about duplicate periods. The echo columns are
 the publisher's LISBON-LOCAL wall time (metadata types text/text/text/date/text): in WEST
 summer they show UTC+1 (a 23:45 UTC record carries the NEXT local date and 00:45), so they are
 validated as genuine JSON strings with canonical shapes and internal consistency
@@ -380,10 +385,12 @@ class EredesSource:
                 if date.fromisoformat(t_raw[:10]) != day:
                     raise ValueError(f"E-REDES record {t_raw!r} sits outside its requested "
                                      f"day window {where!r}")
-                if prev is not None and t_raw <= prev:
-                    raise ValueError(f"E-REDES records not strictly ascending/unique at "
-                                     f"{t_raw!r} (duplicate or out-of-order timestamp)")
-                prev = t_raw
+                if prev is not None and t_raw < prev:
+                    raise ValueError(f"E-REDES records not strictly ascending at {t_raw!r} "
+                                     "(out-of-order timestamp)")
+                prev = t_raw  # an EQUAL next stamp is a genuine duplicate: handed unchanged
+                # to validate(), whose duplicate_period quarantine rejects EVERY occurrence
+                # (a conflicting pair can never be arbitrated by dropping one copy here)
                 for field in FIELD_LABELS:
                     spec = wanted.get((dataset, field))
                     if spec is None:

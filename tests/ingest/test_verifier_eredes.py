@@ -87,14 +87,20 @@ def test_verifier_evidence_envelope_carries_csv_and_metadata():
     assert rec_csv["status"] == 200 and rec_meta["status"] == 200
 
 
-def test_verifier_missing_period_is_not_found_not_a_crash():
+def test_verifier_missing_period_is_not_found_and_created_duplicate_is_ambiguous():
     tampered = vbody("window_csv").replace(
         b"2026-11-10T00:15:00+00:00;10", b"2026-11-10T01:15:00+00:00;10", 1)
-    with pytest.raises(ValueError, match="time|repeats datahora"):
-        # it collides with row 01:15 (the timestamp duplicate is still fail-closed; the
-        # withdrawn aux-vs-UTC equality guard no longer plays a role)
-        EredesVerifier().check([_item(*CASES[1][:2])],
-                               VerifyFixtureHttp({"window_csv": tampered}))
+    results = EredesVerifier().check(
+        [_item(*CASES[1][:2]),                       # 00:15: the withdrawn stamp
+         _item(CASES[0][0], "2026-11-10T01:15:00+00:00"),  # 01:15: now duplicated
+         _item(*CASES[0][:2])],                      # 00:00: unaffected stamp
+        VerifyFixtureHttp({"window_csv": tampered}))
+    # the withdrawn stamp (00:15) is a mismatch, never a crash...
+    assert results[0].observed_text is None
+    # ...and the stamp the tamper collided with (01:15) is now AMBIGUOUS: neither copy is
+    # served; unaffected stamps of the same day still verify (the day is not aborted)
+    assert results[1].observed_text is None
+    assert results[2].observed_text == CASES[0][2]
 
 
 @pytest.mark.parametrize("old,new,match", [
@@ -152,13 +158,17 @@ def test_verifier_channel_drift_fails_closed(name, old, new, match):
                                VerifyFixtureHttp({name: tampered}))
 
 
-def test_verifier_duplicate_timestamp_raises():
+def test_verifier_duplicate_timestamp_is_ambiguous_never_served():
+    # a stamp repeated in one day file (the portal genuinely does this across the fall-back
+    # boundary, genuine evidence nov1_window_csv): neither copy is served and NO row overwrites
+    # another, but the rest of the day still verifies - no whole-day abort.
     tampered = vbody("window_csv").replace(
         b"2026-11-10T00:15:00+00:00;10;11;2026;2026-11-10;00:15",
         b"2026-11-10T00:00:00+00:00;10;11;2026;2026-11-10;00:00", 1)
-    with pytest.raises(ValueError, match="repeats datahora"):
-        EredesVerifier().check([_item(*CASES[0][:2])],
-                               VerifyFixtureHttp({"window_csv": tampered}))
+    results = EredesVerifier().check([_item(*CASES[0][:2]), _item(*CASES[2][:2])],
+                                     VerifyFixtureHttp({"window_csv": tampered}))
+    assert results[0].period == "2026-11-10T00:00:00+00:00" and results[0].observed_text is None
+    assert results[1].observed_text == CASES[2][2]  # unaffected unique stamp, exact token
 
 
 def test_verifier_html_page_raises():

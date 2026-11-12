@@ -13,7 +13,7 @@ from ingest.http import HttpResult
 VFIX = Path(__file__).resolve().parent / "fixtures" / "eredes"
 VMANIFEST: dict = json.loads((VFIX / "MANIFEST.json").read_text())["sets"]
 
-VERIFIER_SETS = ("window_csv", "summer_window_csv", "metadata")
+VERIFIER_SETS = ("window_csv", "summer_window_csv", "nov1_window_csv", "metadata")
 
 
 def vbody(name: str) -> bytes:

@@ -89,7 +89,38 @@
    "sha256": "24bb889cfb62b7646ab00703f992c602c682e7495099b64a2be94c61b0a74992",
    "bytes": 8536,
    "note": "CSV export of the SAME 2026-04-01 UTC window (96 rows): same wall-time aux columns; tokens byte-identical to summer_window_json."
+  },
+  "nov1_window_json": {
+   "file": "nov1_window_json.body",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?where=datahora+%3E%3D+%222026-11-01%22+AND+datahora+%3C+%222026-11-02%22&order_by=datahora&limit=100",
+   "params": {
+    "where": "datahora >= \"2026-11-01\" AND datahora < \"2026-11-02\"",
+    "order_by": "datahora",
+    "limit": 100
+   },
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?where=datahora+%3E%3D+%222026-11-01%22+AND+datahora+%3C+%222026-11-02%22&order_by=datahora&limit=100",
+   "fetched_at_utc": "2026-11-12T21:38:32.598698+00:00",
+   "sha256": "6bc99c9306c4afeec63732ebde89b275a75ebd81bd896a82ff0dca51e880bd36",
+   "bytes": 17244,
+   "note": "records JSON, one complete UTC day 2026-11-01: total_count 97 == results length == 96 distinct periods + 4 duplicated stamps. Genuine CONFLICTING canonical duplicates (publisher emitted 01:00/01:15/01:30/01:45 twice with DIFFERENT dgm/pre/total values - the duplicate hour is doubled across the fall-back boundary). Original bytes of the controller live-gate run (raw_fetch id 216, receipt copied verbatim from the run DB, fetched_at above is that receipt, not re-invented), copied unchanged from its raw store; sha/bytes verified against raw_fetch before copying."
+  },
+  "nov1_window_csv": {
+   "file": "nov1_window_csv.body",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=UTC&where=datahora%20%3E%3D%20%222026-11-01%22%20AND%20datahora%20%3C%20%222026-11-02%22",
+   "params": {
+    "lang": "pt",
+    "timezone": "UTC",
+    "where": "datahora >= \"2026-11-01\" AND datahora < \"2026-11-02\""
+   },
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=UTC&where=datahora+%3E%3D+%222026-11-01%22+AND+datahora+%3C+%222026-11-02%22",
+   "fetched_at_utc": "2026-11-12T21:47:14.099185+00:00",
+   "sha256": "b5c7e77def6c7a93a4a89bea2f5ac7913abc2e4b7c7f57d4113cee15b4f9d3cd",
+   "bytes": 8143,
+   "note": "exports/csv of the SAME Nov 1 window (independent verifier channel): UTF-8 BOM, ';', CRLF, 97 data rows with the SAME 4 duplicated stamps as the JSON channel (verified at capture). ONE fresh request 2026-11-12 (timeout 10 s, 0 retries, 0.411 s of a 20 s deadline, 8143 B of the 200 KB cap); all times/status/sha above are this capture's own facts."
   }
  },
- "addendum_2026-11-12_summer": "Two sets added for the C1 fix (controller live gate 2026-11-12: the April UTC window was wrongly rejected by the withdrawn aux-echo-equals-UTC guard): summer_window_json is the UNMODIFIED original bytes of that controller run's archived raw_fetch id 2 (sha256 matches the raw store; fetched_at/url/params from the controller DB, NOT a new request); summer_window_csv is one genuine /exports/csv of the same window, fetched 2026-11-12 from f0nix egress in 1 request (10 s timeout, 0 retries, 0.912 s, 8536 B < 200 KB cap). All 288 dgm/pre/total tokens and all 9 column tokens are byte-decimal-identical between the two channels (checked at archiving time)."
+ "addendum_2026-11-12_summer": "Two sets added for the C1 fix (controller live gate 2026-11-12: the April UTC window was wrongly rejected by the withdrawn aux-echo-equals-UTC guard): summer_window_json is the UNMODIFIED original bytes of that controller run's archived raw_fetch id 2 (sha256 matches the raw store; fetched_at/url/params from the controller DB, NOT a new request); summer_window_csv is one genuine /exports/csv of the same window, fetched 2026-11-12 from f0nix egress in 1 request (10 s timeout, 0 retries, 0.912 s, 8536 B < 200 KB cap). All 288 dgm/pre/total tokens and all 9 column tokens are byte-decimal-identical between the two channels (checked at archiving time).",
+ "addendum_2026-11-12_nov1_duplicates": "Task 17 live-fix: genuine canonical-duplicate evidence. nov1_window_json is the UNMODIFIED raw-store file of controller live-gate raw_fetch id 216 (URL/params/fetched_at/http_status/sha256/bytes copied verbatim from that DB row); nov1_window_csv is one fresh capture of the same day on the verifier channel. No previous set was rewritten."
 }
