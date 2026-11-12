@@ -4,26 +4,40 @@
         api.worldbank.org/v2/country/<geos>/indicator/<CODE>?format=json&per_page=20000
     verifier:  the publisher's genuine BULK CSV ZIP EXPORT — a different endpoint family AND a
         different (CSV table inside a ZIP archive) serialization, not a JSON re-serialization:
-        GET https://api.worldbank.org/v2/en/indicator/<CODE>?downloadformat=csv
-        (HTTP 200 application/zip; recorded 2026-11-11 as full archives in
+        GET https://api.worldbank.org/v2/<lang>/indicator/<CODE>?downloadformat=csv
+        (HTTP 200 application/zip; the 'en' archives were recorded 2026-11-11 in
         tests/ingest/fixtures/worldbank/, sha256-pinned by MANIFEST.json)
+
+EXPORT LOCALE CONTRACT (strict, fail-closed): the channel exists under per-locale routes
+(/v2/en/, /v2/es/, ...) whose archives carry localized identity markers. Which locales may be
+used AT ALL is the exact allowlist `CSV_LANGUAGES` below; the caller picks ONE at construction
+(`WorldBankVerifier(csv_language=...)`, default 'en' = the original behavior). Everything the
+verifier accepts is then tied to that locale: the exact URL template, the localized Data Source
+title row, and the ZIP member-name infix `DS2_<lang>_csv_v2_<rev>`. There is NO arbitrary
+URL/locale input, NO automatic fallback or retry and NO request rewriting: a mismatch between
+the chosen locale and the served archive (crossed locale, foreign member names, foreign title)
+fails closed, and a language outside the allowlist fails at construction before any request.
 
 Channel mechanics (from the archived bytes):
 - The ZIP holds exactly THREE members: the main data CSV
-  'API_<CODE>_DS2_en_csv_v2_<rev>.csv', 'Metadata_Indicator_API_<CODE>_...csv' and
-  'Metadata_Country_API_<CODE>_...csv'. Any other member count/name, a path-traversal name
-  ('..', absolute) or a member whose size disagrees with its declared entry fails closed; the
-  archive is processed IN MEMORY (never extracted to the filesystem) with bounded member
-  count/uncompressed size/reads (ZIP-bomb guards: MAX_MEMBERS, MAX_MEMBER_BYTES,
-  MAX_TOTAL_BYTES; actual reads are capped and the realized length must equal the entry's).
-- The main CSV starts with a metadata block: '"Data Source","World Development Indicators",',
-  a blank row, '"Last Updated Date","<YYYY-MM-DD>",' (shape-validated ONLY; per the blind
-  protocol it is never compared against collector metadata), another blank row, then the
-  table header '"Country Name","Country Code","Indicator Name","Indicator Code","1960",...'
+  'API_<CODE>_DS2_<lang>_csv_v2_<rev>.csv', 'Metadata_Indicator_API_<CODE>_DS2_<lang>_csv_v2_
+  <rev>.csv' and 'Metadata_Country_API_<CODE>_DS2_<lang>_csv_v2_<rev>.csv', ALL SHARING the
+  same revision number <rev>; a split revision is identity drift. Any other member count/name,
+  a path-traversal name ('..', absolute) or a member whose size disagrees with its declared
+  entry fails closed; the archive is processed IN MEMORY (never extracted to the filesystem)
+  with bounded member count/uncompressed size/reads (ZIP-bomb guards: MAX_MEMBERS,
+  MAX_MEMBER_BYTES, MAX_TOTAL_BYTES; actual reads are capped and the realized length must equal
+  the entry's).
+- The main CSV starts with a metadata block: '"Data Source","<localized title>",', a blank
+  row, '"Last Updated Date","<YYYY-MM-DD>",' (shape-validated ONLY; per the blind protocol it
+  is never compared against collector metadata), another blank row, then the table header
+  '"Country Name","Country Code","Indicator Name","Indicator Code","1960",...' (these labels,
+  like the 'Data Source' and 'Last Updated Date' row keys, are NOT localized by this exporter)
   and one row per country/aggregate, all cells quoted, every row ending in a trailing comma
   (the header's final cell is empty accordingly). Year columns must be unique; rows must be
   unique per Country Code (+Indicator Code, which must equal the requested CODE on every row);
-  duplicates or header drift fail closed.
+  duplicates or header drift fail closed. The per-row Indicator Name cell IS localized (e.g.
+  'Crecimiento del PIB (% anual)'); only agreement on a single name across rows is asserted.
 - Values are quoted decimal-string tokens ('.' decimal), '' = missing -> the item is reported
   not-found (observed_text=None); a sampled observation whose cell is empty is a genuine
   mismatch decided by ingest.verify, never zero-filled or skipped here. Tokens are returned
@@ -55,7 +69,14 @@ import zipfile
 from ingest.http import Http
 from ingest.verifiers import BlindItem, ItemResult
 
-CSV_URL = "https://api.worldbank.org/v2/en/indicator/{code}?downloadformat=csv"
+# The ONLY admitted export locales of the SAME publisher per-indicator CSV exporter:
+# language -> (exact URL template, expected localized Data Source title of the archive).
+# Extending this is an explicit, reviewed change — never a runtime parameter.
+CSV_LANGUAGES: dict[str, tuple[str, str]] = {
+    "en": ("https://api.worldbank.org/v2/en/indicator/{code}?downloadformat=csv",
+           "World Development Indicators"),
+}
+CSV_URL = CSV_LANGUAGES["en"][0]  # the original English template (kept name)
 EVIDENCE_SCHEMA = "worldbank-csv-evidence"
 EVIDENCE_VERSION = 1
 
@@ -106,7 +127,18 @@ def _read_member(z, info, limit: int, what: str) -> bytes:
     return data
 
 
-def _read_export(body: bytes, code: str, what: str) -> bytes:
+def _member_patterns(code: str, language: str) -> tuple:
+    """Exact full-name patterns of the THREE members of one locale's export: the main data CSV
+    and the two metadata companions, each `..._DS2_<language>_csv_v2_<rev>.csv` with the
+    revision number captured; the three revisions must be ONE (checked by _read_export). A
+    member outside this exact identity — another locale, another exporter layout — is drift."""
+    c, lang = re.escape(code), re.escape(language)
+    return (re.compile(rf"API_{c}_DS2_{lang}_csv_v2_(\d+)\.csv"),
+            re.compile(rf"Metadata_Indicator_API_{c}_DS2_{lang}_csv_v2_(\d+)\.csv"),
+            re.compile(rf"Metadata_Country_API_{c}_DS2_{lang}_csv_v2_(\d+)\.csv"))
+
+
+def _read_export(body: bytes, code: str, language: str, what: str) -> bytes:
     """The main data CSV bytes of a deciding ZIP, with every safety guard fail-closed."""
     if not body.startswith(b"PK"):
         raise ValueError(f"World Bank CSV export for {what} is not a ZIP (markup/garbage): "
@@ -120,7 +152,9 @@ def _read_export(body: bytes, code: str, what: str) -> bytes:
         if len(infos) != MAX_MEMBERS:
             raise ValueError(f"World Bank CSV export for {what} carries {len(infos)} members, "
                              f"expected exactly {MAX_MEMBERS}: {z.namelist()!r}")
+        main_p, meta_i_p, meta_c_p = _member_patterns(code, language)
         main = meta_i = meta_c = None
+        rev_m = rev_i = rev_c = None
         total = 0
         for info in infos:
             name = info.filename
@@ -129,25 +163,34 @@ def _read_export(body: bytes, code: str, what: str) -> bytes:
             total += info.file_size
             if total > MAX_TOTAL_BYTES:
                 raise ValueError(f"World Bank CSV export for {what} exceeds the total size cap")
-            if name.startswith(f"API_{code}_DS2_") and name.endswith(".csv"):
+            m = main_p.fullmatch(name)
+            if m:
                 if main is not None:
                     raise ValueError(f"World Bank CSV export for {what} has ambiguous main "
                                      f"members: {z.namelist()!r}")
-                main = info
-            elif name.startswith(f"Metadata_Indicator_API_{code}_DS2_"):
-                meta_i = info
-            elif name.startswith(f"Metadata_Country_API_{code}_DS2_"):
-                meta_c = info
-            else:
-                raise ValueError(f"World Bank CSV export for {what} carries an unexpected "
-                                 f"member {name!r} (identity drift)")
+                main, rev_m = info, m.group(1)
+                continue
+            m = meta_i_p.fullmatch(name)
+            if m:
+                meta_i, rev_i = info, m.group(1)
+                continue
+            m = meta_c_p.fullmatch(name)
+            if m:
+                meta_c, rev_c = info, m.group(1)
+                continue
+            raise ValueError(f"World Bank CSV export for {what} carries an unexpected "
+                             f"member {name!r} (identity drift: not the {code} DS2_{language} "
+                             f"members)")
         if main is None or meta_i is None or meta_c is None:
             raise ValueError(f"World Bank CSV export for {what} misses the expected "
-                             f"{code} members: {z.namelist()!r}")
+                             f"{code} DS2_{language} members: {z.namelist()!r}")
+        if not rev_m == rev_i == rev_c:
+            raise ValueError(f"World Bank CSV export for {what} members disagree on the "
+                             f"revision ({rev_m!r}/{rev_i!r}/{rev_c!r}): identity drift")
         return _read_member(z, main, MAX_MEMBER_BYTES, what)
 
 
-def _table(main: bytes, code: str, what: str) -> tuple[dict[str, list[str]], dict[str, int]]:
+def _table(main: bytes, code: str, title: str, what: str) -> tuple[dict[str, list[str]], dict[str, int]]:
     """(row per Country Code, year -> column) of the main CSV, strictly shaped."""
     try:
         text = main.decode("utf-8-sig")
@@ -159,8 +202,9 @@ def _table(main: bytes, code: str, what: str) -> tuple[dict[str, list[str]], dic
         raise ValueError(f"World Bank CSV export for {what} is malformed CSV: {e}") from e
     if len(rows) < 6:
         raise ValueError(f"World Bank CSV export for {what} is too short: {len(rows)} rows")
-    if rows[0] != ["Data Source", "World Development Indicators", ""]:
-        raise ValueError(f"World Bank CSV export for {what} header block drifted: {rows[0]!r}")
+    if rows[0] != ["Data Source", title, ""]:
+        raise ValueError(f"World Bank CSV export for {what} Data Source title of the chosen "
+                         f"locale drifted (expected {title!r}): {rows[0]!r}")
     if rows[1] or not rows[2] or rows[2][0] != "Last Updated Date" or len(rows[2]) != 3 \
             or rows[2][2] != "" or not _DATE_STAMP.fullmatch(rows[2][1]):
         raise ValueError(f"World Bank CSV export for {what} Last Updated row drifted: "
@@ -206,9 +250,24 @@ class WorldBankVerifier:
     """See the module docstring: one full CSV ZIP per indicator (cached inside a single
     check() call), period/identity read from the table itself, observed_unit/observed_flag
     honestly None (no such surfaces in this channel), evidence = the deciding response's
-    versioned envelope (exact ZIP bytes + final URL + actual HTTP status)."""
+    versioned envelope (exact ZIP bytes + final URL + actual HTTP status).
+
+    csv_language: the ONE export locale this instance reads, from the exact CSV_LANGUAGES
+    allowlist; the default 'en' is the original behavior. An unknown language is rejected
+    HERE, at construction, before any request; a served archive that does not carry that
+    locale's identity (URL/title/DS2_<lang> member names with one shared revision) fails
+    closed — no fallback, no retry, no request rewriting."""
 
     source_name = "worldbank"
+
+    def __init__(self, csv_language: str = "en"):
+        if csv_language not in CSV_LANGUAGES:
+            raise ValueError(f"WorldBankVerifier csv_language must be one of "
+                             f"{sorted(CSV_LANGUAGES)}, got {csv_language!r} (the export "
+                             f"locale is an exact allowlist; arbitrary URLs/locales are "
+                             f"never accepted)")
+        self.csv_language = csv_language
+        self._url, self._title = CSV_LANGUAGES[csv_language]
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         zips: dict[str, tuple[bytes, str, int]] = {}  # code -> (body, final url, status)
@@ -220,13 +279,14 @@ class WorldBankVerifier:
                 raise ValueError(f"World Bank verifier accepts canonical yearly periods only, "
                                  f"got {item.period!r}")
             if code not in zips:
-                r = http.get(CSV_URL.format(code=code))
+                r = http.get(self._url.format(code=code))
                 if not 200 <= r.status < 300:
                     raise ValueError(f"World Bank CSV export for indicator {code} answered "
                                      f"HTTP {r.status} (fail closed on every non-2xx)")
                 zips[code] = (r.body, r.url, r.status)
-                tables[code] = _table(_read_export(r.body, code, item.series_id),
-                                      code, item.series_id)
+                tables[code] = _table(
+                    _read_export(r.body, code, self.csv_language, item.series_id),
+                    code, self._title, item.series_id)
             body, url, status = zips[code]
             rows, ycol = tables[code]
             row = rows.get(iso3)
