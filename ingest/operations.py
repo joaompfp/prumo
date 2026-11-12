@@ -217,14 +217,18 @@ class RunReport:
 def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec], *,
                http_for: Callable[[], Http], request: RunRequest = RunRequest(),
                max_attempts: int = 3, size: int = 50, now=None,
-               source_factories: dict | None = None,
-               verifier_ops: dict | None = None) -> list[GroupOutcome]:
+               source_factories: dict | None = None, verifier_ops: dict | None = None,
+               blocked_groups: dict[str, str] | None = None) -> list[GroupOutcome]:
     """Every dataset group of ONE source, isolated from each other.
 
     - `verifiable: false` (DGEG) is reported BLOCKED without ANY HTTP or run rows;
     - no active series -> 'skipped';
     - source construction (lazy factory: a missing FRED_API_KEY) or verifier-registration
       failure -> 'blocked' with detail, exit-relevant because the source is active;
+    - grouping-policy failures (a malformed registry native_code) and HTTP-client
+      construction failures are contained the same way: 'blocked', never an outer abort;
+    - `blocked_groups` (dataset_key -> refusal detail) reports those groups 'blocked'
+      WITHOUT attempting them (per-group stale-bundle refusal, Task 17 review R1);
     - every group runs through run_with_refetch ONLY, and one group's exception is recorded as
       'error' while the next group/source continues.
     """
@@ -251,9 +255,22 @@ def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec
     except Exception as e:
         return [GroupOutcome(source_name, source_name, "blocked",
                              detail=f"verifier setup failed: {e}")]
-    http = http_for()
+    try:
+        groups = group_specs(active)
+    except ValueError as e:
+        return [GroupOutcome(source_name, source_name, "blocked",
+                             detail=f"source grouping failed: {e}")]
+    try:
+        http = http_for()
+    except Exception as e:
+        return [GroupOutcome(source_name, source_name, "blocked",
+                             detail=f"http client setup failed: {e}")]
     outcomes = []
-    for group in group_specs(active):
+    for group in groups:
+        if blocked_groups and group.key() in blocked_groups:
+            outcomes.append(GroupOutcome(source_name, group.label, "blocked",
+                                         detail=blocked_groups[group.key()]))
+            continue
         try:
             r = run_with_refetch(db, store, source, verifier, list(group.specs), http,
                                  max_attempts=max_attempts, size=size, now=now,
@@ -269,15 +286,18 @@ def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec
 def run_all(db: Db, store: RawStore, specs: list[SeriesSpec], *,
             http_for: Callable[[str], Http], request: RunRequest = RunRequest(),
             max_attempts: int = 3, size: int = 50, now=None, only: list[str] | None = None,
-            source_factories: dict | None = None,
-            verifier_ops: dict | None = None) -> RunReport:
+            source_factories: dict | None = None, verifier_ops: dict | None = None,
+            blocked_groups: dict[str, str] | None = None) -> RunReport:
     """`run all`: every registry source (or `only`), one failure never stopping the rest.
     http_for(source_name) is called lazily per source, only when the source is actually
-    attempted (a blocked source makes no HTTP client at all)."""
+    attempted (a blocked source makes no HTTP client at all). `blocked_groups`
+    (dataset_key -> refusal detail) skips those groups with a 'blocked' outcome while their
+    source's healthy groups still run."""
     names = only if only is not None else sorted({s.source.name for s in specs})
     outcomes: list[GroupOutcome] = []
     for name in names:
         outcomes += run_source(db, store, name, specs, http_for=lambda: http_for(name),
                                request=request, max_attempts=max_attempts, size=size, now=now,
-                               source_factories=source_factories, verifier_ops=verifier_ops)
+                               source_factories=source_factories, verifier_ops=verifier_ops,
+                               blocked_groups=blocked_groups)
     return RunReport(tuple(outcomes))

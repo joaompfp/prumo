@@ -128,8 +128,10 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--max-requests", type=int, default=256,
                    help="physical network request cap, redirects and retries included")
     c.add_argument("--deadline", type=float, default=300.0,
-                   help="whole capture deadline in seconds, checked BEFORE every physical "
-                        "request")
+                   help="hard whole-phase deadline in seconds: checked BEFORE every physical "
+                        "request, each request's timeout is clamped to the remaining budget, "
+                        "a stalled server is KILLED at the deadline and a late response is "
+                        "discarded rather than returned")
 
     s = sub.add_parser("status", help="operational status report (read-only)")
     s.add_argument("--json", dest="as_json", action="store_true", help="typed JSON report")
@@ -233,8 +235,10 @@ def _open_run(args, specs, db_path: Path, raw_path: Path, request: RunRequest,
     DB/raw store under TMPDIR - the real --db/--raw-dir are never opened. With `bundle` (a
     fully validated ingest.bundle.Bundle), input comes ONLY from the pinned offline
     responses: the run is labelled 'recorded', keeps the receipts' ORIGINAL fetch dates, and
-    is refused BEFORE any insertion when the bundle is not strictly newer than the verified
-    data already held for the selected series."""
+    stale groups are refused PER DATASET GROUP before sync_registry or any insertion when the
+    group's own original collector receipts are not newer than the verified fetched data
+    already held for that group; an atomic in-transaction guard (ingest.pipeline) covers the
+    race with a concurrent newer writer."""
     pinned = None
     source_factories = None
     if args.dry_run:
@@ -252,29 +256,84 @@ def _open_run(args, specs, db_path: Path, raw_path: Path, request: RunRequest,
     db = open_db(db_path)
     try:
         store = RawStore(raw_path)
-        sync_registry(db, specs)
+        blocked_groups = None
         if bundle is not None:
-            ids = [s.id for s in specs if s.source.name == args.source and s.active]
-            existing = db.max_verified_fetched_at(ids)
-            newest = bundle.max_fetched_at()
-            if existing is not None and newest is not None and \
-                    datetime.fromisoformat(existing) > newest:
-                print(f"refusing an outdated bundle: the verified fetched data already held "
-                      f"for this source/group reaches {existing}, but the bundle's newest "
-                      f"original receipt is {newest.isoformat()}; a recorded bundle never "
-                      f"replaces NEWER verified data - legacy April rows stay untouched and a "
-                      f"LATER valid recorded download is still accepted",
-                      file=sys.stderr)
+            blocked_groups, n_groups = _stale_bundle_groups(db, bundle, args.source, specs,
+                                                            request)
+            for detail in blocked_groups.values():
+                print(detail, file=sys.stderr)  # every refusal diagnosed BEFORE any write
+            if n_groups and len(blocked_groups) == n_groups:
+                # every selected group is stale: refuse the replay BEFORE sync_registry, so a
+                # refused bundle cannot even rewrite registry metadata
                 return 1
+        sync_registry(db, specs)
         only = None if getattr(args, "source", "all") == "all" else [args.source]
         report = run_all(db, store, specs, http_for=http_for, request=request, only=only,
-                         source_factories=source_factories)
+                         source_factories=source_factories, blocked_groups=blocked_groups)
         _print_report(report, sys.stdout)
         return report.exit_code()
     finally:
         db.close()
         if tmp is not None:
             tmp.cleanup()
+
+
+def _stale_bundle_groups(db, bundle, source_name: str, specs, request: RunRequest):
+    """Per-dataset-group stale preflight of a recorded replay (Task 17 review R1).
+
+    For each ACTUAL DatasetGroup of the selected source, compares the OLDEST ORIGINAL
+    collector receipt that would back an OBSERVATION of that group (the real adapter
+    re-driven over a fresh PinnedHttp, fetch+parse, and the rows' response_index receipts -
+    so dataset-metadata and verifier receipts can neither boost nor doom a payload's
+    freshness) against the NEWEST verified fetched row held for that group's series.
+    Conservative on both sides (MIN vs MAX): a group is stale when the held data is strictly
+    newer than its own oldest observation receipt, no matter how fresh OTHER groups are.
+
+    Returns ({group_key: refusal detail}, total groups). A group whose collector receipt
+    plan cannot be reproduced offline (missing pinned request, adapter failure) is NOT
+    preflight-refused: the real run fails honestly on its own, and the in-transaction guard
+    still applies if it ever reaches an insert. Pure reads + bundle file IO: no DB writes.
+    """
+    active = [s for s in specs if s.source.name == source_name and s.active]
+    if not active:
+        return {}, 0
+    groups = operations.group_specs(active)
+    blocked: dict[str, str] = {}
+    for group in groups:
+        held = db.max_verified_fetched_at([s.id for s in group.specs])
+        if held is None:
+            continue
+        oldest = _group_oldest_receipt(bundle, source_name, request, group.specs)
+        if oldest is None or datetime.fromisoformat(held) <= oldest:
+            continue
+        blocked[group.key()] = (
+            f"refusing an outdated bundle for dataset group {group.label!r}: the verified "
+            f"fetched data already held for THIS group reaches {held}, but the bundle's "
+            f"oldest original collector receipt for the group is {oldest.isoformat()}; a "
+            f"recorded bundle never replaces NEWER verified data - legacy April rows stay "
+            f"untouched, and a LATER valid recorded download is still accepted")
+    return blocked, len(groups)
+
+
+def _group_oldest_receipt(bundle, source_name: str, request: RunRequest, group_specs):
+    """The OLDEST original fetch time of the collector responses that would back this group's
+    OBSERVATIONS (rows parse out of; dataset-metadata responses carry no rows and are
+    excluded), or None when the adapter's request plan cannot be reproduced offline (missing
+    pinned request, adapter parse error): such a group gets no preflight verdict and is left
+    to the real run (the in-transaction guard still applies if it ever reaches an insert)."""
+    pinned = PinnedHttp(bundle)
+    source = operations.SOURCE_FACTORIES[source_name](request)
+    recorded = RecordedSource(source, pinned)
+    base = len(pinned.served)
+    try:
+        responses = list(recorded.fetch(list(group_specs), pinned))
+        served = pinned.served[base:]
+        parsed = recorded.parse(list(group_specs), responses)
+        stamps = [datetime.fromisoformat(served[row.response_index].fetched_at)
+                  for rows in parsed.values() for row in rows]
+    except Exception:  # a predictive probe only; the real run reports the failure honestly
+        return None
+    return min(stamps) if stamps else None
 
 
 def main(argv: list[str] | None = None, *, http_for=None) -> int:

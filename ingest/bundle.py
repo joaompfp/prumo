@@ -30,6 +30,7 @@ is never assigned an invented status by this module.
 import hashlib
 import json
 import math
+import multiprocessing
 import os
 import tempfile
 import time
@@ -59,6 +60,37 @@ class BundleError(ValueError):
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+def _capture_worker(conn, url, params, headers, timeout):
+    """Child side of CaptureHttp's real transport: ONE physical GET, the body streamed with
+    the per-entry byte cap enforced WHILE reading (an oversized body is dropped mid-stream,
+    never materialized in full), and exactly one receipt message sent back:
+    ("ok", status, final_url, body, headers) | ("too-large", bytes_seen) | ("error",
+    ExceptionTypeName, str(e)). No redirects (the parent bounds and follows them), no
+    retries, no auth. Module-level and spawn-safe: cross-platform under multiprocessing."""
+    try:
+        import requests
+
+        from ingest.http import USER_AGENT
+        with requests.Session() as session:
+            with session.get(url, params=params,
+                             headers={"User-Agent": USER_AGENT, **(headers or {})},
+                             timeout=timeout, allow_redirects=False, stream=True) as resp:
+                chunks, total = [], 0
+                for chunk in resp.iter_content(65536):
+                    chunks.append(chunk)
+                    total += len(chunk)
+                    if total > MAX_ENTRY_BYTES:
+                        conn.send(("too-large", total))
+                        return
+                conn.send(("ok", resp.status_code, resp.url, b"".join(chunks),
+                           dict(resp.headers)))
+    except BaseException as e:
+        try:
+            conn.send(("error", type(e).__name__, str(e)))
+        except Exception:
+            pass  # the parent reports a dead worker on its own
 
 
 def request_key(url: str, params: dict | None) -> tuple:
@@ -109,10 +141,13 @@ class CaptureHttp:
     """The bounded real-network client of `capture` (retries=0 by contract).
 
     Every PHYSICAL request - redirects included - counts against max_requests and is
-    gated by the deadline BEFORE it starts, so the network budget is genuinely finite and no
-    post-hoc elapsed check masquerades as a deadline. `transport` is the test seam (bounded
-    fake responses, no requests dependency); the default transport is a requests Session with
-    allow_redirects=False + per-request timeout, wrapped exactly once per physical request.
+    gated by the deadline BEFORE it starts; the deadline is a REAL wall-clock bound on the
+    whole phase: each request's timeout is CLAMPED to the remaining budget, a response
+    arriving past the deadline is discarded instead of returned, and the default transport
+    runs every physical request in a KILLABLE worker subprocess joined for at most its
+    clamped share (a stalled server is terminated at the deadline - no unkillable
+    threadpool, no hidden retry), with the per-entry byte cap enforced WHILE streaming.
+    `transport` is the test seam (bounded fake responses, no requests dependency).
     """
 
     def __init__(self, *, timeout: float = 30.0, max_requests: int = 256,
@@ -131,14 +166,42 @@ class CaptureHttp:
         self._session = None
 
     def _requests_transport(self, url, params, headers, timeout):
-        import requests  # local import: the capture-only network dependency
-        if self._session is None:
-            self._session = requests.Session()
-        from ingest.http import USER_AGENT
-        resp = self._session.get(url, params=params,
-                                 headers={"User-Agent": USER_AGENT, **(headers or {})},
-                                 timeout=timeout, allow_redirects=False)
-        return resp.status_code, resp.url, resp.content, dict(resp.headers)
+        """One killable worker subprocess per physical request; the parent joins it for AT
+        MOST `timeout` (already clamped by get() to the remaining whole-phase budget), so the
+        deadline is wall-clock real even against a stalled server or a hung body read."""
+        recv_end, send_end = multiprocessing.Pipe(duplex=False)
+        proc = multiprocessing.Process(target=_capture_worker,
+                                       args=(send_end, url, params, headers, timeout),
+                                       daemon=True)
+        proc.start()
+        send_end.close()
+        proc.join(timeout)
+        if proc.is_alive():
+            proc.terminate()
+            proc.join(5)
+            if proc.is_alive():
+                proc.kill()
+                proc.join()
+            raise BundleError(
+                f"capture request exceeded its deadline-clamped budget of {timeout} s and "
+                f"was killed; the capture is abandoned, healthy already-recorded responses "
+                f"stay on disk")
+        try:
+            kind, *payload = recv_end.recv()
+        except (EOFError, OSError) as e:
+            raise BundleError(f"capture worker exited without a receipt: {e}") from e
+        finally:
+            recv_end.close()
+        if kind == "too-large":
+            raise BundleError(f"capture response exceeded the per-entry cap of "
+                              f"{MAX_ENTRY_BYTES} bytes WHILE being read (dropped at "
+                              f"{payload[0]} bytes, never fully materialized)")
+        if kind == "error":
+            import requests  # local import: the capture-only network dependency
+            raise requests.exceptions.RequestException(
+                f"capture worker request failed: {payload[0]}: {payload[1]}")
+        status, final, body, resp_headers = payload
+        return status, final, body, resp_headers
 
     def _budget(self) -> None:
         if self.n_requests >= self.max_requests:
@@ -158,8 +221,20 @@ class CaptureHttp:
         eff = self.timeout if timeout is None else timeout
         for _ in range(MAX_REDIRECTS + 1):
             self._budget()
+            remaining = self.deadline_s - (self._clock() - self._start)
+            if remaining <= 0:
+                raise BundleError(f"capture deadline of {self.deadline_s} s reached before "
+                                  f"request {self.n_requests + 1}; the capture is abandoned, "
+                                  f"healthy already-recorded responses stay on disk")
+            eff = min(eff, remaining)  # clamp: a request never outlives the phase deadline
             self.n_requests += 1
             status, final, body, resp_headers = self._transport(url, params, headers, eff)
+            if self._clock() - self._start > self.deadline_s:
+                raise BundleError(f"capture deadline of {self.deadline_s} s was reached while "
+                                  f"request {self.n_requests} was in flight; the LATE "
+                                  f"response is discarded, never returned as success - the "
+                                  f"capture is abandoned and healthy already-recorded "
+                                  f"responses stay on disk")
             if status in (301, 302, 303, 307, 308) and "Location" in resp_headers:
                 from urllib.parse import urljoin, urlsplit
                 url = urljoin(final, resp_headers["Location"])
@@ -257,6 +332,9 @@ class BundleRecorder:
             raise BundleError(f"capture holds {len(self.entries)} entries > cap {MAX_ENTRIES}")
         if sum(e.n_bytes for e in self.entries) > MAX_TOTAL_BYTES:
             raise BundleError(f"capture total bytes exceed the cap {MAX_TOTAL_BYTES}")
+        # A capture where EVERY request failed (e.g. deadline-killed first request) has no
+        # body dir yet: create it so the honest failure manifest is still sealed, never lost.
+        self.root.mkdir(parents=True, exist_ok=True)
         doc = {"schema": SCHEMA, "version": VERSION, "source": source,
                "note": "operator receipt of an exact original-file capture; the publisher "
                        "payload bytes live under responses/ and are addressed by sha256",

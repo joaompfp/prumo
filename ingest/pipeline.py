@@ -6,6 +6,8 @@
        ├─ parse/validate raised, or a series has no rows ──> failed-validation + event(format_change)
        └─ ONE transaction: observations + quarantine + revision events + state
           ──> pending-verification      (any exception inside: rolled back, failed-validation)
+       a recorded replay whose ORIGINAL receipts are older than held verified fetched rows
+          ──> rolled back atomically as 'blocked-stale' + event(stale_refusal) instead
 
 Only `verified` runs are served (view `served_observation`), so no failure here can hide or
 overwrite previously verified data. Verification (Task 7) moves pending-verification onward.
@@ -30,6 +32,13 @@ class DatasetRunResult:
     run_id: int
     n_written: int  # observation rows committed by this run
     n_quarantined: int  # quarantine rows committed by this run
+
+
+class StaleRecordedError(ValueError):
+    """A recorded replay tried to insert observations OLDER than the verified fetched data
+    already held for those series. Raised INSIDE the write transaction: the whole dataset
+    write rolls back atomically, so a concurrent newer writer is never displaced by old
+    recorded rows even when it lands between the CLI preflight and the insert."""
 
 
 def dataset_key(source_name: str, series_ids: list[str]) -> str:
@@ -170,14 +179,48 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
 
     try:
         with db.transaction():
+            if input_origin == "recorded":
+                _guard_recorded_not_stale(db, raws, checked)
             t = ts()
             for detail in empty:
                 db.add_event(t, "format_change", run_id, detail)
             n_written, n_quarantined = _write(db, run_id, raws, checked, t)
             db.set_run_state(run_id, "pending-verification", finished_at=ts())
+    except StaleRecordedError as e:  # rolled back atomically: nothing of this run remains
+        return finish("blocked-stale", "stale_refusal", {"error": str(e)})
     except Exception as e:  # rolled back: none of this run's observations/quarantine remain
         return finish("failed-validation", "format_change", {"error": repr(e), "stage": "write"})
     return DatasetRunResult("pending-verification", run_id, n_written, n_quarantined)
+
+
+def _guard_recorded_not_stale(db: Db, raws: list[tuple[int, str]], checked: list) -> None:
+    """Recorded-replay continuity guard, called INSIDE the observation transaction (all SQL
+    via Db). A recorded run's observations are only as new as their own OLDEST original
+    collector receipt (the raw_fetch.fetched_at tied to each observation through the row's
+    response_index; dataset-metadata and verifier responses carry no rows and never count).
+    Per series, when the held VERIFIED fetched rows reach past that bound, inserting would
+    let the served view's last-inserted tie-break replace NEWER verified data with old
+    recorded rows: refuse the whole dataset atomically instead. Equal-time re-imports pass
+    (the identical-payload short-circuit keeps them no-ops), genuinely newer bundles advance
+    the data, and legacy-unverified rows never count as held verified data, so a legacy-only
+    or empty database is free to accept any recorded bundle."""
+    stale = []
+    oldests = []
+    for spec, _n_raw, observations, _rejections in checked:
+        if not observations:
+            continue
+        # UTC ISO text: lexicographic = chronological; receipts back rows, never metadata
+        oldest = min(raws[o.response_index][1] for o in observations)
+        oldests.append(oldest)
+        held = db.max_verified_fetched_at([spec.id])
+        if held is not None and held > oldest:
+            stale.append(f"{spec.id} (held verified fetched reaches {held})")
+    if stale:
+        raise StaleRecordedError(
+            f"recorded replay refused for {len(stale)} series: this run's oldest original "
+            f"collector receipt is {min(oldests)}, but the verified fetched data already "
+            f"held is newer for {'; '.join(stale)}; a recorded replay never replaces NEWER "
+            f"verified data")
 
 
 def _record(db: Db, store: RawStore, source_name: str, run_id: int, resp: RawResponse,

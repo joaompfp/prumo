@@ -72,6 +72,7 @@ class DatasetStatus:
 class PendingRun:
     run_id: int
     dataset: str
+    source: str  # the run's OWN source: attribution never depends on current grouping
     started_at: str
     input_origin: str
     stale: bool  # started more than PENDING_STALE_AFTER ago
@@ -166,9 +167,8 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
             continue  # legacy synthetic runs are never an attempt; keys-less rows are not
         if state == "pending-verification":
             started_dt = _parse_ts(started)
-            pending.append(PendingRun(run_id, label_of_key.get(key, key), started,
-                                      input_origin=origin,
-                                      stale=started_dt is not None
+            pending.append(PendingRun(run_id, label_of_key.get(key, key), source, started,
+                                      origin, started_dt is not None
                                       and now_ts - started_dt > PENDING_STALE_AFTER))
         cur = latest_by_key.get(key)
         if cur is None or started > cur[0]:
@@ -199,7 +199,9 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
     source_rows = {name: redist for name, redist in db.source_list()}
 
     sources = []
-    for name in sorted(set(by_source) | set(source_rows)):
+    # Sources known ONLY through pending runs (unknown/old-registry source names) still get a
+    # row, so pending state is visible under its own source instead of vanishing.
+    for name in sorted(set(by_source) | set(source_rows) | {p.source for p in pending}):
         group = by_source.get(name, [])
         spec0 = group[0].source if group else None
         verifiable = spec0.verifiable if spec0 else True
@@ -234,9 +236,7 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
             latest_attempt=latest_attempt, latest_attempt_state=latest_state,
             last_verified=last_verified, real_data_fetched_at=real_fetched,
             events=events.get(name, {}),
-            pending_runs=tuple(p for p in pending
-                               if p.dataset in {label_of_key.get(k) for k in label_of_key
-                                                if any(key_of.get(s.id) == k for s in group)}),
+            pending_runs=tuple(p for p in pending if p.source == name),
             datasets=datasets, series=tuple(series_out)))
     return StatusReport(generated_at=now_ts.astimezone(timezone.utc).isoformat(),
                         sources=tuple(sources))
