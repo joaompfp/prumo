@@ -1,0 +1,70 @@
+{
+  "kind": "controller-created-live-acceptance-not-deployment",
+  "started_at": "2026-11-12T16:38:45.875530+00:00",
+  "registry_sha256": "8cb91ac64a3312ca52d5afba2b71f996edac09a94a586a2e7015eac15e09fd74",
+  "egress": "f0nix",
+  "root": "/home/joao/.hermes/cache/scratch/prumo-oecd-acceptance-r5t617vh",
+  "max_physical_requests": 18,
+  "whole_network_deadline_s": 180,
+  "per_remote_request_deadline_s": 12,
+  "minimum_request_interval_s": 4.5,
+  "retries": 0,
+  "max_dataset_attempts": 1,
+  "state": "verified",
+  "run_id": 1,
+  "n_written": 2915,
+  "n_quarantined": 0,
+  "network_elapsed_s": 51.307,
+  "http_responses": 12,
+  "series": [
+    [
+      "oecd.cli.PT",
+      478,
+      "1987-01",
+      "2026-10"
+    ],
+    [
+      "oecd.employment.PT",
+      478,
+      "1987-01",
+      "2026-10"
+    ],
+    [
+      "oecd.order_books.PT",
+      478,
+      "1987-01",
+      "2026-10"
+    ],
+    [
+      "oecd.production.PT",
+      478,
+      "1987-01",
+      "2026-10"
+    ],
+    [
+      "oecd.selling_prices.PT",
+      478,
+      "1987-01",
+      "2026-10"
+    ],
+    [
+      "oecd.unemp_m.PT",
+      525,
+      "1983-01",
+      "2026-09"
+    ]
+  ],
+  "verification": [
+    [
+      120,
+      1
+    ]
+  ],
+  "served": 0,
+  "quarantines": [],
+  "all_publisher_tokens_recovered": 2915,
+  "sampled_comparisons_recovered": 120,
+  "evidence_bundles_recovered": 6,
+  "offline_replay": "passed",
+  "finished_at": "2026-11-12T16:39:37.297137+00:00"
+}

@@ -1,0 +1,720 @@
+{
+  "meta": {
+    "schema": "https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/data-message/tools/schemas/2.0.0/sdmx-json-data-schema.json",
+    "id": "IREF020647",
+    "prepared": "2026-11-12T14:16:55Z",
+    "test": false,
+    "contentLanguages": [
+      "en",
+      "en-US"
+    ],
+    "sender": {
+      "id": "Disseminate_Final_DMZ",
+      "name": "unknown",
+      "names": {
+        "en-US": "unknown"
+      }
+    }
+  },
+  "data": {
+    "dataSets": [
+      {
+        "structure": 0,
+        "action": "Information",
+        "links": [
+          {
+            "rel": "datastructure",
+            "urn": "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=OECD.SDD.STES:DSD_STES(4.0)"
+          }
+        ],
+        "annotations": [
+          7,
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "attributes": [],
+        "dimensionGroupAttributes": {
+          "0:~:~:0:0:~:~:~:~:~": [
+            8
+          ],
+          "~:~:~:0:0:~:~:~:~:~": [
+            8
+          ],
+          "~:~:~:~:~:~:~:~:~:~": [
+            8
+          ]
+        },
+        "series": {
+          "0:0:0:0:0:0:0:0:0": {
+            "annotations": [],
+            "attributes": [
+              0,
+              0
+            ],
+            "observations": {
+              "0": [
+                3.3,
+                0
+              ],
+              "1": [
+                -4.4,
+                0
+              ],
+              "2": [
+                2.5,
+                0
+              ],
+              "3": [
+                -5.7,
+                0
+              ],
+              "4": [
+                1.6,
+                0
+              ],
+              "5": [
+                1.5,
+                0
+              ],
+              "6": [
+                1.6,
+                0
+              ],
+              "7": [
+                -6.0,
+                0
+              ],
+              "8": [
+                3.3,
+                0
+              ],
+              "9": [
+                1.6,
+                0
+              ],
+              "10": [
+                -5.5,
+                0
+              ],
+              "11": [
+                4.1,
+                0
+              ],
+              "12": [
+                3.4,
+                0
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "structures": [
+      {
+        "name": "Business tendency surveys",
+        "names": {
+          "en": "Business tendency surveys"
+        },
+        "description": "Business Tendency Surveys (BTS) – also called business opinion or business climate surveys – are economic surveys used to monitor and forecast business cycles. \nCovering 4 different economic sectors (manufacturing, construction, retail trade and services), they are designed to collect qualitative information useful in monitoring\nthe current business situation and forecasting short-term developments by directly asking company managers about the pulse of their businesses. They are well known for providing advance warning of turning points in aggregate economic activity as measured by GDP or industrial production. As respondents provide answers on a 3 scale options (up, same, down, or above normal, normal, below normal), data are summarised in net balances corresponsing to the difference in % of positive over negative replies. Because of their collection mode, timeliness and immediate availability, they have proved to be a cost‑effective mean of generating timely information especially during crises. \nIn the late '90, in collaboration with the European Commission, the OECD has developed a system of harmonised business tendency surveys in order to collect and compare data across countries.\nThe EC Directorate General for Economic and Financial Affairs is since then in charge of running the program and collecting data across EU members, while the OECD helped the adoption and implementation \nof the same harmonised framework in non-EU OECD countries and BRIICS. By construction, BTS questions are formulated in order to exclude seasonal factors. Nevertheless all series are tested for seasonality by both the OECD (using x12) and by the EC for the EU member data (using DAINTIES). This dataset comprises a set of harmonised target indicators available across OECD and BRIICS countries, any departure from target definitions are\ndocumented in the metadata.",
+        "descriptions": {
+          "en": "Business Tendency Surveys (BTS) – also called business opinion or business climate surveys – are economic surveys used to monitor and forecast business cycles. \nCovering 4 different economic sectors (manufacturing, construction, retail trade and services), they are designed to collect qualitative information useful in monitoring\nthe current business situation and forecasting short-term developments by directly asking company managers about the pulse of their businesses. They are well known for providing advance warning of turning points in aggregate economic activity as measured by GDP or industrial production. As respondents provide answers on a 3 scale options (up, same, down, or above normal, normal, below normal), data are summarised in net balances corresponsing to the difference in % of positive over negative replies. Because of their collection mode, timeliness and immediate availability, they have proved to be a cost‑effective mean of generating timely information especially during crises. \nIn the late '90, in collaboration with the European Commission, the OECD has developed a system of harmonised business tendency surveys in order to collect and compare data across countries.\nThe EC Directorate General for Economic and Financial Affairs is since then in charge of running the program and collecting data across EU members, while the OECD helped the adoption and implementation \nof the same harmonised framework in non-EU OECD countries and BRIICS. By construction, BTS questions are formulated in order to exclude seasonal factors. Nevertheless all series are tested for seasonality by both the OECD (using x12) and by the EC for the EU member data (using DAINTIES). This dataset comprises a set of harmonised target indicators available across OECD and BRIICS countries, any departure from target definitions are\ndocumented in the metadata."
+        },
+        "links": [
+          {
+            "rel": "datastructure",
+            "urn": "urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow=OECD.SDD.STES:DSD_STES@DF_BTS(4.0)"
+          }
+        ],
+        "dimensions": {
+          "dataSet": [],
+          "series": [
+            {
+              "id": "REF_AREA",
+              "name": "Reference area",
+              "names": {
+                "en": "Reference area"
+              },
+              "keyPosition": 0,
+              "roles": [
+                "REF_AREA"
+              ],
+              "values": [
+                {
+                  "id": "PRT",
+                  "order": 29,
+                  "name": "Portugal",
+                  "names": {
+                    "en": "Portugal"
+                  },
+                  "annotations": [
+                    9
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "FREQ",
+              "name": "Frequency of observation",
+              "names": {
+                "en": "Frequency of observation"
+              },
+              "keyPosition": 1,
+              "roles": [
+                "FREQ"
+              ],
+              "values": [
+                {
+                  "id": "M",
+                  "order": 11,
+                  "name": "Monthly",
+                  "names": {
+                    "en": "Monthly"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "MEASURE",
+              "name": "Measure",
+              "names": {
+                "en": "Measure"
+              },
+              "keyPosition": 2,
+              "roles": [
+                "MEASURE"
+              ],
+              "values": [
+                {
+                  "id": "EM",
+                  "order": 3,
+                  "name": "Employment",
+                  "names": {
+                    "en": "Employment"
+                  },
+                  "annotations": [
+                    10
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "UNIT_MEASURE",
+              "name": "Unit of measure",
+              "names": {
+                "en": "Unit of measure"
+              },
+              "keyPosition": 3,
+              "roles": [
+                "UNIT_MEASURE"
+              ],
+              "values": [
+                {
+                  "id": "PB",
+                  "order": 565,
+                  "name": "Percentage balance",
+                  "names": {
+                    "en": "Percentage balance"
+                  },
+                  "annotations": [
+                    11
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "ACTIVITY",
+              "name": "Economic activity",
+              "names": {
+                "en": "Economic activity"
+              },
+              "keyPosition": 4,
+              "roles": [
+                "ACTIVITY"
+              ],
+              "values": [
+                {
+                  "id": "C",
+                  "order": 118,
+                  "name": "Manufacturing",
+                  "names": {
+                    "en": "Manufacturing"
+                  },
+                  "parent": "_T",
+                  "parents": [
+                    "_T"
+                  ],
+                  "annotations": [
+                    12
+                  ]
+                },
+                {
+                  "id": "_T",
+                  "order": 0,
+                  "name": "Total - all activities",
+                  "names": {
+                    "en": "Total - all activities"
+                  },
+                  "annotations": [
+                    13
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "ADJUSTMENT",
+              "name": "Adjustment",
+              "names": {
+                "en": "Adjustment"
+              },
+              "keyPosition": 5,
+              "roles": [
+                "ADJUSTMENT"
+              ],
+              "values": [
+                {
+                  "id": "Y",
+                  "order": 15,
+                  "name": "Calendar and seasonally adjusted",
+                  "names": {
+                    "en": "Calendar and seasonally adjusted"
+                  },
+                  "annotations": [
+                    14
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "TRANSFORMATION",
+              "name": "Transformation",
+              "names": {
+                "en": "Transformation"
+              },
+              "keyPosition": 6,
+              "roles": [
+                "TRANSFORMATION"
+              ],
+              "values": [
+                {
+                  "id": "_Z",
+                  "order": 57,
+                  "name": "Not applicable",
+                  "names": {
+                    "en": "Not applicable"
+                  },
+                  "annotations": [
+                    15
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "TIME_HORIZ",
+              "name": "Time horizon",
+              "names": {
+                "en": "Time horizon"
+              },
+              "keyPosition": 7,
+              "roles": [
+                "TIME_HORIZ"
+              ],
+              "values": [
+                {
+                  "id": "FT",
+                  "order": 0,
+                  "name": "Future tendency",
+                  "names": {
+                    "en": "Future tendency"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "METHODOLOGY",
+              "name": "Calculation methodology",
+              "names": {
+                "en": "Calculation methodology"
+              },
+              "keyPosition": 8,
+              "roles": [
+                "METHODOLOGY"
+              ],
+              "values": [
+                {
+                  "id": "N",
+                  "order": 1,
+                  "name": "National",
+                  "names": {
+                    "en": "National"
+                  }
+                }
+              ]
+            }
+          ],
+          "observation": [
+            {
+              "id": "TIME_PERIOD",
+              "name": "Time period",
+              "names": {
+                "en": "Time period"
+              },
+              "keyPosition": 9,
+              "roles": [
+                "TIME_PERIOD"
+              ],
+              "values": [
+                {
+                  "start": "2026-07-01T00:00:00",
+                  "end": "2026-07-31T23:59:59",
+                  "id": "2026-07",
+                  "name": "2026-07",
+                  "names": {
+                    "en-US": "2026-07"
+                  }
+                },
+                {
+                  "start": "2026-08-01T00:00:00",
+                  "end": "2026-08-31T23:59:59",
+                  "id": "2026-08",
+                  "name": "2026-08",
+                  "names": {
+                    "en-US": "2026-08"
+                  }
+                },
+                {
+                  "start": "2026-09-01T00:00:00",
+                  "end": "2026-09-30T23:59:59",
+                  "id": "2026-09",
+                  "name": "2026-09",
+                  "names": {
+                    "en-US": "2026-09"
+                  }
+                },
+                {
+                  "start": "2026-10-01T00:00:00",
+                  "end": "2026-10-31T23:59:59",
+                  "id": "2026-10",
+                  "name": "2026-10",
+                  "names": {
+                    "en-US": "2026-10"
+                  }
+                },
+                {
+                  "start": "2026-06-01T00:00:00",
+                  "end": "2026-06-30T23:59:59",
+                  "id": "2026-06",
+                  "name": "2026-06",
+                  "names": {
+                    "en-US": "2026-06"
+                  }
+                },
+                {
+                  "start": "2026-03-01T00:00:00",
+                  "end": "2026-03-31T23:59:59",
+                  "id": "2026-03",
+                  "name": "2026-03",
+                  "names": {
+                    "en-US": "2026-03"
+                  }
+                },
+                {
+                  "start": "2026-04-01T00:00:00",
+                  "end": "2026-04-30T23:59:59",
+                  "id": "2026-04",
+                  "name": "2026-04",
+                  "names": {
+                    "en-US": "2026-04"
+                  }
+                },
+                {
+                  "start": "2026-05-01T00:00:00",
+                  "end": "2026-05-31T23:59:59",
+                  "id": "2026-05",
+                  "name": "2026-05",
+                  "names": {
+                    "en-US": "2026-05"
+                  }
+                },
+                {
+                  "start": "2025-10-01T00:00:00",
+                  "end": "2025-10-31T23:59:59",
+                  "id": "2025-10",
+                  "name": "2025-10",
+                  "names": {
+                    "en-US": "2025-10"
+                  }
+                },
+                {
+                  "start": "2025-11-01T00:00:00",
+                  "end": "2025-11-30T23:59:59",
+                  "id": "2025-11",
+                  "name": "2025-11",
+                  "names": {
+                    "en-US": "2025-11"
+                  }
+                },
+                {
+                  "start": "2025-12-01T00:00:00",
+                  "end": "2025-12-31T23:59:59",
+                  "id": "2025-12",
+                  "name": "2025-12",
+                  "names": {
+                    "en-US": "2025-12"
+                  }
+                },
+                {
+                  "start": "2026-01-01T00:00:00",
+                  "end": "2026-01-31T23:59:59",
+                  "id": "2026-01",
+                  "name": "2026-01",
+                  "names": {
+                    "en-US": "2026-01"
+                  }
+                },
+                {
+                  "start": "2026-02-01T00:00:00",
+                  "end": "2026-02-28T23:59:59",
+                  "id": "2026-02",
+                  "name": "2026-02",
+                  "names": {
+                    "en-US": "2026-02"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "attributes": {
+          "dataSet": [],
+          "dimensionGroup": [],
+          "series": [
+            {
+              "id": "UNIT_MULT",
+              "name": "Unit multiplier",
+              "names": {
+                "en": "Unit multiplier"
+              },
+              "isMandatory": true,
+              "roles": [
+                "UNIT_MULT"
+              ],
+              "relationship": {
+                "dimensions": [
+                  "REF_AREA",
+                  "FREQ",
+                  "MEASURE",
+                  "UNIT_MEASURE",
+                  "ACTIVITY",
+                  "ADJUSTMENT",
+                  "TRANSFORMATION",
+                  "TIME_HORIZ",
+                  "METHODOLOGY"
+                ]
+              },
+              "values": [
+                {
+                  "id": "0",
+                  "order": 0,
+                  "name": "Units",
+                  "names": {
+                    "en": "Units"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "DECIMALS",
+              "name": "Decimals",
+              "names": {
+                "en": "Decimals"
+              },
+              "isMandatory": false,
+              "roles": [
+                "DECIMALS"
+              ],
+              "relationship": {
+                "dimensions": [
+                  "METHODOLOGY",
+                  "TIME_HORIZ",
+                  "TRANSFORMATION",
+                  "ADJUSTMENT",
+                  "ACTIVITY",
+                  "UNIT_MEASURE",
+                  "MEASURE",
+                  "FREQ",
+                  "REF_AREA"
+                ]
+              },
+              "values": [
+                {
+                  "id": "2",
+                  "order": 2,
+                  "name": "Two",
+                  "names": {
+                    "en": "Two"
+                  }
+                }
+              ]
+            }
+          ],
+          "observation": [
+            {
+              "id": "OBS_STATUS",
+              "name": "Observation status",
+              "names": {
+                "en": "Observation status"
+              },
+              "isMandatory": false,
+              "roles": [
+                "OBS_STATUS"
+              ],
+              "relationship": {
+                "observation": {}
+              },
+              "values": [
+                {
+                  "id": "A",
+                  "order": 0,
+                  "name": "Normal value",
+                  "names": {
+                    "en": "Normal value"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "annotations": [
+          {
+            "type": "NonProductionDataflow",
+            "text": "true",
+            "texts": {
+              "en": "true"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "title": "ACTIVITY,MEASURE",
+            "type": "LAYOUT_ROW"
+          },
+          {
+            "id": "@SDMX",
+            "title": "TIME_PERIOD",
+            "type": "LAYOUT_COLUMN"
+          },
+          {
+            "id": "@SDMX",
+            "title": "TIME_HORIZ",
+            "type": "LAYOUT_ROW_SECTION"
+          },
+          {
+            "id": "@SDMX",
+            "title": "UNIT_MULT=0,OBS_STATUS=A,METHODOLOGY=N",
+            "type": "NOT_DISPLAYED"
+          },
+          {
+            "id": "@SDMX",
+            "title": "REF_AREA=FRA,FREQ=M",
+            "type": "DEFAULT"
+          },
+          {
+            "title": "COMBINED_UNIT_MEASURE:UNIT_MEASURE,ADJUSTMENT,UNIT_MULT",
+            "type": "COMBINED_CONCEPTS",
+            "text": "COMBINED_UNIT_MEASURE:Unit of measure",
+            "texts": {
+              "en": "COMBINED_UNIT_MEASURE:Unit of measure"
+            }
+          },
+          {
+            "title": "urn:sdmx:org.sdmx.infomodel.metadatastructure.MetadataStructure=OECD:MSD_REF_METADATA(1.0)",
+            "type": "METADATA"
+          },
+          {
+            "type": "HAS_METADATA"
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "300",
+            "texts": {
+              "en": "300"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "4",
+            "texts": {
+              "en": "4"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "5660",
+            "texts": {
+              "en": "5660"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "1190",
+            "texts": {
+              "en": "1190"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "10",
+            "texts": {
+              "en": "10"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "30",
+            "texts": {
+              "en": "30"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "580",
+            "texts": {
+              "en": "580"
+            }
+          }
+        ],
+        "measures": {
+          "observation": [
+            {
+              "id": "OBS_VALUE",
+              "name": "Observation value",
+              "names": {
+                "en": "Observation value"
+              },
+              "isMandatory": false,
+              "roles": [
+                "OBS_VALUE"
+              ],
+              "values": null
+            }
+          ]
+        },
+        "dataSets": [
+          0
+        ]
+      }
+    ]
+  },
+  "errors": []
+}
