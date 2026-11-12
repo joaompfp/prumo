@@ -213,6 +213,59 @@ class Db:
             [(o.series_id, o.period, o.value_text, o.value, o.status_flag, run_id, fetched_at)
              for o, fetched_at in rows])
 
+    # --- operational status / CLI verification resolution (Task 17A) -------------------------
+
+    def source_list(self) -> list[tuple[str, int]]:
+        """(name, redistribution_ok) of every registered source, by name."""
+        return self.conn.execute(
+            "SELECT name, redistribution_ok FROM source ORDER BY name").fetchall()
+
+    def series_list(self) -> list[tuple[str, str, str, int]]:
+        """(id, source_name, frequency, active) of every series, by id."""
+        return self.conn.execute(
+            "SELECT r.id, s.name, r.frequency, r.active FROM series r "
+            "JOIN source s ON s.id = r.source_id ORDER BY r.id").fetchall()
+
+    def runs_overview(self) -> list[tuple[int, str, str | None, str, str, str | None]]:
+        """(id, source_name, dataset_key, state, started_at, finished_at) of every run."""
+        return self.conn.execute(
+            "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at "
+            "FROM dataset_run r JOIN source s ON s.id = r.source_id ORDER BY r.id").fetchall()
+
+    def observation_stats(self) -> list[tuple[str, str, str, int, str]]:
+        """(series_id, kind, run state, row count, max fetched_at) per series/kind/state."""
+        return self.conn.execute(
+            "SELECT o.series_id, o.kind, r.state, COUNT(*), MAX(o.fetched_at) "
+            "FROM observation o JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "GROUP BY o.series_id, o.kind, r.state").fetchall()
+
+    def event_totals(self) -> list[tuple[str | None, str, int]]:
+        """(source_name or None, kind, total count) of events over all time."""
+        return self.conn.execute(
+            "SELECT s.name, e.kind, COUNT(*) FROM event e "
+            "LEFT JOIN dataset_run r ON r.id = e.dataset_run_id "
+            "LEFT JOIN source s ON s.id = r.source_id GROUP BY s.name, e.kind").fetchall()
+
+    def verification_overview(self) -> list[tuple[int, str | None, int, str]]:
+        """(run_id, dataset_key, passed, created_at) of every verification, oldest first."""
+        return self.conn.execute(
+            "SELECT v.dataset_run_id, r.dataset_key, v.passed, v.created_at "
+            "FROM verification v JOIN dataset_run r ON r.id = v.dataset_run_id "
+            "ORDER BY v.id").fetchall()
+
+    def run_series_ids(self, run_id: int) -> list[str]:
+        """Distinct series ids with observations in the run."""
+        return [r[0] for r in self.conn.execute(
+            "SELECT DISTINCT series_id FROM observation WHERE dataset_run_id = ? "
+            "ORDER BY series_id", (run_id,))]
+
+    def run_info(self, run_id: int) -> tuple[int, str, str | None, str, str, str | None] | None:
+        """(id, source_name, dataset_key, state, started_at, finished_at); None if no such run."""
+        return self.conn.execute(
+            "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at "
+            "FROM dataset_run r JOIN source s ON s.id = r.source_id WHERE r.id = ?",
+            (run_id,)).fetchone()
+
     def close(self) -> None:
         self.conn.close()
 
