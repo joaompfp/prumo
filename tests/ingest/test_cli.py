@@ -12,10 +12,12 @@ import ingest.verifiers as verifiers
 from ingest.cli import main
 from ingest.db import open_db
 from ingest.models import SeriesSpec, SourceSpec
+from ingest.operations import VERIFIER_OPS, ensure_verifier
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawStore
 from ingest.registry import sync_registry
 from ingest.sources.worldbank import WorldBankSource
+from ingest.verifiers.worldbank import WorldBankVerifier
 from tests.ingest.legacy_csv import write_csv
 from tests.ingest.worldbank_fixtures import (
     GDP_PTDES,
@@ -236,6 +238,19 @@ def test_cli_verify_refuses_legacy_runs(tmp_path, capsys):
     assert main(["--db", str(db_path), "--registry", str(reg), "verify",
                  str(legacy_run_id)]) == 2
     assert "legacy" in capsys.readouterr().err
+
+
+def test_ensure_verifier_registers_once_and_reuses_only_a_compatible_instance():
+    """The supported reuse contract: one registration per source per process; a pre-registered
+    instance with a DIFFERENT configuration is a clear mismatch error, never a silent reuse or
+    a private-registry replacement."""
+    ops = VERIFIER_OPS["worldbank"]
+    v = ensure_verifier(ops)
+    assert v.indicator_locales == {"NY.GDP.MKTP.KD.ZG": "es", "SL.UEM.TOTL.ZS": "es"}
+    assert ensure_verifier(ops) is v  # compatible pre-registered instance is reused
+    verifiers._REGISTRY["worldbank"] = WorldBankVerifier()  # foreign default-en instance
+    with pytest.raises(ValueError, match="incompatible"):
+        ensure_verifier(ops)
 
 
 def test_cli_argument_errors(tmp_path, capsys):
