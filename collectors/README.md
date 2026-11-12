@@ -25,7 +25,7 @@ What remains here and why:
   this branch and exists only as a historical artifact. Do not port, wrap, or call it.
 
 A historical pre-rebuild snapshot of the legacy tree is available on the
-`legacy-ui-final` branch reference. It predates this branch and is not asserted to
+`legacy-ui-final` tag. It predates this branch and is not asserted to
 match this branch's exact pre-cleanup tree.
 New collection code belongs in `ingest/sources/` with an independent verifier in
 `ingest/verifiers/`; see `tests/ingest/` for the supported contract.

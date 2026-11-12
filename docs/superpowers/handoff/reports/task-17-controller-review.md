@@ -1,6 +1,6 @@
-# Task 17 controller acceptance and remaining cleanup
+# Task 17 controller acceptance and final cleanup
 
-Updated 2026-11-12. Final code: d05e24b. CLI/status/replay, dated-data continuity and original-file capture/replay are technically accepted after independent specification and quality reviews plus scoped fix re-reviews. Task 17 as a whole remains OPEN: tool-gated legacy-code deletion and the final legacy test/CI cleanup have not been completed. The owner was asked to authorize deletion; no approval was received in this turn. No main merge or deployment.
+Updated 2026-11-12. Operational code d05e24b remains accepted. Task 17 is now COMPLETE after the final cleanup at f8cb9b0, documentation-only fixes at 062fd65, independent specification/quality approval and scoped re-reviews. Controller normal suite and fresh requirements-only CI rehearsal each passed 1,382 tests with seven live tests deselected. This report retains the prior operational/live evidence; final cleanup evidence is in task-17-cleanup-controller-review.md. No main merge or deployment.
 
 ## Operational contract accepted
 
@@ -42,10 +42,10 @@ These manual and population checks ran at 6cf6777. The later d05e24b change is c
 
 Durable evidence is under /home/joao/projects/prumo-pipeline/docs/superpowers/handoff/reports/evidence/task-17/. manifest.json records the hashes, sizes, code revisions and member counts of the controller-created capsules. Every member was re-read and every content-addressed raw body rehashed. These are audit capsules, not publisher archives. The World Bank continuity capsule intentionally omits the all-source legacy DB; it includes the permitted World Bank bundle, raw evidence, status and report instead. Other-source legacy values were not republished in this artifact. Raw-fetch absolute paths in snapshot DBs are historical capture paths; relocate by source/hash when replaying from a capsule.
 
-## Remaining work and consent boundary
+## Final cleanup acceptance and remaining boundaries
 
-Do not repeat accepted source implementations or launch another World Bank recovery loop. Resolve the pending tool-gated deletion only after explicit owner approval: superseded collectors eurostat/ine/bportugal/ren/worldbank/fred/oecd/eredes/base, the old scheduler/audit/backfill scripts, scripts/collectors and scripts/maintenance. Preserve DGEG/dadosgov and all data/archive/seed files. Complete the associated legacy test fixtures, pytest/CI cleanup and obsolete seed-step removal, then re-verify and close Task 17.
+The owner requested continuation and the exact legacy cleanup completed without a tool refusal. The base.py entry in the previous deletion proposal was wrong: dadosgov.py and habitacao.py use bare local imports, so base.py was preserved. The superseded collectors/orchestrators were removed, unused dashboard fixtures retired, and CI detached from DuckDB seed creation and accidental live-test selection. All data/archive/seed files, publisher evidence and retained collector implementations remain unchanged. Independent spec/quality and documentation-fix re-reviews passed; see task-17-cleanup-controller-review.md for the two full-suite results and exact preservation checks. No further source recovery loop was launched.
 
-GitNexus generated changes to protected AGENTS.md and CLAUDE.md during indexing. Attempts to revert only those generated hunks were themselves blocked awaiting consent. They remain dirty, unstaged and uncommitted; do not silently retry via another tool or include them in a feature commit. The owner was also asked about legacy deletion, which remains unapproved.
+GitNexus generated changes to protected AGENTS.md and CLAUDE.md during prior indexing. Attempts to revert only those generated hunks were themselves blocked awaiting consent. They remain byte-identical to the cleanup controller intake, dirty, unstaged and uncommitted; do not silently retry via another tool or include them in a feature commit. This protected-file boundary is separate from the now-completed Task17 legacy deletion.
 
 Task 18 scheduler/compose/deployment and Task 19 final methodology/source docs/audit are not started. The new pipeline is not installed in production; the public app remains maintenance-only. Merge into main stays the owner's decision.

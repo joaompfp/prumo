@@ -177,6 +177,8 @@ Each task is the same shape and delivers `ingest/sources/<name>.py` (implements 
 
 ### Task 17: CLI, status report, replay
 
+Acceptance checkpoint 2026-11-12: operational/manual scope and final cleanup COMPLETE after independent specification and quality gates, scoped re-reviews, and 1,382 passing tests in both the normal and clean requirements-only CI environments. The earlier isolated source catch-up evidence is retained; production installation, catch-up/status inspection and the 24-hour observation remain Task 18 gates. No merge or deployment. See `docs/superpowers/handoff/reports/task-17-cleanup-controller-review.md`; shared status is maintained in HANDOFF/ledger rather than retroactively ticking this original plan.
+
 **Files:** Create `ingest/cli.py`, `ingest/__main__.py`, `ingest/status.py`, `tests/ingest/test_cli.py`; Delete: old `collectors/` and `scripts/` collectors/orchestrators superseded by Tasks 9–16 (`collect_scheduled.py`, `audit_nightly.py`, `backfill_*.py`, `scripts/collectors/`, `scripts/maintenance/`, `warm_cache.py`), then drop `duckdb`, `pandas`, `pyarrow`, `Pillow` from `requirements.txt` (keep `duckdb` only for `legacy_import` via a separate `requirements-migration.txt`).
 
 **Interfaces:**
