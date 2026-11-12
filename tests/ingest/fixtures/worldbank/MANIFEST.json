@@ -255,6 +255,24 @@
    "note": "Task13 implementer probe; FULL ZIP verifier-channel fixture"
   },
   {
+   "file": "csv-es-sl-uem-totl-zs.zip",
+   "url": "https://api.worldbank.org/v2/es/indicator/SL.UEM.TOTL.ZS?downloadformat=csv",
+   "status": 200,
+   "content_type": "application/zip",
+   "bytes": 42458,
+   "sha256": "d0533f8f2c23dcfe838b588663479478f7bbd6efe3a83ae4d6649e0a6e7c6872",
+   "note": "Task13 f0nix recovery probe 2026-11-12 (r4-f0nix-es); GENUINE Spanish-locale FULL ZIP verifier-channel fixture, copied byte-for-byte. Content-Disposition filename API_SL.UEM.TOTL.ZS_DS2_es_csv_v2_13960.zip; title 'Indicadores del desarrollo mundial'. Ephemeral Cloudflare Set-Cookie/auth and trace headers deliberately NOT recorded (not part of evidence); byte identity sha256-pinned; full request accounting retained in controller recovery evidence"
+  },
+  {
+   "file": "csv-es-ny-gdp-mktp-kd-zg.zip",
+   "url": "https://api.worldbank.org/v2/es/indicator/NY.GDP.MKTP.KD.ZG?downloadformat=csv",
+   "status": 200,
+   "content_type": "application/zip",
+   "bytes": 135776,
+   "sha256": "0054931ddc3db0f9e2c94a8abe8f2c8b417be5888b695379e8ee91c8257527e8",
+   "note": "Task13 f0nix recovery probe 2026-11-12 (probe-2); GENUINE Spanish-locale FULL ZIP verifier-channel fixture, copied byte-for-byte. Content-Disposition filename API_NY.GDP.MKTP.KD.ZG_DS2_es_csv_v2_1937.zip; title 'Indicadores del desarrollo mundial'. Same sanitization/pinning as csv-es-sl-uem-totl-zs.zip"
+  },
+  {
    "file": "multi-eugrat-pop.json",
    "url": "https://api.worldbank.org/v2/country/EU;GR;AT/indicator/SP.POP.TOTL?format=json&per_page=20000",
    "status": 200,
