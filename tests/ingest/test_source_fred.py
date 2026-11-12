@@ -769,3 +769,48 @@ def test_pipeline_refuses_a_truncated_or_unicode_aliased_archive_and_writes_noth
                                    (r.run_id,)).fetchone()[0] > 0  # evidence kept
         finally:
             db.close()
+
+
+# ============================== fix round 2 regression (quality re-review) ==================
+# The params identity is a SUBSET contract - the same one the URL query side already asserts
+# (`not set(q) <= allowed`, fred.py _identify). A strict-superset test lets ONE unknown
+# archived key ride along whenever a reviewed optional key is absent from the params - i.e.
+# `offset` on every first page. Any unreviewed param key must fail closed.
+
+@pytest.mark.parametrize("extra_key,extra_value", [
+    ("observation_start", "2010-01-01"),
+    ("frequency", "m"),
+    ("units", "lin"),
+])
+def test_parse_rejects_params_with_an_unreviewed_key(extra_key, extra_value):
+    """Re-review blocker: `set(params) > allowed` misses a single unknown key on an archived
+    first page (no `offset`, so the tampered key set is not a strict superset). URL, body and
+    every reviewed param stay genuine, so ONLY the params-subset guard can raise."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    genuine = _obs()
+    resp = RawResponse(url=genuine.url, status=genuine.status,
+                       params={**(genuine.params or {}), extra_key: extra_value},
+                       body=genuine.body)
+    with pytest.raises(ValueError, match="(?i)archived params drifted"):
+        _source().parse([spec], [_meta(), resp])
+
+
+def test_parse_rejects_an_unreviewed_restriction_param_on_a_self_consistent_window():
+    """The exact smuggle shape: unknown `observation_start` param plus a body whose envelope
+    AGREES with it - 201 monthly rows from 2010-01-01, count declared 201 - so truncation,
+    count, extent, canonicality and limit/offset guards all stay silent. Only the params
+    identity fails closed."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+
+    def window(d):
+        d["observations"] = [r for r in d["observations"] if r["date"] >= "2010-01-01"]
+        assert len(d["observations"]) == 201  # pin the intended self-consistent window
+        d["count"] = len(d["observations"])
+        d["observation_start"] = "2010-01-01"  # envelope agrees with the smuggled param
+
+    genuine = _obs(body_=_mut_obs("PALUMUSDM", window))
+    resp = RawResponse(url=genuine.url, status=genuine.status,
+                       params={**(genuine.params or {}), "observation_start": "2010-01-01"},
+                       body=genuine.body)
+    with pytest.raises(ValueError, match="(?i)archived params drifted"):
+        _source().parse([spec], [_meta(), resp])

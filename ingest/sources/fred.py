@@ -322,7 +322,7 @@ def _identify(resp: RawResponse, what: str) -> tuple[str, str, dict]:
     if urlsplit(resp.url).netloc != "api.stlouisfed.org":
         raise ValueError(f"FRED {what} URL is not api.stlouisfed.org: {resp.url!r}")
     params = {k: str(v) for k, v in resp.params.items()}
-    if set(params) > allowed or "series_id" not in params:
+    if not set(params) <= allowed or "series_id" not in params:
         raise ValueError(f"FRED {what} archived params drifted: {params!r}")
     if params.get("file_type") != "json":
         raise ValueError(f"FRED {what} archived params file_type must be the literal 'json': "
