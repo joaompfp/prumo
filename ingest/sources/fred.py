@@ -39,14 +39,22 @@ declaration of the reviewed shape; any new per-observation field raises.
 
 Fail-closed on: markup/invalid JSON, duplicate JSON keys, the API error shape, unknown
 top-level/series/row fields, identity drift (requested vs payload series id, per-observation
-realtime identical to its response envelope), duplicate dates, non month-first dates
-(day != 01), count/offset/limit truncation, and page-order drift. parse() needs no HTTP or DB:
-identity comes from the archived url/params (which must never carry an api_key).
+realtime identical to its response envelope, count/limit/realtime/extent pinned identical
+across the pages of a series archive), duplicate or out-of-order dates, non month-first dates
+(day != 01), non-canonical dates (dates are canonical ASCII YYYY-MM-DD Gregorian - Unicode
+digit aliases, year 0000 and impossible day-of-month values are rejected, never normalized),
+rows outside the declared observation extent, count/offset/limit truncation - including an
+archive whose accumulated rows never reach the payload-declared count (a missing tail) - and
+page-order drift. The archived url/params identity is strict: unreviewed, duplicated or
+params-mismatched URL query keys, non-canonical offset/limit literals and any file_type other
+than json all fail closed. parse() needs no HTTP or DB: identity comes from the archived
+url/params (which must never carry an api_key).
 """
 import json
 import os
 import re
 from collections.abc import Iterator
+from datetime import date as _gregorian
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from ingest.http import Http
@@ -60,8 +68,10 @@ ENV_VAR = "FRED_API_KEY"
 MISSING = "."
 
 _CODE = re.compile(r"[A-Z0-9]+")
-_DATE = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
-_LAST_UPDATED = re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}[+-]\d{2}")
+# ASCII digit classes only: \d is Unicode-aware on str and would admit digit aliases
+# (e.g. Arabic-Indic ٠١) that later collapse onto a genuine period key.
+_DATE = re.compile(r"([0-9]{4})-([0-9]{2})-([0-9]{2})")
+_LAST_UPDATED = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}[+-][0-9]{2}")
 
 _META_TOP_KEYS = {"realtime_start", "realtime_end", "seriess"}
 _META_SERIES_KEYS = {"id", "realtime_start", "realtime_end", "title", "observation_start",
@@ -125,10 +135,17 @@ def _str(v, what: str) -> str:
 
 
 def _date(v, what: str, *, month_first: bool) -> str:
+    """A canonical ASCII YYYY-MM-DD date that exists on the Gregorian calendar (year 0000,
+    Feb 30 & co. rejected). The original text is returned verbatim - never normalized, never
+    alias-repaired."""
     s = _str(v, what)
     m = _DATE.fullmatch(s)
-    if not m or not (1 <= int(m.group(2)) <= 12) or not (1 <= int(m.group(3)) <= 31):
-        raise ValueError(f"FRED {what} is not a YYYY-MM-DD date, got {s!r}")
+    if not m:
+        raise ValueError(f"FRED {what} is not a canonical ASCII YYYY-MM-DD date, got {s!r}")
+    try:
+        _gregorian(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+    except ValueError:
+        raise ValueError(f"FRED {what} is not a valid Gregorian date, got {s!r}") from None
     if month_first and m.group(3) != "01":
         raise ValueError(f"FRED {what} must be a month-first date (day 01), got {s!r}")
     return s
@@ -180,15 +197,23 @@ def _metadata(body: bytes, code: str, what: str) -> dict:
 
 def _observations(body: bytes, code: str, what: str) -> dict:
     """One /fred/series/observations page, strictly shaped; returns {count, offset, limit,
-    realtime, rows[(date, token_or_None)]}."""
+    realtime, extent, rows[(date, token_or_None)]}. The envelope's realtime bounds and declared
+    observation extent (observation_start/end - the broad 1600-01-01..9999-12-31 echo of an
+    unrestricted request) are validated Gregorian dates, and every row date must stay within
+    the extent: a restricted or tampered page is never parsed as a full-history one."""
     doc = _loads(body, f"{what} observations")
     if isinstance(doc, dict) and "error_code" in doc:
         raise ValueError(f"FRED {what} observations is an API error response")
     if not isinstance(doc, dict) or set(doc) != _OBS_TOP_KEYS:
         raise ValueError(f"FRED {what} observations top-level keys drifted: "
                          f"{sorted(doc) if isinstance(doc, dict) else doc!r}")
-    rts, rte = _str(doc["realtime_start"], f"{what} realtime_start"), \
-        _str(doc["realtime_end"], f"{what} realtime_end")
+    rts = _date(doc["realtime_start"], f"{what} realtime_start", month_first=False)
+    rte = _date(doc["realtime_end"], f"{what} realtime_end", month_first=False)
+    obs_start = _date(doc["observation_start"], f"{what} observation_start", month_first=False)
+    obs_end = _date(doc["observation_end"], f"{what} observation_end", month_first=False)
+    if obs_start > obs_end:
+        raise ValueError(f"FRED {what} observation extent is inverted: observation_start "
+                         f"{obs_start} > observation_end {obs_end}")
     if (doc["units"], doc["file_type"], doc["order_by"], doc["sort_order"]) != \
             ("lin", "json", "observation_date", "asc"):
         raise ValueError(f"FRED {what} observations envelope drifted (units/file_type/order_by/"
@@ -210,6 +235,9 @@ def _observations(body: bytes, code: str, what: str) -> dict:
         if (row["realtime_start"], row["realtime_end"]) != (rts, rte):
             raise ValueError(f"FRED {what} observation realtime identity drift within the page")
         d = _date(row["date"], f"{what} observation date", month_first=True)
+        if not obs_start <= d <= obs_end:
+            raise ValueError(f"FRED {what} observation date {d!r} is outside the declared "
+                             f"observation extent {obs_start}..{obs_end}")
         v = row["value"]
         if not isinstance(v, str):  # FRED value tokens are JSON STRINGS; a number is unknown
             raise ValueError(f"FRED {what} observation value must be a JSON string token, got "
@@ -227,7 +255,51 @@ def _observations(body: bytes, code: str, what: str) -> dict:
                          f"{doc['offset']} + {len(rows)} rows > count {doc['count']} "
                          "(truncation)")
     return {"count": doc["count"], "offset": doc["offset"], "limit": doc["limit"],
-            "realtime": (rts, rte), "rows": rows}
+            "realtime": (rts, rte), "extent": (obs_start, obs_end), "rows": rows}
+
+
+class _PageLedger:
+    """The ONE authoritative pagination identity of a series archive (AGENTS: one
+    authoritative representation of extent/count/provenance, consumed by fetch AND parse).
+    The FIRST page pins (count, limit, realtime, extent); every later page must declare the
+    same identity, offsets must be contiguous from 0, and the archive is complete iff the
+    accepted rows reach the declared count exactly - a truncated, restricted or unstable
+    archive fails closed instead of being promoted as a full history."""
+
+    def __init__(self):
+        self.count: int | None = None
+        self.identity: tuple | None = None  # (limit, realtime, extent) of the first page
+        self.expected_offset = 0
+
+    def add(self, page: dict, what: str) -> bool:
+        """Check one page against the pin; return True iff the archive is now complete."""
+        if page["offset"] != self.expected_offset:
+            raise ValueError(f"FRED {what} page offset {page['offset']} != the expected "
+                             f"{self.expected_offset} (pages must be contiguous from 0)")
+        identity = (page["limit"], page["realtime"], page["extent"])
+        count = self.count
+        if count is None:  # the first page pins the identity of the whole archive
+            count = page["count"]
+            self.count, self.identity = count, identity
+        else:
+            if page["count"] != count:
+                raise ValueError(f"FRED {what} declared total count drifted mid-archive: "
+                                 f"{count} on the first page, {page['count']} now "
+                                 "(an unstable or shrinking series is never trusted)")
+            if identity != self.identity:
+                raise ValueError(f"FRED {what} limit/realtime/extent drifted across pages of "
+                                 "the same series archive")
+        self.expected_offset += len(page["rows"])
+        return self.expected_offset >= count
+
+    def assert_complete(self, what: str):
+        """Fail closed unless a real observations archive reached its declared count."""
+        if self.count is None:
+            raise ValueError(f"FRED {what}: no observations page archived")
+        if self.expected_offset != self.count:
+            raise ValueError(f"FRED {what} is an incomplete archive: {self.expected_offset} "
+                             f"rows against the declared count {self.count} (a missing tail "
+                             "is coverage loss, not a shorter series)")
 
 
 def _identify(resp: RawResponse, what: str) -> tuple[str, str, dict]:
@@ -252,14 +324,28 @@ def _identify(resp: RawResponse, what: str) -> tuple[str, str, dict]:
     params = {k: str(v) for k, v in resp.params.items()}
     if set(params) > allowed or "series_id" not in params:
         raise ValueError(f"FRED {what} archived params drifted: {params!r}")
-    q = dict(parse_qsl(urlsplit(resp.url).query))
-    if any(q.get(k) != params[k] for k in params if k in q):
+    if params.get("file_type") != "json":
+        raise ValueError(f"FRED {what} archived params file_type must be the literal 'json': "
+                         f"{params!r}")
+    for k in ("limit", "offset"):
+        if k in params and (not re.fullmatch(r"[0-9]+", params[k])
+                            or params[k] != str(int(params[k]))):
+            raise ValueError(f"FRED {what} archived param {k!r} is not a canonical ASCII "
+                             f"non-negative int: {params[k]!r}")
+    # The archived URL query is a STRICT projection of the archived params: params may carry
+    # identity by themselves, but every key present in the URL must be a reviewed key and must
+    # agree with params exactly. Duplicated keys are rejected (a dict view would hide them).
+    pairs = parse_qsl(urlsplit(resp.url).query, keep_blank_values=True)
+    qkeys = [k for k, _ in pairs]
+    if len(set(qkeys)) != len(qkeys):
+        raise ValueError(f"FRED {what} URL query carries duplicated keys: {resp.url!r}")
+    q = dict(pairs)
+    if not set(q) <= allowed:
+        raise ValueError(f"FRED {what} URL query carries unreviewed keys "
+                         f"{sorted(set(q) - allowed)}: {resp.url!r}")
+    if any(k not in params or q[k] != params[k] for k in q):
         raise ValueError(f"FRED {what} URL query disagrees with archived params: {resp.url!r} "
                          f"vs {params!r}")
-    for k in ("limit", "offset"):
-        if k in params and not re.fullmatch(r"[0-9]+", params[k]):
-            raise ValueError(f"FRED {what} archived param {k!r} is not a non-negative int: "
-                             f"{params[k]!r}")
     return endpoint, parse_native_code(params["series_id"]), params
 
 
@@ -322,6 +408,7 @@ class FredSource:
             yield self._get(http, "series", {"series_id": code, "file_type": "json"}, timeout,
                             code)
             offset = 0
+            ledger = _PageLedger()  # pins count/limit/realtime/extent from the first page
             while True:
                 params = {"series_id": code, "file_type": "json", "limit": str(OBS_LIMIT)}
                 if offset:
@@ -331,12 +418,12 @@ class FredSource:
                 if not 200 <= resp.status < 300:
                     break  # the pipeline classifies it; never retry/filter here
                 page = _observations(resp.body, code, f"fetch ({code})")
-                offset += len(page["rows"])
-                if offset >= page["count"]:
-                    break
+                if ledger.add(page, f"fetch ({code})"):
+                    break  # the archive reached the declared count exactly
                 if not page["rows"]:
                     raise FredRequestError(f"FRED observations for {code}: pagination makes no "
                                            "progress (empty page before count is reached)")
+                offset = ledger.expected_offset
 
     def parse(self, specs: list[SeriesSpec],
               responses: list[RawResponse]) -> dict[str, list[RawRow]]:
@@ -349,7 +436,7 @@ class FredSource:
             wanted.setdefault(parse_native_code(s.native_code), []).append(s)
         rows: dict[str, list[RawRow]] = {s.id: [] for s in specs}
         metas: dict[str, dict] = {}
-        pages: dict[str, list[tuple[int, list, int, tuple]]] = {}
+        pages: dict[str, list[tuple[dict, int]]] = {}
         for i, resp in enumerate(responses):
             what = f"response[{i}]"
             if not 200 <= resp.status < 300:
@@ -371,8 +458,7 @@ class FredSource:
                     raise ValueError(f"FRED {what} archived limit/offset drift: params "
                                      f"{resp.params!r} vs payload limit {page['limit']} offset "
                                      f"{page['offset']}")
-                pages.setdefault(code, []).append(
-                    (page["offset"], page["rows"], i, page["realtime"]))
+                pages.setdefault(code, []).append((page, i))
         for code, spec_list in wanted.items():
             if code not in metas:
                 raise ValueError(f"FRED series {code}: no metadata response archived (the "
@@ -383,18 +469,17 @@ class FredSource:
                     raise ValueError(f"FRED series {code} metadata units {meta['units']!r} != "
                                      f"registry unit of {s.id} {s.unit!r} (fail closed, never "
                                      "relabel fresh data)")
+            ledger = _PageLedger()  # the same pin fetch() holds the live stream to
+            last_date: str | None = None
             seen_dates: set[tuple[str, str]] = set()
-            expected_offset = 0
-            realtime = None
-            for offset, page_rows, i, rt in pages.get(code, []):
-                if offset != expected_offset:
-                    raise ValueError(f"FRED {code} pages are not contiguous: expected offset "
-                                     f"{expected_offset}, got {offset}")
-                if realtime is not None and rt != realtime:
-                    raise ValueError(f"FRED {code} realtime identity drifts across pages")
-                realtime = rt
-                expected_offset += len(page_rows)
-                for d, token in page_rows:
+            for page, i in pages.get(code, []):
+                ledger.add(page, f"archive of {code}")
+                for d, token in page["rows"]:
+                    if last_date is not None and d <= last_date:
+                        raise ValueError(f"FRED {code} observation dates are not strictly "
+                                         f"ascending across the archive (duplicate or "
+                                         f"out-of-order): {d!r} after {last_date!r}")
+                    last_date = d
                     period = d[:7]  # month-first date, asserted day==01 -> canonical YYYY-MM
                     for s in spec_list:
                         key = (s.id, period)
@@ -404,4 +489,5 @@ class FredSource:
                         rows[s.id].append(RawRow(period_raw=period, value_raw=token,
                                                  unit_raw=meta["units"], flag_raw="normal",
                                                  response_index=i))
+            ledger.assert_complete(f"archive of {code}")
         return rows

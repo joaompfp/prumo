@@ -6,10 +6,12 @@ tests/ingest/fred_fixtures.py; the publisher pads table cells with trailing zero
 comparisons are exact Decimal, never float).
 """
 import json
+from urllib.parse import urlsplit
 
 import pytest
 
 from ingest.db import open_db
+from ingest.http import HttpResult
 from ingest.legacy_import import import_legacy
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawStore
@@ -501,3 +503,269 @@ def test_legacy_usd_rows_are_rejected_unit_mismatch_not_relabelled(tmp_path):
         assert reasons == [("1992-01", "unit_mismatch"), ("1992-02", "missing_unit")]
     finally:
         db.close()
+
+
+# ============================== fix round 1 regressions (quality review I1) ==============
+# I1: an archived FRED corpus must be COMPLETE and STABLE per series: page offsets contiguous
+# from 0, final accumulated rows == the payload-declared count, identical count/limit/
+# realtime/extent on every page, strictly ascending dates, every row date within the declared
+# observation extent, and a strict url-query/params identity. The genuine archived envelope is
+# the broad 1600-01-01..9999-12-31 no-restriction echo, so endpoints are NOT asserted equal
+# to first/last rows - containment and count reconciliation are the contract.
+
+def test_parse_rejects_a_truncated_archive_that_keeps_the_declared_count():
+    """Review P1: obs payload truncated to 300 rows with count=561 intact must fail closed -
+    never ingest a partial history error-free (missing periods produce no verification items,
+    so the loss would be invisible downstream)."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    def trunc(d):
+        d["observations"] = d["observations"][:300]
+    with pytest.raises(ValueError, match="(?i)incomplete|truncat|missing|tail|count"):
+        _source().parse([spec], [_meta(), _obs(body_=_mut_obs("PALUMUSDM", trunc))])
+
+
+def test_parse_rejects_an_archive_missing_its_tail_page():
+    """Same completeness contract over multi-page archives: only page 1 of 2 present => the
+    accumulated 300 rows never reach the declared count 561."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    first_page_only = _paged("PALUMUSDM", 300, 2)[:1]
+    with pytest.raises(ValueError, match="(?i)incomplete|missing|tail|count"):
+        _source().parse([spec], [_meta(), *first_page_only])
+
+
+def test_parse_rejects_a_series_with_metadata_but_no_observations_page():
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    with pytest.raises(ValueError, match="(?i)observations|incomplete|no .*page"):
+        _source().parse([spec], [_meta()])
+
+
+def test_parse_rejects_rows_outside_the_declared_observation_extent():
+    """Review P4: envelope observation_start/end are the publisher's declared request extent.
+    Every row date must stay within it (the genuine envelope is broad 1600-01-01..9999-12-31,
+    so containment - not endpoint equality - is the assertion)."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    with pytest.raises(ValueError, match="(?i)extent|observation_start|outside"):
+        _source().parse([spec], [_meta(), _obs(body_=_mut_obs(
+            "PALUMUSDM", lambda d: d.update(observation_start="2010-01-01")))])
+    with pytest.raises(ValueError, match="(?i)extent|observation_end|outside"):
+        _source().parse([spec], [_meta(), _obs(body_=_mut_obs(
+            "PALUMUSDM", lambda d: d.update(observation_end="2020-01-01")))])
+
+
+def test_parse_rejects_count_or_extent_drift_across_pages():
+    """Mid-archive instability: page 2 declares a different total count or observation extent
+    than page 1. Cross-page identity is pinned from the FIRST page."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    pages = _paged("PALUMUSDM", 300, 2)
+
+    def mutate_page2(mut):
+        d = json.loads(pages[1].body)
+        mut(d)
+        return RawResponse(url=pages[1].url, params=pages[1].params, status=200,
+                           body=json.dumps(d).encode())
+
+    grown = mutate_page2(lambda d: d.update(count=600))  # per-page bounds still coherent
+    with pytest.raises(ValueError, match="(?i)count.*drift|drift.*count|count"):
+        _source().parse([spec], [_meta(), pages[0], grown])
+    narrowed = mutate_page2(lambda d: d.update(observation_end="2026-08-31"))
+    with pytest.raises(ValueError, match="(?i)extent|observation|drift|outside"):
+        _source().parse([spec], [_meta(), pages[0], narrowed])
+
+
+def test_parse_rejects_unreviewed_duplicate_or_mismatched_url_query_keys():
+    """Review P3/M3: the archived URL query must be a strict projection of the reviewed params -
+    unreviewed keys (e.g. a restriction the params never declared), duplicated keys, and
+    query/param value disagreements all fail closed. params may carry identity by themselves
+    (the happy-path fixtures already cover that positive)."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    good = entry("obs-PALUMUSDM.json")["url"]
+    base = good.split("?")[0]
+    ok_params = {"series_id": "PALUMUSDM", "file_type": "json", "limit": str(OBS_LIMIT)}
+    obs = body("obs-PALUMUSDM.json")
+    cases = [
+        RawResponse(url=good + "&observation_start=2010-01-01", params=dict(ok_params),
+                    status=200, body=obs),  # unreviewed restriction key in the URL
+        RawResponse(url=base + "?series_id=PALUMUSDM&series_id=PALUMUSDM&file_type=json"
+                               "&limit=100000", params=dict(ok_params), status=200, body=obs),
+        RawResponse(url=base + "?series_id=PALUMUSDM&file_type=json&limit=99999",
+                    params=dict(ok_params), status=200, body=obs),  # value disagreement
+        RawResponse(url=good, params={"series_id": "PALUMUSDM", "file_type": "json"},
+                    status=200, body=obs),  # URL carries a key the params never declared
+    ]
+    for resp in cases:
+        with pytest.raises(ValueError, match="(?i)query|params|duplicate|drift|disagree"):
+            _source().parse([spec], [_meta(), resp])
+
+
+def test_parse_rejects_non_canonical_or_wrong_archived_param_literals():
+    """Archived limit/offset literals must be canonical ASCII decimals and file_type must be the
+    literal 'json' - a tampered archive cannot smuggle identity through formatting."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    url = entry("obs-PALUMUSDM.json")["url"]
+    obs = body("obs-PALUMUSDM.json")
+    for params in ({"series_id": "PALUMUSDM", "file_type": "json", "limit": "0100000"},
+                   {"series_id": "PALUMUSDM", "file_type": "json", "limit": str(OBS_LIMIT),
+                    "offset": "00"},
+                   {"series_id": "PALUMUSDM", "file_type": "JSON", "limit": str(OBS_LIMIT)}):
+        resp = RawResponse(url=url, params=params, status=200, body=obs)
+        with pytest.raises(ValueError, match="(?i)canonical|file_type|limit|offset|disagree"):
+            _source().parse([spec], [_meta(), resp])
+
+
+# ------------------------------------------- multi-page fetch stability (I1, fetch-side)
+
+class _PagedHttp(FixtureHttp):
+    """FixtureHttp is single-page only (limit=100000 exceeds every archived series). This double
+    serves the genuine archived obs body RE-SLICED by the request's offset/limit so the
+    multi-page fetch path is exercised; the drift_* flags simulate a mid-pagination unstable
+    publisher (tamper built in-test, never stored as genuine evidence)."""
+
+    def __init__(self, code: str = "PALUMUSDM", drift_realtime: bool = False,
+                 drift_extent: bool = False, drift_limit: bool = False):
+        super().__init__()
+        self.code = code
+        self.drift_realtime = drift_realtime
+        self.drift_extent = drift_extent
+        self.drift_limit = drift_limit
+
+    def get(self, url, params=None, headers=None, timeout=None):
+        p = {k: str(v) for k, v in (params or {}).items()}
+        assert p.get("api_key"), f"FRED wire request must carry the credential: {params}"
+        if urlsplit(url).path != "/fred/series/observations":
+            return super().get(url, params=params, headers=headers, timeout=timeout)
+        off, lim = int(p.get("offset", "0")), int(p["limit"])
+        doc = json.loads(body(f"obs-{self.code}.json"))
+        rows = doc["observations"][off:off + lim]
+        page = dict(doc, observations=rows, offset=off, limit=lim)
+        if off:
+            if self.drift_realtime:
+                page["realtime_end"] = "1999-12-31"
+                for r in rows:  # keep the page internally consistent: only CROSS-page drift
+                    r["realtime_end"] = "1999-12-31"
+            if self.drift_extent:
+                page["observation_end"] = "2026-08-31"  # excludes the genuine 2026-09-01 tail
+            if self.drift_limit:
+                page["limit"] = lim + 1
+        q = "&".join(f"{k}={v}" for k, v in p.items() if k != "api_key")
+        self.calls.append(("obs", self.code))
+        return HttpResult(status=200, body=json.dumps(page).encode(), url=f"{url}?{q}")
+
+
+def test_fetch_paginates_to_a_complete_stable_archive(monkeypatch):
+    """Happy path over the multi-page fetch loop (OBS_LIMIT patched small): two coherent pages
+    concatenate to exactly the single-page archive, with per-page response_index provenance."""
+    monkeypatch.setattr("ingest.sources.fred.OBS_LIMIT", 300)
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    http = _PagedHttp()
+    out = list(_source().fetch([spec], http))
+    assert http.calls == [("meta", "PALUMUSDM"), ("obs", "PALUMUSDM"), ("obs", "PALUMUSDM")]
+    assert len(out) == 3 and all(r.status == 200 for r in out)
+    assert SENTINEL_KEY not in repr(out)  # archived identity stays key-free over pagination
+    parsed = _source().parse([spec], out)
+    full = _source().parse([spec], _responses(["PALUMUSDM"]))[spec.id]
+    assert [(r.period_raw, r.value_raw) for r in parsed[spec.id]] == \
+        [(r.period_raw, r.value_raw) for r in full]
+    assert [r.response_index for r in parsed[spec.id]][:300] == [1] * 300
+    assert [r.response_index for r in parsed[spec.id]][300:] == [2] * 261
+
+
+@pytest.mark.parametrize("flag", ["drift_realtime", "drift_extent", "drift_limit"])
+def test_fetch_rejects_cross_page_identity_drift_mid_pagination(monkeypatch, flag):
+    """The run must fail closed AT the drifting page (never promote a short/unstable archive):
+    realtime, observation extent and page limit are pinned from the first page."""
+    monkeypatch.setattr("ingest.sources.fred.OBS_LIMIT", 300)
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    with pytest.raises(ValueError, match="(?i)realtime|extent|limit|drift|outside"):
+        list(_source().fetch([spec], _PagedHttp(**{flag: True})))
+
+
+# ============================== fix round 1 regressions (quality review I2) ==============
+# I2: dates are canonical ASCII YYYY-MM-DD Gregorian. \d is Unicode-aware; unicode aliases
+# bypassed the duplicate check as distinct period keys before normalize_period collapsed them.
+
+ARABIC_INDIC_MONTH_01 = "2026-٠١-01"  # ٠١ = '01' in Arabic-Indic digits, aliases 2026-01
+
+
+def test_parse_rejects_unicode_digit_date_aliases():
+    """Review P2: a row carrying Arabic-Indic digits reached validate() as a distinct period
+    key alongside the genuine 2026-09. The source trust boundary must reject non-ASCII dates;
+    the pipeline-level refusal is pinned separately below."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    def alias(d):
+        row = dict(d["observations"][-1])
+        row["date"] = ARABIC_INDIC_MONTH_01
+        d["observations"].append(row)
+        d["count"] += 1
+    with pytest.raises(ValueError, match="(?i)ascii|date"):
+        _source().parse([spec], [_meta(), _obs(body_=_mut_obs("PALUMUSDM", alias))])
+    def alias_inplace(d):  # aliasing a genuine row, not only an appended one
+        d["observations"][0]["date"] = "١٩٨٠-٠١-٠١"
+    with pytest.raises(ValueError, match="(?i)ascii|date"):
+        _source().parse([spec], [_meta(), _obs(body_=_mut_obs("PALUMUSDM", alias_inplace))])
+
+
+def test_parse_rejects_dates_that_are_ascii_but_not_gregorian():
+    """ASCII digits are necessary not sufficient: the date must exist on the Gregorian calendar.
+    Row dates already pass the month-first (day==01) gate, so year-0000 is the reachable
+    row-level hole; envelope/realtime fields carry genuine day-of-month values (9999-12-31),
+    where a Feb 30 sailed through pre-fix. Values stay verbatim: no normalization/repair."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    def year0_row(d):  # distinct extra row: the date check fires, never a duplicate collision
+        row = dict(d["observations"][-1])
+        row["date"] = "0000-01-01"
+        d["observations"].append(row)
+        d["count"] += 1
+    with pytest.raises(ValueError, match="(?i)gregorian|date"):
+        _source().parse([spec], [_meta(), _obs(body_=_mut_obs("PALUMUSDM", year0_row))])
+    for bad in ("9999-02-30", "0000-01-01"):  # month_first=False envelope fields
+        with pytest.raises(ValueError, match="(?i)gregorian|date"):
+            _source().parse([spec], [_meta(), _obs(body_=_mut_obs(
+                "PALUMUSDM", lambda d, b=bad: d.update(observation_end=b)))])
+
+
+def test_parse_rejects_unicode_digit_realtime_and_last_updated():
+    """Realtime bounds and last_updated keep the same canonical-ASCII rule (metadata dates were
+    already _date-validated; the obs envelope realtime and last_updated shape were not)."""
+    spec = registry_specs()["fred.aluminum.WORLD"]
+    def rt_alias(d):
+        for r in d["observations"]:  # keep the page internally consistent
+            r["realtime_end"] = "2026-١٠-23"
+        d["realtime_end"] = "2026-١٠-23"
+    with pytest.raises(ValueError, match="(?i)ascii|date|realtime"):
+        _source().parse([spec], [_meta(), _obs(body_=_mut_obs("PALUMUSDM", rt_alias))])
+    meta = json.loads(body("meta-PALUMUSDM.json"))
+    meta["seriess"][0]["last_updated"] = "2026-١٠-22 14:26:54-05"
+    with pytest.raises(ValueError, match="(?i)last_updated|drift|date|ascii"):
+        _source().parse([spec], [_meta(body_=json.dumps(meta).encode()), _obs()])
+
+
+# -------------------------------------- full-pipeline refusal of tampered archives (I1+I2)
+
+def test_pipeline_refuses_a_truncated_or_unicode_aliased_archive_and_writes_nothing(tmp_path):
+    """End-to-end on recorded bytes with only the PALUMUSDM obs body tampered in-test: the run
+    must end failed (no promotion), with zero observations and the byte evidence kept - never
+    a silently shortened history or a unicode-aliased period reaching the DB/verifier."""
+    specs = active_specs()
+
+    def truncated(d):
+        d["observations"] = d["observations"][:300]
+
+    def aliased(d):
+        row = dict(d["observations"][-1])
+        row["date"] = ARABIC_INDIC_MONTH_01
+        d["observations"].append(row)
+        d["count"] += 1
+
+    for i, tamper in enumerate((truncated, aliased)):
+        poisoned = _mut_obs("PALUMUSDM", tamper)
+        db = open_db(tmp_path / f"t{i}.db")
+        try:
+            sync_registry(db, specs)
+            r = run_dataset(db, RawStore(tmp_path / f"raw{i}"), _source(), specs,
+                            FixtureHttp(override={"obs-PALUMUSDM.json": poisoned}))
+            assert r.state.startswith("failed-") and r.n_written == 0
+            assert db.conn.execute("SELECT COUNT(*) FROM observation").fetchone()[0] == 0
+            assert db.conn.execute("SELECT COUNT(*) FROM raw_fetch WHERE dataset_run_id=?",
+                                   (r.run_id,)).fetchone()[0] > 0  # evidence kept
+        finally:
+            db.close()
