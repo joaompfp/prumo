@@ -113,7 +113,10 @@ def test_0006_upgrades_populated_0005_and_preserves_everything(tmp_path, monkeyp
     assert preserved["observation"] == [("ine.gdp.PT", "2025", "1.5"),
                                         ("bl.x.PT", "2026-01-01", "9")]
     assert preserved["verification"] == [(7, 1, 1)]
-    assert preserved["setting"] == [("legacy_served", "1")]
+    assert preserved["setting"] == [("legacy_served", "1"),
+                                    # 0007 (Task 17A) seeds the source-scoped WB legacy switch;
+                                    # every pre-existing setting row survives the migration
+                                    ("legacy_served_source:worldbank", "1")]
     # served view + licence gate intact: ine (redistribution_ok=1) serves, blocked serves 0
     assert d.conn.execute(
         "SELECT series_id, period, value_text FROM served_observation ORDER BY series_id"
