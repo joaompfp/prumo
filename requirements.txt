@@ -1,9 +1,7 @@
 fastapi>=0.115,<0.136
 starlette>=0.40,<1
 uvicorn[standard]>=0.34,<1
-duckdb
 requests
-pyarrow>=15.0
 
 # Testing
 pytest>=7.4,<8

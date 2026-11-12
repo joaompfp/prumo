@@ -26,12 +26,9 @@ if [ ! -f "$DATA_DIR/cae-data.duckdb" ] && [ ! -f "$DATA_DIR/cae-data.db" ]; the
     cp "$SEED_DIR/README-DB.txt" "$DATA_DIR/README-DB.txt"
 fi
 
-# Schedule nightly collect + audit at 03:00 (if crond available)
-if command -v crond >/dev/null 2>&1 || command -v cron >/dev/null 2>&1; then
-    echo "0 3 * * * cd /app && python scripts/collect_scheduled.py >> /data/collect-cron.log 2>&1 && python scripts/audit_nightly.py >> /data/audit-cron.log 2>&1" | crontab -
-    crond 2>/dev/null || cron 2>/dev/null || true
-    echo "Nightly collect + audit scheduled at 03:00"
-fi
+# The old nightly collect/audit cron entries were removed in Task 17B together with the
+# superseded collectors; the reviewed pipeline (python -m ingest) gets its own scheduler in
+# Task 18.
 
 # Start the application
 exec "$@"
