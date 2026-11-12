@@ -1,0 +1,62 @@
+{
+ "fetched": "2026-11-12T14:16:50Z..2026-11-12T14:17:38Z (f3nix egress)",
+ "user_agent": "curl (Task 15 discovery); the verifier requests with format=csvfilewithlabels&dimensionAtObservation=AllDimensions and no Accept header",
+ "source_manifest": "docs/superpowers/handoff/evidence/task-15-oecd/discovery/manifest.json",
+ "channel": "SDMX CSV with labels (csvfilewithlabels, dimensionAtObservation=AllDimensions) - the OECD verifier's independent channel; separate manifest from tests/ingest/fixtures/oecd/MANIFEST.json (Part A JSON channel, different ownership)",
+ "files": [
+  {
+   "file": "cli-csv.csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H?startPeriod=2025-10&format=csvfilewithlabels&dimensionAtObservation=AllDimensions",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+csv; labels=name; charset=utf-8; version=2",
+   "bytes": 4055,
+   "sha256": "aaf6b537fe83cac660d28c0eb4f15a738acbf41d157ab21cad308ff74819a6c6",
+   "note": "Task15 discovery item 2 (cli-csv), fetched 2026-11-12T14:16:50.314723+00:00 from f3nix; byte-identical copy of 02-cli-csv.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-employment-csv.csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N?startPeriod=2025-10&format=csvfilewithlabels&dimensionAtObservation=AllDimensions",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+csv; labels=name; charset=utf-8; version=2",
+   "bytes": 4021,
+   "sha256": "5fe4b9835a4647dcbe09f79d079f190cfc846d384f931e1d429c13ec0639becb",
+   "note": "Task15 discovery item 4 (bts-employment-csv), fetched 2026-11-12T14:17:00.137845+00:00 from f3nix; byte-identical copy of 04-bts-employment-csv.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-order_books-csv.csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N?startPeriod=2025-10&format=csvfilewithlabels&dimensionAtObservation=AllDimensions",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+csv; version=2; charset=utf-8; labels=name",
+   "bytes": 3931,
+   "sha256": "5e59abeedde232176057f5e473a7bf690db0c1d919d4bbd85bce30d5eab77b7a",
+   "note": "Task15 discovery item 6 (bts-order_books-csv), fetched 2026-11-12T14:17:09.922916+00:00 from f3nix; byte-identical copy of 06-bts-order_books-csv.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-production-csv.csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N?startPeriod=2025-10&format=csvfilewithlabels&dimensionAtObservation=AllDimensions",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+csv; version=2; charset=utf-8; labels=name",
+   "bytes": 3926,
+   "sha256": "3d34be07482061e18ec80ed47c5b3bd25fb6ce45dad40c1fba094fc819cfa471",
+   "note": "Task15 discovery item 8 (bts-production-csv), fetched 2026-11-12T14:17:19.647558+00:00 from f3nix; byte-identical copy of 08-bts-production-csv.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-selling_prices-csv.csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N?startPeriod=2025-10&format=csvfilewithlabels&dimensionAtObservation=AllDimensions",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+csv; version=2; charset=utf-8; labels=name",
+   "bytes": 4079,
+   "sha256": "164d6b17f63ea0a3b58bfe408c7b582850cee4683ca01e309d3df6069c3e969f",
+   "note": "Task15 discovery item 10 (bts-selling_prices-csv), fetched 2026-11-12T14:17:29.265719+00:00 from f3nix; byte-identical copy of 10-bts-selling_prices-csv.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "unemp-csv.csv",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M?startPeriod=2025-10&format=csvfilewithlabels&dimensionAtObservation=AllDimensions",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+csv; charset=utf-8; labels=name; version=2",
+   "bytes": 4525,
+   "sha256": "c46c6c33da6f3ff127477b949d8b453637c760f706499cd550153332b44e78ed",
+   "note": "Task15 discovery item 12 (unemp-csv), fetched 2026-11-12T14:17:38.955611+00:00 from f3nix; byte-identical copy of 12-unemp-csv.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  }
+ ]
+}
