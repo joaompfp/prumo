@@ -31,10 +31,12 @@ _PATTERNS: dict[str, list[re.Pattern]] = {
           re.compile(r"(?P<mn>[a-z]+) de (?P<y>\d{4})$")],
     "D": [re.compile(r"(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})$")],
     # Native quarter-hour observations (Task 16, E-REDES): a single canonical UTC spelling
-    # 'YYYY-MM-DDTHH:MM:SS+00:00' with minute 00/15/30/45 and seconds 00. Anything else
-    # ('Z', another offset, a space separator, fractional seconds, a non-Gregorian date,
-    # non-ASCII digits) is rejected rather than guessed - no local-time ambiguity, ever.
-    "PT15M": [re.compile(r"(?P<y>[0-9]{4})-(?P<m>[0-9]{2})-(?P<d>[0-9]{2})t"
+    # 'YYYY-MM-DDTHH:MM:SS+00:00' with minute 00/15/30/45 and seconds 00, matched against the
+    # RAW string below (no fold, no strip, no unicode normalization). Anything else ('Z',
+    # another offset, a space separator, lowercase 't', surrounding whitespace, fractional
+    # seconds, a non-Gregorian date, non-ASCII digits) is rejected rather than guessed -
+    # no local-time ambiguity, ever.
+    "PT15M": [re.compile(r"(?P<y>[0-9]{4})-(?P<m>[0-9]{2})-(?P<d>[0-9]{2})T"
                          r"(?P<h>[0-9]{2}):(?P<mi>[0-9]{2}):(?P<ss>[0-9]{2})\+00:00$")],
 }
 
@@ -43,7 +45,9 @@ def normalize_period(raw: str, frequency: str) -> str:
     """Canonical period string for `frequency`; raises ValueError rather than guessing."""
     if frequency not in _PATTERNS:
         raise ValueError(f"unknown frequency {frequency!r}")
-    text = _fold(raw)
+    # PT15M accepts only the exact canonical ASCII spelling of `raw`; coarser frequencies
+    # keep the historical tolerant fold (case, accents, whitespace) they are documented to do.
+    text = raw if frequency == "PT15M" else _fold(raw)
     for pat in _PATTERNS[frequency]:
         m = pat.match(text)
         if not m:

@@ -225,8 +225,6 @@ def _migrate(conn: sqlite3.Connection) -> None:
     done = {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
     pending = [f for f in sorted(MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql"))
                if f.stem not in done]
-    if not pending:
-        return
     # A migration that rebuilds a referenced table (0006 rebuilds `series` to extend its
     # frequency CHECK) needs foreign_keys OFF at statement time: with FK ON, SQLite fails
     # the DROP on immediate child references and silently rewrites child REFERENCES clauses
@@ -237,15 +235,26 @@ def _migrate(conn: sqlite3.Connection) -> None:
         for f in pending:
             record = f"INSERT INTO schema_migration(version) VALUES ('{f.stem}');"
             try:
-                # executescript is required for multi-statement files (triggers contain ';')
-                conn.executescript(f"BEGIN;\n{f.read_text()}\n{record}\nCOMMIT;")
+                # executescript is required for multi-statement files (triggers contain ';').
+                # The script opens its transaction but does NOT commit it: foreign_key_check
+                # runs next, INSIDE it, so a violation rolls the migration AND its
+                # schema_migration record back together (no corrupt applied version; a later
+                # open retries the file rather than skipping it); COMMIT only on a clean check.
+                conn.executescript(f"BEGIN;\n{f.read_text()}\n{record}")
+                bad = conn.execute("PRAGMA foreign_key_check").fetchall()
+                if bad:
+                    raise RuntimeError(
+                        f"foreign key violations after migration {f.stem}: {bad[:5]}")
+                conn.execute("COMMIT")
             except BaseException:
                 if conn.in_transaction:
                     conn.execute("ROLLBACK")
                 raise
+        # Run on every open, even with nothing pending: corruption committed by an older
+        # non-atomic migrator (bad row + recorded version) is never silently accepted.
         bad = conn.execute("PRAGMA foreign_key_check").fetchall()
         if bad:
-            raise RuntimeError(f"foreign key violations after migration: {bad[:5]}")
+            raise RuntimeError(f"foreign key violations in database: {bad[:5]}")
     finally:
         conn.execute("PRAGMA foreign_keys=ON")
 
@@ -254,5 +263,9 @@ def open_db(path: str | Path) -> Db:
     conn = sqlite3.connect(str(path), isolation_level=None)
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
-    _migrate(conn)
+    try:
+        _migrate(conn)
+    except BaseException:
+        conn.close()  # do not leak the open (WAL) handle when migration fails
+        raise
     return Db(conn)

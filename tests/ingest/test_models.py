@@ -36,6 +36,11 @@ def test_normalize_period_pt15m_accepts_canonical(raw):
     "٢٠٢٦-١١-١٠T٢٣:٤٥:٠٠+٠٠:٠٠",       # non-ASCII digits (Arabic-Indic)
     "2026-11-10T23:45:00-00:00",      # negative zero offset is not the canonical spelling
     " 2026-11-10T23:45:00+00:00Z",    # trailing junk
+    # Task 16 spec review R2: PT15M matches the RAW string - no fold/strip/unicode normalize
+    "2026-11-10t23:45:00+00:00",      # lowercase t: T must be uppercase
+    " 2026-11-10T23:45:00+00:00",     # leading whitespace is not stripped
+    "2026-11-10T23:45:00+00:00 ",     # trailing whitespace is not stripped
+    "２０２６-１１-１０Ｔ２３：４５：００＋００：００",  # fullwidth tokens (NFKD would fold them)
 ])
 def test_normalize_period_pt15m_rejects_noncanonical(raw):
     with pytest.raises(ValueError):

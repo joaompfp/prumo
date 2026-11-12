@@ -140,3 +140,64 @@ def test_0006_upgrades_populated_0005_and_preserves_everything(tmp_path, monkeyp
                d.conn.execute("SELECT version FROM schema_migration"))
     assert d.conn.execute("SELECT COUNT(*) FROM observation").fetchone()[0] == 3
     d.close()
+
+
+# --- Common migrator atomicity (Task 16 spec review R1) ----------------------------------------
+
+
+def _migrations_plus_bad(tmp_path):
+    """The real migrations plus a synthetic 0007 that breaks a foreign key invisibly to the
+    triggers (child row pointing at a nonexistent source, allowed only under FK OFF) - exactly
+    the failure the common migrator's integrity check exists to catch."""
+    mig = tmp_path / "mig7"
+    mig.mkdir()
+    for f in MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql"):
+        (mig / f.name).write_bytes(f.read_bytes())
+    (mig / "0007_bad.sql").write_text(
+        "INSERT INTO series(id,source_id,indicator_key,role,theme,geography,frequency,"
+        "unit,active) VALUES ('ghost.PT',999,'x','primary','economy','PT','A','n',1);\n")
+    return mig
+
+
+def test_bad_migration_rolls_back_atomically_no_corrupt_applied_version(tmp_path, monkeypatch):
+    """R1: a migration that breaks foreign keys must fail INSIDE its own transaction, so
+    neither the corrupt row nor its schema_migration record survives the failed open."""
+    monkeypatch.setattr(dbmod, "MIGRATIONS_DIR", _migrations_plus_bad(tmp_path))
+    p = tmp_path / "probe.db"
+    with pytest.raises(RuntimeError, match="foreign key violations"):
+        open_db(p)
+    raw = sqlite3.connect(p)  # side-channel inspection, no migrator involved
+    try:
+        applied = {r[0].split("_")[0]
+                   for r in raw.execute("SELECT version FROM schema_migration")}
+        assert applied == {"0001", "0002", "0003", "0004", "0005", "0006"}
+        assert raw.execute("SELECT COUNT(*) FROM series").fetchone()[0] == 0
+    finally:
+        raw.close()
+    # Repeated open does not skip a recorded corrupt migration (none was recorded): it fails
+    # again, and succeeds cleanly once the offending file is removed.
+    with pytest.raises(RuntimeError, match="foreign key violations"):
+        open_db(p)
+    (tmp_path / "mig7" / "0007_bad.sql").unlink()
+    d = open_db(p)
+    assert d.conn.execute("SELECT COUNT(*) FROM series").fetchone()[0] == 0
+    d.close()
+
+
+def test_open_rejects_preexisting_corruption_with_no_pending_migrations(tmp_path):
+    """R1: corruption committed by the old non-atomic migrator (bad row + recorded version)
+    is never silently accepted on a subsequent open with nothing pending - the check runs
+    on every open."""
+    p = tmp_path / "corrupt.db"
+    open_db(p).close()
+    raw = sqlite3.connect(p)
+    raw.execute("PRAGMA foreign_keys=OFF")
+    raw.execute("INSERT INTO series(id,source_id,indicator_key,role,theme,geography,frequency,"
+                "unit,active) VALUES ('ghost.PT',999,'x','primary','economy','PT','A','n',1)")
+    raw.execute("INSERT INTO schema_migration(version) VALUES ('0007_bad')")
+    raw.commit()
+    raw.close()
+    with pytest.raises(RuntimeError, match="foreign key violations"):
+        open_db(p)
+    with pytest.raises(RuntimeError, match="foreign key violations"):  # repeatable, not one-shot
+        open_db(p)
