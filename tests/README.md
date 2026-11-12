@@ -16,5 +16,7 @@
 .venv-ci/bin/python -m pytest tests -m live -s  # hits real publisher APIs (never in CI)
 ```
 
-Markers (pytest.ini): `live` (network, deselected by default), `slow`, `integration`, `unit`.
-Coverage config targets the app (`[coverage:run] source = app` in pytest.ini).
+Markers (pytest.ini): `live` (network, deselected by default via `-m "not live"`),
+`slow`, `integration`, `unit`. Coverage config for both `app` and `ingest` lives in
+`.coveragerc` (consumed by pytest-cov); CI passes explicit
+`--cov=app --cov=ingest --cov-branch` flags.

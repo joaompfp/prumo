@@ -31,8 +31,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-from ingest.verifiers import (_INGEST_ROOT, SHARED_ALLOWED, _closure, _ingest_imports,
-                              _module_file, _parse)
+from ingest.verifiers import (
+    _INGEST_ROOT,
+    SHARED_ALLOWED,
+    _closure,
+    _ingest_imports,
+    _module_file,
+    _parse,
+)
 
 _CHILD = r"""
 import json, os, sys

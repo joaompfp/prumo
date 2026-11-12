@@ -1,0 +1,17 @@
+[run]
+# Coverage for the supported runtime only: the maintenance web app and the
+# rebuilt ingest pipeline. (pytest.ini [coverage:*] sections are NOT consumed
+# by coverage.py — this file is the real configuration.)
+source =
+    app
+    ingest
+branch = true
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
