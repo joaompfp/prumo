@@ -44,4 +44,4 @@ def run():
                             "body": vbody("metadata")}
         assert r.evidence_url == VMANIFEST["window_csv"]["url"]
     # cache: one CSV export + one metadata response for the whole 7-item batch
-    assert http.calls == ["window_csv", "metadata"]
+    assert http.calls == ["metadata", "window_csv"]  # per-sampled-day csv (Task 17B)

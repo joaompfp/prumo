@@ -68,7 +68,10 @@ def test_verifier_reads_every_recorded_case():
 def test_verifier_caches_one_csv_and_one_metadata_per_check():
     http = VerifyFixtureHttp()
     EredesVerifier().check([_item(s, p) for s, p, _ in CASES], http)
-    assert http.calls == ["window_csv", "metadata"]
+    # Task 17B: one per-SAMPLED-DAY csv; the single-day batch reads its own day csv once,
+    # plus one metadata response for the unit labels (order: metadata first is deliberate -
+    # labels gate every day file).
+    assert http.calls == ["metadata", "window_csv"]
 
 
 def test_verifier_evidence_envelope_carries_csv_and_metadata():

@@ -5,7 +5,9 @@
     verifier:  the same portal's exports service - a DIFFERENT endpoint AND a different (CSV
         table) serialization of the same published data (the REN/BPstat precedent):
         GET .../datasets/<dataset>/exports/csv?lang=pt&timezone=UTC
-            &where=datahora >= "<first day>" AND datahora < "<last day + 1>"
+            &where=datahora >= "<day>" AND datahora < "<day + 1>"
+        ONE export per SAMPLED UTC day of the sample (Task 17B: a min..max span query is
+        seed-dependent and can never match an exact recorded bundle under a fresh sample),
         plus .../datasets/<dataset> (metadata - the unit evidence: field labels '(kWh)')
 
 Channel mechanics (genuine recorded fixtures tests/ingest/fixtures/eredes/, 2026-11-12):
@@ -25,9 +27,10 @@ Channel mechanics (genuine recorded fixtures tests/ingest/fixtures/eredes/, 2026
 
 EVIDENCE (Ruling R/AC/G7): ItemResult.evidence is the versioned JSON envelope
 'eredes-csv-evidence' v1 {"responses": [{"url", "status", "body_base64"}, ...]} holding the
-deciding CSV response AND the unit metadata response - exact bytes, FINAL urls and ACTUAL HTTP
-statuses, all byte-for-byte recoverable from the raw store without HTTP; evidence_url is the
-CSV final URL. The envelope shape is E-REDES-local to this module.
+item's OWN DAY deciding CSV response AND the unit metadata response - exact bytes, FINAL urls
+and ACTUAL HTTP statuses, all byte-for-byte recoverable from the raw store without HTTP;
+evidence_url is that day's CSV final URL. The envelope shape is E-REDES-local to this module
+and unchanged from the one-day form, so previously archived one-day evidence still replays.
 
 INDEPENDENCE: this module shares NO code with the collector (enforced by register_verifier and
 assert_verifier_independent); the dataset/field/label constants are DUPLICATED ON PURPOSE - if
@@ -123,10 +126,10 @@ def _csv_rows(body: bytes, what: str) -> list[list[str]]:
 
 
 class EredesVerifier:
-    """One CSV export per (dataset, covered day span) + one metadata response per check; the
+    """One CSV export per (dataset, SAMPLED UTC day) + one metadata response per check; the
     period is read FROM THE CSV's own datahora tokens (string equality with the canonical UTC
     period, never echoed from the request), observed_unit from the metadata field label,
-    observed_flag honestly None."""
+    observed_flag honestly None. Each item's result maps back to its OWN day's response."""
 
     source_name = "eredes"
 
@@ -156,12 +159,6 @@ class EredesVerifier:
         state: dict[str, dict] = {}
         for dataset, its in by_dataset.items():
             days = sorted({i.period[:10] for i in its})
-            first, last = date.fromisoformat(days[0]), date.fromisoformat(days[-1])
-            where = f'datahora >= "{first.isoformat()}" AND ' \
-                    f'datahora < "{(last + timedelta(days=1)).isoformat()}"'
-            csv_body, csv_url, csv_status = get(f"{API_BASE}/{dataset}/exports/csv",
-                                                {"lang": "pt", "timezone": "UTC",
-                                                 "where": where})
             meta_body, meta_url, meta_status = get(f"{API_BASE}/{dataset}", None)
             meta = json.loads(meta_body)  # strict metadata parse (identity + labels)
             if meta.get("dataset_id") != dataset:
@@ -174,25 +171,37 @@ class EredesVerifier:
                         raise ValueError(f"E-REDES field {f.get('name')!r} label is not "
                                          f"'<name> (<unit>)': {f.get('label')!r}")
                     labels[f["name"]] = (m.group(1), f.get("type"))
-            by_ts = {}
-            for row in _csv_rows(csv_body, dataset):
-                if len(row) != len(EXPECTED_HEADER):
-                    raise ValueError(f"E-REDES CSV row has {len(row)} cells: {row!r}")
-                ts = row[0]
-                if _PERIOD.fullmatch(ts) is None:
-                    raise ValueError(f"E-REDES CSV datahora is not the canonical UTC "
-                                     f"spelling: {ts!r}")
-                _wall_cells(row)
-                if ts in by_ts:
-                    raise ValueError(f"E-REDES CSV export repeats datahora {ts!r}")
-                if not (first.isoformat() <= ts[:10] < (last + timedelta(days=1)).isoformat()):
-                    raise ValueError(f"E-REDES CSV row {ts!r} outside the requested window "
-                                     f"{where!r}")
-                by_ts[ts] = row
-            state[dataset] = {"labels": labels, "by_ts": by_ts, "csv_url": csv_url,
-                              "evidence": _envelope([
-                                  {"url": csv_url, "status": csv_status, "body": csv_body},
-                                  {"url": meta_url, "status": meta_status, "body": meta_body}])}
+            day_state: dict[str, dict] = {}
+            seen_ts: set[str] = set()  # a datahora seen in ANY of this dataset's day files
+            for day_s in days:
+                day = date.fromisoformat(day_s)
+                where = f'datahora >= "{day.isoformat()}" AND ' \
+                        f'datahora < "{(day + timedelta(days=1)).isoformat()}"'
+                csv_body, csv_url, csv_status = get(f"{API_BASE}/{dataset}/exports/csv",
+                                                    {"lang": "pt", "timezone": "UTC",
+                                                     "where": where})
+                by_ts = {}
+                for row in _csv_rows(csv_body, dataset):
+                    if len(row) != len(EXPECTED_HEADER):
+                        raise ValueError(f"E-REDES CSV row has {len(row)} cells: {row!r}")
+                    ts = row[0]
+                    if _PERIOD.fullmatch(ts) is None:
+                        raise ValueError(f"E-REDES CSV datahora is not the canonical UTC "
+                                         f"spelling: {ts!r}")
+                    _wall_cells(row)
+                    if ts in seen_ts:
+                        raise ValueError(f"E-REDES CSV export repeats datahora {ts!r}")
+                    seen_ts.add(ts)
+                    if ts[:10] != day.isoformat():
+                        raise ValueError(f"E-REDES CSV row {ts!r} outside the requested day "
+                                         f"window {where!r}")
+                    by_ts[ts] = row
+                day_state[day.isoformat()] = {
+                    "by_ts": by_ts, "csv_url": csv_url,
+                    "evidence": _envelope([
+                        {"url": csv_url, "status": csv_status, "body": csv_body},
+                        {"url": meta_url, "status": meta_status, "body": meta_body}])}
+            state[dataset] = {"labels": labels, "days": day_state}
 
         for item in items:
             dataset, field = _dataset_and_field(item.spec.native_code)
@@ -200,15 +209,16 @@ class EredesVerifier:
             if field not in st["labels"] or st["labels"][field][1] != "double":
                 raise ValueError(f"E-REDES metadata field {field!r} missing or not double")
             unit = st["labels"][field][0]
-            row = st["by_ts"].get(item.period)
+            d = st["days"][item.period[:10]]  # every sampled day was fetched above
+            row = d["by_ts"].get(item.period)
             if row is None:
                 results.append(ItemResult(item.series_id, item.period, None,
-                                          st["csv_url"], ".", unit, None, st["evidence"]))
+                                          d["csv_url"], ".", unit, None, d["evidence"]))
                 continue
             token = row[EXPECTED_HEADER.index(field)].strip()
             if _NUMBER.fullmatch(token) is None:
                 raise ValueError(f"E-REDES CSV {field} @ {item.period} is not a number "
                                  f"token: {row[EXPECTED_HEADER.index(field)]!r}")
-            results.append(ItemResult(item.series_id, item.period, token, st["csv_url"],
-                                      ".", unit, None, st["evidence"]))
+            results.append(ItemResult(item.series_id, item.period, token, d["csv_url"],
+                                      ".", unit, None, d["evidence"]))
         return results
