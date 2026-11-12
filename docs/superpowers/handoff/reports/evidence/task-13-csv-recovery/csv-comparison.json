@@ -1,0 +1,15 @@
+{
+  "kind": "diagnostic only; not full live acceptance",
+  "source_run_state": "pending-verification",
+  "active_series": 930,
+  "available_csv_codes": 16,
+  "compared_items": 822,
+  "matching_items": 822,
+  "mismatches": [],
+  "missing_csv_series": {
+    "NY.GDP.MKTP.KD.ZG": 54,
+    "SL.UEM.TOTL.ZS": 54
+  },
+  "served": 0,
+  "baseline": "909 passed, 5 live deselected, 1 warning in159.50s"
+}
