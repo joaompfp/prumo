@@ -8,7 +8,9 @@ import json
 import re
 import signal
 import time
+from dataclasses import replace
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
 from urllib.parse import parse_qsl, urlsplit
 
 import pytest
@@ -17,6 +19,7 @@ import ingest.verifiers as verifiers
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawStore
 from ingest.registry import sync_registry
+from ingest.sources import RawResponse
 from ingest.sources.oecd import OecdSource
 from ingest.verifiers import BlindItem, get_verifier, register_verifier
 from ingest.verifiers.independence import assert_verifier_independent
@@ -629,6 +632,144 @@ def test_rolling_start_month_survives_the_year_rollover(today, want):
     assert rolling_start_month(today) == want and _PERIOD.fullmatch(want)
 
 
+# ------------------------------------- whole-archive fidelity helpers (used live AND offline)
+
+def _archive_responses(db, store, run_id):
+    """Rebuild the collector RawResponses from THIS run's raw store (offline, no HTTP).
+
+    The ARCHIVED http_status of each raw_fetch row is restored into the RawResponse and
+    asserted 2xx; it is never hardcoded to 200 - a stored non-2xx/NULL is a provenance bug
+    the gate must see, not a detail to paper over. Returns (responses, raw_fetch ids in
+    fetch order) for the 6 SDMX-JSON responses (the verifier's CSV fetches are excluded).
+    """
+    rows = db.conn.execute(
+        "SELECT id, url, params_json, path, http_status FROM raw_fetch WHERE "
+        "dataset_run_id=? AND ok=1 ORDER BY id", (run_id,)).fetchall()
+    collector = [r for r in rows if "format=csvfilewithlabels" not in r[1]]
+    assert len(collector) == 6, f"expected 6 archived SDMX-JSON responses, {len(collector)}"
+    responses, ids = [], []
+    for rid, url, params_json, path, status in collector:
+        assert isinstance(status, int) and 200 <= status < 300, (url, status)
+        responses.append(RawResponse(url=url, params=json.loads(params_json), status=status,
+                                     body=store.load(Path(path))))
+        ids.append(rid)
+    return responses, ids
+
+
+def _expected_quarantine(expected):
+    """reason -> count the pipeline MUST report for this archive. Only reasons with a count
+    ABOVE ZERO appear: SQL GROUP BY over an empty quarantine set returns [], so a complete
+    archive expects {} - never [('non_numeric', 0)]."""
+    n = sum(row.value_raw is None for rows in expected.values() for row in rows)
+    return {"non_numeric": n} if n else {}
+
+
+def _assert_db_matches_archive(db, run_id, expected, archive_ids):
+    """FULL set comparison DB == publisher archive (review I1): every stored
+    (series_id, period, value_text, status_flag, raw-response position) tuple of the run must
+    equal the offline re-parse of the fresh archived publisher bytes EXACTLY. Row loss AND
+    value/flag drift on unsampled interior rows are caught; counts or the verification sample
+    alone cannot prove this."""
+    assert set(expected) == set(ALL_SIX)
+    assert all(expected[sid] for sid in ALL_SIX), \
+        "every active series must hold archived publisher rows"
+    want = set()
+    for sid in ALL_SIX:
+        periods = [row.period_raw for row in expected[sid]]
+        assert all(p is not None and _PERIOD.fullmatch(p) for p in periods)
+        assert len(set(periods)) == len(periods), f"{sid}: duplicate period in archive"
+        for row in expected[sid]:
+            if row.value_raw is None:  # null cells are quarantined, never stored
+                continue
+            want.add((sid, row.period_raw, str(row.value_raw).strip(),
+                      row.flag_raw or "normal", row.response_index))
+    total = sum(1 for sid in ALL_SIX for row in expected[sid] if row.value_raw is not None)
+    assert len(want) == total, "silent collision in archive tuples"
+    position = {rid: ix for ix, rid in enumerate(archive_ids)}
+    got_rows = db.conn.execute(
+        "SELECT series_id, period, value_text, status_flag, raw_fetch_id FROM observation "
+        "WHERE dataset_run_id=?", (run_id,)).fetchall()
+    got = set()
+    for sid, period, text, flag, rid in got_rows:
+        assert rid in position, f"{sid} {period}: linked to non-collector raw_fetch {rid}"
+        got.add((sid, period, text, flag, position[rid]))
+    assert len(got) == len(got_rows), "duplicate stored observations"
+    assert got == want, (
+        f"DB != publisher archive: {sorted(want - got)[:3]} missing in DB, "
+        f"{sorted(got - want)[:3]} extra/drifted in DB")
+
+
+# ------------------------------------------ whole-archive fidelity regressions (no HTTP)
+
+def _offline_run(db, tmp_path, size=12):
+    """Full run over the recorded GENUINE fixtures (SDMX-JSON + CSV doubles, zero network)."""
+    specs = specs_of(ALL_SIX)
+    sync_registry(db, specs)
+    store = RawStore(tmp_path / "raw")
+    verifier = OecdVerifier()
+    register_verifier(verifier)
+    res = run_with_refetch(db, store, _source(), verifier, specs, _BothChannels(),
+                           size=size, now=Clock(), max_attempts=1)
+    assert res.state == "verified"
+    return res, store
+
+
+def test_whole_archive_compare_on_unsorted_genuine_fixtures(db, tmp_path):
+    """Regression C1/C2, no HTTP: the genuine archives emit TIME_PERIOD rows in UNSORTED
+    order and hold ZERO missing cells, so the comparison needs min/max over ALL rows (never
+    the emission-order endpoints) and an EMPTY quarantine expectation (never a 0-count row).
+    """
+    res, store = _offline_run(db, tmp_path)
+    responses, archive_ids = _archive_responses(db, store, res.run_id)
+    expected = OecdSource().parse(specs_of(ALL_SIX), responses)
+    periods = {sid: [row.period_raw for row in expected[sid]] for sid in ALL_SIX}
+    assert any(ps != sorted(ps) for ps in periods.values()), \
+        "regression is vacuous unless a fixture arrives in unsorted emission order"
+    cli = periods[CLI]
+    assert (min(cli), max(cli)) != (cli[0], cli[-1])  # the old endpoint pair was wrong here
+    _assert_db_matches_archive(db, res.run_id, expected, archive_ids)
+    assert db.conn.execute("SELECT COUNT(*) FROM quarantine WHERE dataset_run_id=?",
+                           (res.run_id,)).fetchone()[0] == 0  # genuine archive is complete
+    assert _expected_quarantine(expected) == {}  # empty quarantine: zero-count entry absent
+
+
+def test_quarantine_expectation_maps_only_positive_counts(db):
+    """SYNTHETIC null (clearly labelled: the genuine archived window holds none, so the null
+    below is hand-made): one null maps to exactly {non_numeric: 1}; zero nulls map to {}."""
+    specs = specs_of(ALL_SIX)
+    responses = list(OecdSource(start_period="2025-10", end_period="2026-10")
+                     .fetch(specs, SourceFixtureHttp()))
+    expected = OecdSource().parse(specs, responses)
+    assert _expected_quarantine(expected) == {}  # all 77 genuine cells carry a value token
+    tampered = dict(expected)
+    row = tampered[EMP][3]
+    tampered[EMP] = [replace(r, value_raw=None) if r is row else r for r in tampered[EMP]]
+    assert _expected_quarantine(tampered) == {"non_numeric": 1}
+
+
+def test_full_compare_catches_tampered_unsampled_interior_value(db, tmp_path):
+    """Regression I1, no HTTP: corrupt one UNSAMPLED, non-extreme row in the DB; the
+    whole-archive set comparison must fail even though counts, endpoints and the 12-item
+    verification sample would all still pass."""
+    res, store = _offline_run(db, tmp_path)
+    responses, archive_ids = _archive_responses(db, store, res.run_id)
+    expected = OecdSource().parse(specs_of(ALL_SIX), responses)
+    sampled = {(r[0], r[1]) for r in db.conn.execute(
+        "SELECT series_id, period FROM verification_item").fetchall()}
+    victims = []
+    for sid in ALL_SIX:
+        ps = [row.period_raw for row in expected[sid]]
+        extremes = {min(ps), max(ps)}
+        victims += [(sid, p) for p in ps if p not in extremes and (sid, p) not in sampled]
+    assert victims, "77 genuine rows vs a 12-item sample: unsampled interiors must exist"
+    sid, period = victims[len(victims) // 2]
+    db.conn.execute("UPDATE observation SET value_text='0.0', value=0.0 "
+                    "WHERE dataset_run_id=? AND series_id=? AND period=?",
+                    (res.run_id, sid, period))
+    with pytest.raises(AssertionError, match="archive"):
+        _assert_db_matches_archive(db, res.run_id, expected, archive_ids)
+
+
 # ----------------------------------------------------------------------- live (controller-run)
 
 @pytest.mark.live
@@ -648,11 +789,8 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
     THIS run's freshly archived publisher bytes (raw store re-parsed offline), never frozen
     fixture counts/dates, and verifier expectations from the freshly archived CSV envelopes.
     """
-    from pathlib import Path
-
     from ingest.db import open_db
     from ingest.registry import load_registry
-    from ingest.sources import RawResponse
     from tests.ingest.oecd_fixtures import ROOT
 
     monkeypatch.setattr(verifiers, "_REGISTRY", {})
@@ -704,27 +842,25 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
         assert http.attempts <= 18 and elapsed <= 150.0  # kept as the acceptance signal
         assert {r[0] for r in per_series} == set(ALL_SIX)  # all active series covered
         # Non-stale expectations derived from the run's OWN archived publisher bytes (never
-        # frozen counts: OECD revises/publishes monthly). Re-parsing the raw store offline
-        # asserts DB == publisher archive exactly, incl. row loss between fetch and write.
-        raws = db.conn.execute(
-            "SELECT url, params_json, path FROM raw_fetch WHERE dataset_run_id=? AND ok=1 "
-            "ORDER BY id", (result.run_id,)).fetchall()
-        responses = [RawResponse(url=url, params=json.loads(params_json), status=200,
-                                 body=store.load(Path(path)))
-                     for url, params_json, path in raws
-                     if "format=csvfilewithlabels" not in url]
-        assert len(responses) == 6  # the collector's SDMX-JSON responses, not the verifier's
+        # frozen counts: OECD revises/publishes monthly). The raw store re-parses offline and
+        # _assert_db_matches_archive set-compares EVERY stored (series, period, value, status,
+        # raw-provenance) tuple against the fresh archive rows: row loss AND value/flag drift
+        # on unsampled interior rows are caught, not just counts or the 12-item sample.
+        responses, archive_ids = _archive_responses(db, store, result.run_id)
         expected = OecdSource().parse(specs, responses)  # offline, no HTTP
+        _assert_db_matches_archive(db, result.run_id, expected, archive_ids)
         for sid, n, lo, hi in per_series:
             rows = expected[sid]
-            assert rows, f"{sid}: archived publisher response holds no rows"
             assert n == len([r for r in rows if r.value_raw is not None])
-            assert (lo, hi) == (rows[0].period_raw, rows[-1].period_raw)
+            # min/max over ALL archived periods: TIME_PERIOD arrives in UNSORTED emission
+            # order, so the SQL aggregates cannot be compared to rows[0]/rows[-1].
+            assert (lo, hi) == (min(r.period_raw for r in rows),
+                                max(r.period_raw for r in rows))
             assert _PERIOD.fullmatch(lo) and _PERIOD.fullmatch(hi)
         assert served == 0  # redistribution_ok=false: verified is not served
         assert verifs == [(12, 1)]
-        assert sorted(quar) == sorted({"non_numeric": sum(
-            r.value_raw is None for rows in expected.values() for r in rows)}.items())
+        # GROUP BY over an empty quarantine set returns []; positive counts only.
+        assert sorted(quar) == sorted(_expected_quarantine(expected).items())
         # offline evidence replay (no HTTP): every sampled item's archived CSV envelope
         # re-reads value + unit + flag from its stored bytes alone
         items = db.conn.execute(
