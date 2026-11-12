@@ -1,6 +1,6 @@
 """Pytest configuration for the Prumo test suite.
 
-Only the import-path bootstrap lives here; the old maintenance-UI fixtures were
+Only the import-path bootstrap lives here; the old dashboard fixtures were
 removed in the Task 17 cleanup (no surviving test consumed them). Pipeline-scoped
 fixtures live in tests/ingest/conftest.py.
 """

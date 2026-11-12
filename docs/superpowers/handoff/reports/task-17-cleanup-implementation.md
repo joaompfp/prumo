@@ -1,4 +1,4 @@
-# Task 17 cleanup — implementation report
+# Task 17 cleanup - implementation report
 
 Author: implementer subagent. Date: 2026-11-12. Branch: `pipeline-rebuild`, base `cdc6579`.
 This report does NOT close Task 17; controller applies closure only after fresh
@@ -7,9 +7,9 @@ independent specification and quality reviews.
 ## Commits
 
 - `f8cb9b0` `chore(cleanup): Task17 - delete retired legacy collectors/scripts, align CI
-  and test config` — 31 files changed, 359 insertions(+), 7381 deletions(-).
+  and test config` - 31 files changed, 359 insertions(+), 7381 deletions(-).
 - the follow-up `docs: Task17 cleanup implementation report` commit (report only;
-  self-referencing hash omitted — the child commit of `f8cb9b0` in `git log`).
+  self-referencing hash omitted - the child commit of `f8cb9b0` in `git log`).
 
 ## What changed
 
@@ -28,7 +28,7 @@ Preserved (verified: none appear in `git diff --name-only cdc6579..f8cb9b0`):
 - `scripts/{create_seed_db,ingest}.py`, `Dockerfile`, `entrypoint.sh`, registry
   definitions, all publisher fixtures, raw/archive/seed data
 - unlisted legacy helpers (`scripts/{generate_share_cards,test_all_indicators}.py`,
-  `scripts/run-standalone`) — outside deletion consent, untouched
+  `scripts/run-standalone`) - outside deletion consent, untouched
 
 Config / docs:
 
@@ -47,14 +47,14 @@ Config / docs:
   `requirements-legacy.txt`, no `create_seed_db.py` step, no `CAE_DB_PATH`; full
   offline suite `pytest tests/ --cov=app --cov=ingest --cov-branch --cov-report=
   term-missing` with pytest.ini's default `not live` selection (the old
-  `-m "not integration and not slow"` override — which re-enabled live tests — removed);
+  `-m "not integration and not slow"` override - which re-enabled live tests - removed);
   lint now targets `app/ ingest/` only.
 - `ingest/verifiers/independence.py`: minimal import-order-only fix for the single
   inherited ruff I001 (GitNexus impact: 0 upstream callers, LOW, corroborated by
   source search; diff is the import block reformat only).
 
 New permanent regression guards: `tests/test_task17_cleanup.py` (47 parametrized
-checks) — removal set gone, preservation set present, bare-base consumers intact,
+checks) - removal set gone, preservation set present, bare-base consumers intact,
 active `app/`/`ingest/` AST never imports retired collector roots nor duckdb/pyarrow,
 conftest fixtures gone with bootstrap kept, `.coveragerc` consumed, CI workflow
 contract (runtime requirements only, no seed/env, app+ingest coverage, no live
@@ -83,7 +83,7 @@ no duckdb/pyarrow), plus the venv's `ruff`.
   0 affected processes, risk LOW.
 - Staged diff reviewed before commit; only task-owned paths staged (explicit `git
   add` list; `.github/workflows/ci.yml` is tracked but matched by a pre-existing
-  `.github/` gitignore line — added with `git add -f` on that exact path).
+  `.github/` gitignore line - added with `git add -f` on that exact path).
   Pre-existing dirty `AGENTS.md` / `CLAUDE.md` left untouched and unstaged;
   controller's brief and handoff files not staged.
 
@@ -104,7 +104,7 @@ no duckdb/pyarrow), plus the venv's `ruff`.
 - GitNexus index has known parser warnings; import-hygiene guards are therefore
   AST-based in tests plus source searches, not graph-only.
 - `tests/ingest/test_verifier_eurostat.py` inherited F401 (unused import) remains
-  out of scope — tests/ are not linted and no edit was requested.
+  out of scope - tests/ are not linted and no edit was requested.
 - `scripts/create_seed_db.py` and `scripts/ingest.py` still import duckdb/pyarrow
   by design (legacy inspection scripts; requirements-legacy.txt retained for them);
   they are simply no longer exercised in CI.
