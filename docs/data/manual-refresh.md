@@ -184,5 +184,9 @@ cd /home/joao/projects/prumo-pipeline
   via de upload manual não é suportada como importação.
 - As datas dos DADOS (período de referência, ex. ano 2025 ou dia UTC) não são a data de
   recolha: o `status` mostra-as separadamente (`real_data_fetched_at` vs período).
+- Recibos datados no FUTURO (mais de 5 minutos à frente do relógio do servidor — a margem
+  de dessincronização admitida) são recusados na importação: um portátil de captura com o
+  relógio errado não pode fabricar dados "frescos" nem bloquear as importações reais
+  seguintes.
 - O verificador E-REDES lê um CSV por dia UTC amostrado; a captura grava já o CSV de TODOS os
   dias da janela, por isso qualquer amostra nova na importação é servida pelo pacote.

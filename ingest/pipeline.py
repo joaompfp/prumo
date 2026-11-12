@@ -22,6 +22,7 @@ from ingest.db import Db
 from ingest.http import Http
 from ingest.models import Observation, SeriesSpec
 from ingest.rawstore import RawStore
+from ingest.receipts import receipt_fetched_at
 from ingest.sources import RawResponse, Source
 from ingest.validate import Rejection, validate
 
@@ -51,19 +52,13 @@ def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _receipt_ts(raw: str) -> str:
+def _receipt_ts(raw: str, *, now: datetime | None = None) -> str:
     """A recorded-replay receipt timestamp (`RawResponse.fetched_at`): a timezone-aware
-    ISO-8601 datetime, normalized to UTC. Raises ValueError on anything else - a bad receipt
-    is NEVER silently replaced by 'now'."""
-    if not isinstance(raw, str):
-        raise ValueError(f"recorded receipt fetched_at must be a string, got {type(raw).__name__}")
-    try:
-        dt = datetime.fromisoformat(raw)
-    except ValueError as e:
-        raise ValueError(f"recorded receipt fetched_at is not ISO-8601: {raw!r}") from e
-    if dt.tzinfo is None or dt.utcoffset() is None:
-        raise ValueError(f"recorded receipt fetched_at must be timezone-aware: {raw!r}")
-    return dt.astimezone(timezone.utc).isoformat()
+    ISO-8601 datetime, normalized to UTC, and not more than MAX_CLOCK_SKEW in the future
+    (checked against the run clock - ingest.receipts holds the single skew policy). Raises
+    ValueError on anything else - a bad receipt is NEVER silently replaced by 'now'."""
+    return receipt_fetched_at(raw, now=now if now is not None else _utc_now(),
+                              what="recorded receipt")
 
 
 def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec], http: Http,
@@ -136,7 +131,7 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
             # Recorded replay: the receipt's ORIGINAL fetch time is the data's retrieval
             # date. Invalid receipt -> failed-validation (never a silent 'now').
             try:
-                fetched_at = _receipt_ts(resp.fetched_at)
+                fetched_at = _receipt_ts(resp.fetched_at, now=now())
             except ValueError as e:
                 return finish("failed-validation", "format_change", {"error": str(e)})
         else:

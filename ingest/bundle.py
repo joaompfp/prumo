@@ -39,6 +39,7 @@ from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 
 from ingest.http import MAX_REDIRECTS, HttpResult
+from ingest.receipts import receipt_fetched_at
 from ingest.sources import RawResponse
 
 SCHEMA = "prumo-bundle"
@@ -107,17 +108,15 @@ def request_key(url: str, params: dict | None) -> tuple:
     return (url, tuple(sorted((k, str(v)) for k, v in (params or {}).items())))
 
 
-def _entry_ts(raw: object) -> str:
-    """Validate and normalize an entry's tz-aware ISO fetched_at to UTC ISO text."""
-    if not isinstance(raw, str):
-        raise BundleError(f"bundle entry fetched_at must be a string, got {type(raw).__name__}")
+def _entry_ts(raw: object, *, now: datetime | None = None) -> str:
+    """Validate and normalize an entry's tz-aware ISO fetched_at to UTC ISO text. Receipts
+    more than MAX_CLOCK_SKEW in the future are refused (ingest.receipts): a capture machine
+    with a wrong clock must not mint false freshness."""
     try:
-        dt = datetime.fromisoformat(raw)
+        return receipt_fetched_at(raw, now=now if now is not None else _utc_now(),
+                                  what="bundle entry")
     except ValueError as e:
-        raise BundleError(f"bundle entry fetched_at is not ISO-8601: {raw!r}") from e
-    if dt.tzinfo is None or dt.utcoffset() is None:
-        raise BundleError(f"bundle entry fetched_at must be timezone-aware: {raw!r}")
-    return dt.astimezone(timezone.utc).isoformat()
+        raise BundleError(str(e)) from e
 
 
 @dataclass(frozen=True)
@@ -382,14 +381,17 @@ _ENTRY_KEYS = {"url", "params", "final_url", "status", "fetched_at", "sha256", "
 _FAILURE_KEYS = {"url", "params", "error", "fetched_at"}
 
 
-def load_bundle(root: Path, *, source: str) -> "Bundle":
+def load_bundle(root: Path, *, source: str,
+                now: datetime | None = None) -> "Bundle":
     """Validate the ENTIRE bundle (manifest + every referenced body) before returning a
     Bundle. Runs BEFORE any DB open/mutation by contract of the CLI call sites. Raises
     BundleError on any violation: schema/version/source mismatch, unknown entry keys, bad
     url/params/status/fetch time/hash/byte counts, entry/member/member-size caps, unsafe
     paths (traversal/absolute/symlink), missing bodies and duplicate request identities that
     disagree. Duplicate identities with identical bytes, status and final URL are folded to
-    the earliest pinned receipt."""
+    the earliest pinned receipt. Receipts more than MAX_CLOCK_SKEW in the future are refused
+    (`now` injects the clock for tests; production compares against the real UTC now)."""
+    now = now if now is not None else _utc_now()
     root = Path(root)
     if not root.is_dir():
         raise BundleError(f"bundle directory not found: {root}")
@@ -432,7 +434,7 @@ def load_bundle(root: Path, *, source: str) -> "Bundle":
         status = raw["status"]
         if isinstance(status, bool) or not isinstance(status, int) or not 100 <= status <= 599:
             raise BundleError(f"bundle {what} status must be an integer HTTP status, got {status!r}")
-        fetched_at = _entry_ts(raw["fetched_at"])
+        fetched_at = _entry_ts(raw["fetched_at"], now=now)
         sha = raw["sha256"]
         if not isinstance(sha, str) or len(sha) != 64 or set(sha) - _SHA256:
             raise BundleError(f"bundle {what} sha256 must be 64 lowercase hex: {sha!r}")
