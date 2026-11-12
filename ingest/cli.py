@@ -17,6 +17,18 @@
     import-legacy <csv>            import the legacy CSV export (Ruling U - NOT the old DuckDB
                                    store); legacy rows stay legacy-unverified and keep their
                                    original retrieval dates
+    capture <wb|eredes>            MANUAL original-file capture for networks where the server
+                                   routes fail: runs the full registered source+verifier flow
+                                   through a bounded recording client on a THROWAWAY scratch
+                                   DB under TMPDIR (--db/--raw-dir are never opened) and
+                                   writes an auditable bundle: exact bodies + manifest with
+                                   ACTUAL statuses and ORIGINAL fetch times
+    run <source> --bundle DIR      replay one validated bundle offline (--indicator scopes a
+                                   World Bank bundle to one indicator's whole geography
+                                   group; E-REDES bundle runs need explicit --from/--to day
+                                   bounds, also usable live for catch-up); recorded input
+                                   keeps its ORIGINAL retrieval dates and is labelled
+                                   'recorded'; never replaces newer verified data
     replay --from YYYY-MM          fresh re-fetch of every source through run_with_refetch;
                                    the cutoff scopes ONLY E-REDES' explicit day window
                                    ([<month>-01T00:00:00+00:00, today UTC day start)); other
@@ -31,20 +43,33 @@ import os
 import re
 import sys
 import tempfile
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from ingest import operations
+from ingest.bundle import (
+    BundleError,
+    BundleRecorder,
+    CaptureHttp,
+    PinnedHttp,
+    RecordedSource,
+    RecordingHttp,
+    load_bundle,
+)
 from ingest.db import open_db
 from ingest.http import RequestsHttp
 from ingest.legacy_import import DEFAULT_REGISTRY, import_legacy
 from ingest.operations import RunReport, RunRequest, run_all
 from ingest.rawstore import RawStore
 from ingest.registry import load_registry, sync_registry
+from ingest.sources.worldbank import parse_native_code as wb_parse_native_code
 from ingest.status import build_status, render_text
 from ingest.verifiers import get_verifier
 from ingest.verify import verify_run
 
 _MONTH = re.compile(r"[0-9]{4}-[0-9]{2}")  # ASCII digits only
+_DAY = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+BUNDLE_SOURCES = ("worldbank", "eredes")  # keyless, reviewed channels only
 DEFAULT_CLIENT_TIMEOUT_S = 30.0
 
 
@@ -67,9 +92,44 @@ def build_parser() -> argparse.ArgumentParser:
 
     r = sub.add_parser("run", help="fresh fetch+verify of one source or all (see module help)")
     r.add_argument("source", help="registry source name, or 'all'")
+    r.add_argument("--bundle", metavar="DIR",
+                   help="replay an exact validated original-file bundle offline "
+                        "(worldbank/eredes only); recorded input keeps original fetch dates")
+    r.add_argument("--indicator", metavar="CODE",
+                   help="worldbank only: one native indicator code (its whole registered "
+                        "geography group, never one country)")
+    r.add_argument("--from", dest="from_day", metavar="YYYY-MM-DD",
+                   help="eredes only: first UTC day of an explicit catch-up/replay window")
+    r.add_argument("--to", dest="to_day", metavar="YYYY-MM-DD",
+                   help="eredes only: last UTC day of the window (inclusive; before today UTC)")
     r.add_argument("--dry-run", action="store_true",
                    help="isolate: a throwaway DB/raw store under TMPDIR; --db/--raw-dir are "
                         "never opened")
+
+    c = sub.add_parser(
+        "capture",
+        help="MANUAL original-file capture on any machine with network (worldbank/eredes "
+             "keyless channels): full registered source+verifier flow on a THROWAWAY scratch "
+             "DB under TMPDIR (--db/--raw-dir are never opened), writing an auditable bundle "
+             "of exact bodies + manifest; partial captures keep healthy files archived and "
+             "exit nonzero")
+    c.add_argument("source", choices=BUNDLE_SOURCES)
+    c.add_argument("--output", required=True, metavar="DIR",
+                   help="new (or empty) bundle directory; an existing non-empty one is "
+                        "refused, never overwritten")
+    c.add_argument("--indicator", metavar="CODE",
+                   help="worldbank only: one native indicator code (whole geography group)")
+    c.add_argument("--from", dest="from_day", metavar="YYYY-MM-DD",
+                   help="eredes only: first UTC day to capture")
+    c.add_argument("--to", dest="to_day", metavar="YYYY-MM-DD",
+                   help="eredes only: last UTC day to capture (inclusive; before today UTC)")
+    c.add_argument("--timeout", type=float, default=DEFAULT_CLIENT_TIMEOUT_S,
+                   help="per-request timeout seconds (positive finite)")
+    c.add_argument("--max-requests", type=int, default=256,
+                   help="physical network request cap, redirects and retries included")
+    c.add_argument("--deadline", type=float, default=300.0,
+                   help="whole capture deadline in seconds, checked BEFORE every physical "
+                        "request")
 
     s = sub.add_parser("status", help="operational status report (read-only)")
     s.add_argument("--json", dest="as_json", action="store_true", help="typed JSON report")
@@ -108,6 +168,32 @@ def _check_month(text: str) -> str:
                          f"cutoff that would skip unseen data")
     return text
 
+def _check_day(text: str) -> date:
+    """A canonical YYYY-MM-DD day, ASCII digits, a real Gregorian date."""
+    if not _DAY.fullmatch(text):
+        raise ValueError(f"day bounds must be ASCII YYYY-MM-DD, got {text!r}")
+    try:
+        return date.fromisoformat(text)
+    except ValueError as e:
+        raise ValueError(f"day bound is not a real date: {text!r}") from e
+
+
+def _eredes_bounds(args) -> tuple[str, str]:
+    """Validate --from/--to (both required by callers here) into a [from, to+1d) UTC window
+    of canonical day starts: strict ASCII days, non-empty, never in the future (today UTC is
+    a running, partial day, so the last allowed day is yesterday)."""
+    if bool(args.from_day) != bool(args.to_day):
+        raise ValueError("E-REDES explicit windows need BOTH --from and --to")
+    first, last = _check_day(args.from_day), _check_day(args.to_day)
+    if last < first:
+        raise ValueError(f"--from {first} must not be after --to {last} (window is non-empty)")
+    today = datetime.now(timezone.utc).date()
+    if last >= today:
+        raise ValueError(f"--to {last} must be before today UTC ({today}): today's window is "
+                         f"still running/partial; refusing to capture/ingest it as complete")
+    return (f"{first.isoformat()}T00:00:00+00:00",
+            f"{(last + timedelta(days=1)).isoformat()}T00:00:00+00:00")
+
 
 def _http_for(specs, name=None):
     """CLI default Http factory: per-source polite client - min registry throttle (default
@@ -142,20 +228,47 @@ def _resolve_paths(args):
 
 
 def _open_run(args, specs, db_path: Path, raw_path: Path, request: RunRequest,
-              http_for) -> int:
+              http_for, *, bundle=None) -> int:
     """The run/replay body: prints the aggregate report; honours --dry-run with a throwaway
-    DB/raw store under TMPDIR - the real --db/--raw-dir are never opened."""
+    DB/raw store under TMPDIR - the real --db/--raw-dir are never opened. With `bundle` (a
+    fully validated ingest.bundle.Bundle), input comes ONLY from the pinned offline
+    responses: the run is labelled 'recorded', keeps the receipts' ORIGINAL fetch dates, and
+    is refused BEFORE any insertion when the bundle is not strictly newer than the verified
+    data already held for the selected series."""
+    pinned = None
+    source_factories = None
     if args.dry_run:
         tmp = tempfile.TemporaryDirectory(prefix="prumo-dry-run-")  # TMPDIR-scoped
         db_path, raw_path = Path(tmp.name) / "prumo.sqlite3", Path(tmp.name) / "raw"
     else:
         tmp = None
+    if bundle is not None:
+        pinned = PinnedHttp(bundle)  # refuses partial (failure-carrying) bundles
+        source_factories = {
+            args.source: lambda req: RecordedSource(
+                operations.SOURCE_FACTORIES[args.source](req), pinned)}
+        def http_for(_name):  # recorded path: the pinned bundle is the only input
+            return pinned
     db = open_db(db_path)
     try:
         store = RawStore(raw_path)
         sync_registry(db, specs)
+        if bundle is not None:
+            ids = [s.id for s in specs if s.source.name == args.source and s.active]
+            existing = db.max_verified_fetched_at(ids)
+            newest = bundle.max_fetched_at()
+            if existing is not None and newest is not None and \
+                    datetime.fromisoformat(existing) > newest:
+                print(f"refusing an outdated bundle: the verified fetched data already held "
+                      f"for this source/group reaches {existing}, but the bundle's newest "
+                      f"original receipt is {newest.isoformat()}; a recorded bundle never "
+                      f"replaces NEWER verified data - legacy April rows stay untouched and a "
+                      f"LATER valid recorded download is still accepted",
+                      file=sys.stderr)
+                return 1
         only = None if getattr(args, "source", "all") == "all" else [args.source]
-        report = run_all(db, store, specs, http_for=http_for, request=request, only=only)
+        report = run_all(db, store, specs, http_for=http_for, request=request, only=only,
+                         source_factories=source_factories)
         _print_report(report, sys.stdout)
         return report.exit_code()
     finally:
@@ -170,6 +283,7 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
     db_path, raw_path, registry = _resolve_paths(args)
     specs = load_registry(registry)
     known = sorted({s.source.name for s in specs})
+    custom_http = http_for is not None
     http_for = http_for or (lambda name: _http_for(specs, name))
 
     if args.command == "status":
@@ -217,18 +331,157 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
                   file=sys.stderr)
             return 2
         request = RunRequest()
+        bundle = None
         if args.command == "replay":
             try:
                 month = _check_month(args.from_month)  # rejects before ANY db open/mutation
             except ValueError as e:
                 print(str(e), file=sys.stderr)
                 return 2
-            from datetime import datetime, timezone
             today = datetime.now(timezone.utc).date()
             request = RunRequest(window=(f"{month}-01T00:00:00+00:00",
                                          f"{today.isoformat()}T00:00:00+00:00"))
-        return _open_run(args, specs, db_path, raw_path, request, http_for)
+            return _open_run(args, specs, db_path, raw_path, request, http_for)
+        try:  # every run-mode validation BEFORE any DB open or file mutation
+            if args.dry_run and args.bundle:
+                raise ValueError("--dry-run and --bundle do not combine: a recorded run IS "
+                                 "already the isolated path")
+            if args.bundle is not None:
+                if args.source == "all":
+                    raise ValueError("--bundle is per-source: run one source per bundle")
+                if args.source not in BUNDLE_SOURCES:
+                    raise ValueError(f"--bundle supports {list(BUNDLE_SOURCES)} only (the "
+                                     f"keyless recorded channels), got {args.source!r}")
+            if args.indicator is not None:
+                if args.source != "worldbank":
+                    raise ValueError("--indicator is a World Bank-only selector (its whole "
+                                     "registered geography group, never one country)")
+                selected = _select_indicator(specs, args.indicator)
+            else:
+                selected = specs
+            if (args.from_day or args.to_day) and args.source != "eredes":
+                raise ValueError("--from/--to day bounds are E-REDES-only")
+            if args.source == "eredes" and (args.from_day or args.to_day):
+                request = RunRequest(window=_eredes_bounds(args))
+            if args.source == "eredes" and args.bundle is not None and not request.window:
+                raise ValueError("a recorded E-REDES replay needs explicit --from/--to day "
+                                 "bounds (the bundle was captured for a specific window)")
+            if args.bundle is not None:
+                bundle = load_bundle(Path(args.bundle), source=args.source)  # FULL entry+
+                # byte validation here, BEFORE any DB open/mutation
+                request = RunRequest(window=request.window, input_origin="recorded")
+        except (ValueError, BundleError) as e:
+            print(str(e), file=sys.stderr)
+            return 2
+        return _open_run(args, selected, db_path, raw_path, request, http_for, bundle=bundle)
+    if args.command == "capture":
+        try:
+            return _cmd_capture(args, specs, http_for, custom_http=custom_http)
+        except (ValueError, FileExistsError) as e:
+            print(str(e), file=sys.stderr)
+            return 2
     raise AssertionError("unreachable")  # argparse required=True already enforced the command
+
+
+def _select_indicator(specs, code: str):
+    """World Bank registry restricted to ONE active indicator code (whole geography group,
+    never a single country). ValueError on an unknown/inactive code."""
+    known_codes = sorted({wb_parse_native_code(s.native_code)[0]
+                          for s in specs if s.source.name == "worldbank" and s.active})
+    if code not in known_codes:
+        raise ValueError(f"unknown active World Bank indicator {code!r}; registry "
+                         f"indicators: {known_codes}")
+    return [s for s in specs if s.source.name != "worldbank" or not s.active
+            or wb_parse_native_code(s.native_code)[0] == code]
+
+
+_CSV_DAY = re.compile(r'([0-9]{4}-[0-9]{2}-[0-9]{2})')
+
+
+def _eredes_covered_csv_days(recorder: BundleRecorder) -> set[str]:
+    """UTC days with a recorded /exports/csv entry in the capture (per-day where params)."""
+    covered = set()
+    for e in recorder.entries:
+        if e.url.endswith("/exports/csv") and e.params and "where" in e.params:
+            m = _CSV_DAY.search(e.params["where"])
+            if m:
+                covered.add(m.group(1))
+    return covered
+
+
+def _capture_eredes_coverage(window: tuple[str, str], rec_http, recorder: BundleRecorder,
+                             specs) -> None:
+    """Record a genuine /exports/csv for EVERY source window day, not only the days the
+    capture's own random verification sampled - a later replay draws a FRESH seed and must
+    find every day pinned. Uses the registered verifier itself (same reviewed endpoint/
+    format) on one BlindItem per uncovered day through the SAME recording client; nothing is
+    synthesized."""
+    from ingest.sources.eredes import EredesSource
+    from ingest.verifiers import BlindItem
+    covered = _eredes_covered_csv_days(recorder)
+    days = [d.isoformat() for d in EredesSource(*window).days]
+    missing = [d for d in days if d not in covered]
+    if not missing:
+        return
+    spec = next(s for s in specs if s.source.name == "eredes" and s.active)
+    verifier = operations.ensure_verifier(operations.VERIFIER_OPS["eredes"])
+    items = [BlindItem(series_id=spec.id, period=f"{d}T00:00:00+00:00", spec=spec)
+             for d in missing]
+    verifier.check(items, rec_http)  # raises (recorded honestly) on any non-2xx/drift
+
+
+def _cmd_capture(args, specs, http_for, *, custom_http: bool = False) -> int:
+    """Bounded manual capture on a scratch DB; seals the bundle; exit 0 only when the full
+    registered flow verified AND every capture-relevant request succeeded. Never opens the
+    configured --db/--raw-dir."""
+    if args.indicator is not None and args.source != "worldbank":
+        raise ValueError("--indicator is a World Bank-only selector")
+    if (args.from_day or args.to_day) and args.source != "eredes":
+        raise ValueError("--from/--to day bounds are E-REDES-only")
+    request = RunRequest()
+    window = None
+    if args.source == "eredes":
+        if not (args.from_day and args.to_day):
+            raise ValueError("capture eredes needs explicit --from/--to day bounds (record "
+                             "exactly the window you intend to replay)")
+        window = _eredes_bounds(args)
+        request = RunRequest(window=window)
+    selected = (_select_indicator(specs, args.indicator)
+                if args.indicator is not None else specs)
+    base = http_for(args.source) if custom_http else CaptureHttp(
+        timeout=args.timeout, max_requests=args.max_requests, deadline_s=args.deadline)
+    recorder = BundleRecorder(Path(args.output))  # refuses an existing non-empty output
+    rec_http = RecordingHttp(base, recorder)
+    tmp = tempfile.TemporaryDirectory(prefix="prumo-capture-")  # scratch under TMPDIR only
+    ok = True
+    try:
+        db = open_db(Path(tmp.name) / "capture.sqlite3")
+        try:
+            store = RawStore(Path(tmp.name) / "raw")
+            sync_registry(db, specs)
+            report = run_all(db, store, selected, http_for=lambda _n: rec_http,
+                             request=request, only=[args.source])
+            _print_report(report, sys.stdout)
+            ok = report.exit_code() == 0
+            if ok and args.source == "eredes" and window is not None:
+                _capture_eredes_coverage(window, rec_http, recorder, selected)
+        finally:
+            db.close()
+    except Exception as e:  # honest failure record; healthy files already on disk stay
+        recorder.record_failure("<capture>", None, f"{type(e).__name__}: {e}")
+        ok = False
+    finally:
+        tmp.cleanup()
+    manifest = recorder.seal(args.source)  # atomic operator receipt, failures included
+    if not ok or recorder.failures:
+        print(f"capture INCOMPLETE (failures: {len(recorder.failures)}); healthy responses "
+              f"stay archived under {manifest.parent} for audit; fix the failing route and "
+              f"capture again into a FRESH directory - a partial bundle is never runnable",
+              file=sys.stderr)
+        return 1
+    print(f"capture complete: {len(recorder.entries)} exact response(s) sealed with original "
+          f"fetch times in {manifest}")
+    return 0
 
 
 def _cmd_verify(run_id: int, specs, db, store, http_for) -> int:

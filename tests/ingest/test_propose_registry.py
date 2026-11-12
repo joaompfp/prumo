@@ -163,7 +163,39 @@ def test_real_export_proposal_and_import():
             rep = import_legacy(db, REAL_EXPORT, specs)
             total = rep.n_imported + sum(rep.n_quarantined_by_reason.values())
             assert total == 246162
-            assert db.conn.execute("SELECT count(*) FROM served_observation").fetchone()[0] == 0
+            # Task 17A/17B (owner-authorized, source-scoped WB continuity): the outdated
+            # global 'nothing legacy is ever served' expectation is replaced by these
+            # PRECISE assertions. No row count is hardcoded; the served set is derived.
+            assert db.conn.execute(
+                "SELECT value FROM setting WHERE key = 'legacy_served'"
+            ).fetchone()[0] == "0"  # the GLOBAL legacy gate stays OFF
+            assert db.conn.execute(
+                "SELECT value FROM setting WHERE key = 'legacy_served_source:worldbank'"
+            ).fetchone()[0] == "1"
+            served = db.conn.execute(
+                "SELECT o.series_id, o.period, o.kind, o.fetched_at, s.active, p.name, "
+                "p.redistribution_ok FROM served_observation o "
+                "JOIN series s ON s.id = o.series_id JOIN source p ON p.id = s.source_id"
+            ).fetchall()
+            legacy = [r for r in served if r[2] == "legacy-unverified"]
+            assert legacy, "scoped WB legacy continuity must be served"
+            # ONLY validated ACTIVE worldbank rows of a redistribution-OK source are
+            # eligible; every other origin (eredes/dgeg/fred/ine/oecd/...) stays unserved,
+            # and inactive PPP-conflict series are never exposed by the scoped switch.
+            assert {r[5] for r in legacy} == {"worldbank"}
+            assert all(r[4] == 1 and r[6] == 1 for r in legacy)
+            # the served scoped set is EXACTLY the eligible candidate set (no more, no less)
+            expected = db.conn.execute(
+                "SELECT COUNT(*) FROM ("
+                "  SELECT DISTINCT o.series_id, o.period FROM observation o "
+                "  JOIN series s ON s.id = o.series_id AND s.active = 1 "
+                "  JOIN source p ON p.id = s.source_id AND p.redistribution_ok = 1 "
+                "  WHERE o.kind = 'legacy-unverified' AND p.name = 'worldbank')"
+            ).fetchone()[0]
+            assert len(legacy) == expected
+            # kind and ORIGINAL fetch dates are preserved by the import: legacy rows predate
+            # the rebuild, so no date may read like an import/run time of this test.
+            assert all(r[2] == "legacy-unverified" and r[3] < "2026-06-01" for r in legacy)
         finally:
             db.close()
 
