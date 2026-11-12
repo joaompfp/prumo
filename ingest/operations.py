@@ -48,6 +48,9 @@ class RunRequest:
     (from_ts .. to_ts as canonical UTC day starts) used by replay/catch-up — and by the planned
     17B manual tiny-window procedures; None = every source's native default window."""
     window: tuple[str, str] | None = None
+    # 'live' (default) or 'recorded' (validated original-file bundle replay, 17B): labels
+    # every attempt's dataset_run, refetches included. 'legacy' is never set by callers.
+    input_origin: str = "live"
 
 
 @dataclass(frozen=True)
@@ -253,7 +256,8 @@ def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec
     for group in group_specs(active):
         try:
             r = run_with_refetch(db, store, source, verifier, list(group.specs), http,
-                                 max_attempts=max_attempts, size=size, now=now)
+                                 max_attempts=max_attempts, size=size, now=now,
+                                 input_origin=request.input_origin)
             outcomes.append(GroupOutcome(source_name, group.label, r.state, r.run_id,
                                          r.n_written, r.n_quarantined))
         except Exception as e:

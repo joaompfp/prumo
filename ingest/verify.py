@@ -250,7 +250,8 @@ def replay_item(db: Db, store: RawStore, verification_item_id: int) -> bool:
 
 def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier,
                      specs: list[SeriesSpec], http: Http, max_attempts: int = 3, size: int = 50,
-                     now: Callable[[], datetime] | None = None) -> DatasetRunResult:
+                     now: Callable[[], datetime] | None = None, *,
+                     input_origin: str = "live") -> DatasetRunResult:
     """run_dataset, then verify_run with a fresh random seed; on failure emit event(refetch) and
     re-fetch the whole dataset (a new run: identical bytes are re-processed because the previous
     run is not verified), at most `max_attempts` runs in total.
@@ -259,6 +260,10 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
     independence rule), else ValueError. Refuses up front (before any fetch): SourceNotVerifiable
     if the registry marks the source `verifiable: false`; NoVerifierRegistered if the source has
     no registered verifier.
+
+    `input_origin` labels EVERY attempt (refetch runs included, not just the last): 'live' is
+    the fresh-network default; 'recorded' marks a run driven by an exact validated bundle
+    capture (Task 17B) - the run clock stays the actual attempt time either way.
 
     Returns the last run's result: `verified` on a pass; `failed-verification` after
     max_attempts failures (left unserved; escalation is the CLI report's business); any other
@@ -282,7 +287,7 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
         raise ValueError(f"verifier is not the one registered for source {source.name!r}")
     now = now or _utc_now
     for attempt in range(1, max_attempts + 1):
-        result = run_dataset(db, store, source, specs, http, now)
+        result = run_dataset(db, store, source, specs, http, now, input_origin=input_origin)
         if result.state != "pending-verification":
             return result
         if verify_run(db, result.run_id, verifier, http, size=size, specs=specs, store=store,

@@ -42,8 +42,24 @@ def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def _receipt_ts(raw: str) -> str:
+    """A recorded-replay receipt timestamp (`RawResponse.fetched_at`): a timezone-aware
+    ISO-8601 datetime, normalized to UTC. Raises ValueError on anything else - a bad receipt
+    is NEVER silently replaced by 'now'."""
+    if not isinstance(raw, str):
+        raise ValueError(f"recorded receipt fetched_at must be a string, got {type(raw).__name__}")
+    try:
+        dt = datetime.fromisoformat(raw)
+    except ValueError as e:
+        raise ValueError(f"recorded receipt fetched_at is not ISO-8601: {raw!r}") from e
+    if dt.tzinfo is None or dt.utcoffset() is None:
+        raise ValueError(f"recorded receipt fetched_at must be timezone-aware: {raw!r}")
+    return dt.astimezone(timezone.utc).isoformat()
+
+
 def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec], http: Http,
-                now: Callable[[], datetime] = _utc_now) -> DatasetRunResult:
+                now: Callable[[], datetime] = _utc_now, *,
+                input_origin: str = "live") -> DatasetRunResult:
     """Fetch, store, parse, validate and write one dataset; never raises for source misbehaviour.
 
     Preconditions (ValueError otherwise): `specs` non-empty, all from `source.name`, already
@@ -74,10 +90,12 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
     unverified rows. A revision emits event(revision, {series_id, period, old, new}); the new
     value is stored as a new vintage (higher observation.id) either way.
     """
+    if input_origin not in ("live", "recorded"):
+        raise ValueError(f"input_origin must be 'live' or 'recorded', got {input_origin!r}")
     _check_preconditions(source, specs)
     ts = lambda: _iso(now())  # noqa: E731
     key = dataset_key(source.name, [s.id for s in specs])
-    run_id = db.begin_run(source.name, key, ts())
+    run_id = db.begin_run(source.name, key, ts(), input_origin=input_origin)
 
     def finish(state: str, event: str | None = None, detail: dict | None = None,
                n_written: int = 0, n_quarantined: int = 0) -> DatasetRunResult:
@@ -105,7 +123,15 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
         except Exception as e:  # network failure, possibly mid-pagination: no observations
             return finish("failed-fetch", "fetch_failure", {"error": repr(e)})
         problem = _fetch_problem(resp, expected)
-        fetched_at = ts()
+        if resp.fetched_at is not None:
+            # Recorded replay: the receipt's ORIGINAL fetch time is the data's retrieval
+            # date. Invalid receipt -> failed-validation (never a silent 'now').
+            try:
+                fetched_at = _receipt_ts(resp.fetched_at)
+            except ValueError as e:
+                return finish("failed-validation", "format_change", {"error": str(e)})
+        else:
+            fetched_at = ts()
         raws.append((_record(db, store, source.name, run_id, resp, fetched_at, problem is None),
                      fetched_at))
         responses.append(resp)

@@ -180,7 +180,11 @@ def test_migrating_an_existing_0004_database_preserves_history_and_gates(tmp_pat
                 "0004_verification_audit", "0005_served_licence_gate"} <= versions
         # every row survived the view replacement byte-identical (nothing deleted, no rewrite)
         assert db.conn.execute("SELECT * FROM observation ORDER BY id").fetchall() == before_obs
-        assert db.conn.execute("SELECT * FROM dataset_run ORDER BY id").fetchall() == before_runs
+        # pre-0008 runs carry no origin record, so migration 0008 honestly adds the schema
+        # default 'live' to those synthetic fetched runs (real legacy runs have 'legacy:<src>'
+        # keys and are stamped 'legacy' by the migration itself)
+        assert db.conn.execute("SELECT * FROM dataset_run ORDER BY id").fetchall() == \
+            [tuple(r) + ("live",) for r in before_runs]
         assert db.conn.execute("SELECT * FROM quarantine ORDER BY id").fetchall() == before_quar
         # gate active: denied row withheld, allowed latest vintage served
         assert _served(db) == [("a1", "2025", "2.0")]

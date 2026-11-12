@@ -52,12 +52,15 @@ class Db:
     # Write methods below issue plain statements: called outside `transaction()` each statement
     # autocommits; called inside it they join that transaction.
 
-    def begin_run(self, source_name: str, dataset_key: str, started_at: str) -> int:
-        """New dataset_run in state 'running'. The source must already be registered."""
+    def begin_run(self, source_name: str, dataset_key: str, started_at: str, *,
+                  input_origin: str = "live") -> int:
+        """New dataset_run in state 'running'. The source must already be registered.
+        input_origin: 'live' (fresh network input, the default) or 'recorded' (an exact
+        validated original-file bundle, Task 17B); 'legacy' is set by legacy_run only."""
         cur = self.conn.execute(
-            "INSERT INTO dataset_run(source_id, started_at, state, dataset_key) "
-            "VALUES ((SELECT id FROM source WHERE name = ?), ?, 'running', ?)",
-            (source_name, started_at, dataset_key))
+            "INSERT INTO dataset_run(source_id, started_at, state, dataset_key, input_origin) "
+            "VALUES ((SELECT id FROM source WHERE name = ?), ?, 'running', ?, ?)",
+            (source_name, started_at, dataset_key, input_origin))
         return cur.lastrowid
 
     def set_run_state(self, run_id: int, state: str, finished_at: str | None = None) -> None:
@@ -186,8 +189,9 @@ class Db:
         if row:
             return row[0]
         cur = self.conn.execute(
-            "INSERT INTO dataset_run(source_id, started_at, finished_at, state, dataset_key) "
-            "VALUES ((SELECT id FROM source WHERE name = ?), ?, ?, 'verified', ?)",
+            "INSERT INTO dataset_run(source_id, started_at, finished_at, state, dataset_key, "
+            "input_origin) "
+            "VALUES ((SELECT id FROM source WHERE name = ?), ?, ?, 'verified', ?, 'legacy')",
             (source_name, started_at, started_at, dataset_key))
         return cur.lastrowid
 
@@ -226,11 +230,25 @@ class Db:
             "SELECT r.id, s.name, r.frequency, r.active FROM series r "
             "JOIN source s ON s.id = r.source_id ORDER BY r.id").fetchall()
 
-    def runs_overview(self) -> list[tuple[int, str, str | None, str, str, str | None]]:
-        """(id, source_name, dataset_key, state, started_at, finished_at) of every run."""
+    def runs_overview(self) -> list[tuple[int, str, str | None, str, str, str | None, str]]:
+        """(id, source_name, dataset_key, state, started_at, finished_at, input_origin)."""
         return self.conn.execute(
-            "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at "
+            "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at, "
+            "r.input_origin "
             "FROM dataset_run r JOIN source s ON s.id = r.source_id ORDER BY r.id").fetchall()
+
+    def max_verified_fetched_at(self, series_ids: list[str]) -> str | None:
+        """Latest observation.fetched_at among VERIFIED fetched rows of the given series
+        (Task 17B stale-bundle refusal: a recorded bundle must be strictly newer than the
+        verified data already held; legacy rows never count here)."""
+        if not series_ids:
+            return None
+        marks = ",".join("?" * len(series_ids))
+        return self.conn.execute(
+            "SELECT MAX(o.fetched_at) FROM observation o "
+            "JOIN dataset_run r ON r.id = o.dataset_run_id "
+            f"WHERE o.kind = 'fetched' AND r.state = 'verified' AND o.series_id IN ({marks})",
+            series_ids).fetchone()[0]
 
     def observation_stats(self) -> list[tuple[str, str, str, int, str]]:
         """(series_id, kind, run state, row count, max fetched_at) per series/kind/state."""

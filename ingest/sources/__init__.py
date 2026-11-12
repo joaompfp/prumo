@@ -22,6 +22,10 @@ class RawResponse:
     params: dict | None
     status: int
     body: bytes
+    # Recorded-replay receipt (Task 17B): the ORIGINAL timezone-aware fetch timestamp of a
+    # validated bundle receipt, or None for a live fetch (the pipeline stamps 'now'). The
+    # pipeline validates it before writing; no silent fallback to 'now' on a bad receipt.
+    fetched_at: str | None = None
 
 
 class Source(Protocol):

@@ -65,6 +65,7 @@ class DatasetStatus:
     label: str
     latest_state: str | None
     latest_attempt: str | None
+    input_origin: str | None  # 'live' | 'recorded' of that latest attempt (never 'legacy')
 
 
 @dataclass(frozen=True)
@@ -72,6 +73,7 @@ class PendingRun:
     run_id: int
     dataset: str
     started_at: str
+    input_origin: str
     stale: bool  # started more than PENDING_STALE_AFTER ago
 
 
@@ -83,6 +85,7 @@ class SeriesStatus:
     dataset_label: str | None  # None for inactive series (they are not scheduled to run)
     latest_attempt: str | None
     latest_attempt_state: str | None
+    latest_attempt_origin: str | None  # 'live' | 'recorded' of the latest attempt
     last_verified: str | None       # real verification evidence only (never a legacy run)
     real_data_fetched_at: str | None  # the retained data's genuine retrieval date
     availability: str               # 'verified' | 'legacy-unverified' | 'none'
@@ -156,22 +159,23 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
                 key_of[s.id] = g.key()
 
     # runs: latest non-legacy attempt per dataset; pending runs
-    latest_by_key: dict[str, tuple[str, str]] = {}     # key -> (started_at, state)
+    latest_by_key: dict[str, tuple[str, str, str]] = {}  # key -> (started_at, state, origin)
     pending: list[PendingRun] = []
-    for run_id, source, key, state, started, _finished in db.runs_overview():
+    for run_id, source, key, state, started, _finished, origin in db.runs_overview():
         if key is None or key.startswith(LEGACY_DATASET_PREFIX):
             continue  # legacy synthetic runs are never an attempt; keys-less rows are not
         if state == "pending-verification":
             started_dt = _parse_ts(started)
             pending.append(PendingRun(run_id, label_of_key.get(key, key), started,
+                                      input_origin=origin,
                                       stale=started_dt is not None
                                       and now_ts - started_dt > PENDING_STALE_AFTER))
         cur = latest_by_key.get(key)
         if cur is None or started > cur[0]:
-            latest_by_key[key] = (started, state)
+            latest_by_key[key] = (started, state, origin)
 
     legacy_keys = set()
-    for run_id, source, key, state, started, _finished in db.runs_overview():
+    for run_id, source, key, state, started, _finished, _o in db.runs_overview():
         if key is not None and key.startswith(LEGACY_DATASET_PREFIX):
             legacy_keys.add(key)
 
@@ -209,8 +213,8 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
                                              verified_by_key, stats))
         tried = series_out
         datasets = tuple(
-            DatasetStatus(label_of_key[k], state, started)
-            for k, (started, state) in sorted(latest_by_key.items())
+            DatasetStatus(label_of_key[k], state, started, origin)
+            for k, (started, state, origin) in sorted(latest_by_key.items())
             if label_of_key.get(k) is not None
             and any(key_of.get(s.id) == k for s in group))
         latest_attempt, latest_state = None, None
@@ -268,6 +272,7 @@ def _series_status(s: SeriesSpec, now: datetime, label_of, key_of, latest_by_key
         id=s.id, active=s.active, frequency=s.frequency, dataset_label=label,
         latest_attempt=latest[0] if latest else None,
         latest_attempt_state=latest[1] if latest else None,
+        latest_attempt_origin=latest[2] if latest else None,
         last_verified=last_verified, real_data_fetched_at=real_fetched,
         availability=availability, legacy_rows=legacy_rows, stale=stale,
         stale_reason=reason)
@@ -287,9 +292,11 @@ def render_text(report: StatusReport) -> str:
                      f"last verified {s.last_verified or 'never'}; data as of "
                      f"{s.real_data_fetched_at or 'none'}; events {s.events or '{}'}")
         for d in s.datasets:
+            origin = f", input {d.input_origin}" if d.input_origin else ""
             lines.append(f"  dataset {d.label}: {d.latest_state or 'no attempt'} "
-                         f"({d.latest_attempt or '-'})")
+                         f"({d.latest_attempt or '-'}{origin})")
         for p in s.pending_runs:
             mark = " STALE" if p.stale else ""
-            lines.append(f"  PENDING run {p.run_id} ({p.dataset}) since {p.started_at}{mark}")
+            lines.append(f"  PENDING run {p.run_id} ({p.dataset}, input {p.input_origin}) "
+                         f"since {p.started_at}{mark}")
     return "\n".join(lines)
