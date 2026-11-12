@@ -59,6 +59,37 @@
    "sha256": "78bbea1bc49ad6a0076b5428ee96c99d0ee9a146ab2ca3e32b79164e5e598e82",
    "bytes": 8088,
    "note": "exports/csv of the SAME window (independent verifier channel): UTF-8 BOM, ';', CRLF, header datahora;dia;mes;ano;date;time;dgm;pre;total, 96 data rows, UTC datahora spellings; all 288 value tokens are byte-identical to window_json (checked at recording time)"
+  },
+  "summer_window_json": {
+   "file": "summer_window_json.body",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?where=datahora+%3E%3D+%222026-04-01%22+AND+datahora+%3C+%222026-04-02%22&order_by=datahora&limit=100",
+   "params": {
+    "where": "datahora >= \"2026-04-01\" AND datahora < \"2026-04-02\"",
+    "order_by": "datahora",
+    "limit": 100
+   },
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?where=datahora+%3E%3D+%222026-04-01%22+AND+datahora+%3C+%222026-04-02%22&order_by=datahora&limit=100",
+   "fetched_at_utc": "2026-11-12T19:03:10.859621+00:00",
+   "sha256": "ef0a13d7ae66e8966adc1f19127b7975d16b3a7138a117365a5381bb30c4b9ad",
+   "bytes": 17543,
+   "note": "records JSON, one complete UTC day 2026-04-01 (total_count 96 == results length): WEST summer time - dia/mes/ano/date/time are the publisher's LISBON LOCAL wall-time echo (01:00 at 00:00 UTC; the 23:45 UTC record carries date 2026-04-02 / time 00:45), NEVER equal to the UTC datahora. Original bytes of the controller live-gate run (raw_fetch id 2), copied unchanged from its raw store."
+  },
+  "summer_window_csv": {
+   "file": "summer_window_csv.body",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=UTC&where=datahora%20%3E%3D%20%222026-04-01%22%20AND%20datahora%20%3C%20%222026-04-02%22",
+   "params": {
+    "lang": "pt",
+    "timezone": "UTC",
+    "where": "datahora >= \"2026-04-01\" AND datahora < \"2026-04-02\""
+   },
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=UTC&where=datahora%20%3E%3D%20%222026-04-01%22%20AND%20datahora%20%3C%20%222026-04-02%22",
+   "fetched_at_utc": "2026-11-12T19:11:27.382428+00:00",
+   "sha256": "24bb889cfb62b7646ab00703f992c602c682e7495099b64a2be94c61b0a74992",
+   "bytes": 8536,
+   "note": "CSV export of the SAME 2026-04-01 UTC window (96 rows): same wall-time aux columns; tokens byte-identical to summer_window_json."
   }
- }
+ },
+ "addendum_2026-11-12_summer": "Two sets added for the C1 fix (controller live gate 2026-11-12: the April UTC window was wrongly rejected by the withdrawn aux-echo-equals-UTC guard): summer_window_json is the UNMODIFIED original bytes of that controller run's archived raw_fetch id 2 (sha256 matches the raw store; fetched_at/url/params from the controller DB, NOT a new request); summer_window_csv is one genuine /exports/csv of the same window, fetched 2026-11-12 from f0nix egress in 1 request (10 s timeout, 0 retries, 0.912 s, 8536 B < 200 KB cap). All 288 dgm/pre/total tokens and all 9 column tokens are byte-decimal-identical between the two channels (checked at archiving time)."
 }

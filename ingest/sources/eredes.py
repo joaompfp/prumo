@@ -17,7 +17,8 @@ the only reviewed combinations (anything else fails closed until separately revi
 
 Windows: the constructor takes an EXPLICIT [from_ts, to_ts) window of canonical UTC day
 boundaries ('YYYY-MM-DDT00:00:00+00:00') for replay/catch-up (e.g. from 2026-04-01 onward), or
-none for the default safe bounded refresh of the last 3 complete UTC days. Each day is
+none for the default safe bounded refresh of the last 3 complete UTC days (contract clock:
+datetime.now(timezone.utc), never the host-local date). Each day is
 requested separately (96 native quarter-hour records each), so neither the 100-record page
 limit nor the 10000 offset cap can ever truncate a window: page sets are asserted complete
 (total_count constant across pages, offsets contiguous, result count == total_count) and any
@@ -27,18 +28,23 @@ Fetch yields every response verbatim (metadata included); parse() rebuilds windo
 VALIDATED request params (where), asserts per-window completeness/order/identity, reads numbers
 as tagged JSON number tokens (a quoted string is never a number token; the exact publisher
 token reaches RawRow as a plain str, float tails preserved), and fail-closes on metadata drift
-(dataset id, datahora type, field types/labels, licence, publisher), unknown record keys, a
-non-canonical or duplicated datahora, or inconsistency between the dia/mes/ano/date/time echo
-columns and datahora. No status/quality surface exists on this dataset, so flag_raw=None.
+(dataset id, field types/labels, licence, publisher), unknown record keys, a non-canonical or
+duplicated datahora, or a malformed dia/mes/ano/date/time wall-time echo. The echo columns are
+the publisher's LISBON-LOCAL wall time (metadata types text/text/text/date/text): in WEST
+summer they show UTC+1 (a 23:45 UTC record carries the NEXT local date and 00:45), so they are
+validated as genuine JSON strings with canonical shapes and internal consistency
+(date == ano-mes-dia) but NEVER equated with the authoritative UTC datahora, and no local
+offset is recomputed here. No status/quality surface exists on this dataset, so flag_raw=None.
 
-Recorded evidence: tests/ingest/fixtures/eredes/ (2026-11-12, MANIFEST.json). Cadence and units
+Recorded evidence: tests/ingest/fixtures/eredes/ (winter 2026-11-10 window and WEST-summer
+2026-04-01 window, 2026-11-12, MANIFEST.json). Cadence and units
 are publisher facts from the metadata; the independent verification channel is the same
 portal's /exports/csv (different endpoint AND format) — see ingest/verifiers/eredes.py.
 """
 import json
 import re
 from collections.abc import Iterator
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from ingest.http import Http
 from ingest.models import SeriesSpec
@@ -62,6 +68,8 @@ _WHERE = re.compile(r'datahora >= "(\d{4}-\d{2}-\d{2})" AND datahora < "(\d{4}-\
 # enforced downstream by validate->normalize_period).
 _DATAHORA = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+00:00")
 _NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")  # observed token grammar (decimal '.', float tails)
+_WALL_DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+_WALL_TIME = re.compile(r"([01][0-9]|2[0-3]):[0-5][0-9]")
 
 
 def parse_native_code(code: str | None) -> tuple[str, str]:
@@ -114,6 +122,27 @@ def _text(v, what: str) -> str:
     return v
 
 
+def _wall_time_echo(rec: dict) -> None:
+    """dia/mes/ano/date/time are the publisher's LISBON-LOCAL wall-time echo of the period: in
+    WEST summer they show UTC+1, so a 23:45 UTC record legitimately carries the next local date
+    and 00:45. They must be genuine JSON strings with canonical shapes and internal consistency
+    (date == ano-mes-dia), but they are NEVER equated with the authoritative UTC datahora and no
+    local offset is recomputed here."""
+    d = _text(rec["date"], "date")
+    if _WALL_DATE.fullmatch(d) is None:
+        raise ValueError(f"E-REDES date echo is not canonical YYYY-MM-DD: {d!r}")
+    try:
+        dd = date.fromisoformat(d)
+    except ValueError as e:
+        raise ValueError(f"E-REDES date echo is not a real Gregorian date: {d!r}") from e
+    if (_text(rec["ano"], "ano") != f"{dd.year:04d}"
+            or _text(rec["mes"], "mes") != f"{dd.month:02d}"
+            or _text(rec["dia"], "dia") != f"{dd.day:02d}"):
+        raise ValueError(f"E-REDES dia/mes/ano echo columns disagree with date {d!r}")
+    if _WALL_TIME.fullmatch(_text(rec["time"], "time")) is None:
+        raise ValueError(f"E-REDES time echo is not canonical HH:MM: {rec['time']!r}")
+
+
 def _total_count(doc, what: str) -> int:
     tc = doc.get("total_count") if isinstance(doc, dict) else None
     if type(tc) is not _Num or not re.fullmatch(r"[0-9]+", tc):
@@ -156,6 +185,11 @@ def _assert_metadata(body: bytes, dataset: str) -> None:
     ts = by_name.get("datahora")
     if ts is None or ts.get("type") != "datetime":
         raise ValueError("E-REDES datahora field missing or not datetime")
+    for name, typ in {"dia": "text", "mes": "text", "ano": "text", "date": "date",
+                      "time": "text"}.items():
+        f = by_name.get(name)
+        if f is None or f.get("type") != typ:
+            raise ValueError(f"E-REDES wall-time echo field {name!r} missing or not {typ}")
     for name, label in FIELD_LABELS.items():
         f = by_name.get(name)
         if f is None or f.get("type") != "double":
@@ -201,7 +235,7 @@ class EredesSource:
         if (from_ts is None) != (to_ts is None):
             raise ValueError("E-REDES needs both from_ts and to_ts, or neither")
         if from_ts is None:
-            t = today or date.today()
+            t = today or datetime.now(timezone.utc).date()  # contract UTC clock
             first = t - timedelta(days=DEFAULT_RECENT_DAYS)
             last = t  # today is running/partial; the portal lags ~1 day, overlap is bounded
         else:
@@ -342,14 +376,7 @@ class EredesSource:
                 if not _DATAHORA.fullmatch(t_raw):
                     raise ValueError(f"E-REDES datahora is not the canonical UTC "
                                      f"quarter-hour spelling: {t_raw!r}")
-                # echo-column consistency: dia/mes/ano/date/time must repeat datahora exactly
-                if (_text(rec["date"], "date") != t_raw[:10]
-                        or _text(rec["time"], "time") != t_raw[11:16]
-                        or _text(rec["dia"], "dia") != t_raw[8:10]
-                        or _text(rec["mes"], "mes") != t_raw[5:7]
-                        or _text(rec["ano"], "ano") != t_raw[:4]):
-                    raise ValueError(f"E-REDES record's dia/mes/ano/date/time echo columns "
-                                     f"disagree with datahora {t_raw!r}")
+                _wall_time_echo(rec)
                 if date.fromisoformat(t_raw[:10]) != day:
                     raise ValueError(f"E-REDES record {t_raw!r} sits outside its requested "
                                      f"day window {where!r}")

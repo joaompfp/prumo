@@ -88,9 +88,27 @@ def test_verifier_missing_period_is_not_found_not_a_crash():
     tampered = vbody("window_csv").replace(
         b"2026-11-10T00:15:00+00:00;10", b"2026-11-10T01:15:00+00:00;10", 1)
     with pytest.raises(ValueError, match="time|repeats datahora"):
-        # the echoed columns now disagree with datahora (or it collides with row 01:15) -
-        # fail closed either way
+        # it collides with row 01:15 (the timestamp duplicate is still fail-closed; the
+        # withdrawn aux-vs-UTC equality guard no longer plays a role)
         EredesVerifier().check([_item(*CASES[1][:2])],
+                               VerifyFixtureHttp({"window_csv": tampered}))
+
+
+@pytest.mark.parametrize("old,new,match", [
+    (b"2026-11-10T00:30:00+00:00;10;11;2026;2026-11-10;00:30",
+     b"2026-11-10T00:30:00+00:00;10;11;2026;2026-11-31;00:30", "Gregorian"),  # unreal date
+    (b"2026-11-10T00:30:00+00:00;10;11;2026;2026-11-10;00:30",
+     b"2026-11-10T00:30:00+00:00;10;11;2026;10-11-2026;00:30", "canonical"),  # wrong shape
+    (b"2026-11-10T00:30:00+00:00;10;11;2026;2026-11-10;00:30",
+     b"2026-11-10T00:30:00+00:00;11;11;2026;2026-11-10;00:30", "disagree"),   # dia != date
+    (b"2026-11-10T00:30:00+00:00;10;11;2026;2026-11-10;00:30",
+     b"2026-11-10T00:30:00+00:00;10;11;2026;2026-11-10;0:30", "time"),        # bad HH:MM
+])
+def test_verifier_aux_wall_time_cells_fail_closed(old, new, match):
+    tampered = vbody("window_csv").replace(old, new, 1)
+    assert tampered != vbody("window_csv")
+    with pytest.raises(ValueError, match=match):
+        EredesVerifier().check([_item(*CASES[0][:2])],
                                VerifyFixtureHttp({"window_csv": tampered}))
 
 
@@ -299,3 +317,54 @@ def test_run_with_refetch_verifies_the_registered_verifier(env):
     [(passed,)] = q(db, "SELECT passed FROM verification")
     assert passed == 1
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(288,)]
+
+
+# --- genuine WEST-summer window (C1 regression, 2026-04-01 UTC day) ------------------------------
+
+# Named exact samples from the genuine summer_window_csv (byte-decimal-identical to the JSON
+# channel at archiving time; aux cells are Lisbon wall time and deliberately NOT echoed here).
+SUMMER_CASES = [  # (series, period, value)
+    ("eredes.production_market.PT", "2026-04-01T00:00:00+00:00", "945304.0"),
+    ("eredes.production_special.PT", "2026-04-01T01:00:00+00:00", "406955.266"),
+    ("eredes.production_total.PT", "2026-04-01T12:00:00+00:00", "1423799.417"),
+    ("eredes.production_market.PT", "2026-04-01T22:45:00+00:00", "1278743.0"),
+    ("eredes.production_total.PT", "2026-04-01T23:45:00+00:00", "1369057.51"),
+]
+
+
+def _summer_source():
+    return EredesSource(from_ts="2026-04-01T00:00:00+00:00", to_ts="2026-04-02T00:00:00+00:00")
+
+
+def test_verifier_reads_summer_cases_from_the_wall_time_export():
+    results = EredesVerifier().check([_item(s, p) for s, p, _ in SUMMER_CASES],
+                                     VerifyFixtureHttp())
+    assert [(r.series_id, r.period, r.observed_text, r.observed_unit, r.observed_flag)
+            for r in results] == [(s, p, v, "kWh", None) for s, p, v in SUMMER_CASES]
+    assert all(r.evidence for r in results)
+
+
+def test_run_with_refetch_verifies_and_serves_the_summer_window(env):
+    """C1 end-to-end regression: the genuine April archive (rejected at the live gate by the
+    withdrawn guard) runs the REGISTERED pipeline to verified, serves 288 obs under CC BY 4.0,
+    and every sampled item's evidence replays offline from the raw store."""
+    db, specs, store, clock = env
+    v = EredesVerifier()
+    register_verifier(v)
+    res = run_with_refetch(db, store, _summer_source(), v, specs, _BothChannels(), size=50,
+                           now=clock, max_attempts=1)
+    assert res.state == "verified"
+    [(passed,)] = q(db, "SELECT passed FROM verification")
+    assert passed == 1
+    assert q(db, "SELECT COUNT(*) FROM served_observation") == [(288,)]
+    assert q(db, "SELECT value_text FROM served_observation WHERE series_id="
+                 "'eredes.production_total.PT' AND period='2026-04-01T23:45:00+00:00'") == \
+        [("1369057.51",)]
+    rows = q(db, "SELECT id, evidence_url, evidence_sha256 FROM verification_item")
+    for item_id, url, sha in rows:
+        blob = store.load(store.root / "verify-eredes" / sha[:2] / sha)  # raises if altered
+        rec_csv, rec_meta = decode_evidence(blob)
+        assert url == VMANIFEST["summer_window_csv"]["url"] == rec_csv["url"]
+        assert rec_csv["body"] == vbody("summer_window_csv")
+        assert rec_meta["body"] == vbody("metadata")
+        assert replay_item(db, store, item_id) is True

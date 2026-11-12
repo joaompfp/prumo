@@ -21,6 +21,9 @@ _Loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
 
 # The genuine window the fixtures cover: 2026-11-10 (UTC day, 96 quarter-hour records).
 WINDOW = ("2026-11-10T00:00:00+00:00", "2026-11-11T00:00:00+00:00")
+# The genuine WEST-summer window: 2026-04-01 (UTC day; the dia/mes/ano/date/time echo is LISBON
+# LOCAL wall time = UTC+1, so the 23:45 UTC record carries date 2026-04-02 and time 00:45).
+SUMMER_WINDOW = ("2026-04-01T00:00:00+00:00", "2026-04-02T00:00:00+00:00")
 
 
 @cache
@@ -61,7 +64,7 @@ class FixtureHttp:
         self.override = override or {}
         self.calls: list[str] = []
         self.routes = {_norm(m): name for name, m in MANIFEST["sets"].items()
-                       if name != "window_csv"}  # the CSV set belongs to the verifier channel
+                       if not name.endswith("_csv")}  # CSV sets belong to the verifier channel
         self.urls = {name: m["url"] for name, m in MANIFEST["sets"].items()}
 
     def get(self, url, params=None, headers=None, timeout=None):

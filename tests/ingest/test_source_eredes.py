@@ -2,7 +2,7 @@
 2026-11-12, MANIFEST.json). Synthetic doubles/mutations are labelled synthetic in-line.
 """
 import json
-from datetime import date
+from datetime import date, datetime, timezone
 
 import pytest
 
@@ -12,7 +12,14 @@ from ingest.registry import sync_registry
 from ingest.sources import RawResponse
 from ingest.sources.eredes import PAGE_SIZE, PRODUCTION_DATASET, EredesSource, parse_native_code
 from ingest.validate import validate
-from tests.ingest.eredes_fixtures import FixtureHttp, all_specs, body, registry_specs
+from tests.ingest.eredes_fixtures import (
+    MANIFEST,
+    SUMMER_WINDOW,
+    FixtureHttp,
+    all_specs,
+    body,
+    registry_specs,
+)
 
 # Named exact samples from the genuine recorded window (window_json.body, byte-checked against
 # the independent exports/csv of the same window at recording time).
@@ -65,6 +72,20 @@ def test_parse_native_code_rejects_unreviewed(code):
 def test_default_window_is_the_last_complete_utc_days():
     src = EredesSource(today=date(2026, 11, 12))
     assert src.days == (date(2026, 11, 9), date(2026, 11, 10), date(2026, 11, 11))
+
+
+def test_default_window_uses_the_utc_clock_not_host_local(monkeypatch):
+    """M3 fix: the default 'today' comes from datetime.now(timezone.utc), never date.today()"""
+    import ingest.sources.eredes as mod
+
+    class FakeDatetime:
+        @staticmethod
+        def now(tz=None):
+            assert tz is timezone.utc
+            return datetime(2026, 11, 12, 23, 30, tzinfo=timezone.utc)
+
+    monkeypatch.setattr(mod, "datetime", FakeDatetime)
+    assert EredesSource().days == (date(2026, 11, 9), date(2026, 11, 10), date(2026, 11, 11))
 
 
 def test_explicit_window_days():
@@ -271,10 +292,29 @@ def test_parse_rejects_unknown_record_key():
                                                            b'"dgm": 925741.0, "quality": "Q"'))
 
 
-def test_parse_rejects_date_column_inconsistent_with_datahora():
-    with pytest.raises(ValueError, match="date|dia|mes|ano|time"):
-        _window_source().parse(all_specs(), _mutate_window(b'"date": "2026-11-10"',
-                                                           b'"date": "2026-11-11"'))
+@pytest.mark.parametrize("old,new,match", [
+    (b'"date": "2026-11-10"', b'"date": "10-11-2026"', "canonical"),   # wrong shape
+    (b'"date": "2026-11-10"', b'"date": "2026-11-31"', "Gregorian"),   # not a real date
+    (b'"date": "2026-11-10"', b'"date": 20261110', "string"),          # not a JSON string
+    (b'"time": "00:15"', b'"time": "0:15"', "time"),                   # not canonical HH:MM
+    (b'"time": "00:15"', b'"time": "00:60"', "time"),                  # not a real minute
+    (b'"dia": "10"', b'"dia": "11"', "disagree"),                      # dia/mes/ano != date
+    (b'"ano": "2026"', b'"ano": "2027"', "disagree"),
+])
+def test_parse_rejects_malformed_aux_wall_time_echo(old, new, match):
+    """The Lisbon-local wall-time echo is genuine-string, canonically shaped and internally
+    consistent; a cell that is merely DIFFERENT from the UTC datahora (summer time) is fine."""
+    assert body("window_json").count(old) >= 1
+    with pytest.raises(ValueError, match=match):
+        _window_source().parse(all_specs(), _mutate_window(old, new))
+
+
+def test_parse_rejects_out_of_window_record():
+    """A datahora outside the requested day fails the whole window (the real identity guard;
+    a summer 23:45 UTC record IS inside its own UTC day and must pass)."""
+    with pytest.raises(ValueError, match="outside"):
+        _window_source().parse(all_specs(), _mutate_window(b"2026-11-10T23:45:00+00:00",
+                                                           b"2026-11-11T23:45:00+00:00"))
 
 
 def test_parse_rejects_incomplete_window():
@@ -345,6 +385,66 @@ def test_full_pipeline_records_window_with_provenance(db, tmp_path):
                                          (meta_row,)).fetchone()[0]
     served = db.conn.execute("SELECT COUNT(*) FROM served_observation").fetchone()[0]
     assert served == 0  # pending-verification is never served
+
+
+# --- genuine WEST-summer window (C1 regression): UTC datahora authoritative, wall-time echo -
+
+# Named exact samples from the genuine summer window (summer_window_json.body); all 288 dgm/
+# pre/total tokens byte-checked against the independent summer_window_csv at archiving time.
+SUMMER_EXACT = [  # (period UTC, dgm, pre, total, aux wall date, aux wall time)
+    ("2026-04-01T00:00:00+00:00", "945304.0", "410629.514", "1355933.514", "2026-04-01", "01:00"),
+    ("2026-04-01T01:00:00+00:00", "862817.0", "406955.266", "1269772.266", "2026-04-01", "02:00"),
+    ("2026-04-01T12:00:00+00:00", "1150468.0", "273331.417", "1423799.417", "2026-04-01", "13:00"),
+    ("2026-04-01T22:45:00+00:00", "1278743.0", "192096.519", "1470839.519", "2026-04-01", "23:45"),
+    ("2026-04-01T23:45:00+00:00", "1195557.0", "173500.51", "1369057.51", "2026-04-02", "00:45"),
+]
+
+
+def _summer_source():
+    return EredesSource(from_ts=SUMMER_WINDOW[0], to_ts=SUMMER_WINDOW[1])
+
+
+def _summer_responses():
+    def rr(name):
+        m = MANIFEST["sets"][name]
+        return RawResponse(url=m["url"], params=m["params"], status=m["status"],
+                           body=body(name))
+    return [rr("metadata"), rr("summer_window_json")]
+
+
+def test_summer_fixture_proves_the_wall_time_property():
+    """Fixture evidence shape: without these genuine properties the C1 regression tests below
+    would prove nothing."""
+    doc = json.loads(body("summer_window_json"), parse_float=str)
+    assert doc["total_count"] == 96 and len(doc["results"]) == 96
+    first, last = doc["results"][0], doc["results"][-1]
+    assert (first["datahora"], first["time"]) == ("2026-04-01T00:00:00+00:00", "01:00")
+    assert (last["datahora"], last["date"], last["time"]) == \
+        ("2026-04-01T23:45:00+00:00", "2026-04-02", "00:45")
+    cross = [r for r in doc["results"] if r["date"] != r["datahora"][:10]]
+    assert len(cross) == 4 and all(r["date"] == "2026-04-02" for r in cross)
+
+
+def test_parse_genuine_summer_window_accepts_wall_time_echo():
+    """C1 regression: this genuine archive was rejected by the withdrawn echo-equals-UTC guard
+    ("dia/mes/ano/date/time echo columns disagree with datahora '2026-04-01T00:00:00+00:00'")."""
+    rows = _summer_source().parse(all_specs(), _summer_responses())
+    assert all(len(r) == 96 for r in rows.values())
+    by_key = {s.id: {(r.period_raw, r.value_raw) for r in rows[s.id]} for s in all_specs()}
+    for period, dgm, pre, total, _wdate, _wtime in SUMMER_EXACT:
+        assert (period, dgm) in by_key["eredes.production_market.PT"]
+        assert (period, pre) in by_key["eredes.production_special.PT"]
+        assert (period, total) in by_key["eredes.production_total.PT"]
+
+
+def test_summer_tokens_validate_to_canonical_utc_observations():
+    rows = _summer_source().parse(all_specs(), _summer_responses())
+    spec = registry_specs()["eredes.production_total.PT"]
+    obs, rej = validate(spec, rows[spec.id])
+    assert not rej and len(obs) == 96
+    o = [o for o in obs if o.period == "2026-04-01T23:45:00+00:00"][0]
+    assert o.value_text == "1369057.51" and float(o.value) == 1369057.51
+    assert o.status_flag is None and o.period.endswith("+00:00")  # native UTC ts unchanged
 
 
 def test_pipeline_html_200_body_is_failed_fetch(db, tmp_path):

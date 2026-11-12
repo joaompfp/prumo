@@ -14,6 +14,11 @@ Channel mechanics (genuine recorded fixtures tests/ingest/fixtures/eredes/, 2026
   decimals, datahora in the canonical UTC spelling when timezone=UTC is requested. All 288
   tokens of the recorded one-day window are byte-identical to the JSON channel (checked at
   recording time, MANIFEST.json). The where clause is honored (the archive is windowed).
+- dia/mes/ano/date/time are the publisher's LISBON-LOCAL wall-time echo of the period (WEST =
+  UTC+1 in summer: the genuine summer archive carries date 2026-04-02 / time 00:45 at
+  2026-04-01T23:45:00+00:00). They are validated for canonical shape and internal consistency
+  (date == ano-mes-dia) but NEVER equated with the authoritative UTC datahora of column 0, and
+  no local offset is recomputed here.
 - The dataset has NO per-record status/quality surface on either channel -> observed_flag is
   honestly None. Units come from the metadata field labels ('Market (kWh)' etc.), so BOTH the
   deciding CSV and the metadata response are archived per item.
@@ -50,6 +55,29 @@ _NATIVE_CODE = re.compile(r"([a-z0-9][a-z0-9-]*):(dgm|pre|total)$")
 _PERIOD = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+00:00")
 _NUMBER = re.compile(r"-?[0-9]+(\.[0-9]+)?")  # observed CSV token grammar (decimal '.')
 _LABEL_UNIT = re.compile(r"[^(]*\(([^()]+)\)$")
+_WALL_DATE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+_WALL_TIME = re.compile(r"([01][0-9]|2[0-3]):[0-5][0-9]")
+
+
+def _wall_cells(row: list[str]) -> None:
+    """dia/mes/ano/date/time CSV cells are the publisher's LISBON-LOCAL wall-time echo of the
+    period: canonical shapes and internal consistency (date == ano-mes-dia) only, NEVER equated
+    with the authoritative UTC datahora of column 0 (WEST summer shows UTC+1, so a 23:45 UTC
+    row legitimately carries the next local date and 00:45). DUPLICATE shape rules of the
+    collector's, ON PURPOSE."""
+    d = row[4]
+    if _WALL_DATE.fullmatch(d) is None:
+        raise ValueError(f"E-REDES CSV date cell is not canonical YYYY-MM-DD: {row!r}")
+    try:
+        dd = date.fromisoformat(d)
+    except ValueError as e:
+        raise ValueError(f"E-REDES CSV date cell is not a real Gregorian date: {row!r}") from e
+    if (row[3] != f"{dd.year:04d}" or row[2] != f"{dd.month:02d}"
+            or row[1] != f"{dd.day:02d}"):
+        raise ValueError(f"E-REDES CSV row's dia/mes/ano cells disagree with date {d!r}: "
+                         f"{row!r}")
+    if _WALL_TIME.fullmatch(row[5]) is None:
+        raise ValueError(f"E-REDES CSV time cell is not canonical HH:MM: {row!r}")
 
 
 def _dataset_and_field(code) -> tuple[str, str]:
@@ -154,11 +182,7 @@ class EredesVerifier:
                 if _PERIOD.fullmatch(ts) is None:
                     raise ValueError(f"E-REDES CSV datahora is not the canonical UTC "
                                      f"spelling: {ts!r}")
-                # echo-column consistency: dia/mes/ano/date/time must repeat datahora exactly
-                if not (row[4] == ts[:10] and row[5] == ts[11:16] and row[1] == ts[8:10]
-                        and row[2] == ts[5:7] and row[3] == ts[:4]):
-                    raise ValueError(f"E-REDES CSV row's dia/mes/ano/date/time echo columns "
-                                     f"disagree with datahora {ts!r}: {row!r}")
+                _wall_cells(row)
                 if ts in by_ts:
                     raise ValueError(f"E-REDES CSV export repeats datahora {ts!r}")
                 if not (first.isoformat() <= ts[:10] < (last + timedelta(days=1)).isoformat()):
