@@ -223,17 +223,31 @@ def _migrate(conn: sqlite3.Connection) -> None:
         "version TEXT PRIMARY KEY, applied_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP) STRICT"
     )
     done = {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
-    for f in sorted(MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql")):
-        if f.stem in done:
-            continue
-        record = f"INSERT INTO schema_migration(version) VALUES ('{f.stem}');"
-        try:
-            # executescript is required for multi-statement files (triggers contain ';')
-            conn.executescript(f"BEGIN;\n{f.read_text()}\n{record}\nCOMMIT;")
-        except BaseException:
-            if conn.in_transaction:
-                conn.execute("ROLLBACK")
-            raise
+    pending = [f for f in sorted(MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql"))
+               if f.stem not in done]
+    if not pending:
+        return
+    # A migration that rebuilds a referenced table (0006 rebuilds `series` to extend its
+    # frequency CHECK) needs foreign_keys OFF at statement time: with FK ON, SQLite fails
+    # the DROP on immediate child references and silently rewrites child REFERENCES clauses
+    # during RENAME. The pragma is a transaction no-op, so it is toggled here, outside the
+    # per-file transaction; integrity of the result is verified with foreign_key_check.
+    conn.execute("PRAGMA foreign_keys=OFF")
+    try:
+        for f in pending:
+            record = f"INSERT INTO schema_migration(version) VALUES ('{f.stem}');"
+            try:
+                # executescript is required for multi-statement files (triggers contain ';')
+                conn.executescript(f"BEGIN;\n{f.read_text()}\n{record}\nCOMMIT;")
+            except BaseException:
+                if conn.in_transaction:
+                    conn.execute("ROLLBACK")
+                raise
+        bad = conn.execute("PRAGMA foreign_key_check").fetchall()
+        if bad:
+            raise RuntimeError(f"foreign key violations after migration: {bad[:5]}")
+    finally:
+        conn.execute("PRAGMA foreign_keys=ON")
 
 
 def open_db(path: str | Path) -> Db:

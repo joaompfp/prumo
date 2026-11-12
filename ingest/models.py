@@ -8,7 +8,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator, model_validator
 
-Frequency = Literal["A", "S", "Q", "M", "D"]
+Frequency = Literal["A", "S", "Q", "M", "D", "PT15M"]
 
 
 def _fold(s: str) -> str:
@@ -30,6 +30,12 @@ _PATTERNS: dict[str, list[re.Pattern]] = {
     "M": [re.compile(r"(?P<y>\d{4})-?M?(?P<m>\d{2})$", re.I),
           re.compile(r"(?P<mn>[a-z]+) de (?P<y>\d{4})$")],
     "D": [re.compile(r"(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})$")],
+    # Native quarter-hour observations (Task 16, E-REDES): a single canonical UTC spelling
+    # 'YYYY-MM-DDTHH:MM:SS+00:00' with minute 00/15/30/45 and seconds 00. Anything else
+    # ('Z', another offset, a space separator, fractional seconds, a non-Gregorian date,
+    # non-ASCII digits) is rejected rather than guessed - no local-time ambiguity, ever.
+    "PT15M": [re.compile(r"(?P<y>[0-9]{4})-(?P<m>[0-9]{2})-(?P<d>[0-9]{2})t"
+                         r"(?P<h>[0-9]{2}):(?P<mi>[0-9]{2}):(?P<ss>[0-9]{2})\+00:00$")],
 }
 
 
@@ -59,6 +65,13 @@ def normalize_period(raw: str, frequency: str) -> str:
                 return date(int(y), int(g["m"]), int(g["d"])).isoformat()
             except ValueError:
                 pass
+        if frequency == "PT15M" and g["mi"] in ("00", "15", "30", "45") and g["ss"] == "00":
+            try:  # actual Gregorian date and hour; rejects 02-30, 24:00, month 13, ...
+                datetime(int(y), int(g["m"]), int(g["d"]), int(g["h"]))
+            except ValueError:
+                pass
+            else:
+                return f"{y}-{g['m']}-{g['d']}T{g['h']}:{g['mi']}:{g['ss']}+00:00"
         break
     raise ValueError(f"cannot normalize period {raw!r} as frequency {frequency}")
 

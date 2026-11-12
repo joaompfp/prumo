@@ -3,6 +3,50 @@ from pydantic import ValidationError
 
 from ingest.models import Observation, normalize_period, parse_number
 
+# --- PT15M: native quarter-hour timestamps (Task 16; single canonical UTC spelling) ----------
+
+@pytest.mark.parametrize("raw", [
+    "2026-11-10T23:45:00+00:00",
+    "2023-01-01T00:00:00+00:00",  # E-REDES production first record (discovery fixture 04)
+    "2026-11-11T00:00:00+00:00",  # E-REDES production latest record (discovery fixture 03)
+    "2026-10-25T00:45:00+00:00",  # Europe/Lisbon DST end day: UTC is unaffected
+    "2026-10-25T01:15:00+00:00",
+    "2026-03-29T01:30:00+00:00",  # Europe/Lisbon DST start day
+    "2024-02-29T12:15:00+00:00",  # leap day
+])
+def test_normalize_period_pt15m_accepts_canonical(raw):
+    assert normalize_period(raw, "PT15M") == raw
+
+
+@pytest.mark.parametrize("raw", [
+    "2026-11-10T23:46:00+00:00",      # minute not a quarter hour
+    "2026-11-10T23:01:00+00:00",
+    "2026-11-10T23:45:01+00:00",      # seconds must be 00
+    "2026-11-10T23:45:00",            # missing UTC offset
+    "2026-11-10T23:45:00Z",           # 'Z' spelling is not the canonical '+00:00'
+    "2026-11-10 23:45:00+00:00",      # space separator, not 'T'
+    "2026-11-10T23:45:00+01:00",      # non-UTC offset
+    "2026-11-10T23:45:00.000+00:00",  # fractional seconds
+    "2026-11-10T23:45+00:00",         # missing seconds
+    "2026-02-30T00:00:00+00:00",      # no such Gregorian date
+    "2025-02-29T00:00:00+00:00",      # 2025 is not a leap year
+    "2026-13-10T00:00:00+00:00",      # month 13
+    "2026-11-10T24:00:00+00:00",      # no such hour
+    "2026-11-10",                     # a date is D, not PT15M
+    "٢٠٢٦-١١-١٠T٢٣:٤٥:٠٠+٠٠:٠٠",       # non-ASCII digits (Arabic-Indic)
+    "2026-11-10T23:45:00-00:00",      # negative zero offset is not the canonical spelling
+    " 2026-11-10T23:45:00+00:00Z",    # trailing junk
+])
+def test_normalize_period_pt15m_rejects_noncanonical(raw):
+    with pytest.raises(ValueError):
+        normalize_period(raw, "PT15M")
+
+
+@pytest.mark.parametrize("freq", ["A", "S", "Q", "M", "D"])
+def test_normalize_period_pt15m_timestamp_is_not_a_coarser_period(freq):
+    with pytest.raises(ValueError):
+        normalize_period("2026-11-10T23:45:00+00:00", freq)
+
 
 @pytest.mark.parametrize("raw,freq,expected", [
     ("Setembro de 2025", "M", "2025-09"),
