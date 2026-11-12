@@ -33,10 +33,19 @@ sources:
     attribution: 'Source: Eurostat'
     redistribution_ok: true
   fred:
+    # FRED API Terms of Use (licence_url), read 2026-11-12 (Task 14 evidence
+    # docs/superpowers/handoff/evidence/task-14-fred/fred-api-terms.html, HTTP 200): FRED grants
+    # API ACCESS but defers third-party content rights to each series' owner ("making the data
+    # series available through the FRED API does not constitute such permission"; "you must
+    # contact the data owner to obtain permission"). The 12 active series are IMF
+    # Primary Commodity Prices ("Reprinted with permission" per FRED metadata); IMF redistribution
+    # terms were NOT obtained (imf.org terms page unreachable at intake). API accessibility is
+    # not redistribution consent - the source is withheld until an IMF grant is confirmed.
     licence: UNVERIFIED — builder must confirm before serving
     licence_url: https://fred.stlouisfed.org/docs/api/terms_of_use.html
     attribution: 'Source: IMF Primary Commodity Prices, via FRED (Federal Reserve Bank of St. Louis)'
     redistribution_ok: false
+    verifiable: true  # independent channel: server-rendered https://fred.stlouisfed.org/data/<CODE> table
   ine:
     licence: CC BY 4.0
     licence_url: https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cont_inst&INST=3585857
@@ -7418,9 +7427,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
   native_code: PALUMUSDM
+  url: https://fred.stlouisfed.org/series/PALUMUSDM
+  active: true
 - id: fred.brent_oil.WORLD
   source: fred
   indicator_key: fred_brent_oil.WORLD.M
@@ -7428,9 +7440,12 @@ series:
   theme: energy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Barrel
   decimal: .
+  seasonal_adjustment: NSA
   native_code: POILBREUSDM
+  url: https://fred.stlouisfed.org/series/POILBREUSDM
+  active: true
 - id: fred.coffee.WORLD
   source: fred
   indicator_key: fred_coffee.WORLD.M
@@ -7438,9 +7453,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Cents per Pound
   decimal: .
+  seasonal_adjustment: NSA
   native_code: PCOFFOTMUSDM
+  url: https://fred.stlouisfed.org/series/PCOFFOTMUSDM
+  active: true
 - id: fred.copper.WORLD
   source: fred
   indicator_key: fred_copper.WORLD.M
@@ -7448,9 +7466,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
   native_code: PCOPPUSDM
+  url: https://fred.stlouisfed.org/series/PCOPPUSDM
+  active: true
 - id: fred.corn.WORLD
   source: fred
   indicator_key: fred_corn.WORLD.M
@@ -7458,9 +7479,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
   native_code: PMAIZMTUSDM
+  url: https://fred.stlouisfed.org/series/PMAIZMTUSDM
+  active: true
 - id: fred.cotton.WORLD
   source: fred
   indicator_key: fred_cotton.WORLD.M
@@ -7468,9 +7492,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Cents per Pound
   decimal: .
+  seasonal_adjustment: NSA
   native_code: PCOTTINDUSDM
+  url: https://fred.stlouisfed.org/series/PCOTTINDUSDM
+  active: true
 - id: fred.natural_gas.WORLD
   source: fred
   indicator_key: fred_natural_gas.WORLD.M
@@ -7481,6 +7508,7 @@ series:
   unit: USD
   decimal: .
   native_code: MHHNGSP
+  active: false
 - id: fred.wheat.WORLD
   source: fred
   indicator_key: fred_wheat.WORLD.M
@@ -7488,9 +7516,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
   native_code: PWHEAMTUSDM
+  url: https://fred.stlouisfed.org/series/PWHEAMTUSDM
+  active: true
 - id: ine.hicp_yoy.PT
   source: ine
   indicator_key: hicp_yoy.PT.M
@@ -8538,8 +8569,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
+  native_code: PIORECRUSDM
+  url: https://fred.stlouisfed.org/series/PIORECRUSDM
+  active: true
 - id: fred.iron_ore.WORLD
   source: fred
   indicator_key: iron_ore_price.WORLD.M
@@ -8550,6 +8585,7 @@ series:
   unit: USD
   decimal: .
   native_code: PIORECRUSDM
+  active: false
 - id: fred.commodity_nickel.WORLD
   source: fred
   indicator_key: nickel_price.WORLD.M
@@ -8557,8 +8593,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
+  native_code: PNICKUSDM
+  url: https://fred.stlouisfed.org/series/PNICKUSDM
+  active: true
 - id: fred.nickel.WORLD
   source: fred
   indicator_key: nickel_price.WORLD.M
@@ -8569,6 +8609,7 @@ series:
   unit: USD
   decimal: .
   native_code: PNICKUSDM
+  active: false
 - id: oecd.cli.PT
   source: oecd
   indicator_key: oecd_cli.PT.M
@@ -8794,8 +8835,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
+  native_code: PSOYBUSDM
+  url: https://fred.stlouisfed.org/series/PSOYBUSDM
+  active: true
 - id: fred.soybean.WORLD
   source: fred
   indicator_key: soybean_price.WORLD.M
@@ -8806,6 +8851,7 @@ series:
   unit: USD
   decimal: .
   native_code: PSOYBUSDM
+  active: false
 - id: fred.steel.WORLD
   source: fred
   indicator_key: steel_price.WORLD.M
@@ -8816,6 +8862,7 @@ series:
   unit: USD
   decimal: .
   native_code: WPU101
+  active: false
 - id: fred.commodity_steel.WORLD
   source: fred
   indicator_key: steel_price.WORLD.M
@@ -8825,6 +8872,7 @@ series:
   frequency: M
   unit: USD
   decimal: .
+  active: false
 - id: fred.commodity_sugar.WORLD
   source: fred
   indicator_key: sugar_price.WORLD.M
@@ -8832,8 +8880,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Cents per Pound
   decimal: .
+  seasonal_adjustment: NSA
+  native_code: PSUGAISAUSDM
+  url: https://fred.stlouisfed.org/series/PSUGAISAUSDM
+  active: true
 - id: fred.sugar.WORLD
   source: fred
   indicator_key: sugar_price.WORLD.M
@@ -8844,6 +8896,7 @@ series:
   unit: USD
   decimal: .
   native_code: PSUGAISAUSDM
+  active: false
 - id: worldbank.unemployment_wb.AO
   source: worldbank
   indicator_key: unemployment_rate.AO.A
@@ -20051,8 +20104,12 @@ series:
   theme: economy
   geography: WORLD
   frequency: M
-  unit: USD
+  unit: U.S. Dollars per Metric Ton
   decimal: .
+  seasonal_adjustment: NSA
+  native_code: PZINCUSDM
+  url: https://fred.stlouisfed.org/series/PZINCUSDM
+  active: true
 - id: fred.zinc.WORLD
   source: fred
   indicator_key: zinc_price.WORLD.M
@@ -20063,6 +20120,7 @@ series:
   unit: USD
   decimal: .
   native_code: PZINCUSDM
+  active: false
 - id: ine.population.PT
   source: ine
   indicator_key: ine_population.PT.A
