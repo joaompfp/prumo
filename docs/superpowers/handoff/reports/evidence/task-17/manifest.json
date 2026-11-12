@@ -1,0 +1,46 @@
+{
+  "created_at": "2026-11-12T22:06:01.912744+00:00",
+  "kind": "controller-created audit capsules, not publisher archives",
+  "capsules": [
+    {
+      "file": "capture-live.tar.gz",
+      "bytes": 176506,
+      "sha256": "22daea0624b66594eaf9b93419da881ea288ccba387e95196220c1bf6fca2c4e",
+      "regular_members": 13,
+      "content_addressed_members_rehashed": 9,
+      "mode": "capture-live",
+      "source_code": "6cf67774155329904f0d2c8edd43869dd9db49c0",
+      "exit_code": 0
+    },
+    {
+      "file": "eredes-live.tar.gz",
+      "bytes": 2576587,
+      "sha256": "133048e88bf2b141e63ca828b4e3e8f8f5fa477f9ef7188ffa4af1cc2924eec8",
+      "regular_members": 275,
+      "content_addressed_members_rehashed": 273,
+      "mode": "eredes-live",
+      "source_code": "d05e24b2948d84e0a0858a6fa3188c3264e52dcb",
+      "exit_code": 0
+    },
+    {
+      "file": "wb-live.tar.gz",
+      "bytes": 211335,
+      "sha256": "b58e0ac3810441ea3973e3627485706cf40d71ecb53c10f32a5dc4a519fb4b80",
+      "regular_members": 4,
+      "content_addressed_members_rehashed": 2,
+      "mode": "wb-live",
+      "source_code": "6cf67774155329904f0d2c8edd43869dd9db49c0",
+      "exit_code": 0
+    },
+    {
+      "file": "wb-recorded.tar.gz",
+      "bytes": 511176,
+      "sha256": "9c54befb9cbd9a2e0242b3936d98861983c3b0b5679b984d15c2a836bdc928a9",
+      "regular_members": 11,
+      "content_addressed_members_rehashed": 8,
+      "mode": "wb-recorded",
+      "source_code": "6cf67774155329904f0d2c8edd43869dd9db49c0",
+      "exit_code": 0
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "source": "eredes",
+    "comparisons_reparsed_from_original_bytes": 50,
+    "unique_publisher_responses": 48,
+    "passed": true,
+    "network_forbidden": true
+  },
+  {
+    "source": "worldbank",
+    "comparisons_reparsed_from_original_bytes": 108,
+    "unique_publisher_responses": 2,
+    "passed": true,
+    "network_forbidden": true
+  }
+]
