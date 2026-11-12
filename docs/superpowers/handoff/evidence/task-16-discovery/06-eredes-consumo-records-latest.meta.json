@@ -1,0 +1,15 @@
+{
+ "name": "06-eredes-consumo-records-latest",
+ "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional/records",
+ "params": {
+  "limit": 3,
+  "order_by": "datahora DESC"
+ },
+ "truncated_by_probe": false,
+ "status": 200,
+ "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional/records?limit=3&order_by=datahora+DESC",
+ "elapsed_s": 0.151,
+ "bytes_archived": 718,
+ "content_type": "application/json; charset=utf-8",
+ "fetched_at_utc": "2026-11-12T18:13:33.364272+00:00"
+}

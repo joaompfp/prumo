@@ -1,0 +1,14 @@
+{
+ "name": "10-dadosgov-execucao-orcamental",
+ "url": "https://dados.gov.pt/api/3/action/package_show",
+ "params": {
+  "id": "execucao-orcamental-da-administracao-central"
+ },
+ "truncated_by_probe": false,
+ "status": 404,
+ "final_url": "https://dados.gov.pt/api/3/action/package_show?id=execucao-orcamental-da-administracao-central",
+ "elapsed_s": 0.162,
+ "bytes_archived": 146,
+ "content_type": "application/json",
+ "fetched_at_utc": "2026-11-12T18:13:35.338281+00:00"
+}

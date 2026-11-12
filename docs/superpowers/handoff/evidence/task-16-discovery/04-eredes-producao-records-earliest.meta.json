@@ -1,0 +1,15 @@
+{
+ "name": "04-eredes-producao-records-earliest",
+ "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records",
+ "params": {
+  "limit": 1,
+  "order_by": "datahora ASC"
+ },
+ "truncated_by_probe": false,
+ "status": 200,
+ "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?limit=1&order_by=datahora+ASC",
+ "elapsed_s": 0.29,
+ "bytes_archived": 215,
+ "content_type": "application/json; charset=utf-8",
+ "fetched_at_utc": "2026-11-12T18:13:33.105715+00:00"
+}

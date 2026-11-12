@@ -10,6 +10,10 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-10-base-data-pipeline-design.md` (read it first; this plan implements it).
 
+## Owner amendment: dated-data continuity
+
+The owner authorizes keeping existing BM/E-REDES data usable with honest original fetch dates when refresh channels fail. Maximize automatic updates and provide precise, executable manual refresh procedures. Do not fabricate April E-REDES rows: reconciliation found integration code but no persisted records. Rebuild its previously attempted native national-production integration without aggregation or unit conversion. Technical verification, legacy origin, staleness, and legal eligibility remain separate; failed fresh runs are never relabelled verified. This amendment supersedes the registry-only Task16 exclusion and global disabling of otherwise valid approved-source legacy continuity.
+
 ## Global Constraints
 
 - Runs on f0nix; container `prumo`, Tailscale `100.118.19.6:8088`; public `cae.joao.date` and `joao.date/dados` show "Em manutenção" until project 4.

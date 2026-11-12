@@ -1,0 +1,180 @@
+{
+ "probe": "task-16-discovery",
+ "started_utc": "2026-11-12T18:13:32.549081+00:00",
+ "requests_made": 12,
+ "request_budget": 12,
+ "deadline_s": 120.0,
+ "network_phase_elapsed_s": 3.46,
+ "host": "f3nix",
+ "requests": [
+  {
+   "name": "01-eredes-catalog",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets",
+   "params": {
+    "limit": 100
+   },
+   "truncated_by_probe": true,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets?limit=100",
+   "elapsed_s": 0.653,
+   "bytes_archived": 204800,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:32.549081+00:00"
+  },
+  {
+   "name": "02-eredes-producao-metadata",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional",
+   "params": null,
+   "truncated_by_probe": false,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional",
+   "elapsed_s": 0.112,
+   "bytes_archived": 14411,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:32.662154+00:00"
+  },
+  {
+   "name": "03-eredes-producao-records-latest",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records",
+   "params": {
+    "limit": 3,
+    "order_by": "datahora DESC"
+   },
+   "truncated_by_probe": false,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?limit=3&order_by=datahora+DESC",
+   "elapsed_s": 0.152,
+   "bytes_archived": 570,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:32.815075+00:00"
+  },
+  {
+   "name": "04-eredes-producao-records-earliest",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records",
+   "params": {
+    "limit": 1,
+    "order_by": "datahora ASC"
+   },
+   "truncated_by_probe": false,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?limit=1&order_by=datahora+ASC",
+   "elapsed_s": 0.29,
+   "bytes_archived": 215,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:33.105715+00:00"
+  },
+  {
+   "name": "05-eredes-consumo-metadata",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional",
+   "params": null,
+   "truncated_by_probe": false,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional",
+   "elapsed_s": 0.107,
+   "bytes_archived": 14065,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:33.212931+00:00"
+  },
+  {
+   "name": "06-eredes-consumo-records-latest",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional/records",
+   "params": {
+    "limit": 3,
+    "order_by": "datahora DESC"
+   },
+   "truncated_by_probe": false,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional/records?limit=3&order_by=datahora+DESC",
+   "elapsed_s": 0.151,
+   "bytes_archived": 718,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:33.364272+00:00"
+  },
+  {
+   "name": "07-eredes-consumo-records-earliest",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional/records",
+   "params": {
+    "limit": 1,
+    "order_by": "datahora ASC"
+   },
+   "truncated_by_probe": false,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/consumo-total-nacional/records?limit=1&order_by=datahora+ASC",
+   "elapsed_s": 0.136,
+   "bytes_archived": 262,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:33.500602+00:00"
+  },
+  {
+   "name": "08-eredes-injetada-metadata",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-injetada-na-rede-de-distribuicao",
+   "params": null,
+   "truncated_by_probe": false,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-injetada-na-rede-de-distribuicao",
+   "elapsed_s": 0.097,
+   "bytes_archived": 13798,
+   "content_type": "application/json; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:33.597903+00:00"
+  },
+  {
+   "name": "09-eredes-producao-exports-csv",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv",
+   "params": {
+    "lang": "pt",
+    "timezone": "Europe/Lisbon"
+   },
+   "truncated_by_probe": true,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=Europe%2FLisbon",
+   "elapsed_s": 1.577,
+   "bytes_archived": 160289,
+   "content_type": "text/csv; charset=utf-8",
+   "fetched_at_utc": "2026-11-12T18:13:35.175131+00:00"
+  },
+  {
+   "name": "10-dadosgov-execucao-orcamental",
+   "url": "https://dados.gov.pt/api/3/action/package_show",
+   "params": {
+    "id": "execucao-orcamental-da-administracao-central"
+   },
+   "truncated_by_probe": false,
+   "status": 404,
+   "final_url": "https://dados.gov.pt/api/3/action/package_show?id=execucao-orcamental-da-administracao-central",
+   "elapsed_s": 0.162,
+   "bytes_archived": 146,
+   "content_type": "application/json",
+   "fetched_at_utc": "2026-11-12T18:13:35.338281+00:00"
+  },
+  {
+   "name": "11-dadosgov-prr",
+   "url": "https://dados.gov.pt/api/3/action/package_show",
+   "params": {
+    "id": "plano-de-recuperacao-e-resiliencia"
+   },
+   "truncated_by_probe": false,
+   "status": 404,
+   "final_url": "https://dados.gov.pt/api/3/action/package_show?id=plano-de-recuperacao-e-resiliencia",
+   "elapsed_s": 0.012,
+   "bytes_archived": 146,
+   "content_type": "application/json",
+   "fetched_at_utc": "2026-11-12T18:13:35.351324+00:00"
+  },
+  {
+   "name": "12-dadosgov-search-execucao",
+   "url": "https://dados.gov.pt/api/3/action/package_search",
+   "params": {
+    "q": "execução orçamental",
+    "rows": 3
+   },
+   "status": 404,
+   "final_url": "https://dados.gov.pt/api/3/action/package_search?q=execu%C3%A7%C3%A3o+or%C3%A7amental&rows=3",
+   "elapsed_s": 0.09,
+   "bytes_archived": 146,
+   "truncated_by_probe": false,
+   "content_type": "application/json",
+   "fetched_at_utc": "2026-11-12T18:13:46.302009+00:00"
+  }
+ ],
+ "completed_utc": "2026-11-12T18:13:46.302553+00:00"
+}
