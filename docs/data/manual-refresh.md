@@ -16,7 +16,7 @@ dados de produção - a captura corre toda num diretório descartável debaixo d
 
 ```bash
 # na máquina com rede
-git clone <url do repositório> prumo-pipeline
+git clone https://github.com/joaompfp/prumo.git prumo-pipeline
 cd prumo-pipeline
 git checkout pipeline-rebuild
 python3.12 -m venv .venv
@@ -35,16 +35,20 @@ A captura corre o fluxo registado completo (coletor + verificador independente) 
 base descartável e grava corpos exatos + manifesto (URL, parâmetros, URL final, estado HTTP
 REAL, data/hora ORIGINAL da recolha, bytes e sha256 de cada resposta).
 
+O diretório dos pacotes é à escolha do operador; os exemplos usam `$HOME/pacotes`
+(criar uma vez com `mkdir -p "$HOME/pacotes"`). A captura recusa diretórios de saída
+existentes não vazios - cada captura usa um diretório NOVO.
+
 Banco Mundial - tudo (18 indicadores ativos):
 
 ```bash
-.venv/bin/python -m ingest capture worldbank --output /caminho/pacotes/bm-$(date -u +%F)
+.venv/bin/python -m ingest capture worldbank --output "$HOME/pacotes/bm-$(date -u +%F)"
 ```
 
 Banco Mundial - um só indicador (grupo completo de geografias, nunca um país):
 
 ```bash
-.venv/bin/python -m ingest capture worldbank --output /caminho/pacotes/bm-pop-$(date -u +%F) \
+.venv/bin/python -m ingest capture worldbank --output "$HOME/pacotes/bm-pop-$(date -u +%F)" \
     --indicator SP.POP.TOTL
 ```
 
@@ -52,13 +56,16 @@ E-REDES - janela de dias UTC explícita (obrigatória; o último dia tem de ser 
 UTC, porque hoje é um dia parcial ainda em curso):
 
 ```bash
-.venv/bin/python -m ingest capture eredes --output /caminho/pacotes/eredes-2026-11-10 \
+.venv/bin/python -m ingest capture eredes --output "$HOME/pacotes/eredes-2026-11-10" \
     --from 2026-11-10 --to 2026-11-10          # um só dia
-.venv/bin/python -m ingest capture eredes --output /caminho/pacotes/eredes-abril \
+.venv/bin/python -m ingest capture eredes --output "$HOME/pacotes/eredes-abril" \
     --from 2026-04-01 --to 2026-04-30          # janela de recuperação
 ```
 
-Limites de rede (valores por omissão razoáveis, todos físicos, redireções incluídas):
+Limites de rede (valores por omissão razoáveis, todos físicos, redireções incluídas; o
+`--deadline` é um limite real de relógio para TODA a fase de rede: cada pedido fica com o
+tempo que falta, um servidor parado é morto ao chegar ao limite e uma resposta tardia é
+descartada em vez de contada como sucesso):
 
 ```bash
     --timeout 30 --max-requests 256 --deadline 300
@@ -80,65 +87,91 @@ captura num diretório NOVO - a captura recusa diretórios existentes não vazio
 
 O pacote é uma pasta com `manifest.json` + `responses/<sha[:2]>/<sha>`. Copiar a pasta
 INTEIRA sem alterar nada (os manifestos são validados bit a bit; bytes alterados são
-detetados pelo sha256):
+detetados pelo sha256). Destino de HOJE no f3nix: uma pasta do operador, por exemplo
+`/home/joao/pacotes/` (criar com `mkdir -p /home/joao/pacotes`):
 
 ```bash
-scp -r /caminho/pacotes/bm-2026-11-12 <servidor>:/tmp/pacotes/bm-2026-11-12
+scp -r "$HOME/pacotes/bm-2026-11-12" f3nix:/home/joao/pacotes/bm-2026-11-12
 ```
 
-Caminhos de HOJE no servidor/alojamento (sem contentor novo): qualquer pasta temporária
-serve, por exemplo `/tmp/pacotes/...`. No FUTURO contentor da tarefa 18, os caminhos
-persistentes serão `/data/prumo.sqlite3` (base) e `/data/raw/` (evidência); o pacote em si
-continua a ser uma pasta à escolha do operador, montada ou copiada para dentro do contentor.
+Nota de estado: a ingestão ainda NÃO está instalada como serviço no f3nix (sem contentor nem
+crond); a importação corre a partir do checkout existente. Os caminhos `/data/prumo.sqlite3`
+e `/data/raw/` são PLANEADOS para o futuro contentor da tarefa 18 - ainda não existem neste
+servidor e não devem ser usados agora.
 
 ## 4. Importar no servidor (offline, sem rede)
+
+HOJE a importação corre a partir do checkout existente `/home/joao/projects/prumo-pipeline`
+(ramo `pipeline-rebuild`), com a venv de CI `.venv-ci`, e com base de dados e evidência
+ISOLADAS da operação manual num diretório do operador - por exemplo
+`/home/joao/pacotes/manual/` (também serve `/home/joao/.hermes/cache/scratch/...` para
+corridas realmente descartáveis; `/data/...` é só o plano da tarefa 18):
+
+```bash
+cd /home/joao/projects/prumo-pipeline
+OP=/home/joao/pacotes/manual            # diretório do operador; mkdir -p "$OP/db" na 1.ª vez
+mkdir -p "$OP/db"
+.venv-ci/bin/python -m ingest --db "$OP/db/prumo.sqlite3" --raw-dir "$OP/db/raw" \
+    run worldbank --bundle /home/joao/pacotes/bm-2026-11-12
+.venv-ci/bin/python -m ingest --db "$OP/db/prumo.sqlite3" --raw-dir "$OP/db/raw" \
+    run worldbank --bundle /home/joao/pacotes/bm-pop-2026-11-12 --indicator SP.POP.TOTL
+.venv-ci/bin/python -m ingest --db "$OP/db/prumo.sqlite3" --raw-dir "$OP/db/raw" \
+    run eredes --bundle /home/joao/pacotes/eredes-2026-11-10 --from 2026-11-10 --to 2026-11-10
+```
 
 Nada aqui abre a rede: a importação responde só com os pedidos exatos gravados no pacote e
 falha fechada se faltar algum. As datas gravadas são as ORIGINAIS da captura; o instante da
 importação fica em `started_at` do run e o run fica marcado `input_origin='recorded'`.
-
-```bash
-.venv/bin/python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
-    run worldbank --bundle /tmp/pacotes/bm-2026-11-12
-.venv/bin/python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
-    run worldbank --bundle /tmp/pacotes/bm-pop-2026-11-12 --indicator SP.POP.TOTL
-.venv/bin/python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
-    run eredes --bundle /tmp/pacotes/eredes-2026-11-10 --from 2026-11-10 --to 2026-11-10
-```
 
 Estados de saída:
 
 - saída 0 e linhas `<grupo>: verified` = importado e verificado a 100% com amostra nova;
 - saída 1 com `failed-fetch`/`failed-verification` = a importação honestamente falhou e os
   dados bons antigos continuam servidos (nada é apagado nem promovido);
-- saída 1 com `refusing an outdated bundle` = o pacote é MAIS ANTIGO que os dados verificados
-  já guardados; recusado antes de qualquer escrita. Um pacote mais recente é aceite. As linhas
-  legacy de abril NUNCA são substituídas por este mecanismo - ficam servidas com a data
-  original até haver dados verificados mais novos para o mesmo período;
+- saída 1 com a linha `refusing an outdated bundle for dataset group '<grupo>'` = o pacote é
+  MAIS ANTIGO que os dados verificados guardados PARA ESSE GRUPO. A recusa é POR GRUPO de
+  dataset (indicador), acontece antes de qualquer escrita nesse grupo (e, quando TODOS os
+  grupos são mais antigos, antes até de mexer nos metadados do registo), e é diagnosticada
+  com o grupo e as duas datas; os grupos sãos do mesmo pacote continuam a importar (aparecem
+  `verified`), o grupo velho aparece `blocked` com a razão. Um pacote mais recente é aceite.
+  As linhas legacy de abril NUNCA são substituídas por este mecanismo - ficam servidas com a
+  data original até haver dados verificados mais novos para o mesmo período;
 - saída 2 = erro de argumentos/validação do pacote (manifesto inválido, pasta errada,
   combinações inválidas); nada foi escrito.
 
 Inspecionar o estado depois (JSON; `real_data_fetched_at` é a data de recolha REAL dos dados,
-`input_origin` mostra `recorded` nos datasets importados por pacote):
+`input_origin` mostra `recorded` nos datasets importados por pacote, e runs pendentes ficam
+listados na SUA própria fonte mesmo com chaves de dataset antigas):
 
 ```bash
-.venv/bin/python -m ingest --db /data/prumo.sqlite3 status --json
+.venv-ci/bin/python -m ingest --db "$OP/db/prumo.sqlite3" status --json
 ```
 
 ## 5. Funcionamento automático normal
 
-Nada muda quando a rede do servidor funciona: a atualização automática continua a ser
+Quando a tarefa 18 instalar a ingestão no contentor (PLANO), a atualização automática passa a
+ser, dentro do contentor, com a base e a evidência persistentes planeadas:
 
 ```bash
-.venv/bin/python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw run worldbank
-.venv/bin/python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw run eredes
+python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw run worldbank
+python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw run eredes
 ```
 
-com `input_origin='live'`. A recuperação (catch-up) manual E-REDES com janela explícita,
-sem pacote, também é automática e faz fetch real:
+com `input_origin='live'`. A recuperação (catch-up) manual E-REDES com janela explícita, sem
+pacote, também é automática e faz fetch real:
 
 ```bash
-.venv/bin/python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
+python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
+    run eredes --from 2026-11-01 --to 2026-11-10
+```
+
+Enquanto a tarefa 18 não acontecer (HOJE), o equivalente manual corre com a rede do f3nix
+partindo do checkout existente, sempre com a base isolada do operador ("$OP" da secção 4):
+
+```bash
+cd /home/joao/projects/prumo-pipeline
+.venv-ci/bin/python -m ingest --db "$OP/db/prumo.sqlite3" --raw-dir "$OP/db/raw" run worldbank
+.venv-ci/bin/python -m ingest --db "$OP/db/prumo.sqlite3" --raw-dir "$OP/db/raw" \
     run eredes --from 2026-11-01 --to 2026-11-10
 ```
 
