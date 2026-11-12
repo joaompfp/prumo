@@ -75,6 +75,12 @@ from ingest.verifiers import BlindItem, ItemResult
 CSV_LANGUAGES: dict[str, tuple[str, str]] = {
     "en": ("https://api.worldbank.org/v2/en/indicator/{code}?downloadformat=csv",
            "World Development Indicators"),
+    # 2026-11-12 f0nix recovery: the SAME exporter under /v2/es/ (title 'Indicadores del
+    # desarrollo mundial', English column labels, '.'-decimal tokens byte-identical to the
+    # JSON channel, 54/54 series matched exactly for both recovered indicators); genuine
+    # ZIPs recorded in tests/ingest/fixtures/worldbank/csv-es-*.zip.
+    "es": ("https://api.worldbank.org/v2/es/indicator/{code}?downloadformat=csv",
+           "Indicadores del desarrollo mundial"),
 }
 CSV_URL = CSV_LANGUAGES["en"][0]  # the original English template (kept name)
 EVIDENCE_SCHEMA = "worldbank-csv-evidence"

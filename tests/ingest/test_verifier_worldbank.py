@@ -18,6 +18,7 @@ from ingest.verifiers import BlindItem, get_verifier, register_verifier
 from ingest.verifiers.independence import assert_verifier_independent
 from ingest.verifiers.worldbank import WorldBankVerifier
 from ingest.verify import replay_item, run_with_refetch, verify_run
+from tests.ingest.fakes import FakeHttp, FakeSource, ok, payload
 from tests.ingest.worldbank_fixtures import (
     GDP_PTDES,
     POP_EUGRAT,
@@ -27,6 +28,7 @@ from tests.ingest.worldbank_fixtures import (
 )
 from tests.ingest.worldbank_verifier_fixtures import (
     CSV_URL,
+    CSV_URL_ES,
     VerifyFixtureHttp,
     decode_evidence,
     zip_bytes,
@@ -154,20 +156,21 @@ def _rezip(code: str, members: dict[str, bytes]) -> bytes:
     return buf.getvalue()
 
 
-def _members(code: str) -> dict[str, bytes]:
-    with zipfile.ZipFile(io.BytesIO(zip_bytes(code))) as z:
+def _members(code: str, language: str = "en") -> dict[str, bytes]:
+    with zipfile.ZipFile(io.BytesIO(zip_bytes(code, language))) as z:
         return {n: z.read(n) for n in z.namelist()}
 
 
-def _main_name(code: str) -> str:
-    return next(n for n in _members(code) if n.startswith("API_"))
+def _main_name(code: str, language: str = "en") -> str:
+    return next(n for n in _members(code, language) if n.startswith("API_"))
 
 
-def _zip_with_main_cell(code: str, iso3: str, year: str, new_token: str) -> bytes:
+def _zip_with_main_cell(code: str, iso3: str, year: str, new_token: str,
+                        language: str = "en") -> bytes:
     """Rebuild the recorded ZIP with exactly one CSV cell replaced (identity kept)."""
     import csv as _csv
-    mem = _members(code)
-    main = _main_name(code)
+    mem = _members(code, language)
+    main = _main_name(code, language)
     rows = list(_csv.reader(io.StringIO(mem[main].decode("utf-8-sig"))))
     hi = next(i for i, r in enumerate(rows) if r and r[0] == "Country Name")
     yi = rows[hi].index(year)
@@ -399,3 +402,274 @@ def test_run_with_refetch_verifies_the_registered_verifier(env):
     [(passed,)] = q(db, "SELECT passed FROM verification")
     assert passed == 1
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(396,)]
+
+
+# --- Spanish-locale channel (Task 13 recovery) ----------------------------------------------
+# The publisher's same per-indicator CSV exporter served under /v2/es/ answered HTTP 200 from
+# f0nix on 2026-11-12 while both /en/ exports below timed out from both egresses. The genuine
+# archives are recorded byte-for-byte in tests/ingest/fixtures/worldbank/csv-es-*.zip
+# (sha256-pinned by MANIFEST.json): title 'Indicadores del desarrollo mundial', English column
+# labels, exactly three DS2_es_csv_v2_<rev> members sharing one revision, '.'-decimal tokens.
+# The controller validated all es tokens against the API v2 JSON channel live: 54 of 54
+# registry series matched EXACTLY for each of SL.UEM.TOTL.ZS and NY.GDP.MKTP.KD.ZG.
+# Selection of the locale is EXPLICIT (WorldBankVerifier(csv_language='es')): no fallback, no
+# retry, no request rewriting.
+
+ES_CASES = [  # (series, period, exact token in the genuine es ZIP; None = empty cell)
+    ("worldbank.unemployment_wb.PT", "2025", "6.164"),
+    ("worldbank.unemployment_wb.GR", "2024", "10.02"),
+    ("worldbank.unemployment_wb.ES", "2025", "10.376"),
+    ("worldbank.gdp_growth.PT", "2025", "1.86448007464475"),
+    ("worldbank.gdp_growth.PT", "2020", "-8.20463159324387"),
+    ("worldbank.gdp_growth.ES", "2025", "2.82495400578509"),
+    ("worldbank.gdp_growth.GR", "2024", "2.0865743380603"),
+]
+
+
+def test_es_verifier_reads_every_pinned_spanish_case():
+    results = WorldBankVerifier(csv_language="es").check(
+        [_item(s, p) for s, p, _ in ES_CASES], VerifyFixtureHttp(language="es"))
+    assert [(r.series_id, r.period, r.observed_text) for r in results] == list(ES_CASES)
+    assert all(r.observed_decimal == "." and r.observed_unit is None
+               and r.observed_flag is None for r in results)
+    assert [r.evidence_url for r in results] == [
+        CSV_URL_ES.format(code=registry_specs()[r.series_id].native_code.split(":")[0])
+        for r in results]
+
+
+def test_es_verifier_empty_csv_cell_is_not_found_not_zero():
+    (r,) = WorldBankVerifier(csv_language="es").check(
+        [_item("worldbank.unemployment_wb.PT", "1960")], VerifyFixtureHttp(language="es"))
+    assert r.observed_text is None and r.evidence  # evidence still archived
+
+
+def test_es_verifier_evidence_envelope_carries_exact_es_zip_url_and_status():
+    (r,) = WorldBankVerifier(csv_language="es").check(
+        [_item("worldbank.gdp_growth.PT", "2025")], VerifyFixtureHttp(language="es"))
+    url = CSV_URL_ES.format(code="NY.GDP.MKTP.KD.ZG")
+    assert r.evidence_url == url
+    (rec,) = decode_evidence(r.evidence)
+    assert rec == {"url": url, "status": 200, "body": zip_bytes("NY.GDP.MKTP.KD.ZG", "es")}
+
+
+def test_es_verifier_tampered_value_comes_back_verbatim_for_verify_run():
+    tampered = _zip_with_main_cell("NY.GDP.MKTP.KD.ZG", "PRT", "2025",
+                                   "1.86448007464499", language="es")
+    (r,) = WorldBankVerifier(csv_language="es").check(
+        [_item("worldbank.gdp_growth.PT", "2025")],
+        VerifyFixtureHttp({"NY.GDP.MKTP.KD.ZG": tampered}, language="es"))
+    assert r.observed_text == "1.86448007464499"  # detection is verify_run's Decimal compare
+
+
+def test_default_language_remains_english():
+    """Backward compatibility: no constructor argument == the original English channel."""
+    v = WorldBankVerifier()
+    assert v.csv_language == "en"
+    (r,) = v.check([_item("worldbank.unemployment_wb.PT", "2025")], VerifyFixtureHttp())
+    assert r.observed_text == "6.164" and r.evidence_url == \
+        CSV_URL.format(code="SL.UEM.TOTL.ZS")
+
+
+def test_es_unknown_language_is_rejected_before_any_request():
+    for lang in ("fr", "EN", "", "pt-BR", "en,es"):
+        with pytest.raises(ValueError, match="csv_language"):
+            WorldBankVerifier(csv_language=lang)
+
+
+def test_es_verifier_rejects_an_english_zip():
+    """Crossed locale: serving the genuine EN unemployment ZIP to the es verifier fails
+    closed on the ZIP member identity (DS2_en infix), never silently accepted/converted."""
+    http = VerifyFixtureHttp({"SL.UEM.TOTL.ZS": zip_bytes("SL.UEM.TOTL.ZS")}, language="es")
+    with pytest.raises(ValueError, match="member|identity"):
+        WorldBankVerifier(csv_language="es").check(
+            [_item("worldbank.unemployment_wb.PT", "2025")], http)
+
+
+def test_en_verifier_rejects_a_spanish_zip():
+    http = VerifyFixtureHttp({"SL.UEM.TOTL.ZS": zip_bytes("SL.UEM.TOTL.ZS", "es")})
+    with pytest.raises(ValueError, match="member|identity"):
+        WorldBankVerifier().check([_item("worldbank.unemployment_wb.PT", "2025")], http)
+
+
+def test_es_verifier_rejects_english_title_under_spanish_members():
+    """Semantic locale mismatch must NOT fall back: es members + English Data Source title."""
+    mem = _members("SL.UEM.TOTL.ZS", "es")
+    main = _main_name("SL.UEM.TOTL.ZS", "es")
+    mem[main] = mem[main].replace(b'"Data Source","Indicadores del desarrollo mundial"',
+                                  b'"Data Source","World Development Indicators"', 1)
+    assert mem[main] != zip_bytes("SL.UEM.TOTL.ZS", "es")  # the replacement actually happened
+    with pytest.raises(ValueError, match="Data Source|header block|title"):
+        WorldBankVerifier(csv_language="es").check(
+            [_item("worldbank.unemployment_wb.PT", "2025")],
+            VerifyFixtureHttp({"SL.UEM.TOTL.ZS": _rezip("SL.UEM.TOTL.ZS", mem)},
+                              language="es"))
+
+
+def test_es_verifier_rejects_members_with_split_revisions():
+    """The three members must share ONE DS2_es_csv_v2_<rev> revision identity."""
+    mem = _members("SL.UEM.TOTL.ZS", "es")
+    old = "Metadata_Country_API_SL.UEM.TOTL.ZS_DS2_es_csv_v2_13960.csv"
+    mem["Metadata_Country_API_SL.UEM.TOTL.ZS_DS2_es_csv_v2_13958.csv"] = mem.pop(old)
+    with pytest.raises(ValueError, match="revision|identity"):
+        WorldBankVerifier(csv_language="es").check(
+            [_item("worldbank.unemployment_wb.PT", "2025")],
+            VerifyFixtureHttp({"SL.UEM.TOTL.ZS": _rezip("SL.UEM.TOTL.ZS", mem)},
+                              language="es"))
+
+
+def test_es_verifier_rejects_foreign_locale_member_infix():
+    mem = _members("SL.UEM.TOTL.ZS", "es")
+    renamed = {n.replace("_DS2_es_", "_DS2_fr_"): v for n, v in mem.items()}
+    with pytest.raises(ValueError, match="member|identity"):
+        WorldBankVerifier(csv_language="es").check(
+            [_item("worldbank.unemployment_wb.PT", "2025")],
+            VerifyFixtureHttp({"SL.UEM.TOTL.ZS": _rezip("SL.UEM.TOTL.ZS", renamed)},
+                              language="es"))
+
+
+def test_es_verifier_no_retry_no_fallback_after_a_locale_failure():
+    """One failed fetch/parse = one request, one raise. No silent retry and NO automatic
+    fallback to the English route (which is exactly the channel confusion Task 13 forbids)."""
+    http = VerifyFixtureHttp({"SL.UEM.TOTL.ZS": zip_bytes("SL.UEM.TOTL.ZS")}, language="es")
+    with pytest.raises(ValueError):
+        WorldBankVerifier(csv_language="es").check(
+            [_item("worldbank.unemployment_wb.PT", "2025")], http)
+    assert http.calls == ["SL.UEM.TOTL.ZS"]  # a single attempt, then fail closed
+
+
+def test_es_verifier_non_2xx_raises():
+    http = VerifyFixtureHttp(status={"SL.UEM.TOTL.ZS": 502}, language="es")
+    with pytest.raises(ValueError, match="HTTP 502"):
+        WorldBankVerifier(csv_language="es").check(
+            [_item("worldbank.unemployment_wb.PT", "2025")], http)
+    assert http.calls == ["SL.UEM.TOTL.ZS"]
+
+
+def test_es_verifier_period_must_be_a_canonical_year():
+    with pytest.raises(ValueError, match="period"):
+        WorldBankVerifier(csv_language="es").check(
+            [_item("worldbank.gdp_growth.PT", "2025-M1")], VerifyFixtureHttp(language="es"))
+
+
+def test_es_verifier_registers_and_passes_allowlist():
+    v = WorldBankVerifier(csv_language="es")
+    register_verifier(v)  # the static independence allowlist runs here
+    assert get_verifier("worldbank") is v
+
+
+def test_es_subprocess_independence():
+    assert_verifier_independent("ingest.verifiers.worldbank",
+                                "tests.ingest.worldbank_verifier_entry:run_es",
+                                source_name="worldbank",
+                                blocked_prefixes=("collectors", "ingest.flags", "ingest.sources"))
+
+
+# --- Spanish locale through the real verification machinery --------------------------------
+# Genuine per-series tokens of the es ZIPs (the expected side of the blind comparison), one
+# scripted page per run: the collector channel itself was validated live by the controller
+# (54/54 exact matches per indicator); these runs exercise WorldBankVerifier(es) through
+# verify_run/replay_item without substituting for the live gate.
+ES_TRUTH = {
+    "worldbank.gdp_growth.PT": [["2020", "-8.20463159324387"], ["2021", "5.55875672070374"],
+                                ["2022", "6.98584137580278"], ["2023", "3.09998745904281"],
+                                ["2024", "2.21459232301109"], ["2025", "1.86448007464475"]],
+    "worldbank.gdp_growth.ES": [["2020", "-10.9400706350371"], ["2021", "6.68314420473001"],
+                                ["2022", "6.37031712129601"], ["2023", "2.46085796805582"],
+                                ["2024", "3.45525405630191"], ["2025", "2.82495400578509"]],
+    "worldbank.unemployment_wb.PT": [["2020", "6.85"], ["2021", "6.712"], ["2022", "6.138"],
+                                     ["2023", "6.498"], ["2024", "6.5"], ["2025", "6.164"]],
+    "worldbank.unemployment_wb.GR": [["2020", "15.899"], ["2021", "14.656"], ["2022", "12.426"],
+                                     ["2023", "11.023"], ["2024", "10.02"], ["2025", "8.54"]],
+}
+ES_IDS = list(ES_TRUTH)
+
+
+class _EsTruthSource(FakeSource):
+    """A one-page scripted JSON source carrying the GENUINE es-channel tokens of ES_TRUTH, so a
+    real pending-verification run exists for WorldBankVerifier(es) to check. Registered under
+    the worldbank name so verify_run's source identity rules apply unchanged."""
+    name = "worldbank"
+
+
+@pytest.fixture
+def env_es(db, tmp_path):
+    specs = specs_of(ES_IDS)
+    sync_registry(db, specs)
+    return db, specs, RawStore(tmp_path / "raw"), Clock()
+
+
+def _run_es(env, seed=7):
+    db, specs, store, clock = env
+    r = run_dataset(db, store, _EsTruthSource(), specs, FakeHttp(ok(payload(ES_TRUTH))), clock)
+    assert r.state == "pending-verification" and r.n_written == 24
+    good = verify_run(db, r.run_id, WorldBankVerifier(csv_language="es"),
+                      VerifyFixtureHttp(language="es"), seed=seed, size=50, specs=specs,
+                      store=store, now=clock)
+    return db, specs, store, r, good
+
+
+def test_es_verifier_matches_clean_run_through_verify_run(env_es):
+    db, specs, store, r, good = _run_es(env_es)
+    assert good and db.run_state(r.run_id) == "verified"
+    [(n, passed)] = q(db, "SELECT sample_size, passed FROM verification WHERE dataset_run_id=?",
+                      r.run_id)
+    assert n == 24 and passed == 1  # 4 latest + every remaining observation (size 50 > 24)
+    items = q(db, "SELECT observed_unit, observed_flag, observed_decimal FROM verification_item")
+    assert all(u is None and f is None and d == "." for u, f, d in items)
+    assert q(db, "SELECT COUNT(*) FROM served_observation") == [(24,)]
+
+
+def test_es_archived_evidence_recovers_offline_and_replays(env_es):
+    db, specs, store, r, good = _run_es(env_es)
+    assert good
+    rows = q(db, "SELECT id, series_id, evidence_url, evidence_sha256 FROM verification_item")
+    assert len(rows) == 24
+    seen_payloads = set()
+    for item_id, sid, url, sha in rows:
+        blob = store.load(store.root / "verify-worldbank" / sha[:2] / sha)  # raises if altered
+        code = registry_specs()[sid].native_code.split(":")[0]
+        (rec,) = decode_evidence(blob)
+        assert rec == {"url": url, "status": 200, "body": zip_bytes(code, "es")}
+        assert url == CSV_URL_ES.format(code=code)
+        seen_payloads.add(sha)
+        assert replay_item(db, store, item_id) is True
+    # content-addressed store: one archived ZIP payload per indicator used in the sample
+    assert len(seen_payloads) == 2  # NY.GDP.MKTP.KD.ZG + SL.UEM.TOTL.ZS (Spanish locales)
+
+
+def test_es_verifier_detects_tampered_value_through_verify_run(env_es):
+    """GDP growth PT 2025 tampered to ...99 in the es ZIP channel: blind compare fails the run."""
+    db, specs, store, clock = env_es
+    r = run_dataset(db, store, _EsTruthSource(), specs, FakeHttp(ok(payload(ES_TRUTH))), clock)
+    assert r.state == "pending-verification"
+    tampered = _zip_with_main_cell("NY.GDP.MKTP.KD.ZG", "PRT", "2025",
+                                   "1.86448007464499", language="es")
+    assert not verify_run(db, r.run_id, WorldBankVerifier(csv_language="es"),
+                          VerifyFixtureHttp({"NY.GDP.MKTP.KD.ZG": tampered}, language="es"),
+                          seed=13, size=50, specs=specs, store=store, now=Clock())
+    assert db.run_state(r.run_id) == "failed-verification"
+    bad = q(db, "SELECT series_id, period, expected_text, observed_text, note FROM "
+                "verification_item WHERE match=0")
+    assert bad == [("worldbank.gdp_growth.PT", "2025", "1.86448007464475",
+                    "1.86448007464499", "value differs")]
+    assert q(db, "SELECT COUNT(*) FROM served_observation") == [(0,)]
+
+
+def test_es_verifier_detects_tampered_geography_row(env_es):
+    """The PRT row re-labelled XXX in the es unemployment ZIP: items not found -> the run fails."""
+    db, specs, store, clock = env_es
+    r = run_dataset(db, store, _EsTruthSource(), specs, FakeHttp(ok(payload(ES_TRUTH))), clock)
+    assert r.state == "pending-verification"
+    mem = _members("SL.UEM.TOTL.ZS", "es")
+    main = _main_name("SL.UEM.TOTL.ZS", "es")
+    text = mem[main].decode("utf-8-sig")
+    row = next(line for line in text.splitlines() if ',"PRT",' in line)
+    mem[main] = text.replace(row, row.replace(',"PRT",', ',"XXX",', 1), 1).encode()
+    assert not verify_run(db, r.run_id, WorldBankVerifier(csv_language="es"),
+                          VerifyFixtureHttp({"SL.UEM.TOTL.ZS": _rezip("SL.UEM.TOTL.ZS", mem)},
+                                            language="es"),
+                          seed=5, size=50, specs=specs, store=store, now=clock)
+    assert db.run_state(r.run_id) == "failed-verification"
+    bad = q(db, "SELECT series_id, period, note FROM verification_item WHERE match=0")
+    assert any(sid == "worldbank.unemployment_wb.PT" and "not found" in note
+               for sid, _, note in bad)
