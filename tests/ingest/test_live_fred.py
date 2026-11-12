@@ -5,15 +5,24 @@
 
 Runs the real pipeline over ALL 12 active core series: the registered FredVerifier re-reads a
 fresh random sample through the independent keyless table channel
-(https://fred.stlouisfed.org/data/<CODE>). Bounded: RequestsHttp throttles <=1 req/s, each
-call times out at 120 s, ONE whole-dataset attempt (max_attempts=1), sample size 120. The
-licence gate keeps served=0 even when verified (IMF grant unconfirmed). The controller
-re-runs this from the planned f0nix egress after review; a skip means no owner key was in the
-environment.
+(https://fred.stlouisfed.org/data/<CODE>). Bounded: RequestsHttp throttles <=1 req/s with
+client retries DISABLED (retries=0) and a 120 s PER-REQUEST timeout - that bounds each call,
+it is not a whole-phase deadline (none is implemented here; the controller's f0nix acceptance
+caps the phase at 48 calls / 180 s) - plus ONE whole-dataset attempt (max_attempts=1) and
+sample size 120. The licence gate keeps served=0 even when verified (IMF grant unconfirmed).
+
+Non-stale by construction: FRED publishes a new month every cycle, so NO per-series row
+counts, date ranges or '.' quarantine totals are frozen here - they are re-derived from the
+run's OWN archived publisher responses (raw-store bytes re-parsed offline) and must match the
+DB exactly (nonempty series, canonical periods, exact latest/sampled values via the verifier).
+The controller re-runs this from the planned f0nix egress after review; a skip means no owner
+key was in the environment.
 """
 import base64
 import json
 import os
+import re
+from pathlib import Path
 
 import pytest
 
@@ -21,11 +30,14 @@ from ingest.db import open_db
 from ingest.http import RequestsHttp
 from ingest.rawstore import RawStore
 from ingest.registry import load_registry, sync_registry
+from ingest.sources import RawResponse
 from ingest.sources.fred import FredSource
 from ingest.verifiers import register_verifier
 from ingest.verifiers.fred import FredVerifier, read_table_page
 from ingest.verify import run_with_refetch
 from tests.ingest.fred_fixtures import ROOT, active_specs
+
+_PERIOD = re.compile(r"[0-9]{4}-[0-9]{2}")  # canonical YYYY-MM (source asserts ASCII dates)
 
 
 @pytest.mark.live
@@ -45,9 +57,10 @@ def test_live_run_with_refetch_is_verified_and_served_zero(tmp_path, monkeypatch
     db = open_db(tmp_path / "live.db")
     try:
         sync_registry(db, specs)
-        http = RequestsHttp(throttle_rps=1.0, timeout=120.0)
+        http = RequestsHttp(throttle_rps=1.0, timeout=120.0, retries=0)  # per-request bound
         result = run_with_refetch(db, RawStore(tmp_path / "raw"), FredSource(api_key=key),
                                   verifier, specs, http, size=120, max_attempts=1)
+        store = RawStore(tmp_path / "raw")
         per_series = db.conn.execute(
             "SELECT series_id, COUNT(*), MIN(period), MAX(period) FROM observation "
             "WHERE dataset_run_id = ? GROUP BY series_id", (result.run_id,)).fetchall()
@@ -67,16 +80,41 @@ def test_live_run_with_refetch_is_verified_and_served_zero(tmp_path, monkeypatch
             print(f"  quarantine: {reason} x{n}")
         assert result.state == "verified"
         assert {r[0] for r in per_series} == {s.id for s in specs}
-        assert all(n == 417 and (lo, hi) == ("1992-01", "2026-09")
-                   for _, n, lo, hi in per_series)
+        # Non-stale expectations derived from the run's OWN archived publisher bytes (never
+        # frozen 417/2026-09 counts: FRED publishes a new month every cycle). Re-parsing the
+        # raw store offline asserts DB == publisher archive exactly, incl. row loss anywhere
+        # between fetch and write; value correctness past identity is the verifier's job.
+        raws = db.conn.execute(
+            "SELECT url, params_json, path FROM raw_fetch WHERE dataset_run_id=? AND ok=1 "
+            "ORDER BY id", (result.run_id,)).fetchall()
+        responses = [RawResponse(url=url, params=json.loads(params_json), status=200,
+                                 body=store.load(Path(path))) for url, params_json, path in raws]
+        expected = FredSource(api_key=key).parse(specs, responses)  # offline, no HTTP
+        metas = {}
+        for url, params_json, path in raws:  # /fred/series responses carry no limit param
+            p = json.loads(params_json)
+            if set(p) == {"series_id", "file_type"}:
+                metas[p["series_id"]] = json.loads(store.load(Path(path)))
+        sid_to_code = {s.id: s.native_code for s in specs}
+        for sid, n, lo, hi in per_series:
+            arch = expected[sid]
+            vals = [r for r in arch if r.value_raw is not None]
+            assert vals, f"{sid}: archived publisher response holds no values"
+            assert n == len(vals), f"{sid}: DB holds {n} rows != {len(vals)} archived values"
+            assert (lo, hi) == (vals[0].period_raw, vals[-1].period_raw)
+            assert _PERIOD.fullmatch(lo) and _PERIOD.fullmatch(hi)
+            meta = metas[sid_to_code[sid]]["seriess"][0]
+            assert (meta["observation_start"][:7], meta["observation_end"][:7]) == (lo, hi), \
+                f"{sid}: DB range {lo}..{hi} != the publisher-declared metadata extent"
         assert served == 0  # redistribution_ok=false: verified is not served
         assert verifs == [(120, 1)]
-        assert quar == [("non_numeric", 12 * 144)]  # the API's '.' pre-1992 missing cells
+        # the API's '.' missing cells are quarantined non_numeric, exactly as many as archived
+        assert quar == [("non_numeric", sum(r.value_raw is None
+                                            for rows in expected.values() for r in rows))]
         # offline evidence replay (no HTTP): every sampled item's archived envelope re-reads
         rows = db.conn.execute(
             "SELECT evidence_url, evidence_sha256 FROM verification_item").fetchall()
         id_of = {s.native_code: s.id for s in specs}
-        store = RawStore(tmp_path / "raw")
         replayed = 0
         for url, sha in rows:
             blob = store.load(store.root / "verify-fred" / sha[:2] / sha)
@@ -88,6 +126,6 @@ def test_live_run_with_refetch_is_verified_and_served_zero(tmp_path, monkeypatch
             assert unit and values
             replayed += 1
         print(f"  offline evidence replay: {replayed} envelopes re-read without HTTP")
-        assert replayed == 120
+        assert replayed == len(rows) == 120  # every sampled item's envelope, value + unit
     finally:
         db.close()
