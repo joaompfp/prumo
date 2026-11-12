@@ -1,0 +1,554 @@
+[
+  {
+    "seq": 1,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PALUMUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:15.807847+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.09,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PALUMUSDM&file_type=json",
+    "bytes": 902,
+    "sha256": "f9fcc811cab2a19c2427bf100c21def66d1942996e4dac2141d3bf20cc1041e8",
+    "body_file": "response-01.body"
+  },
+  {
+    "seq": 2,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PALUMUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:16.956902+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.88,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PALUMUSDM&file_type=json&limit=100000",
+    "bytes": 57594,
+    "sha256": "888c65a205171b316f5ad4b8c28d5387f561d01f4ae8f98c492d9a3331cb60a8",
+    "body_file": "response-02.body"
+  },
+  {
+    "seq": 3,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PCOFFOTMUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:17.957006+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.85,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PCOFFOTMUSDM&file_type=json",
+    "bytes": 915,
+    "sha256": "4a6e015621c8b45ea64922305eb472d0ca8c784febb234b66d3544d157431717",
+    "body_file": "response-03.body"
+  },
+  {
+    "seq": 4,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PCOFFOTMUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:18.957101+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.94,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PCOFFOTMUSDM&file_type=json&limit=100000",
+    "bytes": 57901,
+    "sha256": "82569bc0a400989d05da1d0b90c658351f9420595d4dab9729bde2c6e4bad3e4",
+    "body_file": "response-04.body"
+  },
+  {
+    "seq": 5,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PCOPPUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:19.957172+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.98,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PCOPPUSDM&file_type=json",
+    "bytes": 900,
+    "sha256": "ae659b9776b1faa3fb70f0682e549d560cdedc06a03d4aeda39996beedeee4b5",
+    "body_file": "response-05.body"
+  },
+  {
+    "seq": 6,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PCOPPUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:20.968546+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.96,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PCOPPUSDM&file_type=json&limit=100000",
+    "bytes": 57589,
+    "sha256": "6f776f97b46549775cd49161c30be4e7b3ba3bd23d90b35536a46e9f7984b7ee",
+    "body_file": "response-06.body"
+  },
+  {
+    "seq": 7,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PCOTTINDUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:21.968611+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.84,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PCOTTINDUSDM&file_type=json",
+    "bytes": 895,
+    "sha256": "defb81cc70b6143b6eaf68ee83810dbf7212b398534e0bdf956bd589c520d2b2",
+    "body_file": "response-07.body"
+  },
+  {
+    "seq": 8,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PCOTTINDUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:22.968688+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.97,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PCOTTINDUSDM&file_type=json&limit=100000",
+    "bytes": 57198,
+    "sha256": "39e1103670a3f3d328ef91acd85183f408bc91db0b212f08cb7fe8f598937e08",
+    "body_file": "response-08.body"
+  },
+  {
+    "seq": 9,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PIORECRUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:23.991541+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.88,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PIORECRUSDM&file_type=json",
+    "bytes": 904,
+    "sha256": "474c7a2ca58aade3b185be28e8a14cee48ee708279d6ef53e552ed1a65ab7698",
+    "body_file": "response-09.body"
+  },
+  {
+    "seq": 10,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PIORECRUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:24.991632+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.04,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PIORECRUSDM&file_type=json&limit=100000",
+    "bytes": 55637,
+    "sha256": "34b3ec898aa7c2cc6cdb138ddfa5c2ba0c7b96a4b333434ecd0a176460cfa5e3",
+    "body_file": "response-10.body"
+  },
+  {
+    "seq": 11,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PMAIZMTUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:26.099665+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.05,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PMAIZMTUSDM&file_type=json",
+    "bytes": 900,
+    "sha256": "0ed7ca03399363b3021080040450b4a54012d2e26a8983d64a295af57d9477c5",
+    "body_file": "response-11.body"
+  },
+  {
+    "seq": 12,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PMAIZMTUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:27.207888+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.97,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PMAIZMTUSDM&file_type=json&limit=100000",
+    "bytes": 58343,
+    "sha256": "d32c8cffba38dddf9d50c2f16b289e59e4d3b06a60dd97d9d4dc9e48688c78e6",
+    "body_file": "response-12.body"
+  },
+  {
+    "seq": 13,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PNICKUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:28.258513+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.87,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PNICKUSDM&file_type=json",
+    "bytes": 900,
+    "sha256": "e9aaf5318850b7b00440d8f94ab82fcbf959e71ae9d45332ade1a59eb035c0c4",
+    "body_file": "response-13.body"
+  },
+  {
+    "seq": 14,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PNICKUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:29.258610+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.92,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PNICKUSDM&file_type=json&limit=100000",
+    "bytes": 57320,
+    "sha256": "89001fe32c2d1096d33e21b1d7c9887c9eefccd2dbbb2bdc662335c107dd47eb",
+    "body_file": "response-14.body"
+  },
+  {
+    "seq": 15,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "POILBREUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:30.263873+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.93,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=POILBREUSDM&file_type=json",
+    "bytes": 899,
+    "sha256": "96e24126daa98a19088d7f74c140d3cf5546858bfc11d1f3cc64e85f5f7c47d5",
+    "body_file": "response-15.body"
+  },
+  {
+    "seq": 16,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "POILBREUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:31.263971+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.06,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=POILBREUSDM&file_type=json&limit=100000",
+    "bytes": 57788,
+    "sha256": "cc681ec745c7d3db1a2a7efacc70ea50b0073d9cedcdf6f506bcf4f0546e2de8",
+    "body_file": "response-16.body"
+  },
+  {
+    "seq": 17,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PSOYBUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:32.413859+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.82,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PSOYBUSDM&file_type=json",
+    "bytes": 902,
+    "sha256": "0b2d540e4e018ac3853372357b879b4d59a7538ce4850720a1ab8d7ed6be6f1d",
+    "body_file": "response-17.body"
+  },
+  {
+    "seq": 18,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PSOYBUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:33.413971+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.9,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PSOYBUSDM&file_type=json&limit=100000",
+    "bytes": 57383,
+    "sha256": "563a6fe009dbd142fa997f73b6838993b8d900958c4c8c477d7410acddccad2e",
+    "body_file": "response-18.body"
+  },
+  {
+    "seq": 19,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PSUGAISAUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:34.414055+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.13,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PSUGAISAUSDM&file_type=json",
+    "bytes": 909,
+    "sha256": "266e3938b4c1981b4ae840d54ed7bc37e2c96e1ff95889efa023779af37b0fda",
+    "body_file": "response-19.body"
+  },
+  {
+    "seq": 20,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PSUGAISAUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:35.619272+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.87,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PSUGAISAUSDM&file_type=json&limit=100000",
+    "bytes": 57403,
+    "sha256": "863ea1286b4cc536927ed2ed4777825443738659b668455692aac0c5b71cfe19",
+    "body_file": "response-20.body"
+  },
+  {
+    "seq": 21,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PWHEAMTUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:36.619400+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.83,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PWHEAMTUSDM&file_type=json",
+    "bytes": 901,
+    "sha256": "9a1c5dcb813e4fbc3e2307df2b7c7694ab8653cb52987894d4263f0ddd73fbe7",
+    "body_file": "response-21.body"
+  },
+  {
+    "seq": 22,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PWHEAMTUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:37.619468+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.9,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PWHEAMTUSDM&file_type=json&limit=100000",
+    "bytes": 58111,
+    "sha256": "9a294142d7a250bf9c5c0eea2193fb63ab13491c88591d4e1f03b49e9b1093ec",
+    "body_file": "response-22.body"
+  },
+  {
+    "seq": 23,
+    "requested_url": "https://api.stlouisfed.org/fred/series",
+    "params": {
+      "series_id": "PZINCUSDM",
+      "file_type": "json"
+    },
+    "fetched_at": "2026-11-12T13:59:38.619550+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 0.82,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series?series_id=PZINCUSDM&file_type=json",
+    "bytes": 898,
+    "sha256": "62d398a240b533e484b465905c11683cbc833265245d898664f7a23862ad9315",
+    "body_file": "response-23.body"
+  },
+  {
+    "seq": 24,
+    "requested_url": "https://api.stlouisfed.org/fred/series/observations",
+    "params": {
+      "series_id": "PZINCUSDM",
+      "file_type": "json",
+      "limit": "100000"
+    },
+    "fetched_at": "2026-11-12T13:59:39.619639+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.04,
+    "status": 200,
+    "final_url": "https://api.stlouisfed.org/fred/series/observations?series_id=PZINCUSDM&file_type=json&limit=100000",
+    "bytes": 57439,
+    "sha256": "c06d92b0c4996fdf0a4cdf9e8755366ad21a22ad5b52577f48fb6ebe9c1e28d5",
+    "body_file": "response-24.body"
+  },
+  {
+    "seq": 25,
+    "requested_url": "https://fred.stlouisfed.org/data/PALUMUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:41.094182+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.1,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PALUMUSDM",
+    "bytes": 93507,
+    "sha256": "7c13d7c50f9f1819e5abd46361ac072b053d38eb92f240e554ccf041b454a4ff",
+    "body_file": "response-25.body"
+  },
+  {
+    "seq": 26,
+    "requested_url": "https://fred.stlouisfed.org/data/POILBREUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:42.262877+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.13,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/POILBREUSDM",
+    "bytes": 93576,
+    "sha256": "f54c3501bc35454c71485bc8fb4fd05421a0507133369c9741aa2e92c7558dfa",
+    "body_file": "response-26.body"
+  },
+  {
+    "seq": 27,
+    "requested_url": "https://fred.stlouisfed.org/data/PCOFFOTMUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:43.454903+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.17,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PCOFFOTMUSDM",
+    "bytes": 93921,
+    "sha256": "784f11a7ad880ea05db436d26dc80f7fac271dc12b8cd1a26b1a522439101527",
+    "body_file": "response-27.body"
+  },
+  {
+    "seq": 28,
+    "requested_url": "https://fred.stlouisfed.org/data/PIORECRUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:44.675415+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.1,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PIORECRUSDM",
+    "bytes": 93635,
+    "sha256": "2babed119dc6d22cc37ad8528b975007b80d665081c7e890061290cbfd5b3e23",
+    "body_file": "response-28.body"
+  },
+  {
+    "seq": 29,
+    "requested_url": "https://fred.stlouisfed.org/data/PNICKUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:45.818045+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.04,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PNICKUSDM",
+    "bytes": 93759,
+    "sha256": "d175b35fd6e03ffaf0fb91c8cc5212a03eb160046d6c059ad10bae06d3bab616",
+    "body_file": "response-29.body"
+  },
+  {
+    "seq": 30,
+    "requested_url": "https://fred.stlouisfed.org/data/PSOYBUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:46.905571+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.09,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PSOYBUSDM",
+    "bytes": 93507,
+    "sha256": "cf6d155d7b0015427eaaaad0ca81a556173468d1114cea9fb4fa0cc24e4f5e25",
+    "body_file": "response-30.body"
+  },
+  {
+    "seq": 31,
+    "requested_url": "https://fred.stlouisfed.org/data/PSUGAISAUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:48.041959+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.17,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PSUGAISAUSDM",
+    "bytes": 93563,
+    "sha256": "12ee31d5bc54154047ecaf1f10425d9163ecb51e598e60f81944d477e5b8ec58",
+    "body_file": "response-31.body"
+  },
+  {
+    "seq": 32,
+    "requested_url": "https://fred.stlouisfed.org/data/PZINCUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:49.269785+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.1,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PZINCUSDM",
+    "bytes": 93841,
+    "sha256": "67521f28abede01832eb96eee25b0df40f5a0b43afef4e63f14bb9eda1b0ed22",
+    "body_file": "response-32.body"
+  },
+  {
+    "seq": 33,
+    "requested_url": "https://fred.stlouisfed.org/data/PCOPPUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:50.418636+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.12,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PCOPPUSDM",
+    "bytes": 93513,
+    "sha256": "2c57fa0c2eb4441f72293b9e6ce87bf7b18ec03103875277a5cc954fdf672ce6",
+    "body_file": "response-33.body"
+  },
+  {
+    "seq": 34,
+    "requested_url": "https://fred.stlouisfed.org/data/PMAIZMTUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:51.587032+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.03,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PMAIZMTUSDM",
+    "bytes": 93830,
+    "sha256": "8d9e12433891a494661fedb633a1533ab4d6f34741f66d9c05bb33ae8c00af4d",
+    "body_file": "response-34.body"
+  },
+  {
+    "seq": 35,
+    "requested_url": "https://fred.stlouisfed.org/data/PCOTTINDUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:52.666090+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.17,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PCOTTINDUSDM",
+    "bytes": 93533,
+    "sha256": "e3a5d073d955898cc59e49f9beb46602e1f79225af2937bac9b31f08371d154c",
+    "body_file": "response-35.body"
+  },
+  {
+    "seq": 36,
+    "requested_url": "https://fred.stlouisfed.org/data/PWHEAMTUSDM",
+    "params": {},
+    "fetched_at": "2026-11-12T13:59:53.878035+00:00",
+    "egress": "f0nix",
+    "elapsed_s": 1.03,
+    "status": 200,
+    "final_url": "https://fred.stlouisfed.org/data/PWHEAMTUSDM",
+    "bytes": 93894,
+    "sha256": "2a0325d9094fbd4d73b12db1e52c47e585b5018b1a2163431f0741d6ae5f611a",
+    "body_file": "response-36.body"
+  }
+]

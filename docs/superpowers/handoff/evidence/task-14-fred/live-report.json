@@ -1,0 +1,112 @@
+{
+  "kind": "fresh-network-controller-acceptance",
+  "egress": "f0nix",
+  "scratch_root": "/home/joao/.hermes/cache/scratch/prumo-t14-live-20261112T135913",
+  "state": "verified",
+  "run_id": 1,
+  "n_written": 5004,
+  "n_quarantined": 1728,
+  "served": 0,
+  "per_series": [
+    [
+      "fred.aluminum.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.brent_oil.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.coffee.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.commodity_iron_ore.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.commodity_nickel.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.commodity_soybean.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.commodity_sugar.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.commodity_zinc.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.copper.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.corn.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.cotton.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ],
+    [
+      "fred.wheat.WORLD",
+      417,
+      "1992-01",
+      "2026-09"
+    ]
+  ],
+  "quarantine": [
+    [
+      "non_numeric",
+      1728
+    ]
+  ],
+  "verification": [
+    [
+      65826823845696541,
+      120,
+      1
+    ]
+  ],
+  "comparison_totals": [
+    [
+      120,
+      120
+    ]
+  ],
+  "raw_fetch_count": [
+    [
+      24
+    ]
+  ],
+  "request_count": 36,
+  "elapsed_s": 39.45,
+  "offline_comparisons_replayed": 120,
+  "distinct_evidence_envelopes": 12
+}
