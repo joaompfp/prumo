@@ -6,6 +6,8 @@ as genuine evidence. The verifier reads no other channel: SDMX-JSON/codelists un
 import base64
 import json
 import re
+import signal
+import time
 from datetime import date, datetime, timedelta, timezone
 from urllib.parse import parse_qsl, urlsplit
 
@@ -25,6 +27,12 @@ from ingest.verifiers.oecd import (
     read_csv_evidence,
 )
 from ingest.verify import run_with_refetch, verify_run
+from tests.ingest.live_bounds import (
+    BoundedRequestsHttp,
+    LiveBoundExceeded,
+    hard_deadline,
+    rolling_start_month,
+)
 from tests.ingest.oecd_fixtures import (
     ALL_SIX,
     registry_specs,
@@ -247,6 +255,57 @@ def test_foreign_or_drifted_coordinate_raises():
             _file(EMP): _set_cell(_file(EMP), "2026-05", "REF_AREA", "ESP")})
 
 
+# ------------------------------------------------------- semantic dimension identity
+
+def _renamed_header(file: str, old: str, new: str) -> bytes:
+    """In-test mutation: rename ONE header column name; every data cell keeps its pinned
+    code. The anchor must occur exactly once in the header line. Never written to disk."""
+    text = body(file).decode("utf-8")
+    hdr = text.split("\r\n")[0]
+    assert hdr.count(old) == 1, (file, old)
+    return text.replace(hdr, hdr.replace(old, new, 1), 1).encode("utf-8")
+
+
+def test_dimension_name_rename_with_identical_codes_fails_closed():
+    # Controller finding: previously ANY uppercase name + non-blank label passed the 9
+    # pinned-code slots, so MEASURE -> MEASUREE (same codes, same order) was accepted. The
+    # reviewed series dimension id sequence per flow is now asserted, in ALL three flows.
+    with pytest.raises(ValueError, match="identity|dimension"):
+        _one(CLI, "2026-05", override={
+            _file(CLI): _renamed_header(_file(CLI), ",MEASURE,", ",MEASUREE,")})
+    with pytest.raises(ValueError, match="identity|dimension"):
+        _one(EMP, "2026-05", override={
+            _file(EMP): _renamed_header(_file(EMP), ",MEASURE,", ",MEASUREE,")})
+    with pytest.raises(ValueError, match="identity|dimension"):
+        _one(UNE, "2026-02", override={
+            _file(UNE): _renamed_header(_file(UNE), ",MEASURE,", ",MEASUREE,")})
+
+
+def test_ref_area_rename_to_foreign_area_fails_closed():
+    with pytest.raises(ValueError, match="identity|dimension"):
+        _one(CLI, "2026-05", override={
+            _file(CLI): _renamed_header(_file(CLI), ",REF_AREA,", ",FOREIGN_AREA,")})
+
+
+def test_dimension_name_duplicate_and_identity_alias_fail_closed():
+    # duplicate: a trailing pair renamed onto an existing dimension id -> two MEASURE pairs
+    with pytest.raises(ValueError, match="duplicate header|identity|dimension"):
+        _one(CLI, "2026-05", override={
+            _file(CLI): _renamed_header(_file(CLI), ",METHODOLOGY,", ",MEASURE,")})
+    # identity alias: MEASURE and UNIT_MEASURE name cells swapped, codes left in place
+    with pytest.raises(ValueError, match="identity|dimension"):
+        _one(CLI, "2026-05", override={
+            _file(CLI): _renamed_header(_file(CLI), ",MEASURE,Measure,UNIT_MEASURE,",
+                                        ",UNIT_MEASURE,Measure,MEASURE,")})
+
+
+def test_unreviewed_dataflow_carries_no_dimension_id_sequence():
+    spec = registry_specs()[CLI]
+    bogus = spec.native_code.replace("DSD_STES@DF_CLI", "DSD_STES@DF_CLI2")
+    with pytest.raises(ValueError, match="dimension id|unreviewed"):
+        read_csv_evidence(body(_file(CLI)), bogus, spec, start="2025-10", end="2026-10")
+
+
 def test_out_of_window_period_raises():
     with pytest.raises(ValueError, match="window"):
         _one(CLI, "2026-05", override={
@@ -458,6 +517,118 @@ def test_archived_verifier_evidence_replays_offline(env):
         assert got_unit == unit and values[period] == (token, flag)
 
 
+# ------------------------------------------------------- live bounds helper (no network)
+
+class _FakeResp:
+    def __init__(self, url, redirect_to=None):
+        self.url = url
+        self.is_redirect = redirect_to is not None
+        self.headers = {"Location": redirect_to} if redirect_to else {}
+        self.status_code = 200
+        self.content = b"ok"
+
+
+class _FakeSession:
+    """Stands in for requests.Session: script entries are None (final 200) or a redirect
+    Location. Records the socket timeout it was given. Never touches the network."""
+
+    def __init__(self, script=()):
+        self.script = list(script)
+        self.seen_timeout = []
+
+    def get(self, url, params=None, headers=None, timeout=None, allow_redirects=False):
+        assert allow_redirects is False
+        self.seen_timeout.append(timeout)
+        hop = self.script.pop(0) if self.script else None
+        return _FakeResp(url, hop)
+
+
+def _bounded(**kw):
+    return BoundedRequestsHttp(throttle_rps=240.0, timeout=30.0, retries=0, **kw)
+
+
+def test_bounded_client_counts_every_physical_attempt_including_redirect_hops():
+    http = _bounded(max_attempts=2, deadline_s=60.0)
+    http._session = _FakeSession(["https://sdmx.oecd.org/hop", None])
+    r = http.get("https://sdmx.oecd.org/public/rest/data/x")  # 1 redirect hop + 1 final
+    assert r.status == 200 and http.attempts == 2  # both wire hops hit the counter
+    with pytest.raises(LiveBoundExceeded, match="attempt budget"):
+        http.get("https://sdmx.oecd.org/public/rest/data/x")  # attempt 3, refused pre-network
+    assert len(http._session.seen_timeout) == 2  # the refused attempt never reached a socket
+
+
+def test_bounded_client_caps_each_attempt_timeout_to_12s_and_to_remaining():
+    http = _bounded(max_attempts=9, deadline_s=150.0)
+    http._session = _FakeSession()
+    http.get("https://sdmx.oecd.org/public/rest/data/x")
+    assert http._session.seen_timeout == [12.0]  # min(30 client, ~150 remaining, 12 cap)
+    http = _bounded(max_attempts=9, deadline_s=6.0)
+    http._session = _FakeSession()
+    time.sleep(1.5)  # ~4.5 s of wall budget left: the remaining cap bites under 12 s
+    http.get("https://sdmx.oecd.org/public/rest/data/x")
+    (t,) = http._session.seen_timeout
+    assert 2.0 < t <= 6.0 and t < 12.0
+
+
+def test_bounded_client_refuses_an_attempt_once_the_wall_deadline_is_spent():
+    http = _bounded(max_attempts=9, deadline_s=1.1)
+    http._session = _FakeSession()
+    time.sleep(1.3)
+    with pytest.raises(LiveBoundExceeded, match="deadline"):
+        http.get("https://sdmx.oecd.org/public/rest/data/x")
+    assert http.attempts == 0 and http._session.seen_timeout == []  # nothing hit the wire
+
+
+def test_bounded_client_rejects_a_retrying_client():
+    with pytest.raises(ValueError, match="retries=0"):
+        BoundedRequestsHttp(retries=3)  # explicit retries must stay 0
+    with pytest.raises(ValueError, match="retries=0"):
+        BoundedRequestsHttp(1.0, 30.0, 2)  # positional retries are refused the same way
+
+
+def test_hard_deadline_aborts_a_blocked_call_and_restores_alarm_state():
+    assert signal.getsignal(signal.SIGALRM) == signal.SIG_DFL
+    assert signal.getitimer(signal.ITIMER_REAL) == (0.0, 0.0)
+    t0 = time.monotonic()
+    with pytest.raises(LiveBoundExceeded, match="hard deadline"):
+        with hard_deadline(0.3):
+            time.sleep(30)  # the tiny 0.3 s alarm must abort this long sleep
+    assert time.monotonic() - t0 < 5
+    assert signal.getsignal(signal.SIGALRM) == signal.SIG_DFL  # restored
+    assert signal.getitimer(signal.ITIMER_REAL) == (0.0, 0.0)  # no alarm left behind
+
+
+def test_hard_deadline_preserves_a_preexisting_handler_and_timer():
+    seen = []
+
+    def sentinel(signum, frame):
+        seen.append(signum)
+
+    old = signal.signal(signal.SIGALRM, sentinel)
+    signal.setitimer(signal.ITIMER_REAL, 120.0)  # armed foreign timer: must survive intact
+    try:
+        with hard_deadline(30.0):
+            pass  # no fire
+        assert signal.getsignal(signal.SIGALRM) is sentinel
+        delay, interval = signal.getitimer(signal.ITIMER_REAL)
+        assert 100.0 < delay <= 120.0 and interval == 0.0  # still armed for the sentinel
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0.0)
+        signal.signal(signal.SIGALRM, old)
+    assert seen == []  # the foreign timer was never delivered to our abort handler
+
+
+@pytest.mark.parametrize("today,want", [
+    (date(2026, 11, 12), "2025-09"),  # November: plain in-year subtraction
+    (date(2026, 12, 31), "2025-10"),  # December stays in-year
+    (date(2027, 1, 15), "2025-11"),   # January rollover (M3: was a year too late)
+    (date(2027, 2, 1), "2025-12"),    # February rollover (the exact M3 trap)
+    (date(2027, 3, 1), "2026-01"),    # March boundary back to plain subtraction
+])
+def test_rolling_start_month_survives_the_year_rollover(today, want):
+    assert rolling_start_month(today) == want and _PERIOD.fullmatch(want)
+
+
 # ----------------------------------------------------------------------- live (controller-run)
 
 @pytest.mark.live
@@ -468,17 +639,18 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
         .venv-ci/bin/python -m pytest tests/ingest/test_verifier_oecd.py -m live -s
 
     Real RequestsHttp over BOTH channels, ALL 6 active series, isolated temp db, bounded:
-    <=15 req/min (throttle 0.25 rps), 30 s per-request timeout, client retries DISABLED
-    (retries=0), ONE whole-dataset attempt (max_attempts=1), at most 18 requests and a <=150 s
-    whole-phase deadline asserted around the run. NON-STALE: expectations are re-derived from
+    <=15 req/min (throttle 0.25 rps), at most 12 s per physical attempt (timeout capped to
+    the remaining wall budget), client retries DISABLED (retries=0, enforced), ONE
+    whole-dataset attempt (max_attempts=1), at most 18 physical HTTP attempts counting every
+    redirect hop, and a <=150 s whole-phase wall deadline ENFORCED while the phase runs
+    (the bounded client refuses over-budget attempts inside the run; a SIGALRM hard deadline
+    aborts a blocked socket read). NON-STALE: expectations are re-derived from
     THIS run's freshly archived publisher bytes (raw store re-parsed offline), never frozen
     fixture counts/dates, and verifier expectations from the freshly archived CSV envelopes.
     """
-    import time
     from pathlib import Path
 
     from ingest.db import open_db
-    from ingest.http import RequestsHttp
     from ingest.registry import load_registry
     from ingest.sources import RawResponse
     from tests.ingest.oecd_fixtures import ROOT
@@ -490,29 +662,25 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
     reg = {s.id: s for s in load_registry(ROOT / "registry" / "core.yaml")}
     specs = [reg[sid] for sid in ALL_SIX]
     assert len(specs) == 6 and all(s.active and s.source.verifiable for s in specs)
-    # rolling bounded collector window: from 14 months ago (canonical YYYY-MM), no end bound —
-    # the publisher answers with whatever is currently published; nothing frozen here.
-    today = date.today()
-    y, m = (today.year, today.month - 14) if today.month > 2 else (today.year - 1, today.month + 10)
-    start = f"{y - (1 if m <= 0 else 0)}-{(m % 12) or 12:02d}" if m <= 0 else f"{y}-{m:02d}"
+    # rolling bounded collector window: from 14 months ago (canonical YYYY-MM; month-index
+    # arithmetic survives the year rollover), no end bound - the publisher answers with
+    # whatever is currently published; nothing frozen here.
+    start = rolling_start_month(date.today())
     assert _PERIOD.fullmatch(start)
-
-    class _Counting:
-        def __init__(self, base):
-            self.base, self.n = base, 0
-
-        def get(self, url, params=None, headers=None, timeout=None):
-            self.n += 1
-            return self.base.get(url, params=params, headers=headers, timeout=timeout)
 
     db = open_db(tmp_path / "live.db")
     try:
         sync_registry(db, specs)
-        http = _Counting(RequestsHttp(throttle_rps=0.25, timeout=30.0, retries=0))  # <=15/min
+        http = BoundedRequestsHttp(throttle_rps=0.25, timeout=12.0, retries=0,  # <=15/min
+                                   max_attempts=18, deadline_s=150.0)
         t0 = time.monotonic()
-        result = run_with_refetch(db, RawStore(tmp_path / "raw"),
-                                  OecdSource(start_period=start), verifier, specs, http,
-                                  size=12, max_attempts=1)
+        try:
+            with hard_deadline(150.0):
+                result = run_with_refetch(db, RawStore(tmp_path / "raw"),
+                                          OecdSource(start_period=start), verifier, specs,
+                                          http, size=12, max_attempts=1)
+        except LiveBoundExceeded as e:
+            raise AssertionError(f"live phase broke its hard bounds while running: {e}") from e
         elapsed = time.monotonic() - t0
         store = RawStore(tmp_path / "raw")
         per_series = db.conn.execute(
@@ -526,14 +694,14 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
             "SELECT reason, COUNT(*) FROM quarantine WHERE dataset_run_id=? GROUP BY reason",
             (result.run_id,)).fetchall()
         print(f"\nfinal state: {result.state}  run_id={result.run_id}  "
-              f"http_calls={http.n}  elapsed={elapsed:.1f}s  served={served}  "
+              f"http_attempts={http.attempts}  elapsed={elapsed:.1f}s  served={served}  "
               f"verifications={verifs}")
         for sid, n, lo, hi in sorted(per_series):
             print(f"  {sid}: {n} observations {lo}..{hi}")
         for reason, n in quar:
             print(f"  quarantine: {reason} x{n}")
         assert result.state == "verified"
-        assert http.n <= 18 and elapsed <= 150.0  # whole-phase deadline + request cap
+        assert http.attempts <= 18 and elapsed <= 150.0  # kept as the acceptance signal
         assert {r[0] for r in per_series} == set(ALL_SIX)  # all active series covered
         # Non-stale expectations derived from the run's OWN archived publisher bytes (never
         # frozen counts: OECD revises/publishes monthly). Re-parsing the raw store offline

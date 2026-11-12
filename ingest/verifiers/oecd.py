@@ -16,9 +16,16 @@ sparse samples never invent data and all-periods-present is never assumed.
 
 Structure assertions are fail-closed, parsed by HEADER NAME, never column position (the
 unemployment fixture puts BASE_PER before OBS_STATUS): exactly the 4 fixed STRUCTURE* /ACTION
-columns, then one (code, label) column pair per pinned key segment (9 in the reviewed shape),
-then TIME_PERIOD/OBS_VALUE pairs, then OBS_STATUS/UNIT_MULT/DECIMALS/BASE_PER pairs in any
-order; anything else raises (duplicate header names, unknown columns, wrong width). Every row
+columns, then the 9 (code, label) dimension pairs of the request's own dataflow pinned by
+NAME against the reviewed id sequence per flow - REF_AREA FREQ MEASURE UNIT_MEASURE ACTIVITY
+ADJUSTMENT TRANSFORMATION TIME_HORIZ METHODOLOGY for both DSD_STES flows, REF_AREA MEASURE
+UNIT_MEASURE TRANSFORMATION ADJUSTMENT SEX AGE ACTIVITY FREQ for DSD_LFS@DF_IALFS_UNE_M - so
+a renamed, duplicated, repositioned or aliased dimension column is identity drift and fails
+closed even when every pinned code cell matches (the pair order in every reviewed response
+equals the native key order, which the positional code comparison below already required;
+unknown dataflows carry no reviewed sequence and fail). Then TIME_PERIOD/OBS_VALUE pairs,
+then OBS_STATUS/UNIT_MULT/DECIMALS/BASE_PER pairs in any order; anything else raises
+(duplicate header names, unknown columns, wrong width). Every row
 must carry STRUCTURE=DATAFLOW, ACTION='I', the request-pinned STRUCTURE_ID
 '<agency>:<dataflow>(<version>)', and dimension code cells equal to the registry key's pins
 (payload identity, not URL trust; a row with drifted coordinates is a foreign series and
@@ -74,6 +81,19 @@ _PERIOD = re.compile(r"[0-9]{4}-(0[1-9]|1[0-2])")  # canonical YYYY-MM, ASCII on
 _VALUE = re.compile(r"[+-]?[0-9]+(?:\.[0-9]+)?")  # plain ASCII decimal token, verbatim
 _PINS = 9  # every reviewed series key pins exactly 9 dimension segments
 _FIXED_HEADER = ("STRUCTURE", "STRUCTURE_ID", "STRUCTURE_NAME", "ACTION")
+# Reviewed series dimension id sequence per dataflow: the 9 (code, label) pair names in
+# header order, which in every reviewed response equals the native keyPosition order (Task 15
+# items 2,4,6,8,10,12 headers). DUPLICATED ON PURPOSE from the publisher DSD evidence - this
+# table shares no import with the collector; a divergence between the two copies is drift and
+# fails closed here. An unlisted dataflow has no reviewed sequence and fails closed too.
+_STES_DIM_IDS = ("REF_AREA", "FREQ", "MEASURE", "UNIT_MEASURE", "ACTIVITY", "ADJUSTMENT",
+                 "TRANSFORMATION", "TIME_HORIZ", "METHODOLOGY")
+_DIM_IDS = {
+    "DSD_STES@DF_CLI": _STES_DIM_IDS,
+    "DSD_STES@DF_BTS": _STES_DIM_IDS,
+    "DSD_LFS@DF_IALFS_UNE_M": ("REF_AREA", "MEASURE", "UNIT_MEASURE", "TRANSFORMATION",
+                               "ADJUSTMENT", "SEX", "AGE", "ACTIVITY", "FREQ"),
+}
 # pinned (code column, label column) pairs of the reviewed shape; TIME_PERIOD/OBS_VALUE sit
 # between the dimension pairs and the remaining attribute pairs in both evidence families.
 _ATTR_LABELS = {"TIME_PERIOD": "Time period", "OBS_VALUE": "Observation value",
@@ -118,26 +138,29 @@ def _window(name: str, value: str) -> str:
     return value
 
 
-def _header(header: list[str], what: str) -> dict:
+def _header(header: list[str], what: str, dim_ids: tuple[str, ...]) -> dict:
     """Column layout by NAME -> {"dims": [(code_ix, label_ix)], attr: (code_ix, label_ix)};
-    raises on duplicate/unknown/drifted columns. Positions of the attribute pairs after
-    TIME_PERIOD/OBS_VALUE are NOT fixed (item 12 puts BASE_PER before OBS_STATUS)."""
+    raises on duplicate/unknown/drifted columns. The 9 dimension pair names must equal
+    `dim_ids`, the reviewed id sequence of the request's own dataflow, in order: semantic
+    identity is that id sequence, not any 9 uppercase columns with matching codes. Positions
+    of the attribute pairs after TIME_PERIOD/OBS_VALUE are NOT fixed (item 12 puts BASE_PER
+    before OBS_STATUS)."""
     if header[:4] != list(_FIXED_HEADER):
         raise ValueError(f"OECD {what} header does not start with {_FIXED_HEADER}: {header!r}")
     if len(set(header)) != len(header):
         raise ValueError(f"OECD {what} has duplicate header names: {header!r}")
     i, dims, rest = 4, [], len(header)
-    while i < rest and header[i] != "TIME_PERIOD":
-        if not _PIN.fullmatch(header[i]) or header[i] in _ATTR_LABELS or \
-                header[i] in _FIXED_HEADER:
-            raise ValueError(f"OECD {what} unknown column {header[i]!r}")
+    for expected in dim_ids:
+        got = header[i] if i < rest else None
+        if got != expected:
+            raise ValueError(f"OECD {what} series dimension {len(dims)} is {got!r}, not the "
+                             f"reviewed id {expected!r}: identity drift (a renamed, "
+                             "repositioned, duplicated or aliased dimension column is a "
+                             "format change, fail closed)")
         if i + 1 >= rest or not header[i + 1] or _PIN.fullmatch(header[i + 1]):
-            raise ValueError(f"OECD {what} dimension {header[i]!r} lacks its label column")
+            raise ValueError(f"OECD {what} dimension {expected!r} lacks its label column")
         dims.append((i, i + 1))
         i += 2
-    if len(dims) != _PINS:
-        raise ValueError(f"OECD {what} carries {len(dims)} dimension pairs, need {_PINS} "
-                         "(code+label per pinned key segment; unreviewed shape, fail closed)")
     ix: dict = {"dims": dims}
     for name in ("TIME_PERIOD", "OBS_VALUE"):
         if i + 1 >= rest or header[i] != name or header[i + 1] != _ATTR_LABELS[name]:
@@ -166,6 +189,10 @@ def read_csv_evidence(body: bytes, native_code: str | None, spec: SeriesSpec, *,
     module docstring. This same function is the OFFLINE replay path for archived evidence
     bytes (no HTTP); start/end are a containment constraint on the decoded periods."""
     agency, dataflow, pins = _native(native_code)
+    dim_ids = _DIM_IDS.get(dataflow)
+    if dim_ids is None:
+        raise ValueError(f"OECD csvfilewithlabels dataflow {dataflow!r} has no reviewed "
+                         "series dimension id sequence (unreviewed flow, fail closed)")
     start, end = _window("start", start), _window("end", end)
     if start > end:
         raise ValueError(f"OECD window is inverted: {start} > {end}")
@@ -182,7 +209,7 @@ def read_csv_evidence(body: bytes, native_code: str | None, spec: SeriesSpec, *,
     rows = list(csv.reader(io.StringIO(text, newline="")))
     if len(rows) < 2:
         raise ValueError(f"OECD {what} carries no data rows")
-    ix = _header(rows[0], what)
+    ix = _header(rows[0], what, dim_ids)
     struct_id = re.compile(re.escape(agency) + ":" + re.escape(dataflow)
                            + r"\([0-9]+(?:\.[0-9]+)*\)")
     dim_codes = [c for c, _ in ix["dims"]]
