@@ -34,8 +34,12 @@ meta.schema pinned to the sdmx-json-data-schema 2.0.0 URL. data carries exactly 
 request agency/DSD) and one structure whose dataflow URN
 'urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow=<agency>:<dataflow>(<version>)' must match
 the REQUEST identity. dimensions.series are keyed by GENUINE NUMERIC keyPosition 0..n-1 (quoted
-aliases rejected) with exactly one pinned value each; the value codes must equal the requested
-key segments in order (payload identity, not URL trust). dimensions.observation[0] is
+aliases rejected) and their ids must equal the reviewed per-dataflow sequence
+(_SERIES_DIM_IDS: a silent DSD revision renaming, duplicating or repositioning a dimension id
+fails closed) with exactly one pinned value each; the value codes must equal the requested
+key segments in order (payload identity, not URL trust). The request key must pin exactly one
+code per series dimension (an extra pin is never silently unasserted, a missing pin never
+unresolved). dimensions.observation[0] is
 TIME_PERIOD; its values array is UNSORTED in evidence (index->period mapping ALWAYS goes
 through values[i].id, never a sorted zip; duplicate/malformed period ids fail). Series entries
 index dimensions by canonical ASCII decimal segments ('0:0:...:0'; '00', Unicode digit aliases,
@@ -103,11 +107,28 @@ _ANNOTATION_KEYS = {"id", "title", "type", "text", "texts"}
 _SERIES_ATTR_IDS = {"UNIT_MULT", "DECIMALS"}
 _REVIEWED_OBS_STATUS = {"A": "normal"}  # 'A' = Normal value; anything else fails closed
 
+# Reviewed series dimension ids per dataflow, in keyPosition order (genuine fixture evidence:
+# tests/ingest/fixtures/oecd/, byte-identical to Task 15 discovery items 1,3,5,7,9,11). Every
+# reviewed flow carries exactly 9 series dimensions; a silent DSD revision renaming,
+# duplicating or repositioning a dimension id fails closed instead of rebinding values.
+_STES_DIM_IDS = ("REF_AREA", "FREQ", "MEASURE", "UNIT_MEASURE", "ACTIVITY", "ADJUSTMENT",
+                 "TRANSFORMATION", "TIME_HORIZ", "METHODOLOGY")
+_SERIES_DIM_IDS = {
+    "DSD_STES@DF_CLI": _STES_DIM_IDS,
+    "DSD_STES@DF_BTS": _STES_DIM_IDS,
+    "DSD_LFS@DF_IALFS_UNE_M": ("REF_AREA", "MEASURE", "UNIT_MEASURE", "TRANSFORMATION",
+                               "ADJUSTMENT", "SEX", "AGE", "ACTIVITY", "FREQ"),
+}
+_KEY_SEGMENTS = 9  # all three reviewed flows pin exactly one code per 9 series dimensions
+
 
 def parse_native_code(code: str | None) -> tuple[str, str, str]:
     """'<agency>,<dataflow>/<key>' -> (agency, dataflow, key); ValueError if malformed. The
     full triple is the unique publisher request identity of an active series; dataflow is the
-    publisher's 'DSD@DF' token (e.g. 'DSD_STES@DF_CLI')."""
+    publisher's 'DSD@DF' token (e.g. 'DSD_STES@DF_CLI'). The key must pin exactly
+    _KEY_SEGMENTS dot-joined codes (one per series dimension of the reviewed flows): an extra
+    pin would assert nothing against the payload and a missing pin leaves a dimension
+    unpinned, so both fail closed here - before any HTTP request and in offline parsing."""
     if not isinstance(code, str):
         raise ValueError(f"OECD native_code must be '<agency>,<dataflow>/<key>', got {code!r}")
     agency, sep1, rest = code.partition(",")
@@ -116,6 +137,11 @@ def parse_native_code(code: str | None) -> tuple[str, str, str]:
             or not _DATAFLOW.fullmatch(dataflow) or not _KEY.fullmatch(key):
         raise ValueError(f"OECD native_code must be '<agency>,<dataflow>/<key>' with an "
                          f"agency id, a DSD@DF dataflow and dot-joined key pins, got {code!r}")
+    n_pins = len(key.split("."))
+    if n_pins != _KEY_SEGMENTS:
+        raise ValueError(f"OECD native_code key must pin exactly {_KEY_SEGMENTS} dimension "
+                         f"codes (one per series dimension of the reviewed flows), got "
+                         f"{n_pins} in {code!r}")
     return agency, dataflow, key
 
 
@@ -285,6 +311,7 @@ def _payload(body: bytes, agency: str, dataflow: str, key: str,
     if not isinstance(series_dims, list) or not series_dims:
         raise ValueError(f"OECD {what} carries no series dimensions")
     pins: list[list[str]] = [[]] * len(series_dims)
+    dim_ids: list[str] = [""] * len(series_dims)
     positions = set()
     for d in series_dims:
         if not isinstance(d, dict) or not set(d) <= _DIM_KEYS \
@@ -301,6 +328,7 @@ def _payload(body: bytes, agency: str, dataflow: str, key: str,
             raise ValueError(f"OECD {what} series dimension keyPosition drifted: {pos} "
                              f"(duplicate or out of range 0..{len(series_dims) - 1})")
         positions.add(pos)
+        dim_ids[pos] = d["id"]
         # A series-request response lists the PINNED value plus (hierarchy) parents; the
         # series key's index at this dimension resolves the actual pin.
         pins[pos] = _dim_values(d["values"], f"{what} series dimension {d['id']!r}",
@@ -308,6 +336,15 @@ def _payload(body: bytes, agency: str, dataflow: str, key: str,
     if len(positions) != len(series_dims):
         raise ValueError(f"OECD {what} series dimension keyPositions do not cover "
                          f"0..{len(series_dims) - 1}")
+    want_ids = _SERIES_DIM_IDS.get(dataflow)
+    if want_ids is None:
+        raise ValueError(f"OECD {what} dataflow {dataflow!r} is not a reviewed flow: its "
+                         "expected series dimension ids are unverified, fail closed")
+    if tuple(dim_ids) != want_ids:
+        raise ValueError(f"OECD {what} series dimension ids {dim_ids!r} drifted from the "
+                         f"reviewed {dataflow!r} sequence {list(want_ids)!r}: a renamed, "
+                         "duplicated or repositioned dimension id is a format change, fail "
+                         "closed")
 
     obs_dims = dims["observation"]
     if not isinstance(obs_dims, list) or len(obs_dims) != 1:
@@ -433,6 +470,11 @@ def _payload(body: bytes, agency: str, dataflow: str, key: str,
         raise ValueError(f"OECD {what} series key {series_key!r} is not canonical decimal "
                          f"segments x{len(series_dims)} (aliases/'00'/Unicode rejected)")
     key_pins = key.split(".")
+    if len(key_pins) != len(series_dims):
+        raise ValueError(f"OECD {what} request key carries {len(key_pins)} pins but the "
+                         f"payload declares {len(series_dims)} series dimensions: every "
+                         "pinned code must assert against exactly one dimension (an extra "
+                         "pin would be silently unasserted, a missing pin unresolved)")
     for pos, k in enumerate(seg):
         i = int(k)
         if i >= len(pins[pos]):

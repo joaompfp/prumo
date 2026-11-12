@@ -308,6 +308,84 @@ def test_measure_drift_li_vs_bcicp_raises():
             b'"id": "BCICP",', b'"id": "LI",', 1))])
 
 
+def test_registry_key_with_wrong_pin_count_is_rejected_before_any_http():
+    """F1/F2 (Part A review probes P4/P5): every reviewed flow pins exactly 9 series
+    dimensions. An EXTRA registry pin asserted nothing (silently unasserted identity, the
+    fail-open class the BCICP/LI pin exists to kill) and a SHORT key left a raw IndexError
+    escaping the adapter's error contract. The grammar now rejects both before any request."""
+    for bad in (NC["oecd.cli.PT"] + ".X",  # 10 pins (extra)
+                "OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z",  # 8 pins (short)
+                NC["oecd.unemp_m.PT"] + "._Z"):
+        with pytest.raises(ValueError, match="9"):
+            parse_native_code(bad)
+    s = registry_specs()["oecd.cli.PT"].model_copy(
+        update={"native_code": NC["oecd.cli.PT"] + ".X"})
+    http = FixtureHttp()
+    with pytest.raises(ValueError, match="9"):
+        list(OecdSource().fetch([s], http))
+    assert http.calls == []  # fail closed BEFORE the wire
+
+
+def test_archived_url_with_wrong_pin_count_fails_closed_offline():
+    """Offline identity comes from the archived URL: a 10-pin archived request identity can
+    never be a reviewed series."""
+    u = f"{API_BASE}/data/{NC['oecd.cli.PT']}.X?startPeriod=2025-10"
+    with pytest.raises(ValueError, match="9"):
+        _parse(["oecd.cli.PT"], [_resp("oecd.cli.PT", url=u)])
+
+
+def test_payload_asserts_key_pin_count_against_dimension_count():
+    """F1/F2 defense in depth: _payload itself asserts the requested key pin count equals the
+    payload's series dimension count - an extra pin raises (pre-fix it parsed silently),
+    a short key raises the module ValueError (pre-fix a raw IndexError escaped), and an
+    unreviewed dataflow fails closed."""
+    from ingest.sources.oecd import _payload
+    agency, dataflow, key = parse_native_code(NC["oecd.cli.PT"])
+    b = body(FILE_OF["oecd.cli.PT"])
+    with pytest.raises(ValueError, match="dimension"):
+        _payload(b, agency, dataflow, key + ".X", "probe")
+    with pytest.raises(ValueError, match="dimension"):
+        _payload(b, agency, dataflow, key.rsplit(".", 1)[0], "probe")
+    # unreviewed flow fails closed even when the payload's dataflow URN is mutated to match
+    urn = b"OECD.SDD.STES:DSD_STES@DF_CLI("
+    assert b.count(urn) == 1
+    with pytest.raises(ValueError, match="dataflow"):
+        _payload(b.replace(urn, b"OECD.SDD.STES:DSD_STES@DF_OTHER(", 1),
+                 agency, "DSD_STES@DF_OTHER", key, "probe")
+
+
+def test_series_dimension_id_rename_fails_closed():
+    """F3 (probe P3): payload series dimension ids must equal the reviewed per-dataflow
+    sequence in keyPosition order - renaming MEASURE to MEASUREE silently rebased identity
+    semantics and still parsed pre-fix."""
+    for sid in ("oecd.cli.PT", "oecd.unemp_m.PT"):
+        b = body(FILE_OF[sid])
+        assert b.count(b'"id": "MEASURE",') == 1
+        with pytest.raises(ValueError, match="dimension id"):
+            _parse([sid], [_resp(sid, body_=b.replace(
+                b'"id": "MEASURE",', b'"id": "MEASUREE",', 1))])
+
+
+def test_series_dimension_id_duplicate_fails_closed():
+    b = body(FILE_OF["oecd.cli.PT"])
+    assert b.count(b'"id": "FREQ",') == 1
+    with pytest.raises(ValueError, match="dimension id"):
+        _parse(["oecd.cli.PT"], [_resp("oecd.cli.PT", body_=b.replace(
+            b'"id": "FREQ",', b'"id": "MEASURE",', 1))])
+
+
+def test_series_dimension_position_drift_fails_closed():
+    """Same id set, wrong keyPosition order (REF_AREA<->FREQ swap): position drift is a format
+    change, never a re-parse."""
+    b = body(FILE_OF["oecd.cli.PT"])
+    assert b.count(b'"id": "REF_AREA",') == 1 and b.count(b'"id": "FREQ",') == 1
+    t = b.replace(b'"id": "REF_AREA",', b'"id": "__TMP__",', 1)
+    t = t.replace(b'"id": "FREQ",', b'"id": "REF_AREA",', 1)
+    t = t.replace(b'"id": "__TMP__",', b'"id": "FREQ",', 1)
+    with pytest.raises(ValueError, match="dimension id"):
+        _parse(["oecd.cli.PT"], [_resp("oecd.cli.PT", body_=t)])
+
+
 def test_dataflow_urn_must_match_the_request_identity():
     b = body(FILE_OF["oecd.cli.PT"])
     urn = b"urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow=OECD.SDD.STES:DSD_STES@DF_CLI(4.1)"
