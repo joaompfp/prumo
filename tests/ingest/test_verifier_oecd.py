@@ -1,4 +1,4 @@
-"""OECD independent verifier tests — recorded csvfilewithlabels SDMX-CSV bodies
+"""OECD independent verifier tests - recorded csvfilewithlabels SDMX-CSV bodies
 (tests/ingest/fixtures/oecd/verify/, fetched 2026-11-12, sha256-pinned byte copies of Task 15
 discovery items 2,4,6,8,10,12 in MANIFEST.json). Mutations are built IN-TEST only, never stored
 as genuine evidence. The verifier reads no other channel: SDMX-JSON/codelists unused.
@@ -57,7 +57,7 @@ CLI, EMP, OB, PR, SP, UNE = ALL_SIX
 _PERIOD = re.compile(r"[0-9]{4}-[0-9]{2}")
 
 # (series id, period) named pins, >=5 per dataflow family; expectations are re-derived from the
-# ARCHIVED original CSV bytes via the test-only extractor — the exact publisher OBS_VALUE token.
+# ARCHIVED original CSV bytes via the test-only extractor - the exact publisher OBS_VALUE token.
 # Each series' pins span its full archived extent, so the double serves the pinned originals
 # unfiltered.
 PINS = [
@@ -434,7 +434,7 @@ def _source():
 
 class _BothChannels:
     """run_with_refetch shares one Http between collector and verifier: the same host carries
-    both (params distinguish them — the collector never sends format=csvfilewithlabels)."""
+    both (params distinguish them - the collector never sends format=csvfilewithlabels)."""
 
     def __init__(self, verifier: CsvFixtureHttp | None = None):
         self.collector = SourceFixtureHttp()
@@ -774,7 +774,7 @@ def test_full_compare_catches_tampered_unsampled_interior_value(db, tmp_path):
 
 @pytest.mark.live
 def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkeypatch):
-    """Live end-to-end against sdmx.oecd.org — network. Deselected by default
+    """Live end-to-end against sdmx.oecd.org - network. Deselected by default
     (pytest.ini adds -m "not live"); the CONTROLLER runs it separately, never this suite:
 
         .venv-ci/bin/python -m pytest tests/ingest/test_verifier_oecd.py -m live -s

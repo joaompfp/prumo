@@ -1,4 +1,4 @@
-"""OECD SDMX-JSON data 2.0 source adapter tests — real recorded fixtures
+"""OECD SDMX-JSON data 2.0 source adapter tests - real recorded fixtures
 (tests/ingest/fixtures/oecd/, 2026-11-12 f3nix, sha256-pinned by MANIFEST.json; byte-identical
 copies of the controller-rehashed Task 15 discovery items 1,3,5,7,9,11).
 
@@ -8,9 +8,9 @@ The six active core monthly PT series share one collector request shape:
 
 Every fixture's TIME_PERIOD values array is UNSORTED (index->period mapping is exercised, never
 zip-sorted), values are genuine JSON number primitives (trailing-zero tokens '-6.0', '12.0',
-'6.0' preserved verbatim — the Part B CSV verifier channel formats them '-6', '12', '6'), and
+'6.0' preserved verbatim - the Part B CSV verifier channel formats them '-6', '12', '6'), and
 all 77 observations carry OBS_STATUS=A ('Normal value', mapped to flag 'normal'; any other code
-fails closed — the full OBS_STATUS codelist was NOT enumerable, Task 15 discovery item 13).
+fails closed - the full OBS_STATUS codelist was NOT enumerable, Task 15 discovery item 13).
 """
 import pytest
 
@@ -414,7 +414,7 @@ def test_key_position_must_be_a_genuine_numeric_primitive():
 
 def test_duplicate_time_period_ids_raise():
     """Copy the whole 2026-03 TIME_PERIOD value entry onto 2026-02 (id AND start/end stay
-    consistent): two indices then decode to the same period — a duplicate, never a merge."""
+    consistent): two indices then decode to the same period - a duplicate, never a merge."""
     b = body(FILE_OF["oecd.cli.PT"])
     assert b.count(b'"id": "2026-03"') == 1
     t = b.replace(b'"id": "2026-03"', b'"id": "2026-02"', 1)

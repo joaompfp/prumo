@@ -1,7 +1,7 @@
-# Task 15 Part A — OECD source implementation report
+# Task 15 Part A - OECD source implementation report
 
 Date: 2026-11-12. Author: implementer subagent (kimi-k3). Base 2fb6e28, branch
-pipeline-rebuild, /home/joao/projects/prumo-pipeline. Scope: Part A ONLY per dispatch —
+pipeline-rebuild, /home/joao/projects/prumo-pipeline. Scope: Part A ONLY per dispatch -
 the collector (`ingest/sources/oecd.py`), original JSON fixtures, source + scoped registry
 tests, registry/core.yaml six OECD entries + source licence block, licences-todo.md,
 registry/mappings-oecd.md. The verifier (Part B), live acceptance, CLI/scheduler, reviews and
@@ -11,7 +11,7 @@ any handoff/ledger/vault edits are explicitly out of scope and untouched.
 
 | path | what |
 |---|---|
-| ingest/sources/oecd.py | `OecdSource` — SDMX-JSON data 2.0 collector (fetch + parse) |
+| ingest/sources/oecd.py | `OecdSource` - SDMX-JSON data 2.0 collector (fetch + parse) |
 | tests/ingest/fixtures/oecd/ | 6 genuine publisher bodies + MANIFEST.json (sha256 pins; byte-identical to discovery items 1,3,5,7,9,11; verified against discovery hashes at copy time) |
 | tests/ingest/oecd_fixtures.py | fixture accessors + routing FixtureHttp |
 | tests/ingest/test_source_oecd.py | 43 source tests |
@@ -24,7 +24,7 @@ any handoff/ledger/vault edits are explicitly out of scope and untouched.
 
 - RED: `ModuleNotFoundError: No module named 'ingest.sources.oecd'` at collection
   (full failing-run output captured at the time).
-- Iteration: two real mis-assumptions fixed against evidence, not guessed —
+- Iteration: two real mis-assumptions fixed against evidence, not guessed -
   (a) `dimensionGroupAttributes` keys are arbitrary dimension-subset keys (9- and 10-segment
   keys both occur), (b) series-request responses list hierarchy PARENTS as extra dimension
   values (ACTIVITY carries C + _T); the pinned code is the value the series key's index
@@ -32,7 +32,7 @@ any handoff/ledger/vault edits are explicitly out of scope and untouched.
   BCICP/LI drift test exercises).
 - GREEN: `43 passed tests/ingest/test_source_oecd.py`, `8 passed
   tests/ingest/test_registry_oecd_units.py`.
-- Full suite after both commits: **1077 passed, 6 live deselected, 1 warning in 230 s** —
+- Full suite after both commits: **1077 passed, 6 live deselected, 1 warning in 230 s** -
   controller baseline 1026 + 51 new tests, zero regressions; core.yaml==core.proposed.yaml
   invariant tests pass.
 
@@ -53,7 +53,7 @@ any handoff/ledger/vault edits are explicitly out of scope and untouched.
   errors==[], single dataSet/structure/series.
 - Multiplier/status: UNIT_MULT must resolve 0 ('Units') twice (table + series attributes);
   OBS_STATUS table must contain ONLY reviewed code 'A' (map A→normal) and every observation
-  attribute index must resolve in range — unknown codes fail closed even when unreferenced,
+  attribute index must resolve in range - unknown codes fail closed even when unreferenced,
   per the unenumerable codelist (discovery item 13). BASE_PER does not exist on the JSON
   channel (CSV-only, empty in evidence).
 - Missing values: `null` → value_raw=None → quarantined non_numeric (tested via mutation;
@@ -72,7 +72,7 @@ Pipeline integration test: `run_dataset` over all six series → 77 observations
 
 - Six entries: complete `native_code` identities, `url` = canonical request address,
   `multiplier: 0`, `seasonal_adjustment: "Calendar and seasonally adjusted"` where ADJUSTMENT=Y
-  (cli left unset: AA is amplitude adjustment, not seasonal — documented), no invented base
+  (cli left unset: AA is amplitude adjustment, not seasonal - documented), no invented base
   year. Units/ids/indicator_keys/roles/geography untouched; unemployment stays cross_check of
   `unemployment_rate.PT.M` (INE primary). No inactivation, no proposal regeneration.
 - Source block: canonical terms URL, T&C §3 grant wording with third-party caveat, corrected
@@ -90,19 +90,19 @@ the contract is unchanged); `gitnexus detect-changes -r prumo-pipeline` before c
 
 ## Commits
 
-- `05fdd3b` feat(ingest): OECD SDMX-JSON data 2.0 source adapter (Task 15 Part A) — 10 files.
-- `8847d84` feat(registry): OECD scoped metadata from Task 15 publisher evidence (Part A) —
+- `05fdd3b` feat(ingest): OECD SDMX-JSON data 2.0 source adapter (Task 15 Part A) - 10 files.
+- `8847d84` feat(registry): OECD scoped metadata from Task 15 publisher evidence (Part A) -
   5 files.
 
 ## Remaining gaps for Part B (explicit, not hidden)
 
 1. `ingest/verifiers/oecd.py` (csvfilewithlabels channel, `oecd-csv-evidence` envelope),
-   its tests/fixtures, registration and independence subprocess guard — NOT started. CSV
+   its tests/fixtures, registration and independence subprocess guard - NOT started. CSV
    fixtures (discovery items 2,4,6,8,10,12) are controller evidence awaiting Part B.
 2. Decimal-exact (not token-exact) comparison policy: CSV trims trailing `.0` (-6.0↔-6 etc.,
-   7/77 cells) — verifier must compare by Decimal equivalence, never string equality.
+   7/77 cells) - verifier must compare by Decimal equivalence, never string equality.
 3. Live acceptance (`run_with_refetch`, fresh f0nix archive, full active coverage, served=0
-   under redistribution_ok=false) — controller's separate gate.
+   under redistribution_ok=false) - controller's separate gate.
 4. OBS_STATUS full codelist remains unenumerated (publisher 404 on the probed id); fail-closed
    on non-'A' stands until official codelist evidence is supplied and independently reviewed.
 5. Per-dataset third-party licence clearance for DF_CLI/DF_BTS/DF_IALFS_UNE_M is the owner's

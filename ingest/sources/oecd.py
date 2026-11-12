@@ -6,15 +6,15 @@
 
 Recorded evidence in tests/ingest/fixtures/oecd/ (2026-11-12 f3nix, sha256-pinned by
 MANIFEST.json; byte-identical to docs/superpowers/handoff/evidence/task-15-oecd/discovery/
-items 1,3,5,7,9,11): six active core monthly PT series — oecd.cli.PT (DF_CLI), the four DF_BTS
+items 1,3,5,7,9,11): six active core monthly PT series - oecd.cli.PT (DF_CLI), the four DF_BTS
 business-tendency balances and oecd.unemp_m.PT (DF_IALFS_UNE_M, cross_check of
 unemployment_rate.PT.M, INE primary). Note the identity trap: oecd.cli.PT is MEASURE=BCICP
 (composite business confidence), NOT the dataflow's DEFAULT annotation MEASURE=LI (headline
-composite leading indicator) — keys are pinned in full and never defaulted
+composite leading indicator) - keys are pinned in full and never defaulted
 (registry/mappings-oecd.md).
 
 Registry contract (`SeriesSpec.native_code`): '<agency>,<dataflow>/<key>', exactly the probed
-publisher request identity — dataflow carries its DSD ('DSD_STES@DF_CLI'), the key is the
+publisher request identity - dataflow carries its DSD ('DSD_STES@DF_CLI'), the key is the
 dot-joined pinned dimension codes (one segment per series dimension, e.g.
 'PRT.M.BCICP.IX._Z.AA.IX._Z.H'; parse never reorders it). `SeriesSpec.url` is the canonical
 request address API_BASE/data/<native_code>. `SeriesSpec.multiplier` records the observed
@@ -46,15 +46,15 @@ index dimensions by canonical ASCII decimal segments ('0:0:...:0'; '00', Unicode
 out-of-range indices and extra series keys all raise). Observations are sparse
 '"<canonical decimal index>": [<JSON number value | null>, <numeric OBS_STATUS attr index>]':
 value tokens are preserved VERBATIM via json.loads(parse_int/parse_float tagging JSON numbers
-as _Num — a quoted numeric string is a type flip and raises); null stays value_raw=None
+as _Num - a quoted numeric string is a type flip and raises); null stays value_raw=None
 (quarantined non_numeric downstream, never zero-filled). Series attributes must resolve to
-UNIT_MULT=0 ('Units') — any other multiplier is a wrong scale, never a conversion excuse — and
+UNIT_MULT=0 ('Units') - any other multiplier is a wrong scale, never a conversion excuse - and
 DECIMALS is a display hint only (CLI publishes 4-5 dp despite DECIMALS=2). OBS_STATUS is an
 observation attribute whose codelist was NOT enumerable (discovery item 13, HTTP 404): only 'A'
 ('Normal value') is reviewed and mapped to flag_raw='normal'; ANY other code fails closed,
 referenced or not.
 
-Archived identity (offline parse): url/params are the identity — netloc sdmx.oecd.org, path
+Archived identity (offline parse): url/params are the identity - netloc sdmx.oecd.org, path
 /public/rest/data/<agency>,<dataflow>/<key>, params keys subset of {startPeriod, endPeriod}
 (canonical YYYY-MM literals only), the URL query a strict projection of the archived params (no
 unreviewed, duplicated or contradicting keys). A declared archived window is a CONTAINMENT

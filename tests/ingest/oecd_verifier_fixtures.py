@@ -60,7 +60,7 @@ def entry(name: str) -> dict:
 @cache
 def csv_values(name: str) -> dict[str, str]:
     """Test-only extractor: {period: exact OBS_VALUE token} of an archived original, located by
-    header NAME (never column position) — expectations are re-derived from the pinned bytes, not
+    header NAME (never column position) - expectations are re-derived from the pinned bytes, not
     hardcoded in tests."""
     rows = list(csv.reader(io.StringIO(body(name).decode("utf-8"), newline="")))
     hdr, data = rows[0], rows[1:]

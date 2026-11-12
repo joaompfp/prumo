@@ -126,7 +126,7 @@ def test_every_registry_unit_is_derived_from_archived_publisher_metadata():
 
 def test_cli_is_bcicp_business_confidence_not_the_li_default():
     """The registry id says 'cli' but the pinned MEASURE is BCICP (composite business
-    confidence); the dataflow's DEFAULT annotation references MEASURE=LI — proof the trap is
+    confidence); the dataflow's DEFAULT annotation references MEASURE=LI - proof the trap is
     real and the explicit pin is required."""
     doc = _fixture("oecd.cli.PT")
     dims = {d["id"]: d for d in doc["data"]["structures"][0]["dimensions"]["series"]}

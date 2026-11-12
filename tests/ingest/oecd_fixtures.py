@@ -4,8 +4,8 @@ MANIFEST.json and byte-identical to docs/superpowers/handoff/evidence/task-15-oe
 items 1,3,5,7,9,11 whose discovery manifest sha256 is pinned there), plus an Http double that
 serves the collector channel by native_code.
 
-Fixture set keys of the source channel (routed by WHAT the adapter asks for — the registry
-native_code '<agency>,<dataflow>/<key>' — not literal URL string):
+Fixture set keys of the source channel (routed by WHAT the adapter asks for - the registry
+native_code '<agency>,<dataflow>/<key>' - not literal URL string):
     OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H     -> cli-json.json      (13 obs)
     OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N          -> bts-employment-json.json
     OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N           -> bts-order_books-json.json
@@ -71,8 +71,8 @@ class FixtureHttp:
     requested URL path, so the adapter's exact base URL is its own choice but a missing/extra/
     wrong request fails the test. Records every call as (native_code, params, headers) so tests
     can assert request count, the SDMX-JSON Accept header and the window params. The returned
-    final URL is the request URL plus the adapter's encoded params — what a real client produces
-    — and for the recorded 2025-10 window that exactly equals the manifest's archived URL."""
+    final URL is the request URL plus the adapter's encoded params - what a real client produces
+    - and for the recorded 2025-10 window that exactly equals the manifest's archived URL."""
 
     def __init__(self, status: dict[str, int] | None = None,
                  override: dict[str, bytes] | None = None):

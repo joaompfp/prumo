@@ -61,15 +61,15 @@ sources:
     # OECD Terms & Conditions (canonical URL, 'Last updated on 1 July 2024') §3 'Data' grants
     # extracting/downloading/copying/adapting/printing/distributing/sharing/embedding Data for
     # any purpose incl. commercial, with the OECD citation and sub-licence acknowledgment
-    # propagation — read 2026-11-12 via web extraction (plain curl answers HTTP 403 Cloudflare
+    # propagation - read 2026-11-12 via web extraction (plain curl answers HTTP 403 Cloudflare
     # challenge on both f3nix and f0nix egresses; the 403 is a bot-wall, not absence).
     # The grant is subject to PER-DATASET third-party rights the user must verify in the
     # metadata/source tab; until the owner confirms DF_CLI/DF_BTS/DF_IALFS_UNE_M carry no
     # third-party restriction, redistribution_ok stays FALSE and nothing is served. CC BY 4.0
-    # covers OECD WRITTEN content since 2024-07-01 — it is NOT a blanket statistical-data
+    # covers OECD WRITTEN content since 2024-07-01 - it is NOT a blanket statistical-data
     # licence. Provenance: docs/superpowers/handoff/evidence/task-15-oecd/discovery items
     # 18-20 (webtext) + registry/licences-todo.md.
-    licence: OECD T&C §3 bespoke data grant (reuse for any purpose incl. commercial, with attribution and sub-licence acknowledgment propagation) — UNVERIFIED pending per-dataset third-party rights clearance
+    licence: OECD T&C §3 bespoke data grant (reuse for any purpose incl. commercial, with attribution and sub-licence acknowledgment propagation) - UNVERIFIED pending per-dataset third-party rights clearance
     licence_url: https://www.oecd.org/en/about/terms-conditions.html
     attribution: 'Source: OECD (year), (dataset name), sdmx.oecd.org (accessed on YYYY-MM-DD)'
     redistribution_ok: false
@@ -8632,7 +8632,7 @@ series:
   unit: index (100=trend)
   decimal: .
   # IDENTITY TRAP: this series is MEASURE=BCICP (composite BUSINESS CONFIDENCE, amplitude
-  # adjusted, long-term average = 100) living in the DF_CLI dataflow — NOT the dataflow's
+  # adjusted, long-term average = 100) living in the DF_CLI dataflow - NOT the dataflow's
   # DEFAULT annotation MEASURE=LI (headline composite leading indicator). Pin BCICP explicitly;
   # never default the key. See registry/mappings-oecd.md.
   native_code: OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H

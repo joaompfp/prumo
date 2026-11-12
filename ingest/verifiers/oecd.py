@@ -11,7 +11,7 @@
 ONE bounded labelled-CSV response per series carries BOTH surfaces an item's decision needs:
 the OBS_VALUE token per TIME_PERIOD and the unit/multiplier/status columns as code+label pairs.
 The request window is the sampled items' min..max period; a requested period absent from the
-rows returns observed_text=None (an honest 'not found' mismatch decided by ingest.verify) —
+rows returns observed_text=None (an honest 'not found' mismatch decided by ingest.verify) -
 sparse samples never invent data and all-periods-present is never assumed.
 
 Structure assertions are fail-closed, parsed by HEADER NAME, never column position (the
@@ -47,8 +47,8 @@ registry seasonal_adjustment unset, 'Y'/'Calendar and seasonally adjusted' -> th
 registry prose) are asserted against the spec the same way.
 
 EVIDENCE (Ruling R/G7): every ItemResult carries one versioned JSON envelope (schema
-'oecd-csv-evidence', version 1) bundling the exact wire record — final URL, actual HTTP status
-and the full CSV body base64-encoded — byte-for-byte recoverable from the raw store with no
+'oecd-csv-evidence', version 1) bundling the exact wire record - final URL, actual HTTP status
+and the full CSV body base64-encoded - byte-for-byte recoverable from the raw store with no
 HTTP; `read_csv_evidence` re-reads the archived bytes and recovers values AND units AND flags.
 
 INDEPENDENCE: this module shares NO code with the collector (register_verifier's static
@@ -313,7 +313,7 @@ def read_csv_evidence(body: bytes, native_code: str | None, spec: SeriesSpec, *,
 
 def _envelope(r: HttpResult) -> bytes:
     """The item's evidence: one versioned JSON envelope (schema 'oecd-csv-evidence', v1)
-    bundling the exact wire record of the bounded CSV response — final URL, actual HTTP status
+    bundling the exact wire record of the bounded CSV response - final URL, actual HTTP status
     and the full body base64-encoded (byte-for-byte recoverable from the raw store with no
     HTTP; metadata AND values come from this one response, so one record carries both)."""
     doc = {"schema": EVIDENCE_SCHEMA, "version": EVIDENCE_VERSION,
