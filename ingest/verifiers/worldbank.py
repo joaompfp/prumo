@@ -17,6 +17,10 @@ title row, and the ZIP member-name infix `DS2_<lang>_csv_v2_<rev>`. There is NO 
 URL/locale input, NO automatic fallback or retry and NO request rewriting: a mismatch between
 the chosen locale and the served archive (crossed locale, foreign member names, foreign title)
 fails closed, and a language outside the allowlist fails at construction before any request.
+Task 17A adds one reviewed extension: an optional per-indicator locale map
+(`WorldBankVerifier(indicator_locales={<CODE>: <lang>})`), same allowlisted endpoints/parsers,
+validated and copied at construction, with no automatic fallback between locales — an indicator
+absent from the map simply uses the instance's csv_language.
 
 Channel mechanics (from the archived bytes):
 - The ZIP holds exactly THREE members: the main data CSV
@@ -258,22 +262,51 @@ class WorldBankVerifier:
     honestly None (no such surfaces in this channel), evidence = the deciding response's
     versioned envelope (exact ZIP bytes + final URL + actual HTTP status).
 
-    csv_language: the ONE export locale this instance reads, from the exact CSV_LANGUAGES
-    allowlist; the default 'en' is the original behavior. An unknown language is rejected
-    HERE, at construction, before any request; a served archive that does not carry that
-    locale's identity (URL/title/DS2_<lang> member names with one shared revision) fails
-    closed — no fallback, no retry, no request rewriting."""
+    csv_language: the ONE export locale this instance reads by default, from the exact
+    CSV_LANGUAGES allowlist; the default 'en' is the original behavior. An unknown language is
+    rejected HERE, at construction, before any request; a served archive that does not carry
+    that locale's identity (URL/title/DS2_<lang> member names with one shared revision) fails
+    closed — no fallback, no retry, no request rewriting.
+
+    indicator_locales: optional EXPLICIT per-indicator overrides {WDI indicator code: locale}
+    (Task 17A; the reviewed recovery mapping lives in ingest.operations). Both keys and values
+    are validated at construction (indicator codes must match the WDI code shape, locales must
+    be in CSV_LANGUAGES); the mapping is COPIED, so mutating the caller's dict afterwards can
+    never change verification. An indicator not in the map uses csv_language. There is no
+    automatic fallback between locales: the mapped locale's archive fails closed exactly like
+    any other locale mismatch."""
 
     source_name = "worldbank"
 
-    def __init__(self, csv_language: str = "en"):
+    def __init__(self, csv_language: str = "en",
+                 indicator_locales: dict[str, str] | None = None):
         if csv_language not in CSV_LANGUAGES:
             raise ValueError(f"WorldBankVerifier csv_language must be one of "
                              f"{sorted(CSV_LANGUAGES)}, got {csv_language!r} (the export "
                              f"locale is an exact allowlist; arbitrary URLs/locales are "
                              f"never accepted)")
+        bad_codes = sorted(c for c in (indicator_locales or {})
+                           if not _INDICATOR.fullmatch(c))
+        bad_locales = sorted({lang for lang in (indicator_locales or {}).values()
+                              if lang not in CSV_LANGUAGES})
+        if bad_codes or bad_locales:
+            raise ValueError(f"WorldBankVerifier indicator_locales must map WDI indicator "
+                             f"codes to admitted locales {sorted(CSV_LANGUAGES)}; got "
+                             f"malformed indicator codes {bad_codes} and/or unknown locales "
+                             f"{bad_locales}")
         self.csv_language = csv_language
-        self._url, self._title = CSV_LANGUAGES[csv_language]
+        self._indicator_locales = dict(indicator_locales or {})
+
+    @property
+    def indicator_locales(self) -> dict[str, str]:
+        """A copy of the per-indicator locale overrides; mutating it changes nothing."""
+        return dict(self._indicator_locales)
+
+    def _channel(self, code: str) -> tuple[str, str, str]:
+        """(URL template, localized Data Source title, locale) one indicator is read through."""
+        lang = self._indicator_locales.get(code, self.csv_language)
+        url, title = CSV_LANGUAGES[lang]
+        return url, title, lang
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         zips: dict[str, tuple[bytes, str, int]] = {}  # code -> (body, final url, status)
@@ -285,14 +318,15 @@ class WorldBankVerifier:
                 raise ValueError(f"World Bank verifier accepts canonical yearly periods only, "
                                  f"got {item.period!r}")
             if code not in zips:
-                r = http.get(self._url.format(code=code))
+                url_t, title, lang = self._channel(code)
+                r = http.get(url_t.format(code=code))
                 if not 200 <= r.status < 300:
                     raise ValueError(f"World Bank CSV export for indicator {code} answered "
                                      f"HTTP {r.status} (fail closed on every non-2xx)")
                 zips[code] = (r.body, r.url, r.status)
                 tables[code] = _table(
-                    _read_export(r.body, code, self.csv_language, item.series_id),
-                    code, self._title, item.series_id)
+                    _read_export(r.body, code, lang, item.series_id),
+                    code, title, item.series_id)
             body, url, status = zips[code]
             rows, ycol = tables[code]
             row = rows.get(iso3)

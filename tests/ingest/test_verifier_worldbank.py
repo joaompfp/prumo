@@ -673,3 +673,106 @@ def test_es_verifier_detects_tampered_geography_row(env_es):
     bad = q(db, "SELECT series_id, period, note FROM verification_item WHERE match=0")
     assert any(sid == "worldbank.unemployment_wb.PT" and "not found" in note
                for sid, _, note in bad)
+
+
+# --- Per-indicator locale configuration (Task 17A) -------------------------------------------
+# Reviewed finding (2026-11-12, f0nix): the SAME publisher per-indicator CSV exporter hangs on
+# /v2/en/ for SOME indicators while answering under /v2/es/. One WorldBankVerifier may therefore
+# carry an EXPLICIT indicator -> locale map (validated eagerly, copied at construction, no
+# automatic fallback); indicators not in the map keep the instance's csv_language. The CLI's
+# run-all registers exactly this configuration (ingest.operations). These tests read RECORDED
+# fixture bytes only; double-routing by URL locale segment, never rewritten responses.
+
+WB_INDICATOR_LOCALES = {"NY.GDP.MKTP.KD.ZG": "es", "SL.UEM.TOTL.ZS": "es"}
+
+
+class _RoutedHttp:
+    """Test double over the recorded en/es fixture doubles: routes each request by the locale
+    path segment (/v2/es/ vs /v2/en/) so one instance can exercise both channels. Labels fixture
+    bytes; it does not re-read or rewrite publisher content."""
+    def __init__(self, es_status=None):
+        self.en = VerifyFixtureHttp(language="en")
+        self.es = VerifyFixtureHttp(language="es", status=es_status)
+
+    def get(self, url, params=None, headers=None, timeout=None):
+        if "/v2/es/" in url:
+            return self.es.get(url, params=params, headers=headers, timeout=timeout)
+        return self.en.get(url, params=params, headers=headers, timeout=timeout)
+
+
+def test_indicator_locales_default_is_empty_and_all_english():
+    v = WorldBankVerifier()
+    assert v.csv_language == "en" and v.indicator_locales == {}
+    (r,) = v.check([_item("worldbank.population.EU", "2025")], _RoutedHttp())
+    assert r.observed_text == "451127411"
+    assert r.evidence_url == CSV_URL.format(code="SP.POP.TOTL")
+
+
+def test_indicator_locales_one_instance_reads_each_indicator_in_its_own_locale():
+    v = WorldBankVerifier(indicator_locales=dict(WB_INDICATOR_LOCALES))
+    items = [_item("worldbank.gdp_growth.PT", "2025"),      # mapped es
+             _item("worldbank.unemployment_wb.GR", "2024"),  # mapped es
+             _item("worldbank.population.EU", "2025"),       # default en
+             _item("worldbank.gdp_usd.PT", "2025")]          # default en
+    results = v.check(items, _RoutedHttp())
+    assert [(r.series_id, r.period, r.observed_text) for r in results] == [
+        ("worldbank.gdp_growth.PT", "2025", "1.86448007464475"),
+        ("worldbank.unemployment_wb.GR", "2024", "10.02"),
+        ("worldbank.population.EU", "2025", "451127411"),
+        ("worldbank.gdp_usd.PT", "2025", "346639825141.821")]
+    assert [r.evidence_url for r in results] == [
+        CSV_URL_ES.format(code="NY.GDP.MKTP.KD.ZG"),
+        CSV_URL_ES.format(code="SL.UEM.TOTL.ZS"),
+        CSV_URL.format(code="SP.POP.TOTL"),
+        CSV_URL.format(code="NY.GDP.MKTP.CD")]
+
+
+def test_indicator_locales_codes_and_locales_validated_eagerly():
+    with pytest.raises(ValueError, match="locale"):
+        WorldBankVerifier(indicator_locales={"NY.GDP.MKTP.KD.ZG": "fr"})
+    with pytest.raises(ValueError, match="indicator"):
+        WorldBankVerifier(indicator_locales={"ny.gdp.mktp.kd.zg": "es"})
+    with pytest.raises(ValueError, match="indicator"):
+        WorldBankVerifier(indicator_locales={"": "es"})
+    with pytest.raises(ValueError, match="csv_language"):
+        WorldBankVerifier(csv_language="fr",
+                          indicator_locales=dict(WB_INDICATOR_LOCALES))
+
+
+def test_indicator_locales_caller_mutation_cannot_change_verification():
+    m = {"NY.GDP.MKTP.KD.ZG": "es"}
+    v = WorldBankVerifier(indicator_locales=m)
+    m["NY.GDP.MKTP.KD.ZG"] = "en"   # mutate the caller's dict after construction
+    m["SL.UEM.TOTL.ZS"] = "en"
+    assert v.indicator_locales == {"NY.GDP.MKTP.KD.ZG": "es"}
+    v.indicator_locales["NY.GDP.MKTP.KD.ZG"] = "en"  # the accessor itself returns a copy
+    assert v.indicator_locales == {"NY.GDP.MKTP.KD.ZG": "es"}
+    http = _RoutedHttp()
+    (r,) = v.check([_item("worldbank.gdp_growth.PT", "2025")], http)
+    assert r.evidence_url == CSV_URL_ES.format(code="NY.GDP.MKTP.KD.ZG")
+    assert http.es.calls == ["NY.GDP.MKTP.KD.ZG"] and http.en.calls == []
+
+
+def test_indicator_locales_no_fallback_when_a_mapped_locale_fails():
+    http = _RoutedHttp(es_status={"NY.GDP.MKTP.KD.ZG": 503})
+    with pytest.raises(ValueError, match="HTTP 503"):
+        WorldBankVerifier(indicator_locales=dict(WB_INDICATOR_LOCALES)).check(
+            [_item("worldbank.gdp_growth.PT", "2025")], http)
+    assert http.en.calls == []  # no silent retry on /v2/en/ (channel confusion is forbidden)
+
+
+def test_indicator_locales_instance_registers_and_passes_allowlist():
+    v = WorldBankVerifier(indicator_locales=dict(WB_INDICATOR_LOCALES))
+    register_verifier(v)
+    assert get_verifier("worldbank") is v
+
+
+def test_indicator_locales_clean_run_through_verify_run(env_es):
+    """The configured instance verifies through the real machinery exactly like csv_language=."""
+    db, specs, store, clock = env_es
+    r = run_dataset(db, store, _EsTruthSource(), specs, FakeHttp(ok(payload(ES_TRUTH))), clock)
+    assert r.state == "pending-verification"
+    good = verify_run(db, r.run_id,
+                      WorldBankVerifier(indicator_locales=dict(WB_INDICATOR_LOCALES)),
+                      _RoutedHttp(), seed=7, size=50, specs=specs, store=store, now=clock)
+    assert good and db.run_state(r.run_id) == "verified"
