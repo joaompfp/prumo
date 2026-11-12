@@ -1,0 +1,64 @@
+{
+ "artifact": "prumo Task 16 E-REDES fixtures",
+ "recorded_utc": "2026-11-12T18:28:53.538125+00:00",
+ "provenance": "genuine, complete, UNMODIFIED responses from the E-REDES Open Data Portal (OpenDataSoft v2.1), fetched from f3nix egress on 2026-11-12 within the Task 16 brief's bounded network budget (3 of max 8 requests used, 1.54 s of max 60 s deadline, 10 s per-request timeout, 0 retries; every response well under the 200 KB cap). The discovery archive (docs/superpowers/handoff/evidence/task-16-discovery/) is probe-truncated for catalog/CSV and was NOT reused here.",
+ "portal": "https://e-redes.opendatasoft.com",
+ "dataset": "energia-produzida-total-nacional",
+ "window_utc": [
+  "2026-11-10T00:00:00+00:00",
+  "2026-11-11T00:00:00+00:00"
+ ],
+ "budget": {
+  "max_requests": 8,
+  "deadline_s": 60,
+  "timeout_s": 10,
+  "retries": 0
+ },
+ "actual": {
+  "requests": 3,
+  "elapsed_s": 1.543
+ },
+ "sets": {
+  "metadata": {
+   "file": "metadata.body",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional",
+   "params": null,
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional",
+   "fetched_at_utc": "2026-11-12T18:28:52.273082+00:00",
+   "sha256": "396af1887eee26353bec34b3e0adf538e65dfff4635e8954c81bde846f60a648",
+   "bytes": 14411,
+   "note": "dataset metadata: dataset_id, fields (datahora datetime; dia/mes/ano/date/time; dgm/pre/total double with labels 'Market (kWh)'/'Special Regime (kWh)'/'Total (kWh)'), default metas license 'CC BY 4.0' + license_url, publisher 'E-REDES'"
+  },
+  "window_json": {
+   "file": "window_json.body",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?limit=100&order_by=datahora&where=datahora%20%3E%3D%20%222026-11-10%22%20AND%20datahora%20%3C%20%222026-11-11%22",
+   "params": {
+    "where": "datahora >= \"2026-11-10\" AND datahora < \"2026-11-11\"",
+    "order_by": "datahora",
+    "limit": 100
+   },
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/records?where=datahora+%3E%3D+%222026-11-10%22+AND+datahora+%3C+%222026-11-11%22&order_by=datahora&limit=100",
+   "fetched_at_utc": "2026-11-12T18:28:52.423760+00:00",
+   "sha256": "5b5baba6189881d037e559be7d74a726d1cb5fe02a65e0d8b5d0ce648f220cd7",
+   "bytes": 17095,
+   "note": "records JSON, one complete UTC day: total_count 96 == results length (single page, no truncation); native float tokens preserved"
+  },
+  "window_csv": {
+   "file": "window_csv.body",
+   "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=UTC&where=datahora%20%3E%3D%20%222026-11-10%22%20AND%20datahora%20%3C%20%222026-11-11%22",
+   "params": {
+    "lang": "pt",
+    "timezone": "UTC",
+    "where": "datahora >= \"2026-11-10\" AND datahora < \"2026-11-11\""
+   },
+   "status": 200,
+   "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=UTC&where=datahora+%3E%3D+%222026-11-10%22+AND+datahora+%3C+%222026-11-11%22",
+   "fetched_at_utc": "2026-11-12T18:28:53.537683+00:00",
+   "sha256": "78bbea1bc49ad6a0076b5428ee96c99d0ee9a146ab2ca3e32b79164e5e598e82",
+   "bytes": 8088,
+   "note": "exports/csv of the SAME window (independent verifier channel): UTF-8 BOM, ';', CRLF, header datahora;dia;mes;ano;date;time;dgm;pre;total, 96 data rows, UTC datahora spellings; all 288 value tokens are byte-identical to window_json (checked at recording time)"
+  }
+ }
+}
