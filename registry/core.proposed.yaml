@@ -58,10 +58,22 @@ sources:
     timeout_s: 300  # its JSON API takes 17-45 s per request (trade 170-236 s); client default is 30 s
     verifiable: true  # independent channel exists: bddXplorer HTML table (verifier ingest.verifiers.ine)
   oecd:
-    licence: UNVERIFIED — builder must confirm before serving
-    licence_url: https://www.oecd.org/termsandconditions/
-    attribution: 'Source: OECD'
+    # OECD Terms & Conditions (canonical URL, 'Last updated on 1 July 2024') §3 'Data' grants
+    # extracting/downloading/copying/adapting/printing/distributing/sharing/embedding Data for
+    # any purpose incl. commercial, with the OECD citation and sub-licence acknowledgment
+    # propagation — read 2026-11-12 via web extraction (plain curl answers HTTP 403 Cloudflare
+    # challenge on both f3nix and f0nix egresses; the 403 is a bot-wall, not absence).
+    # The grant is subject to PER-DATASET third-party rights the user must verify in the
+    # metadata/source tab; until the owner confirms DF_CLI/DF_BTS/DF_IALFS_UNE_M carry no
+    # third-party restriction, redistribution_ok stays FALSE and nothing is served. CC BY 4.0
+    # covers OECD WRITTEN content since 2024-07-01 — it is NOT a blanket statistical-data
+    # licence. Provenance: docs/superpowers/handoff/evidence/task-15-oecd/discovery items
+    # 18-20 (webtext) + registry/licences-todo.md.
+    licence: OECD T&C §3 bespoke data grant (reuse for any purpose incl. commercial, with attribution and sub-licence acknowledgment propagation) — UNVERIFIED pending per-dataset third-party rights clearance
+    licence_url: https://www.oecd.org/en/about/terms-conditions.html
+    attribution: 'Source: OECD (year), (dataset name), sdmx.oecd.org (accessed on YYYY-MM-DD)'
     redistribution_ok: false
+    verifiable: true  # independent channel: csvfilewithlabels SDMX CSV (Task 15 Part B)
   ren:
     # REN DataHub "Termos Legais e Condições Gerais" (licence_url), read live 2026-11-11
     # (Task 12 discovery archive terms/datahub-termos.body): clause 2 reserves all exploitation
@@ -8619,7 +8631,13 @@ series:
   frequency: M
   unit: index (100=trend)
   decimal: .
-  native_code: DF_CLI
+  # IDENTITY TRAP: this series is MEASURE=BCICP (composite BUSINESS CONFIDENCE, amplitude
+  # adjusted, long-term average = 100) living in the DF_CLI dataflow — NOT the dataflow's
+  # DEFAULT annotation MEASURE=LI (headline composite leading indicator). Pin BCICP explicitly;
+  # never default the key. See registry/mappings-oecd.md.
+  native_code: OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H
+  url: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H
+  multiplier: 0  # UNIT_MULT=0 ('Units') in archived Task 15 responses; no scaling ever
 - id: oecd.employment.PT
   source: oecd
   indicator_key: oecd_employment.PT.M
@@ -8629,7 +8647,10 @@ series:
   frequency: M
   unit: balance %
   decimal: .
-  native_code: DF_BTS
+  native_code: OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N
+  url: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N
+  multiplier: 0  # UNIT_MULT=0 in archived Task 15 responses
+  seasonal_adjustment: Calendar and seasonally adjusted  # ADJUSTMENT=Y (publisher label)
 - id: oecd.order_books.PT
   source: oecd
   indicator_key: oecd_order_books.PT.M
@@ -8639,7 +8660,10 @@ series:
   frequency: M
   unit: balance %
   decimal: .
-  native_code: DF_BTS
+  native_code: OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N
+  url: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N
+  multiplier: 0  # UNIT_MULT=0 in archived Task 15 responses
+  seasonal_adjustment: Calendar and seasonally adjusted  # ADJUSTMENT=Y
 - id: oecd.production.PT
   source: oecd
   indicator_key: oecd_production.PT.M
@@ -8649,7 +8673,10 @@ series:
   frequency: M
   unit: balance %
   decimal: .
-  native_code: DF_BTS
+  native_code: OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N
+  url: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N
+  multiplier: 0  # UNIT_MULT=0 in archived Task 15 responses
+  seasonal_adjustment: Calendar and seasonally adjusted  # ADJUSTMENT=Y
 - id: oecd.selling_prices.PT
   source: oecd
   indicator_key: oecd_selling_prices.PT.M
@@ -8659,7 +8686,10 @@ series:
   frequency: M
   unit: balance %
   decimal: .
-  native_code: DF_BTS
+  native_code: OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N
+  url: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N
+  multiplier: 0  # UNIT_MULT=0 in archived Task 15 responses
+  seasonal_adjustment: Calendar and seasonally adjusted  # ADJUSTMENT=Y
 - id: ren.electricity_biomass.PT
   source: ren
   indicator_key: ren_electricity_biomass.PT.M
@@ -9672,13 +9702,16 @@ series:
 - id: oecd.unemp_m.PT
   source: oecd
   indicator_key: unemployment_rate.PT.M
-  role: cross_check
+  role: cross_check  # INE remains the primary source of unemployment_rate.PT.M
   theme: economy
   geography: PT
   frequency: M
   unit: '%'
   decimal: .
-  native_code: DF_IALFS_UNE_M
+  native_code: OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M
+  url: https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M
+  multiplier: 0  # UNIT_MULT=0 in archived Task 15 responses
+  seasonal_adjustment: Calendar and seasonally adjusted  # ADJUSTMENT=Y
 - id: worldbank.unemployment_wb.RO
   source: worldbank
   indicator_key: unemployment_rate.RO.A
