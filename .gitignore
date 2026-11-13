@@ -56,3 +56,7 @@ seed_data/seed.duckdb
 docs/testing/.claude/
 docs/testing/.playwright-mcp/
 docs/testing/*.log
+
+# Secrets (rotated 2026-11-13; keys live in SOPS only)
+.fred_api_key
+*.api_key
