@@ -1,0 +1,245 @@
+{
+  "acceptance": "controller review required; source exceptions remain explicit",
+  "attempt_log_count": 4,
+  "attempt_states": {
+    "verified": 4
+  },
+  "blocked_sources": [
+    "dgeg"
+  ],
+  "elapsed_24h": false,
+  "elapsed_seconds": 316.433981,
+  "integrity": "ok",
+  "legacy_observations_unchanged": true,
+  "licence_violations": 0,
+  "observation_start": "2026-11-13T01:21:18.732242+00:00",
+  "observed_at": "2026-11-13T01:26:35.166223+00:00",
+  "public_checks": [
+    {
+      "maintenance": false,
+      "status": 200,
+      "url": "http://100.118.19.6:8088/healthz"
+    },
+    {
+      "maintenance": true,
+      "status": 200,
+      "url": "https://cae.joao.date/"
+    },
+    {
+      "maintenance": true,
+      "status": 200,
+      "url": "https://joao.date/dados/"
+    }
+  ],
+  "served_by_source": [
+    [
+      "bportugal",
+      "fetched",
+      4318
+    ],
+    [
+      "eredes",
+      "fetched",
+      64479
+    ],
+    [
+      "eurostat",
+      "fetched",
+      45500
+    ],
+    [
+      "worldbank",
+      "legacy-unverified",
+      44487
+    ]
+  ],
+  "sources": [
+    {
+      "active": 10,
+      "availability": {
+        "verified": 10
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "bportugal",
+          "latest_attempt": "2026-11-13T01:21:20.171346+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:22:24.432837+00:00",
+      "name": "bportugal",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:21:24.422030+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 0,
+      "availability": {},
+      "blockers": [
+        "not_verifiable",
+        "licence_withheld"
+      ],
+      "datasets": [],
+      "last_verified": null,
+      "name": "dgeg",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-02-26T01:39:43.601887Z",
+      "stale_active": 0
+    },
+    {
+      "active": 3,
+      "availability": {
+        "verified": 3
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "eredes",
+          "latest_attempt": "2026-11-13T01:22:24.469887+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:22:31.009041+00:00",
+      "name": "eredes",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:22:26.579654+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 329,
+      "availability": {
+        "verified": 329
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "eurostat",
+          "latest_attempt": "2026-11-13T01:22:31.032953+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:23:10.964435+00:00",
+      "name": "eurostat",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:22:50.411465+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 12,
+      "availability": {
+        "verified": 12
+      },
+      "blockers": [
+        "licence_withheld"
+      ],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "fred",
+          "latest_attempt": "2026-11-13T01:23:11.014131+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:23:46.399011+00:00",
+      "name": "fred",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:23:34.270934+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 41,
+      "availability": {
+        "legacy-unverified": 37,
+        "none": 4
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "ine",
+          "latest_attempt": "2026-11-13T01:23:46.433453+00:00",
+          "latest_state": "running"
+        }
+      ],
+      "last_verified": null,
+      "name": "ine",
+      "never_verified_active": 41,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-04-06T01:47:04Z",
+      "stale_active": 37
+    },
+    {
+      "active": 6,
+      "availability": {
+        "legacy-unverified": 6
+      },
+      "blockers": [
+        "licence_withheld"
+      ],
+      "datasets": [],
+      "last_verified": null,
+      "name": "oecd",
+      "never_verified_active": 6,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-03-15T20:50:53Z",
+      "stale_active": 6
+    },
+    {
+      "active": 14,
+      "availability": {
+        "legacy-unverified": 14
+      },
+      "blockers": [
+        "licence_withheld"
+      ],
+      "datasets": [],
+      "last_verified": null,
+      "name": "ren",
+      "never_verified_active": 14,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-04-06T01:32:30Z",
+      "stale_active": 14
+    },
+    {
+      "active": 930,
+      "availability": {
+        "legacy-unverified": 930
+      },
+      "blockers": [],
+      "datasets": [],
+      "last_verified": null,
+      "name": "worldbank",
+      "never_verified_active": 930,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-03-15T20:50:53Z",
+      "stale_active": 930
+    }
+  ],
+  "task_18_closed": false,
+  "worker": {
+    "image": "sha256:cbce2ba401f52447c93198cc8f2269a3323483ca88811212086312521d1f46e3",
+    "restarts": 0,
+    "state": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 0,
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 3322930,
+      "Restarting": false,
+      "Running": true,
+      "StartedAt": "2026-11-13T01:21:18.732242939Z",
+      "Status": "running"
+    }
+  }
+}

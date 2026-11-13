@@ -191,6 +191,8 @@ Acceptance checkpoint 2026-11-12: operational/manual scope and final cleanup COM
 
 ### Task 18: Scheduler service and deployment
 
+Release checkpoint 2026-11-13: scheduler/image code passed independent specification and quality gates, then the owner-authorized merge 49a3602 and infrastructure 6a58b51 were pushed and deployed on f0nix. Controller full suite: 1435 passed / 7 live deselected / 3 warnings; hosted main CI success. Original legacy CSV imported before worker startup; E-REDES initial catch-up verified. The real 24-hour observation began 2026-11-13T01:21:18.732242+00:00 and remains OPEN, as does review of ongoing/queued source results. This is not final all-core-fresh or Project 1 acceptance. See `docs/superpowers/handoff/reports/task-18-controller-review.md` and `docs/data/operations.md`.
+
 **Files:** Create `ingest/scheduler.py`, `tests/ingest/test_scheduler.py`, `compose/prumo-ingest.yml` (in the infra repo, `stacks/web/compose/`); Modify: infra `stacks/web/compose.yml` (include), `Dockerfile` (`COPY ingest/ registry/`), `entrypoint.sh` (drop the dead `crond` block and DuckDB/site.json seeding).
 
 **Interfaces:**

@@ -1,0 +1,47 @@
+{
+  "runtime_merge": "49a3602b936fd05db6a2032965c4f892e39906ee",
+  "infra_commit": "6a58b51c762c4b8a57b7dd4fd8272a4c963c3dd2",
+  "ci_url": "https://github.com/joaompfp/prumo/actions/runs/43342679524",
+  "observation_start": "2026-11-13T01:21:18.732242+00:00",
+  "observation_job_id": "41f08dd25c5c",
+  "observation_job_due": "2026-11-14T01:24:32.992446+00:00",
+  "observation_closed": false,
+  "files": {
+    "audit-after-import.json": {
+      "bytes": 2930,
+      "sha256": "54dc02baf77e2957bba49a7524a51faaff0e7eeaea5a3b3a7b34c4e9a3511638"
+    },
+    "audit-before-worker.json": {
+      "bytes": 3291,
+      "sha256": "c0412b2536d6262be0cdbf181dbfca0e7b32653ba92e978836cd2f8d1327d1d7"
+    },
+    "ci-result.json": {
+      "bytes": 3376,
+      "sha256": "26f289d765b45a0f28537adecddf0889a0712feb786d841fe81a3ea57287f7cf"
+    },
+    "collect-observation.py": {
+      "bytes": 6158,
+      "sha256": "ef4778ebc494062fb4cd0eb7c01e4b9455556b0ba4df11f670e1ab5922446648"
+    },
+    "eredes-catchup.txt": {
+      "bytes": 71,
+      "sha256": "23f04f69d26c44b0277e2fc248b92143a56510cd3dd49dae09648ec7fef857a1"
+    },
+    "initial-worker-audit.json": {
+      "bytes": 6081,
+      "sha256": "15a656480f0ba68777c1a83abaab5ae9c6fabf0dddb45fe328cc87e91108fb80"
+    },
+    "initial-worker-summary.json": {
+      "bytes": 5788,
+      "sha256": "72b57759a2408746d1b257438517d44a9eddf27acaebb1c2c1f068b8593deb76"
+    },
+    "legacy-import.txt": {
+      "bytes": 158,
+      "sha256": "f388365d25eec84f2f351a81088e13dd0d253bb07bdd028a763e190f6899fad3"
+    },
+    "production-audit.py": {
+      "bytes": 4851,
+      "sha256": "bcba22197d0e7915b35261450f1bfe202fb7d1942a3a4423bd22485c3f57b579"
+    }
+  }
+}

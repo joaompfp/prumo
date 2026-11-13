@@ -1,0 +1,1 @@
+imported 161263 legacy rows; quarantined {'not_in_registry': 73863, 'missing_unit': 7468, 'unit_mismatch': 3082, 'suspect_unit_scale': 480, 'non_numeric': 6}

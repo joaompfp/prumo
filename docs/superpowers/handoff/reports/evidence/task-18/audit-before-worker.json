@@ -1,0 +1,225 @@
+{
+  "integrity": "ok",
+  "legacy_db_sha256": "75506bce135f3feb6c6325673426f397892e0ed68aa0a014181934fa2be58e82",
+  "legacy_fingerprint": {
+    "rows": 161263,
+    "sha256": "2dbabfcd42c1a99e963459cc8d61093961e5f717e1299c7b0fa0b8a5b5b0e6b5"
+  },
+  "licence_violations": 0,
+  "migrations": [
+    [
+      "0001_init",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0002_dataset_key",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0003_verification_replay",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0004_verification_audit",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0005_served_licence_gate",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0006_pt15m",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0007_scoped_legacy_serving",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0008_input_origin",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0009_blocked_stale_state",
+      "2026-11-13 01:15:36"
+    ],
+    [
+      "0010_scheduler_state",
+      "2026-11-13 01:15:36"
+    ]
+  ],
+  "quarantines": [
+    [
+      "bportugal",
+      "missing_unit",
+      946
+    ],
+    [
+      "eredes",
+      "duplicate_period",
+      24
+    ],
+    [
+      "eurostat",
+      "missing_unit",
+      1819
+    ],
+    [
+      "fred",
+      "missing_unit",
+      3779
+    ],
+    [
+      "fred",
+      "unit_mismatch",
+      3082
+    ],
+    [
+      "ine",
+      "missing_unit",
+      864
+    ],
+    [
+      "ine",
+      "suspect_unit_scale",
+      480
+    ],
+    [
+      "worldbank",
+      "missing_unit",
+      60
+    ],
+    [
+      "worldbank",
+      "non_numeric",
+      6
+    ]
+  ],
+  "raw_receipts_by_source": {
+    "eredes": 227
+  },
+  "raw_unique_bytes_checked": 3908713,
+  "raw_unique_files_checked": 227,
+  "run_states": [
+    [
+      "bportugal",
+      "verified",
+      1
+    ],
+    [
+      "dgeg",
+      "verified",
+      1
+    ],
+    [
+      "eredes",
+      "verified",
+      1
+    ],
+    [
+      "eurostat",
+      "verified",
+      1
+    ],
+    [
+      "fred",
+      "verified",
+      1
+    ],
+    [
+      "ine",
+      "verified",
+      1
+    ],
+    [
+      "oecd",
+      "verified",
+      1
+    ],
+    [
+      "ren",
+      "verified",
+      1
+    ],
+    [
+      "worldbank",
+      "verified",
+      1
+    ]
+  ],
+  "scheduler_state": [],
+  "served_by_source": [
+    [
+      "eredes",
+      "fetched",
+      64479
+    ],
+    [
+      "worldbank",
+      "legacy-unverified",
+      44487
+    ]
+  ],
+  "source_rows": [
+    [
+      "dgeg",
+      "legacy-unverified",
+      "verified",
+      466
+    ],
+    [
+      "eredes",
+      "fetched",
+      "verified",
+      64479
+    ],
+    [
+      "eurostat",
+      "legacy-unverified",
+      "verified",
+      98631
+    ],
+    [
+      "fred",
+      "legacy-unverified",
+      "verified",
+      3007
+    ],
+    [
+      "ine",
+      "legacy-unverified",
+      "verified",
+      7872
+    ],
+    [
+      "oecd",
+      "legacy-unverified",
+      "verified",
+      2291
+    ],
+    [
+      "ren",
+      "legacy-unverified",
+      "verified",
+      2714
+    ],
+    [
+      "worldbank",
+      "legacy-unverified",
+      "verified",
+      46282
+    ]
+  ],
+  "verification_comparisons_with_evidence": {
+    "eredes": 50
+  },
+  "verification_totals": [
+    [
+      "eredes",
+      1,
+      50,
+      1
+    ]
+  ],
+  "verification_unique_evidence_checked": 44
+}
