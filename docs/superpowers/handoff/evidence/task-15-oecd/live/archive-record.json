@@ -1,0 +1,30 @@
+{
+  "kind": "controller-created-compressed-audit-capsule-not-a-publisher-ZIP",
+  "file": "live-acceptance-capsule.tar.gz",
+  "bytes": 305756,
+  "sha256": "2f40615a8705c6d4a75612663da975040f23760497c1f82d3d21a8410b144409",
+  "regular_members": 33,
+  "checks": [
+    "all wire body bytes/hashes/statuses",
+    "SQLite integrity and foreign keys",
+    "all 2915 value/flag/provenance tuples vs fresh JSON archive",
+    "all 120 sampled values/units/flags from 6 original CSV envelopes",
+    "safe regular tar members only",
+    "offline replay with socket audit events forbidden after dependency imports"
+  ],
+  "sqlite_sidecars": {
+    "wal_bytes": 0,
+    "shm_bytes": 32768,
+    "note": "Original controller DB had been checkpointed; included sidecars are audit artifacts, not publisher bytes."
+  },
+  "offline_replay": {
+    "files_hashed": 32,
+    "raw_responses": 6,
+    "observations_recovered": 2915,
+    "sample_comparisons": 120,
+    "evidence_bundles": 6,
+    "served": 0,
+    "network_used": false,
+    "state": "passed"
+  }
+}

@@ -1,0 +1,645 @@
+{
+ "recorded": "2026-11-11",
+ "channel": "bddXplorer04.jsp server-rendered statistical table; every request sent header 'Referer: https://www.ine.pt/' (302+empty without it). Requests are deterministic from the manifest 'route' keys: the service URL is the page URL, the selection is the xmlDocHidden that the recorded response itself echoes.",
+ "routes": {
+  "page_0001188": {
+   "route": [
+    "page",
+    "0001188"
+   ],
+   "file": "page_0001188.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0001188&contexto=bd&lang=PT",
+   "bytes": 83499
+  },
+  "page_0001346": {
+   "route": [
+    "page",
+    "0001346"
+   ],
+   "file": "page_0001346.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0001346&contexto=bd&lang=PT",
+   "bytes": 25871
+  },
+  "page_0001400": {
+   "route": [
+    "page",
+    "0001400"
+   ],
+   "file": "page_0001400.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0001400&contexto=bd&lang=PT",
+   "bytes": 170759
+  },
+  "page_0005605": {
+   "route": [
+    "page",
+    "0005605"
+   ],
+   "file": "page_0005605.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0005605&contexto=bd&lang=PT",
+   "bytes": 22462
+  },
+  "page_0006031": {
+   "route": [
+    "page",
+    "0006031"
+   ],
+   "file": "page_0006031.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0006031&contexto=bd&lang=PT",
+   "bytes": 20838
+  },
+  "page_0007983": {
+   "route": [
+    "page",
+    "0007983"
+   ],
+   "file": "page_0007983.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0007983&contexto=bd&lang=PT",
+   "bytes": 69921
+  },
+  "page_0011889": {
+   "route": [
+    "page",
+    "0011889"
+   ],
+   "file": "page_0011889.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0011889&contexto=bd&lang=PT",
+   "bytes": 59143
+  },
+  "page_0014647": {
+   "route": [
+    "page",
+    "0014647"
+   ],
+   "file": "page_0014647.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0014647&contexto=bd&lang=PT",
+   "bytes": 153948
+  },
+  "page_0014655": {
+   "route": [
+    "page",
+    "0014655"
+   ],
+   "file": "page_0014655.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=0014655&contexto=bd&lang=PT",
+   "bytes": 83061
+  },
+  "sel_0001188_Abril_de_2020_PT": {
+   "route": [
+    "sel",
+    "0001188",
+    [
+     "Abril de 2020"
+    ],
+    [
+     "PT"
+    ]
+   ],
+   "file": "sel_0001188_Abril_de_2020_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%221648%3B2006.06.26%22+indicadorOcorrCod%3D%220001188%22+simbolo%3D%22%25%22+potencia%3D%220%22+label%3D%22Indicador+de+confian%C3%A7a+%28Saldo+de+respostas+extremas%29+da+ind%C3%BAstria+",
+   "bytes": 83060
+  },
+  "sel_0001346_2024_PT_T": {
+   "route": [
+    "sel",
+    "0001346",
+    [
+     "2024"
+    ],
+    [
+     "PT",
+     "T"
+    ]
+   ],
+   "file": "sel_0001346_2024_PT_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%22396%3B2005.09.05%22+indicadorOcorrCod%3D%220001346%22+simbolo%3D%22N.%C2%BA%22+potencia%3D%220%22+label%3D%22Nados-vivos+%28N.%C2%BA%29+por+Sexo%3B+Anual%22+labelTotal%3D%22Nados-vivos+",
+   "bytes": 23709
+  },
+  "sel_0001346_2025_PT_T": {
+   "route": [
+    "sel",
+    "0001346",
+    [
+     "2025"
+    ],
+    [
+     "PT",
+     "T"
+    ]
+   ],
+   "file": "sel_0001346_2025_PT_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%22396%3B2005.09.05%22+indicadorOcorrCod%3D%220001346%22+simbolo%3D%22N.%C2%BA%22+potencia%3D%220%22+label%3D%22Nados-vivos+%28N.%C2%BA%29+por+Sexo%3B+Anual%22+labelTotal%3D%22Nados-vivos+",
+   "bytes": 23709
+  },
+  "sel_0001400_Maio_de_2005_MUNDO_T": {
+   "route": [
+    "sel",
+    "0001400",
+    [
+     "Maio de 2005"
+    ],
+    [
+     "MUNDO",
+     "T"
+    ]
+   ],
+   "file": "sel_0001400_Maio_de_2005_MUNDO_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%221273%3B2006.05.10%22+indicadorOcorrCod%3D%220001400%22+simbolo%3D%22%E2%82%AC%22+potencia%3D%220%22+label%3D%22Exporta%C3%A7%C3%B5es+%28%E2%82%AC%29+de+bens+por+Local+de+destino+e+Tipo+",
+   "bytes": 114065
+  },
+  "sel_0001400_Mar_o_de_2001_MUNDO_T": {
+   "route": [
+    "sel",
+    "0001400",
+    [
+     "Março de 2001"
+    ],
+    [
+     "MUNDO",
+     "T"
+    ]
+   ],
+   "file": "sel_0001400_Mar_o_de_2001_MUNDO_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%221273%3B2006.05.10%22+indicadorOcorrCod%3D%220001400%22+simbolo%3D%22%E2%82%AC%22+potencia%3D%220%22+label%3D%22Exporta%C3%A7%C3%B5es+%28%E2%82%AC%29+de+bens+por+Local+de+destino+e+Tipo+",
+   "bytes": 114067
+  },
+  "sel_0001400_Setembro_de_2018_MUNDO_T": {
+   "route": [
+    "sel",
+    "0001400",
+    [
+     "Setembro de 2018"
+    ],
+    [
+     "MUNDO",
+     "T"
+    ]
+   ],
+   "file": "sel_0001400_Setembro_de_2018_MUNDO_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%221273%3B2006.05.10%22+indicadorOcorrCod%3D%220001400%22+simbolo%3D%22%E2%82%AC%22+potencia%3D%220%22+label%3D%22Exporta%C3%A7%C3%B5es+%28%E2%82%AC%29+de+bens+por+Local+de+destino+e+Tipo+",
+   "bytes": 114069
+  },
+  "sel_0001400_Setembro_de_2026_MUNDO_T": {
+   "route": [
+    "sel",
+    "0001400",
+    [
+     "Setembro de 2026"
+    ],
+    [
+     "MUNDO",
+     "T"
+    ]
+   ],
+   "file": "sel_0001400_Setembro_de_2026_MUNDO_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%221273%3B2006.05.10%22+indicadorOcorrCod%3D%220001400%22+simbolo%3D%22%E2%82%AC%22+potencia%3D%220%22+label%3D%22Exporta%C3%A7%C3%B5es+%28%E2%82%AC%29+de+bens+por+Local+de+destino+e+Tipo+",
+   "bytes": 114069
+  },
+  "sel_0005605_2024_PT_T": {
+   "route": [
+    "sel",
+    "0005605",
+    [
+     "2024"
+    ],
+    [
+     "PT",
+     "T"
+    ]
+   ],
+   "file": "sel_0005605_2024_PT_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%22397%3B2005.09.05%22+indicadorOcorrCod%3D%220005605%22+simbolo%3D%22N.%C2%BA%22+potencia%3D%220%22+label%3D%22%C3%93bitos+%28N.%C2%BA%29+por+Local+de+resid%C3%AAncia+%28Distrito%2F+Regi%",
+   "bytes": 21994
+  },
+  "sel_0006031_2024_PT_T": {
+   "route": [
+    "sel",
+    "0006031",
+    [
+     "2024"
+    ],
+    [
+     "PT",
+     "T"
+    ]
+   ],
+   "file": "sel_0006031_2024_PT_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%22395%3B2005.01.01%22+indicadorOcorrCod%3D%220006031%22+simbolo%3D%22N.%C2%BA%22+potencia%3D%220%22+label%3D%22Popula%C3%A7%C3%A3o+residente+%28N.%C2%BA%29+por+Sexo%2C+Idade+e+Naturalidad",
+   "bytes": 20836
+  },
+  "sel_0007983_Janeiro_de_2006_PT_T": {
+   "route": [
+    "sel",
+    "0007983",
+    [
+     "Janeiro de 2006"
+    ],
+    [
+     "PT",
+     "T"
+    ]
+   ],
+   "file": "sel_0007983_Janeiro_de_2006_PT_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%229515%3B2016.03.11%22+indicadorOcorrCod%3D%220007983%22+simbolo%3D%22%25%22+potencia%3D%220%22+label%3D%22Taxa+de+desemprego+%28Ajustada+de+sazonalidade+-+%25%29+da+popula%C3%A7%C3%A3o+a",
+   "bytes": 67740
+  },
+  "sel_0007983_Setembro_de_2026_PT_T": {
+   "route": [
+    "sel",
+    "0007983",
+    [
+     "Setembro de 2026"
+    ],
+    [
+     "PT",
+     "T"
+    ]
+   ],
+   "file": "sel_0007983_Setembro_de_2026_PT_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%229515%3B2016.03.11%22+indicadorOcorrCod%3D%220007983%22+simbolo%3D%22%25%22+potencia%3D%220%22+label%3D%22Taxa+de+desemprego+%28Ajustada+de+sazonalidade+-+%25%29+da+popula%C3%A7%C3%A3o+a",
+   "bytes": 67759
+  },
+  "sel_0011889_Agosto_de_2026_10_PT": {
+   "route": [
+    "sel",
+    "0011889",
+    [
+     "Agosto de 2026"
+    ],
+    [
+     "10",
+     "PT"
+    ]
+   ],
+   "file": "sel_0011889_Agosto_de_2026_10_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222298%3B2007.04.03%22+indicadorOcorrCod%3D%220011889%22+simbolo%3D%22-%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+produ%C3%A7%C3%A3o+industrial+-+ajustado+de+efeitos+de+calend%C3%A1",
+   "bytes": 54070
+  },
+  "sel_0011889_Fevereiro_de_2017_C_PT": {
+   "route": [
+    "sel",
+    "0011889",
+    [
+     "Fevereiro de 2017"
+    ],
+    [
+     "C",
+     "PT"
+    ]
+   ],
+   "file": "sel_0011889_Fevereiro_de_2017_C_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222298%3B2007.04.03%22+indicadorOcorrCod%3D%220011889%22+simbolo%3D%22-%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+produ%C3%A7%C3%A3o+industrial+-+ajustado+de+efeitos+de+calend%C3%A1",
+   "bytes": 53984
+  },
+  "sel_0011889_Janeiro_de_2005_C_PT": {
+   "route": [
+    "sel",
+    "0011889",
+    [
+     "Janeiro de 2005"
+    ],
+    [
+     "C",
+     "PT"
+    ]
+   ],
+   "file": "sel_0011889_Janeiro_de_2005_C_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222298%3B2007.04.03%22+indicadorOcorrCod%3D%220011889%22+simbolo%3D%22-%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+produ%C3%A7%C3%A3o+industrial+-+ajustado+de+efeitos+de+calend%C3%A1",
+   "bytes": 53982
+  },
+  "sel_0011889_Junho_de_2026_08_PT": {
+   "route": [
+    "sel",
+    "0011889",
+    [
+     "Junho de 2026"
+    ],
+    [
+     "08",
+     "PT"
+    ]
+   ],
+   "file": "sel_0011889_Junho_de_2026_08_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222298%3B2007.04.03%22+indicadorOcorrCod%3D%220011889%22+simbolo%3D%22-%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+produ%C3%A7%C3%A3o+industrial+-+ajustado+de+efeitos+de+calend%C3%A1",
+   "bytes": 54069
+  },
+  "sel_0011889_Junho_de_2026_10_PT": {
+   "route": [
+    "sel",
+    "0011889",
+    [
+     "Junho de 2026"
+    ],
+    [
+     "10",
+     "PT"
+    ]
+   ],
+   "file": "sel_0011889_Junho_de_2026_10_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222298%3B2007.04.03%22+indicadorOcorrCod%3D%220011889%22+simbolo%3D%22-%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+produ%C3%A7%C3%A3o+industrial+-+ajustado+de+efeitos+de+calend%C3%A1",
+   "bytes": 54069
+  },
+  "sel_0011889_Setembro_de_2026_C_PT": {
+   "route": [
+    "sel",
+    "0011889",
+    [
+     "Setembro de 2026"
+    ],
+    [
+     "C",
+     "PT"
+    ]
+   ],
+   "file": "sel_0011889_Setembro_de_2026_C_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222298%3B2007.04.03%22+indicadorOcorrCod%3D%220011889%22+simbolo%3D%22-%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+produ%C3%A7%C3%A3o+industrial+-+ajustado+de+efeitos+de+calend%C3%A1",
+   "bytes": 53982
+  },
+  "sel_0011889_Setembro_de_2026_PT_TOT": {
+   "route": [
+    "sel",
+    "0011889",
+    [
+     "Setembro de 2026"
+    ],
+    [
+     "PT",
+     "TOT"
+    ]
+   ],
+   "file": "sel_0011889_Setembro_de_2026_PT_TOT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222298%3B2007.04.03%22+indicadorOcorrCod%3D%220011889%22+simbolo%3D%22-%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+produ%C3%A7%C3%A3o+industrial+-+ajustado+de+efeitos+de+calend%C3%A1",
+   "bytes": 53961
+  },
+  "sel_0014647_Outubro_de_2025_1_T": {
+   "route": [
+    "sel",
+    "0014647",
+    [
+     "Outubro de 2025"
+    ],
+    [
+     "1",
+     "T"
+    ]
+   ],
+   "file": "sel_0014647_Outubro_de_2025_1_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%22978%3B2005.10.04%22+indicadorOcorrCod%3D%220014647%22+simbolo%3D%22%25%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+de+pre%C3%A7os+no+consumidor+%28Taxa+de+varia%C3%A7%C3%A3o+hom%C3%B3l",
+   "bytes": 150674
+  },
+  "sel_0014655_Outubro_de_2025_PT_T": {
+   "route": [
+    "sel",
+    "0014655",
+    [
+     "Outubro de 2025"
+    ],
+    [
+     "PT",
+     "T"
+    ]
+   ],
+   "file": "sel_0014655_Outubro_de_2025_PT_T.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?tipoSeleccao=0&xmlDocHidden=%3CClassificacoes+variavCod%3D%222261%3B2007.03.28%22+indicadorOcorrCod%3D%220014655%22+simbolo%3D%22%25%22+potencia%3D%220%22+label%3D%22%C3%8Dndice+harmonizado+de+pre%C3%A7os+no+consumidor+%28Taxa+de+varia%C3%A7%C3%A",
+   "bytes": 69048
+  }
+ },
+ "cases": {
+  "ine.live_births.PT|2024": {
+   "series": "ine.live_births.PT",
+   "period": "2024",
+   "observed": {
+    "text": "84 642",
+    "unit": "N.º",
+    "flag": "normal"
+   },
+   "route": "sel_0001346_2024_PT_T",
+   "cross_check": "Eurostat demo_gind A.LBIRTH.PT 2024"
+  },
+  "ine.live_births.PT|2025": {
+   "series": "ine.live_births.PT",
+   "period": "2025",
+   "observed": {
+    "text": "87 764",
+    "unit": "N.º",
+    "flag": "normal"
+   },
+   "route": "sel_0001346_2025_PT_T",
+   "cross_check": "INE JSON fixture annual_births_0001346"
+  },
+  "ine.unemployment_monthly.PT|2026-09": {
+   "series": "ine.unemployment_monthly.PT",
+   "period": "2026-09",
+   "observed": {
+    "text": "5,6",
+    "unit": "%",
+    "flag": "provisional"
+   },
+   "route": "sel_0007983_Setembro_de_2026_PT_T",
+   "cross_check": "INE JSON fixture monthly_unemployment_0007983"
+  },
+  "ine.unemployment_monthly.PT|2006-01": {
+   "series": "ine.unemployment_monthly.PT",
+   "period": "2006-01",
+   "observed": {
+    "text": "9,2",
+    "unit": "%",
+    "flag": "normal"
+   },
+   "route": "sel_0007983_Janeiro_de_2006_PT_T",
+   "cross_check": "INE JSON fixture monthly_unemployment_0007983"
+  },
+  "ine.exports_monthly.PT|2026-09": {
+   "series": "ine.exports_monthly.PT",
+   "period": "2026-09",
+   "observed": {
+    "text": "7 609 586 380",
+    "unit": "EUR",
+    "flag": "normal"
+   },
+   "route": "sel_0001400_Setembro_de_2026_MUNDO_T",
+   "cross_check": "INE JSON fixture monthly_exports_0001400"
+  },
+  "ine.exports_monthly.PT|2001-03": {
+   "series": "ine.exports_monthly.PT",
+   "period": "2001-03",
+   "observed": {
+    "text": "2 550 670 164",
+    "unit": "EUR",
+    "flag": "normal"
+   },
+   "route": "sel_0001400_Mar_o_de_2001_MUNDO_T",
+   "cross_check": "INE JSON fixture monthly_exports_0001400"
+  },
+  "ine.exports_monthly.PT|2005-05": {
+   "series": "ine.exports_monthly.PT",
+   "period": "2005-05",
+   "observed": {
+    "text": "2 586 695 070",
+    "unit": "EUR",
+    "flag": "normal"
+   },
+   "route": "sel_0001400_Maio_de_2005_MUNDO_T",
+   "cross_check": "INE JSON fixture monthly_exports_0001400"
+  },
+  "ine.exports_monthly.PT|2018-09": {
+   "series": "ine.exports_monthly.PT",
+   "period": "2018-09",
+   "observed": {
+    "text": "4 694 752 793",
+    "unit": "EUR",
+    "flag": "normal"
+   },
+   "route": "sel_0001400_Setembro_de_2018_MUNDO_T",
+   "cross_check": "INE JSON fixture monthly_exports_0001400"
+  },
+  "ine.ipi_seasonal_cae_C.PT|2026-09": {
+   "series": "ine.ipi_seasonal_cae_C.PT",
+   "period": "2026-09",
+   "observed": {
+    "text": "96,57",
+    "unit": "index_2021=100",
+    "flag": "normal"
+   },
+   "route": "sel_0011889_Setembro_de_2026_C_PT",
+   "cross_check": "Eurostat sts_inpr_m M.PRD.C.SCA.I21.PT + fixture"
+  },
+  "ine.ipi_seasonal_cae_C.PT|2005-01": {
+   "series": "ine.ipi_seasonal_cae_C.PT",
+   "period": "2005-01",
+   "observed": {
+    "text": "140,30",
+    "unit": "index_2021=100",
+    "flag": "normal"
+   },
+   "route": "sel_0011889_Janeiro_de_2005_C_PT",
+   "cross_check": "INE JSON fixture monthly_ipi_0011889"
+  },
+  "ine.ipi_seasonal_cae_C.PT|2017-02": {
+   "series": "ine.ipi_seasonal_cae_C.PT",
+   "period": "2017-02",
+   "observed": {
+    "text": "102,81",
+    "unit": "index_2021=100",
+    "flag": "normal"
+   },
+   "route": "sel_0011889_Fevereiro_de_2017_C_PT",
+   "cross_check": "INE JSON fixture monthly_ipi_0011889"
+  },
+  "ine.ipi_seasonal_cae_TOT.PT|2026-09": {
+   "series": "ine.ipi_seasonal_cae_TOT.PT",
+   "period": "2026-09",
+   "observed": {
+    "text": "97,24",
+    "unit": "index_2021=100",
+    "flag": "normal"
+   },
+   "route": "sel_0011889_Setembro_de_2026_PT_TOT",
+   "cross_check": "INE JSON fixture monthly_ipi_0011889"
+  },
+  "ine.ipi_seasonal_cae_10.PT|2026-08": {
+   "series": "ine.ipi_seasonal_cae_10.PT",
+   "period": "2026-08",
+   "observed": {
+    "text": "105,46",
+    "unit": "index_2021=100",
+    "flag": "normal"
+   },
+   "route": "sel_0011889_Agosto_de_2026_10_PT",
+   "cross_check": "INE JSON fixture monthly_ipi_0011889"
+  },
+  "ine.ipi_seasonal_cae_10.PT|2026-06": {
+   "series": "ine.ipi_seasonal_cae_10.PT",
+   "period": "2026-06",
+   "observed": {
+    "text": "114,57",
+    "unit": "index_2021=100",
+    "flag": "normal"
+   },
+   "route": "sel_0011889_Junho_de_2026_10_PT",
+   "cross_check": "INE JSON fixture monthly_ipi_0011889"
+  },
+  "ine.ipi_seasonal_cae_08.PT|2026-06": {
+   "series": "ine.ipi_seasonal_cae_08.PT",
+   "period": "2026-06",
+   "observed": {
+    "text": "124,88",
+    "unit": "index_2021=100",
+    "flag": "normal"
+   },
+   "route": "sel_0011889_Junho_de_2026_08_PT",
+   "cross_check": "live JSON pindica 0011889 (this recording run): '124.88'/normal"
+  },
+  "ine.deaths.PT|2024": {
+   "series": "ine.deaths.PT",
+   "period": "2024",
+   "observed": {
+    "text": "118 396",
+    "unit": "N.º",
+    "flag": "normal"
+   },
+   "route": "sel_0005605_2024_PT_T",
+   "cross_check": "Eurostat demo_gind A.DEATH.PT 2024"
+  },
+  "ine.population.PT|2024": {
+   "series": "ine.population.PT",
+   "period": "2024",
+   "observed": {
+    "text": "11 387 222",
+    "unit": "N.º",
+    "flag": "normal"
+   },
+   "route": "sel_0006031_2024_PT_T",
+   "cross_check": "Eurostat demo_gind A.JAN.PT 2025"
+  },
+  "ine.hicp_yoy.PT|2025-10": {
+   "series": "ine.hicp_yoy.PT",
+   "period": "2025-10",
+   "observed": {
+    "text": "2,0",
+    "unit": "%",
+    "flag": "normal"
+   },
+   "route": "sel_0014655_Outubro_de_2025_PT_T",
+   "cross_check": "Eurostat prc_hicp_manr M.RCH_A.CP00.PT 2025-10 + fixture"
+  },
+  "ine.ipc_yoy.Continente|2025-10": {
+   "series": "ine.ipc_yoy.Continente",
+   "period": "2025-10",
+   "observed": {
+    "text": "2,32",
+    "unit": "%",
+    "flag": "normal"
+   },
+   "route": "sel_0014647_Outubro_de_2025_1_T",
+   "cross_check": "live JSON pindica 0014647 (this recording run): '2.32'/normal"
+  },
+  "ine.conf_manufacturing.PT|2020-04": {
+   "series": "ine.conf_manufacturing.PT",
+   "period": "2020-04",
+   "observed": {
+    "text": "-31,0",
+    "unit": "%",
+    "flag": "normal"
+   },
+   "route": "sel_0001188_Abril_de_2020_PT",
+   "cross_check": "INE JSON fixture monthly_confidence_0001188"
+  }
+ },
+ "aux": {
+  "error_page_ora": {
+   "file": "error_page_ora.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp",
+   "note": "real INE response to a malformed selection XML (a dimension with no selected category): 'Ocorreu um erro nesta página' + ORA error, 2026-11-11"
+  },
+  "home_no_referer": {
+   "file": "home_no_referer.html",
+   "url": "https://www.ine.pt/",
+   "note": "the destination of INE's 302 when Referer is missing (RequestsHttp follows it): home page, no dados table, 2026-11-11"
+  },
+  "sinais": {
+   "file": "sinais_PT.html",
+   "url": "https://www.ine.pt/bddXplorer/htdocs/sinais.jsp?lang=PT",
+   "note": "INE's official conventional-sign legend, recorded 2026-11-11"
+  }
+ }
+}

@@ -1,0 +1,212 @@
+[
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N",
+    "requested_at": "2026-11-12T16:38:46.662267+00:00",
+    "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+    "file": "wire-01.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N",
+    "params": {},
+    "headers": {
+      "Accept": "application/vnd.sdmx.data+json;version=2.0"
+    },
+    "bytes": 203364,
+    "sha256": "499cb5ed3595d22edf5618193cbe7017cba0139559f4383b2ad07437bf240d37",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N",
+    "requested_at": "2026-11-12T16:38:50.915820+00:00",
+    "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+    "file": "wire-02.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N",
+    "params": {},
+    "headers": {
+      "Accept": "application/vnd.sdmx.data+json;version=2.0"
+    },
+    "bytes": 203778,
+    "sha256": "22eef3d91efe395cc31543e091cb3efc7f769ff528791f8e1be3eb0ddf20e086",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N",
+    "requested_at": "2026-11-12T16:38:55.434551+00:00",
+    "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+    "file": "wire-03.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N",
+    "params": {},
+    "headers": {
+      "Accept": "application/vnd.sdmx.data+json;version=2.0"
+    },
+    "bytes": 203410,
+    "sha256": "f366398033c924290d8616a003888df25590e31859fbd788b7675ecf27daec13",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N",
+    "requested_at": "2026-11-12T16:38:59.947424+00:00",
+    "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+    "file": "wire-04.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N",
+    "params": {},
+    "headers": {
+      "Accept": "application/vnd.sdmx.data+json;version=2.0"
+    },
+    "bytes": 203388,
+    "sha256": "96aeb9e334590564ff7e5a2cfee1291c048aa21de65e2d3d0e3d4df0c450ac77",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H",
+    "requested_at": "2026-11-12T16:39:04.421783+00:00",
+    "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+    "file": "wire-05.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H",
+    "params": {},
+    "headers": {
+      "Accept": "application/vnd.sdmx.data+json;version=2.0"
+    },
+    "bytes": 204111,
+    "sha256": "d2a794395281f039273a76e02a296dbd3e628e06062e96cb7a23b8c7f63894c3",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M",
+    "requested_at": "2026-11-12T16:39:08.921373+00:00",
+    "content_type": "application/vnd.sdmx.data+json; charset=utf-8; version=2.0",
+    "file": "wire-06.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M",
+    "params": {},
+    "headers": {
+      "Accept": "application/vnd.sdmx.data+json;version=2.0"
+    },
+    "bytes": 219867,
+    "sha256": "67d99266c78541291326c64a94f212270730e60753ab7445f7ed062b3aa0f4c6",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H?format=csvfilewithlabels&dimensionAtObservation=AllDimensions&startPeriod=1987-03&endPeriod=2026-10",
+    "requested_at": "2026-11-12T16:39:13.413653+00:00",
+    "content_type": "application/vnd.sdmx.data+csv; labels=name; charset=utf-8; version=2",
+    "file": "wire-07.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H",
+    "params": {
+      "format": "csvfilewithlabels",
+      "dimensionAtObservation": "AllDimensions",
+      "startPeriod": "1987-03",
+      "endPeriod": "2026-10"
+    },
+    "headers": {},
+    "bytes": 133184,
+    "sha256": "d49cd08f3ce5a30cc5e1f1498d7d4c5075bbbf1f94ef63178e06fdbd098b35b1",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N?format=csvfilewithlabels&dimensionAtObservation=AllDimensions&startPeriod=1990-04&endPeriod=2026-10",
+    "requested_at": "2026-11-12T16:39:17.950877+00:00",
+    "content_type": "application/vnd.sdmx.data+csv; labels=name; charset=utf-8; version=2",
+    "file": "wire-08.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N",
+    "params": {
+      "format": "csvfilewithlabels",
+      "dimensionAtObservation": "AllDimensions",
+      "startPeriod": "1990-04",
+      "endPeriod": "2026-10"
+    },
+    "headers": {},
+    "bytes": 121668,
+    "sha256": "d759810452dfb31c4b4371e5e517385e4f3d8f6775b6a1955ca0d9aa370797cc",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N?format=csvfilewithlabels&dimensionAtObservation=AllDimensions&startPeriod=1987-11&endPeriod=2026-10",
+    "requested_at": "2026-11-12T16:39:22.441775+00:00",
+    "content_type": "application/vnd.sdmx.data+csv; labels=name; charset=utf-8; version=2",
+    "file": "wire-09.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N",
+    "params": {
+      "format": "csvfilewithlabels",
+      "dimensionAtObservation": "AllDimensions",
+      "startPeriod": "1987-11",
+      "endPeriod": "2026-10"
+    },
+    "headers": {},
+    "bytes": 126478,
+    "sha256": "a8c9157b8f380731ef584fd4ee05fb5a37a2535f701c62ea2d0119b73347a3cd",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N?format=csvfilewithlabels&dimensionAtObservation=AllDimensions&startPeriod=1987-09&endPeriod=2026-10",
+    "requested_at": "2026-11-12T16:39:26.939497+00:00",
+    "content_type": "application/vnd.sdmx.data+csv; charset=utf-8; labels=name; version=2",
+    "file": "wire-10.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N",
+    "params": {
+      "format": "csvfilewithlabels",
+      "dimensionAtObservation": "AllDimensions",
+      "startPeriod": "1987-09",
+      "endPeriod": "2026-10"
+    },
+    "headers": {},
+    "bytes": 126620,
+    "sha256": "8badadb25ff35343d68b2e520be815aff7fb8f78478d108fd0f8e53023aa5345",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N?format=csvfilewithlabels&dimensionAtObservation=AllDimensions&startPeriod=1990-10&endPeriod=2026-10",
+    "requested_at": "2026-11-12T16:39:31.427279+00:00",
+    "content_type": "application/vnd.sdmx.data+csv; labels=name; charset=utf-8; version=2",
+    "file": "wire-11.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N",
+    "params": {
+      "format": "csvfilewithlabels",
+      "dimensionAtObservation": "AllDimensions",
+      "startPeriod": "1990-10",
+      "endPeriod": "2026-10"
+    },
+    "headers": {},
+    "bytes": 121815,
+    "sha256": "fee3e78399b21101b59ad189f11a3c8323ebf3d44fc691206fb50c45a9fa3d34",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  },
+  {
+    "status": 200,
+    "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M?format=csvfilewithlabels&dimensionAtObservation=AllDimensions&startPeriod=1984-03&endPeriod=2026-09",
+    "requested_at": "2026-11-12T16:39:35.935009+00:00",
+    "content_type": "application/vnd.sdmx.data+csv; labels=name; charset=utf-8; version=2",
+    "file": "wire-12.body",
+    "requested_url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M",
+    "params": {
+      "format": "csvfilewithlabels",
+      "dimensionAtObservation": "AllDimensions",
+      "startPeriod": "1984-03",
+      "endPeriod": "2026-09"
+    },
+    "headers": {},
+    "bytes": 176653,
+    "sha256": "3f79b5f483fe80837804458294bf88f75dcfa56bf466c0f3ca1f667b2b597265",
+    "egress": "f0nix",
+    "record_kind": "controller-wire-record-original-publisher-body"
+  }
+]

@@ -1,0 +1,15 @@
+{
+ "name": "09-eredes-producao-exports-csv",
+ "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv",
+ "params": {
+  "lang": "pt",
+  "timezone": "Europe/Lisbon"
+ },
+ "truncated_by_probe": true,
+ "status": 200,
+ "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-produzida-total-nacional/exports/csv?lang=pt&timezone=Europe%2FLisbon",
+ "elapsed_s": 1.577,
+ "bytes_archived": 160289,
+ "content_type": "text/csv; charset=utf-8",
+ "fetched_at_utc": "2026-11-12T18:13:35.175131+00:00"
+}

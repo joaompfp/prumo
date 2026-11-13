@@ -1,0 +1,5 @@
+# Legacy inspection scripts ONLY (scripts/create_seed_db.py, scripts/ingest.py), which still
+# read the OLD DuckDB store. NOT part of the reviewed ingest pipeline (ingest/) and NOT
+# installed in production images; do not install DuckDB on f3nix (illegal instruction).
+duckdb
+pyarrow>=15.0

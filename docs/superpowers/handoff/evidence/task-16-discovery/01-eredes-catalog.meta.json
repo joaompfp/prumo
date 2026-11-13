@@ -1,0 +1,14 @@
+{
+ "name": "01-eredes-catalog",
+ "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets",
+ "params": {
+  "limit": 100
+ },
+ "truncated_by_probe": true,
+ "status": 200,
+ "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets?limit=100",
+ "elapsed_s": 0.653,
+ "bytes_archived": 204800,
+ "content_type": "application/json; charset=utf-8",
+ "fetched_at_utc": "2026-11-12T18:13:32.549081+00:00"
+}

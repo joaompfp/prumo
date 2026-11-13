@@ -1,0 +1,1 @@
+F0NIX_META status=200 bytes=4525 time=0.068958 final=https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M?startPeriod=2025-10&format=csvfilewithlabels&dimensionAtObservation=AllDimensions ct=application/vnd.sdmx.data+csv; charset=utf-8; labels=name; version=2

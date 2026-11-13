@@ -1,0 +1,323 @@
+DERIVED EVIDENCE — NOT the raw HTTP response and NOT usable as verifier response evidence.
+Derivation: `pdftotext -layout` text layer of the source PDF (extraction by Task 12 follow-up research, 2026-11-11).
+Source PDF: https://www.dgeg.gov.pt/media/5riiwycf/dgeg-apn-2015-2024-pt.pdf (HTTP 200, 2369104 bytes,
+sha256 d4490a8e3d296ed1895fc5d716db10c30191ef169a09489f7564ede07d0007a7, edition "13 fevereiro de 2026";
+the PDF itself is NOT committed — 2.3 MB is above the evidence size cap; hash pins it in the research archive).
+This is the FULL text layer (small because the document is mostly charts); thousands separator in numbers is a space.
+---
+    ENERGIA
+    EM
+    PORTUGAL
+    Principais Números
+
+
+
+
+1
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+
+
+FICHA TÉCNICA
+
+     Título: Energia em Portugal – Principais Números 2024
+     Autor: DGEG – Direção Geral de Energia e Geologia
+            Direção de Serviços de Planeamento Energético e Estatística
+            Divisão de Estatística e Mercados
+            Av. 5 de Outubro 208, 1069-039 Lisboa – Portugal
+
+     Portal: www.dgeg.gov.pt
+
+     Email: estatistica@dgeg.gov.pt
+
+     Edição: 13 fevereiro de 2026
+             Periodicidade anual
+
+
+
+
+2
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+
+
+ÍNDICE
+     Consumo de energia primária                                     4
+     Consumo de energia final                                        5
+     Saldo importador de produtos energéticos                        6
+     Dependência energética                                          6
+     Capacidade instalada de energias renováveis                     7
+     Produção de eletricidade por energias renováveis                7
+     Consumo de energia primária na produção de energia elétrica     8
+     Consumo de energia elétrica por setor de atividade              8
+     Consumo total de energia final por setor de atividade           9
+     Consumo final de derivados de petróleo por setor de atividade   9
+     Consumo final de gás natural por setor de atividade             10
+     Objetivos para 2020 e 2030                                      11
+     Consumo energético / PIB (2021=100)                             11
+     Consumo energético / habitante (2021=100)                       11
+     Conceitos e abreviaturas                                        12
+
+
+
+
+3
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+CONSUMO DE ENERGIA PRIMÁRIA
+
+
+
+
+            2015        2016       2017       2018       2019      2020     2021     2022     2023     2024
+                148         186         203       186        172      189      199      175      166      193
+              5 517       6 205       5 421     6 016      5 999    6 232    6 585    6 557    7 184    7 784
+              4 097       4 340       5 438     5 044      5 304    5 205    4 972    4 822    3 820    3 159
+              9 452       9 161       9 042     8 761      9 454    8 496    8 452    8 956    8 591    8 304
+              3 259       2 848       3 247     2 696      1 248      566      196        7        5        6
+                195        -437        -231      -228        292      125      409      796      880      900
+             22 668     22 302     23 120      22 476     22 469   20 814   20 812   21 313   20 646   20 346
+
+        * Inclui o contributo renovável das bombas de calor.
+
+
+
+
+                               2015                                                    2024
+
+
+
+
+4
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+CONSUMO DE ENERGIA FINAL
+
+
+
+
+            2015     2016      2017     2018     2019     2020     2021     2022     2023     2024
+               69       96       106       97       77      106       99       93       92       99
+            1 186    1 192     1 137    1 166    1 192    1 125    1 181    1 091      979      974
+            3 944    3 990     4 012    4 126    4 118    3 986    4 090    4 187    4 261    4 349
+            1 635    1 663     1 696    1 731    1 800    1 746    1 851    2 083    2 147    1 989
+            1 565    1 553     1 673    1 701    1 722    1 673    1 771    1 662    1 611    1 617
+            7 498    7 422     7 577    7 595    7 690    6 771    7 165    7 438    7 748    7 685
+           15 897   15 916   16 201    16 416   16 597   15 407   16 156   16 553   16 837   16 713
+
+
+
+
+                        2015                                               2024
+
+
+
+
+5
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+SALDO IMPORTADOR DE PRODUTOS ENERGÉTICOS
+
+
+
+
+DEPENDÊNCIA ENERGÉTICA
+
+
+
+
+           76.4%   72.2%   77.7%   75.9%   74.2%   65.8%   67.1%   71.2%   66.7%   64.3%
+           75.8%   73.2%   76.4%   76.4%   74.1%   66.0%   67.5%   70.2%   67.1%   65.8%
+
+
+
+
+6
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+CAPACIDADE INSTALADA DE ENERGIAS RENOVÁVEIS
+
+
+
+
+PRODUÇÃO DE ELETRICIDADE POR ENERGIAS RENOVÁVEIS
+
+
+
+
+                                      (segundo a Diretiva 2009/28/CE até 2020 e
+                                      Diretiva 2018/2001 desde 2021)
+
+
+
+
+7
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+CONSUMO DE ENERGIA PRIMÁRIA NA PRODUÇÃO DE ENERGIA
+ELÉTRICA
+
+
+
+
+CONSUMO DE ENERGIA ELÉTRICA POR SETOR DE ATIVIDADE
+
+
+
+
+8
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+CONSUMO TOTAL DE ENERGIA FINAL POR SETOR DE ATIVIDADE
+
+
+
+
+CONSUMO FINAL DE DERIVADOS DE PETRÓLEO POR SETOR DE
+ATIVIDADE
+
+
+
+
+9
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+CONSUMO FINAL DE GÁS NATURAL POR SETOR DE ATIVIDADE
+
+
+
+
+                                                (inclui agricultura,
+                                                pescas e transportes)
+
+
+
+
+10
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+OBJETIVOS PARA 2020 E 2030
+
+
+            Contributo das FER no CFBE de acordo com a Diretiva 2009/28/CE e o PNEC 2030
+
+
+
+
+            Consumo de Energia Primária de acordo com a Diretiva 2012/27/UE e o PNEC 2030
+
+
+
+
+Até 2020, Portugal definiu como objetivo reduzir para 22 500 ktep o consumo de energia primária, o que correspondia a uma redução
+de 25% em relação às projeções efetuadas, tendo por base o ano de 2007. O PNEC 2030 previa inicialmente o decréscimo desse
+consumo para 21 000 ktep até 2030, e na sua revisão esse objetivo foi alterado para 16 711 ktep, até 2030.
+
+
+
+
+     CONSUMO ENERGÉTICO / PIB                                           CONSUMO ENERGÉTICO /
+                           (2021=100)                                     HABITANTE (2021=100)
+
+
+
+
+11
+ENERGIA EM PORTUGAL – Principais Números 2024
+
+
+CONCEITOS E ABREVIATURAS
+
+
+             Aviação    Fornecimentos à aviação civil com destino a aeroportos internacionais.
+        Internacional   Excluem-se os fornecimentos à aviação militar de qualquer bandeira.
+
+                        Consumo de Energia Primária –Corresponde a toda a energia utilizada
+                        diretamente ou a que é sujeita a transformação para outras formas energéticas.
+                CEP
+                        Resulta da soma das importações com a produção doméstica, retirando as
+                        saídas e variação de stocks.
+
+                        Consumo de Energia Primária para efeitos da aplicação da Diretiva 2012/27/UE
+                        para a eficiência energética.
+             CEPDEE     Corresponde ao Consumo de Energia Primária, definido anteriormente,
+                        acrescido do consumo da aviação internacional e subtraído do consumo não
+                        energético.
+
+                  DE    Dependência Energética (%)
+
+
+
+
+                        Consumo Final de Energia - Corresponde ao consumo final observado. Do
+                CFE     consumo final exclui-se o consumo para outras formas de energia, o consumo
+                        no setor energético e o consumo como matéria-prima.
+
+                        Corresponde ao Consumo Final de Energia, definido anteriormente, acrescido
+               CFBE
+                        do consumo da Aviação Internacional e subtraído do consumo não energético.
+
+                FER     Fontes de Energia Renováveis.
+
+
+                 GN     Gás Natural.
+
+
+        Exportações     Quantidades que fisicamente saíram do território nacional.
+
+                        Quantidades que fisicamente entraram no território nacional, independentemente
+        Importações
+                        da situação alfandegária.
+
+                ktep    103 tep
+
+                        Fornecimentos a embarcações civis de transporte com destino a portos
+          Navegação
+                        internacionais.
+             Marítima
+                        Excluem-se os fornecimentos a embarcações militares e de pesca, de qualquer
+        Internacional
+                        bandeira, que são contabilizados no consumo final de energia.
+
+                PCH     Pequena Central Hídrica.
+
+           Produção
+                        Energia primária produzida em território nacional.
+          Doméstica
+
+             Saldo      Diferença entre as quantidades físicas que entraram e saíram do território
+         Importador     nacional.
+
+                 PIB    Produto Interno Bruto.
+
+                        Corresponde à soma da energia Exportada, acrescida da energia fornecida à
+              Saídas
+                        Aviação Internacional e Navegação Marítima Interncional.
+
+                RSU     Resíduos Sólidos Urbanos.
+
+
+                 tep    Tonelada equivalente de petróleo (10 Gcal; 41,869 GJ).
+
+
+
+
+12
+ENERGIA
+EM
+PORTUGAL
+Principais Números
+
+
+2024
+

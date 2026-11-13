@@ -1,0 +1,8 @@
+{
+  "path": "docs/superpowers/handoff/reports/evidence/task-13-csv-language/full-recorded-run.tar.gz",
+  "bytes": 3865309,
+  "sha256": "10a4fca3ea302adbf170020a326be36459546167dfaf1c9b50c44bc123e8deff",
+  "members": 90,
+  "raw_payloads": 36,
+  "kind": "recorded-response audit capsule; NOT publisher archive and NOT full-source fresh live acceptance"
+}

@@ -1,0 +1,5758 @@
+[ {
+  "IndicadorCod" : "0011889",
+  "IndicadorDsg" : "Índice de produção industrial - ajustado de efeitos de calendário e de sazonalidade (Base - 2021) por Atividade económica (CAE Rev. 3); Mensal - INE, Índice de produção industrial (Base 2021)",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0011889&lingua=PT",
+  "DataExtracao" : "2026-11-11T03:47:18.636Z",
+  "DataUltimoAtualizacao" : "2026-11-02",
+  "UltimoPref" : "Setembro de 2026",
+  "Dados" : {
+    "Janeiro de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "79,11",
+      "valor" : "79.11"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "135,07",
+      "valor" : "135.07"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "140,30",
+      "valor" : "140.3"
+    } ],
+    "Fevereiro de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "80,50",
+      "valor" : "80.5"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "137,55",
+      "valor" : "137.55"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "142,22",
+      "valor" : "142.22"
+    } ],
+    "Março de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "80,55",
+      "valor" : "80.55"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "134,30",
+      "valor" : "134.3"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "139,05",
+      "valor" : "139.05"
+    } ],
+    "Abril de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "80,78",
+      "valor" : "80.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "135,60",
+      "valor" : "135.6"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "139,93",
+      "valor" : "139.93"
+    } ],
+    "Maio de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "76,90",
+      "valor" : "76.9"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "130,14",
+      "valor" : "130.14"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "133,66",
+      "valor" : "133.66"
+    } ],
+    "Junho de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "79,73",
+      "valor" : "79.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "134,29",
+      "valor" : "134.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "137,87",
+      "valor" : "137.87"
+    } ],
+    "Julho de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "81,54",
+      "valor" : "81.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "133,39",
+      "valor" : "133.39"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "136,99",
+      "valor" : "136.99"
+    } ],
+    "Agosto de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "82,80",
+      "valor" : "82.8"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "118,71",
+      "valor" : "118.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "121,12",
+      "valor" : "121.12"
+    } ],
+    "Setembro de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "82,44",
+      "valor" : "82.44"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "130,62",
+      "valor" : "130.62"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "134,76",
+      "valor" : "134.76"
+    } ],
+    "Outubro de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "78,94",
+      "valor" : "78.94"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "130,45",
+      "valor" : "130.45"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "134,41",
+      "valor" : "134.41"
+    } ],
+    "Novembro de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "82,51",
+      "valor" : "82.51"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "134,98",
+      "valor" : "134.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "138,30",
+      "valor" : "138.3"
+    } ],
+    "Dezembro de 2005" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "83,39",
+      "valor" : "83.39"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "129,54",
+      "valor" : "129.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "133,49",
+      "valor" : "133.49"
+    } ],
+    "Janeiro de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "80,45",
+      "valor" : "80.45"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "125,70",
+      "valor" : "125.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "129,32",
+      "valor" : "129.32"
+    } ],
+    "Fevereiro de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "80,99",
+      "valor" : "80.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "124,39",
+      "valor" : "124.39"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "127,77",
+      "valor" : "127.77"
+    } ],
+    "Março de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "83,86",
+      "valor" : "83.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "129,78",
+      "valor" : "129.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "133,46",
+      "valor" : "133.46"
+    } ],
+    "Abril de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "82,57",
+      "valor" : "82.57"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "124,62",
+      "valor" : "124.62"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "127,36",
+      "valor" : "127.36"
+    } ],
+    "Maio de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "83,35",
+      "valor" : "83.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "130,17",
+      "valor" : "130.17"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "133,89",
+      "valor" : "133.89"
+    } ],
+    "Junho de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "83,90",
+      "valor" : "83.9"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "131,04",
+      "valor" : "131.04"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "134,08",
+      "valor" : "134.08"
+    } ],
+    "Julho de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "82,78",
+      "valor" : "82.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "135,61",
+      "valor" : "135.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "140,21",
+      "valor" : "140.21"
+    } ],
+    "Agosto de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "83,65",
+      "valor" : "83.65"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "128,01",
+      "valor" : "128.01"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "130,99",
+      "valor" : "130.99"
+    } ],
+    "Setembro de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "81,51",
+      "valor" : "81.51"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "131,48",
+      "valor" : "131.48"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "135,60",
+      "valor" : "135.6"
+    } ],
+    "Outubro de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "83,92",
+      "valor" : "83.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "129,86",
+      "valor" : "129.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "133,64",
+      "valor" : "133.64"
+    } ],
+    "Novembro de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "85,86",
+      "valor" : "85.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "133,69",
+      "valor" : "133.69"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "137,45",
+      "valor" : "137.45"
+    } ],
+    "Dezembro de 2006" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,16",
+      "valor" : "87.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "139,82",
+      "valor" : "139.82"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "143,52",
+      "valor" : "143.52"
+    } ],
+    "Janeiro de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "90,27",
+      "valor" : "90.27"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "132,99",
+      "valor" : "132.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "135,57",
+      "valor" : "135.57"
+    } ],
+    "Fevereiro de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "88,84",
+      "valor" : "88.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "128,87",
+      "valor" : "128.87"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "131,75",
+      "valor" : "131.75"
+    } ],
+    "Março de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,50",
+      "valor" : "87.5"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "130,49",
+      "valor" : "130.49"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "133,37",
+      "valor" : "133.37"
+    } ],
+    "Abril de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,69",
+      "valor" : "87.69"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "126,05",
+      "valor" : "126.05"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "128,79",
+      "valor" : "128.79"
+    } ],
+    "Maio de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,23",
+      "valor" : "87.23"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "128,78",
+      "valor" : "128.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "130,99",
+      "valor" : "130.99"
+    } ],
+    "Junho de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "85,58",
+      "valor" : "85.58"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "128,99",
+      "valor" : "128.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "132,22",
+      "valor" : "132.22"
+    } ],
+    "Julho de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "86,46",
+      "valor" : "86.46"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "123,99",
+      "valor" : "123.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "126,86",
+      "valor" : "126.86"
+    } ],
+    "Agosto de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,59",
+      "valor" : "87.59"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "118,20",
+      "valor" : "118.2"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "119,77",
+      "valor" : "119.77"
+    } ],
+    "Setembro de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,52",
+      "valor" : "87.52"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "124,61",
+      "valor" : "124.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "127,48",
+      "valor" : "127.48"
+    } ],
+    "Outubro de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,98",
+      "valor" : "87.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "130,25",
+      "valor" : "130.25"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "132,91",
+      "valor" : "132.91"
+    } ],
+    "Novembro de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,59",
+      "valor" : "89.59"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "127,54",
+      "valor" : "127.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "130,29",
+      "valor" : "130.29"
+    } ],
+    "Dezembro de 2007" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "84,79",
+      "valor" : "84.79"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "124,87",
+      "valor" : "124.87"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "127,04",
+      "valor" : "127.04"
+    } ],
+    "Janeiro de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "86,86",
+      "valor" : "86.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "129,68",
+      "valor" : "129.68"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "131,29",
+      "valor" : "131.29"
+    } ],
+    "Fevereiro de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "83,56",
+      "valor" : "83.56"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "129,36",
+      "valor" : "129.36"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "132,60",
+      "valor" : "132.6"
+    } ],
+    "Março de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "82,51",
+      "valor" : "82.51"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "121,95",
+      "valor" : "121.95"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "125,38",
+      "valor" : "125.38"
+    } ],
+    "Abril de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "86,78",
+      "valor" : "86.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "126,85",
+      "valor" : "126.85"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "129,77",
+      "valor" : "129.77"
+    } ],
+    "Maio de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,61",
+      "valor" : "89.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "120,30",
+      "valor" : "120.3"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "122,41",
+      "valor" : "122.41"
+    } ],
+    "Junho de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,99",
+      "valor" : "89.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "120,36",
+      "valor" : "120.36"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "120,49",
+      "valor" : "120.49"
+    } ],
+    "Julho de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "87,97",
+      "valor" : "87.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "120,16",
+      "valor" : "120.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "120,40",
+      "valor" : "120.4"
+    } ],
+    "Agosto de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "86,74",
+      "valor" : "86.74"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "114,55",
+      "valor" : "114.55"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "115,49",
+      "valor" : "115.49"
+    } ],
+    "Setembro de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "85,20",
+      "valor" : "85.2"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "114,73",
+      "valor" : "114.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "115,36",
+      "valor" : "115.36"
+    } ],
+    "Outubro de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "86,98",
+      "valor" : "86.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "111,53",
+      "valor" : "111.53"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "111,87",
+      "valor" : "111.87"
+    } ],
+    "Novembro de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "85,51",
+      "valor" : "85.51"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "113,70",
+      "valor" : "113.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "114,68",
+      "valor" : "114.68"
+    } ],
+    "Dezembro de 2008" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "86,70",
+      "valor" : "86.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,53",
+      "valor" : "106.53"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,42",
+      "valor" : "107.42"
+    } ],
+    "Janeiro de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "88,02",
+      "valor" : "88.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,96",
+      "valor" : "99.96"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,48",
+      "valor" : "101.48"
+    } ],
+    "Fevereiro de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,15",
+      "valor" : "89.15"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,11",
+      "valor" : "98.11"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,97",
+      "valor" : "100.97"
+    } ],
+    "Março de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,51",
+      "valor" : "89.51"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,79",
+      "valor" : "100.79"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,49",
+      "valor" : "102.49"
+    } ],
+    "Abril de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "93,12",
+      "valor" : "93.12"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,41",
+      "valor" : "101.41"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,13",
+      "valor" : "103.13"
+    } ],
+    "Maio de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "90,97",
+      "valor" : "90.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,18",
+      "valor" : "100.18"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,77",
+      "valor" : "101.77"
+    } ],
+    "Junho de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "91,39",
+      "valor" : "91.39"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,92",
+      "valor" : "98.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,67",
+      "valor" : "100.67"
+    } ],
+    "Julho de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "91,71",
+      "valor" : "91.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,31",
+      "valor" : "103.31"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,66",
+      "valor" : "104.66"
+    } ],
+    "Agosto de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "86,76",
+      "valor" : "86.76"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,81",
+      "valor" : "98.81"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,74",
+      "valor" : "101.74"
+    } ],
+    "Setembro de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "90,84",
+      "valor" : "90.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "104,34",
+      "valor" : "104.34"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,72",
+      "valor" : "106.72"
+    } ],
+    "Outubro de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,80",
+      "valor" : "89.8"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "104,02",
+      "valor" : "104.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,67",
+      "valor" : "106.67"
+    } ],
+    "Novembro de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,26",
+      "valor" : "89.26"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "104,63",
+      "valor" : "104.63"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,21",
+      "valor" : "106.21"
+    } ],
+    "Dezembro de 2009" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,42",
+      "valor" : "92.42"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,70",
+      "valor" : "103.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,57",
+      "valor" : "106.57"
+    } ],
+    "Janeiro de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "91,96",
+      "valor" : "91.96"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,97",
+      "valor" : "102.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,96",
+      "valor" : "105.96"
+    } ],
+    "Fevereiro de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "93,43",
+      "valor" : "93.43"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,61",
+      "valor" : "101.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,08",
+      "valor" : "103.08"
+    } ],
+    "Março de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,99",
+      "valor" : "97.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,63",
+      "valor" : "103.63"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,38",
+      "valor" : "105.38"
+    } ],
+    "Abril de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,29",
+      "valor" : "92.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,27",
+      "valor" : "101.27"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,55",
+      "valor" : "104.55"
+    } ],
+    "Maio de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "93,07",
+      "valor" : "93.07"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,36",
+      "valor" : "102.36"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,45",
+      "valor" : "105.45"
+    } ],
+    "Junho de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,48",
+      "valor" : "94.48"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,04",
+      "valor" : "103.04"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,68",
+      "valor" : "105.68"
+    } ],
+    "Julho de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "93,49",
+      "valor" : "93.49"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,52",
+      "valor" : "101.52"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,28",
+      "valor" : "105.28"
+    } ],
+    "Agosto de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,71",
+      "valor" : "96.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,87",
+      "valor" : "101.87"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,36",
+      "valor" : "104.36"
+    } ],
+    "Setembro de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,11",
+      "valor" : "99.11"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,53",
+      "valor" : "102.53"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,08",
+      "valor" : "104.08"
+    } ],
+    "Outubro de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,85",
+      "valor" : "100.85"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,26",
+      "valor" : "102.26"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,09",
+      "valor" : "104.09"
+    } ],
+    "Novembro de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,75",
+      "valor" : "95.75"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,80",
+      "valor" : "102.8"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,76",
+      "valor" : "105.76"
+    } ],
+    "Dezembro de 2010" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,11",
+      "valor" : "92.11"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,06",
+      "valor" : "102.06"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,24",
+      "valor" : "107.24"
+    } ],
+    "Janeiro de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,46",
+      "valor" : "92.46"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,98",
+      "valor" : "102.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,32",
+      "valor" : "105.32"
+    } ],
+    "Fevereiro de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "93,44",
+      "valor" : "93.44"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,02",
+      "valor" : "105.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,76",
+      "valor" : "107.76"
+    } ],
+    "Março de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,03",
+      "valor" : "94.03"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,89",
+      "valor" : "101.89"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,13",
+      "valor" : "105.13"
+    } ],
+    "Abril de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,72",
+      "valor" : "105.72"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,83",
+      "valor" : "105.83"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,31",
+      "valor" : "106.31"
+    } ],
+    "Maio de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,20",
+      "valor" : "89.2"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,84",
+      "valor" : "100.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,92",
+      "valor" : "103.92"
+    } ],
+    "Junho de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "91,28",
+      "valor" : "91.28"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,40",
+      "valor" : "100.4"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,53",
+      "valor" : "101.53"
+    } ],
+    "Julho de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "88,32",
+      "valor" : "88.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,15",
+      "valor" : "101.15"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,11",
+      "valor" : "103.11"
+    } ],
+    "Agosto de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,03",
+      "valor" : "102.03"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,92",
+      "valor" : "103.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "111,99",
+      "valor" : "111.99"
+    } ],
+    "Setembro de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,14",
+      "valor" : "98.14"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,44",
+      "valor" : "99.44"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,87",
+      "valor" : "101.87"
+    } ],
+    "Outubro de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "88,54",
+      "valor" : "88.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,94",
+      "valor" : "96.94"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,56",
+      "valor" : "102.56"
+    } ],
+    "Novembro de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,92",
+      "valor" : "98.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,73",
+      "valor" : "101.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "107,05",
+      "valor" : "107.05"
+    } ],
+    "Dezembro de 2011" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,52",
+      "valor" : "96.52"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,13",
+      "valor" : "97.13"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,68",
+      "valor" : "98.68"
+    } ],
+    "Janeiro de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,52",
+      "valor" : "92.52"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,46",
+      "valor" : "98.46"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,54",
+      "valor" : "98.54"
+    } ],
+    "Fevereiro de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,26",
+      "valor" : "89.26"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,15",
+      "valor" : "99.15"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,25",
+      "valor" : "99.25"
+    } ],
+    "Março de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,88",
+      "valor" : "100.88"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,04",
+      "valor" : "101.04"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,10",
+      "valor" : "102.1"
+    } ],
+    "Abril de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "89,45",
+      "valor" : "89.45"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,71",
+      "valor" : "95.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,75",
+      "valor" : "95.75"
+    } ],
+    "Maio de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,92",
+      "valor" : "94.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,00",
+      "valor" : "97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,50",
+      "valor" : "97.5"
+    } ],
+    "Junho de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "90,93",
+      "valor" : "90.93"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,42",
+      "valor" : "96.42"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "96,97",
+      "valor" : "96.97"
+    } ],
+    "Julho de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,29",
+      "valor" : "98.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,84",
+      "valor" : "98.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,65",
+      "valor" : "101.65"
+    } ],
+    "Agosto de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,94",
+      "valor" : "97.94"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,09",
+      "valor" : "100.09"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,42",
+      "valor" : "101.42"
+    } ],
+    "Setembro de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,07",
+      "valor" : "95.07"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,84",
+      "valor" : "97.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,31",
+      "valor" : "98.31"
+    } ],
+    "Outubro de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,79",
+      "valor" : "92.79"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,65",
+      "valor" : "95.65"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,76",
+      "valor" : "95.76"
+    } ],
+    "Novembro de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,63",
+      "valor" : "95.63"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "96,45",
+      "valor" : "96.45"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,36",
+      "valor" : "98.36"
+    } ],
+    "Dezembro de 2012" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "94,73",
+      "valor" : "94.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,12",
+      "valor" : "95.12"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,11",
+      "valor" : "97.11"
+    } ],
+    "Janeiro de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,35",
+      "valor" : "96.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,89",
+      "valor" : "96.89"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,79",
+      "valor" : "97.79"
+    } ],
+    "Fevereiro de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,02",
+      "valor" : "97.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,97",
+      "valor" : "97.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "112,92",
+      "valor" : "112.92"
+    } ],
+    "Março de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,43",
+      "valor" : "98.43"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,91",
+      "valor" : "100.91"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,53",
+      "valor" : "101.53"
+    } ],
+    "Abril de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "94,56",
+      "valor" : "94.56"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,49",
+      "valor" : "97.49"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,33",
+      "valor" : "98.33"
+    } ],
+    "Maio de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,29",
+      "valor" : "98.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,66",
+      "valor" : "98.66"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,28",
+      "valor" : "99.28"
+    } ],
+    "Junho de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,84",
+      "valor" : "98.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,67",
+      "valor" : "99.67"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,04",
+      "valor" : "103.04"
+    } ],
+    "Julho de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,48",
+      "valor" : "92.48"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,78",
+      "valor" : "95.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,63",
+      "valor" : "96.63"
+    } ],
+    "Agosto de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,91",
+      "valor" : "94.91"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,92",
+      "valor" : "97.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,40",
+      "valor" : "98.4"
+    } ],
+    "Setembro de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,52",
+      "valor" : "100.52"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,54",
+      "valor" : "100.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "108,43",
+      "valor" : "108.43"
+    } ],
+    "Outubro de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,35",
+      "valor" : "100.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,32",
+      "valor" : "101.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "110,49",
+      "valor" : "110.49"
+    } ],
+    "Novembro de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,77",
+      "valor" : "97.77"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,56",
+      "valor" : "101.56"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,95",
+      "valor" : "101.95"
+    } ],
+    "Dezembro de 2013" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,04",
+      "valor" : "102.04"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,66",
+      "valor" : "102.66"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "110,85",
+      "valor" : "110.85"
+    } ],
+    "Janeiro de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,61",
+      "valor" : "97.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,98",
+      "valor" : "99.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,52",
+      "valor" : "102.52"
+    } ],
+    "Fevereiro de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,47",
+      "valor" : "99.47"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,81",
+      "valor" : "101.81"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,86",
+      "valor" : "102.86"
+    } ],
+    "Março de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,03",
+      "valor" : "98.03"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,68",
+      "valor" : "98.68"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,88",
+      "valor" : "99.88"
+    } ],
+    "Abril de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,31",
+      "valor" : "100.31"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,99",
+      "valor" : "100.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,85",
+      "valor" : "101.85"
+    } ],
+    "Maio de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,98",
+      "valor" : "96.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,41",
+      "valor" : "100.41"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,17",
+      "valor" : "101.17"
+    } ],
+    "Junho de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,33",
+      "valor" : "100.33"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,76",
+      "valor" : "100.76"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,00",
+      "valor" : "101"
+    } ],
+    "Julho de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,22",
+      "valor" : "101.22"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,20",
+      "valor" : "102.2"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "109,22",
+      "valor" : "109.22"
+    } ],
+    "Agosto de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,31",
+      "valor" : "99.31"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,05",
+      "valor" : "100.05"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,20",
+      "valor" : "100.2"
+    } ],
+    "Setembro de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "93,30",
+      "valor" : "93.3"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,44",
+      "valor" : "99.44"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,45",
+      "valor" : "99.45"
+    } ],
+    "Outubro de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,06",
+      "valor" : "101.06"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,52",
+      "valor" : "101.52"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,75",
+      "valor" : "103.75"
+    } ],
+    "Novembro de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,65",
+      "valor" : "100.65"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,97",
+      "valor" : "101.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,75",
+      "valor" : "104.75"
+    } ],
+    "Dezembro de 2014" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,59",
+      "valor" : "95.59"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,34",
+      "valor" : "98.34"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,35",
+      "valor" : "100.35"
+    } ],
+    "Janeiro de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "93,39",
+      "valor" : "93.39"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,32",
+      "valor" : "99.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,46",
+      "valor" : "99.46"
+    } ],
+    "Fevereiro de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,95",
+      "valor" : "95.95"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,51",
+      "valor" : "100.51"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,64",
+      "valor" : "101.64"
+    } ],
+    "Março de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,31",
+      "valor" : "95.31"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,86",
+      "valor" : "100.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,90",
+      "valor" : "100.9"
+    } ],
+    "Abril de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,99",
+      "valor" : "102.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,68",
+      "valor" : "103.68"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,58",
+      "valor" : "105.58"
+    } ],
+    "Maio de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,71",
+      "valor" : "96.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,18",
+      "valor" : "103.18"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,00",
+      "valor" : "104"
+    } ],
+    "Junho de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,22",
+      "valor" : "94.22"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,55",
+      "valor" : "103.55"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,74",
+      "valor" : "103.74"
+    } ],
+    "Julho de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,02",
+      "valor" : "106.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,10",
+      "valor" : "106.1"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "118,19",
+      "valor" : "118.19"
+    } ],
+    "Agosto de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,70",
+      "valor" : "99.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,43",
+      "valor" : "100.43"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,90",
+      "valor" : "100.9"
+    } ],
+    "Setembro de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,58",
+      "valor" : "101.58"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,62",
+      "valor" : "102.62"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,38",
+      "valor" : "103.38"
+    } ],
+    "Outubro de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,66",
+      "valor" : "95.66"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "104,06",
+      "valor" : "104.06"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,92",
+      "valor" : "106.92"
+    } ],
+    "Novembro de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,35",
+      "valor" : "96.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,14",
+      "valor" : "103.14"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,96",
+      "valor" : "103.96"
+    } ],
+    "Dezembro de 2015" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,61",
+      "valor" : "99.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,60",
+      "valor" : "102.6"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,86",
+      "valor" : "103.86"
+    } ],
+    "Janeiro de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,92",
+      "valor" : "98.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,28",
+      "valor" : "102.28"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,17",
+      "valor" : "104.17"
+    } ],
+    "Fevereiro de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,81",
+      "valor" : "95.81"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,56",
+      "valor" : "102.56"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,65",
+      "valor" : "105.65"
+    } ],
+    "Março de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,44",
+      "valor" : "97.44"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,97",
+      "valor" : "101.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,95",
+      "valor" : "103.95"
+    } ],
+    "Abril de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,17",
+      "valor" : "98.17"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,66",
+      "valor" : "103.66"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,69",
+      "valor" : "106.69"
+    } ],
+    "Maio de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,24",
+      "valor" : "96.24"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,12",
+      "valor" : "100.12"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,75",
+      "valor" : "103.75"
+    } ],
+    "Junho de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,69",
+      "valor" : "98.69"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,26",
+      "valor" : "102.26"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,56",
+      "valor" : "104.56"
+    } ],
+    "Julho de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,89",
+      "valor" : "94.89"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,31",
+      "valor" : "102.31"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,87",
+      "valor" : "103.87"
+    } ],
+    "Agosto de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,12",
+      "valor" : "100.12"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,29",
+      "valor" : "100.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,07",
+      "valor" : "103.07"
+    } ],
+    "Setembro de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,02",
+      "valor" : "103.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,22",
+      "valor" : "104.22"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,82",
+      "valor" : "104.82"
+    } ],
+    "Outubro de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,32",
+      "valor" : "102.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,10",
+      "valor" : "104.1"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "110,66",
+      "valor" : "110.66"
+    } ],
+    "Novembro de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,67",
+      "valor" : "96.67"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,35",
+      "valor" : "103.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,68",
+      "valor" : "104.68"
+    } ],
+    "Dezembro de 2016" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,69",
+      "valor" : "97.69"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "104,22",
+      "valor" : "104.22"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,33",
+      "valor" : "105.33"
+    } ],
+    "Janeiro de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,17",
+      "valor" : "95.17"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,17",
+      "valor" : "97.17"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,78",
+      "valor" : "99.78"
+    } ],
+    "Fevereiro de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,25",
+      "valor" : "97.25"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,81",
+      "valor" : "102.81"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,26",
+      "valor" : "104.26"
+    } ],
+    "Março de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,74",
+      "valor" : "97.74"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,76",
+      "valor" : "107.76"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,53",
+      "valor" : "108.53"
+    } ],
+    "Abril de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,79",
+      "valor" : "95.79"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,59",
+      "valor" : "103.59"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,26",
+      "valor" : "104.26"
+    } ],
+    "Maio de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,59",
+      "valor" : "99.59"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,73",
+      "valor" : "106.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,03",
+      "valor" : "108.03"
+    } ],
+    "Junho de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,29",
+      "valor" : "96.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,66",
+      "valor" : "105.66"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,80",
+      "valor" : "107.8"
+    } ],
+    "Julho de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,71",
+      "valor" : "107.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "109,75",
+      "valor" : "109.75"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "122,72",
+      "valor" : "122.72"
+    } ],
+    "Agosto de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,80",
+      "valor" : "99.8"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,23",
+      "valor" : "107.23"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "110,85",
+      "valor" : "110.85"
+    } ],
+    "Setembro de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,80",
+      "valor" : "98.8"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,19",
+      "valor" : "107.19"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,53",
+      "valor" : "108.53"
+    } ],
+    "Outubro de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,02",
+      "valor" : "95.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,40",
+      "valor" : "107.4"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,73",
+      "valor" : "107.73"
+    } ],
+    "Novembro de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,48",
+      "valor" : "102.48"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,84",
+      "valor" : "107.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "108,44",
+      "valor" : "108.44"
+    } ],
+    "Dezembro de 2017" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,50",
+      "valor" : "100.5"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,45",
+      "valor" : "106.45"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,16",
+      "valor" : "107.16"
+    } ],
+    "Janeiro de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,43",
+      "valor" : "103.43"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,16",
+      "valor" : "108.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "108,79",
+      "valor" : "108.79"
+    } ],
+    "Fevereiro de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,00",
+      "valor" : "103"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,00",
+      "valor" : "106"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,50",
+      "valor" : "106.5"
+    } ],
+    "Março de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,54",
+      "valor" : "104.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,56",
+      "valor" : "107.56"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "112,02",
+      "valor" : "112.02"
+    } ],
+    "Abril de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,57",
+      "valor" : "103.57"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,62",
+      "valor" : "105.62"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,40",
+      "valor" : "108.4"
+    } ],
+    "Maio de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,84",
+      "valor" : "100.84"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,32",
+      "valor" : "106.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,28",
+      "valor" : "107.28"
+    } ],
+    "Junho de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,99",
+      "valor" : "103.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,12",
+      "valor" : "105.12"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,15",
+      "valor" : "108.15"
+    } ],
+    "Julho de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,32",
+      "valor" : "100.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,13",
+      "valor" : "105.13"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,11",
+      "valor" : "108.11"
+    } ],
+    "Agosto de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,25",
+      "valor" : "100.25"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,35",
+      "valor" : "103.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,77",
+      "valor" : "106.77"
+    } ],
+    "Setembro de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,06",
+      "valor" : "102.06"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,91",
+      "valor" : "106.91"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "108,76",
+      "valor" : "108.76"
+    } ],
+    "Outubro de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,59",
+      "valor" : "105.59"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,08",
+      "valor" : "107.08"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "107,63",
+      "valor" : "107.63"
+    } ],
+    "Novembro de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,23",
+      "valor" : "102.23"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,79",
+      "valor" : "103.79"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,06",
+      "valor" : "104.06"
+    } ],
+    "Dezembro de 2018" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,90",
+      "valor" : "100.9"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,95",
+      "valor" : "102.95"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,33",
+      "valor" : "103.33"
+    } ],
+    "Janeiro de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,49",
+      "valor" : "101.49"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,73",
+      "valor" : "104.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,02",
+      "valor" : "105.02"
+    } ],
+    "Fevereiro de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,08",
+      "valor" : "105.08"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,10",
+      "valor" : "105.1"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,43",
+      "valor" : "107.43"
+    } ],
+    "Março de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,75",
+      "valor" : "100.75"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,74",
+      "valor" : "102.74"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,11",
+      "valor" : "105.11"
+    } ],
+    "Abril de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,95",
+      "valor" : "102.95"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,53",
+      "valor" : "106.53"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,53",
+      "valor" : "106.53"
+    } ],
+    "Maio de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,62",
+      "valor" : "103.62"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "107,21",
+      "valor" : "107.21"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,36",
+      "valor" : "107.36"
+    } ],
+    "Junho de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,51",
+      "valor" : "102.51"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,29",
+      "valor" : "105.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,34",
+      "valor" : "105.34"
+    } ],
+    "Julho de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,40",
+      "valor" : "98.4"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,27",
+      "valor" : "105.27"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "106,23",
+      "valor" : "106.23"
+    } ],
+    "Agosto de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,73",
+      "valor" : "101.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,43",
+      "valor" : "102.43"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,91",
+      "valor" : "102.91"
+    } ],
+    "Setembro de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,34",
+      "valor" : "100.34"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,16",
+      "valor" : "102.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,24",
+      "valor" : "102.24"
+    } ],
+    "Outubro de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,97",
+      "valor" : "96.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,46",
+      "valor" : "102.46"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,67",
+      "valor" : "103.67"
+    } ],
+    "Novembro de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,67",
+      "valor" : "100.67"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,29",
+      "valor" : "102.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,32",
+      "valor" : "104.32"
+    } ],
+    "Dezembro de 2019" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,80",
+      "valor" : "101.8"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,54",
+      "valor" : "102.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,13",
+      "valor" : "105.13"
+    } ],
+    "Janeiro de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "105,61",
+      "valor" : "105.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,63",
+      "valor" : "105.63"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "107,44",
+      "valor" : "107.44"
+    } ],
+    "Fevereiro de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,97",
+      "valor" : "105.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "106,15",
+      "valor" : "106.15"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "106,38",
+      "valor" : "106.38"
+    } ],
+    "Março de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "94,05",
+      "valor" : "94.05"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,20",
+      "valor" : "95.2"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,78",
+      "valor" : "101.78"
+    } ],
+    "Abril de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "68,46",
+      "valor" : "68.46"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "72,39",
+      "valor" : "72.39"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "88,33",
+      "valor" : "88.33"
+    } ],
+    "Maio de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "74,30",
+      "valor" : "74.3"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "77,63",
+      "valor" : "77.63"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "92,48",
+      "valor" : "92.48"
+    } ],
+    "Junho de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "87,93",
+      "valor" : "87.93"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "89,02",
+      "valor" : "89.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,00",
+      "valor" : "94"
+    } ],
+    "Julho de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,91",
+      "valor" : "95.91"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,70",
+      "valor" : "96.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "96,90",
+      "valor" : "96.9"
+    } ],
+    "Agosto de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "94,38",
+      "valor" : "94.38"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,94",
+      "valor" : "102.94"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,26",
+      "valor" : "104.26"
+    } ],
+    "Setembro de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,80",
+      "valor" : "99.8"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,50",
+      "valor" : "102.5"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "104,07",
+      "valor" : "104.07"
+    } ],
+    "Outubro de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,99",
+      "valor" : "98.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,86",
+      "valor" : "103.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "105,66",
+      "valor" : "105.66"
+    } ],
+    "Novembro de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,98",
+      "valor" : "95.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,56",
+      "valor" : "99.56"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,68",
+      "valor" : "99.68"
+    } ],
+    "Dezembro de 2020" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "96,25",
+      "valor" : "96.25"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,47",
+      "valor" : "100.47"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,63",
+      "valor" : "100.63"
+    } ],
+    "Janeiro de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "98,95",
+      "valor" : "98.95"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,16",
+      "valor" : "101.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,29",
+      "valor" : "101.29"
+    } ],
+    "Fevereiro de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "95,12",
+      "valor" : "95.12"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,25",
+      "valor" : "98.25"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,68",
+      "valor" : "101.68"
+    } ],
+    "Março de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,09",
+      "valor" : "97.09"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,78",
+      "valor" : "100.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,26",
+      "valor" : "101.26"
+    } ],
+    "Abril de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,49",
+      "valor" : "100.49"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,37",
+      "valor" : "102.37"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,51",
+      "valor" : "102.51"
+    } ],
+    "Maio de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,73",
+      "valor" : "97.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,16",
+      "valor" : "99.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,17",
+      "valor" : "99.17"
+    } ],
+    "Junho de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,14",
+      "valor" : "98.14"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,20",
+      "valor" : "99.2"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,58",
+      "valor" : "101.58"
+    } ],
+    "Julho de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,14",
+      "valor" : "99.14"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,23",
+      "valor" : "99.23"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,25",
+      "valor" : "99.25"
+    } ],
+    "Agosto de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "94,99",
+      "valor" : "94.99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,97",
+      "valor" : "95.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,15",
+      "valor" : "100.15"
+    } ],
+    "Setembro de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "97,89",
+      "valor" : "97.89"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,58",
+      "valor" : "98.58"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,12",
+      "valor" : "99.12"
+    } ],
+    "Outubro de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,72",
+      "valor" : "99.72"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,97",
+      "valor" : "100.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,85",
+      "valor" : "102.85"
+    } ],
+    "Novembro de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,63",
+      "valor" : "101.63"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,62",
+      "valor" : "102.62"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,56",
+      "valor" : "104.56"
+    } ],
+    "Dezembro de 2021" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,87",
+      "valor" : "100.87"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,19",
+      "valor" : "102.19"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,34",
+      "valor" : "104.34"
+    } ],
+    "Janeiro de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,74",
+      "valor" : "97.74"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "99,17",
+      "valor" : "99.17"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,58",
+      "valor" : "99.58"
+    } ],
+    "Fevereiro de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,19",
+      "valor" : "99.19"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,18",
+      "valor" : "102.18"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,62",
+      "valor" : "103.62"
+    } ],
+    "Março de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,59",
+      "valor" : "100.59"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,74",
+      "valor" : "100.74"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,03",
+      "valor" : "101.03"
+    } ],
+    "Abril de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,89",
+      "valor" : "101.89"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,94",
+      "valor" : "101.94"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,27",
+      "valor" : "102.27"
+    } ],
+    "Maio de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,55",
+      "valor" : "100.55"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,71",
+      "valor" : "102.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,99",
+      "valor" : "102.99"
+    } ],
+    "Junho de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,53",
+      "valor" : "100.53"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,47",
+      "valor" : "102.47"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "103,82",
+      "valor" : "103.82"
+    } ],
+    "Julho de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,96",
+      "valor" : "100.96"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,49",
+      "valor" : "101.49"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,55",
+      "valor" : "102.55"
+    } ],
+    "Agosto de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,08",
+      "valor" : "100.08"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,79",
+      "valor" : "100.79"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,80",
+      "valor" : "102.8"
+    } ],
+    "Setembro de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,45",
+      "valor" : "100.45"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,39",
+      "valor" : "101.39"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,97",
+      "valor" : "101.97"
+    } ],
+    "Outubro de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,56",
+      "valor" : "99.56"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,98",
+      "valor" : "100.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "102,18",
+      "valor" : "102.18"
+    } ],
+    "Novembro de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,86",
+      "valor" : "100.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,24",
+      "valor" : "101.24"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,91",
+      "valor" : "105.91"
+    } ],
+    "Dezembro de 2022" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,95",
+      "valor" : "100.95"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,98",
+      "valor" : "101.98"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,25",
+      "valor" : "103.25"
+    } ],
+    "Janeiro de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,87",
+      "valor" : "99.87"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,16",
+      "valor" : "101.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,83",
+      "valor" : "103.83"
+    } ],
+    "Fevereiro de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,75",
+      "valor" : "98.75"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,53",
+      "valor" : "99.53"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,44",
+      "valor" : "104.44"
+    } ],
+    "Março de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,48",
+      "valor" : "99.48"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,75",
+      "valor" : "101.75"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "107,12",
+      "valor" : "107.12"
+    } ],
+    "Abril de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,96",
+      "valor" : "95.96"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,73",
+      "valor" : "98.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,60",
+      "valor" : "103.6"
+    } ],
+    "Maio de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,16",
+      "valor" : "97.16"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,55",
+      "valor" : "98.55"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,00",
+      "valor" : "105"
+    } ],
+    "Junho de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,55",
+      "valor" : "97.55"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,61",
+      "valor" : "98.61"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,40",
+      "valor" : "105.4"
+    } ],
+    "Julho de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,85",
+      "valor" : "97.85"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,47",
+      "valor" : "98.47"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "117,90",
+      "valor" : "117.9"
+    } ],
+    "Agosto de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,76",
+      "valor" : "95.76"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,81",
+      "valor" : "95.81"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,05",
+      "valor" : "104.05"
+    } ],
+    "Setembro de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "94,29",
+      "valor" : "94.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,41",
+      "valor" : "95.41"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,84",
+      "valor" : "104.84"
+    } ],
+    "Outubro de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "94,66",
+      "valor" : "94.66"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,75",
+      "valor" : "95.75"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "100,66",
+      "valor" : "100.66"
+    } ],
+    "Novembro de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,54",
+      "valor" : "97.54"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,01",
+      "valor" : "99.01"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,86",
+      "valor" : "105.86"
+    } ],
+    "Dezembro de 2023" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,15",
+      "valor" : "97.15"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,32",
+      "valor" : "98.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "106,88",
+      "valor" : "106.88"
+    } ],
+    "Janeiro de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,03",
+      "valor" : "100.03"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,35",
+      "valor" : "100.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "111,04",
+      "valor" : "111.04"
+    } ],
+    "Fevereiro de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "100,37",
+      "valor" : "100.37"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,09",
+      "valor" : "101.09"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "108,93",
+      "valor" : "108.93"
+    } ],
+    "Março de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,70",
+      "valor" : "99.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "103,90",
+      "valor" : "103.9"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "109,28",
+      "valor" : "109.28"
+    } ],
+    "Abril de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,12",
+      "valor" : "99.12"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,72",
+      "valor" : "101.72"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "110,38",
+      "valor" : "110.38"
+    } ],
+    "Maio de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,78",
+      "valor" : "98.78"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,86",
+      "valor" : "98.86"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,08",
+      "valor" : "105.08"
+    } ],
+    "Junho de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,42",
+      "valor" : "95.42"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,19",
+      "valor" : "98.19"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "106,69",
+      "valor" : "106.69"
+    } ],
+    "Julho de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "94,70",
+      "valor" : "94.7"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,36",
+      "valor" : "96.36"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "103,61",
+      "valor" : "103.61"
+    } ],
+    "Agosto de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "95,53",
+      "valor" : "95.53"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,68",
+      "valor" : "96.68"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,83",
+      "valor" : "101.83"
+    } ],
+    "Setembro de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,02",
+      "valor" : "97.02"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,81",
+      "valor" : "98.81"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "104,41",
+      "valor" : "104.41"
+    } ],
+    "Outubro de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,64",
+      "valor" : "100.64"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,00",
+      "valor" : "101"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "115,48",
+      "valor" : "115.48"
+    } ],
+    "Novembro de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "96,88",
+      "valor" : "96.88"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,92",
+      "valor" : "97.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "107,04",
+      "valor" : "107.04"
+    } ],
+    "Dezembro de 2024" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "93,19",
+      "valor" : "93.19"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,89",
+      "valor" : "95.89"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,54",
+      "valor" : "105.54"
+    } ],
+    "Janeiro de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,29",
+      "valor" : "97.29"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,43",
+      "valor" : "97.43"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "112,31",
+      "valor" : "112.31"
+    } ],
+    "Fevereiro de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,03",
+      "valor" : "102.03"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "102,31",
+      "valor" : "102.31"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "113,81",
+      "valor" : "113.81"
+    } ],
+    "Março de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "94,64",
+      "valor" : "94.64"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,10",
+      "valor" : "98.1"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,27",
+      "valor" : "105.27"
+    } ],
+    "Abril de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,09",
+      "valor" : "96.09"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,52",
+      "valor" : "99.52"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "106,04",
+      "valor" : "106.04"
+    } ],
+    "Maio de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,65",
+      "valor" : "99.65"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,73",
+      "valor" : "102.73"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "111,06",
+      "valor" : "111.06"
+    } ],
+    "Junho de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,85",
+      "valor" : "97.85"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,90",
+      "valor" : "97.9"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "108,76",
+      "valor" : "108.76"
+    } ],
+    "Julho de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,31",
+      "valor" : "97.31"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,89",
+      "valor" : "97.89"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "107,28",
+      "valor" : "107.28"
+    } ],
+    "Agosto de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "98,37",
+      "valor" : "98.37"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,93",
+      "valor" : "98.93"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "101,80",
+      "valor" : "101.8"
+    } ],
+    "Setembro de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,00",
+      "valor" : "99"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "99,90",
+      "valor" : "99.9"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "110,58",
+      "valor" : "110.58"
+    } ],
+    "Outubro de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,95",
+      "valor" : "100.95"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "101,93",
+      "valor" : "101.93"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "126,97",
+      "valor" : "126.97"
+    } ],
+    "Novembro de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "97,05",
+      "valor" : "97.05"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,21",
+      "valor" : "97.21"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "111,85",
+      "valor" : "111.85"
+    } ],
+    "Dezembro de 2025" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "93,71",
+      "valor" : "93.71"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "94,37",
+      "valor" : "94.37"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "109,11",
+      "valor" : "109.11"
+    } ],
+    "Janeiro de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,35",
+      "valor" : "95.35"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "98,32",
+      "valor" : "98.32"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "113,07",
+      "valor" : "113.07"
+    } ],
+    "Fevereiro de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "93,97",
+      "valor" : "93.97"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,91",
+      "valor" : "97.91"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "110,70",
+      "valor" : "110.7"
+    } ],
+    "Março de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,65",
+      "valor" : "99.65"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "102,20",
+      "valor" : "102.2"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "112,90",
+      "valor" : "112.9"
+    } ],
+    "Abril de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,42",
+      "valor" : "99.42"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "100,04",
+      "valor" : "100.04"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "111,19",
+      "valor" : "111.19"
+    } ],
+    "Maio de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "99,28",
+      "valor" : "99.28"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "101,07",
+      "valor" : "101.07"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "110,69",
+      "valor" : "110.69"
+    } ],
+    "Junho de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,68",
+      "valor" : "95.68"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "96,66",
+      "valor" : "96.66"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "114,57",
+      "valor" : "114.57"
+    } ],
+    "Julho de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "95,48",
+      "valor" : "95.48"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,09",
+      "valor" : "97.09"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "108,65",
+      "valor" : "108.65"
+    } ],
+    "Agosto de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "93,25",
+      "valor" : "93.25"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "94,92",
+      "valor" : "94.92"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "ind_string" : "105,46",
+      "valor" : "105.46"
+    } ],
+    "Setembro de 2026" : [ {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "C",
+      "dim_3_t" : "Indústrias transformadoras",
+      "ind_string" : "96,57",
+      "valor" : "96.57"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "TOT",
+      "dim_3_t" : "Total",
+      "ind_string" : "97,24",
+      "valor" : "97.24"
+    }, {
+      "geocod" : "PT",
+      "geodsg" : "Portugal",
+      "dim_3" : "10",
+      "dim_3_t" : "Indústrias alimentares",
+      "sinal_conv" : "x",
+      "sinal_conv_desc" : "Dado não disponível",
+      "ind_string" : "x"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]

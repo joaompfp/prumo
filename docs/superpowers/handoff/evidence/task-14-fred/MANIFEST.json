@@ -1,0 +1,63 @@
+{
+  "fetched": "2026-11-12",
+  "provenance": "All copies byte-identical to the Task 14 preflight originals (scratch prumo-t14-preflight). csv-decimal-mismatches.json is controller analysis, not publisher bytes.",
+  "files": [
+    {
+      "file": "fred-api-terms.html",
+      "bytes": 49492,
+      "sha256": "8f18f5706e0fbe8a30b10c7e7aed19f1d5fc93375373e407cb9009cce7bbff6d",
+      "note": "FRED API terms of use (200); defers third-party rights to each series' owner; no redistribution grant. IMF terms page unreachable at intake, so IMF permission is unconfirmed.",
+      "url": "https://fred.stlouisfed.org/docs/api/terms_of_use.html",
+      "fetched_at": "2026-11-12T12:19:45.949474+00:00",
+      "status": 200
+    },
+    {
+      "file": "meta-WPU101.json",
+      "bytes": 534,
+      "sha256": "e023fdb92897f7d0ba896cab1b8491493c7b3f3a121706c2233cfafdbaeca583",
+      "note": "WPU101 metadata: units 'Index 1982=100', title 'Producer Price Index by Commodity: Metals and Metal Products: Iron and Steel' (US BLS PPI, NOT a USD WORLD steel price) - grounds fred.steel.WORLD and fred.commodity_steel.WORLD inactivation. api_key redacted from url.",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=WPU101&file_type=json",
+      "fetched_at": "2026-11-12T12:19:44.900309+00:00",
+      "status": 200
+    },
+    {
+      "file": "meta-MHHNGSP.json",
+      "bytes": 625,
+      "sha256": "b91a06e3121915ab544fa3761a0d81ca5424057dd1bb74ca8e7c0314391591e9",
+      "note": "MHHNGSP metadata: 'Henry Hub Natural Gas Spot Price', 'Dollars per Million BTU' (US benchmark, NOT a WORLD price) - grounds fred.natural_gas.WORLD inactivation. api_key redacted from url.",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=MHHNGSP&file_type=json",
+      "fetched_at": "2026-11-12T12:19:44.021111+00:00",
+      "status": 200
+    },
+    {
+      "file": "page-WPU101.html",
+      "bytes": 77747,
+      "sha256": "406b1f2e4bb977a50ef829e0489cadfc8e045e2939167c3b0a68a617a713368e",
+      "note": "WPU101 series page (200); same conflict evidence.",
+      "url": "https://fred.stlouisfed.org/series/WPU101",
+      "fetched_at": "2026-11-12T12:13:19.582157+00:00",
+      "status": 200
+    },
+    {
+      "file": "page-MHHNGSP.html",
+      "bytes": 75034,
+      "sha256": "97a0ebee1797c8062ac93c8933132fe164c4dbdb70b0feb396b9ac8e232f0424",
+      "note": "MHHNGSP series page (200); same conflict evidence.",
+      "url": "https://fred.stlouisfed.org/series/MHHNGSP",
+      "fetched_at": "2026-11-12T12:13:18.226899+00:00",
+      "status": 200
+    },
+    {
+      "file": "csv-decimal-mismatches.json",
+      "bytes": 170086,
+      "sha256": "fd9966747a3d52a6e365532744a202657b97f6716fecb9aa012314b23704bb1e",
+      "note": "Controller computation (NOT publisher bytes): per-series exact Decimal comparison of API observation tokens vs fredgraph.csv tokens; 10/12 series differ; also documents the 144 pre-1992 '.' missing cells per series and each series' metadata observation range 1992-01-01..2026-09-01."
+    },
+    {
+      "file": "f0nix-probes.json",
+      "bytes": 376,
+      "sha256": "8c7d4c49c4328bb0929f45d73bf0009a826bad2d315e2d99098c7d18bc399127",
+      "note": "Production-egress probes 2026-11-12: FRED API metadata + fredgraph.csv both HTTP 200 via the owner's existing key; no secret persisted on f0nix."
+    }
+  ]
+}

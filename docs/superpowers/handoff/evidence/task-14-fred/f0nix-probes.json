@@ -1,0 +1,1 @@
+[{"endpoint": "https://api.stlouisfed.org/fred/series", "status": 200, "bytes": 902, "sha256": "f9fcc811cab2a19c2427bf100c21def66d1942996e4dac2141d3bf20cc1041e8", "elapsed_s": 0.32}, {"endpoint": "https://fred.stlouisfed.org/graph/fredgraph.csv", "status": 200, "bytes": 12120, "sha256": "ff464a26d1f859cf2883140e14e9e8c97b1ed0298093b4282dabad10531b0541", "elapsed_s": 0.14}]

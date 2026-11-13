@@ -1,0 +1,88 @@
+{
+  "created_utc": "2026-11-11",
+  "task": "Prumo Task 12B — DGEG safe disposition evidence bundle (durable copies of hashes/bytes verified by the controller against the 35-entry research manifests)",
+  "research_scratch_origins": [
+    "/home/joao/.hermes/cache/scratch/prumo-task12-dgeg-discovery (MANIFEST.json, 35 entries superset)",
+    "/home/joao/.hermes/cache/scratch/prumo-task12-dgeg-followup (MANIFEST.json + FOLLOWUP-REPORT.md)"
+  ],
+  "note": "Raw files are byte-identical copies of the archived HTTP responses. Derived files are labelled DERIVED, are NOT raw response evidence (there is no implemented DGEG verifier), and name their source PDF by URL/sha256/bytes; the 2.4 MB APN and 13 MB AEN PDFs and the multi-MB dumps stay out of the repo by policy.",
+  "files": [
+    {
+      "path": "dgeg-iie-1995-2024.xlsx",
+      "kind": "raw",
+      "source_url": "https://www.dgeg.gov.pt/media/5unlgvvo/dgeg-iie-1995-2024.xlsx",
+      "http_status": "200 OK",
+      "sha256": "5f31904ad33757ba2b52d02fd5107be4054ad94db7e97d1bc17edfda177837be",
+      "bytes": 119336,
+      "note": "Publisher workbook (Indicadores de Infra-estruturas Energéticas 1995-2024p). Raw XML ground truth for every sheet/row coordinate and token cited in registry/unmapped-dgeg.md. Last-updated cell 2026-01-30; no licence metadata fields."
+    },
+    {
+      "path": "dgeg-termos-e-condicoes.html",
+      "kind": "raw",
+      "source_url": "https://www.dgeg.gov.pt/pt/termos-e-condicoes/",
+      "http_status": "200 OK",
+      "sha256": "6c063ff9c27e0bf451c5067d56faea468096780046dbc473a33a960fde176dd2",
+      "bytes": 26939,
+      "note": "Terms page = shell ('about us' paragraph only, no reuse/licence clauses); carries the site-wide footer 'Copyright 2026. All Rights Reserved. Powered by DGEG'."
+    },
+    {
+      "path": "dgeg-acesso-informacao-administrativa.html",
+      "kind": "raw",
+      "source_url": "https://www.dgeg.gov.pt/pt/a-dgeg/acesso-a-informacao-administrativa/",
+      "http_status": "200 OK",
+      "sha256": "dec887c66a7ed0262c5f46eccab743d38018bf445326d381b2453b55400539a8",
+      "bytes": 31130,
+      "note": "Quotes LADA (Lei 26/2016) access/reutilisation statute verbatim plus an access-request procedure (Despacho 8/DGEG/2021); statute citation is NOT a licence grant for these data."
+    },
+    {
+      "path": "dgeg-indicadores-energeticos-page.html",
+      "kind": "raw",
+      "source_url": "https://www.dgeg.gov.pt/pt/estatistica/energia/indicadores-energeticos/",
+      "http_status": "200 OK",
+      "sha256": "1ee985e55185d33dd7a6756bff7d2bafc2e708a1fa222d47d8841a9ac8c42029",
+      "bytes": 44319,
+      "note": "Collector page for the workbook: links only the two XLSX files; no HTML value table, CSV or API."
+    },
+    {
+      "path": "dadosgovpt-dgeg-datasets-page1.json",
+      "kind": "raw",
+      "source_url": "https://dados.gov.pt/api/1/organizations/654138c66ddddda109c4960c/datasets/?page_size=200",
+      "http_status": "not recorded in the prior discovery manifest (hash-pinned bytes)",
+      "sha256": "90284c7a773dd60f6c6b1d03cb13ade2afed8d44e96f273e522e95b92e029572",
+      "bytes": 130573,
+      "note": "DGEG org on dados.gov.pt: 19 datasets, all geology/licensing, all cc-by — none is an energy statistics workbook, so that CC BY is not a licence for the energy series."
+    },
+    {
+      "path": "derived/apn-2015-2024-pt-fulltext.txt",
+      "kind": "derived",
+      "source_url": "https://www.dgeg.gov.pt/media/5riiwycf/dgeg-apn-2015-2024-pt.pdf",
+      "http_status": "200 OK (research archive)",
+      "sha256": "a29ab0b3f8daf89c6257f5d50968cf751e29e985fa2a3c92f1ebeb0d092ff6a6",
+      "bytes": 9717,
+      "derived_from": {
+        "path": "(research archive) evidence/dgeg-apn-2015-2024-pt.pdf — NOT committed (2369104 bytes exceeds the evidence size cap)",
+        "url": "https://www.dgeg.gov.pt/media/5riiwycf/dgeg-apn-2015-2024-pt.pdf",
+        "sha256": "d4490a8e3d296ed1895fc5d716db10c30191ef169a09489f7564ede07d0007a7",
+        "bytes": 2369104,
+        "method": "pdftotext -layout full text layer"
+      },
+      "note": "APN 'Energia em Portugal – Principais Números 2024' (2015-2024 tables). Basis of the APN 10/10 and 8/10 token comparisons cited in registry/unmapped-dgeg.md."
+    },
+    {
+      "path": "derived/aen-2025e-ficha-tecnica-rights-excerpt.txt",
+      "kind": "derived",
+      "source_url": "https://www.dgeg.gov.pt/media/b4fhd0lv/dgeg-aen-2025e.pdf",
+      "http_status": "200 OK (research archive)",
+      "sha256": "5d73d3c607f33c10a518de856c6b47b08f62579be7d1122db4d5d2ee72027939",
+      "bytes": 1347,
+      "derived_from": {
+        "path": "(research archive) evidence/dgeg-aen-2025e.pdf — NOT committed (13114538 bytes exceeds the evidence size cap)",
+        "url": "https://www.dgeg.gov.pt/media/b4fhd0lv/dgeg-aen-2025e.pdf",
+        "sha256": "9486137ed36e25c1a7dbfe5da683ee6d20548c7d405304d1199a11a8378c4db1",
+        "bytes": 13114538,
+        "method": "pdftotext -layout, ficha técnica (rights) section excerpt"
+      },
+      "note": "Verbatim rights wording of the AEN 2025 co-edition (DGEG+ADENE): 'Todos os direitos reservados.' + 'Publicação gratuita'. Cited by registry/licences-todo.md."
+    }
+  ]
+}

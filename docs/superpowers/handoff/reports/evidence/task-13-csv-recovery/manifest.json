@@ -1,0 +1,198 @@
+[
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/BX.KLT.DINV.WD.GD.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.22,
+    "code": "BX.KLT.DINV.WD.GD.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/BX.KLT.DINV.WD.GD.ZS.bin",
+    "bytes": 121485,
+    "sha256": "ee7eef01e75a93819bea6a4e0490871e21033ca8a3abbd70e37219f34388ef3f",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/BX.KLT.DINV.WD.GD.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/GB.XPD.RSDV.GD.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.18,
+    "code": "GB.XPD.RSDV.GD.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/GB.XPD.RSDV.GD.ZS.bin",
+    "bytes": 31303,
+    "sha256": "6dab80ef88d19a8dfc6fad6a7de60b579ad885a5bdca7211a4556dc3abebdf99",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/GB.XPD.RSDV.GD.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/GC.DOD.TOTL.GD.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.07,
+    "code": "GC.DOD.TOTL.GD.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/GC.DOD.TOTL.GD.ZS.bin",
+    "bytes": 32603,
+    "sha256": "02adad2d9c383ef8e3582e036efd94b81c562354ba8863764f4dd4feaca21b5e",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/GC.DOD.TOTL.GD.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/NE.EXP.GNFS.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.19,
+    "code": "NE.EXP.GNFS.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/NE.EXP.GNFS.ZS.bin",
+    "bytes": 115014,
+    "sha256": "084c540b7db83e0a3051acc346eaec47b94d0740ba6913f3ce0ee2279ad0cde7",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/NE.EXP.GNFS.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/NE.IMP.GNFS.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.2,
+    "code": "NE.IMP.GNFS.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/NE.IMP.GNFS.ZS.bin",
+    "bytes": 115639,
+    "sha256": "496addd460d3a7de5f7bc410a96c948946d07b6d5588ab3cbaecec962add049a",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/NE.IMP.GNFS.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/NE.RSB.GNFS.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.19,
+    "code": "NE.RSB.GNFS.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/NE.RSB.GNFS.ZS.bin",
+    "bytes": 117882,
+    "sha256": "a821445393ab86f03850c960a10056617c33bbb146818739b1d781133bb92b07",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/NE.RSB.GNFS.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.09,
+    "code": "NY.GDP.MKTP.CD",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/NY.GDP.MKTP.CD.bin",
+    "bytes": 142909,
+    "sha256": "48296011514a05e3183f165b7a20b5c265fd7d7ab67daf51c0ed4e17cef44018",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/NY.GDP.MKTP.CD.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.KD.ZG?downloadformat=csv",
+    "status": 502,
+    "seconds": 0.18,
+    "code": "NY.GDP.MKTP.KD.ZG",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/NY.GDP.MKTP.KD.ZG.bin",
+    "bytes": 16,
+    "sha256": "bb2fb7b51f18478e3ccde6376dc39285b20472f0394e7034fd2e0bdf6a5716e2",
+    "zip": false
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/NY.GDP.PCAP.CD?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.22,
+    "code": "NY.GDP.PCAP.CD",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/NY.GDP.PCAP.CD.bin",
+    "bytes": 147670,
+    "sha256": "7f6854ecc253a73b8686b53abd4c95c18f166e1fd2fcd2bfd8fc7121cfc612ca",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/NY.GDP.PCAP.CD.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SI.POV.GINI?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.1,
+    "code": "SI.POV.GINI",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SI.POV.GINI.bin",
+    "bytes": 20080,
+    "sha256": "ee7af858347bc313934732f51830864df83bcd77def0be4a2556cff5447639de",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SI.POV.GINI.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SL.EMP.TOTL.SP.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.09,
+    "code": "SL.EMP.TOTL.SP.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SL.EMP.TOTL.SP.ZS.bin",
+    "bytes": 49755,
+    "sha256": "b8205067155538b4ab751e2be93922ba9edf52e23fb453b32fb64dfcb565e9f6",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SL.EMP.TOTL.SP.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SL.TLF.CACT.FE.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.19,
+    "code": "SL.TLF.CACT.FE.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SL.TLF.CACT.FE.ZS.bin",
+    "bytes": 51425,
+    "sha256": "99aea0eb79d1e26a3395fb07f452ce62d25f6f7056e34da1afc5253f71e90020",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SL.TLF.CACT.FE.ZS.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SL.UEM.TOTL.ZS?downloadformat=csv",
+    "status": 502,
+    "seconds": 0.17,
+    "code": "SL.UEM.TOTL.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SL.UEM.TOTL.ZS.bin",
+    "bytes": 16,
+    "sha256": "bb2fb7b51f18478e3ccde6376dc39285b20472f0394e7034fd2e0bdf6a5716e2",
+    "zip": false
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SP.DYN.CBRT.IN?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.2,
+    "code": "SP.DYN.CBRT.IN",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SP.DYN.CBRT.IN.bin",
+    "bytes": 81312,
+    "sha256": "a055535b9c9892d7655d8ab67a0cfeebf225f21df7fb22e201d3c42c1309e279",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SP.DYN.CBRT.IN.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SP.DYN.CDRT.IN?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.18,
+    "code": "SP.DYN.CDRT.IN",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SP.DYN.CDRT.IN.bin",
+    "bytes": 77222,
+    "sha256": "e66216c484f093502a5e0d64b4da17db984344b2b9e6339e9adebce7663903d6",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SP.DYN.CDRT.IN.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SP.DYN.LE00.IN?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.19,
+    "code": "SP.DYN.LE00.IN",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SP.DYN.LE00.IN.bin",
+    "bytes": 91365,
+    "sha256": "69d38d10c2354e71a8d34d6f2ee31d1c817dd21aa23c50970af59c56d9c2fdd4",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SP.DYN.LE00.IN.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SP.POP.TOTL?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.18,
+    "code": "SP.POP.TOTL",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SP.POP.TOTL.bin",
+    "bytes": 90344,
+    "sha256": "693ea67047199a041b9dc6d38d2aeefbbb12986414347714470345df68437787",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SP.POP.TOTL.zip"
+  },
+  {
+    "url": "https://api.worldbank.org/v2/en/indicator/SP.URB.TOTL.IN.ZS?downloadformat=csv",
+    "status": 200,
+    "seconds": 0.47,
+    "code": "SP.URB.TOTL.IN.ZS",
+    "path": "/home/joao/.hermes/cache/scratch/prumo-task13-resume/f0nix-csv/SP.URB.TOTL.IN.ZS.bin",
+    "bytes": 160141,
+    "sha256": "ecb6671b0b11aa47e275eda3f3e1bbc4d390e0da493a78b079641417272c3572",
+    "zip": true,
+    "archived_path": "docs/superpowers/handoff/reports/evidence/task-13-csv-recovery/SP.URB.TOTL.IN.ZS.zip"
+  }
+]

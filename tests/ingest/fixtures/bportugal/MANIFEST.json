@@ -1,0 +1,155 @@
+{
+ "recorded": "2026-11-11",
+ "channel": "BPstat public data API, JSON-stat 2.0 (https://bpstat.bportugal.pt/data/v1), decimal=true so values are the publisher's fixed-point strings ('the exact same number of decimal places as displayed in the BPstat website'), lang=EN. Full history per series (no obs_since/obs_to), so later revisions are seen. Fetched live from f3nix with RequestsHttp, <=1 req/s.",
+ "sets": {
+  "euribor": {
+   "file": "euribor.json",
+   "url": "https://bpstat.bportugal.pt/data/v1/domains/22/datasets/2829cb9155cb4f6ba6906db6b204c4bc/?lang=EN&series_ids=13168436%2C13168437%2C13168438%2C13168439&decimal=true",
+   "params": {
+    "lang": "EN",
+    "series_ids": "13168436,13168437,13168438,13168439",
+    "decimal": "true"
+   },
+   "series_ids": [
+    "13168436",
+    "13168437",
+    "13168438",
+    "13168439"
+   ],
+   "domain": "22",
+   "dataset": "2829cb9155cb4f6ba6906db6b204c4bc",
+   "bytes": 29703,
+   "sha256": "303de50a451ccefa3cd4cc563d0b5b953e43ee8056b8c6342a4333ba582f6de3",
+   "reference_dates": 394,
+   "last_date": "2026-10-31",
+   "series_labels": {
+    "13168436": "Euribor 3 months - monthly average",
+    "13168437": "Euribor 1 year - monthly average",
+    "13168438": "Euribor 6 months - monthly average",
+    "13168439": "Euribor 1 month - monthly average"
+   },
+   "unit_labels": {
+    "13168436": 3327,
+    "13168437": 3327,
+    "13168438": 3327,
+    "13168439": 3327
+   }
+  },
+  "yields": {
+   "file": "yields.json",
+   "url": "https://bpstat.bportugal.pt/data/v1/domains/26/datasets/690b7b36fd36c0dbe249c48cbbc39524/?lang=EN&series_ids=12099464%2C12560098&decimal=true",
+   "params": {
+    "lang": "EN",
+    "series_ids": "12099464,12560098",
+    "decimal": "true"
+   },
+   "series_ids": [
+    "12099464",
+    "12560098"
+   ],
+   "domain": "26",
+   "dataset": "690b7b36fd36c0dbe249c48cbbc39524",
+   "bytes": 16472,
+   "sha256": "44fe1c07eac71d9b5d16cf56d493c8eba7f11f08c35a6c0dec4d12d8c741de1c",
+   "reference_dates": 400,
+   "last_date": "2026-10-31",
+   "series_labels": {
+    "12099464": "Yield on Treasury bonds with fixed rate and residual maturity of 10 years - monthly",
+    "12560098": "Yield on Germany Treasury bonds with fixed rate and residual maturity of 10 years - monthly"
+   },
+   "unit_labels": {
+    "12099464": 3327,
+    "12560098": 3327
+   }
+  },
+  "credit": {
+   "file": "credit.json",
+   "url": "https://bpstat.bportugal.pt/data/v1/domains/19/datasets/28b6a921e1a4a9e326e724ab3e043d97/?lang=EN&series_ids=12557378%2C12557382&decimal=true",
+   "params": {
+    "lang": "EN",
+    "series_ids": "12557378,12557382",
+    "decimal": "true"
+   },
+   "series_ids": [
+    "12557378",
+    "12557382"
+   ],
+   "domain": "19",
+   "dataset": "28b6a921e1a4a9e326e724ab3e043d97",
+   "bytes": 26014,
+   "sha256": "03111d70e679a3a70c1e413e6912a6e07f50aa832929daac60500b50665719cf",
+   "reference_dates": 562,
+   "last_date": "2026-09-30",
+   "series_labels": {
+    "12557378": "Loans-Households and NPISH-PRT-House purchase-M€ (OMFI)",
+    "12557382": "Loans-Households and NPISH-PRT-Consumption-M€ (OMFI)"
+   },
+   "unit_labels": {
+    "12557378": 3331,
+    "12557382": 3331
+   }
+  },
+  "deposits": {
+   "file": "deposits.json",
+   "url": "https://bpstat.bportugal.pt/data/v1/domains/19/datasets/d5bf6198a39f1e77b0d14dda97103de0/?lang=EN&series_ids=12556700&decimal=true",
+   "params": {
+    "lang": "EN",
+    "series_ids": "12556700",
+    "decimal": "true"
+   },
+   "series_ids": [
+    "12556700"
+   ],
+   "domain": "19",
+   "dataset": "d5bf6198a39f1e77b0d14dda97103de0",
+   "bytes": 17942,
+   "sha256": "c23683aadc7e50b5c96ec2f6b74cc305b4708e50423171142b2cfdb2f938cf49",
+   "reference_dates": 562,
+   "last_date": "2026-09-30",
+   "series_labels": {
+    "12556700": "Deposits and similars-Households and NPISH-PRT-M€ (OMFI)"
+   },
+   "unit_labels": {
+    "12556700": 3331
+   }
+  },
+  "eurusd": {
+   "file": "eurusd.json",
+   "url": "https://bpstat.bportugal.pt/data/v1/domains/29/datasets/23e0cdd56bddb4ad3016a9c3ad63a539/?lang=EN&series_ids=12531993&decimal=true",
+   "params": {
+    "lang": "EN",
+    "series_ids": "12531993",
+    "decimal": "true"
+   },
+   "series_ids": [
+    "12531993"
+   ],
+   "domain": "29",
+   "dataset": "23e0cdd56bddb4ad3016a9c3ad63a539",
+   "bytes": 10428,
+   "sha256": "74a01a86aa1942125d8d83cb03ded75c1a3f8474120e80018bee4b944650d4fb",
+   "reference_dates": 334,
+   "last_date": "2026-10-31",
+   "series_labels": {
+    "12531993": "US, Dollars (USD) - monthly average"
+   },
+   "unit_labels": {
+    "12531993": 3325
+   }
+  }
+ },
+ "error_bad_series_ids": {
+  "file": "error_bad_series_ids.json",
+  "url": "https://bpstat.bportugal.pt/data/v1/domains/26/datasets/690b7b36fd36c0dbe249c48cbbc39524/?lang=EN&series_ids=abc&decimal=true",
+  "status": 400,
+  "bytes": 53,
+  "note": "malformed series_ids=abc -> API error body"
+ },
+ "error_html_spa_page": {
+  "file": "error_html_spa_page.html",
+  "url": "https://bpstat.bportugal.pt/serie/12099464",
+  "status": 200,
+  "bytes": 13332,
+  "note": "the host's SPA page (200, text/html): what a misrouted/renamed endpoint answers instead of JSON"
+ }
+}

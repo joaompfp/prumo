@@ -1,0 +1,703 @@
+{
+ "recorded": "2026-11-11",
+ "channel": "BPstat PORTAL internal API (drives the bpstat.bportugal.pt SPA; discovered from the live network trace): GET /api/observations/?series_ids=<id>&start_date=<month first day>&end_date=<month last day> rows per publication vintage (the current value is the latest pub_date row; live evidence: 12099464 @2023-08-31 was '3.30' @pub 2023-09-04, revised to '3.31' @pub 2023-10-03) and GET /api/series/?view_full=true&page_size=1&series_ids=<id> series metadata (unit-of-measure, territory, recurrence). No auth, no Referer needed; plain curl reproduced the SPA's calls. Fetched live from f3nix with RequestsHttp, <=1 req/s.",
+ "meta": {
+  "12099464": {
+   "file": "series_full_12099464.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=12099464",
+   "bytes": 8579,
+   "sha256": "bfb0577a1426d452de379da623503231e8b841c3e2552c2c9758851119e7681c",
+   "title": "Yield on Treasury bonds with fixed rate and residual maturity of 10 years - monthly",
+   "recurrence": "M"
+  },
+  "12531993": {
+   "file": "series_full_12531993.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=12531993",
+   "bytes": 7687,
+   "sha256": "9da54d8e193a5f2af25a882ac852aa034bc11f3338adf772bd421dcf5bdfe224",
+   "title": "US, Dollars (USD) - monthly average",
+   "recurrence": "M"
+  },
+  "12556700": {
+   "file": "series_full_12556700.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=12556700",
+   "bytes": 14306,
+   "sha256": "e3aeab30fdf925de5780a32d718be190204ca01d6ab7b34a8273e974c2522c01",
+   "title": "Deposits and similars-Households and NPISH-PRT-M€ (OMFI)",
+   "recurrence": "M"
+  },
+  "12557378": {
+   "file": "series_full_12557378.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=12557378",
+   "bytes": 15584,
+   "sha256": "3481513edea27a31604ad26b0135889ba923fb4ac1879b56ba5f8ae7254d52c9",
+   "title": "Loans-Households and NPISH-PRT-House purchase-M€ (OMFI)",
+   "recurrence": "M"
+  },
+  "12557382": {
+   "file": "series_full_12557382.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=12557382",
+   "bytes": 15352,
+   "sha256": "f5d28b6acfd50383e1f297091e808748350de8a7a55b3a5f08e1ee6c34e745a9",
+   "title": "Loans-Households and NPISH-PRT-Consumption-M€ (OMFI)",
+   "recurrence": "M"
+  },
+  "12560098": {
+   "file": "series_full_12560098.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=12560098",
+   "bytes": 8621,
+   "sha256": "8de536a48e66aa100ece8b32aae79faf86a29de7ea5882c8c309c4dfaa56b283",
+   "title": "Yield on Germany Treasury bonds with fixed rate and residual maturity of 10 years - monthly",
+   "recurrence": "M"
+  },
+  "13168436": {
+   "file": "series_full_13168436.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=13168436",
+   "bytes": 9584,
+   "sha256": "61536fb04977ec92b8bf3441f04e95f7baf6f309114f2080ff6c6da25838896e",
+   "title": "Euribor 3 months - monthly average",
+   "recurrence": "M"
+  },
+  "13168437": {
+   "file": "series_full_13168437.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=13168437",
+   "bytes": 9566,
+   "sha256": "33df9d8085c6ec1ecc06d48cf67ed2966234ee0f285aa5d5a76a5e626203732d",
+   "title": "Euribor 1 year - monthly average",
+   "recurrence": "M"
+  },
+  "13168438": {
+   "file": "series_full_13168438.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=13168438",
+   "bytes": 9584,
+   "sha256": "8c7aefa1bfb7055b37a1ba72aada14ffa1bc54ea750e90d1ff371452f35b1382",
+   "title": "Euribor 6 months - monthly average",
+   "recurrence": "M"
+  },
+  "13168439": {
+   "file": "series_full_13168439.json",
+   "url": "https://bpstat.bportugal.pt/api/series/?view_full=true&page_size=1&series_ids=13168439",
+   "bytes": 9575,
+   "sha256": "0d9ac531bd0e4357e7cc50ab6933abb02519dca064719f272592a6b4564fbcd3",
+   "title": "Euribor 1 month - monthly average",
+   "recurrence": "M"
+  }
+ },
+ "cases": {
+  "13168439@1994-01": {
+   "file": "obs_13168439_1994-01.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168439&start_date=1994-01-01&end_date=1994-01-31",
+   "bytes": 209,
+   "sha256": "3eae4ea41dddb60d218ece7ea49436da3620bb52225d2e592d6408ba9d9e45d5",
+   "series_id": 13168439,
+   "period": "1994-01",
+   "params": {
+    "series_ids": "13168439",
+    "start_date": "1994-01-01",
+    "end_date": "1994-01-31"
+   },
+   "expected_text": "7.1200",
+   "vintages": [
+    [
+     "7.1200",
+     "2025-07-07T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "7.1200",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168439@2026-10": {
+   "file": "obs_13168439_2026-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168439&start_date=2026-10-01&end_date=2026-10-31",
+   "bytes": 209,
+   "sha256": "202b7de33dc1e43178e1ea68e7568d9d6f22bdbe9c4f32cebd301864b1d5e898",
+   "series_id": 13168439,
+   "period": "2026-10",
+   "params": {
+    "series_ids": "13168439",
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-31"
+   },
+   "expected_text": "2.4358",
+   "vintages": [
+    [
+     "2.4358",
+     "2026-11-03T17:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "2.4358",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168436@1994-01": {
+   "file": "obs_13168436_1994-01.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168436&start_date=1994-01-01&end_date=1994-01-31",
+   "bytes": 209,
+   "sha256": "c31e763ac2b765738fce8694fc0e96f40cb1e8c1adcc327f7219a579535d97b7",
+   "series_id": 13168436,
+   "period": "1994-01",
+   "params": {
+    "series_ids": "13168436",
+    "start_date": "1994-01-01",
+    "end_date": "1994-01-31"
+   },
+   "expected_text": "6.9100",
+   "vintages": [
+    [
+     "6.9100",
+     "2025-07-07T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "6.9100",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168436@2003-04": {
+   "file": "obs_13168436_2003-04.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168436&start_date=2003-04-01&end_date=2003-04-30",
+   "bytes": 209,
+   "sha256": "6a3e9fdd170e8f5c378ccda8ac909f92f70ebfe102cf16a3b4ae3acfd0a211d3",
+   "series_id": 13168436,
+   "period": "2003-04",
+   "params": {
+    "series_ids": "13168436",
+    "start_date": "2003-04-01",
+    "end_date": "2003-04-30"
+   },
+   "expected_text": "2.5334",
+   "vintages": [
+    [
+     "2.5334",
+     "2025-07-07T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "2.5334",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168436@2026-10": {
+   "file": "obs_13168436_2026-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168436&start_date=2026-10-01&end_date=2026-10-31",
+   "bytes": 209,
+   "sha256": "15e67372e75ef0411afdbb9417f5d4737f664cf65546c714256e51a71df52f3d",
+   "series_id": 13168436,
+   "period": "2026-10",
+   "params": {
+    "series_ids": "13168436",
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-31"
+   },
+   "expected_text": "2.6347",
+   "vintages": [
+    [
+     "2.6347",
+     "2026-11-03T17:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "2.6347",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168438@1994-01": {
+   "file": "obs_13168438_1994-01.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168438&start_date=1994-01-01&end_date=1994-01-31",
+   "bytes": 209,
+   "sha256": "d2b580f37ed6ad01b3c8d0e01a0ac619d47225fdd82e68953a7176b1f9e14d02",
+   "series_id": 13168438,
+   "period": "1994-01",
+   "params": {
+    "series_ids": "13168438",
+    "start_date": "1994-01-01",
+    "end_date": "1994-01-31"
+   },
+   "expected_text": "6.6700",
+   "vintages": [
+    [
+     "6.6700",
+     "2025-07-07T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "6.6700",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168438@2026-10": {
+   "file": "obs_13168438_2026-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168438&start_date=2026-10-01&end_date=2026-10-31",
+   "bytes": 209,
+   "sha256": "e6d333ad8f9c32505b1b755f265cdf106277d7e18f3b4a799b684238d0e7541d",
+   "series_id": 13168438,
+   "period": "2026-10",
+   "params": {
+    "series_ids": "13168438",
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-31"
+   },
+   "expected_text": "2.9747",
+   "vintages": [
+    [
+     "2.9747",
+     "2026-11-03T17:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "2.9747",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168437@1994-01": {
+   "file": "obs_13168437_1994-01.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168437&start_date=1994-01-01&end_date=1994-01-31",
+   "bytes": 209,
+   "sha256": "b2321f91bb84a997c8539cc0550cfceadbb2010faca460978994d2a5da3ef550",
+   "series_id": 13168437,
+   "period": "1994-01",
+   "params": {
+    "series_ids": "13168437",
+    "start_date": "1994-01-01",
+    "end_date": "1994-01-31"
+   },
+   "expected_text": "6.3400",
+   "vintages": [
+    [
+     "6.3400",
+     "2025-07-07T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "6.3400",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168437@2020-04": {
+   "file": "obs_13168437_2020-04.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168437&start_date=2020-04-01&end_date=2020-04-30",
+   "bytes": 210,
+   "sha256": "96da39b73a6f3d3e965a8e579fcab42972c8f6b28199b9313f28244f19dd7e84",
+   "series_id": 13168437,
+   "period": "2020-04",
+   "params": {
+    "series_ids": "13168437",
+    "start_date": "2020-04-01",
+    "end_date": "2020-04-30"
+   },
+   "expected_text": "-0.1082",
+   "vintages": [
+    [
+     "-0.1082",
+     "2025-07-07T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "-0.1082",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "13168437@2026-10": {
+   "file": "obs_13168437_2026-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=13168437&start_date=2026-10-01&end_date=2026-10-31",
+   "bytes": 209,
+   "sha256": "7991b03cbb4f2f8a8dea87c8cf43609fed1b7958450fd032f82c5ed482b649a6",
+   "series_id": 13168437,
+   "period": "2026-10",
+   "params": {
+    "series_ids": "13168437",
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-31"
+   },
+   "expected_text": "3.2386",
+   "vintages": [
+    [
+     "3.2386",
+     "2026-11-03T17:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "3.2386",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12099464@1993-07": {
+   "file": "obs_12099464_1993-07.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12099464&start_date=1993-07-01&end_date=1993-07-31",
+   "bytes": 208,
+   "sha256": "ee82bf69c907737e3322520973cb3cdde2848dc5dcb982d193e76048b908ff3d",
+   "series_id": 12099464,
+   "period": "1993-07",
+   "params": {
+    "series_ids": "12099464",
+    "start_date": "1993-07-01",
+    "end_date": "1993-07-31"
+   },
+   "expected_text": "10.67",
+   "vintages": [
+    [
+     "10.67",
+     "2019-08-06T10:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "10.67",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12099464@2023-08": {
+   "file": "obs_12099464_2023-08.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12099464&start_date=2023-08-01&end_date=2023-08-31",
+   "bytes": 404,
+   "sha256": "4264683d2acfa9150d8f5649ea468d5fdac463da2617b56a3da16d0e290cf88d",
+   "series_id": 12099464,
+   "period": "2023-08",
+   "params": {
+    "series_ids": "12099464",
+    "start_date": "2023-08-01",
+    "end_date": "2023-08-31"
+   },
+   "expected_text": "3.31",
+   "vintages": [
+    [
+     "3.30",
+     "2023-09-04T15:30:00Z"
+    ],
+    [
+     "3.31",
+     "2023-10-03T15:30:00Z"
+    ]
+   ],
+   "jsonstat_token": "3.31",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12099464@2026-10": {
+   "file": "obs_12099464_2026-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12099464&start_date=2026-10-01&end_date=2026-10-31",
+   "bytes": 207,
+   "sha256": "69ab4169e95c521e42e6c33dcea4487cb1738c7b17676dce9e7e219d62438c63",
+   "series_id": 12099464,
+   "period": "2026-10",
+   "params": {
+    "series_ids": "12099464",
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-31"
+   },
+   "expected_text": "3.92",
+   "vintages": [
+    [
+     "3.92",
+     "2026-11-03T17:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "3.92",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12560098@2000-01": {
+   "file": "obs_12560098_2000-01.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12560098&start_date=2000-01-01&end_date=2000-01-31",
+   "bytes": 207,
+   "sha256": "a271489ce316332913d1ca09641b99d15d2b3054f9e95c1c96071f646d071e21",
+   "series_id": 12560098,
+   "period": "2000-01",
+   "params": {
+    "series_ids": "12560098",
+    "start_date": "2000-01-01",
+    "end_date": "2000-01-31"
+   },
+   "expected_text": "5.52",
+   "vintages": [
+    [
+     "5.52",
+     "2019-12-04T15:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "5.52",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12560098@2009-06": {
+   "file": "obs_12560098_2009-06.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12560098&start_date=2009-06-01&end_date=2009-06-30",
+   "bytes": 207,
+   "sha256": "549390426e5592a4af6c1b802a3860bcdb598ef661ad174d130fb8b1847f5f8b",
+   "series_id": 12560098,
+   "period": "2009-06",
+   "params": {
+    "series_ids": "12560098",
+    "start_date": "2009-06-01",
+    "end_date": "2009-06-30"
+   },
+   "expected_text": "3.55",
+   "vintages": [
+    [
+     "3.55",
+     "2019-12-04T15:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "3.55",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12560098@2026-10": {
+   "file": "obs_12560098_2026-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12560098&start_date=2026-10-01&end_date=2026-10-31",
+   "bytes": 207,
+   "sha256": "813f7d179b7c4ba398d2bacdd0ab71f5a53d2c397bc8a1f1408aaf7aecacf082",
+   "series_id": 12560098,
+   "period": "2026-10",
+   "params": {
+    "series_ids": "12560098",
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-31"
+   },
+   "expected_text": "3.43",
+   "vintages": [
+    [
+     "3.43",
+     "2026-11-03T17:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "3.43",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12560098@1999-12": {
+   "file": "obs_12560098_1999-12.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12560098&start_date=1999-12-01&end_date=1999-12-31",
+   "bytes": 11,
+   "sha256": "8fe32e407a1038ee38753b70e5374b3a46d6ae9d5f16cd5b73c53abaca8f5ed0",
+   "series_id": 12560098,
+   "period": "1999-12",
+   "params": {
+    "series_ids": "12560098",
+    "start_date": "1999-12-01",
+    "end_date": "1999-12-31"
+   },
+   "expected_text": null,
+   "vintages": [],
+   "jsonstat_token": null,
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12557378@1982-08": {
+   "file": "obs_12557378_1982-08.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12557378&start_date=1982-08-01&end_date=1982-08-31",
+   "bytes": 208,
+   "sha256": "f9819e0b56aa050b58d1bafbb865d449339727c2ca6568e0e6f55c96b751995e",
+   "series_id": 12557378,
+   "period": "1982-08",
+   "params": {
+    "series_ids": "12557378",
+    "start_date": "1982-08-01",
+    "end_date": "1982-08-31"
+   },
+   "expected_text": "908.1",
+   "vintages": [
+    [
+     "908.1",
+     "2019-11-12T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "908.1",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12557378@1997-06": {
+   "file": "obs_12557378_1997-06.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12557378&start_date=1997-06-01&end_date=1997-06-30",
+   "bytes": 210,
+   "sha256": "4288a24cee79d77d2c290fb6e67c1781c053cd676e6b7f969d93d6745238ab81",
+   "series_id": 12557378,
+   "period": "1997-06",
+   "params": {
+    "series_ids": "12557378",
+    "start_date": "1997-06-01",
+    "end_date": "1997-06-30"
+   },
+   "expected_text": "21096.1",
+   "vintages": [
+    [
+     "21096.1",
+     "2019-11-12T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "21096.1",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12557378@1999-12": {
+   "file": "obs_12557378_1999-12.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12557378&start_date=1999-12-01&end_date=1999-12-31",
+   "bytes": 210,
+   "sha256": "fe170ed8ae18aba5d3ac504352634b985168567c5b60375399924ef349daec30",
+   "series_id": 12557378,
+   "period": "1999-12",
+   "params": {
+    "series_ids": "12557378",
+    "start_date": "1999-12-01",
+    "end_date": "1999-12-31"
+   },
+   "expected_text": "42179.6",
+   "vintages": [
+    [
+     "42179.6",
+     "2019-11-12T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "42179.6",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12557378@2026-09": {
+   "file": "obs_12557378_2026-09.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12557378&start_date=2026-09-01&end_date=2026-09-30",
+   "bytes": 211,
+   "sha256": "3e9ec53dffcc3d1d1e5037cc92f818aad21a1e061eb40112d5cc467a33f8ad3e",
+   "series_id": 12557378,
+   "period": "2026-09",
+   "params": {
+    "series_ids": "12557378",
+    "start_date": "2026-09-01",
+    "end_date": "2026-09-30"
+   },
+   "expected_text": "120179.0",
+   "vintages": [
+    [
+     "120179.0",
+     "2026-10-27T10:30:00Z"
+    ]
+   ],
+   "jsonstat_token": "120179.0",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12557382@1999-12": {
+   "file": "obs_12557382_1999-12.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12557382&start_date=1999-12-01&end_date=1999-12-31",
+   "bytes": 209,
+   "sha256": "96d9ce56d6d576c4b6764a62e8e18326461f4bb63a9eb1d224360360f4aabe83",
+   "series_id": 12557382,
+   "period": "1999-12",
+   "params": {
+    "series_ids": "12557382",
+    "start_date": "1999-12-01",
+    "end_date": "1999-12-31"
+   },
+   "expected_text": "6770.1",
+   "vintages": [
+    [
+     "6770.1",
+     "2019-11-12T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "6770.1",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12557382@2012-11": {
+   "file": "obs_12557382_2012-11.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12557382&start_date=2012-11-01&end_date=2012-11-30",
+   "bytes": 210,
+   "sha256": "758efa8c02df2903135e2d476332a35fb382b9df14d904b953e2df5f74a3aa16",
+   "series_id": 12557382,
+   "period": "2012-11",
+   "params": {
+    "series_ids": "12557382",
+    "start_date": "2012-11-01",
+    "end_date": "2012-11-30"
+   },
+   "expected_text": "13411.7",
+   "vintages": [
+    [
+     "13411.7",
+     "2019-11-12T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "13411.7",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12557382@2026-09": {
+   "file": "obs_12557382_2026-09.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12557382&start_date=2026-09-01&end_date=2026-09-30",
+   "bytes": 210,
+   "sha256": "5245e65231a07ad8e28adfa0192628bd6aae817d7e417e33016ee180affd2dd6",
+   "series_id": 12557382,
+   "period": "2026-09",
+   "params": {
+    "series_ids": "12557382",
+    "start_date": "2026-09-01",
+    "end_date": "2026-09-30"
+   },
+   "expected_text": "22766.1",
+   "vintages": [
+    [
+     "22766.1",
+     "2026-10-27T10:30:00Z"
+    ]
+   ],
+   "jsonstat_token": "22766.1",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12556700@1999-12": {
+   "file": "obs_12556700_1999-12.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12556700&start_date=1999-12-01&end_date=1999-12-31",
+   "bytes": 210,
+   "sha256": "964b13f70039f1181b7ea3e2c59a4ce0fa1e2dc07bab3f29cd079a2724a9a7e2",
+   "series_id": 12556700,
+   "period": "1999-12",
+   "params": {
+    "series_ids": "12556700",
+    "start_date": "1999-12-01",
+    "end_date": "1999-12-31"
+   },
+   "expected_text": "77865.3",
+   "vintages": [
+    [
+     "77865.3",
+     "2019-11-12T16:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "77865.3",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12556700@2026-09": {
+   "file": "obs_12556700_2026-09.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12556700&start_date=2026-09-01&end_date=2026-09-30",
+   "bytes": 211,
+   "sha256": "9557ec6d54d56c7c670acf6f1237dbe2cce3c8b6c6bd3ac11f15074e5f422024",
+   "series_id": 12556700,
+   "period": "2026-09",
+   "params": {
+    "series_ids": "12556700",
+    "start_date": "2026-09-01",
+    "end_date": "2026-09-30"
+   },
+   "expected_text": "203204.0",
+   "vintages": [
+    [
+     "203204.0",
+     "2026-10-27T10:30:00Z"
+    ]
+   ],
+   "jsonstat_token": "203204.0",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12531993@2000-10": {
+   "file": "obs_12531993_2000-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12531993&start_date=2000-10-01&end_date=2000-10-31",
+   "bytes": 209,
+   "sha256": "e2591ecdf7f0bfc07217318ab9ee74c36b64b0f678039f7385af95620f2957f2",
+   "series_id": 12531993,
+   "period": "2000-10",
+   "params": {
+    "series_ids": "12531993",
+    "start_date": "2000-10-01",
+    "end_date": "2000-10-31"
+   },
+   "expected_text": "0.8552",
+   "vintages": [
+    [
+     "0.8552",
+     "2019-07-15T08:22:00Z"
+    ]
+   ],
+   "jsonstat_token": "0.8552",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  },
+  "12531993@2026-10": {
+   "file": "obs_12531993_2026-10.json",
+   "url": "https://bpstat.bportugal.pt/api/observations/?series_ids=12531993&start_date=2026-10-01&end_date=2026-10-31",
+   "bytes": 209,
+   "sha256": "b32702f4833d2678c169fc3333ac878bb9d5c23934902e3b6844ccd03302a066",
+   "series_id": 12531993,
+   "period": "2026-10",
+   "params": {
+    "series_ids": "12531993",
+    "start_date": "2026-10-01",
+    "end_date": "2026-10-31"
+   },
+   "expected_text": "1.1202",
+   "vintages": [
+    [
+     "1.1202",
+     "2026-11-02T12:00:00Z"
+    ]
+   ],
+   "jsonstat_token": "1.1202",
+   "cross_check": "portal latest-pub_date row == collector JSON-stat decimal=true token, checked live at recording"
+  }
+ }
+}

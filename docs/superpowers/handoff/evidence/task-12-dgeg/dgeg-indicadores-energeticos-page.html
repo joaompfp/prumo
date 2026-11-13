@@ -1,0 +1,688 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <!-- Google Analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164474427-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-164474427-1');
+    </script>
+    <!-- end of Google Analytics-->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+    <title>Indicadores Energ&#233;ticos</title>
+        <meta name="description" content="Indicadores Energ&#233;ticos">
+            <meta name="keywords" content="Indicadores Energ&#233;ticos,Energia,Estat&#237;stica">
+    <link href="/images/favicon.png" rel="icon">
+    <!-- Stylesheets -->
+    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" type="text/css" rel="stylesheet"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet"/><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" rel="stylesheet"/><link href="/DependencyHandler.axd?s=L2Nzcy9zdHlsZS5jc3M7&amp;t=Css&amp;cdv=12" type="text/css" rel="stylesheet"/>
+    
+    <link href="/css/ServicosOnlineBotao/servicosonlinebotao.css" rel="stylesheet" />
+    <link href="/css/SplitButton/splitbutton.css" rel="stylesheet" />
+    <link href="/css/RTE.css" rel="stylesheet" />
+
+
+
+</head>
+
+<body>
+
+    <!-- header -->
+    <header class="fixed-top header" id="masterLayout">
+
+        <a href="#skip-main" class="scrollLink skip-main">Skip to main content</a>
+
+        <!-- top header -->
+        <div class="top-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <div class="text p-sm-2 py-2 px-0 d-none d-lg-inline-block">Hor&#225;rio de Atendimento: 09:00 &#224;s 12:30 / 14:00 &#224;s 17:00</div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="text p-sm-2 py-2 px-0 d-none d-lg-inline-block">217 922 700 / 800 - chamada para a rede fixa nacional</div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="p-sm-2 py-2 px-0 d-none d-lg-inline-block">Email Geral:</div>
+                                <div class="p-sm-0 py-2 px-0 d-none d-lg-inline-block"><a href="mailto:geral@dgeg.gov.pt" class="email-header">geral@dgeg.gov.pt</a></div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="p-sm-2 py-2 px-0 d-none d-lg-inline-block">Imprensa:</div>
+                                <div class="p-sm-0 py-2 px-0 d-none d-lg-inline-block">
+                                    <!-- <a href="mailto:imprensa@dgeg.gov.pt" class="email-header">imprensa@dgeg.gov.pt</a> -->
+                                    <button id="email" class="email-header" aria-expanded="false">imprensa@dgeg.gov.pt</button>
+                                </div>
+                                <div class="email-form">
+                                    <form id="openEmail">
+                                        <label for="name">Nome</label>
+                                        <input type="text" id="name" name="name" placeholder="Nome">
+                                        <div class="required-message">Campo Obrigat&#243;rio</div>
+
+                                        <label for="ocs">&#211;rg&#227;o de Comunica&#231;&#227;o Social</label>
+                                        <input type="text" id="ocs" name="ocs" placeholder="&#211;rg&#227;o de Comunica&#231;&#227;o Social">
+                                        <div class="required-message">Campo Obrigat&#243;rio</div>
+
+                                        <label for="ncj">N&#186; Carteira de Jornalista</label>
+                                        <input type="text" id="ncj" name="ncj" placeholder="N&#186; Carteira de Jornalista">
+                                        <div class="required-message">Campo Obrigat&#243;rio</div>
+
+
+                                        <input id="close-form" type="button" value="Fechar">
+
+                                        <input id="submit-form" type="button" value="Submeter">
+                                        <a id="invisible-link"></a>  <!-- invisible anchor to insert the email content via JS-->
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- navbar creation  -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navigation">
+                    <nav class="navbar expand-nav navbar-light">
+                        <button class="navbar-toggler rounded-0" type="button" data-toggle="collapse" data-target="#navigation"
+                                aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse collapse-nav" id="navigation">
+                            <ul class="navbar-nav">
+
+                                <li>
+                                    <a href="#search-icon" class="scrollLink sr-only">Ignorar links de navegação</a>
+                                </li>
+
+
+                                <li>
+                                    <div>
+                                        <a href="/pt/">
+                                            <img src="/Media/logo.png" alt="DGEG Logo" id="logo-image">
+                                        </a>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div>
+                                        <a href="/pt/" class="access-ind">
+                                            <img src="/Media/logo_text.png" alt="DGEG Name" id="logo-text">
+                                        </a>
+                                    </div>
+                                </li>
+
+
+
+
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">A DGEG <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/a-dgeg/missao-competencias/">Miss&#227;o / Compet&#234;ncias</a>
+                                                        <a href="/pt/a-dgeg/organograma/">Organograma</a>
+                                                        <a href="/pt/a-dgeg/unidade-de-auditoria-interna/">Unidade de Auditoria Interna</a>
+                                                        <a href="/pt/a-dgeg/codigo-de-etica-e-conduta/">C&#243;digo de &#201;tica e Conduta</a>
+                                                        <a href="/pt/a-dgeg/conselho-cientifico/">Conselho Cient&#237;fico</a>
+                                                        <a href="/pt/a-dgeg/instrumentos-de-gestao/">Instrumentos de Gest&#227;o</a>
+                                                        <a href="/pt/a-dgeg/rgpd-regulamento-geral-de-protecao-de-dados/">RGPD | Regulamento Geral de Prote&#231;&#227;o de Dados</a>
+                                                        <a href="/pt/a-dgeg/acesso-a-informacao-administrativa/">Acesso a Informa&#231;&#227;o Administrativa</a>
+                                                        <a href="/pt/a-dgeg/contactos-e-localizacao/">Contactos e Localiza&#231;&#227;o</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="nav-button" href="/pt/destaques/">Destaques</a>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">&#193;reas Setoriais <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/areas-setoriais/energia/">Energia</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/combustiveis/">Combust&#237;veis</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/eficiencia-energetica/">Efici&#234;ncia Energ&#233;tica</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/energia-eletrica/">Energia El&#233;trica</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/estudos-e-sustentabilidade-energetica/">Estudos e Sustentabilidade Energ&#233;tica</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/planeamento-energetico-e-seguranca-de-abastecimento/">Planeamento Energ&#233;tico e Seguran&#231;a de Abastecimento</a>
+                                                        <a href="/pt/areas-setoriais/geologia/">Geologia</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/depositos-minerais-minas/">Dep&#243;sitos Minerais (Minas)</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/massas-minerais-pedreiras/">Massas Minerais (Pedreiras)</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/petroleo-armazenamento-de-co2/">Petr&#243;leo / Armazenamento de CO₂</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/recursos-geotermicos/">Recursos Geot&#233;rmicos</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/recursos-hidrogeologicos/">Recursos Hidrogeol&#243;gicos</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">&#193;reas Transversais <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/areas-transversais/investigacao-e-inovacao/">Investiga&#231;&#227;o e Inova&#231;&#227;o</a>
+                                                        <a href="/pt/areas-transversais/mercados-e-mecanismos-de-capacidade/">Mercados e mecanismos de capacidade</a>
+                                                        <a href="/pt/areas-transversais/patrimonio-geologico/">Patrim&#243;nio Geol&#243;gico</a>
+                                                        <a href="/pt/areas-transversais/politicas-de-protecao-ao-consumidor-de-energia/">Pol&#237;ticas de prote&#231;&#227;o ao consumidor de energia</a>
+                                                        <a href="/pt/areas-transversais/recursos-humanos/">Recursos Humanos</a>
+                                                        <a href="/pt/areas-transversais/relacoes-institucionais-e-de-mercado/">Rela&#231;&#245;es Institucionais e de Mercado</a>
+                                                        <a href="/pt/areas-transversais/sig-e-ordenamento-do-territorio/">SIG e Ordenamento do Territ&#243;rio</a>
+                                                        <a href="/pt/areas-transversais/tecnologias-de-informacao/">Tecnologias de Informa&#231;&#227;o</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Servi&#231;os Online <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/servicos-online/informacao-geografica/">Informa&#231;&#227;o Geogr&#225;fica</a>
+                                                        <a href="/pt/servicos-online/setor-energetico/">Setor Energ&#233;tico</a>
+                                                        <a href="/pt/servicos-online/setor-geologico/">Setor Geol&#243;gico</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Estat&#237;stica <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/estatistica/energia/">Energia</a>
+                                                        <a href="/pt/estatistica/geologia/">Geologia</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Comunica&#231;&#227;o <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/comunicacao/eventos/">Eventos</a>
+                                                        <a href="/pt/comunicacao/identidade-visual/">Identidade Visual</a>
+                                                        <a href="/pt/comunicacao/newsletter-dgeg/">Newsletter DGEG</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Reposit&#243;rio <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/repositorio/atos/">Atos</a>
+                                                        <a href="/pt/repositorio/biblioteca/">Biblioteca</a>
+                                                        <a href="/pt/repositorio/editais/">Editais</a>
+                                                        <a href="/pt/repositorio/publicacoes/">Publica&#231;&#245;es</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="nav-button" href="/pt/faqs/">FAQs</a>
+                                        </li>
+
+                                <li>
+                                    <button id="search-icon" class="nav-button access-ind" title="Search Icon" aria-expanded="false"><i class="fa fa-search"></i></button>
+
+                                    <div class="nav-search">
+                                        
+                                        <form action="/pt/pesquisa/" method="GET">
+                                            
+                                            <input class="form-control" style="font-size: inherit;" type="text" placeholder="Pesquisar..." name="query">
+                                            
+                                        </form>
+
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- /header -->
+
+    <div class="under-header"></div>
+
+    <main>
+        
+
+
+
+
+<section class="breadcrumb-content">
+    <ul class="breadcrumb">
+
+                <li><a href="/pt/"><i class="fa fa-home"></i><span class="sr-only">Home</span></a></li>
+                    <li>Estat&#237;stica</li>
+                    <li><a href="/pt/estatistica/energia/">Energia</a></li>
+                    <li><a href="/pt/estatistica/energia/indicadores-energeticos/">Indicadores Energ&#233;ticos</a></li>
+    </ul>
+</section>
+
+<section class="main-content" id="skip-main" tabindex="-1">
+    <div>
+        <div class="umbraco-image">
+                <h1><a href="/pt/estatistica/energia/">Energia</a></h1>
+                <div class="progress bar">
+                    <div class="progress-bar bar-red"></div>
+                    <div class="progress-bar bar-gray"></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 side-menu">
+
+
+    <div class="side-nav">
+
+
+
+
+<div class="dropdown">
+    <a class="btn btn-secundary " href="/pt/estatistica/energia/recentes/">
+        <span>Recentes</span>
+    </a>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/publicacoes/" id="buttonCont">
+          <span style="width:230px" class=" parent">Publica&#231;&#245;es</span>
+        </a>
+      <div class="btn-group open">
+        <button id="d0f5dca1-900f-49b0-be35-1c245299548a" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/publicacoes/fatura-energetica/">Fatura energ&#233;tica</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/publicacoes/energia-em-numeros/">Energia em n&#250;meros</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/publicacoes/energia-principais-numeros/">Energia - Principais n&#250;meros</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/publicacoes/estatisticas-rapidas-das-renovaveis/">Estat&#237;sticas r&#225;pidas das renov&#225;veis</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/publicacoes/estatisticas-rapidas-dos-combustiveis-fosseis/">Estat&#237;sticas r&#225;pidas dos combust&#237;veis f&#243;sseis</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/publicacoes/estimativas-rapidas-de-consumo-energetico/">Estimativas r&#225;pidas de consumo energ&#233;tico</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/publicacoes/outras-publicacoes/">Outras publica&#231;&#245;es</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="dropdown">
+    <a class="btn btn-secundary active" href="/pt/estatistica/energia/indicadores-energeticos/">
+        <span>Indicadores Energ&#233;ticos</span>
+    </a>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/balancos-energeticos/" id="buttonCont">
+          <span style="width:230px" class=" parent">Balan&#231;os Energ&#233;ticos</span>
+        </a>
+      <div class="btn-group open">
+        <button id="50c8902c-c86d-4829-b73d-4d1528829fbd" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/balancos-energeticos/balancos-energeticos-nacionais/">Balan&#231;os Energ&#233;ticos Nacionais</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/balancos-energeticos/balancos-energeticos-sinteticos/">Balan&#231;os Energ&#233;ticos Sint&#233;ticos</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/balancos-energeticos/balancos-energeticos-da-regiao-autonoma-dos-acores/">Balan&#231;os Energ&#233;ticos da Regi&#227;o Aut&#243;noma dos A&#231;ores</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/balancos-energeticos/balancos-energeticos-da-regiao-autonoma-da-madeira/">Balan&#231;os Energ&#233;ticos da Regi&#227;o Aut&#243;noma da Madeira</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/balancos-energeticos/conversoes-energeticas/">Convers&#245;es Energ&#233;ticas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/precos-de-energia/" id="buttonCont">
+          <span style="width:230px" class=" parent">Pre&#231;os de Energia</span>
+        </a>
+      <div class="btn-group open">
+        <button id="aebaffca-d0c1-4f52-a6db-7eccbd6532c5" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/precos-de-energia/precos-de-combustiveis-em-portugal-continental/">Pre&#231;os de combust&#237;veis em Portugal Continental</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/precos-de-energia/precos-da-energia-na-uniao-europeia/">Pre&#231;os da Energia na Uni&#227;o Europeia</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/precos-de-energia/petroleo-bruto/">Petr&#243;leo Bruto</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/precos-de-energia/tarifas-da-cogeracao/">Tarifas da cogera&#231;&#227;o</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/precos-de-energia/outras-publicacoes/">Outras Publica&#231;&#245;es</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/precos-de-energia/contribuicao-extraordinaria-sobre-o-setor-energetico-cese/">Contribui&#231;&#227;o extraordin&#225;ria sobre o setor energ&#233;tico (CESE)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/renovaveis/" id="buttonCont">
+          <span style="width:230px" class=" parent">Renov&#225;veis</span>
+        </a>
+      <div class="btn-group open">
+        <button id="69904b4c-c202-42ac-95b8-40e805f87e61" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/renovaveis/producao-de-energia-eletrica-a-partir-de-fer/">Produ&#231;&#227;o de energia el&#233;trica a partir de FER</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/renovaveis/potencia-instalada-fer/">Pot&#234;ncia instalada FER</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/renovaveis/contribuicao-para-o-balanco-energetico/">Contribui&#231;&#227;o para o balan&#231;o energ&#233;tico</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/renovaveis/estatisticas-rapidas-das-renovaveis/">Estat&#237;sticas r&#225;pidas das renov&#225;veis</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/eletricidade/" id="buttonCont">
+          <span style="width:230px" class=" parent">Eletricidade</span>
+        </a>
+      <div class="btn-group open">
+        <button id="aba0e7e9-4649-4a10-83ef-21cf08506882" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/eletricidade/producao-mensal-de-eletricidade/">Produ&#231;&#227;o mensal de eletricidade</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/eletricidade/producao-anual-e-potencia-instalada/">Produ&#231;&#227;o anual e pot&#234;ncia instalada</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/eletricidade/consumo-por-municipio-e-setor-de-atividade/">Consumo por munic&#237;pio e setor de atividade</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/eletricidade/consumo-por-municipio-e-tipo-de-consumidor/">Consumo por munic&#237;pio e tipo de consumidor</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/eletricidade/numero-de-consumidores/">N&#250;mero de consumidores</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/gas-natural/" id="buttonCont">
+          <span style="width:230px" class=" parent">G&#225;s Natural</span>
+        </a>
+      <div class="btn-group open">
+        <button id="a394a276-bfed-4dae-83a8-fb13364aff42" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/gas-natural/consumos/">Consumos</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/gas-natural/importacoes-exportacoes/">Importa&#231;&#245;es/Exporta&#231;&#245;es</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/petroleo-e-derivados/" id="buttonCont">
+          <span style="width:230px" class=" parent">Petr&#243;leo e Derivados</span>
+        </a>
+      <div class="btn-group open">
+        <button id="0672f734-474f-487b-a976-60bb1851b56b" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/petroleo-e-derivados/vendas-mensais/">Vendas mensais</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/petroleo-e-derivados/vendas-anuais/">Vendas anuais</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/petroleo-e-derivados/importacoes-exportacoes/">Importa&#231;&#245;es/Exporta&#231;&#245;es</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/petroleo-e-derivados/densidades/">Densidades</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary normalButtonactivated " href="/pt/estatistica/energia/carvao/" id="buttonCont">
+          <span style="width:230px" class=" parent">Carv&#227;o</span>
+        </a>
+      <div class="btn-group open">
+        <button id="86c8ec52-2ce2-4f9b-a137-f98aee6a8fbe" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown normalButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/carvao/consumos/">Consumos</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/carvao/importacoes-exportacoes/">Importa&#231;&#245;es/Exporta&#231;&#245;es</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:15px">
+  <div class="layout">
+    <div class="btn-group">
+              <a class="btn btn-secundary hugeButtonactivated " href="/pt/estatistica/energia/calendario-metainformacao-e-outra-documentacao/" id="buttonCont">
+          <span style="width:230px" class=" parent">Calend&#225;rio, Metainforma&#231;&#227;o e Outra Documenta&#231;&#227;o</span>
+        </a>
+      <div class="btn-group open">
+        <button id="d1e8024b-89b5-4bf3-be85-e4651a46afc8" type="button" class="btn btn-secundary dropdown-toggle dropdown-toggle-split dropdown hugeButton " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-right chev-right"></i>
+          <i class="fa fa-chevron-down chev-down"></i>
+        </button>
+        <div class="dropdown-menu" id="dropdownList">
+              <a class="dropdown-item  " href="/pt/estatistica/energia/calendario-metainformacao-e-outra-documentacao/calendario-de-difusao/">Calend&#225;rio de difus&#227;o</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/calendario-metainformacao-e-outra-documentacao/documentos-metodologicos/">Documentos metodol&#243;gicos</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/calendario-metainformacao-e-outra-documentacao/sistema-estatistico/">Sistema Estat&#237;stico</a>
+              <a class="dropdown-item  " href="/pt/estatistica/energia/calendario-metainformacao-e-outra-documentacao/outra-documentacao/">Outra documenta&#231;&#227;o</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+
+
+<div class="online-services">
+    <div>
+        <h1>Pre&#231;os dos Combust&#237;veis online</h1>
+    </div>
+    <div class="aplicacoes">
+                <a href="https://precoscombustiveis.dgeg.gov.pt" target="Umbraco.Web.PublishedModels.ImageWithLinkAndDescription?.Link?.Target"><img src="/media/5ycj0rf5/pol-07.jpg" alt="Pre&#231;os dos combust&#237;evis online"></a>
+
+    </div>
+</div>
+
+<div id="side-contacts">
+    <h1>Fale connosco</h1>
+    <div class="contacts-content">
+        <div class="icon marker-icon">
+            <i class="fa fa-map-marker"></i>
+        </div>
+        <div class="text">
+            Av. 5 de Outubro 208, 1069-039 Lisboa
+        </div>
+    </div>
+
+    <div class="contacts-content">
+        <div class="icon phone-icon">
+            <i class="fa fa-phone"></i>
+        </div>
+        <div class="text">
+            (+351) 217 922 700 / 800 - chamada para a rede fixa nacional
+        </div>
+    </div>
+
+
+    <div class="contacts-content">
+        <div class="icon envelope-icon">
+            <i class="fa fa-envelope"></i>
+        </div>
+        <div class="text">
+            <a href="mailto: estatistica@dgeg.gov.pt">estatistica@dgeg.gov.pt</a>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                    <div class="col-lg-9 col-md-8 tema-content">
+                        <h1>Indicadores Energ&#233;ticos</h1>
+                        <p><br /><span style="font-size: 10pt;">Reúne os principais<span style="color: #993300;"> </span><span style="text-decoration: underline;"><span style="color: #993300; text-decoration: underline;"><a style="color: #993300; text-decoration: underline;" rel="noopener" href="/media/5unlgvvo/dgeg-iie-1995-2024.xlsx" target="_blank" title="Dgeg Iie 1995 2024">indicadores energéticos</a></span></span> para o período 1995-2024.</span><br /><br /><span style="font-size: 10pt;">O <a rel="noopener" href="/media/hyaaxahw/shares-ue-2004-2024.xlsx" target="_blank" title="SHARES UE 2004 2024"><span style="text-decoration: underline; color: #993300;">SHort Assessment of Renewable Energy Sources (SHARES)</span></a> é uma ferramenta desenvolvida pelo EUROSTAT, que calcula a quota de energia proveniente de fontes renováveis de acordo com a Directiva 2009/28/CE até 2020 e de acordo com a Directiva 2018/2001/UE a partir de 2021. </span><br /><br /></p>
+<div style="height: 486px; width: 800px; position: relative; margin: 20px auto;"><iframe title="IndicadoresEnergeticos24" width="800" height="486" src="https://app.powerbi.com/view?r=eyJrIjoiMWRkYmQxZjYtN2VkYy00NzhhLTg1M2QtZDhhMTY5MjM1ZmMxIiwidCI6ImRlNzMzMTQyLTQ1MjMtNDJlMS1hOGQ0LThlMDRmNzhmOGQ1OSIsImMiOjl9" frameborder="0" allowfullscreen="true"></iframe></div>
+<p> </p>
+                        <div class="row justify-content-center">
+
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</section>
+
+    <script src="/scripts/HistoricoPesquisas.js"></script>
+    <script>
+        var nome = "";
+        if (4== 6) {
+            nome = "Energia" +" - "+ "Indicadores Energ&#233;ticos";
+        } else {
+            nome="Indicadores Energ&#233;ticos";
+        }
+        console.log(nome);
+        InsereHistoricoVisita("/pt/estatistica/energia/indicadores-energeticos/", nome, 20, "pt", "/umbraco/Api/HistoricoPesquisa/InsereHistoricoVisita");
+    </script>
+
+
+    </main>
+
+
+    <!-- footer -->
+
+    <footer>
+        <div class="footer bg-footer">
+            <div class="border-bottom">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-8 mb-5 mb-lg-0">
+                        <!-- Sobre nós -->
+                        <h2>Sobre n&#243;s</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                A Dire&#231;&#227;o-Geral de Energia e Geologia resulta da fus&#227;o operada em 2004 entre Dire&#231;&#227;o Geral de Energia (DGE) e de parte do Instituto Geol&#243;gico e Mineiro (IGM). &#201; um &#243;rg&#227;o da administra&#231;&#227;o central do Estado que prossegue a defini&#231;&#227;o, implementa&#231;&#227;o e avalia&#231;&#227;o de pol&#237;ticas p&#250;blicas relativas &#224; energia e aos recursos geol&#243;gicos, com o objetivo de garantir a satisfa&#231;&#227;o regular e cont&#237;nua das necessidades coletivas nos setores que est&#227;o sob sua responsabilidade.
+                            </li>
+                            <li class="mb-3"><a class="color-red" href="/pt/a-dgeg/">Mais sobre a DGEG</a></li>
+                        </ul>
+                    </div>
+                    <!-- área de links -->
+                    <div class="col-lg-3 col-md-6 col-sm-8 mb-5 mb-lg-0">
+                        <h2>&#193;rea de links R&#225;pidos</h2>
+                        <ul class="list-unstyled">
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/a-dgeg/acesso-a-informacao-administrativa/" title="Acesso a Informa&#231;&#227;o Administrativa">Acesso a Informa&#231;&#227;o Administrativa</a></li>
+                                        <li class="mb-2"><a href="/pt/areas-setoriais/energia/energia-eletrica/atividades-e-profissoes/" title="Atividades e Profiss&#245;es - Energia El&#233;trica">Atividades e Profiss&#245;es (energia el&#233;trica)</a></li>
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/areas-setoriais/energia/energia-eletrica/producao-de-energia-eletrica/producao-descentralizada-autoconsumo-e-upp-mp-mn/autoconsumo-e-cer/" title="Autoconsumo, CER e UPP">Autoconsumo, CER e UPP</a></li>
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/areas-setoriais/energia/eficiencia-energetica/sistema-de-certificacao-energetica-dos-edificios/sce-sistema-de-certificacao-energetica-dos-edificios/" title="Certifica&#231;&#227;o Energ&#233;tica dos Edif&#237;cios">Certifica&#231;&#227;o Energ&#233;tica dos Edif&#237;cios</a></li>
+                                        <li class="mb-2"><a href="/pt/servicos-online/informacao-geografica/?id=de764a4a5ccd446292cb26a7e5c2e725" target="" title="Visualizador de Dados">Informa&#231;&#227;o Geogr&#225;fica</a></li>
+                                        <li class="mb-2"><a href="/pt/areas-transversais/patrimonio-geologico/divulgacao-informacao/roteiro-das-minas-e-pontos-de-interesse-mineiro-e-geologico-de-portugal/" title="Roteiro de Minas">Roteiro das Minas e Pontos de Interesse Mineiro e Geol&#243;gico de Portugal</a></li>
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/areas-transversais/politicas-de-protecao-ao-consumidor-de-energia/tarifa-social-de-energia/" target="_blank" title="Tarifa Social de Energia">Tarifa Social de Energia</a></li>
+
+                        </ul>
+                    </div>
+                    <!-- contactos -->
+                    
+<div class="col-lg-3 col-md-6 col-sm-8 mb-5 mb-lg-0 contacts">
+    <h2>Contactos</h2>
+        <div class="contacts-content">
+            <div class="icon marker-icon">
+                <i class="fa fa-map-marker"></i>
+            </div>
+            <div class="text">
+                Av. 5 de Outubro 208, 1069-039 Lisboa
+            </div>
+        </div>
+            <div class="contacts-content">
+            <div class="icon phone-icon">
+                <i class="fa fa-phone"></i>
+            </div>
+            <div class="text">
+                +351 217 922 700 / 800 chamada para a rede fixa nacional
+            </div>
+        </div>
+            <div class="contacts-content">
+            <div class="icon envelope-icon">
+                <i class="fa fa-envelope"></i>
+            </div>
+            <div class="text">
+                <a href="mailto:geral@dgeg.gov.pt">
+                    geral@dgeg.gov.pt
+                </a>
+            </div>
+        </div>
+            <a class="color-red" href="/pt/a-dgeg/contactos-e-localizacao/">Ver todos os contactos</a>
+</div>
+                    <!-- newsletter -->
+                    
+<div class="col-lg-4 col-md-6 col-sm-8 mb-5 mb-lg-0 newsletter">
+    <h2>Newsletter</h2>
+    <ul class="list-unstyled">
+        <li class="mb-3">Assine a Newsletter e receba as atividades mais recentes.</li>
+        <li class="mb-3">
+            <a href="https://www.dgeg.gov.pt/pt/divulgacao/newsletter-dgeg" class="btn btn-primary" target="_blank">Subscrever</a>
+        </li>
+        <a class="color-red" href="/pt/comunicacao/newsletter-dgeg/arquivo-newsletters/">Ver todas as newsletters </a>
+    </ul>
+</div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- copyright -->
+        <div class="copyright sm-footer">
+    <div class="row">
+        <div class="col-md-6 text-sm-left">
+
+            <ul class="list-inline">
+                <li class="list-inline-item info">Copyright 2026. All Rights Reserved. Powered by <a class="color-red" href="http://www.dgeg.gov.pt/">DGEG</a></li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-sm-right mb-0">
+            <ul class="list-inline">
+                <li class="list-inline-item info"><a title="Abrir a p&#225;gina Suporte" href="/pt/site-helpdesk/" target="">Suporte</a></li>
+                <li class="list-inline-item info">|</li>
+                <li class="list-inline-item info"><a title="Abrir a p&#225;gina Utiliza&#231;&#227;o de Cookies" href="/pt/utilizacao-de-cookies/">Utiliza&#231;&#227;o de Cookies</a></li>
+                <li class="list-inline-item info">|</li>
+                <li class="list-inline-item info"><a title="Abrir a p&#225;gina Termos e condi&#231;&#245;es" href="/pt/termos-e-condicoes/">Termos e condi&#231;&#245;es</a></li>
+                
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+    </footer>
+    <!-- /footer -->
+    <script src="/scripts/jquery-3.3.1.slim.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" type="text/javascript"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script><script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js" type="text/javascript"></script><script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js" type="text/javascript"></script><script src="/DependencyHandler.axd?s=L3NjcmlwdHMvc2NyaXB0LmpzOy9zY3JpcHRzL2pzLmNvb2tpZS5qczsvc2NyaXB0cy9jb29raWVjb25zZW50LmpzOy9zY3JpcHRzL0hpc3Rvcmljb1Blc3F1aXNhcy5qczs&amp;t=Javascript&amp;cdv=12" type="text/javascript"></script>
+    
+</body>
+</html>

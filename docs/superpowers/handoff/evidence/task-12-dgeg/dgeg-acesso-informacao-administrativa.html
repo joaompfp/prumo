@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <!-- Google Analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164474427-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-164474427-1');
+    </script>
+    <!-- end of Google Analytics-->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+    <title>Acesso a Informa&#231;&#227;o Administrativa</title>
+        <meta name="description" content="">
+            <meta name="keywords" content="acesso a informa&#231;&#227;o,RAI,procedimentos,modelo">
+    <link href="/images/favicon.png" rel="icon">
+    <!-- Stylesheets -->
+    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" type="text/css" rel="stylesheet"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet"/><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" rel="stylesheet"/><link href="/DependencyHandler.axd?s=L2Nzcy9zdHlsZS5jc3M7&amp;t=Css&amp;cdv=12" type="text/css" rel="stylesheet"/>
+    
+    <link href="/css/ServicosOnlineBotao/servicosonlinebotao.css" rel="stylesheet" />
+    <link href="/css/SplitButton/splitbutton.css" rel="stylesheet" />
+    <link href="/css/RTE.css" rel="stylesheet" />
+
+
+
+</head>
+
+<body>
+
+    <!-- header -->
+    <header class="fixed-top header" id="masterLayout">
+
+        <a href="#skip-main" class="scrollLink skip-main">Skip to main content</a>
+
+        <!-- top header -->
+        <div class="top-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <div class="text p-sm-2 py-2 px-0 d-none d-lg-inline-block">Hor&#225;rio de Atendimento: 09:00 &#224;s 12:30 / 14:00 &#224;s 17:00</div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="text p-sm-2 py-2 px-0 d-none d-lg-inline-block">217 922 700 / 800 - chamada para a rede fixa nacional</div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="p-sm-2 py-2 px-0 d-none d-lg-inline-block">Email Geral:</div>
+                                <div class="p-sm-0 py-2 px-0 d-none d-lg-inline-block"><a href="mailto:geral@dgeg.gov.pt" class="email-header">geral@dgeg.gov.pt</a></div>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="p-sm-2 py-2 px-0 d-none d-lg-inline-block">Imprensa:</div>
+                                <div class="p-sm-0 py-2 px-0 d-none d-lg-inline-block">
+                                    <!-- <a href="mailto:imprensa@dgeg.gov.pt" class="email-header">imprensa@dgeg.gov.pt</a> -->
+                                    <button id="email" class="email-header" aria-expanded="false">imprensa@dgeg.gov.pt</button>
+                                </div>
+                                <div class="email-form">
+                                    <form id="openEmail">
+                                        <label for="name">Nome</label>
+                                        <input type="text" id="name" name="name" placeholder="Nome">
+                                        <div class="required-message">Campo Obrigat&#243;rio</div>
+
+                                        <label for="ocs">&#211;rg&#227;o de Comunica&#231;&#227;o Social</label>
+                                        <input type="text" id="ocs" name="ocs" placeholder="&#211;rg&#227;o de Comunica&#231;&#227;o Social">
+                                        <div class="required-message">Campo Obrigat&#243;rio</div>
+
+                                        <label for="ncj">N&#186; Carteira de Jornalista</label>
+                                        <input type="text" id="ncj" name="ncj" placeholder="N&#186; Carteira de Jornalista">
+                                        <div class="required-message">Campo Obrigat&#243;rio</div>
+
+
+                                        <input id="close-form" type="button" value="Fechar">
+
+                                        <input id="submit-form" type="button" value="Submeter">
+                                        <a id="invisible-link"></a>  <!-- invisible anchor to insert the email content via JS-->
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- navbar creation  -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navigation">
+                    <nav class="navbar expand-nav navbar-light">
+                        <button class="navbar-toggler rounded-0" type="button" data-toggle="collapse" data-target="#navigation"
+                                aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse collapse-nav" id="navigation">
+                            <ul class="navbar-nav">
+
+                                <li>
+                                    <a href="#search-icon" class="scrollLink sr-only">Ignorar links de navegação</a>
+                                </li>
+
+
+                                <li>
+                                    <div>
+                                        <a href="/pt/">
+                                            <img src="/Media/logo.png" alt="DGEG Logo" id="logo-image">
+                                        </a>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div>
+                                        <a href="/pt/" class="access-ind">
+                                            <img src="/Media/logo_text.png" alt="DGEG Name" id="logo-text">
+                                        </a>
+                                    </div>
+                                </li>
+
+
+
+
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">A DGEG <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/a-dgeg/missao-competencias/">Miss&#227;o / Compet&#234;ncias</a>
+                                                        <a href="/pt/a-dgeg/organograma/">Organograma</a>
+                                                        <a href="/pt/a-dgeg/unidade-de-auditoria-interna/">Unidade de Auditoria Interna</a>
+                                                        <a href="/pt/a-dgeg/codigo-de-etica-e-conduta/">C&#243;digo de &#201;tica e Conduta</a>
+                                                        <a href="/pt/a-dgeg/conselho-cientifico/">Conselho Cient&#237;fico</a>
+                                                        <a href="/pt/a-dgeg/instrumentos-de-gestao/">Instrumentos de Gest&#227;o</a>
+                                                        <a href="/pt/a-dgeg/rgpd-regulamento-geral-de-protecao-de-dados/">RGPD | Regulamento Geral de Prote&#231;&#227;o de Dados</a>
+                                                        <a href="/pt/a-dgeg/acesso-a-informacao-administrativa/">Acesso a Informa&#231;&#227;o Administrativa</a>
+                                                        <a href="/pt/a-dgeg/contactos-e-localizacao/">Contactos e Localiza&#231;&#227;o</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="nav-button" href="/pt/destaques/">Destaques</a>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">&#193;reas Setoriais <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/areas-setoriais/energia/">Energia</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/combustiveis/">Combust&#237;veis</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/eficiencia-energetica/">Efici&#234;ncia Energ&#233;tica</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/energia-eletrica/">Energia El&#233;trica</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/estudos-e-sustentabilidade-energetica/">Estudos e Sustentabilidade Energ&#233;tica</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/energia/planeamento-energetico-e-seguranca-de-abastecimento/">Planeamento Energ&#233;tico e Seguran&#231;a de Abastecimento</a>
+                                                        <a href="/pt/areas-setoriais/geologia/">Geologia</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/depositos-minerais-minas/">Dep&#243;sitos Minerais (Minas)</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/massas-minerais-pedreiras/">Massas Minerais (Pedreiras)</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/petroleo-armazenamento-de-co2/">Petr&#243;leo / Armazenamento de CO₂</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/recursos-geotermicos/">Recursos Geot&#233;rmicos</a>
+                                                                <a class="pl30" href="/pt/areas-setoriais/geologia/recursos-hidrogeologicos/">Recursos Hidrogeol&#243;gicos</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">&#193;reas Transversais <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/areas-transversais/investigacao-e-inovacao/">Investiga&#231;&#227;o e Inova&#231;&#227;o</a>
+                                                        <a href="/pt/areas-transversais/mercados-e-mecanismos-de-capacidade/">Mercados e mecanismos de capacidade</a>
+                                                        <a href="/pt/areas-transversais/patrimonio-geologico/">Patrim&#243;nio Geol&#243;gico</a>
+                                                        <a href="/pt/areas-transversais/politicas-de-protecao-ao-consumidor-de-energia/">Pol&#237;ticas de prote&#231;&#227;o ao consumidor de energia</a>
+                                                        <a href="/pt/areas-transversais/recursos-humanos/">Recursos Humanos</a>
+                                                        <a href="/pt/areas-transversais/relacoes-institucionais-e-de-mercado/">Rela&#231;&#245;es Institucionais e de Mercado</a>
+                                                        <a href="/pt/areas-transversais/sig-e-ordenamento-do-territorio/">SIG e Ordenamento do Territ&#243;rio</a>
+                                                        <a href="/pt/areas-transversais/tecnologias-de-informacao/">Tecnologias de Informa&#231;&#227;o</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Servi&#231;os Online <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/servicos-online/informacao-geografica/">Informa&#231;&#227;o Geogr&#225;fica</a>
+                                                        <a href="/pt/servicos-online/setor-energetico/">Setor Energ&#233;tico</a>
+                                                        <a href="/pt/servicos-online/setor-geologico/">Setor Geol&#243;gico</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Estat&#237;stica <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/estatistica/energia/">Energia</a>
+                                                        <a href="/pt/estatistica/geologia/">Geologia</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Comunica&#231;&#227;o <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/comunicacao/eventos/">Eventos</a>
+                                                        <a href="/pt/comunicacao/identidade-visual/">Identidade Visual</a>
+                                                        <a href="/pt/comunicacao/newsletter-dgeg/">Newsletter DGEG</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown">
+                                                <button class="dropbtn nav-button">Reposit&#243;rio <i class="fa fa-chevron-down"></i></button>
+                                                <div class="dropdown-content nav-button-content">
+                                                        <a href="/pt/repositorio/atos/">Atos</a>
+                                                        <a href="/pt/repositorio/biblioteca/">Biblioteca</a>
+                                                        <a href="/pt/repositorio/editais/">Editais</a>
+                                                        <a href="/pt/repositorio/publicacoes/">Publica&#231;&#245;es</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="nav-button" href="/pt/faqs/">FAQs</a>
+                                        </li>
+
+                                <li>
+                                    <button id="search-icon" class="nav-button access-ind" title="Search Icon" aria-expanded="false"><i class="fa fa-search"></i></button>
+
+                                    <div class="nav-search">
+                                        
+                                        <form action="/pt/pesquisa/" method="GET">
+                                            
+                                            <input class="form-control" style="font-size: inherit;" type="text" placeholder="Pesquisar..." name="query">
+                                            
+                                        </form>
+
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- /header -->
+
+    <div class="under-header"></div>
+
+    <main>
+        
+
+
+
+
+<section class="breadcrumb-content">
+    <ul class="breadcrumb">
+
+                <li><a href="/pt/"><i class="fa fa-home"></i><span class="sr-only">Home</span></a></li>
+                    <li>A DGEG</li>
+                    <li><a href="/pt/a-dgeg/acesso-a-informacao-administrativa/">Acesso a Informa&#231;&#227;o Administrativa</a></li>
+    </ul>
+</section>
+
+<section class="main-content" id="skip-main" tabindex="-1">
+    <div>
+        <div class="umbraco-image">
+                <h1><a href="/pt/a-dgeg/">A DGEG</a></h1>
+                <div class="progress bar">
+                    <div class="progress-bar bar-red"></div>
+                    <div class="progress-bar bar-gray"></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 side-menu">
+
+
+    <div class="side-nav">
+
+
+    </div>
+
+
+                    </div>
+                    <div class="col-lg-9 col-md-8 tema-content">
+                        <h1>Acesso a Informa&#231;&#227;o Administrativa</h1>
+                        <p> </p>
+<p style="text-align: justify;"><span style="font-size: 10pt;">A publicação da <strong><span style="text-decoration: underline;"><a rel="noopener" href="https://dre.pt/application/conteudo/75177807?url=https%3A%2F%2Fdre.pt%2Fapplication%2Fconteudo%2F75177807&amp;data=04%7C01%7Cmonica.pinheiro%40dgeg.gov.pt%7C95fd5d87c377484c5dff08d930d41cc4%7Cde733142452342e1a8d48e04f78f8d59%7C0%7C0%7C637594509848774375%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=tB7BNisNBhGpje6YaQuJEpLvDSlVReaJm0hWw%2Bwr7OQ%3D&amp;reserved=0" target="_blank" data-anchor="?url=https%3A%2F%2Fdre.pt%2Fapplication%2Fconteudo%2F75177807&amp;data=04%7C01%7Cmonica.pinheiro%40dgeg.gov.pt%7C95fd5d87c377484c5dff08d930d41cc4%7Cde733142452342e1a8d48e04f78f8d59%7C0%7C0%7C637594509848774375%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=tB7BNisNBhGpje6YaQuJEpLvDSlVReaJm0hWw%2Bwr7OQ%3D&amp;reserved=0">Lei nº 26/2016</a></span></strong> de 22 de agosto (LADA), veio estabelecer o regime de acesso aos documentos administrativos e à informação administrativa, incluindo matéria ambiental, e reutilização dos documentos administrativos relativos a atividades desenvolvidas por órgãos do setor público.</span></p>
+<p style="text-align: justify;"> </p>
+<p style="text-align: justify;"><span style="font-size: 10pt;">Neste contexto, em cumprimento do Princípio da Administração Aberta e na sequência do <strong><span style="text-decoration: underline;"><a href="https://eur04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.dgeg.gov.pt%2Fmedia%2F2cpmihen%2Fdespacho-8_dgeg_2021_acesso_informacao.pdf&amp;data=04%7C01%7Cmonica.pinheiro%40dgeg.gov.pt%7C95fd5d87c377484c5dff08d930d41cc4%7Cde733142452342e1a8d48e04f78f8d59%7C0%7C0%7C637594509848784368%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=wXLu1s9PNI4R7%2F7TQkiRdqP3s%2F8WqIdrEISxfhMxJgo%3D&amp;reserved=0">Despacho n.º 8/DGEG/2021</a></span></strong>, que designou o responsável pelo acesso à informação administrativa da Direção-Geral da Energia e Geologia, estabeleceu-se o procedimento a adotar para efeitos de pedidos de acesso aos documentos e informação, e definido um modelo próprio de requerimento para formalização dos pedidos de acesso, que se disponibilizam abaixo.</span></p>
+<p style="text-align: justify;"> </p>
+<p> </p>
+                        <div class="row justify-content-center">
+
+<div class="col-sm-4 col-6">
+    <div class="card">
+        <div class="card-title">
+
+                <h1>Procedimento de acesso a documentos e informa&#231;&#227;o administrativa</h1>
+        </div>
+        <div class="card-content">
+            <p>
+
+            </p>
+        </div>
+    <div class="card-button">
+        <a href="/media/rgdbegzj/20241122_procedimento_de_acesso_a_informacao_administrativa.pdf" target="_blank" class="btn btn-link">
+            <div>
+                descarregar documento (pdf)
+            </div>
+        </a>
+    </div>
+        
+
+    </div>
+
+</div>
+<div class="col-sm-4 col-6">
+    <div class="card">
+        <div class="card-title">
+
+                <h1>Modelo de requerimento</h1>
+        </div>
+        <div class="card-content">
+            <p>
+Vers&#227;o atualizada a 20 de maio de 2025.
+            </p>
+        </div>
+    <div class="card-button">
+        <a href="/media/iw2cxobx/20250520_modelo_de_requerimento_de_acesso_a_informacao.docx" target="_blank" class="btn btn-link">
+            <div>
+                descarregar modelo (word)
+            </div>
+        </a>
+    </div>
+        
+
+    </div>
+
+</div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</section>
+
+    <script src="/scripts/HistoricoPesquisas.js"></script>
+    <script>
+        var nome = "";
+        if (3== 6) {
+            nome = "A DGEG" +" - "+ "Acesso a Informa&#231;&#227;o Administrativa";
+        } else {
+            nome="Acesso a Informa&#231;&#227;o Administrativa";
+        }
+        console.log(nome);
+        InsereHistoricoVisita("/pt/a-dgeg/acesso-a-informacao-administrativa/", nome, 20, "pt", "/umbraco/Api/HistoricoPesquisa/InsereHistoricoVisita");
+    </script>
+
+
+    </main>
+
+
+    <!-- footer -->
+
+    <footer>
+        <div class="footer bg-footer">
+            <div class="border-bottom">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-8 mb-5 mb-lg-0">
+                        <!-- Sobre nós -->
+                        <h2>Sobre n&#243;s</h2>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                A Dire&#231;&#227;o-Geral de Energia e Geologia resulta da fus&#227;o operada em 2004 entre Dire&#231;&#227;o Geral de Energia (DGE) e de parte do Instituto Geol&#243;gico e Mineiro (IGM). &#201; um &#243;rg&#227;o da administra&#231;&#227;o central do Estado que prossegue a defini&#231;&#227;o, implementa&#231;&#227;o e avalia&#231;&#227;o de pol&#237;ticas p&#250;blicas relativas &#224; energia e aos recursos geol&#243;gicos, com o objetivo de garantir a satisfa&#231;&#227;o regular e cont&#237;nua das necessidades coletivas nos setores que est&#227;o sob sua responsabilidade.
+                            </li>
+                            <li class="mb-3"><a class="color-red" href="/pt/a-dgeg/">Mais sobre a DGEG</a></li>
+                        </ul>
+                    </div>
+                    <!-- área de links -->
+                    <div class="col-lg-3 col-md-6 col-sm-8 mb-5 mb-lg-0">
+                        <h2>&#193;rea de links R&#225;pidos</h2>
+                        <ul class="list-unstyled">
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/a-dgeg/acesso-a-informacao-administrativa/" title="Acesso a Informa&#231;&#227;o Administrativa">Acesso a Informa&#231;&#227;o Administrativa</a></li>
+                                        <li class="mb-2"><a href="/pt/areas-setoriais/energia/energia-eletrica/atividades-e-profissoes/" title="Atividades e Profiss&#245;es - Energia El&#233;trica">Atividades e Profiss&#245;es (energia el&#233;trica)</a></li>
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/areas-setoriais/energia/energia-eletrica/producao-de-energia-eletrica/producao-descentralizada-autoconsumo-e-upp-mp-mn/autoconsumo-e-cer/" title="Autoconsumo, CER e UPP">Autoconsumo, CER e UPP</a></li>
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/areas-setoriais/energia/eficiencia-energetica/sistema-de-certificacao-energetica-dos-edificios/sce-sistema-de-certificacao-energetica-dos-edificios/" title="Certifica&#231;&#227;o Energ&#233;tica dos Edif&#237;cios">Certifica&#231;&#227;o Energ&#233;tica dos Edif&#237;cios</a></li>
+                                        <li class="mb-2"><a href="/pt/servicos-online/informacao-geografica/?id=de764a4a5ccd446292cb26a7e5c2e725" target="" title="Visualizador de Dados">Informa&#231;&#227;o Geogr&#225;fica</a></li>
+                                        <li class="mb-2"><a href="/pt/areas-transversais/patrimonio-geologico/divulgacao-informacao/roteiro-das-minas-e-pontos-de-interesse-mineiro-e-geologico-de-portugal/" title="Roteiro de Minas">Roteiro das Minas e Pontos de Interesse Mineiro e Geol&#243;gico de Portugal</a></li>
+                                        <li class="mb-2"><a href="https://www.dgeg.gov.pt/pt/areas-transversais/politicas-de-protecao-ao-consumidor-de-energia/tarifa-social-de-energia/" target="_blank" title="Tarifa Social de Energia">Tarifa Social de Energia</a></li>
+
+                        </ul>
+                    </div>
+                    <!-- contactos -->
+                    
+<div class="col-lg-3 col-md-6 col-sm-8 mb-5 mb-lg-0 contacts">
+    <h2>Contactos</h2>
+        <div class="contacts-content">
+            <div class="icon marker-icon">
+                <i class="fa fa-map-marker"></i>
+            </div>
+            <div class="text">
+                Av. 5 de Outubro 208, 1069-039 Lisboa
+            </div>
+        </div>
+            <div class="contacts-content">
+            <div class="icon phone-icon">
+                <i class="fa fa-phone"></i>
+            </div>
+            <div class="text">
+                +351 217 922 700 / 800 chamada para a rede fixa nacional
+            </div>
+        </div>
+            <div class="contacts-content">
+            <div class="icon envelope-icon">
+                <i class="fa fa-envelope"></i>
+            </div>
+            <div class="text">
+                <a href="mailto:geral@dgeg.gov.pt">
+                    geral@dgeg.gov.pt
+                </a>
+            </div>
+        </div>
+            <a class="color-red" href="/pt/a-dgeg/contactos-e-localizacao/">Ver todos os contactos</a>
+</div>
+                    <!-- newsletter -->
+                    
+<div class="col-lg-4 col-md-6 col-sm-8 mb-5 mb-lg-0 newsletter">
+    <h2>Newsletter</h2>
+    <ul class="list-unstyled">
+        <li class="mb-3">Assine a Newsletter e receba as atividades mais recentes.</li>
+        <li class="mb-3">
+            <a href="https://www.dgeg.gov.pt/pt/divulgacao/newsletter-dgeg" class="btn btn-primary" target="_blank">Subscrever</a>
+        </li>
+        <a class="color-red" href="/pt/comunicacao/newsletter-dgeg/arquivo-newsletters/">Ver todas as newsletters </a>
+    </ul>
+</div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- copyright -->
+        <div class="copyright sm-footer">
+    <div class="row">
+        <div class="col-md-6 text-sm-left">
+
+            <ul class="list-inline">
+                <li class="list-inline-item info">Copyright 2026. All Rights Reserved. Powered by <a class="color-red" href="http://www.dgeg.gov.pt/">DGEG</a></li>
+            </ul>
+        </div>
+        <div class="col-md-6 text-sm-right mb-0">
+            <ul class="list-inline">
+                <li class="list-inline-item info"><a title="Abrir a p&#225;gina Suporte" href="/pt/site-helpdesk/" target="">Suporte</a></li>
+                <li class="list-inline-item info">|</li>
+                <li class="list-inline-item info"><a title="Abrir a p&#225;gina Utiliza&#231;&#227;o de Cookies" href="/pt/utilizacao-de-cookies/">Utiliza&#231;&#227;o de Cookies</a></li>
+                <li class="list-inline-item info">|</li>
+                <li class="list-inline-item info"><a title="Abrir a p&#225;gina Termos e condi&#231;&#245;es" href="/pt/termos-e-condicoes/">Termos e condi&#231;&#245;es</a></li>
+                
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+    </footer>
+    <!-- /footer -->
+    <script src="/scripts/jquery-3.3.1.slim.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" type="text/javascript"></script><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" type="text/javascript"></script><script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js" type="text/javascript"></script><script src="https://cdn.datatables.net/rowgroup/1.1.1/js/dataTables.rowGroup.min.js" type="text/javascript"></script><script src="/DependencyHandler.axd?s=L3NjcmlwdHMvc2NyaXB0LmpzOy9zY3JpcHRzL2pzLmNvb2tpZS5qczsvc2NyaXB0cy9jb29raWVjb25zZW50LmpzOy9zY3JpcHRzL0hpc3Rvcmljb1Blc3F1aXNhcy5qczs&amp;t=Javascript&amp;cdv=12" type="text/javascript"></script>
+    
+</body>
+</html>

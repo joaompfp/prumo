@@ -1,0 +1,676 @@
+{
+  "meta": {
+    "schema": "https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/data-message/tools/schemas/2.0.0/sdmx-json-data-schema.json",
+    "id": "IREF020678",
+    "prepared": "2026-11-12T14:17:34Z",
+    "test": false,
+    "contentLanguages": [
+      "en",
+      "en-US"
+    ],
+    "sender": {
+      "id": "Disseminate_Final_DMZ",
+      "name": "unknown",
+      "names": {
+        "en-US": "unknown"
+      }
+    }
+  },
+  "data": {
+    "dataSets": [
+      {
+        "structure": 0,
+        "action": "Information",
+        "links": [
+          {
+            "rel": "datastructure",
+            "urn": "urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=OECD.SDD.TPS:DSD_LFS(1.0)"
+          }
+        ],
+        "annotations": [
+          7,
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "attributes": [],
+        "dimensionGroupAttributes": {
+          "0:0:0:~:~:~:~:~:~:~": [
+            8
+          ],
+          "~:0:~:~:~:~:~:~:~:~": [
+            8
+          ]
+        },
+        "series": {
+          "0:0:0:0:0:0:0:0:0": {
+            "annotations": [],
+            "attributes": [
+              0,
+              0
+            ],
+            "observations": {
+              "0": [
+                5.8,
+                0
+              ],
+              "1": [
+                5.7,
+                0
+              ],
+              "2": [
+                5.7,
+                0
+              ],
+              "3": [
+                5.6,
+                0
+              ],
+              "4": [
+                5.7,
+                0
+              ],
+              "5": [
+                5.8,
+                0
+              ],
+              "6": [
+                6.0,
+                0
+              ],
+              "7": [
+                5.9,
+                0
+              ],
+              "8": [
+                5.7,
+                0
+              ],
+              "9": [
+                5.7,
+                0
+              ],
+              "10": [
+                5.6,
+                0
+              ],
+              "11": [
+                5.6,
+                0
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "structures": [
+      {
+        "name": "Monthly unemployment rates",
+        "names": {
+          "en": "Monthly unemployment rates"
+        },
+        "description": "<p>The infra-annual dataflow on the monthly unemployment rate is a subset of the infra-annual labour statistics database, which contains predominantly monthly and quarterly statistics on the unemployed population by age groups (15+, 15-24, 25-54, 55-64, 15-64 and 15-74 where available) and sex and associated statistical methodological information and associated statistical methodological information, for the OECD member countries and for selected other economies. </p><p>The unemployment rate is calculated as the number of unemployed persons as a percentage of the labour force (i.e., the unemployed plus those in employment). The unemployed are persons in their working age who, in the reference period, do not have a job; are available for work; and, have taken specific steps to find a job. </p><p>Chile, Costa Rica, and the United Kingdom publish Labour Force Survey (LFS) data using a rolling quarter methodology. The OECD treats the middle month of the rolling quarter as the reference month. As a result, the publication of monthly LFS data for these countries may be delayed by one month or more relative to the OECD reference month.</p><p>The infra-annual labour statistics compiled for all OECD member countries, are drawn from Labour Force Surveys based on definition provided by the 19th Conference of Labour Statisticians in 2013. The uniform application of these definitions across all OECD member countries results in estimates that are internationally comparable.</p>",
+        "descriptions": {
+          "en": "<p>The infra-annual dataflow on the monthly unemployment rate is a subset of the infra-annual labour statistics database, which contains predominantly monthly and quarterly statistics on the unemployed population by age groups (15+, 15-24, 25-54, 55-64, 15-64 and 15-74 where available) and sex and associated statistical methodological information and associated statistical methodological information, for the OECD member countries and for selected other economies. </p><p>The unemployment rate is calculated as the number of unemployed persons as a percentage of the labour force (i.e., the unemployed plus those in employment). The unemployed are persons in their working age who, in the reference period, do not have a job; are available for work; and, have taken specific steps to find a job. </p><p>Chile, Costa Rica, and the United Kingdom publish Labour Force Survey (LFS) data using a rolling quarter methodology. The OECD treats the middle month of the rolling quarter as the reference month. As a result, the publication of monthly LFS data for these countries may be delayed by one month or more relative to the OECD reference month.</p><p>The infra-annual labour statistics compiled for all OECD member countries, are drawn from Labour Force Surveys based on definition provided by the 19th Conference of Labour Statisticians in 2013. The uniform application of these definitions across all OECD member countries results in estimates that are internationally comparable.</p>"
+        },
+        "links": [
+          {
+            "rel": "datastructure",
+            "urn": "urn:sdmx:org.sdmx.infomodel.datastructure.Dataflow=OECD.SDD.TPS:DSD_LFS@DF_IALFS_UNE_M(1.0)"
+          }
+        ],
+        "dimensions": {
+          "dataSet": [],
+          "series": [
+            {
+              "id": "REF_AREA",
+              "name": "Reference area",
+              "names": {
+                "en": "Reference area"
+              },
+              "keyPosition": 0,
+              "roles": [
+                "REF_AREA"
+              ],
+              "values": [
+                {
+                  "id": "PRT",
+                  "order": 29,
+                  "name": "Portugal",
+                  "names": {
+                    "en": "Portugal"
+                  },
+                  "annotations": [
+                    9
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "MEASURE",
+              "name": "Measure",
+              "names": {
+                "en": "Measure"
+              },
+              "keyPosition": 1,
+              "roles": [
+                "MEASURE"
+              ],
+              "values": [
+                {
+                  "id": "UNE_LF_M",
+                  "order": 9,
+                  "name": "Monthly unemployment rate",
+                  "names": {
+                    "en": "Monthly unemployment rate"
+                  },
+                  "annotations": [
+                    10
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "UNIT_MEASURE",
+              "name": "Unit of measure",
+              "names": {
+                "en": "Unit of measure"
+              },
+              "keyPosition": 2,
+              "roles": [
+                "UNIT_MEASURE"
+              ],
+              "values": [
+                {
+                  "id": "PT_LF_SUB",
+                  "order": 518,
+                  "name": "Percentage of labour force in the same subgroup",
+                  "names": {
+                    "en": "Percentage of labour force in the same subgroup"
+                  },
+                  "annotations": [
+                    11
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "TRANSFORMATION",
+              "name": "Transformation",
+              "names": {
+                "en": "Transformation"
+              },
+              "keyPosition": 3,
+              "roles": [
+                "TRANSFORMATION"
+              ],
+              "values": [
+                {
+                  "id": "_Z",
+                  "order": 58,
+                  "name": "Not applicable",
+                  "names": {
+                    "en": "Not applicable"
+                  },
+                  "annotations": [
+                    12
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "ADJUSTMENT",
+              "name": "Adjustment",
+              "names": {
+                "en": "Adjustment"
+              },
+              "keyPosition": 4,
+              "roles": [
+                "ADJUSTMENT"
+              ],
+              "values": [
+                {
+                  "id": "Y",
+                  "order": 15,
+                  "name": "Calendar and seasonally adjusted",
+                  "names": {
+                    "en": "Calendar and seasonally adjusted"
+                  },
+                  "annotations": [
+                    13
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "SEX",
+              "name": "Sex",
+              "names": {
+                "en": "Sex"
+              },
+              "keyPosition": 5,
+              "roles": [
+                "SEX"
+              ],
+              "values": [
+                {
+                  "id": "_T",
+                  "order": 4,
+                  "name": "Total",
+                  "names": {
+                    "en": "Total"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "AGE",
+              "name": "Age",
+              "names": {
+                "en": "Age"
+              },
+              "keyPosition": 6,
+              "roles": [
+                "AGE"
+              ],
+              "values": [
+                {
+                  "id": "Y_GE15",
+                  "order": 40,
+                  "name": "15 years or over",
+                  "names": {
+                    "en": "15 years or over"
+                  },
+                  "annotations": [
+                    14
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "ACTIVITY",
+              "name": "Economic activity",
+              "names": {
+                "en": "Economic activity"
+              },
+              "keyPosition": 7,
+              "roles": [
+                "ACTIVITY"
+              ],
+              "values": [
+                {
+                  "id": "_Z",
+                  "order": 957,
+                  "name": "Not applicable",
+                  "names": {
+                    "en": "Not applicable"
+                  },
+                  "annotations": [
+                    15
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "FREQ",
+              "name": "Frequency of observation",
+              "names": {
+                "en": "Frequency of observation"
+              },
+              "keyPosition": 8,
+              "roles": [
+                "FREQ"
+              ],
+              "values": [
+                {
+                  "id": "M",
+                  "order": 11,
+                  "name": "Monthly",
+                  "names": {
+                    "en": "Monthly"
+                  }
+                }
+              ]
+            }
+          ],
+          "observation": [
+            {
+              "id": "TIME_PERIOD",
+              "name": "Time period",
+              "names": {
+                "en": "Time period"
+              },
+              "keyPosition": 9,
+              "roles": [
+                "TIME_PERIOD"
+              ],
+              "values": [
+                {
+                  "start": "2025-10-01T00:00:00",
+                  "end": "2025-10-31T23:59:59",
+                  "id": "2025-10",
+                  "name": "2025-10",
+                  "names": {
+                    "en-US": "2025-10"
+                  }
+                },
+                {
+                  "start": "2025-11-01T00:00:00",
+                  "end": "2025-11-30T23:59:59",
+                  "id": "2025-11",
+                  "name": "2025-11",
+                  "names": {
+                    "en-US": "2025-11"
+                  }
+                },
+                {
+                  "start": "2026-04-01T00:00:00",
+                  "end": "2026-04-30T23:59:59",
+                  "id": "2026-04",
+                  "name": "2026-04",
+                  "names": {
+                    "en-US": "2026-04"
+                  }
+                },
+                {
+                  "start": "2026-05-01T00:00:00",
+                  "end": "2026-05-31T23:59:59",
+                  "id": "2026-05",
+                  "name": "2026-05",
+                  "names": {
+                    "en-US": "2026-05"
+                  }
+                },
+                {
+                  "start": "2025-12-01T00:00:00",
+                  "end": "2025-12-31T23:59:59",
+                  "id": "2025-12",
+                  "name": "2025-12",
+                  "names": {
+                    "en-US": "2025-12"
+                  }
+                },
+                {
+                  "start": "2026-01-01T00:00:00",
+                  "end": "2026-01-31T23:59:59",
+                  "id": "2026-01",
+                  "name": "2026-01",
+                  "names": {
+                    "en-US": "2026-01"
+                  }
+                },
+                {
+                  "start": "2026-02-01T00:00:00",
+                  "end": "2026-02-28T23:59:59",
+                  "id": "2026-02",
+                  "name": "2026-02",
+                  "names": {
+                    "en-US": "2026-02"
+                  }
+                },
+                {
+                  "start": "2026-03-01T00:00:00",
+                  "end": "2026-03-31T23:59:59",
+                  "id": "2026-03",
+                  "name": "2026-03",
+                  "names": {
+                    "en-US": "2026-03"
+                  }
+                },
+                {
+                  "start": "2026-06-01T00:00:00",
+                  "end": "2026-06-30T23:59:59",
+                  "id": "2026-06",
+                  "name": "2026-06",
+                  "names": {
+                    "en-US": "2026-06"
+                  }
+                },
+                {
+                  "start": "2026-07-01T00:00:00",
+                  "end": "2026-07-31T23:59:59",
+                  "id": "2026-07",
+                  "name": "2026-07",
+                  "names": {
+                    "en-US": "2026-07"
+                  }
+                },
+                {
+                  "start": "2026-09-01T00:00:00",
+                  "end": "2026-09-30T23:59:59",
+                  "id": "2026-09",
+                  "name": "2026-09",
+                  "names": {
+                    "en-US": "2026-09"
+                  }
+                },
+                {
+                  "start": "2026-08-01T00:00:00",
+                  "end": "2026-08-31T23:59:59",
+                  "id": "2026-08",
+                  "name": "2026-08",
+                  "names": {
+                    "en-US": "2026-08"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "attributes": {
+          "dataSet": [],
+          "dimensionGroup": [],
+          "series": [
+            {
+              "id": "UNIT_MULT",
+              "name": "Unit multiplier",
+              "names": {
+                "en": "Unit multiplier"
+              },
+              "isMandatory": true,
+              "roles": [
+                "UNIT_MULT"
+              ],
+              "relationship": {
+                "dimensions": [
+                  "UNIT_MEASURE"
+                ]
+              },
+              "values": [
+                {
+                  "id": "0",
+                  "order": 0,
+                  "name": "Units",
+                  "names": {
+                    "en": "Units"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "DECIMALS",
+              "name": "Decimals",
+              "names": {
+                "en": "Decimals"
+              },
+              "isMandatory": false,
+              "roles": [
+                "DECIMALS"
+              ],
+              "relationship": {
+                "dimensions": [
+                  "UNIT_MEASURE"
+                ]
+              },
+              "values": [
+                {
+                  "id": "1",
+                  "order": 1,
+                  "name": "One",
+                  "names": {
+                    "en": "One"
+                  }
+                }
+              ]
+            }
+          ],
+          "observation": [
+            {
+              "id": "OBS_STATUS",
+              "name": "Observation status",
+              "names": {
+                "en": "Observation status"
+              },
+              "isMandatory": false,
+              "roles": [
+                "OBS_STATUS"
+              ],
+              "relationship": {
+                "observation": {}
+              },
+              "values": [
+                {
+                  "id": "A",
+                  "order": 0,
+                  "name": "Normal value",
+                  "names": {
+                    "en": "Normal value"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "annotations": [
+          {
+            "type": "NonProductionDataflow",
+            "text": "true",
+            "texts": {
+              "en": "true"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "title": "REF_AREA,AGE",
+            "type": "LAYOUT_ROW"
+          },
+          {
+            "id": "@SDMX",
+            "title": "TIME_PERIOD",
+            "type": "LAYOUT_COLUMN"
+          },
+          {
+            "id": "@SDMX",
+            "title": "MEASURE,UNIT_MEASURE",
+            "type": "LAYOUT_ROW_SECTION"
+          },
+          {
+            "id": "@SDMX",
+            "title": "OBS_STATUS=A,UNIT_MULT=0,TRANSFORMATION=_Z,ACTIVITY=_Z",
+            "type": "NOT_DISPLAYED"
+          },
+          {
+            "id": "@SDMX",
+            "title": "FREQ=M,LASTNPERIODS=13,MEASURE=UNE_M,AGE=Y_GE15,SEX=_T,ADJUSTMENT=Y,TRANSFORMATION=_Z",
+            "type": "DEFAULT"
+          },
+          {
+            "title": "COMBINED_MEASURE:MEASURE,ACTIVITY;COMBINED_UNIT_MEASURE:UNIT_MEASURE,UNIT_MULT,ADJUSTMENT",
+            "type": "COMBINED_CONCEPTS",
+            "text": "COMBINED_MEASURE:Measure;COMBINED_UNIT_MEASURE:Unit of measure",
+            "texts": {
+              "en": "COMBINED_MEASURE:Measure;COMBINED_UNIT_MEASURE:Unit of measure"
+            }
+          },
+          {
+            "title": "urn:sdmx:org.sdmx.infomodel.metadatastructure.MetadataStructure=OECD:MSD_REF_METADATA(1.0)",
+            "type": "METADATA"
+          },
+          {
+            "type": "HAS_METADATA"
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "300",
+            "texts": {
+              "en": "300"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "10",
+            "texts": {
+              "en": "10"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "5190",
+            "texts": {
+              "en": "5190"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "590",
+            "texts": {
+              "en": "590"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "30",
+            "texts": {
+              "en": "30"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "620",
+            "texts": {
+              "en": "620"
+            }
+          },
+          {
+            "id": "@SDMX",
+            "type": "ORDER",
+            "text": "9580",
+            "texts": {
+              "en": "9580"
+            }
+          }
+        ],
+        "measures": {
+          "observation": [
+            {
+              "id": "OBS_VALUE",
+              "name": "Observation value",
+              "names": {
+                "en": "Observation value"
+              },
+              "isMandatory": false,
+              "roles": [
+                "OBS_VALUE"
+              ],
+              "values": null
+            }
+          ]
+        },
+        "dataSets": [
+          0
+        ]
+      }
+    ]
+  },
+  "errors": []
+}

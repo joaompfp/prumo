@@ -1,0 +1,52 @@
+DERIVED EVIDENCE — NOT the raw HTTP response and NOT usable as verifier response evidence.
+Derivation: `pdftotext -layout` text layer of the source PDF, ficha técnica (rights) section only, excerpted by Task 12 follow-up research (2026-11-11).
+Source PDF: https://www.dgeg.gov.pt/media/b4fhd0lv/dgeg-aen-2025e.pdf (HTTP 200, 13114538 bytes,
+sha256 9486137ed36e25c1a7dbfe5da683ee6d20548c7d405304d1199a11a8378c4db1; the PDF is NOT committed — 13 MB is above the evidence size cap; the full derived text layer additionally survives only in the volatile research scratch archive).
+Purpose: verbatim rights wording for the licence disposition in registry/licences-todo.md.
+---
+EDIÇÃO 2025
+
+
+ENERGIA
+EM NÚMEROS
+
+Ficha Técnica
+
+Título
+Energia em Números - Edição 2025
+
+
+Autor
+Observatório da Energia
+DGEG – Direção Geral de Energia e Geologia, Direção de Serviços de Planeamento Energético e Estatística
+ADENE – Agência para a Energia, Direção de Formação, Informação e Educação
+
+
+
+
+Editor
+ADENE – Agência para a Energia
+Av. 5 de Outubro 208, 2.º Piso
+1050-065 Lisboa - Portugal
+Telefone: 214 722 800
+Email: geral@adene.pt
+
+
+Data
+29 de maio 2025
+
+
+ISBN: 978-972-8646-87-5
+Periodicidade: anual
+
+
+
+
+Design e Composição
+A Mercearia - Everyday Branding Services
+
+
+Todos os direitos reservados.
+Publicação gratuita
+
+

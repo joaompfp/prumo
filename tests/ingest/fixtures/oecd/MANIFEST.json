@@ -1,0 +1,61 @@
+{
+ "fetched": "2026-11-12T14:16:24Z..2026-11-12T14:17:38Z (f3nix egress)",
+ "user_agent": "curl (Task 15 discovery); the adapter requests with Accept: application/vnd.sdmx.data+json;version=2.0",
+ "source_manifest": "docs/superpowers/handoff/evidence/task-15-oecd/discovery/manifest.json",
+ "files": [
+  {
+   "file": "cli-json.json",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_CLI/PRT.M.BCICP.IX._Z.AA.IX._Z.H?startPeriod=2025-10",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+   "bytes": 21967,
+   "sha256": "c23c51a8aa62cb4f07dc6933eb9d5e6322f85aaee02f8fd8a776f32024974f82",
+   "note": "Task15 discovery item 1 (cli-json), fetched 2026-11-12T14:16:24.767769+00:00 from f3nix; byte-identical copy of 01-cli-json.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-employment-json.json",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.EM.PB.C.Y._Z.FT.N?startPeriod=2025-10",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+json; charset=utf-8; version=2.0",
+   "bytes": 23246,
+   "sha256": "554f03067256e97faf5ddd7d9bada30c2fc66647dcaf3c8ed20a3daf974d6462",
+   "note": "Task15 discovery item 3 (bts-employment-json), fetched 2026-11-12T14:16:55.200058+00:00 from f3nix; byte-identical copy of 03-bts-employment-json.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-order_books-json.json",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.OB.PB.C.Y._Z.C.N?startPeriod=2025-10",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+   "bytes": 23251,
+   "sha256": "fdec7c7dfb0899f0471870960f950999403dbd4613349d825d7d1a3ed55f07d0",
+   "note": "Task15 discovery item 5 (bts-order_books-json), fetched 2026-11-12T14:17:05.031627+00:00 from f3nix; byte-identical copy of 05-bts-order_books-json.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-production-json.json",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.PR.PB.C.Y._Z.T.N?startPeriod=2025-10",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+json; charset=utf-8; version=2.0",
+   "bytes": 23238,
+   "sha256": "08f40b05f14035928a77fc7edb369780cffff39443ed14b4f15b92479ff941ee",
+   "note": "Task15 discovery item 7 (bts-production-json), fetched 2026-11-12T14:17:14.737768+00:00 from f3nix; byte-identical copy of 07-bts-production-json.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "bts-selling_prices-json.json",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_BTS/PRT.M.SP.PB.C.Y._Z.FT.N?startPeriod=2025-10",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+json; version=2.0; charset=utf-8",
+   "bytes": 23263,
+   "sha256": "8ec8e04d09e7ef3715e04fe260f05e7bccbadfe15a6a6d37fb27865e014e42ec",
+   "note": "Task15 discovery item 9 (bts-selling_prices-json), fetched 2026-11-12T14:17:24.445749+00:00 from f3nix; byte-identical copy of 09-bts-selling_prices-json.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  },
+  {
+   "file": "unemp-json.json",
+   "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M/PRT.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M?startPeriod=2025-10",
+   "status": 200,
+   "content_type": "application/vnd.sdmx.data+json; charset=utf-8; version=2.0",
+   "bytes": 21317,
+   "sha256": "d5378b7698943b388549257ecc203dbf27da51b6a13fadea8304593b0528db07",
+   "note": "Task15 discovery item 11 (unemp-json), fetched 2026-11-12T14:17:34.035839+00:00 from f3nix; byte-identical copy of 11-unemp-json.body (discovery manifest sha256 09dad8d1f5d082712aaa30309e13de0f4b52195eaa8b508836fa517c735211c1)"
+  }
+ ]
+}

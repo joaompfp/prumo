@@ -1,0 +1,644 @@
+{
+  "fetched": "2026-11-12",
+  "source": "FRED (Federal Reserve Bank of St. Louis) API + fred.stlouisfed.org pages",
+  "provenance": "Byte-identical copies of the Task 14 preflight originals (controller-collected 2026-11-12 with the owner's API key; scratch prumo-t14-preflight). All 48 publisher responses HTTP 200. api_key is redacted from every recorded url/params: the credential is not publisher data and is never archived.",
+  "files": [
+    {
+      "file": "meta-PALUMUSDM.json",
+      "original_label": "api-meta-PALUMUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PALUMUSDM&file_type=json",
+      "params": {
+        "series_id": "PALUMUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:13:12.877205+00:00",
+      "status": 200,
+      "bytes": 902,
+      "sha256": "e25e27d94fdee181ad4f8459f53101699ed0797890fabf2ae1fe16416570cd51",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PALUMUSDM.json",
+      "original_label": "api-full-PALUMUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PALUMUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PALUMUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:07.297750+00:00",
+      "status": 200,
+      "bytes": 57594,
+      "sha256": "5ef269e1eb68dd78a4fbd5c2c5c292bb8a9a4dc3a11e8d5de86e0999c49d98c8",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PALUMUSDM.html",
+      "original_label": "table-PALUMUSDM",
+      "url": "https://fred.stlouisfed.org/data/PALUMUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:16.520173+00:00",
+      "status": 200,
+      "bytes": 93507,
+      "sha256": "7c13d7c50f9f1819e5abd46361ac072b053d38eb92f240e554ccf041b454a4ff",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PALUMUSDM.csv",
+      "original_label": "csv-PALUMUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PALUMUSDM",
+      "params": {
+        "id": "PALUMUSDM"
+      },
+      "fetched_at": "2026-11-12T12:13:15.650474+00:00",
+      "status": 200,
+      "bytes": 12120,
+      "sha256": "ff464a26d1f859cf2883140e14e9e8c97b1ed0298093b4282dabad10531b0541",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-POILBREUSDM.json",
+      "original_label": "api-meta-POILBREUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=POILBREUSDM&file_type=json",
+      "params": {
+        "series_id": "POILBREUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:08.235425+00:00",
+      "status": 200,
+      "bytes": 899,
+      "sha256": "96e24126daa98a19088d7f74c140d3cf5546858bfc11d1f3cc64e85f5f7c47d5",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-POILBREUSDM.json",
+      "original_label": "api-full-POILBREUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=POILBREUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "POILBREUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:09.983699+00:00",
+      "status": 200,
+      "bytes": 57788,
+      "sha256": "b7ec1138c2b7481ca2e3db41790050c7c9e018968c38cc8a3fb9356933df98bc",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-POILBREUSDM.html",
+      "original_label": "table-POILBREUSDM",
+      "url": "https://fred.stlouisfed.org/data/POILBREUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:17.561473+00:00",
+      "status": 200,
+      "bytes": 93576,
+      "sha256": "57715a8ef7889d49fecf2b5d7a01ce32f042dfc2ca5ecda1dc4aae4849003faf",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-POILBREUSDM.csv",
+      "original_label": "csv-POILBREUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=POILBREUSDM",
+      "params": {
+        "id": "POILBREUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:10.904214+00:00",
+      "status": 200,
+      "bytes": 12178,
+      "sha256": "9bc1eac8be12dd5944fa6a9b1074cd949430d4df09a94b1ff590ba99b3274f3d",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PCOFFOTMUSDM.json",
+      "original_label": "api-meta-PCOFFOTMUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PCOFFOTMUSDM&file_type=json",
+      "params": {
+        "series_id": "PCOFFOTMUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:11.568831+00:00",
+      "status": 200,
+      "bytes": 915,
+      "sha256": "4a6e015621c8b45ea64922305eb472d0ca8c784febb234b66d3544d157431717",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PCOFFOTMUSDM.json",
+      "original_label": "api-full-PCOFFOTMUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PCOFFOTMUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PCOFFOTMUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:13.235853+00:00",
+      "status": 200,
+      "bytes": 57901,
+      "sha256": "7347e4f159fd6894641241048efa444a8dd88ecb24b7afc676e8d7f8968dead0",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PCOFFOTMUSDM.html",
+      "original_label": "table-PCOFFOTMUSDM",
+      "url": "https://fred.stlouisfed.org/data/PCOFFOTMUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:18.458720+00:00",
+      "status": 200,
+      "bytes": 93921,
+      "sha256": "ec2c1337a6607bfa2cc0dc7a7a2714f57b5ee127ca41f278babf7059775bb8ea",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PCOFFOTMUSDM.csv",
+      "original_label": "csv-PCOFFOTMUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PCOFFOTMUSDM",
+      "params": {
+        "id": "PCOFFOTMUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:14.047013+00:00",
+      "status": 200,
+      "bytes": 12451,
+      "sha256": "2583f2aee667c65478a49b0cc3fa5926e35169b74e13b15dc83abd1efda9c089",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PCOPPUSDM.json",
+      "original_label": "api-meta-PCOPPUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PCOPPUSDM&file_type=json",
+      "params": {
+        "series_id": "PCOPPUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:14.712018+00:00",
+      "status": 200,
+      "bytes": 900,
+      "sha256": "ae659b9776b1faa3fb70f0682e549d560cdedc06a03d4aeda39996beedeee4b5",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PCOPPUSDM.json",
+      "original_label": "api-full-PCOPPUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PCOPPUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PCOPPUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:16.245987+00:00",
+      "status": 200,
+      "bytes": 57589,
+      "sha256": "44d25e741493ba4f1406ad1f1db4056e0fde0ab7e762c870f7fa9e49f6294a37",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PCOPPUSDM.html",
+      "original_label": "table-PCOPPUSDM",
+      "url": "https://fred.stlouisfed.org/data/PCOPPUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:19.353482+00:00",
+      "status": 200,
+      "bytes": 93513,
+      "sha256": "f09078b1f682aecf93daf4cdf4479ae643786020b849b73e7b2eb6faa5302a8f",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PCOPPUSDM.csv",
+      "original_label": "csv-PCOPPUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PCOPPUSDM",
+      "params": {
+        "id": "PCOPPUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:17.095602+00:00",
+      "status": 200,
+      "bytes": 12136,
+      "sha256": "610ad70849171236939b1a66a48c0bb26d80c9049c65b963f1ffda33f43ca543",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PMAIZMTUSDM.json",
+      "original_label": "api-meta-PMAIZMTUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PMAIZMTUSDM&file_type=json",
+      "params": {
+        "series_id": "PMAIZMTUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:17.747953+00:00",
+      "status": 200,
+      "bytes": 900,
+      "sha256": "0ed7ca03399363b3021080040450b4a54012d2e26a8983d64a295af57d9477c5",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PMAIZMTUSDM.json",
+      "original_label": "api-full-PMAIZMTUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PMAIZMTUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PMAIZMTUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:19.398037+00:00",
+      "status": 200,
+      "bytes": 58343,
+      "sha256": "d32c8cffba38dddf9d50c2f16b289e59e4d3b06a60dd97d9d4dc9e48688c78e6",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PMAIZMTUSDM.html",
+      "original_label": "table-PMAIZMTUSDM",
+      "url": "https://fred.stlouisfed.org/data/PMAIZMTUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:20.216581+00:00",
+      "status": 200,
+      "bytes": 93830,
+      "sha256": "4ef5dbdf6159f0c30be2820536d43ab5809fa5a8204119cfeb05ba5a2ae6aa21",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PMAIZMTUSDM.csv",
+      "original_label": "csv-PMAIZMTUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PMAIZMTUSDM",
+      "params": {
+        "id": "PMAIZMTUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:20.245551+00:00",
+      "status": 200,
+      "bytes": 12463,
+      "sha256": "2a1dc0f2fd24a0c7ecabae1c1db56a1e24c1a72cc4786ee2f83491feab3dd180",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PCOTTINDUSDM.json",
+      "original_label": "api-meta-PCOTTINDUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PCOTTINDUSDM&file_type=json",
+      "params": {
+        "series_id": "PCOTTINDUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:20.920677+00:00",
+      "status": 200,
+      "bytes": 895,
+      "sha256": "defb81cc70b6143b6eaf68ee83810dbf7212b398534e0bdf956bd589c520d2b2",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PCOTTINDUSDM.json",
+      "original_label": "api-full-PCOTTINDUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PCOTTINDUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PCOTTINDUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:22.648403+00:00",
+      "status": 200,
+      "bytes": 57198,
+      "sha256": "60a202a3d58de8eb5c09837a9668dd30997d8863b2b679aa69a365410a94b0c1",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PCOTTINDUSDM.html",
+      "original_label": "table-PCOTTINDUSDM",
+      "url": "https://fred.stlouisfed.org/data/PCOTTINDUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:21.097515+00:00",
+      "status": 200,
+      "bytes": 93533,
+      "sha256": "1f136098dbfafa8457f082b86369e051bd8d4ed64b15a99757a16a1ca4d62e55",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PCOTTINDUSDM.csv",
+      "original_label": "csv-PCOTTINDUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PCOTTINDUSDM",
+      "params": {
+        "id": "PCOTTINDUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:23.462876+00:00",
+      "status": 200,
+      "bytes": 12163,
+      "sha256": "01268287fae617a40c4b012071b5835e7412391e96536b088f85c26b00b2a729",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PWHEAMTUSDM.json",
+      "original_label": "api-meta-PWHEAMTUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PWHEAMTUSDM&file_type=json",
+      "params": {
+        "series_id": "PWHEAMTUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:24.334177+00:00",
+      "status": 200,
+      "bytes": 901,
+      "sha256": "9a1c5dcb813e4fbc3e2307df2b7c7694ab8653cb52987894d4263f0ddd73fbe7",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PWHEAMTUSDM.json",
+      "original_label": "api-full-PWHEAMTUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PWHEAMTUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PWHEAMTUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:26.064570+00:00",
+      "status": 200,
+      "bytes": 58111,
+      "sha256": "5742793d3a35a6c5d06e5051ed4821b223171bab7afa253279e8f08f6cc8f45b",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PWHEAMTUSDM.html",
+      "original_label": "table-PWHEAMTUSDM",
+      "url": "https://fred.stlouisfed.org/data/PWHEAMTUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:22.027495+00:00",
+      "status": 200,
+      "bytes": 93894,
+      "sha256": "68faa4b7aad01922a2b529517cdb4d45aa09e1b6e51e78d45ef9becada3c9097",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PWHEAMTUSDM.csv",
+      "original_label": "csv-PWHEAMTUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PWHEAMTUSDM",
+      "params": {
+        "id": "PWHEAMTUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:26.859661+00:00",
+      "status": 200,
+      "bytes": 12522,
+      "sha256": "ed768f202138a7aef3c55a682de95b7dd34064057d22a4535799fcb392eff9d9",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PIORECRUSDM.json",
+      "original_label": "api-meta-PIORECRUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PIORECRUSDM&file_type=json",
+      "params": {
+        "series_id": "PIORECRUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:27.528036+00:00",
+      "status": 200,
+      "bytes": 904,
+      "sha256": "474c7a2ca58aade3b185be28e8a14cee48ee708279d6ef53e552ed1a65ab7698",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PIORECRUSDM.json",
+      "original_label": "api-full-PIORECRUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PIORECRUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PIORECRUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:29.217242+00:00",
+      "status": 200,
+      "bytes": 55637,
+      "sha256": "34b3ec898aa7c2cc6cdb138ddfa5c2ba0c7b96a4b333434ecd0a176460cfa5e3",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PIORECRUSDM.html",
+      "original_label": "table-PIORECRUSDM",
+      "url": "https://fred.stlouisfed.org/data/PIORECRUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:22.934082+00:00",
+      "status": 200,
+      "bytes": 93635,
+      "sha256": "cfd87dc4f368400e406803d66274bdc93ea3bdcc825987479d6773b3eddcdde2",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PIORECRUSDM.csv",
+      "original_label": "csv-PIORECRUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PIORECRUSDM",
+      "params": {
+        "id": "PIORECRUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:30.046893+00:00",
+      "status": 200,
+      "bytes": 12248,
+      "sha256": "f38a3680b70db78a88f69c051316818b553661a5a9a75dc80edccb2ca9a03ecf",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PNICKUSDM.json",
+      "original_label": "api-meta-PNICKUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PNICKUSDM&file_type=json",
+      "params": {
+        "series_id": "PNICKUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:30.910095+00:00",
+      "status": 200,
+      "bytes": 900,
+      "sha256": "e9aaf5318850b7b00440d8f94ab82fcbf959e71ae9d45332ade1a59eb035c0c4",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PNICKUSDM.json",
+      "original_label": "api-full-PNICKUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PNICKUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PNICKUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:32.606918+00:00",
+      "status": 200,
+      "bytes": 57320,
+      "sha256": "4d7c71d4eeb4c01779512e85cd8893404d6a282607c2ed7ac412b500252c0803",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PNICKUSDM.html",
+      "original_label": "table-PNICKUSDM",
+      "url": "https://fred.stlouisfed.org/data/PNICKUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:23.836768+00:00",
+      "status": 200,
+      "bytes": 93759,
+      "sha256": "12db0aa4b4feccf6026d8400b43de9cf00af86154a2559695934bfec57912d5b",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PNICKUSDM.csv",
+      "original_label": "csv-PNICKUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PNICKUSDM",
+      "params": {
+        "id": "PNICKUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:33.429398+00:00",
+      "status": 200,
+      "bytes": 12382,
+      "sha256": "5a850a153817c3e622f75acfd4b0045a8211f6b19d3bc938d506287099062735",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PSOYBUSDM.json",
+      "original_label": "api-meta-PSOYBUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PSOYBUSDM&file_type=json",
+      "params": {
+        "series_id": "PSOYBUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:34.281325+00:00",
+      "status": 200,
+      "bytes": 902,
+      "sha256": "0b2d540e4e018ac3853372357b879b4d59a7538ce4850720a1ab8d7ed6be6f1d",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PSOYBUSDM.json",
+      "original_label": "api-full-PSOYBUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PSOYBUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PSOYBUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:35.964961+00:00",
+      "status": 200,
+      "bytes": 57383,
+      "sha256": "d5f9382b40f667e703d2bed7d16f1349c7bf835f32c44a054bf86d4c18f4c183",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PSOYBUSDM.html",
+      "original_label": "table-PSOYBUSDM",
+      "url": "https://fred.stlouisfed.org/data/PSOYBUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:24.726351+00:00",
+      "status": 200,
+      "bytes": 93507,
+      "sha256": "67dc1bacbc63330f20e354608ff9d826a3c333d43909d1f42d60584004928165",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PSOYBUSDM.csv",
+      "original_label": "csv-PSOYBUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PSOYBUSDM",
+      "params": {
+        "id": "PSOYBUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:36.799129+00:00",
+      "status": 200,
+      "bytes": 12120,
+      "sha256": "daf3eb154a9b87b3787a5393434398cf2b8e64a85a0f20ea95642ccb819acd69",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PSUGAISAUSDM.json",
+      "original_label": "api-meta-PSUGAISAUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PSUGAISAUSDM&file_type=json",
+      "params": {
+        "series_id": "PSUGAISAUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:37.518884+00:00",
+      "status": 200,
+      "bytes": 909,
+      "sha256": "266e3938b4c1981b4ae840d54ed7bc37e2c96e1ff95889efa023779af37b0fda",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PSUGAISAUSDM.json",
+      "original_label": "api-full-PSUGAISAUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PSUGAISAUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PSUGAISAUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:39.234356+00:00",
+      "status": 200,
+      "bytes": 57403,
+      "sha256": "bcbf41e4aece75c8c8a4be39f20da2a76ec922a61c5448ac77f673caebb2c7e5",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PSUGAISAUSDM.html",
+      "original_label": "table-PSUGAISAUSDM",
+      "url": "https://fred.stlouisfed.org/data/PSUGAISAUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:25.597271+00:00",
+      "status": 200,
+      "bytes": 93563,
+      "sha256": "87d43efd49704172ad697ca2cc30cec5f86ac301e2a0ded37ae8627cb14c7aaa",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PSUGAISAUSDM.csv",
+      "original_label": "csv-PSUGAISAUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PSUGAISAUSDM",
+      "params": {
+        "id": "PSUGAISAUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:40.031353+00:00",
+      "status": 200,
+      "bytes": 12013,
+      "sha256": "6056eb4e10a81f3b9279e9a0935a99ef49022d2a4e5ed562cc237bf167c13472",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    },
+    {
+      "file": "meta-PZINCUSDM.json",
+      "original_label": "api-meta-PZINCUSDM",
+      "url": "https://api.stlouisfed.org/fred/series?series_id=PZINCUSDM&file_type=json",
+      "params": {
+        "series_id": "PZINCUSDM",
+        "file_type": "json"
+      },
+      "fetched_at": "2026-11-12T12:19:40.722684+00:00",
+      "status": 200,
+      "bytes": 898,
+      "sha256": "62d398a240b533e484b465905c11683cbc833265245d898664f7a23862ad9315",
+      "note": "GET /fred/series metadata; unit/frequency/NSA evidence. api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "obs-PZINCUSDM.json",
+      "original_label": "api-full-PZINCUSDM",
+      "url": "https://api.stlouisfed.org/fred/series/observations?series_id=PZINCUSDM&file_type=json&limit=100000",
+      "params": {
+        "series_id": "PZINCUSDM",
+        "file_type": "json",
+        "limit": 100000
+      },
+      "fetched_at": "2026-11-12T12:19:42.395242+00:00",
+      "status": 200,
+      "bytes": 57439,
+      "sha256": "0024afcfeda896ea32ce729d19cdef500e1de0f4476eb6d17a0fd1bf154e0a2a",
+      "note": "GET /fred/series/observations full history (limit=100000; units=lin/output_type=1 are the FRED defaults asserted in-payload). api_key was present in the original request query (FRED requires it); it is deliberately OMITTED from the recorded url/params - the credential is not publisher data and must never be archived."
+    },
+    {
+      "file": "table-PZINCUSDM.html",
+      "original_label": "table-PZINCUSDM",
+      "url": "https://fred.stlouisfed.org/data/PZINCUSDM",
+      "params": {},
+      "fetched_at": "2026-11-12T12:22:26.474338+00:00",
+      "status": 200,
+      "bytes": 93841,
+      "sha256": "b99a1930ea9d358c6f0cf2de5937c564fd7c612a556008384d7dbb283f4c3619",
+      "note": "Server-rendered https://fred.stlouisfed.org/data/<CODE> data-table HTML; the independent verifier channel (Part B), kept here as original evidence."
+    },
+    {
+      "file": "fredgraph-PZINCUSDM.csv",
+      "original_label": "csv-PZINCUSDM",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PZINCUSDM",
+      "params": {
+        "id": "PZINCUSDM"
+      },
+      "fetched_at": "2026-11-12T12:19:43.183327+00:00",
+      "status": 200,
+      "bytes": 12474,
+      "sha256": "42a82b665ff15c8dfa021e63061081318b83bdf0e5754e8e331a1a1aa7859567",
+      "note": "fredgraph.csv export; REJECTED as the independent channel (see MANIFEST note)."
+    }
+  ],
+  "rejected_csv_channel": "fredgraph-<CODE>.csv are kept ONLY as rejection evidence: per csv-decimal-mismatches.json (docs/superpowers/handoff/evidence/task-14-fred/), 10 of 12 series show nonzero exact Decimal differences vs the API observations (binary float tails such as 70.51 vs 70.51000000000001 for POILBREUSDM 2006-05). The working independent verifier channel is the server-rendered data-table HTML: all 417 numeric API values per series match the table exactly (table-comparison.json in the preflight archive)."
+}

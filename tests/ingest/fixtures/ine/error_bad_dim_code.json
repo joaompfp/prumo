@@ -1,0 +1,11 @@
+[ {
+  "Sucesso" : {
+    "Falso" : [ {
+      "IndicadorCod" : "0001188",
+      "Lingua" : "PT",
+      "DataExtracao" : "2026-11-11T03:34:56.581Z",
+      "Msg" : "(PT) Código(s) em Dim2 não válido(s) para o indicador / (EN) Code(s) in Dim2 not valid for the indicator.",
+      "Cod" : "4"
+    } ]
+  }
+} ]

@@ -10,6 +10,10 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-10-base-data-pipeline-design.md` (read it first; this plan implements it).
 
+## Owner amendment: dated-data continuity
+
+The owner authorizes keeping existing BM/E-REDES data usable with honest original fetch dates when refresh channels fail. Maximize automatic updates and provide precise, executable manual refresh procedures. Do not fabricate April E-REDES rows: reconciliation found integration code but no persisted records. Rebuild its previously attempted native national-production integration without aggregation or unit conversion. Technical verification, legacy origin, staleness, and legal eligibility remain separate; failed fresh runs are never relabelled verified. This amendment supersedes the registry-only Task16 exclusion and global disabling of otherwise valid approved-source legacy continuity.
+
 ## Global Constraints
 
 - Runs on f0nix; container `prumo`, Tailscale `100.118.19.6:8088`; public `cae.joao.date` and `joao.date/dados` show "Em manutenção" until project 4.
@@ -172,6 +176,8 @@ Each task is the same shape and delivers `ingest/sources/<name>.py` (implements 
 ---
 
 ### Task 17: CLI, status report, replay
+
+Acceptance checkpoint 2026-11-12: operational/manual scope and final cleanup COMPLETE after independent specification and quality gates, scoped re-reviews, and 1,382 passing tests in both the normal and clean requirements-only CI environments. The earlier isolated source catch-up evidence is retained; production installation, catch-up/status inspection and the 24-hour observation remain Task 18 gates. No merge or deployment. See `docs/superpowers/handoff/reports/task-17-cleanup-controller-review.md`; shared status is maintained in HANDOFF/ledger rather than retroactively ticking this original plan.
 
 **Files:** Create `ingest/cli.py`, `ingest/__main__.py`, `ingest/status.py`, `tests/ingest/test_cli.py`; Delete: old `collectors/` and `scripts/` collectors/orchestrators superseded by Tasks 9–16 (`collect_scheduled.py`, `audit_nightly.py`, `backfill_*.py`, `scripts/collectors/`, `scripts/maintenance/`, `warm_cache.py`), then drop `duckdb`, `pandas`, `pyarrow`, `Pillow` from `requirements.txt` (keep `duckdb` only for `legacy_import` via a separate `requirements-migration.txt`).
 

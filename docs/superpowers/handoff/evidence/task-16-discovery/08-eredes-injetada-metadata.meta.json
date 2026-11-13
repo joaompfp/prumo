@@ -1,0 +1,12 @@
+{
+ "name": "08-eredes-injetada-metadata",
+ "url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-injetada-na-rede-de-distribuicao",
+ "params": null,
+ "truncated_by_probe": false,
+ "status": 200,
+ "final_url": "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets/energia-injetada-na-rede-de-distribuicao",
+ "elapsed_s": 0.097,
+ "bytes_archived": 13798,
+ "content_type": "application/json; charset=utf-8",
+ "fetched_at_utc": "2026-11-12T18:13:33.597903+00:00"
+}
