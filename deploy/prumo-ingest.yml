@@ -1,0 +1,31 @@
+# Candidate include for the existing web stack; the controller installs it on f0nix.
+services:
+  prumo-ingest:
+    build:
+      context: ${DOCKER_DIR}/stacks/web/images/prumo
+      dockerfile: Dockerfile
+    image: prumo-ingest:latest
+    container_name: prumo-ingest
+    command: ["python", "-u", "-m", "ingest.scheduler"]
+    restart: unless-stopped
+    mem_limit: 512m
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      disable: true
+    environment:
+      TZ: ${TZ}
+      PRUMO_DB_PATH: /data/prumo.sqlite3
+      PRUMO_RAW_DIR: /data/raw
+      PYTHONUNBUFFERED: "1"
+      FRED_API_KEY: ${FRED_API_KEY:-}
+    volumes:
+      - ${DOCKER_DIR}/stacks/web/appdata/prumo:/data:rw
+      - ${DOCKER_DIR}/resolv.conf:/etc/resolv.conf:ro
+    networks:
+      - t2_proxy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
