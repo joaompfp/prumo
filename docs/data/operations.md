@@ -19,8 +19,8 @@ The controller owns changes to `/home/joao/docker`, not this implementation slic
   `/home/joao/docker/stacks/web/compose/prumo-ingest.yml` and include
   `compose/prumo-ingest.yml` in `/home/joao/docker/stacks/web/compose.yml`.
   The existing stack supplies `t2_proxy`, `DOCKER_DIR` and `TZ`.
-- Correct the existing web `prumo.base.yml` environment: both `CAE_DB_PATH` and
-  `PRUMO_DB_PATH` must point to `/data/prumo.sqlite3`, not `/data/cae-data.duckdb`.
+- Correct the existing web `prumo.base.yml` environment: remove the obsolete `CAE_DB_PATH`,
+  set `PRUMO_DB_PATH=/data/prumo.sqlite3` and `PRUMO_RAW_DIR=/data/raw`.
   Retain the maintenance web command, HTTP healthcheck and `100.118.19.6:8088` binding.
   The web image still defaults to uvicorn on container port 8080.
 - Remove the obsolete `OLLAMA_BASE`/`ai_net` coupling from `prumo.yml` only under the
