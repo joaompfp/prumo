@@ -1,246 +1,66 @@
-# 🗺️ Prumo Documentation & Resources Map
+# Prumo documentation map
 
-Quick visual guide to all Prumo documentation, guides, and resources organized by function.
+The current system is the SQLite base-data pipeline and maintenance-only web app.
+Task 18 is deployed on f0nix; its real 24-hour observation and final project acceptance
+remain open. The [handoff](docs/superpowers/handoff/HANDOFF.md) owns progress and gates.
+Historical dashboard documents below are retained references, not current instructions.
 
----
+## Current entrypoints
 
-## 📖 Documentation Structure
+| Document | Purpose |
+|---|---|
+| [README](README.md) | Runtime overview, local setup, supported interfaces and test commands |
+| [Methodology](docs/data/methodology.md) | Data stages, native values, vintages, flags and sampled verification |
+| [Source catalogue](docs/data/sources.md) | Generated registry metadata, primary identifiers and reviewed independent channels |
+| [Operations](docs/data/operations.md) | Actual f0nix services/paths, status, manual-write safety and open observation |
+| [Manual refresh](docs/data/manual-refresh.md) | Original World Bank/E-REDES bundles, offline import semantics and return codes |
+| [Agent context](CLAUDE.md) | Agent instructions; human-prefix refresh awaits protected-file approval, with generated graph text retained |
+| [Local development constraints](AGENTS.md) | Repository instructions |
 
-```
-/home/joao/docker/stacks/web/images/prumo/
+For source or adapter work, read the methodology and registry decisions before changing
+code. For a production update, use operations and its linked manual instead of the old
+collector commands. The web health endpoint does not report source freshness.
 
-├── README.md                          # Main project overview
-├── .github/copilot-instructions.md    # AI agent guidelines
-├── CONTRIBUTING.md                    # Contribution procedures
-├── SOURCES.md                         # Data source registry
-│
-├── docs/
-│   ├── README.md                      # ⭐ Central documentation index
-│   ├── design-guide.md                # Visual standards & design guide
-│   ├── wp7-design-strings.md          # UI copy & labels
-│   │
-│   ├── operations/                    # Deployment & operations
-│   │   ├── MIGRATION_RUNBOOK.md       # Deployment procedure
-│   │   ├── PHASE_1_SUMMARY.md         # Initial setup
-│   │   ├── PHASE_2_FRONTEND_TESTING.md
-│   │   ├── PHASE_3_CI_CD_AUTOMATION.md
-│   │   └── PHASE_4_MONITORING.md
-│   │
-│   ├── planning/                      # Architecture & roadmap
-│   │   ├── PLAN-V7.md                 # Architecture & planning
-│   │   └── PRUMO-ROADMAP.md           # Feature roadmap
-│   │
-│   ├── data/                          # Data standards & coverage
-│   │   ├── NORMALIZATION.md           # Data standards
-│   │   ├── painel-indicators-audit.md # Indicator coverage
-│   │   ├── worldbank-gdp-collector-notes.md
-│   │   └── europa-coverage.md
-│   │
-│   ├── content/                       # Narratives & political context
-│   │   ├── narratives.md              # AI narrative generation
-│   │   ├── pcp-estatutos.md           # Political context
-│   │   └── pcp-programa.md
-│   │
-│   ├── research/                      # Exploratory research
-│   │   └── hugo-integration-research.md
-│   │
-│   ├── design/                        # SWD-inspired design references (no copyrighted binaries)
-│   │   ├── README.md                  # Attribution + design resource policy
-│   │   ├── swd-python-matplotlib/     # Matplotlib chart examples
-│   │   ├── swd-r-ggplot/              # R ggplot2 examples + theme
-│   │   └── swd-highcharts-nextjs/     # React/Next.js components
-│   │
-│   ├── testing/                       # Test fixtures & data
-│   └── archive/                       # Historical/deprecated docs
-│
-├── app/
-│   ├── services/                      # Business logic (helpers, compute, analysis)
-│   ├── routes/api.py                  # API endpoint reference
-│   └── main.py                        # FastAPI app entry
-│
-├── static/js/
-│   ├── api.js                         # Frontend API client
-│   ├── app.js                         # Hash router
-│   └── sections/                      # UI section components
-│
-├── collectors/                        # Data source integrations
-├── scripts/
-│   ├── collectors/                    # Data collection orchestration
-│   │   ├── cae-collect                # Main collection orchestrator
-│   │   ├── cae-v4-backfill.py         # Historical data backfill
-│   │   └── collect_*.py               # Individual collector scripts
-│   │
-│   ├── ai/                            # AI analysis & generation
-│   │   ├── batch_*.sh                 # Batch processing for AI
-│   │   └── generate_*.py              # Analysis & headline generation
-│   │
-│   └── maintenance/                   # Data management & maintenance
-│       ├── normalize_db.py            # Database normalization
-│       └── merge_staging.py           # Data merge operations
-│
-├── venv/                              # Python environment (Playwright, deps)
-│
-└── .github/
-    ├── copilot-instructions.md        # AI agent coding guidelines
-    └── CLAUDE.md (~docker/CLAUDE.md)  # Broader workspace context
-```
+## Registry and decisions
 
----
+| Path | Authority |
+|---|---|
+| [Core registry](registry/core.yaml) | Source metadata, licence eligibility, series identity, primary/cross-check role and active state |
+| [Licence review](registry/licences-todo.md) | Unresolved redistribution grants, separate from technical verification |
+| [Unverifiable definitions](registry/unverifiable.md) | Current DGEG block and boundaries of that finding |
+| [DGEG mapping findings](registry/unmapped-dgeg.md) | Per-series blockers and resumption criteria |
+| [Overlaps](registry/overlaps.md) | Provisional primary-source assignments for owner review |
+| [Deferred tail](registry/deferred-tail.md) | Indicators outside the current core |
+| [Design](docs/superpowers/specs/2026-11-10-base-data-pipeline-design.md) | Project 1 intent and original design; later ledger rulings supersede historical assumptions |
+| [Implementation plan](docs/superpowers/plans/2026-11-10-base-data-pipeline.md) | Task scope, not proof of operational acceptance |
+| [Decision ledger](docs/superpowers/handoff/progress-ledger.md) | Binding rulings and review history; controller-owned |
+| [Task 18 release checkpoint](docs/superpowers/handoff/reports/task-18-controller-review.md) | Real deployment evidence, distinct from final observation acceptance |
+| [Task 19 brief](docs/superpowers/handoff/reports/task-19-brief.md) | Dated intermediate source checkpoint and documentation ownership |
 
-## 🗂️ Navigation Quick Links
+## Code navigation
 
-### For Different Roles
+- `ingest/db.py` and `ingest/migrations/`: all SQL access and schema evolution.
+- `ingest/sources/` and `ingest/verifiers/`: separate collector and independent-channel implementations.
+- `ingest/validate.py`, `ingest/models.py`, `ingest/flags.py`: validation, periods, exact
+  text/Decimal handling and reviewed flag mappings.
+- `ingest/operations.py`, `ingest/cli.py`: grouping and operator command semantics.
+- `ingest/scheduler.py`, `ingest/cadence.py`: deployed serial worker and shared refresh policy.
+- `app/main.py`: maintenance GET routes, static mount and `/healthz`.
+- `tests/ingest/`, `tests/test_maintenance.py`, `tests/test_docker_contract.py`: offline
+  regression coverage and image/runbook contracts.
 
-#### 👤 Project Manager / Product Owner
-Start here:
-1. [Prumo README](README.md) — Feature overview
-2. [PRUMO-ROADMAP.md](docs/planning/PRUMO-ROADMAP.md) — What's coming
-3. [docs/README.md](docs/README.md) — Full doc index
-4. [SOURCES.md](SOURCES.md) — Data coverage
+## Historical references
 
-#### 👨‍💻 Backend Developer
-Start here:
-1. [README.md](README.md) — Architecture overview
-2. [.github/copilot-instructions.md](.github/copilot-instructions.md) — Code conventions
-3. [docs/planning/PLAN-V7.md](docs/planning/PLAN-V7.md) — Design decisions
-4. [docs/data/NORMALIZATION.md](docs/data/NORMALIZATION.md) — Data standards
-5. `collectors/` — Data source implementations
+These documents describe earlier designs, scope or dashboard behavior. They do not
+supersede the current registry, methodology, operations or handoff.
 
-#### 🎨 Frontend / UX Designer
-Start here:
-1. [docs/design-guide.md](docs/design-guide.md) — Visual standards
-2. [docs/design/README.md](docs/design/README.md) — SWD design resources
-3. [docs/wp7-design-strings.md](docs/wp7-design-strings.md) — UI copy & labels
-4. `static/` — CSS, JS, components
+- [Older documentation index](docs/README.md) and [source notes](SOURCES.md).
+- [Earlier normalization policy](docs/data/NORMALIZATION.md) and
+  [indicator audit](docs/data/painel-indicators-audit.md).
+- [Legacy deployment runbook](docs/operations/MIGRATION_RUNBOOK.md).
+- [Design guide](docs/design-guide.md) and [design resources](docs/design/README.md).
+- Retained collector code, scripts, seeds and
+  [historical audit evidence](docs/superpowers/handoff/reports/).
 
-#### 🚀 DevOps / SRE
-Start here:
-1. [docs/operations/MIGRATION_RUNBOOK.md](docs/operations/MIGRATION_RUNBOOK.md) — Safe deployment
-2. [docs/operations/PHASE_1_SUMMARY.md](docs/operations/PHASE_1_SUMMARY.md) — Initial setup
-3. [docs/operations/PHASE_3_CI_CD_AUTOMATION.md](docs/operations/PHASE_3_CI_CD_AUTOMATION.md) — Automation
-4. [docs/operations/PHASE_4_MONITORING.md](docs/operations/PHASE_4_MONITORING.md) — Health checks
-
-#### 🧪 QA / Test Engineer
-Start here:
-1. [docs/operations/PHASE_2_FRONTEND_TESTING.md](docs/operations/PHASE_2_FRONTEND_TESTING.md) — Test procedures
-2. [docs/testing/](docs/testing/) — Test fixtures & data
-3. [~docker/md/browser-automation.md](/docker/md/browser-automation.md) — Playwright notes
-4. `tests/` — Your test code
-
-#### 🔍 Data Analyst
-Start here:
-1. [SOURCES.md](SOURCES.md) — Data sources & coverage
-2. [docs/data/painel-indicators-audit.md](docs/data/painel-indicators-audit.md) — All 500+ indicators
-3. [docs/data/NORMALIZATION.md](docs/data/NORMALIZATION.md) — Data standards
-4. [docs/data/europa-coverage.md](docs/data/europa-coverage.md) — EU comparison data
-5. [docs/data/worldbank-gdp-collector-notes.md](docs/data/worldbank-gdp-collector-notes.md) — GDP specifics
-
-#### 🤖 AI / ML Developer
-Start here:
-1. [docs/content/narratives.md](docs/content/narratives.md) — AI narrative generation
-2. `app/services/interpret.py` — LLM integration
-3. `app/services/ideology_lenses.py` — Political context lenses
-4. [docs/content/pcp-*.md](docs/content/) — Political program context
-
----
-
-## 🛠️ Tools & Utilities
-
-### Browser Automation
-- **Location:** `venv/bin/python` (Playwright installed)
-- **Bash aliases:** `pw*` commands in `~/.bash_aliases`
-- **Guide:** `/docker/md/browser-automation.md`
-- **Usage:** `pw https://joao.date/dados`, `pw-test`, `pw-snap <url>`
-
-### Testing
-- **Framework:** pytest
-- **Config:** `pytest.ini`
-- **Test code:** `tests/` folder
-- **Run:** `pytest -v` or `py-test` alias
-
-### Code Quality
-- **Python style:** Per [.github/copilot-instructions.md](.github/copilot-instructions.md)
-- **Linting:** pytest with coverage
-- **Type hints:** Explicit in helpers/services
-
-### Data Collection
-- **Collectors:** `scripts/collectors/` Python modules and orchestrator
-- **Main script:** `scripts/collectors/cae-collect` bash orchestrator
-- **Backfill:** `scripts/collectors/cae-v4-backfill.py`
-- **Individual collectors:** `scripts/collectors/collect_*.py` (by source)
-
----
-
-## 📊 Key Concepts
-
-| Concept | Definition | Reference |
-|---------|-----------|-----------|
-| **KPI Card** | Atomic unit (metric + trend + YoY + sparkline) | [design-guide.md](docs/design-guide.md) |
-| **Service** | Business logic module returning structured JSON | [PLAN-V7.md](docs/planning/PLAN-V7.md) |
-| **Collector** | Data source client (INE, Eurostat, etc) | `collectors/`  |
-| **Period** | Time unit (YYYY-MM, YYYY-Q{N}, YYYY) | [NORMALIZATION.md](docs/data/NORMALIZATION.md) |
-| **Sentiment** | Good/neutral/bad indicator classification | [design-guide.md](docs/design-guide.md) |
-| **Lens** | Political perspective filter for narratives | [narratives.md](docs/content/narratives.md) |
-| **Sparkline** | Tiny 60px chart showing recent trend | [design-guide.md](docs/design-guide.md) |
-
----
-
-## 🔗 External Links
-
-### Official Sources
-- **INE** (Portugal) — [www.ine.pt](https://www.ine.pt)
-- **Eurostat** (EU) — [ec.europa.eu/eurostat](https://ec.europa.eu/eurostat/)
-- **FRED** (Fed Reserve) — [fred.stlouisfed.org](https://fred.stlouisfed.org)
-- **OECD** — [oecd.org](https://www.oecd.org)
-- **World Bank** — [worldbank.org](https://www.worldbank.org)
-
-### Related Projects
-- **Storytelling with Data** — [storytellingwithdata.com](https://www.storytellingwithdata.com/)
-- **FastAPI** — [fastapi.tiangolo.com](https://fastapi.tiangolo.com/)
-- **DuckDB** — [duckdb.org](https://duckdb.org/)
-- **ECharts** — [echarts.apache.org](https://echarts.apache.org/)
-- **Playwright** — [playwright.dev](https://playwright.dev/)
-
----
-
-## 📱 Common Tasks
-
-### "I need to deploy Prumo"
-→ Read `docs/operations/MIGRATION_RUNBOOK.md` (6-section procedure + rollback)
-
-### "I need to add a new KPI"
-→ Read `docs/design-guide.md` + `app/services/painel.py`
-
-### "I need to add a new data source"
-→ Read `SOURCES.md` + `collectors/ine.py` (template) + `docs/data/NORMALIZATION.md`
-
-### "I need to troubleshoot a deployment"
-→ Read `docs/operations/PHASE_4_MONITORING.md` + `docs/operations/MIGRATION_RUNBOOK.md` section 6
-
-### "I need to design a new visualization"
-→ Read `docs/design-guide.md` + `docs/design/README.md`
-
-### "I need to understand the data flow"
-→ Read `README.md` "Data Sources" + `SOURCES.md` + `docs/data/NORMALIZATION.md`
-
-### "I need to add political context"
-→ Read `docs/content/narratives.md` + `docs/content/pcp-*.md` + `app/services/ideology_lenses.py`
-
----
-
-## ✅ Organization Checklist
-
-- [x] Central docs index: `docs/README.md`
-- [x] Design guide: `docs/design-guide.md`
-- [x] Design resources: `docs/design/` (SWD-inspired notes + open implementations only)
-- [x] Deployment runbook: `docs/operations/MIGRATION_RUNBOOK.md`
-- [x] AI agent guidelines: `.github/copilot-instructions.md`
-- [x] Browser automation: `docker/md/browser-automation.md`
-- [x] Bash aliases: `~/.bash_aliases` (pw*, pwenv)
-- [x] Docker workspace docs: `docker/CLAUDE.md`
-
----
-
-**Last Updated:** March 5, 2026  
-**Purpose:** Quick navigation and role-based guidance  
-**Audience:** All Prumo contributors
+The removed UI is recoverable at the Git tag `legacy-ui-final`. Retention is deliberate;
+a historical link does not assert that its old commands or imports still work.

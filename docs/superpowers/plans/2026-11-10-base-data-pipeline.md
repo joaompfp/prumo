@@ -205,6 +205,8 @@ Release checkpoint 2026-11-13: scheduler/image code passed independent specifica
 
 ### Task 19: Docs and final audit pack
 
+Checkpoint 2026-11-13: generator/early offline CLI command, complete registry catalogue, methodology and current deployment/manual runbooks are implemented on pipeline-rebuild. Controller final full suite: 1,471 passed / 7 live deselected / 3 warnings in 383.22s; independent authored-scope specification PASS and quality APPROVED after bounded audit/runbook fixes. The planned CLAUDE.md human-prefix update was blocked by protected-file approval timeout; the entire file remains unchanged and that requirement is OPEN, with no alternate write permitted. Task 18's real 24-hour gate and final whole-branch/owner acceptance also remain open. This is not Project 1 completion. See `docs/superpowers/handoff/reports/task-19-brief.md` and implementation reports.
+
 **Files:** Modify `README.md`, `CLAUDE.md`, `DOCS_MAP.md`; Create `docs/data/methodology.md`, `docs/data/sources.md`
 
 - [ ] **Step 1:** `docs/data/methodology.md`: three stages, vintage rules, flag vocabulary, verification procedure (sampling, independent channel, 100% rule, re-fetch), the gap-month revision caveat, ingestion-date recording. `docs/data/sources.md`: generated from the registry by `python -m ingest docs` (add `ingest/docgen.py` with test `test_sources_md_lists_every_source_with_licence`): per source licence, attribution, primary indicators, independent verification channel.

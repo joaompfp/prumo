@@ -1,0 +1,125 @@
+{
+  "scope": "World Bank deployed evidence offline auditor",
+  "network": "forbidden",
+  "positive_replay": "passed on original JSON and compressed durable capsule",
+  "negative_probes": {
+    "altered_stored_token": {"exit_code": 1, "rejected": true},
+    "altered_csv_result": {"exit_code": 1, "rejected": true},
+    "missing_latest_series_sample": {"exit_code": 1, "rejected": true}
+  },
+  "fix_round_1": {
+    "probe_script": "worldbank-audit-probes.py",
+    "red_exit_code": 1,
+    "green_exit_code": 0,
+    "red": {
+      "all_expectations_passed": false,
+      "negative_probes": {
+        "altered_csv_result": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "altered_run_sample_size": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "altered_run_seed": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "altered_stored_token": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "duplicate_item_replacement": {
+          "accepted_sample_count": 949,
+          "latest_series_samples_covered": 930,
+          "rejected": false
+        },
+        "missing_collector_receipt": {
+          "detail": "(60, 'worldbank.death_rate.AO', '1960')",
+          "exception": "KeyError",
+          "rejected": true
+        },
+        "missing_historical_sample_adjusted_size": {
+          "accepted_sample_count": 948,
+          "latest_series_samples_covered": 930,
+          "rejected": false
+        },
+        "missing_latest_series_sample": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        }
+      },
+      "network": "forbidden",
+      "positive_replay": "passed on original gzip and its in-memory JSON contents",
+      "processing_timestamp_semantics": {
+        "expected_last_processing_finished_at": "2026-11-13T06:52:25.119769+00:00",
+        "passed": false
+      },
+      "production_mutated": false,
+      "scope": "receipt-specific offline helper regression probes; not application tests",
+      "task_18_closed": false
+    },
+    "green": {
+      "all_expectations_passed": true,
+      "negative_probes": {
+        "altered_csv_result": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "altered_run_sample_size": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "altered_run_seed": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "altered_stored_token": {
+          "detail": "",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "duplicate_item_replacement": {
+          "detail": "duplicate sample identity: (36, 'worldbank.rnd_pct_gdp.AO', '2016')",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "missing_collector_receipt": {
+          "detail": "expected 18 collector receipts",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "missing_historical_sample_adjusted_size": {
+          "detail": "expected 949 verification items",
+          "exception": "AssertionError",
+          "rejected": true
+        },
+        "missing_latest_series_sample": {
+          "detail": "expected 949 verification items",
+          "exception": "AssertionError",
+          "rejected": true
+        }
+      },
+      "network": "forbidden",
+      "positive_replay": "passed on original gzip and its in-memory JSON contents",
+      "processing_timestamp_semantics": {
+        "expected_last_processing_finished_at": "2026-11-13T06:52:25.119769+00:00",
+        "passed": true
+      },
+      "production_mutated": false,
+      "scope": "receipt-specific offline helper regression probes; not application tests",
+      "task_18_closed": false
+    }
+  },
+  "production_mutated": false,
+  "task_18_closed": false
+}

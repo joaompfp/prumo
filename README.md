@@ -1,214 +1,116 @@
 # Prumo
 
-Economic indicators dashboard built with **FastAPI** + **DuckDB** + **ECharts**, serving 11 interactive sections with data from 9 official statistical sources.
+Prumo is rebuilding its base-data layer for Portuguese, European and world statistics.
+The Python `ingest/` pipeline stores publisher responses and validated observations in
+SQLite, with independent sampled verification and licence-gated queryability.
 
-## Open-source docs
+The maintenance web app and ingestion worker are already deployed on f0nix. The public
+sites, `https://cae.joao.date/` and `https://joao.date/dados/`, remain in "Em manutenção"
+until the later UI revamp. The retired dashboard is recoverable at the Git tag
+`legacy-ui-final`; its chart sections and data API are not current interfaces.
 
-- **[�️ Documentation Map](DOCS_MAP.md)** — Quick navigation guide for all resources
-- **[�📚 Full Documentation Index](docs/README.md)** — Central guide to all project docs
-- Contribution guide: [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- Formal source registry: [`SOURCES.md`](SOURCES.md)
-- Design resources: [`docs/design/`](docs/design/) — design inspiration notes and open-source implementations (no copyrighted book files)
-- AI agent guidelines: [`copilot-instructions.md`](.github/copilot-instructions.md)
+Task 18's real 24-hour observation remains open. Deployment does not close that gate
+or constitute final owner acceptance of Project 1. See the [current handoff](docs/superpowers/handoff/HANDOFF.md)
+and [operations](docs/data/operations.md) for the dated checkpoint and remaining gates.
 
-## Português (pt-PT)
+## Documentation
 
-Documentação complementar em português está disponível em [`docs/`](stacks/web/images/prumo/docs/) e em notas de projeto como [`SETUP_NOTES.md`](stacks/web/images/prumo/SETUP_NOTES.md). O `README` principal mantém-se em inglês para o público open-source internacional.
+- [Documentation map](DOCS_MAP.md): current entrypoints and historical references.
+- [Methodology](docs/data/methodology.md): raw, validated and served stages, precision,
+  vintages, flags and the limits of sampled verification.
+- [Source catalogue](docs/data/sources.md): registry-generated licences, attribution,
+  primary-series identifiers and reviewed independent channels.
+- [Operations](docs/data/operations.md): deployed f0nix paths, status, worker ownership,
+  manual-write procedure and observation acceptance.
+- [Manual refresh](docs/data/manual-refresh.md): original-response capture and offline
+  bundle rules for World Bank and E-REDES.
+- [Handoff](docs/superpowers/handoff/HANDOFF.md): controller-owned decisions and review status.
 
-<img width="1471" height="1082" alt="image" src="https://github.com/user-attachments/assets/a2a779d1-a2ec-40c8-8e38-a47f040a7600" />
+## Local setup
 
+Terminology: HTTP means Hypertext Transfer Protocol; API means application programming
+interface; JSON means JavaScript Object Notation; CLI means command-line interface;
+SQL means Structured Query Language. Publisher identities are in the source catalogue.
 
-## Architecture
-
-```
-prumo/
-├── app/                          # FastAPI application
-│   ├── main.py                   # App entrypoint, CORS, static mount, healthcheck
-│   ├── config.py                 # Environment variables and paths
-│   ├── database.py               # Thread-safe DuckDB connection pool
-│   ├── constants/                # Static data (catalog, events, country lists)
-│   │   ├── catalog.py            # CATALOG — 9 sources, ~380 indicators
-│   │   ├── events.py             # CHART_EVENTS, BRIEFING/SUMMARY indicator lists
-│   │   ├── countries.py          # COMPARE_COUNTRIES, COMPARE_DATASETS
-│   │   └── mappings.py           # USED_IN, FRED_SERIES, WB_CODES, SOURCE_META
-│   ├── routes/
-│   │   ├── api.py                # /api/* endpoints (thin handlers → services)
-│   │   └── pages.py              # GET / — serves dashboard via Jinja2
-│   └── services/                 # Business logic, one module per section
-│       ├── helpers.py            # Shared: YoY, trend, sparkline, period utils
-│       ├── resumo.py             # Resumo KPIs
-│       ├── industria.py          # Industrial production (IPI)
-│       ├── energia.py            # Energy (REN, E-REDES, DGEG)
-│       ├── emprego.py            # Employment (IEFP, INE)
-│       ├── macro.py              # Macro indicators (GDP, inflation, trade)
-│       ├── ficha.py              # Data sheet / DB stats
-│       ├── fosso.py              # EU convergence gap
-│       ├── produtividade.py      # Productivity metrics
-│       ├── analysis.py           # Automated trend analysis
-│       ├── explorador.py         # Data explorer catalog
-│       ├── series.py             # Generic time series queries + country compare
-│       └── briefing.py           # Auto-generated briefing + summary
-├── templates/
-│   └── dashboard.html            # SPA shell (Jinja2, hash router, ECharts)
-├── static/
-│   ├── css/
-│   │   ├── swd-theme.css         # Storytelling with Data theme
-│   │   └── sections.css          # Section-specific styles
-│   └── js/
-│       ├── app.js                # Hash router + lazy section loading
-│       ├── api.js                # Fetch wrappers with 5-min cache
-│       ├── swd-charts.js         # SWD chart factory (ECharts)
-│       └── sections/             # 11 section initializers (one per tab)
-├── collectors/                   # Data source clients (CLI tools)
-│   ├── ine.py                    # INE — Instituto Nacional de Estatística
-│   ├── eurostat.py               # Eurostat
-│   ├── fred.py                   # FRED — Federal Reserve Economic Data
-│   ├── oecd.py                   # OECD
-│   ├── bportugal.py              # Banco de Portugal
-│   ├── ren.py                    # REN — Rede Energética Nacional
-│   ├── eredes.py                 # E-REDES — electricity distribution
-│   ├── dgeg_fuel_api.py          # DGEG — fuel prices
-│   └── worldbank.py              # World Bank
-├── stats_lib/                    # Shared data layer for collectors
-├── scripts/
-│   ├── cae-collect               # Main collection orchestrator
-│   └── cae-v4-backfill.py        # Historical data backfill
-├── analise-content.html          # Pre-rendered analysis content
-├── analise-metadata.json         # Analysis metadata
-├── requirements.txt              # Python dependencies
-└── Dockerfile                    # Python 3.12 + uvicorn
-```
-
-## Data Sources
-
-| Source | Provider | Data |
-|--------|----------|------|
-| INE | Instituto Nacional de Estatística | Industrial production, employment, GDP, trade |
-| Eurostat | European Commission | Cross-country comparisons (manufacturing, GDP, unemployment) |
-| FRED | Federal Reserve Bank of St. Louis | US interest rates, global benchmarks |
-| OECD | Organisation for Economic Co-operation | Composite leading indicators, productivity |
-| BdP | Banco de Portugal | Monetary/financial indicators |
-| REN | Rede Energética Nacional | Electricity consumption/production |
-| E-REDES | Electricity distribution | Grid distribution data |
-| DGEG | Direcção-Geral de Energia e Geologia | Fuel prices |
-| World Bank | World Bank Group | Long-term development indicators |
-
-For provider URLs, cadence and terms/caveats notes, see [`SOURCES.md`](stacks/web/images/prumo/SOURCES.md).
-
-## Dashboard Sections
-
-| Section | Route | API | Description |
-|---------|-------|-----|-------------|
-| Resumo | `#resumo` | `/api/resumo` | Overview KPIs with sparklines and trends |
-| Indústria | `#industria` | `/api/industria` | Industrial Production Index (IPI) by sector |
-| Europa | `#europa` | `/api/europa` | PT vs EU country comparisons |
-| Energia | `#energia` | `/api/energia` | Energy consumption and production |
-| Emprego | `#emprego` | `/api/emprego` | Employment, unemployment, job offers |
-| Macro | `#macro` | `/api/macro` | GDP, inflation, trade balance |
-| Análise | `#analise` | `/api/analysis` | Automated trend analysis |
-| Fosso | `#fosso` | `/api/fosso` | EU convergence gap |
-| Produtividade | `#produtividade` | `/api/produtividade` | Labour productivity metrics |
-| Explorador | `#explorador` | `/api/explorador` | Data explorer (all indicators) |
-| Ficha Técnica | `#ficha` | `/api/ficha` | Data sheet, DB stats, sources |
-
-## API Endpoints
-
-All endpoints are under `/api/` and return JSON.
-
-| Endpoint | Method | Parameters | Description |
-|----------|--------|------------|-------------|
-| `/api/resumo` | GET | — | Summary KPIs |
-| `/api/industria` | GET | `period` (int, default 5) | IPI sectors data |
-| `/api/europa` | GET | `dataset`, `countries`, `months`, `indicator`, `source`, `since` | Country comparison |
-| `/api/energia` | GET | — | Energy data |
-| `/api/emprego` | GET | — | Employment data |
-| `/api/macro` | GET | — | Macro indicators |
-| `/api/ficha` | GET | — | DB stats and source metadata |
-| `/api/fosso` | GET | — | EU convergence gap |
-| `/api/produtividade` | GET | — | Productivity metrics |
-| `/api/analysis` | GET | — | Automated trend analysis |
-| `/api/explorador` | GET | — | Full indicator catalog |
-| `/api/briefing` | GET | — | Auto-generated briefing |
-| `/api/summary` | GET | — | Executive summary |
-| `/api/series` | GET | `source`, `indicator`, `from`, `to` | Raw time series query |
-| `/api/compare` | GET | `dataset`, `countries`, `months`, `indicator`, `source`, `since` | Country comparison (alias for europa) |
-| `/api/data` | GET | — | Full dataset dump |
-| `/api/kpis` | GET | — | Latest value per indicator |
-| `/api/catalog` | GET | — | CATALOG enriched with DB stats |
-| `/api/events` | GET | — | Historical event markers |
-| `/healthz` | GET | — | Health check |
-| `/docs` | GET | — | Swagger UI (auto-generated) |
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CAE_DB_PATH` | `/data/cae-data.duckdb` | Path to main DuckDB database |
-| `CAE_PORT` | `8080` | Server port |
-| `CAE_BASE_PATH` | `""` | URL base path (for subpath serving) |
-| `SKILLS_DIR` | `/home/node/.openclaw/workspace/skills/cae-reports` | Path to OpenClaw skills directory |
-| `TZ` | — | Timezone (from compose) |
-
-## Local `server-env` workflow (non-commit)
-
-For machine-specific setup, use a local folder at `stacks/web/images/prumo/server-env/`.
-
-- `server-env/` is intentionally ignored by git and must never be committed.
-- Keep all local-only links/files inside `server-env/` (for example symlinks to root-level resources such as `.bash_aliases`, `.env`, and selected folders under `md/`).
-- Preferred pattern is symlink-based references from `server-env/` so local server context is available without changing tracked deployment/configuration files.
-
-Example local setup:
+Python 3.12 is the deployed image baseline. From the repository root:
 
 ```bash
-mkdir -p stacks/web/images/prumo/server-env
-ln -s ../../../../../.bash_aliases stacks/web/images/prumo/server-env/bash_aliases
-ln -s ../../../../../.env stacks/web/images/prumo/server-env/env
-ln -s ../../../../../md stacks/web/images/prumo/server-env/md
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m ingest --help
+.venv/bin/python -m ingest run --help
+.venv/bin/python -m ingest capture --help
+.venv/bin/python -m ingest.scheduler --help
 ```
 
-This workflow is local-only and does not change compose behavior or deployment semantics.
-
-## Data Volume & First-Run Initialization
-
-On its first run, the container will automatically initialize the `/data` volume with default configuration (`site.json`) and ideology defaults if they don't already exist. The DuckDB database is **not** included in the image; if one is not mounted, the system will place a `README-DB.txt` indicating that data needs to be populated via the collection scripts or mounted externally. This ensures safe, idempotent bootstrapping without overwriting existing data.
-
-## Deployment
-
-The dashboard runs as a Docker container behind Traefik reverse proxy.
-
-### Compose layering (Phase 2)
-
-Prumo is now split into two compose layers under [`stacks/web/compose/`](stacks/web/compose/):
-
-- [`prumo.base.yml`](stacks/web/compose/prumo.base.yml): portable/OSS app defaults (build, runtime env, healthcheck).
-- [`prumo.yml`](stacks/web/compose/prumo.yml): server override (Traefik routes, proxy cert chain, server networks, bind mounts used on this host).
-
-The stack loader in [`stacks/web/compose.yml`](stacks/web/compose.yml) includes base first and override second so current server behavior remains unchanged while keeping a reusable base.
-
-### Build and deploy
+Help does not fetch sources or open the data store. A local maintenance app needs no
+populated database:
 
 ```bash
-dc-jarbas-up cae-dashboard
+.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8080
 ```
 
-### Routes
+GET `/healthz` returns `{"status":"ok"}`. Other non-static GET paths return the
+maintenance page, including old `/api/*` paths and `/docs`; there is no public data API
+or interactive API documentation. `/static` is a mounted static directory. Health
+reports web-process availability, not ingestion freshness. HEAD on the maintenance
+route currently returns 405.
 
-- **Primary**: `https://cae.joao.date` — direct access
-- **Subpath**: `https://joao.date/dados` — served under subpath with Traefik StripPrefix
+## Runtime layout
 
-The subpath route uses Traefik's `StripPrefix` middleware which sets `X-Forwarded-Prefix: /dados`. The app reads this header to inject the correct `BASE_PATH` into the template, so all static asset and API URLs resolve correctly.
+| Path | Responsibility |
+|---|---|
+| `ingest/sources/` | Publisher-specific fetching and parsing |
+| `ingest/verifiers/` | Independently parsed publisher channels |
+| `ingest/pipeline.py`, `ingest/verify.py` | Raw capture, validation and sampled verification |
+| `ingest/db.py`, `ingest/migrations/` | SQL access and versioned SQLite schema |
+| `ingest/cli.py`, `ingest/operations.py` | Command-line interface and dataset-group policy |
+| `ingest/scheduler.py`, `ingest/cadence.py` | Serial refresh, persisted retry state and cadence |
+| `registry/core.yaml` | Authoritative source and series definitions, including inactive entries |
+| `app/main.py`, `static/` | Maintenance-only HTTP app and static assets |
+| `deploy/prumo-ingest.yml` | Worker definition installed in the f0nix infrastructure stack |
+| `tests/ingest/` | Offline pipeline, adapter, verifier and CLI tests; opt-in live tests |
 
-### Collect data
+Retained `collectors/`, scripts, seeds and archived documentation are historical or
+unresolved integrations, not the deployed ingestion entrypoint. The runtime image has
+no DuckDB dependency. Do not regenerate `registry/core.yaml` from a legacy proposal or
+remove retained data to make the documentation look current.
+
+## Commands and paths
+
+`python -m ingest` provides `docs`, `run`, `capture`, `status`, `verify`,
+`import-legacy` and `replay`. `python -m ingest docs` renders the source catalogue
+to stdout without network or database access; `python -m ingest --registry PATH docs`
+selects a custom registry. The catalogue is generated, not edited by hand. Consult
+subcommand help before a write. `run --dry-run` still performs real
+network fetching in an isolated temporary database. `replay` is a fresh re-fetch, not
+reconstruction of missing historical vintages. Bundle imports are offline but write
+the selected destination database.
+
+Production uses `/data/prumo.sqlite3` and `/data/raw`, shared by `prumo` and
+`prumo-ingest` on f0nix. The worker reads `PRUMO_DB_PATH`; the ingestion CLI's database
+override is still `PRUMO_DB`. Both support `PRUMO_RAW_DIR`. For operator CLI commands,
+pass global `--db` and `--raw-dir` explicitly before the subcommand, as shown in
+[operations](docs/data/operations.md). Local experiments must use separate paths.
+
+A registry licence grant and successful verification are separate requirements. FRED,
+OECD and REN remain legally withheld; DGEG remains inactive and not verifiable under
+its current definitions. [Licence decisions](registry/licences-todo.md) and
+[unverifiable definitions](registry/unverifiable.md) retain the unresolved cases.
+
+## Tests and lint
 
 ```bash
-docker exec cae-dashboard ./scripts/cae-collect
+.venv/bin/python -m pytest tests -q
+.venv/bin/ruff check app/ ingest/
 ```
 
-## Technical Notes
+Ruff is a development/CI tool, installed separately from `requirements.txt`. Default
+pytest configuration deselects live tests; invoking live collection requires explicit
+scope. For documentation-only changes, use focused link, shell syntax, help and
+relevant contract checks rather than repeating the controller's full suite.
 
-- **Single worker**: Uvicorn runs with `--workers 1` because DuckDB connections are not thread-safe. FastAPI's thread pool handles concurrent requests via per-thread connection reuse.
-- **No auth**: Dashboard is public (`chain-no-auth@file` middleware in Traefik).
-- **SPA routing**: The frontend uses hash-based routing (`#section`). All navigation is client-side; the server only serves the single HTML shell.
-- **Chart library**: ECharts 5.5.0 (CDN) with a custom SWD (Storytelling with Data) theme.
-- **Caching**: `api.js` caches API responses in memory for 5 minutes to reduce DB load during tab switching.
-- **Database**: DuckDB in read-only mode. Data is collected externally by the `cae-collect` script and written to the database separately.
+Deployment and independent manual writes require separate owner authorization. Use
+the f0nix `dc-web-*` aliases and the [operations runbook](docs/data/operations.md);
+never start a second writer alongside the scheduler. No push alerts or automatic
+backups are part of this pipeline.

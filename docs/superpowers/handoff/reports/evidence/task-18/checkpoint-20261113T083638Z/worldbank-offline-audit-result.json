@@ -1,0 +1,23 @@
+{
+  "active_series": 930,
+  "collector_receipt_max": "2026-11-13T06:52:24.974898+00:00",
+  "collector_receipt_min": "2026-11-13T01:46:42.519832+00:00",
+  "csv_evidence_envelopes": 18,
+  "exported_at": "2026-11-13T08:46:19.608659+00:00",
+  "historical_failed_runs": {
+    "failed-fetch": 17,
+    "failed-verification": 9
+  },
+  "independent_exact_csv_samples": 949,
+  "last_processing_finished_at": "2026-11-13T06:52:25.119769+00:00",
+  "latest_series_samples_covered": 930,
+  "limitation": "Independent CSV verification is sampled, not every stored row.",
+  "network": "forbidden",
+  "other_non_numeric_cells": 0,
+  "publisher_null_cells": 15465,
+  "raw_json_receipts": 18,
+  "stored_rows_exact_against_original_json": 45915,
+  "successful_live_groups": 18,
+  "task_13_live_gate": "passed in deployed per-indicator flow",
+  "task_18_closed": false
+}

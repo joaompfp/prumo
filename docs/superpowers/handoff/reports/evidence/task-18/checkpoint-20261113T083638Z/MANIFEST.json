@@ -1,0 +1,31 @@
+{
+  "files": {
+    "audit-20261113T083638Z.json": {
+      "bytes": 11567,
+      "sha256": "3e39c7c850de6852d0d942c15974287c86d87d6e9fc24997c9807bc12321ce9a"
+    },
+    "status-20261113T083638Z.json": {
+      "bytes": 1007773,
+      "sha256": "30b8c11e3251a2c956f1138b230f0a32ecb21d76eb43bfcfc4672db2666d2ec6"
+    },
+    "summary-20261113T083638Z.json": {
+      "bytes": 9872,
+      "sha256": "39e27a50418e5880518bf25a2361ee8396464f0a7d8d33bcfceafd9769f92e9a"
+    },
+    "worker-20261113T083638Z.log": {
+      "bytes": 19084,
+      "sha256": "7f398a11134bde3c2b02051b5723588d1d4b3e8f43e57140354818583f8882bd"
+    },
+    "worldbank-live-evidence.json.gz": {
+      "bytes": 3541615,
+      "sha256": "4ac461bc853c36d82ab78763a923c9d7000a3ae7514397482e65975e0ecc04ba"
+    },
+    "worldbank-offline-audit-result.json": {
+      "bytes": 850,
+      "sha256": "95a3a0598576c385e263fbe518d6730ed04d6c79ae46f159876a71ed06bcc257"
+    }
+  },
+  "publisher_archive": false,
+  "schema": "prumo-controller-checkpoint",
+  "version": 1
+}

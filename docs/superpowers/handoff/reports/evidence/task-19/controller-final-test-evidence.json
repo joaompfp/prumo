@@ -1,0 +1,35 @@
+{
+  "base_commit": "19536716ab27d340e8ef08d67b24bb83ccf5f93f",
+  "branch": "pipeline-rebuild",
+  "command": ".venv-ci/bin/python -m pytest tests -q --basetemp=/home/joao/.hermes/cache/scratch/prumo-task19-final-full",
+  "duration_seconds": 383.22,
+  "hosted_ci_claim": false,
+  "live_deselected": 7,
+  "observed_exit_code": 0,
+  "open_gates": [
+    "CLAUDE protected-file approval",
+    "Task18 actual24-hour observation",
+    "finalwholebranch/owneracceptance"
+  ],
+  "passed": 1471,
+  "scope": "controller final complete local suite after Q1 standalone runbook correction",
+  "separate_focused_controller_result": {
+    "duration_seconds": 0.19,
+    "passed": 12
+  },
+  "tested_file_hashes": {
+    "DOCS_MAP.md": "d2fb5de434ab3d364c7841ba5aeb2827e2b0f35c6edd8ffc80d3a3891ff6cfae",
+    "README.md": "326e441ea51856740a10c53ac7c6a6f96bff04cbb253f112559d3315727dc6b9",
+    "docs/data/manual-refresh.md": "5d13cb81173474d9f52a0dee189580f9902528a6638c1a740c8ae65758a530e3",
+    "docs/data/methodology.md": "1ce40f11b7c01c3fc6cfafd176e4fb923966cb1ebeeea222389e7f0b6d674214",
+    "docs/data/operations.md": "f14170f6545afbdce97e1029e421f20d85e9a3155cc3dd13dbe673244ca0144a",
+    "ingest/cli.py": "11085715e340df17eb37707c7c30fc86137a62556e21dd24caa4219b0c1270f4",
+    "ingest/docgen.py": "0966e1e2c411947f2d0bcdb5c1b7c81ea58bc33af7c1f778ece16fffb31a78fb",
+    "pytest.ini": "ba08feb93eb3938b3059f4054942059b725693ce6af5ff3f8ec563eb8a3201f3",
+    "registry/core.yaml": "07e8b01c2cb09199af939503dd7eb1b9e1211d84ea9b9aa9bdd450b6310467dd",
+    "requirements.txt": "42737c5a583e2d09fa903b42525e69e8b38088b0494f1697b4a28e1f02e00955",
+    "tests/ingest/test_docgen.py": "3786ef6aac32367690aadbe84d0e8b3449b63f20dbe92b763f32218f1fd9a11c",
+    "tests/test_manual_runbook.py": "0623c37289cea8ce3ba87c8eb2708be94a3f9c8591b6b410c924ed89fd475b2d"
+  },
+  "warnings": 3
+}

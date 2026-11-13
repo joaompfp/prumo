@@ -1,0 +1,374 @@
+{
+  "acceptance": "controller review required; source exceptions remain explicit",
+  "attempt_log_count": 45,
+  "attempt_states": {
+    "failed-fetch": 17,
+    "failed-verification": 3,
+    "verified": 25
+  },
+  "blocked_sources": [
+    "dgeg"
+  ],
+  "elapsed_24h": false,
+  "elapsed_seconds": 26119.331944,
+  "integrity": "ok",
+  "legacy_observations_unchanged": true,
+  "licence_violations": 0,
+  "observation_start": "2026-11-13T01:21:18.732242+00:00",
+  "observed_at": "2026-11-13T08:36:38.064186+00:00",
+  "public_checks": [
+    {
+      "maintenance": false,
+      "status": 200,
+      "url": "http://100.118.19.6:8088/healthz"
+    },
+    {
+      "maintenance": true,
+      "status": 200,
+      "url": "https://cae.joao.date/"
+    },
+    {
+      "maintenance": true,
+      "status": 200,
+      "url": "https://joao.date/dados/"
+    }
+  ],
+  "served_by_source": [
+    [
+      "bportugal",
+      "fetched",
+      4318
+    ],
+    [
+      "eredes",
+      "fetched",
+      64479
+    ],
+    [
+      "eurostat",
+      "fetched",
+      45500
+    ],
+    [
+      "ine",
+      "fetched",
+      12034
+    ],
+    [
+      "worldbank",
+      "fetched",
+      45915
+    ]
+  ],
+  "sources": [
+    {
+      "active": 10,
+      "availability": {
+        "verified": 10
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "bportugal",
+          "latest_attempt": "2026-11-13T01:21:20.171346+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:22:24.432837+00:00",
+      "name": "bportugal",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:21:24.422030+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 0,
+      "availability": {},
+      "blockers": [
+        "not_verifiable",
+        "licence_withheld"
+      ],
+      "datasets": [],
+      "last_verified": null,
+      "name": "dgeg",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-02-26T01:39:43.601887Z",
+      "stale_active": 0
+    },
+    {
+      "active": 3,
+      "availability": {
+        "verified": 3
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "eredes",
+          "latest_attempt": "2026-11-13T01:22:24.469887+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:22:31.009041+00:00",
+      "name": "eredes",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:22:26.579654+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 329,
+      "availability": {
+        "verified": 329
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "eurostat",
+          "latest_attempt": "2026-11-13T01:22:31.032953+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:23:10.964435+00:00",
+      "name": "eurostat",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:22:50.411465+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 12,
+      "availability": {
+        "verified": 12
+      },
+      "blockers": [
+        "licence_withheld"
+      ],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "fred",
+          "latest_attempt": "2026-11-13T01:23:11.014131+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:23:46.399011+00:00",
+      "name": "fred",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:23:34.270934+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 41,
+      "availability": {
+        "verified": 41
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "ine",
+          "latest_attempt": "2026-11-13T01:23:46.433453+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:37:47.085960+00:00",
+      "name": "ine",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:36:43.121910+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 6,
+      "availability": {
+        "verified": 6
+      },
+      "blockers": [
+        "licence_withheld"
+      ],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "oecd",
+          "latest_attempt": "2026-11-13T01:37:47.167108+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:37:58.896326+00:00",
+      "name": "oecd",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:37:52.322055+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 14,
+      "availability": {
+        "verified": 14
+      },
+      "blockers": [
+        "licence_withheld"
+      ],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "ren",
+          "latest_attempt": "2026-11-13T01:37:58.931443+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T01:38:41.187929+00:00",
+      "name": "ren",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T01:38:24.070372+00:00",
+      "stale_active": 0
+    },
+    {
+      "active": 930,
+      "availability": {
+        "verified": 930
+      },
+      "blockers": [],
+      "datasets": [
+        {
+          "input_origin": "live",
+          "label": "SI.POV.GINI",
+          "latest_attempt": "2026-11-13T02:50:33.777707+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SL.UEM.TOTL.ZS",
+          "latest_attempt": "2026-11-13T02:50:39.751675+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SP.DYN.LE00.IN",
+          "latest_attempt": "2026-11-13T02:52:17.708668+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SP.POP.TOTL",
+          "latest_attempt": "2026-11-13T01:46:42.427622+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "NY.GDP.MKTP.KD.ZG",
+          "latest_attempt": "2026-11-13T06:52:22.040546+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "NE.EXP.GNFS.ZS",
+          "latest_attempt": "2026-11-13T02:47:19.540281+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "NE.RSB.GNFS.ZS",
+          "latest_attempt": "2026-11-13T06:52:20.930843+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "NY.GDP.PCAP.CD",
+          "latest_attempt": "2026-11-13T02:50:32.650638+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SL.TLF.CACT.FE.ZS",
+          "latest_attempt": "2026-11-13T02:50:37.723590+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "BX.KLT.DINV.WD.GD.ZS",
+          "latest_attempt": "2026-11-13T02:47:14.478064+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SP.DYN.CBRT.IN",
+          "latest_attempt": "2026-11-13T02:50:41.746870+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "NY.GDP.MKTP.CD",
+          "latest_attempt": "2026-11-13T02:48:57.569593+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "GC.DOD.TOTL.GD.ZS",
+          "latest_attempt": "2026-11-13T02:47:17.536690+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "NE.IMP.GNFS.ZS",
+          "latest_attempt": "2026-11-13T02:47:21.587097+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SP.URB.TOTL.IN.ZS",
+          "latest_attempt": "2026-11-13T02:52:18.828936+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SP.DYN.CDRT.IN",
+          "latest_attempt": "2026-11-13T06:52:24.055736+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "SL.EMP.TOTL.SP.ZS",
+          "latest_attempt": "2026-11-13T02:50:35.721889+00:00",
+          "latest_state": "verified"
+        },
+        {
+          "input_origin": "live",
+          "label": "GB.XPD.RSDV.GD.ZS",
+          "latest_attempt": "2026-11-13T02:47:15.614833+00:00",
+          "latest_state": "verified"
+        }
+      ],
+      "last_verified": "2026-11-13T06:52:26.025416+00:00",
+      "name": "worldbank",
+      "never_verified_active": 0,
+      "pending_runs": 0,
+      "real_data_fetched_at": "2026-11-13T06:52:24.974898+00:00",
+      "stale_active": 0
+    }
+  ],
+  "task_18_closed": false,
+  "worker": {
+    "image": "sha256:cbce2ba401f52447c93198cc8f2269a3323483ca88811212086312521d1f46e3",
+    "restarts": 0,
+    "state": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 0,
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 3322930,
+      "Restarting": false,
+      "Running": true,
+      "StartedAt": "2026-11-13T01:21:18.732242939Z",
+      "Status": "running"
+    }
+  }
+}

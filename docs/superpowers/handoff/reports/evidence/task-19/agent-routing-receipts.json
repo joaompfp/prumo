@@ -1,0 +1,86 @@
+{
+  "19b_note": "Frontend detached with exit3 on protected-file approval; exact session admission later terminal/completed. CLAUDE requirement blocked and file preserved.",
+  "receipts": [
+    {
+      "api_calls": 20,
+      "completed": true,
+      "failed": false,
+      "invocation": "19a-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-65c08c7e93703c105f0b4be97294f6ea96dfda63920359175d67f19bf3afbcc5",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "api_calls": 5,
+      "completed": true,
+      "failed": false,
+      "invocation": "q1-quality-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-5e7543212a22fc1562b9c024d43df28552ac5384f76f8d47d2d772b62e4dea34",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "api_calls": 7,
+      "completed": true,
+      "failed": false,
+      "invocation": "q1-spec-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-79f3cfe769815b6edcd4090be4d1fdabc9f4c652ae2faa894bad18c15ceef2ff",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "api_calls": 25,
+      "completed": true,
+      "failed": false,
+      "invocation": "quality-fix1-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-04281ff7763662772d222c59f5985b7019fa8639c11fe54273cb0e124f0b0f30",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "api_calls": 12,
+      "completed": true,
+      "failed": false,
+      "invocation": "quality-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-ccee3975b2d202be43cbfbdc3cf95323e30655b88d87f4ec15261c71ef35364b",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "api_calls": 20,
+      "completed": true,
+      "failed": false,
+      "invocation": "spec-fix1-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-286f91b0d81377f60cb057c9c2222379e6cdc45fb9a740e3b259ebeb9dd2674e",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "api_calls": 10,
+      "completed": true,
+      "failed": false,
+      "invocation": "spec-rereview-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-342564b6fa92019726a2b7a502e32211ad07186592d1f292e18404669958750e",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    },
+    {
+      "api_calls": 19,
+      "completed": true,
+      "failed": false,
+      "invocation": "spec-usage.json",
+      "model": "gpt-6.1-sol",
+      "provider": "openai-codex",
+      "session_id": "local-9f549fbe5772744cd3a865350f0af3946fee30a16943a056016b2360cf368b3e",
+      "turn_exit_reason": "text_response(finish_reason=stop)"
+    }
+  ],
+  "scope": "Task19 per-invocation authenticated recovery route; no permanent config change"
+}

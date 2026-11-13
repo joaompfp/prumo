@@ -1,9 +1,74 @@
 # Prumo image and ingestion operations
 
-This is a deployment candidate for the controller, not a record of an executed deployment.
-Run these commands on f0nix as joao only after the merged code, scheduler, full test suite,
-image build and independent spec/quality reviews have passed. The public app stays in
-maintenance mode. There are no push alerts or automatic backups in this procedure.
+The maintenance web app `prumo` and ingestion scheduler `prumo-ingest` are already
+deployed on f0nix. Task 18 runtime merge `49a3602` and infrastructure commit `6a58b51`
+were installed after owner authorization and release checks. This runbook describes
+that deployed contract and separately authorized future maintenance; it is not an
+instruction to redeploy or repeat bootstrap during the open observation.
+
+The real 24-hour observation remains open. It started at
+`2026-11-13T01:21:18.732242+00:00` and cannot finish before
+`2026-11-14T01:21:18.732242+00:00`. The local-only evidence job `41f08dd25c5c`, scheduled
+for `2026-11-14T01:24:32.992446+00:00`, collects receipts, not acceptance. Keep both
+services unchanged during the window. No push alerts or automatic backups are part
+of this procedure. Final Project 1 acceptance belongs to the owner.
+
+Terminology: CLI means command-line interface; HTTP means Hypertext Transfer Protocol;
+UTC means Coordinated Universal Time; CSV means comma-separated values; JSON means
+JavaScript Object Notation; SQL means Structured Query Language. SOPS is the encrypted
+secret editor used by the infrastructure stack. FRED, OECD, REN and DGEG publisher
+identities and licence metadata are listed in the [source catalogue](sources.md).
+
+## Deployed paths and intermediate checkpoint
+
+| f0nix host path | Container/runtime use |
+|---|---|
+| `/home/joao/docker/stacks/web/images/prumo` | Installed app checkout |
+| `/home/joao/docker/stacks/web/compose/prumo-ingest.yml` | Worker include in the existing web stack |
+| `/home/joao/docker/stacks/web/appdata/prumo` | Persistent shared `/data` volume |
+| `/home/joao/docker/stacks/web/appdata/prumo/prumo.sqlite3` | `/data/prumo.sqlite3` |
+| `/home/joao/docker/stacks/web/appdata/prumo/raw` | `/data/raw` |
+| `/home/joao/prumo-operations/task18-49a3602` | Durable operator receipts, also retained on f3nix |
+
+Production is f0nix, not an isolated database under the f3nix working checkout. Public
+GET checks use `https://cae.joao.date/` and `https://joao.date/dados/`; the maintenance
+listener is `100.118.19.6:8088`. HTTP health alone says nothing about source freshness.
+
+The controller's [Task 19 brief](../superpowers/handoff/reports/task-19-brief.md)
+records an intermediate snapshot at `2026-11-13T08:36:38.064186+00:00`. This document
+has not independently recollected production evidence. At that checkpoint the worker
+was running with zero restarts/OOM, SQLite integrity passed, licence-gate violations
+were zero and the original 161,263 legacy-row fingerprint and old DuckDB hash were
+unchanged. All 1,345 active series had real successful automatic verification and
+none was stale under the implemented refresh policy. This does not prove that every
+publisher had released the latest possible period or complete the observation.
+
+| Source | Checkpoint disposition |
+|---|---|
+| BPstat (Banco de Portugal) | 4,318 current fetched rows queryable |
+| E-REDES | 64,479 current fetched rows queryable; native history ends `2026-11-11T00:00:00+00:00` |
+| Eurostat | 45,500 current fetched rows queryable |
+| INE (Instituto Nacional de Estatística) | 12,034 current fetched rows queryable |
+| World Bank | All 18 indicator groups / 930 active series verified from live input; 45,915 current fetched rows, 949 matching samples across the successful runs |
+| FRED / OECD / REN | 12 / 6 / 14 active series technically verified, respectively; withheld by `redistribution_ok=false` |
+| DGEG | 17 inactive definitions, `verifiable=false`, no new adapter; reuse rights unresolved |
+| ERSE | Zero core definitions |
+| dadosgov | Historical/unresolved integration retained; no stored-data claim |
+
+World Bank recovered automatically at that checkpoint, with no legacy World Bank rows
+remaining in the current served view. Its earlier 17 failed fetches and 9 failed
+verification subruns remain history. Do not erase them or infer permanent endpoint
+reliability; scoped dated-data continuity remains enabled if needed. Original legacy
+rows and receipts are preserved. The [methodology](methodology.md) describes the
+sampled-match limits and the distinction between verification and redistribution.
+
+Exact checkpoint receipts under the operator directory are
+`status-20261113T083638Z.json`, `audit-20261113T083638Z.json`,
+`summary-20261113T083638Z.json` and `worker-20261113T083638Z.log`. The controller owns
+archiving and review; [HANDOFF](../superpowers/handoff/HANDOFF.md) and the
+[Task 18 release report](../superpowers/handoff/reports/task-18-controller-review.md)
+retain the earlier deployment record. Those earlier source outcomes are not a later
+all-source snapshot.
 
 The image contains `app/`, `static/`, `ingest/` (including migrations) and `registry/`.
 Historical collectors, scripts and seeds remain in the repository but are excluded from
@@ -11,9 +76,11 @@ both the build context and the image. Keep all credentials outside these runtime
 `.dockerignore` excludes environment/credential files even inside the allowed directories.
 Never pass secrets as build arguments or bake them into source files.
 
-## Deployment prerequisites
+## Installation contract for a future authorized rebuild
 
-The controller owns changes to `/home/joao/docker`, not this implementation slice:
+These prerequisites were applied for Task 18. They are reference checks for a future
+controller-authorized rebuild, not pending installation work. The controller owns
+changes to `/home/joao/docker`:
 
 - Install `deploy/prumo-ingest.yml` as
   `/home/joao/docker/stacks/web/compose/prumo-ingest.yml` and include
@@ -43,9 +110,11 @@ successful ingestion; use logs, status and response evidence. No heartbeat is fa
 
 ## Bootstrap and initial catch-up
 
-Use an interactive Bash session on f0nix. Preserve the evidence directory path for later
-checks and rollback. Stop if the deployment checkout has local changes; reconcile them
-with its owner instead of resetting or cleaning it.
+Task 18 already completed the original import and catch-up. Do not repeat this section
+against the deployed volume during observation. For a separately authorized first
+installation/recovery, use an interactive Bash session on f0nix and preserve a new
+evidence directory for later checks and rollback. Stop if the deployment checkout has
+local changes; reconcile them with its owner instead of resetting or cleaning it.
 
 ```bash
 set -euo pipefail
@@ -71,7 +140,7 @@ the value must not be placed in a shell command. Verification below is silent on
 and does not expose any secret. It must succeed before either build/start alias is used.
 The read-only `dc-web` alias does not decrypt secrets, so a successful config check alone
 does not establish that FRED is configured. Optional `${FRED_API_KEY:-}` interpolation in
-the candidate deliberately allows that read-only alias to work.
+the worker definition deliberately allows that read-only alias to work.
 
 ```bash
 cd /home/joao/docker
@@ -153,6 +222,10 @@ docker inspect prumo-ingest \
 
 ## Status, logs and data evidence
 
+For the existing observation, set `OP=/home/joao/prumo-operations/task18-49a3602` in
+the operator shell and retain its original observation start. Do not create a new start
+timestamp merely to collect another snapshot.
+
 Run status and read-only evidence commands in the web container; these remain available
 when the worker is stopped. Status exit 0 means the report was produced, not that sources
 are healthy. Review every dataset/group, including pending runs and inactive/blocked sources.
@@ -213,19 +286,26 @@ curl -fsS https://joao.date/dados | \
 ## Manual update with original response bundles
 
 [Manual refresh](manual-refresh.md) is authoritative for capture, manifest validation,
-source/indicator/window selection, return codes and original-file honesty. Its standalone
-f3nix examples remain standalone examples; the deployment target here is f0nix and the
-persistent container paths below. Do not duplicate its capture procedure or treat an
-arbitrary browser download as an importable bundle.
+source/indicator/window selection, return codes and original-file honesty. Production
+imports target f0nix and the persistent container paths below. Do not duplicate the
+capture procedure or treat an arbitrary browser download as an importable bundle.
+No manual write is authorized merely by this runbook; keep the worker running during
+the current observation unless the owner authorizes an interruption.
 
 After following that document, place the complete, validated bundle on f0nix. Set
 `BUNDLE_HOST` to its absolute directory and `BUNDLE_SOURCE` to `worldbank` or `eredes`.
 For an indicator-scoped World Bank capture, set the same `INDICATOR`; for E-REDES set
 `BUNDLE_FROM`/`BUNDLE_TO` to the original capture's inclusive day bounds. Do not substitute
 today's dates for those bounds or its receipt timestamps. Run this while no other CLI writer
-is active. A failed import leaves the worker stopped until the operator reviews the error.
+is active. This standalone block uses strict mode inside a subshell, leaving the
+operator's parent shell open and its options unchanged. It stops on any failed
+prerequisite and requires a successful stopped-state readback before preparing the
+destination. A failed import returns nonzero without running status; collect diagnostics
+separately and review the error before any restart. No failure triggers an automatic restart.
 
 ```bash
+(
+set -euo pipefail
 : "${BUNDLE_HOST:?Set the absolute path of the complete captured bundle on f0nix}"
 : "${BUNDLE_SOURCE:?Set worldbank or eredes}"
 [[ "$BUNDLE_HOST" = /* ]]
@@ -245,15 +325,20 @@ case "$BUNDLE_SOURCE" in
     *) printf '%s\n' 'Unsupported bundle source' >&2; exit 2 ;;
 esac
 bash -lic 'dc-web stop prumo-ingest'
+WORKER_RUNNING=$(docker inspect prumo-ingest --format '{{.State.Running}}')
+[[ "$WORKER_RUNNING" = false ]]
 docker exec prumo mkdir -p /data/migration/bundles
 docker exec prumo test ! -e "$BUNDLE_TARGET"
 docker cp "$BUNDLE_HOST" "prumo:$BUNDLE_TARGET"
 docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw "${RUN_ARGS[@]}"
 docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw status --json
 # Restart only after the actual result and retained/original dates have been reviewed.
+)
 ```
 
-On approval to resume, re-run the silent SOPS key check above, then:
+A stop interrupts continuity: record the stop and begin a new observation window after
+resuming. Do not close the original window using interrupted uptime. On approval to
+resume, re-run the silent SOPS key check above, then:
 
 ```bash
 bash -lic 'dc-web-up prumo-ingest'
@@ -262,7 +347,8 @@ bash -lic 'dc-web logs --tail=100 prumo-ingest'
 
 Recorded imports have `input_origin=recorded`; `started_at` is the import attempt time,
 while `real_data_fetched_at` remains the original capture time. A passed recorded
-verification does not make an old download fresh. A stale/partial/invalid bundle refusal
+verification does not make an old download fresh. Identical bytes after a verified run
+can short-circuit without a new sample. A stale/partial/invalid bundle refusal
 must remain visible and cannot justify replacing newer verified data.
 
 ## Rollback
