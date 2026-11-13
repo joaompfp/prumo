@@ -3,8 +3,20 @@ import json
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
+from typing import NamedTuple
 
 MIGRATIONS_DIR = Path(__file__).parent / "migrations"
+
+
+class SchedulerState(NamedTuple):
+    dataset_key: str
+    source_name: str
+    group_label: str
+    last_attempt_at: str
+    last_attempt_state: str
+    last_success_at: str | None
+    failure_streak: int
+    last_finished_at: str | None
 
 
 class Db:
@@ -283,6 +295,43 @@ class Db:
             "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at "
             "FROM dataset_run r JOIN source s ON s.id = r.source_id WHERE r.id = ?",
             (run_id,)).fetchone()
+
+    # --- scheduler-owned attempts (Task 18A) ------------------------------------------------
+
+    def scheduler_state(self, dataset_key: str) -> SchedulerState | None:
+        """Last scheduler attempt only; never infer freshness from synthetic legacy runs."""
+        row = self.conn.execute(
+            "SELECT dataset_key, source_name, group_label, last_attempt_at, "
+            "last_attempt_state, last_success_at, failure_streak, last_finished_at "
+            "FROM scheduler_state WHERE dataset_key = ?", (dataset_key,)).fetchone()
+        return SchedulerState(*row) if row is not None else None
+
+    def scheduler_attempt_started(self, dataset_key: str, source_name: str,
+                                  group_label: str, at: str) -> None:
+        """Pessimistic, atomic marker BEFORE external work. A killed attempt consumes a
+        backoff step but retains any last success. Call outside a transaction to persist
+        before network; the scheduler CLI's file lock provides exclusive ownership."""
+        self.conn.execute(
+            "INSERT INTO scheduler_state(dataset_key, source_name, group_label, "
+            "last_attempt_at, last_attempt_state, failure_streak) "
+            "VALUES (?, ?, ?, ?, 'running', 1) "
+            "ON CONFLICT(dataset_key) DO UPDATE SET source_name=excluded.source_name, "
+            "group_label=excluded.group_label, last_attempt_at=excluded.last_attempt_at, "
+            "last_attempt_state='running', last_finished_at=NULL, "
+            "failure_streak=scheduler_state.failure_streak + 1",
+            (dataset_key, source_name, group_label, at))
+
+    def scheduler_attempt_finished(self, dataset_key: str, state: str, at: str) -> None:
+        """Finish an in-flight attempt; ONLY verified resets backoff and advances success.
+        last_finished_at anchors retries after slow failures, without losing start time."""
+        cur = self.conn.execute(
+            "UPDATE scheduler_state SET last_attempt_state=?, last_finished_at=?, "
+            "last_success_at=CASE WHEN ?='verified' THEN ? ELSE last_success_at END, "
+            "failure_streak=CASE WHEN ?='verified' THEN 0 ELSE failure_streak END "
+            "WHERE dataset_key=? AND last_attempt_state='running'",
+            (state, at, state, at, state, dataset_key))
+        if cur.rowcount != 1:
+            raise ValueError(f"no in-flight scheduler attempt for {dataset_key!r}")
 
     def close(self) -> None:
         self.conn.close()
