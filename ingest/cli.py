@@ -11,6 +11,8 @@
                                    attempt, last REAL verification, the retained data's genuine
                                    retrieval date, staleness (our refresh policy), event
                                    totals, pending-verification runs
+    withdraw <run_id> --reason R   withdraw ONE verified fetched run from serving (terminal,
+                                   recorded as event 'withdrawal' with the reason; rows kept)
     verify <run_id>                verify ONE existing pending-verification run with the
                                    verifier registered for its source (this command exists to
                                    resolve a specific pending run; normal flows never call it)
@@ -82,7 +84,7 @@ def _default_raw() -> str:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="python -m ingest",
-        description="Prumo base-data operations (run/status/verify/import-legacy/replay).")
+        description="Prumo base-data operations (run/status/verify/withdraw/import-legacy/replay).")
     p.add_argument("--db", help="SQLite database (default: $PRUMO_DB or /data/prumo.sqlite3)")
     p.add_argument("--raw-dir", help="raw evidence store (default: $PRUMO_RAW_DIR or /data/raw)")
     p.add_argument("--registry", help=f"registry YAML (default: {DEFAULT_REGISTRY})")
@@ -141,6 +143,12 @@ def build_parser() -> argparse.ArgumentParser:
     v = sub.add_parser("verify", help="verify ONE existing pending-verification run id "
                                       "(normal runs never use this)")
     v.add_argument("run_id", type=int, help="dataset_run.id in state pending-verification")
+
+    w = sub.add_parser("withdraw", help="withdraw ONE verified fetched run from serving, with "
+                                        "a recorded reason (terminal; rows are kept)")
+    w.add_argument("run_id", type=int, help="dataset_run.id in state verified (not legacy)")
+    w.add_argument("--reason", required=True,
+                   help="why the vintage is withdrawn (recorded in event 'withdrawal')")
 
     i = sub.add_parser("import-legacy", help="import the legacy indicators CSV export "
                                              "(Ruling U)")
@@ -283,7 +291,8 @@ def _stale_bundle_groups(db, bundle, source_name: str, specs, request: RunReques
     collector receipt that would back an OBSERVATION of that group (the real adapter
     re-driven over a fresh PinnedHttp, fetch+parse, and the rows' response_index receipts -
     so dataset-metadata and verifier receipts can neither boost nor doom a payload's
-    freshness) against the NEWEST verified fetched row held for that group's series.
+    freshness) against the NEWEST held (verified or pending-verification) fetched row of
+    that group's series.
     Conservative on both sides (MIN vs MAX): a group is stale when the held data is strictly
     newer than its own oldest observation receipt, no matter how fresh OTHER groups are.
 
@@ -298,18 +307,19 @@ def _stale_bundle_groups(db, bundle, source_name: str, specs, request: RunReques
     groups = operations.group_specs(active)
     blocked: dict[str, str] = {}
     for group in groups:
-        held = db.max_verified_fetched_at([s.id for s in group.specs])
+        held = db.max_held_fetched_at([s.id for s in group.specs])
         if held is None:
             continue
         oldest = _group_oldest_receipt(bundle, source_name, request, group.specs)
         if oldest is None or datetime.fromisoformat(held) <= oldest:
             continue
         blocked[group.key()] = (
-            f"refusing an outdated bundle for dataset group {group.label!r}: the verified "
-            f"fetched data already held for THIS group reaches {held}, but the bundle's "
-            f"oldest original collector receipt for the group is {oldest.isoformat()}; a "
-            f"recorded bundle never replaces NEWER verified data - legacy April rows stay "
-            f"untouched, and a LATER valid recorded download is still accepted")
+            f"refusing an outdated bundle for dataset group {group.label!r}: the "
+            f"(verified or pending) fetched data already held for THIS group reaches "
+            f"{held}, but the bundle's oldest original collector receipt for the group is "
+            f"{oldest.isoformat()}; a recorded bundle never replaces NEWER verified data - "
+            f"legacy April rows stay untouched, and a LATER valid recorded download is "
+            f"still accepted")
     return blocked, len(groups)
 
 
@@ -385,6 +395,18 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
             return _cmd_verify(args.run_id, specs, db, RawStore(raw_path), http_for)
         finally:
             db.close()
+
+    if args.command == "withdraw":
+        db = open_db(db_path)
+        try:
+            db.withdraw_run(args.run_id, args.reason, datetime.now(timezone.utc).isoformat())
+        except ValueError as e:
+            print(f"withdraw refused: {e}", file=sys.stderr)
+            return 2
+        finally:
+            db.close()
+        print(f"run {args.run_id} withdrawn: its rows are kept but no longer served")
+        return 0
 
     if args.command in ("run", "replay"):
         names = known + ["all"]

@@ -6,8 +6,14 @@
        ├─ parse/validate raised, or a series has no rows ──> failed-validation + event(format_change)
        └─ ONE transaction: observations + quarantine + revision events + state
           ──> pending-verification      (any exception inside: rolled back, failed-validation)
-       a recorded replay whose ORIGINAL receipts are older than held verified fetched rows
+       a recorded replay whose ORIGINAL receipts are older than held (verified or still
+          pending-verification) fetched rows
           ──> rolled back atomically as 'blocked-stale' + event(stale_refusal) instead
+       a DB OperationalError at write (e.g. 'database is locked')
+          ──> failed-operational + event(operational_failure), never a format_change
+    any exception escaping (raw store I/O, DB, SIGTERM as SystemExit) ──> failed-operational
+       + event(operational_failure) before it propagates; the scheduler closes runs left
+       'running' by a hard kill at its next start (Db.close_orphan_runs)
 
 Only `verified` runs are served (view `served_observation`), so no failure here can hide or
 overwrite previously verified data. Verification (Task 7) moves pending-verification onward.
@@ -18,7 +24,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from ingest.db import Db
+from ingest.db import Db, OperationalError
 from ingest.http import Http
 from ingest.models import Observation, SeriesSpec
 from ingest.rawstore import RawStore
@@ -109,83 +115,106 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
         db.set_run_state(run_id, state, finished_at=t)
         return DatasetRunResult(state, run_id, n_written, n_quarantined)
 
-    # Consume fetch incrementally: each response is stored as evidence the moment it arrives,
-    # so pages received before a mid-pagination failure are kept (raw file + raw_fetch row).
-    expected = getattr(source, "expected_format", None)
-    responses: list[RawResponse] = []
-    raws: list[tuple[int, str]] = []  # (raw_fetch id, fetched_at) per response, fetch order
-    problems: list[dict] = []
     try:
-        it = iter(source.fetch(specs, http))
-    except Exception as e:
-        return finish("failed-fetch", "fetch_failure", {"error": repr(e)})
-    while True:
+        # Consume fetch incrementally: each response is stored as evidence the moment it arrives,
+        # so pages received before a mid-pagination failure are kept (raw file + raw_fetch row).
+        expected = getattr(source, "expected_format", None)
+        responses: list[RawResponse] = []
+        raws: list[tuple[int, str]] = []  # (raw_fetch id, fetched_at) per response, fetch order
+        problems: list[dict] = []
         try:
-            resp = next(it)
-        except StopIteration:
-            break
-        except Exception as e:  # network failure, possibly mid-pagination: no observations
+            it = iter(source.fetch(specs, http))
+        except Exception as e:
             return finish("failed-fetch", "fetch_failure", {"error": repr(e)})
-        problem = _fetch_problem(resp, expected)
-        if resp.fetched_at is not None:
-            # Recorded replay: the receipt's ORIGINAL fetch time is the data's retrieval
-            # date. Invalid receipt -> failed-validation (never a silent 'now').
+        while True:
             try:
-                fetched_at = _receipt_ts(resp.fetched_at, now=now())
-            except ValueError as e:
-                return finish("failed-validation", "format_change", {"error": str(e)})
-        else:
-            fetched_at = ts()
-        raws.append((_record(db, store, source.name, run_id, resp, fetched_at, problem is None),
-                     fetched_at))
-        responses.append(resp)
-        if problem:
-            problems.append({"url": resp.url, "status": resp.status, "reason": problem})
-    if not responses:
-        return finish("failed-fetch", "fetch_failure", {"error": "source returned no responses"})
-    if problems:
-        return finish("failed-fetch", "fetch_failure", {"problems": problems})
+                resp = next(it)
+            except StopIteration:
+                break
+            except Exception as e:  # network failure, possibly mid-pagination: no observations
+                return finish("failed-fetch", "fetch_failure", {"error": repr(e)})
+            problem = _fetch_problem(resp, expected)
+            if resp.fetched_at is not None:
+                # Recorded replay: the receipt's ORIGINAL fetch time is the data's retrieval
+                # date. Invalid receipt -> failed-validation (never a silent 'now').
+                try:
+                    fetched_at = _receipt_ts(resp.fetched_at, now=now())
+                except ValueError as e:
+                    return finish("failed-validation", "format_change", {"error": str(e)})
+            else:
+                fetched_at = ts()
+            raws.append((_record(db, store, source.name, run_id, resp, fetched_at, problem is None),
+                         fetched_at))
+            responses.append(resp)
+            if problem:
+                problems.append({"url": resp.url, "status": resp.status, "reason": problem})
+        if not responses:
+            return finish("failed-fetch", "fetch_failure", {"error": "source returned no responses"})
+        if problems:
+            return finish("failed-fetch", "fetch_failure", {"problems": problems})
 
-    if _same_as_previous_verified(db, key, run_id):
-        return finish("verified")
+        if _same_as_previous_verified(db, key, run_id):
+            return finish("verified")
 
-    try:
-        parsed = source.parse(specs, responses)
-        checked = []
-        for s in specs:
-            rows = parsed.get(s.id) or []
-            bad = sorted({r.response_index for r in rows if r.response_index >= len(responses)})
-            if bad:
-                raise ValueError(f"series {s.id!r}: response_index {bad} out of range "
-                                 f"(run has {len(responses)} responses)")
-            checked.append((s, len(rows), *validate(s, rows)))
-    except Exception as e:
-        return finish("failed-validation", "format_change", {"error": repr(e)})
+        try:
+            parsed = source.parse(specs, responses)
+            checked = []
+            for s in specs:
+                rows = parsed.get(s.id) or []
+                bad = sorted({r.response_index for r in rows if r.response_index >= len(responses)})
+                if bad:
+                    raise ValueError(f"series {s.id!r}: response_index {bad} out of range "
+                                     f"(run has {len(responses)} responses)")
+                checked.append((s, len(rows), *validate(s, rows)))
+        except Exception as e:
+            return finish("failed-validation", "format_change", {"error": repr(e)})
 
-    # Ruling M: a series with zero valid observations is a format_change event, not a run failure,
-    # unless every series of the dataset is in that state.
-    empty = [{"series_id": s.id, "reason": "no_valid_observations", "n_raw_rows": n_raw,
-              "n_quarantined": len(rej)} for s, n_raw, obs, rej in checked if not obs]
-    if len(empty) == len(checked):
-        t = ts()
-        for detail in empty:
-            db.add_event(t, "format_change", run_id, detail)
-        return finish("failed-validation")
-
-    try:
-        with db.transaction():
-            if input_origin == "recorded":
-                _guard_recorded_not_stale(db, raws, checked)
+        # Ruling M: a series with zero valid observations is a format_change event, not a run failure,
+        # unless every series of the dataset is in that state.
+        empty = [{"series_id": s.id, "reason": "no_valid_observations", "n_raw_rows": n_raw,
+                  "n_quarantined": len(rej)} for s, n_raw, obs, rej in checked if not obs]
+        if len(empty) == len(checked):
             t = ts()
             for detail in empty:
                 db.add_event(t, "format_change", run_id, detail)
-            n_written, n_quarantined = _write(db, run_id, raws, checked, t)
-            db.set_run_state(run_id, "pending-verification", finished_at=ts())
-    except StaleRecordedError as e:  # rolled back atomically: nothing of this run remains
-        return finish("blocked-stale", "stale_refusal", {"error": str(e)})
-    except Exception as e:  # rolled back: none of this run's observations/quarantine remain
-        return finish("failed-validation", "format_change", {"error": repr(e), "stage": "write"})
-    return DatasetRunResult("pending-verification", run_id, n_written, n_quarantined)
+            return finish("failed-validation")
+
+        try:
+            with db.transaction():
+                if input_origin == "recorded":
+                    _guard_recorded_not_stale(db, raws, checked)
+                t = ts()
+                for detail in empty:
+                    db.add_event(t, "format_change", run_id, detail)
+                n_written, n_quarantined = _write(db, run_id, raws, checked, t)
+                db.set_run_state(run_id, "pending-verification", finished_at=ts())
+        except StaleRecordedError as e:  # rolled back atomically: nothing of this run remains
+            return finish("blocked-stale", "stale_refusal", {"error": str(e)})
+        except OperationalError as e:  # e.g. 'database is locked': ours, not the publisher's
+            return finish("failed-operational", "operational_failure",
+                          {"error": repr(e), "stage": "write"})
+        except Exception as e:  # rolled back: none of this run's observations/quarantine remain
+            return finish("failed-validation", "format_change", {"error": repr(e), "stage": "write"})
+        return DatasetRunResult("pending-verification", run_id, n_written, n_quarantined)
+    except BaseException as e:  # our own environment failed (I/O, DB, SIGTERM->SystemExit)
+        _close_interrupted(db, run_id, ts, e)
+        raise
+
+
+def _close_interrupted(db: Db, run_id: int, ts: Callable[[], str], exc: BaseException) -> None:
+    """Best effort: a run interrupted by an exception escaping run_dataset (raw store I/O,
+    DB error, SIGTERM raised as SystemExit) must not stay 'running'. Closed as
+    'failed-operational' + event(operational_failure) unless it already reached a state.
+    A secondary failure here (e.g. the DB is the broken part) is swallowed so the ORIGINAL
+    exception propagates; the scheduler's start-up sweep closes what remains."""
+    try:
+        if db.run_state(run_id) == "running":
+            t = ts()
+            db.add_event(t, "operational_failure", run_id,
+                         {"stage": "interrupted", "error": repr(exc)})
+            db.set_run_state(run_id, "failed-operational", finished_at=t)
+    except Exception:
+        pass
 
 
 def _guard_recorded_not_stale(db: Db, raws: list[tuple[int, str]], checked: list) -> None:
@@ -207,7 +236,7 @@ def _guard_recorded_not_stale(db: Db, raws: list[tuple[int, str]], checked: list
         # UTC ISO text: lexicographic = chronological; receipts back rows, never metadata
         oldest = min(raws[o.response_index][1] for o in observations)
         oldests.append(oldest)
-        held = db.max_verified_fetched_at([spec.id])
+        held = db.max_held_fetched_at([spec.id])
         if held is not None and held > oldest:
             stale.append(f"{spec.id} (held verified fetched reaches {held})")
     if stale:

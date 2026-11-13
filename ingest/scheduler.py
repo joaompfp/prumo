@@ -14,6 +14,7 @@ import argparse
 import fcntl
 import json
 import os
+import signal
 import time
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
@@ -219,22 +220,40 @@ def main(argv: list[str] | None = None, *, now: Clock = _utc_now,
     _plan(specs)  # also fail on schedule/grouping errors before DB, lock or network
     db_path = Path(args.db).expanduser().resolve()
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    with _instance_lock(db_path):
-        db = open_db(db_path)
-        try:
-            sync_registry(db, specs)
-            store = RawStore(Path(args.raw_dir))
-            if args.once:
-                records = tick(db, store, specs, now=now, runner=runner, log=log,
-                               http_for=http_for)
-                return int(any(r["event"] == "attempt" and r["state"] != "verified"
-                               for r in records))
-            serve(db, store, specs, now=now, sleep=sleep, runner=runner, log=log,
-                  http_for=http_for)
-        except KeyboardInterrupt:
-            return 130
-        finally:
-            db.close()
+    previous_sigterm = signal.signal(signal.SIGTERM, _on_sigterm)
+    try:
+        with _instance_lock(db_path):
+            return _locked_main(args, db_path, specs, now=now, sleep=sleep, runner=runner,
+                                log=log, http_for=http_for)
+    finally:
+        signal.signal(signal.SIGTERM, previous_sigterm)
+
+
+def _on_sigterm(signum, _frame):
+    """`docker stop` sends SIGTERM: raise SystemExit so finally paths run (an in-flight
+    dataset run is closed as failed-operational, the DB is closed) instead of dying mid-run."""
+    raise SystemExit(128 + signum)
+
+
+def _locked_main(args, db_path: Path, specs, *, now: Clock, sleep, runner, log, http_for) -> int:
+    db = open_db(db_path)
+    try:
+        # Under the instance lock no other scheduler is mid-run: any 'running' run was left by
+        # a killed process (OOM, SIGKILL) and is closed honestly before new work starts.
+        db.close_orphan_runs(now().astimezone(timezone.utc).isoformat())
+        sync_registry(db, specs)
+        store = RawStore(Path(args.raw_dir))
+        if args.once:
+            records = tick(db, store, specs, now=now, runner=runner, log=log,
+                           http_for=http_for)
+            return int(any(r["event"] == "attempt" and r["state"] != "verified"
+                           for r in records))
+        serve(db, store, specs, now=now, sleep=sleep, runner=runner, log=log,
+              http_for=http_for)
+    except KeyboardInterrupt:
+        return 130
+    finally:
+        db.close()
     return 0
 
 

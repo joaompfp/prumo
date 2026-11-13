@@ -2,10 +2,16 @@
 import json
 import sqlite3
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import NamedTuple
 
 MIGRATIONS_DIR = Path(__file__).parent / "migrations"
+BUSY_TIMEOUT_S = 30.0  # scheduler and CLI can contend for the write lock
+
+# Errors of our own storage environment (lock contention, I/O, missing schema): callers
+# record them as operational failures, never as a publisher format change.
+OperationalError = sqlite3.OperationalError
 
 
 class SchedulerState(NamedTuple):
@@ -35,7 +41,9 @@ class Db:
             self.conn.execute("COMMIT")
 
     def upsert_source_and_series(self, sources: list[dict], series: list[dict]) -> None:
-        """Idempotent registry sync. `series` rows reference their source by `source_name`."""
+        """Idempotent registry sync. `series` rows reference their source by `source_name`.
+        `series` is the WHOLE registry: an active series absent from it is set inactive
+        (its rows stay; inactive fetched rows are not served) with event(series_deactivated)."""
         with self.transaction() as c:
             for s in sources:
                 c.execute(
@@ -59,6 +67,15 @@ class Db:
                     "base_year=excluded.base_year, native_code=excluded.native_code, "
                     "url=excluded.url, active=excluded.active",
                     {**r, "active": int(r["active"])})
+            keep = [r["id"] for r in series]
+            gone = [i for (i,) in c.execute(
+                "SELECT id FROM series WHERE active = 1 AND id NOT IN "
+                f"({','.join('?' * len(keep))}) ORDER BY id", keep)]
+            ts = datetime.now(timezone.utc).isoformat()
+            for sid in gone:
+                c.execute("UPDATE series SET active = 0 WHERE id = ?", (sid,))
+                self.add_event(ts, "series_deactivated", None,
+                               {"series_id": sid, "reason": "absent_from_registry"})
 
     # --- pipeline (Task 6) -------------------------------------------------------------------
     # Write methods below issue plain statements: called outside `transaction()` each statement
@@ -249,17 +266,20 @@ class Db:
             "r.input_origin "
             "FROM dataset_run r JOIN source s ON s.id = r.source_id ORDER BY r.id").fetchall()
 
-    def max_verified_fetched_at(self, series_ids: list[str]) -> str | None:
-        """Latest observation.fetched_at among VERIFIED fetched rows of the given series
-        (Task 17B stale-bundle refusal: a recorded bundle must be strictly newer than the
-        verified data already held; legacy rows never count here)."""
+    def max_held_fetched_at(self, series_ids: list[str]) -> str | None:
+        """Latest observation.fetched_at among HELD fetched rows of the given series: runs
+        that are verified OR still pending verification (Task 17B stale-bundle refusal, Task
+        20 A-I1: a recorded bundle must be strictly newer than the data already held, even
+        when a newer live run has not finished verification yet). Legacy rows and runs in
+        any other state (failed, withdrawn, ...) never count here."""
         if not series_ids:
             return None
         marks = ",".join("?" * len(series_ids))
         return self.conn.execute(
             "SELECT MAX(o.fetched_at) FROM observation o "
             "JOIN dataset_run r ON r.id = o.dataset_run_id "
-            f"WHERE o.kind = 'fetched' AND r.state = 'verified' AND o.series_id IN ({marks})",
+            "WHERE o.kind = 'fetched' AND r.state IN ('verified', 'pending-verification') "
+            f"AND o.series_id IN ({marks})",
             series_ids).fetchone()[0]
 
     def observation_stats(self) -> list[tuple[str, str, str, int, str]]:
@@ -295,6 +315,49 @@ class Db:
             "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at "
             "FROM dataset_run r JOIN source s ON s.id = r.source_id WHERE r.id = ?",
             (run_id,)).fetchone()
+
+    # --- reviewed withdrawal and orphan runs (Task 20) -----------------------------------------
+
+    def withdraw_run(self, run_id: int, reason: str, at: str) -> None:
+        """Withdraw ONE verified fetched vintage: its rows stay in `observation` but are never
+        served again ('withdrawn' is terminal). The operator's reason is recorded as
+        event(withdrawal) in the same transaction; migration 0011's triggers refuse every
+        other way into 'withdrawn'. ValueError (nothing written) on an empty reason, an
+        unknown, legacy or non-verified run."""
+        if not reason or not reason.strip():
+            raise ValueError("a withdrawal needs a non-empty reason")
+        with self.transaction() as c:
+            row = c.execute("SELECT state, input_origin FROM dataset_run WHERE id = ?",
+                            (run_id,)).fetchone()
+            if row is None:
+                raise ValueError(f"no such run: {run_id}")
+            state, origin = row
+            if origin == "legacy":
+                raise ValueError(f"run {run_id} is a legacy import run; legacy rows are "
+                                 f"governed by the legacy serving settings, not withdrawal")
+            if state != "verified":
+                raise ValueError(f"run {run_id} is {state!r}; only verified runs can be "
+                                 f"withdrawn")
+            self.add_event(at, "withdrawal", run_id,
+                           {"reason": reason.strip(), "previous_state": state})
+            if not self.transition_run_state(run_id, "verified", "withdrawn"):
+                raise ValueError(f"run {run_id} left 'verified' concurrently")
+
+    def close_orphan_runs(self, at: str) -> list[int]:
+        """Close every run still 'running' (its process was killed before it could finish)
+        as 'failed-operational' with event(operational_failure). Call only when no other
+        writer can be mid-run: the scheduler calls it at start, under its instance lock
+        (manual CLI runs must not overlap the scheduler - docs/data/operations.md)."""
+        with self.transaction() as c:
+            ids = [i for (i,) in c.execute(
+                "SELECT id FROM dataset_run WHERE state = 'running' ORDER BY id")]
+            for run_id in ids:
+                self.add_event(at, "operational_failure", run_id, {
+                    "stage": "orphaned",
+                    "error": "run left 'running' by an interrupted process "
+                             "(closed at scheduler start)"})
+                self.set_run_state(run_id, "failed-operational", finished_at=at)
+        return ids
 
     # --- scheduler-owned attempts (Task 18A) ------------------------------------------------
 
@@ -380,7 +443,7 @@ def _migrate(conn: sqlite3.Connection) -> None:
 
 
 def open_db(path: str | Path) -> Db:
-    conn = sqlite3.connect(str(path), isolation_level=None)
+    conn = sqlite3.connect(str(path), isolation_level=None, timeout=BUSY_TIMEOUT_S)
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
     try:
