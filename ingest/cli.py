@@ -88,6 +88,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--registry", help=f"registry YAML (default: {DEFAULT_REGISTRY})")
     sub = p.add_subparsers(dest="command", required=True)
 
+    sub.add_parser("docs", help="render registry source documentation to stdout (offline)",
+                   description="Render the selected --registry to stdout; no DB, raw store "
+                               "or network access. Redirect stdout to save the Markdown.")
+
     r = sub.add_parser("run", help="fresh fetch+verify of one source or all (see module help)")
     r.add_argument("source", help="registry source name, or 'all'")
     r.add_argument("--bundle", metavar="DIR",
@@ -333,6 +337,11 @@ def _group_oldest_receipt(bundle, source_name: str, request: RunRequest, group_s
 def main(argv: list[str] | None = None, *, http_for=None) -> int:
     """CLI entry. `http_for` is the test seam (default: the polite per-source client)."""
     args = build_parser().parse_args(argv)
+    if args.command == "docs":
+        from ingest.docgen import generate_sources
+        registry = Path(args.registry) if args.registry else DEFAULT_REGISTRY
+        print(generate_sources(registry), end="")
+        return 0
     db_path, raw_path, registry = _resolve_paths(args)
     specs = load_registry(registry)
     known = sorted({s.source.name for s in specs})
