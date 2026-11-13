@@ -13,8 +13,9 @@ Honesty rules:
 - latest state is per DATASET (ingest.operations.group_specs): a healthy final World Bank
   indicator can never conceal an earlier failed indicator;
 - 'stale' is OUR refresh policy (series.schedule when present, else frequency defaults
-  A/S=30d, Q=7d, M/D/PT15M=1d), never a claimed publisher release date; never-fetched /
-  never-verified series report stale=None with an explicit reason;
+  A/S=30d, Q=7d, M/D/PT15M=1d - the shared knowledge lives in ingest.cadence, which the
+  Task 18 scheduler also derives from), never a claimed publisher release date;
+  never-fetched / never-verified series report stale=None with an explicit reason;
 - pending-verification runs are listed (stale after 24 h); a verified short-circuit run with
   no observations invents no new verification.
 
@@ -26,6 +27,7 @@ from collections.abc import Callable
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timedelta, timezone
 
+from ingest.cadence import DEFAULT_INTERVAL, series_interval
 from ingest.db import Db
 from ingest.models import SeriesSpec
 from ingest.operations import LEGACY_DATASET_PREFIX, group_specs
@@ -34,13 +36,9 @@ SCHEMA = "prumo-status"
 VERSION = 1
 
 # Our refresh policy, not a publisher cadence claim. series.schedule ('7d', '12h'...) wins.
-DEFAULT_STALE_AFTER = {"A": timedelta(days=30), "S": timedelta(days=30),
-                       "Q": timedelta(days=7), "M": timedelta(days=1),
-                       "D": timedelta(days=1), "PT15M": timedelta(days=1)}
+# Compatible alias for the pre-extraction (Task 18A) name; the knowledge lives in ingest.cadence.
+DEFAULT_STALE_AFTER = DEFAULT_INTERVAL
 PENDING_STALE_AFTER = timedelta(hours=24)
-
-_SCHEDULE_UNITS = {"h": timedelta(hours=1), "d": timedelta(days=1),
-                   "w": timedelta(weeks=1)}
 
 
 def _parse_ts(ts: str | None) -> datetime | None:
@@ -48,15 +46,6 @@ def _parse_ts(ts: str | None) -> datetime | None:
         return None
     dt = datetime.fromisoformat(ts)
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
-
-
-def _cadence(spec: SeriesSpec) -> timedelta:
-    if spec.schedule:
-        unit = _SCHEDULE_UNITS.get(spec.schedule[-1])
-        if unit and spec.schedule[:-1].isdigit() and int(spec.schedule[:-1]) > 0:
-            return int(spec.schedule[:-1]) * unit
-        raise ValueError(f"series {spec.id!r}: unparseable schedule {spec.schedule!r}")
-    return DEFAULT_STALE_AFTER[spec.frequency]
 
 
 @dataclass(frozen=True)
@@ -267,7 +256,7 @@ def _series_status(s: SeriesSpec, now: datetime, label_of, key_of, latest_by_key
         stale, reason = None, ("never_fetched" if not fetched_rows else "never_verified")
     else:
         age = now - (_parse_ts(real_fetched) or now)
-        stale, reason = age > _cadence(s), None
+        stale, reason = age > series_interval(s), None
     return SeriesStatus(
         id=s.id, active=s.active, frequency=s.frequency, dataset_label=label,
         latest_attempt=latest[0] if latest else None,
