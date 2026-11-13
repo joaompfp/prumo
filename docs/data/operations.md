@@ -351,6 +351,46 @@ verification does not make an old download fresh. Identical bytes after a verifi
 can short-circuit without a new sample. A stale/partial/invalid bundle refusal
 must remain visible and cannot justify replacing newer verified data.
 
+## Withdrawing data, inactive series and interrupted runs
+
+These are reviewed operator actions. None deletes stored rows; each leaves an event.
+
+**Inactivate a series** (definition or unit defect found after the fact) by setting
+`active: false` in `registry/core.yaml` through the normal reviewed registry change. From
+migration 0011 the served view hides the series' verified *fetched* rows as well as its
+legacy rows; reactivating it serves the retained history again. A series *removed* from the
+registry is set inactive at the next registry sync (scheduler start or any CLI command that
+syncs) and recorded as event `series_deactivated` with reason `absent_from_registry`.
+Registry sync treats the given file as the whole registry, so never point a writing
+command at a partial or scratch registry with the production `--db`.
+
+**Withdraw one verified vintage** when a single fetched run is wrong (for example a
+sampled verification that passed on a vintage later found defective) and the series
+itself stays active. Identify the run from `status --json` or read-only SQL, then run the
+command below with an explicit reason. Only a `verified`, non-legacy run can be withdrawn;
+`withdrawn` is terminal, its rows are kept in `observation` but never served again, and the
+reason is stored as event `withdrawal`. The view then falls back to the newest remaining
+verified vintage for each period, if any. The database refuses any other path into
+`withdrawn` (hand-written SQL included). Withdrawal removes that one vintage only: if the
+publisher still returns the same values, the next scheduled run re-ingests them as a new
+run and serves them once verified. To stop serving a series persistently, inactivate it.
+
+```bash
+: "${RUN_ID:?Set the dataset_run id to withdraw}"
+: "${REASON:?Set the reviewed reason, e.g. a defect reference}"
+docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
+    withdraw "$RUN_ID" --reason "$REASON"
+docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw status --json
+```
+
+**Interrupted runs.** A run whose process failed on our side (raw store I/O, a database
+error such as `database is locked` after the 30 s busy timeout, or `docker stop`/SIGTERM)
+ends `failed-operational` with event `operational_failure`, never `failed-fetch` or
+`failed-validation`/`format_change`, which describe the publisher. A run left `running` by a
+hard kill (OOM, SIGKILL) is closed the same way, with stage `orphaned`, when the scheduler
+next starts. That start-up sweep assumes no manual CLI writer is running at the same time,
+which this runbook already requires (stop the worker before a manual import).
+
 ## Rollback
 
 The safe ingestion rollback is to stop the worker and retain the new maintenance web app,

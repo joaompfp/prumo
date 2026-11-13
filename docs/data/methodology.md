@@ -148,10 +148,14 @@ and marked not verifiable; no new DGEG adapter or ingestion is implied. See
 [licence decisions](../../registry/licences-todo.md) and
 [unverifiable definitions](../../registry/unverifiable.md).
 
-For each series/period, verified fetched data wins over eligible legacy data. Within
-the same kind, the greatest observation id wins, reflecting insertion order rather
-than a publisher revision timestamp. New vintages append observations; failures do not
-overwrite last-good rows. The observation table retains earlier vintages even when
+For each series/period, verified fetched data wins over eligible legacy data. Among
+fetched rows the vintage with the latest retrieval time (`observation.fetched_at`, the
+original receipt time for recorded replays) wins, ties broken by the greater observation
+id; legacy rows keep the greatest-id rule (they are imported in retrieval order). This is
+our retrieval time, not a publisher revision timestamp. Fetched rows of an inactive series
+are not served, and a run withdrawn through the reviewed `withdraw` command is never
+served (see [operations](operations.md)). New vintages append observations; failures do
+not overwrite last-good rows. The observation table retains earlier vintages even when
 only the selected current vintage is queryable through the served view.
 
 Revision events compare new `value_text` with the currently served verified fetched
