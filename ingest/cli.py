@@ -57,9 +57,8 @@ from ingest.bundle import (
     load_bundle,
 )
 from ingest.db import open_db
-from ingest.http import RequestsHttp
 from ingest.legacy_import import DEFAULT_REGISTRY, import_legacy
-from ingest.operations import RunReport, RunRequest, run_all
+from ingest.operations import DEFAULT_CLIENT_TIMEOUT_S, RunReport, RunRequest, polite_http, run_all
 from ingest.rawstore import RawStore
 from ingest.registry import load_registry, sync_registry
 from ingest.sources.worldbank import parse_native_code as wb_parse_native_code
@@ -70,7 +69,6 @@ from ingest.verify import verify_run
 _MONTH = re.compile(r"[0-9]{4}-[0-9]{2}")  # ASCII digits only
 _DAY = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}")
 BUNDLE_SOURCES = ("worldbank", "eredes")  # keyless, reviewed channels only
-DEFAULT_CLIENT_TIMEOUT_S = 30.0
 
 
 def _default_db() -> str:
@@ -198,15 +196,11 @@ def _eredes_bounds(args) -> tuple[str, str]:
 
 
 def _http_for(specs, name=None):
-    """CLI default Http factory: per-source polite client - min registry throttle (default
-    1 rps), the registry timeout_s (INE 300; client default otherwise) and NO client retries
-    (0: retry budgets must not multiply the bounded run_with_refetch attempts)."""
-    active = [s for s in specs if s.active and (name is None or s.source.name == name)]
-    throttle = min((s.throttle_rps for s in active), default=1.0)
-    timeouts = {s.source.timeout_s for s in active}
-    timeout = None if timeouts == {None} else max(t for t in timeouts if t is not None)
-    return RequestsHttp(throttle_rps=throttle,
-                        timeout=timeout or DEFAULT_CLIENT_TIMEOUT_S, retries=0)
+    """CLI default Http factory: the shared polite-client policy (operations.polite_http) -
+    min registry throttle (default 1 rps), the registry timeout_s (INE 300; client default
+    otherwise) and NO client retries (0: retry budgets must not multiply the bounded
+    run_with_refetch attempts)."""
+    return polite_http(specs, name, default_timeout_s=DEFAULT_CLIENT_TIMEOUT_S)
 
 
 def _print_report(report: RunReport, out) -> None:

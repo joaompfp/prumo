@@ -10,7 +10,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from ingest.db import Db
-from ingest.http import Http
+from ingest.http import Http, RequestsHttp
 from ingest.models import SeriesSpec
 from ingest.pipeline import dataset_key
 from ingest.rawstore import RawStore
@@ -35,6 +35,24 @@ from ingest.verifiers.worldbank import WorldBankVerifier
 from ingest.verify import run_with_refetch
 
 LEGACY_DATASET_PREFIX = "legacy:"
+
+# Client timeout used when a source's registry `timeout_s` is absent. Kept here (not in the
+# CLI) because the scheduler shares the polite-client policy; ingest.cli re-imports it.
+DEFAULT_CLIENT_TIMEOUT_S = 30.0
+
+
+def polite_http(specs: list[SeriesSpec], source_name: str | None = None, *,
+                default_timeout_s: float = DEFAULT_CLIENT_TIMEOUT_S) -> Http:
+    """The polite per-source Http client policy, shared by the CLI and the Task 18 scheduler
+    (extracted from the CLI in Task 18A): min registry throttle_rps over the source's ACTIVE
+    series (default 1 rps), the registry timeout_s (the client default when unset - INE
+    declares 300 s), and NO client retries (0): client retry budgets must not multiply the
+    bounded run_with_refetch attempts. Call only for a source that has active series."""
+    active = [s for s in specs if s.active and (source_name is None or s.source.name == source_name)]
+    throttle = min((s.throttle_rps for s in active), default=1.0)
+    timeouts = {s.source.timeout_s for s in active}
+    timeout = None if timeouts == {None} else max(t for t in timeouts if t is not None)
+    return RequestsHttp(throttle_rps=throttle, timeout=timeout or default_timeout_s, retries=0)
 
 # Reviewed 2026-11-12 recovery mapping (f0nix probe): the publisher's per-indicator CSV export
 # times out on /v2/en/ for these two indicators; the SAME exporter answers under /v2/es/.
