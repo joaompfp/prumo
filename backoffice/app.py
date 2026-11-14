@@ -5,6 +5,7 @@ creates the file). A missing database or a schema that differs from this code is
 with HTTP 503 and the refusal message, exactly like `python -m ingest status`.
 """
 import json
+import time
 from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,12 +19,15 @@ from markupsafe import Markup, escape
 
 from backoffice import reads, replay
 from backoffice.deps import paths_from_env
+from backoffice.registry_notes import inactive_notes
+from backoffice.ttl_cache import TtlCache
 from ingest.db import Db, ReadOnlyOpenError, read_db_readonly
 from ingest.registry import load_registry
 
 T = TypeVar("T")
 TEMPLATES = Path(__file__).resolve().parent / "templates"
 PAGE_METHODS = ["GET", "HEAD"]
+STATUS_TTL_S = 30.0  # the full status report is reused this long across pages
 
 
 def link(url: str | None) -> Markup | str:
@@ -50,9 +54,11 @@ def _templates() -> Jinja2Templates:
 
 def create_app(db_path: Path, registry_path: Path,
                now: Callable[[], datetime] | None = None, *,
-               raw_dir: Path | None = None) -> FastAPI:
+               raw_dir: Path | None = None, status_ttl_s: float = STATUS_TTL_S,
+               monotonic: Callable[[], float] = time.monotonic) -> FastAPI:
     """`raw_dir` is the raw evidence store verification items are replayed from (None: the
-    replay page says it cannot replay)."""
+    replay page says it cannot replay). The full status report is computed at most once per
+    `status_ttl_s` (on the `monotonic` clock); pages show its generated_at."""
     specs = load_registry(registry_path)  # fail fast at startup on a bad registry
     clock = now or (lambda: datetime.now(timezone.utc))
     templates = _templates()
@@ -60,6 +66,12 @@ def create_app(db_path: Path, registry_path: Path,
 
     def read(fn: Callable[[Db], T]) -> T:
         return read_db_readonly(db_path, fn)
+
+    status_cache = TtlCache(status_ttl_s, monotonic)
+
+    def status():
+        """The full-registry status report (ingest.status.build_status), cached."""
+        return status_cache.get(lambda: read(lambda db: reads.status_report(db, specs, clock())))
 
     def render(request: Request, name: str, status_code: int = 200, **context):
         return templates.TemplateResponse(request, name, context, status_code=status_code)
@@ -71,22 +83,28 @@ def create_app(db_path: Path, registry_path: Path,
 
     @app.api_route("/healthz", methods=PAGE_METHODS)
     def healthz():
-        return {"status": "ok"}
+        """Liveness (always 200 while the app runs) plus a DB-readiness flag: a cheap
+        read-only open + schema check. A DB hiccup must not make the container flap."""
+        try:
+            read(lambda db: None)
+        except Exception as e:  # any refusal or sqlite error only lowers the flag
+            return {"status": "ok", "db": "unavailable", "db_detail": str(e)}
+        return {"status": "ok", "db": "ready"}
 
     @app.api_route("/", methods=PAGE_METHODS)
     def overview(request: Request):
-        at = clock()
-        return render(request, "overview.html",
-                      report=read(lambda db: reads.overview(db, specs, at)))
+        return render(request, "overview.html", report=status())
 
     @app.api_route("/queue", methods=PAGE_METHODS)
     def queue(request: Request):
         at = clock()
-        q = read(lambda db: reads.queue(db, specs, at))
+        report = status()
+        q = read(lambda db: reads.queue(db, specs, report, at))
         return render(request, "queue.html", queue=q, generated_at=at.isoformat(),
                       event_limit=reads.QUEUE_EVENT_LIMIT)
 
     by_id = {s.id: s for s in specs}
+    notes = inactive_notes(registry_path.parent, {s.id for s in specs if not s.active})
     options = {"source": sorted({s.source.name for s in specs}),
                "theme": sorted({s.theme for s in specs}),
                "geography": sorted({s.geography for s in specs}),
@@ -100,8 +118,7 @@ def create_app(db_path: Path, registry_path: Path,
                    "frequency": frequency, "active": active, "q": q}
         chosen = reads.filter_specs(specs, **filters)
         shown = chosen[(page - 1) * reads.PAGE_SIZE:page * reads.PAGE_SIZE]
-        at = clock()
-        statuses = read(lambda db: reads.series_statuses(db, specs, at))
+        statuses = reads.series_statuses(status())
         rows = [(s, statuses[s.id], reads.status_label(statuses[s.id])) for s in shown]
         query = {k: v for k, v in filters.items() if v}
 
@@ -120,10 +137,11 @@ def create_app(db_path: Path, registry_path: Path,
         if spec is None:
             return render(request, "error.html", 404, title="Unknown series",
                           message=f"unknown series: {series_id} (not in the registry)")
-        at = clock()
-        d = read(lambda db: reads.series_detail(db, spec, specs, at, period or None))
+        report = status()
+        d = read(lambda db: reads.series_detail(db, spec, report, period or None))
         return render(request, "series_detail.html", spec=spec, d=d, period=period,
-                      label=reads.status_label(d.status), cap=reads.OBSERVATION_CAP)
+                      label=reads.status_label(d.status), cap=reads.OBSERVATION_CAP,
+                      inactive_notes=notes.get(spec.id, []), status_at=report.generated_at)
 
     @app.api_route("/verification/item/{item_id}", methods=PAGE_METHODS)
     def verification_item(request: Request, item_id: int):

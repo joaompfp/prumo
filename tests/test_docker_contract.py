@@ -41,6 +41,7 @@ def test_image_copies_only_runtime_inputs_including_registry_and_migrations(inst
         ["app/", "./app/"],
         ["static/", "./static/"],
         ["ingest/", "./ingest/"],
+        ["backoffice/", "./backoffice/"],
         ["registry/", "./registry/"],
         ["entrypoint.sh", "./"],
     ]
@@ -85,7 +86,8 @@ def test_build_context_is_deny_by_default_with_only_runtime_reinclusions():
     allowed = {
         "!Dockerfile", "!.dockerignore", "!requirements.txt", "!entrypoint.sh",
         "!app/", "!app/**", "!static/", "!static/**",
-        "!ingest/", "!ingest/**", "!registry/", "!registry/**",
+        "!ingest/", "!ingest/**", "!backoffice/", "!backoffice/**",
+        "!registry/", "!registry/**",
     }
     assert {rule for rule in rules if rule.startswith("!")} == allowed
     last_allow = max(i for i, rule in enumerate(rules) if rule.startswith("!"))
@@ -239,6 +241,81 @@ def test_test_only_packages_stay_out_of_the_production_image():
     test_only = {"pytest", "pytest-cov", "httpx"}
     assert not runtime & test_only, runtime & test_only
     assert test_only <= dev
-    assert {"fastapi", "uvicorn", "requests", "pydantic", "pyyaml"} <= runtime
+    assert {"fastapi", "uvicorn", "requests", "pydantic", "pyyaml", "jinja2"} <= runtime
     ci = (REPO / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     assert "requirements-dev.txt" in ci
+
+
+# --- backoffice (read-only operator view, Tailscale-only) -------------------------------------
+
+BACKOFFICE = REPO / "deploy/prumo-backoffice.yml"
+
+
+@pytest.fixture(scope="module")
+def backoffice():
+    assert BACKOFFICE.is_file(), "backoffice deployment candidate is missing"
+    document = yaml.safe_load(BACKOFFICE.read_text(encoding="utf-8"))
+    assert set(document) == {"services"}
+    assert set(document["services"]) == {"prumo-backoffice"}
+    return document["services"]["prumo-backoffice"]
+
+
+def test_backoffice_image_inputs_exist():
+    """The image carries backoffice/ (code + templates) and the registry notes it reads."""
+    assert (REPO / "backoffice/app.py").is_file()
+    assert (REPO / "backoffice/templates/base.html").is_file()
+    assert list((REPO / "registry").glob("unmapped-*.md"))
+
+
+def test_backoffice_has_its_own_image_tag_and_runs_the_factory(backoffice):
+    """Same Dockerfile, but its own tag: a backoffice deploy never retags the worker's image."""
+    assert backoffice["build"] == {
+        "context": "${DOCKER_DIR}/stacks/web/images/prumo", "dockerfile": "Dockerfile",
+    }
+    assert backoffice["image"] == "prumo-backoffice:latest"
+    assert backoffice["container_name"] == "prumo-backoffice"
+    assert backoffice["command"] == [
+        "uvicorn", "backoffice.app:app_from_env", "--factory",
+        "--host", "0.0.0.0", "--port", "8080", "--workers", "1",
+    ]
+    from backoffice.app import app_from_env
+    assert callable(app_from_env)
+
+
+def test_backoffice_is_tailscale_only_and_mounts_data_read_only(backoffice):
+    assert backoffice["ports"] == ["100.118.19.6:8089:8080"]
+    assert "labels" not in backoffice  # no Traefik route
+    assert backoffice["volumes"] == [
+        "${DOCKER_DIR}/stacks/web/appdata/prumo:/data:ro",
+        "${DOCKER_DIR}/resolv.conf:/etc/resolv.conf:ro",
+    ]
+    assert backoffice["environment"] == {
+        "TZ": "${TZ}",
+        "PRUMO_DB_PATH": "/data/prumo.sqlite3",
+        "PRUMO_RAW_DIR": "/data/raw",
+        "PYTHONUNBUFFERED": "1",
+    }
+
+
+def test_backoffice_is_bounded_hardened_and_health_checked(backoffice):
+    assert backoffice["restart"] == "unless-stopped"
+    assert backoffice["mem_limit"] == "256m"
+    assert backoffice["security_opt"] == ["no-new-privileges:true"]
+    assert backoffice["networks"] == ["t2_proxy"]
+    assert backoffice["logging"] == {
+        "driver": "json-file", "options": {"max-size": "10m", "max-file": "3"},
+    }
+    check = backoffice["healthcheck"]
+    assert check["test"][0] == "CMD" and "http://127.0.0.1:8080/healthz" in check["test"][-1]
+    assert set(backoffice) == {
+        "build", "image", "container_name", "command", "restart", "mem_limit",
+        "security_opt", "logging", "networks", "ports", "volumes", "environment",
+        "healthcheck",
+    }
+
+
+def test_operator_runbook_documents_the_backoffice():
+    text = OPERATIONS.read_text(encoding="utf-8")
+    assert "## Backoffice" in text
+    assert "http://100.118.19.6:8089" in text
+    assert 'dc-web-up prumo-backoffice' in text

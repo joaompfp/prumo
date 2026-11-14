@@ -13,8 +13,28 @@ RECENT = "2026-11-14T00:00:00+00:00"
 
 def test_healthz(env):
     c = env.client()
-    assert c.get("/healthz").json() == {"status": "ok"}
+    assert c.get("/healthz").json() == {"status": "ok", "db": "ready"}
     assert c.head("/healthz").status_code == 200
+
+
+def test_healthz_stays_200_when_the_db_is_not_ready(env, tmp_path):
+    """Liveness is the app; DB readiness is a flag in the body, so a missing DB or a schema
+    mismatch never makes the container restart-loop."""
+    from fastapi.testclient import TestClient
+
+    from backoffice.app import create_app
+    missing = tmp_path / "missing.sqlite3"
+    r = TestClient(create_app(missing, env.registry)).get("/healthz")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["status"] == "ok" and body["db"] == "unavailable"
+    assert "database not found" in body["db_detail"]
+    assert not missing.exists()
+    db = env.db()
+    db.conn.execute("INSERT INTO schema_migration(version) VALUES ('9999_future')")
+    db.close()
+    r = env.client().get("/healthz")
+    assert r.status_code == 200 and r.json()["db"] == "unavailable"
 
 
 def test_overview_shows_totals_matching_build_status(env):
@@ -116,3 +136,37 @@ def test_html_in_event_detail_is_escaped(env):
     assert "<script>alert(1)</script>" not in r.text
     assert "&lt;script&gt;alert(1)&lt;/script&gt;" in r.text
     assert 'href="javascript:' not in r.text
+
+
+# --- Task 6: the full status report is cached in-process for STATUS_TTL_S -----------------------
+
+def test_status_report_is_cached_for_the_ttl(env):
+    """build_status scans the whole DB (~3 s at production size), so its report is reused for
+    30 s across pages; afterwards it is recomputed."""
+    from fastapi.testclient import TestClient
+    tick = [1000.0]
+    c = TestClient(create_app(env.db_path, env.registry, now=lambda: NOW,
+                              status_ttl_s=30, monotonic=lambda: tick[0]))
+
+    def never_fetched(html):
+        import re
+        return re.search(r'id="t-never_fetched">\s*(\d+)', html)[1]
+
+    assert never_fetched(c.get("/").text) == "2"
+    db = env.db()
+    _direct_verified(db, "s1", "2024", "1.0", RECENT, "k1")
+    db.close()
+    tick[0] += 29
+    assert never_fetched(c.get("/").text) == "2"  # still the cached report
+    tick[0] += 2
+    assert never_fetched(c.get("/").text) == "1"
+
+
+def test_db_refusal_is_not_cached(env, tmp_path):
+    from fastapi.testclient import TestClient
+    path = tmp_path / "later.sqlite3"
+    c = TestClient(create_app(path, env.registry, now=lambda: NOW, status_ttl_s=30,
+                              monotonic=lambda: 0.0))
+    assert c.get("/").status_code == 503
+    path.write_bytes(env.db_path.read_bytes())
+    assert c.get("/").status_code == 200

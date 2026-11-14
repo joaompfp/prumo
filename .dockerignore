@@ -10,6 +10,8 @@
 !static/**
 !ingest/
 !ingest/**
+!backoffice/
+!backoffice/**
 !registry/
 !registry/**
 

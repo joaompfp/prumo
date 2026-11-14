@@ -21,7 +21,8 @@ OBSERVATION_CAP = 200   # newest served rows shown on a series page (the total i
 DETAIL_LIST_CAP = 200   # quarantine rows / verification items shown on a series page
 
 
-def overview(db: Db, specs: list[SeriesSpec], now: datetime) -> StatusReport:
+def status_report(db: Db, specs: list[SeriesSpec], now: datetime) -> StatusReport:
+    """The full-registry `ingest status` report: the one status every page shows."""
     return build_status(db, specs, now=lambda: now)
 
 
@@ -31,8 +32,7 @@ class Queue:
     truncated: bool  # the event read hit QUEUE_EVENT_LIMIT
 
 
-def queue(db: Db, specs: list[SeriesSpec], now: datetime) -> Queue:
-    report = build_status(db, specs, now=lambda: now)
+def queue(db: Db, specs: list[SeriesSpec], report: StatusReport, now: datetime) -> Queue:
     lagging = lagging_series(specs, db.latest_fetched_periods(), now.date())
     events = db.recent_events((now - EVENT_WINDOW).isoformat(), QUEUE_EVENT_KINDS,
                               QUEUE_EVENT_LIMIT)
@@ -55,8 +55,7 @@ def status_label(st: SeriesStatus) -> str:
     return "stale" if st.stale else "verified, current"
 
 
-def series_statuses(db: Db, specs: list[SeriesSpec], now: datetime) -> dict[str, SeriesStatus]:
-    report = build_status(db, specs, now=lambda: now)
+def series_statuses(report: StatusReport) -> dict[str, SeriesStatus]:
     return {st.id: st for src in report.sources for st in src.series}
 
 
@@ -72,12 +71,8 @@ class SeriesDetail:
     vintages: list[dict] | None  # only when a period was asked for
 
 
-def series_detail(db: Db, spec: SeriesSpec, specs: list[SeriesSpec], now: datetime,
+def series_detail(db: Db, spec: SeriesSpec, report: StatusReport,
                   period: str | None) -> SeriesDetail:
-    # Datasets are grouped per source (ingest.operations.group_specs), so the source's own
-    # specs give the same dataset identities as the full registry at a fraction of the work.
-    same_source = [s for s in specs if s.source.name == spec.source.name]
-    report = build_status(db, same_source, now=lambda: now)
     source = next(s for s in report.sources if s.name == spec.source.name)
     status = next(s for s in source.series if s.id == spec.id)
     total, rows = db.series_observations(spec.id, OBSERVATION_CAP)

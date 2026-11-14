@@ -25,7 +25,24 @@
 <dt>redistribution_ok</dt><dd>{{ "yes" if d.source.redistribution_ok else "no (not served publicly)" }}</dd>
 </dl>
 
+{% if not spec.active %}
+<h2 id="inactive">Why inactive</h2>
+{% if inactive_notes %}
+<p class="note">Verbatim lines of the registry notes (registry/unmapped-*.md in git) that name
+this series, with the section they sit in.</p>
+<div class="scroll"><table>
+<tr><th>File</th><th>Section</th><th>Line</th></tr>
+{% for n in inactive_notes %}
+<tr><td>{{ n.file }}</td><td class="wrap">{{ n.section }}</td><td class="wrap">{{ n.text }}</td></tr>
+{% endfor %}
+</table></div>
+{% else %}
+<p class="muted">Inactive, but no reason found in registry/unmapped-*.md for this series.</p>
+{% endif %}
+{% endif %}
+
 <h2>Status</h2>
+<p class="note">From the status report generated {{ status_at }} (reused for up to 30 s).</p>
 <dl class="spec">
 <dt>availability</dt><dd>{{ st.availability }}{% if st.legacy_rows %} ({{ st.legacy_rows }} legacy rows){% endif %}</dd>
 <dt>stale</dt><dd>{{ "unknown" if st.stale is none else ("yes" if st.stale else "no") }}{% if st.stale_reason %} ({{ st.stale_reason }}){% endif %}</dd>

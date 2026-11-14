@@ -147,3 +147,55 @@ def test_series_pages_refuse_missing_db_with_503(env):
     c = env.client()
     assert c.get("/series").status_code == 503
     assert c.get("/series/s1").status_code == 503
+
+
+# --- Task 6: why a series is inactive (registry/unmapped-*.md) -------------------------------
+
+UNMAPPED = """# Fake series not active
+
+Intro mentioning nothing.
+
+## Unit conflicts
+
+- **s2, s9** — registry unit contradicts the publisher <script>x</script>.
+
+## Not active
+
+| series | reason |
+|---|---|
+| `s2` | duplicate of s1 |
+"""
+
+
+def test_inactive_series_shows_documented_reasons(env):
+    (env.registry.parent / "unmapped-fake.md").write_text(UNMAPPED)
+    html = env.client().get("/series/s2").text
+    assert "Why inactive" in html
+    assert "unmapped-fake.md" in html
+    assert "Unit conflicts" in html and "Not active" in html
+    assert "duplicate of s1" in html
+    assert "<script>x" not in html and "&lt;script&gt;x" in html
+
+
+def test_active_series_has_no_inactive_section(env):
+    (env.registry.parent / "unmapped-fake.md").write_text(UNMAPPED)
+    assert "Why inactive" not in env.client().get("/series/s1").text
+
+
+def test_inactive_series_without_documented_reason_says_so(env):
+    html = env.client().get("/series/s2").text
+    assert "Why inactive" in html and "no reason found" in html
+
+
+def test_every_inactive_registry_series_has_a_documented_reason():
+    """Deterministic coverage of the real registry: each inactive series id appears as an exact
+    token in some registry/unmapped-*.md line."""
+    from pathlib import Path
+
+    from backoffice.registry_notes import inactive_notes
+    from ingest.registry import load_registry
+    reg = Path(__file__).resolve().parents[2] / "registry"
+    inactive = {s.id for s in load_registry(reg / "core.yaml") if not s.active}
+    notes = inactive_notes(reg, inactive)
+    assert inactive and set(notes) == inactive
+    assert all(n.file.startswith("unmapped-") for ns in notes.values() for n in ns)

@@ -454,6 +454,39 @@ registered for its source: `python -m ingest --db /data/prumo.sqlite3 --raw-dir 
 verify <run_id>` (in the web container, worker stopped as for any manual write). It ends
 `verified` or `failed-verification`; the next scheduled run fetches afresh either way.
 
+## Backoffice
+
+`prumo-backoffice` is a strictly read-only operator view of the pipeline at
+`http://100.118.19.6:8089` (Tailscale address of f0nix only; there is no Traefik or public
+route and no login: Tailscale membership is the perimeter). It runs the same Dockerfile
+under its own image tag `prumo-backoffice:latest`, so deploying it never retags or restarts
+the worker's `prumo-ingest:latest`. Its include is `deploy/prumo-backoffice.yml`, installed
+as `~/docker/stacks/web/compose/prumo-backoffice.yml`.
+
+Read-only guarantee, in three layers: the `/data` volume is mounted `:ro`; every page opens
+the database through `ingest.db.read_db_readonly` (sqlite `mode=ro`, `query_only`, never
+migrates or creates the file); every route is `GET`/`HEAD` (a test enforces it). A missing
+database or a schema older/newer than the image's code gives an HTTP 503 page with the
+refusal text, like `python -m ingest status`. `/healthz` always answers 200 while the app
+runs and reports `"db": "ready"` or `"db": "unavailable"` (with `db_detail`) in its JSON
+body, so a database hiccup never makes the container restart-loop.
+
+| Page | Shows |
+|---|---|
+| `/` | Overview: the same totals and per-source table as `ingest status` |
+| `/queue` | Derived review queue: verification failures/escalations and revision bursts of the last 7 days, runs pending verification for more than 24 h, stale and lagging series, blocked sources |
+| `/series` | Registry series with filters (source, theme, geography, frequency, active, text) and status, 100 per page |
+| `/series/<id>` | Registry spec and licence, why an inactive series is inactive (verbatim lines of `registry/unmapped-*.md`), status, newest 200 served rows (legacy rows labelled unverified), raw fetches, verification items, quarantine; `?period=` adds that period's vintages |
+| `/verification/item/<id>` | One stored verification item and a fresh offline replay of its archived evidence (match, mismatch, evidence missing, evidence corrupt, cannot replay, with the reason) |
+
+Deploy (controller, owner-authorized; never restart `prumo-ingest` for it):
+
+```bash
+bash -lic "dc-web-up prumo-backoffice"
+curl -fsS http://100.118.19.6:8089/healthz
+docker inspect prumo-ingest --format 'started={{.State.StartedAt}}'
+```
+
 ## Rollback
 
 The safe ingestion rollback is to stop the worker and retain the new maintenance web app,
