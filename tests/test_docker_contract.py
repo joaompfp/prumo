@@ -252,12 +252,16 @@ BACKOFFICE = REPO / "deploy/prumo-backoffice.yml"
 
 
 @pytest.fixture(scope="module")
-def backoffice():
+def backoffice_document():
     assert BACKOFFICE.is_file(), "backoffice deployment candidate is missing"
-    document = yaml.safe_load(BACKOFFICE.read_text(encoding="utf-8"))
-    assert set(document) == {"services"}
-    assert set(document["services"]) == {"prumo-backoffice"}
-    return document["services"]["prumo-backoffice"]
+    return yaml.safe_load(BACKOFFICE.read_text(encoding="utf-8"))
+
+
+@pytest.fixture(scope="module")
+def backoffice(backoffice_document):
+    assert set(backoffice_document) == {"services", "networks"}
+    assert set(backoffice_document["services"]) == {"prumo-backoffice"}
+    return backoffice_document["services"]["prumo-backoffice"]
 
 
 def test_backoffice_image_inputs_exist():
@@ -285,10 +289,8 @@ def test_backoffice_has_its_own_image_tag_and_runs_the_factory(backoffice):
 def test_backoffice_is_tailscale_only_and_mounts_data_read_only(backoffice):
     assert backoffice["ports"] == ["100.118.19.6:8089:8080"]
     assert "labels" not in backoffice  # no Traefik route
-    assert backoffice["volumes"] == [
-        "${DOCKER_DIR}/stacks/web/appdata/prumo:/data:ro",
-        "${DOCKER_DIR}/resolv.conf:/etc/resolv.conf:ro",
-    ]
+    # no resolv.conf: the app makes no outbound call and no lookup (see the no-egress test)
+    assert backoffice["volumes"] == ["${DOCKER_DIR}/stacks/web/appdata/prumo:/data:ro"]
     assert backoffice["environment"] == {
         "TZ": "${TZ}",
         "PRUMO_DB_PATH": "/data/prumo.sqlite3",
@@ -301,7 +303,6 @@ def test_backoffice_is_bounded_hardened_and_health_checked(backoffice):
     assert backoffice["restart"] == "unless-stopped"
     assert backoffice["mem_limit"] == "256m"
     assert backoffice["security_opt"] == ["no-new-privileges:true"]
-    assert backoffice["networks"] == ["t2_proxy"]
     assert backoffice["logging"] == {
         "driver": "json-file", "options": {"max-size": "10m", "max-file": "3"},
     }
@@ -310,8 +311,55 @@ def test_backoffice_is_bounded_hardened_and_health_checked(backoffice):
     assert set(backoffice) == {
         "build", "image", "container_name", "command", "restart", "mem_limit",
         "security_opt", "logging", "networks", "ports", "volumes", "environment",
-        "healthcheck",
+        "healthcheck", "read_only", "tmpfs", "cap_drop",
     }
+
+
+def test_backoffice_root_filesystem_is_read_only_with_a_tmpfs(backoffice):
+    assert backoffice["read_only"] is True
+    assert backoffice["tmpfs"] == ["/tmp"]
+
+
+def test_backoffice_drops_every_capability(backoffice):
+    assert backoffice["cap_drop"] == ["ALL"]
+    assert "cap_add" not in backoffice
+    assert "privileged" not in backoffice
+
+
+def test_backoffice_has_its_own_plain_bridge_not_the_proxy_network(backoffice_document,
+                                                                   backoffice):
+    """Not t2_proxy: Traefik and every container on it could reach :8080 regardless of the
+    host-port bind. A plain user-defined bridge still publishes ports; `internal: true` would
+    NOT (Docker sets up no port publishing for a container attached only to internal
+    networks), so it is deliberately absent and the Tailscale-only port bind stays the
+    perimeter."""
+    assert backoffice["networks"] == ["prumo_backoffice"]
+    assert backoffice_document["networks"] == {
+        "prumo_backoffice": {"name": "prumo_backoffice", "driver": "bridge"},
+    }
+    assert "internal" not in backoffice_document["networks"]["prumo_backoffice"]
+    assert backoffice["ports"] == ["100.118.19.6:8089:8080"]
+
+
+def test_backoffice_runs_as_root_because_raw_evidence_is_owner_only(backoffice, tmp_path):
+    """No `user:`. The worker (root) writes raw evidence through tempfile.mkstemp, which
+    creates files mode 0600, so a non-root uid could not read them and the replay page would
+    break. Root without capabilities (cap_drop ALL: no DAC override) on a read-only rootfs
+    and a :ro data mount reads only what root owns. If RawStore ever writes 0644, revisit
+    (user "1000:1000" plus a one-off chmod -R a+rX of the raw store)."""
+    from ingest.rawstore import RawStore
+    _sha, path = RawStore(tmp_path).save("src", b"payload")
+    assert path.stat().st_mode & 0o777 == 0o600
+    assert "user" not in backoffice
+
+
+def test_backoffice_code_makes_no_network_calls():
+    """Why the resolv.conf mount is gone: nothing in backoffice/ imports a network client,
+    and the replay path (ingest.verify.replay_check + verifier constructors) is offline."""
+    network = re.compile(r"^\s*(import|from)\s+(requests|urllib\.request|http\.client|socket|httpx|"
+                         r"aiohttp|ingest\.http)\b", re.MULTILINE)
+    for f in (REPO / "backoffice").rglob("*.py"):
+        assert not network.search(f.read_text(encoding="utf-8")), f
 
 
 def test_operator_runbook_documents_the_backoffice():

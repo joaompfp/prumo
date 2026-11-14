@@ -1,5 +1,14 @@
 # Candidate include for the existing web stack; the controller installs it on f0nix.
 # Strictly read-only operator view: data mounted :ro, Tailscale address only, no Traefik route.
+# Hardening (backoffice review Important 4):
+# - own plain bridge network, not t2_proxy: nothing on the Traefik network can reach :8080.
+#   Not `internal: true`, because Docker publishes no ports for a container attached only
+#   to internal networks; the 100.118.19.6 bind stays the perimeter.
+# - no resolv.conf mount: the app makes no outbound call and no DNS lookup.
+# - read-only root filesystem (+ tmpfs /tmp), every capability dropped, no-new-privileges.
+# - runs as root ON PURPOSE: the worker writes raw evidence with mode 0600 (tempfile.mkstemp),
+#   so a non-root uid could not read it for the replay page; without capabilities root has no
+#   DAC override and reads only what root owns, through a :ro mount.
 services:
   prumo-backoffice:
     build:
@@ -10,6 +19,11 @@ services:
     command: ["uvicorn", "backoffice.app:app_from_env", "--factory", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]
     restart: unless-stopped
     mem_limit: 256m
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
     security_opt:
       - no-new-privileges:true
     ports:
@@ -27,11 +41,15 @@ services:
       PYTHONUNBUFFERED: "1"
     volumes:
       - ${DOCKER_DIR}/stacks/web/appdata/prumo:/data:ro
-      - ${DOCKER_DIR}/resolv.conf:/etc/resolv.conf:ro
     networks:
-      - t2_proxy
+      - prumo_backoffice
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
+
+networks:
+  prumo_backoffice:
+    name: prumo_backoffice
+    driver: bridge
