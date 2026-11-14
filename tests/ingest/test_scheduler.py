@@ -306,9 +306,9 @@ def test_loop_ticks_every_15_minutes(db, store):
     assert box[0] == T0 + timedelta(minutes=30)
 
 
-def test_blocked_source_reported_each_tick_and_inactive_never_scheduled(db, store, capsys):
-    """Every tick exposes DGEG (verifiable: false, all 17 inactive in the real registry) as
-    BLOCKED without ever attempting it; inactive series of other sources are never scheduled.
+def test_tick_emits_only_attempts_and_inactive_never_scheduled(db, store, capsys):
+    """tick() never repeats the DGEG (verifiable: false) blocked notice: that is reported once
+    per process start by main() (D-M1). Inactive series of other sources are never scheduled.
     Default log target is one JSON line per stdout."""
     live = _wb("wb.act.PT", "X.ACT")
     dead = _wb("wb.dead.PT", "X.DEA", active=False)
@@ -316,18 +316,61 @@ def test_blocked_source_reported_each_tick_and_inactive_never_scheduled(db, stor
     calls: list = []
     tick(db, store, specs, now=lambda: T0, runner=_runner({}, calls))
     out = [json.loads(line) for line in capsys.readouterr().out.strip().splitlines()]
-    blocked = [line for line in out if line["event"] == "blocked"]
-    assert len(blocked) == 1 and blocked[0]["source"] == "dgeg" \
-        and "verifiable: false" in blocked[0]["detail"]
-    attempts = [line for line in out if line["event"] == "attempt"]
-    assert [line["source"] for line in attempts] == ["worldbank"]
+    assert [line["event"] for line in out] == ["attempt"]
+    assert [line["source"] for line in out] == ["worldbank"]
     assert all(line["schema"] == "prumo-scheduler" and line["version"] == 1 and line["ts"]
                for line in out)
     assert [c[1] for c in calls] == ["X.ACT"]          # native indicator label, not source
     assert calls[0][3] == ("wb.act.PT",)               # only active series reached the runner
-    db2 = tick(db, store, specs, now=lambda: T0 + timedelta(minutes=15),
-               runner=_runner({}, calls))
-    assert [line["event"] for line in db2] == ["blocked"]  # DGEG again; nothing else due
+    again = tick(db, store, specs, now=lambda: T0 + timedelta(minutes=15),
+                 runner=_runner({}, calls))
+    assert again == []                                 # nothing due, and no blocked repeat
+
+
+def _registry_with_blocked_dgeg(tmp_path: Path) -> Path:
+    p = _tiny_registry(tmp_path)
+    p.write_text(p.read_text().replace(
+        "series:\n",
+        "  dgeg:\n"
+        "    licence: UNVERIFIED\n"
+        "    licence_url: https://example.org/d\n"
+        "    attribution: DGEG\n"
+        "    redistribution_ok: false\n"
+        "    verifiable: false\n"
+        "series:\n"
+        "  - id: dgeg.a\n"
+        "    source: dgeg\n"
+        "    indicator_key: diesel\n"
+        "    role: primary\n"
+        "    theme: energy\n"
+        "    geography: PT\n"
+        "    frequency: M\n"
+        "    unit: u\n"
+        "    native_code: 'dgeg.a'\n"
+        "    active: false\n", 1))
+    return p
+
+
+def test_blocked_source_reported_once_per_process_start_not_per_pass(tmp_path):
+    """serve mode: three passes, ONE blocked record (from main, before the first pass)."""
+    reg = _registry_with_blocked_dgeg(tmp_path)
+    records: list = []
+    sleeps: list = []
+
+    def stop_after_three(seconds: float) -> None:
+        sleeps.append(seconds)
+        if len(sleeps) == 3:
+            raise KeyboardInterrupt
+
+    box, now = _clock(T0)
+    assert main(["--db", str(tmp_path / "s.db"), "--raw-dir", str(tmp_path / "raw"),
+                 "--registry", str(reg)], now=now, sleep=stop_after_three,
+                runner=_runner({}, []), log=records.append) == 130
+    blocked = [r for r in records if r["event"] == "blocked"]
+    assert [(r["source"], r["state"]) for r in blocked] == [("dgeg", "blocked")]
+    assert "verifiable: false" in blocked[0]["detail"]
+    assert records[0]["event"] == "blocked"            # reported at start, before attempts
+    assert [r["event"] for r in records[1:]] == ["attempt"]  # 1d cadence: one attempt only
 
 
 def test_failed_group_json_line_is_honest(db, store):

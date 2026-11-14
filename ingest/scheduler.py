@@ -126,10 +126,11 @@ def tick(db: Db, store: RawStore, specs: list[SeriesSpec], *, now: Clock = _utc_
          http_for: HttpFor | None = None) -> list[dict]:
     """One pass. Source failures are isolated; persistence/logging failures remain fatal.
 
-    Returned records are the same records sent to log (one per attempted group, plus an
-    explicit blocked-source record each pass). There are no synthetic success heartbeats.
+    Returned records are the same records sent to log: one per attempted group. Blocked
+    sources are reported once per process start by main() (report_blocked), not per pass.
+    There are no synthetic success heartbeats.
     """
-    groups, blocked = _plan(specs)
+    groups = _plan(specs)[0]
     http_for = http_for if http_for is not None else _polite_clients(specs)
     records: list[dict] = []
 
@@ -137,11 +138,6 @@ def tick(db: Db, store: RawStore, specs: list[SeriesSpec], *, now: Clock = _utc_
         records.append(record)
         log(record)
 
-    for name in blocked:
-        outcome = GroupOutcome(name, name, "blocked", exit_relevant=False,
-                               detail="registry marks the source 'verifiable: false'; "
-                                      "not fetched or served")
-        emit(_record(now(), "blocked", outcome, name))
     for group in groups:
         key, name = group.key(), group.specs[0].source.name
         started = _utc(now())
@@ -165,6 +161,21 @@ def tick(db: Db, store: RawStore, specs: list[SeriesSpec], *, now: Clock = _utc_
         finished = _utc(now())
         db.scheduler_attempt_finished(key, outcome.state, finished.isoformat())
         emit(_record(finished, "attempt", outcome, group.label))
+    return records
+
+
+def report_blocked(specs: list[SeriesSpec], *, now: Clock = _utc_now,
+                   log: Log = _stdout) -> list[dict]:
+    """One 'blocked' log record per registry source marked 'verifiable: false' (DGEG). Called
+    once per process start: the state comes from the registry, so repeating it every pass
+    would only be log noise (D-M1). Log only; nothing is written to the database."""
+    records = []
+    for name in _plan(specs)[1]:
+        outcome = GroupOutcome(name, name, "blocked", exit_relevant=False,
+                               detail="registry marks the source 'verifiable: false'; "
+                                      "not fetched or served")
+        records.append(_record(now(), "blocked", outcome, name))
+        log(records[-1])
     return records
 
 
@@ -241,6 +252,7 @@ def _locked_main(args, db_path: Path, specs, *, now: Clock, sleep, runner, log, 
         # a killed process (OOM, SIGKILL) and is closed honestly before new work starts.
         db.close_orphan_runs(now().astimezone(timezone.utc).isoformat())
         sync_registry(db, specs)
+        report_blocked(specs, now=now, log=log)
         store = RawStore(Path(args.raw_dir))
         if args.once:
             records = tick(db, store, specs, now=now, runner=runner, log=log,
