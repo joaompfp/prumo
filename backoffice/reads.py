@@ -10,7 +10,7 @@ from backoffice.queue import EVENT_WINDOW, STUCK_PENDING_AFTER, QueueItem, deriv
 from ingest.data_lag import lagging_series
 from ingest.db import Db
 from ingest.models import SeriesSpec
-from ingest.status import StatusReport, build_status
+from ingest.status import SeriesStatus, SourceStatus, StatusReport, build_status
 
 # Revision bursts are counted per run from the events themselves: one Eurostat run alone
 # emits ~150 revision events, so the page reads every queue-relevant event of the window and
@@ -40,3 +40,68 @@ def queue(db: Db, specs: list[SeriesSpec], now: datetime) -> Queue:
                              older_than=(now - STUCK_PENDING_AFTER).isoformat())
     return Queue(derive_queue(report, lagging, events, stuck, now=now),
                  len(events) >= QUEUE_EVENT_LIMIT)
+
+
+def status_label(st: SeriesStatus) -> str:
+    """One honest word for a series' state, from ingest.status (never re-derived here)."""
+    if st.stale_reason == "never_fetched":
+        return "never fetched"
+    if st.stale_reason == "never_verified":
+        return "never verified"
+    if st.availability == "legacy-unverified":
+        return "legacy only (unverified)"
+    if st.stale_reason == "pinned_bundle_only":
+        return "stale (pinned bundle only)"
+    return "stale" if st.stale else "verified, current"
+
+
+def series_statuses(db: Db, specs: list[SeriesSpec], now: datetime) -> dict[str, SeriesStatus]:
+    report = build_status(db, specs, now=lambda: now)
+    return {st.id: st for src in report.sources for st in src.series}
+
+
+@dataclass(frozen=True)
+class SeriesDetail:
+    status: SeriesStatus
+    source: SourceStatus
+    total: int
+    observations: list[dict]
+    raw_fetches: list[dict]
+    quarantine: list[dict]
+    items: list[dict]
+    vintages: list[dict] | None  # only when a period was asked for
+
+
+def series_detail(db: Db, spec: SeriesSpec, specs: list[SeriesSpec], now: datetime,
+                  period: str | None) -> SeriesDetail:
+    # Datasets are grouped per source (ingest.operations.group_specs), so the source's own
+    # specs give the same dataset identities as the full registry at a fraction of the work.
+    same_source = [s for s in specs if s.source.name == spec.source.name]
+    report = build_status(db, same_source, now=lambda: now)
+    source = next(s for s in report.sources if s.name == spec.source.name)
+    status = next(s for s in source.series if s.id == spec.id)
+    total, rows = db.series_observations(spec.id, OBSERVATION_CAP)
+    return SeriesDetail(
+        status, source, total, rows, db.series_raw_fetches(spec.id),
+        db.series_quarantine(spec.id, DETAIL_LIST_CAP),
+        db.series_verification_items(spec.id, DETAIL_LIST_CAP),
+        db.series_vintages(spec.id, period) if period else None)
+
+
+PAGE_SIZE = 100  # series per list page
+
+
+def filter_specs(specs: list[SeriesSpec], *, source: str = "", theme: str = "",
+                 geography: str = "", frequency: str = "", active: str = "",
+                 q: str = "") -> list[SeriesSpec]:
+    """Registry series matching every non-empty filter, by id. active is 'yes', 'no' or ''
+    (any); q is a case-insensitive substring of id, indicator key or native code."""
+    needle = q.strip().lower()
+    out = [s for s in specs
+           if (not source or s.source.name == source) and (not theme or s.theme == theme)
+           and (not geography or s.geography == geography)
+           and (not frequency or s.frequency == frequency)
+           and (not active or s.active == (active == "yes"))
+           and (not needle or any(needle in (v or "").lower()
+                                  for v in (s.id, s.indicator_key, s.native_code)))]
+    return sorted(out, key=lambda s: s.id)

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}{{ spec.id }} - Prumo backoffice{% endblock %}
+{% block content %}
+{% set st = d.status %}
+<h1>{{ spec.id }}</h1>
+<p>Status: <span class="badge{% if st.availability == 'legacy-unverified' %} sev-medium{% elif st.stale is not false %} bad{% else %} good{% endif %}">{{ label }}</span>
+{% if not spec.active %}<span class="badge muted">inactive</span>{% endif %}
+{% if d.source.blockers %}<span class="badge sev-info">{{ d.source.blockers | join(", ") }}</span>{% endif %}
+&middot; {{ d.total }} served rows</p>
+
+<h2>Registry and licence</h2>
+<dl class="spec">
+<dt>indicator</dt><dd>{{ spec.indicator_key }} ({{ spec.role }})</dd>
+<dt>theme / geography</dt><dd>{{ spec.theme }} / {{ spec.geography }}</dd>
+<dt>frequency</dt><dd>{{ spec.frequency }}{% if spec.schedule %} (schedule {{ spec.schedule }}){% endif %}</dd>
+<dt>unit</dt><dd>{{ spec.unit }}{% if spec.multiplier is not none %} &times; {{ spec.multiplier }}{% endif %}</dd>
+{% if spec.seasonal_adjustment %}<dt>seasonal adjustment</dt><dd>{{ spec.seasonal_adjustment }}</dd>{% endif %}
+{% if spec.base_year %}<dt>base year</dt><dd>{{ spec.base_year }}</dd>{% endif %}
+<dt>decimal separator</dt><dd><code>{{ spec.decimal }}</code></dd>
+<dt>native code</dt><dd><code>{{ spec.native_code or "-" }}</code></dd>
+<dt>source URL</dt><dd>{{ spec.url | link if spec.url else "-" }}</dd>
+<dt>source</dt><dd>{{ spec.source.name }}{% if not spec.source.verifiable %} (no independent verification channel){% endif %}</dd>
+<dt>licence</dt><dd>{{ spec.source.licence }} &middot; {{ spec.source.licence_url | link }}</dd>
+<dt>attribution</dt><dd>{{ spec.source.attribution }}</dd>
+<dt>redistribution_ok</dt><dd>{{ "yes" if d.source.redistribution_ok else "no (not served publicly)" }}</dd>
+</dl>
+
+<h2>Status</h2>
+<dl class="spec">
+<dt>availability</dt><dd>{{ st.availability }}{% if st.legacy_rows %} ({{ st.legacy_rows }} legacy rows){% endif %}</dd>
+<dt>stale</dt><dd>{{ "unknown" if st.stale is none else ("yes" if st.stale else "no") }}{% if st.stale_reason %} ({{ st.stale_reason }}){% endif %}</dd>
+<dt>dataset</dt><dd>{{ st.dataset_label or "-" }}</dd>
+<dt>latest attempt</dt><dd>{{ st.latest_attempt or "-" }}{% if st.latest_attempt_state %} ({{ st.latest_attempt_state }}, input {{ st.latest_attempt_origin }}){% endif %}</dd>
+<dt>last verified</dt><dd>{{ st.last_verified or "never" }}</dd>
+<dt>last confirmed current</dt><dd>{{ st.last_confirmed_current or "never" }}</dd>
+<dt>data fetched</dt><dd>{{ st.real_data_fetched_at or "none" }}</dd>
+</dl>
+
+{% if d.vintages is not none %}
+<h2 id="vintages">Vintages of {{ period }}</h2>
+<p class="note">Every stored version of this period across runs, oldest first. Only the version
+the served view returns is marked served.</p>
+{% if d.vintages %}
+<div class="scroll"><table>
+<tr><th>Run</th><th>Run state</th><th>Fetched</th><th>Value</th><th>Flag</th><th>Origin</th><th>Served</th></tr>
+{% for v in d.vintages %}
+<tr class="vintage-row{% if v.origin == 'legacy' %} legacy{% endif %}">
+<td class="num">{{ v.run_id }}</td>
+<td{% if v.run_state != "verified" %} class="bad"{% endif %}>{{ v.run_state }}</td>
+<td>{{ v.fetched_at }}</td><td class="value">{{ v.value_text }}</td>
+<td>{{ v.status_flag or "" }}</td>
+<td>{{ "legacy, unverified" if v.origin == "legacy" else "fetched" }}</td>
+<td>{% if v.served %}<span class="served-mark">served</span>{% endif %}</td>
+</tr>
+{% endfor %}
+</table></div>
+{% else %}
+<p>No stored row for period <code>{{ period }}</code>.</p>
+{% endif %}
+{% endif %}
+
+<h2>Served observations</h2>
+<p class="note">{% if d.total > d.observations | length %}newest {{ d.observations | length }} of {{ d.total }} served rows{% else %}{{ d.total }} served rows{% endif %};
+values exactly as the publisher's token. Click a period for its vintages.</p>
+{% if d.observations %}
+<div class="scroll"><table>
+<tr><th>Period</th><th>Value</th><th>Flag</th><th>Origin</th><th>Run</th><th>Fetched</th><th>Payload sha256</th></tr>
+{% for o in d.observations %}
+<tr class="obs-row{% if o.origin == 'legacy' %} legacy{% endif %}">
+<td><a href="?period={{ o.period | urlencode }}#vintages">{{ o.period }}</a></td>
+<td class="value">{{ o.value_text }}</td>
+<td>{{ o.status_flag or "" }}</td>
+<td>{{ "legacy, unverified" if o.origin == "legacy" else "fetched, verified" }}</td>
+<td class="num">{{ o.run_id }}</td><td>{{ o.fetched_at }}</td>
+<td class="mono">{{ o.raw_sha or "-" }}</td>
+</tr>
+{% endfor %}
+</table></div>
+{% endif %}
+
+<h2>Raw fetches ({{ d.raw_fetches | length }})</h2>
+{% if d.raw_fetches %}
+<div class="scroll"><table>
+<tr><th>Fetched</th><th>Run</th><th>HTTP</th><th>sha256</th><th>URL</th></tr>
+{% for f in d.raw_fetches %}
+<tr><td>{{ f.fetched_at }}</td><td class="num">{{ f.run_id }}</td><td>{{ f.http_status }}</td>
+<td class="mono">{{ f.sha256 }}</td><td class="wrap">{{ f.url | link }}</td></tr>
+{% endfor %}
+</table></div>
+{% else %}<p class="muted">None.</p>{% endif %}
+
+<h2>Verification items ({{ d.items | length }}{% if d.items | length >= cap %}, newest {{ cap }}{% endif %})</h2>
+{% if d.items %}
+<div class="scroll"><table>
+<tr><th>Item</th><th>Run</th><th>Verified at</th><th>Period</th><th>Expected</th><th>Observed</th>
+<th>Match</th><th>Reason drawn</th><th>Evidence</th></tr>
+{% for i in d.items %}
+<tr><td class="num">{{ i.item_id }}</td><td class="num">{{ i.run_id }}</td><td>{{ i.created_at }}</td>
+<td>{{ i.period }}</td><td class="value">{{ i.expected_text }}</td><td class="value">{{ i.observed_text }}</td>
+<td class="{{ 'good' if i.match else 'bad' }}">{{ "match" if i.match else "MISMATCH" }}</td>
+<td>{{ i.reason or "" }}</td><td class="wrap">{{ i.evidence_url | link }}</td></tr>
+{% endfor %}
+</table></div>
+{% else %}<p class="muted">None.</p>{% endif %}
+
+<h2>Quarantine ({{ d.quarantine | length }}{% if d.quarantine | length >= cap %}, newest {{ cap }}{% endif %})</h2>
+{% if d.quarantine %}
+<div class="scroll"><table>
+<tr><th>Created</th><th>Run</th><th>Period</th><th>Raw value</th><th>Reason</th></tr>
+{% for q in d.quarantine %}
+<tr><td>{{ q.created_at }}</td><td class="num">{{ q.run_id }}</td><td>{{ q.period }}</td>
+<td class="value wrap">{{ q.raw_value }}</td><td>{{ q.reason }}</td></tr>
+{% endfor %}
+</table></div>
+{% else %}<p class="muted">None.</p>{% endif %}
+{% endblock %}

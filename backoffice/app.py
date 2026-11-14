@@ -8,9 +8,10 @@ import json
 from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import TypeVar
+from typing import Literal, TypeVar
+from urllib.parse import urlencode
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Query, Request
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
@@ -57,12 +58,12 @@ def create_app(db_path: Path, registry_path: Path,
     def read(fn: Callable[[Db], T]) -> T:
         return read_db_readonly(db_path, fn)
 
-    def page(request: Request, name: str, status_code: int = 200, **context):
+    def render(request: Request, name: str, status_code: int = 200, **context):
         return templates.TemplateResponse(request, name, context, status_code=status_code)
 
     @app.exception_handler(ReadOnlyOpenError)
     def refused(request: Request, exc: ReadOnlyOpenError):
-        return page(request, "error.html", 503, title="Database unavailable",
+        return render(request, "error.html", 503, title="Database unavailable",
                     message=f"read-only open refused: {exc}")
 
     @app.api_route("/healthz", methods=PAGE_METHODS)
@@ -72,14 +73,54 @@ def create_app(db_path: Path, registry_path: Path,
     @app.api_route("/", methods=PAGE_METHODS)
     def overview(request: Request):
         at = clock()
-        return page(request, "overview.html", report=read(lambda db: reads.overview(db, specs, at)))
+        return render(request, "overview.html",
+                      report=read(lambda db: reads.overview(db, specs, at)))
 
     @app.api_route("/queue", methods=PAGE_METHODS)
     def queue(request: Request):
         at = clock()
         q = read(lambda db: reads.queue(db, specs, at))
-        return page(request, "queue.html", queue=q, generated_at=at.isoformat(),
-                    event_limit=reads.QUEUE_EVENT_LIMIT)
+        return render(request, "queue.html", queue=q, generated_at=at.isoformat(),
+                      event_limit=reads.QUEUE_EVENT_LIMIT)
+
+    by_id = {s.id: s for s in specs}
+    options = {"source": sorted({s.source.name for s in specs}),
+               "theme": sorted({s.theme for s in specs}),
+               "geography": sorted({s.geography for s in specs}),
+               "frequency": sorted({s.frequency for s in specs})}
+
+    @app.api_route("/series", methods=PAGE_METHODS)
+    def series_list(request: Request, source: str = "", theme: str = "", geography: str = "",
+                    frequency: str = "", active: Literal["", "yes", "no"] = "", q: str = "",
+                    page: int = Query(1, ge=1)):
+        filters = {"source": source, "theme": theme, "geography": geography,
+                   "frequency": frequency, "active": active, "q": q}
+        chosen = reads.filter_specs(specs, **filters)
+        shown = chosen[(page - 1) * reads.PAGE_SIZE:page * reads.PAGE_SIZE]
+        at = clock()
+        statuses = read(lambda db: reads.series_statuses(db, specs, at))
+        rows = [(s, statuses[s.id], reads.status_label(statuses[s.id])) for s in shown]
+        query = {k: v for k, v in filters.items() if v}
+
+        def page_url(n: int) -> str:
+            return "/series?" + urlencode({**query, "page": n})
+
+        pages = max(1, -(-len(chosen) // reads.PAGE_SIZE))
+        return render(request, "series_list.html", rows=rows, total=len(chosen),
+                      filters=filters, options=options, page=page, pages=pages,
+                      prev_url=page_url(page - 1) if page > 1 else None,
+                      next_url=page_url(page + 1) if page < pages else None)
+
+    @app.api_route("/series/{series_id}", methods=PAGE_METHODS)
+    def series_detail(request: Request, series_id: str, period: str = ""):
+        spec = by_id.get(series_id)
+        if spec is None:
+            return render(request, "error.html", 404, title="Unknown series",
+                          message=f"unknown series: {series_id} (not in the registry)")
+        at = clock()
+        d = read(lambda db: reads.series_detail(db, spec, specs, at, period or None))
+        return render(request, "series_detail.html", spec=spec, d=d, period=period,
+                      label=reads.status_label(d.status), cap=reads.OBSERVATION_CAP)
 
     return app
 
