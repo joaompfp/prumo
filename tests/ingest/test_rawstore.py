@@ -77,3 +77,8 @@ def test_save_repairs_corrupt_existing_file(tmp_path, damage):
     assert path.read_bytes() == BODY
     assert store.load(path) == BODY
     assert [p.name for p in path.parent.iterdir()] == [sha]
+
+
+def test_saved_files_are_world_readable(tmp_path):
+    _sha, path = RawStore(tmp_path).save("ine", BODY)
+    assert path.stat().st_mode & 0o777 == 0o644

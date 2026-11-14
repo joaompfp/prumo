@@ -26,6 +26,9 @@ class RawStore:
         path.parent.mkdir(parents=True, exist_ok=True)
         fd, tmp = tempfile.mkstemp(dir=path.parent, prefix=".tmp-")
         try:
+            # Public-source bytes, not secrets: world-readable so a non-root read-only viewer
+            # (the backoffice replay page) can open them. mkstemp would give 0600.
+            os.fchmod(fd, 0o644)
             with os.fdopen(fd, "wb") as f:
                 f.write(body)
                 f.flush()

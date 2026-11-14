@@ -518,11 +518,11 @@ the page.
   evidence offline).
 - `read_only: true` root filesystem with a `tmpfs` on `/tmp`, `cap_drop: [ALL]`,
   `no-new-privileges`.
-- It runs as root on purpose. The worker writes raw evidence with mode 0600
-  (`tempfile.mkstemp`), so a non-root uid could not read it for replays. Without
-  capabilities, root has no DAC override and reads only what root owns, through the `:ro`
-  mount. To move to `user: "1000:1000"`, raw evidence would first need group/world read
-  (`chmod -R a+rX` of the raw store plus a RawStore change), which is not done.
+- It runs as `user: "1000:1000"`. `RawStore` writes raw evidence mode 0644 (public-source
+  bytes; it used to be 0600 via `tempfile.mkstemp`). A worker image older than that change
+  still writes 0600 root files that the replay page cannot read: run
+  `docker exec prumo-ingest chmod -R a+rX /data/raw` (no restart) after deploying the
+  backoffice and again until the worker image is rebuilt and restarted.
 - Host header allow-list (DNS-rebinding guard): `PRUMO_BACKOFFICE_ALLOWED_HOSTS`,
   comma-separated, default `100.118.19.6,localhost,127.0.0.1`. Add the MagicDNS name there
   if you browse by name. Every response carries `Content-Security-Policy: default-src 'none';

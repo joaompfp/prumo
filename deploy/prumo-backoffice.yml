@@ -6,9 +6,9 @@
 #   to internal networks; the 100.118.19.6 bind stays the perimeter.
 # - no resolv.conf mount: the app makes no outbound call and no DNS lookup.
 # - read-only root filesystem (+ tmpfs /tmp), every capability dropped, no-new-privileges.
-# - runs as root ON PURPOSE: the worker writes raw evidence with mode 0600 (tempfile.mkstemp),
-#   so a non-root uid could not read it for the replay page; without capabilities root has no
-#   DAC override and reads only what root owns, through a :ro mount.
+# - runs as uid 1000: RawStore writes raw evidence 0644 (public-source bytes) so the replay page
+#   can read it. Files written by a worker image older than that change are 0600 root and need
+#   a one-off `chmod -R a+rX` of the raw store (see docs/data/operations.md).
 services:
   prumo-backoffice:
     build:
@@ -18,6 +18,7 @@ services:
     container_name: prumo-backoffice
     command: ["uvicorn", "backoffice.app:app_from_env", "--factory", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]
     restart: unless-stopped
+    user: "1000:1000"
     mem_limit: 256m
     read_only: true
     tmpfs:

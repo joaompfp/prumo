@@ -311,7 +311,7 @@ def test_backoffice_is_bounded_hardened_and_health_checked(backoffice):
     assert set(backoffice) == {
         "build", "image", "container_name", "command", "restart", "mem_limit",
         "security_opt", "logging", "networks", "ports", "volumes", "environment",
-        "healthcheck", "read_only", "tmpfs", "cap_drop",
+        "healthcheck", "read_only", "tmpfs", "cap_drop", "user",
     }
 
 
@@ -341,16 +341,14 @@ def test_backoffice_has_its_own_plain_bridge_not_the_proxy_network(backoffice_do
     assert backoffice["ports"] == ["100.118.19.6:8089:8080"]
 
 
-def test_backoffice_runs_as_root_because_raw_evidence_is_owner_only(backoffice, tmp_path):
-    """No `user:`. The worker (root) writes raw evidence through tempfile.mkstemp, which
-    creates files mode 0600, so a non-root uid could not read them and the replay page would
-    break. Root without capabilities (cap_drop ALL: no DAC override) on a read-only rootfs
-    and a :ro data mount reads only what root owns. If RawStore ever writes 0644, revisit
-    (user "1000:1000" plus a one-off chmod -R a+rX of the raw store)."""
+def test_backoffice_runs_as_non_root_and_raw_evidence_is_world_readable(backoffice, tmp_path):
+    """`user: "1000:1000"`: the replay page needs to read raw evidence written by the root
+    worker, so RawStore writes it 0644 (public-source bytes). Existing 0600 files on a
+    deployed host need a one-off `chmod -R a+rX` of the raw store."""
     from ingest.rawstore import RawStore
     _sha, path = RawStore(tmp_path).save("src", b"payload")
-    assert path.stat().st_mode & 0o777 == 0o600
-    assert "user" not in backoffice
+    assert path.stat().st_mode & 0o777 == 0o644
+    assert backoffice["user"] == "1000:1000"
 
 
 def test_backoffice_code_makes_no_network_calls():
