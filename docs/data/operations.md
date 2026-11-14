@@ -99,10 +99,10 @@ changes to `/home/joao/docker`:
   archive. Do not delete historical data to make room.
 
 `PRUMO_DB_PATH=/data/prumo.sqlite3` and `PRUMO_RAW_DIR=/data/raw` are the worker/image
-contract. The currently inspected ingestion CLI reads the older `PRUMO_DB` variable as
-its DB override. All operator CLI commands below therefore pass `--db` and `--raw-dir`
-explicitly, before the subcommand. Do not rely on that older variable or change CLI code
-as part of an image deployment.
+contract. Since Task 23 (branch `pipeline-rebuild`) the ingestion CLI reads the same
+`PRUMO_DB_PATH`, with the older `PRUMO_DB` only as a deprecated fallback; the deployed
+49a3602 image still reads only `PRUMO_DB`. The operator commands below keep passing `--db`
+and `--raw-dir` explicitly, before the subcommand, so they are correct for both images.
 
 The worker has its own `prumo-ingest:latest` image tag and no published ports or Traefik
 labels. Its inherited web HTTP healthcheck is disabled. A running process is not proof of
@@ -229,6 +229,18 @@ timestamp merely to collect another snapshot.
 Run status and read-only evidence commands in the web container; these remain available
 when the worker is stopped. Status exit 0 means the report was produced, not that sources
 are healthy. Review every dataset/group, including pending runs and inactive/blocked sources.
+
+Since Task 23 (not in the deployed 49a3602 image until an authorized rebuild), `status` and
+`lag` open the database strictly read-only (SQLite `mode=ro`): they never migrate and never
+create a file. They exit 2 with a clear message when the file is missing or its schema is
+older or newer than the code (the scheduler applies migrations; a report never does).
+The text report shows, per source and in total, the active series that are stale, never
+fetched and never verified (stale series ids listed, capped at 10); `last confirmed current`
+next to the retained data's fetch date (stale is judged on the former, see
+[methodology](methodology.md)); events in the last 24h, 7d and lifetime; and per dataset the
+scheduler's persisted state: failure streak, next eligible time and any `running` marker
+(in flight, or an attempt interrupted by a killed process). The scheduler logs one
+`blocked` record per `verifiable: false` source (DGEG) at process start, not every pass.
 
 ```bash
 bash -lic 'dc-web ps prumo prumo-ingest'

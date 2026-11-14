@@ -222,8 +222,9 @@ healthy siblings.
 There is an accepted exception to fresh sampling: responses with the same fingerprint
 as the immediately previous verified run of the same dataset short-circuit to
 `verified`, with no new observations or verification sample. Prior verified rows stay
-queryable; no new independent verification date is invented. Identical bytes after a
-failed run are fully processed again.
+queryable; no new independent verification date is invented, but the re-fetch does count
+as confirming the retained data current for staleness (see the status definition below).
+Identical bytes after a failed run are fully processed again.
 
 The per-source collector and reviewed independent channel are documented in
 [sources.md](sources.md), including blocked definitions and unknown channels. Technical
@@ -300,7 +301,22 @@ for f0nix writes. The scheduler lock coordinates scheduler instances only. Inter
 production continuity requires a new observation window, not an assertion that the
 original 24-hour gate passed.
 
-Status staleness uses the implemented refresh policy, based on actual retained-data
-retrieval dates and registry schedule/frequency. It is not proof of the publisher's
-latest possible release. Distinguish reference-period coverage, real verification,
-receipt age, failed attempts and legal queryability in every audit report.
+Status staleness uses the implemented refresh policy (registry `schedule`, else the
+frequency default A/S=30d, Q=7d, M/D/PT15M=1d). It is not proof of the publisher's
+latest possible release. `status` reports two retrieval dates per series:
+
+- `real_data_fetched_at`: the latest `fetched_at` of the retained observations, i.e. when
+  the bytes now held were received from the publisher.
+- `last_confirmed_current`: the latest publisher retrieval of a run that is still
+  `verified` and either wrote that series' observations, or is an identical-payload
+  short-circuit whose matched run (followed through earlier short-circuits) is still
+  `verified` and holds that series. An unchanged publisher file that the scheduler
+  re-fetched and found byte-identical therefore confirms the data current, without a new
+  verification date. A failed, pending or withdrawn run confirms nothing.
+
+A series is **stale** when `now - last_confirmed_current` exceeds its refresh interval.
+Legacy-only series (`legacy-unverified`) are always stale (`stale_reason=legacy_unverified`):
+legacy rows never confirm currency, however recent their original date. Never-fetched and
+never-verified series have `stale=null` with that reason. Distinguish reference-period
+coverage, real verification, receipt age, failed attempts and legal queryability in every
+audit report.
