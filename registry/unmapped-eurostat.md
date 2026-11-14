@@ -329,5 +329,10 @@ and stay inactive (their DC history is in `.GR` / `.EU27`, which are mapped to g
 
 ## Registry geography vs Eurostat geo code
 
-Legacy geographies `EU27` and `GR` are mapped to Eurostat `EU27_2020` and `EL` (by value agreement); the
-`geography` field itself was not changed.
+Legacy geographies `EU27` and `GR` are mapped to Eurostat `EU27_2020` and `EL` (by value agreement). Since
+Task 22 (final review C-I2) the `geography` field of every Eurostat series with a native_code equals its pinned
+`geo` code (Eurostat convention, already dominant: `EL` x25 vs `GR` x2, `EU27_2020` x26 vs `EU27` x9); series
+ids and indicator_keys keep the legacy suffix (`.GR`, `.EU27`), because they are identity keys (legacy import,
+stored rows, primary-per-key). Two inactive series without a native_code keep their legacy geography:
+`eurostat.price_level_index.GR` and `eurostat.price_level_index.EU27` (no pinned geo; which EU27 composition the
+legacy rows meant is not established, see Unit conflicts).

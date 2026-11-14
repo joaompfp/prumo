@@ -155,7 +155,7 @@ series:
   theme: economy
   geography: BG
   frequency: M
-  unit: balance %
+  unit: balance
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=BG
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
@@ -179,7 +179,7 @@ series:
   theme: economy
   geography: CY
   frequency: M
-  unit: balance %
+  unit: balance
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=CY
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
@@ -367,7 +367,7 @@ series:
   theme: economy
   geography: LT
   frequency: M
-  unit: balance %
+  unit: balance
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=LT
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
@@ -391,7 +391,7 @@ series:
   theme: economy
   geography: LU
   frequency: M
-  unit: balance %
+  unit: balance
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=LU
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
@@ -491,7 +491,7 @@ series:
   theme: economy
   geography: RO
   frequency: M
-  unit: balance %
+  unit: balance
   decimal: .
   native_code: ei_bsco_m:freq=M,indic=BS-CSMCI,s_adj=SA,unit=BAL,geo=RO
   url: https://ec.europa.eu/eurostat/databrowser/view/ei_bsco_m/default/table?lang=en
@@ -1436,7 +1436,7 @@ series:
   indicator_key: eurostat_electricity_price_household.EU27.S
   role: primary
   theme: energy
-  geography: EU27
+  geography: EU27_2020
   frequency: S
   unit: EUR/kWh
   decimal: .
@@ -1482,7 +1482,7 @@ series:
   indicator_key: eurostat_electricity_price_household.GR.S
   role: primary
   theme: energy
-  geography: GR
+  geography: EL
   frequency: S
   unit: EUR/kWh
   decimal: .
@@ -2350,7 +2350,7 @@ series:
   indicator_key: eurostat_gdp_quarterly.EU27.Q
   role: primary
   theme: economy
-  geography: EU27
+  geography: EU27_2020
   frequency: Q
   unit: M_EUR_2010
   decimal: .
@@ -3044,9 +3044,9 @@ series:
   indicator_key: eurostat_hicp.EU27.M
   role: primary
   theme: economy
-  geography: EU27
+  geography: EU27_2020
   frequency: M
-  unit: index_2015
+  unit: I15
   decimal: .
   native_code: prc_hicp_midx:freq=M,unit=I15,coicop=CP00,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en
@@ -3058,7 +3058,7 @@ series:
   theme: economy
   geography: EU27_2020
   frequency: M
-  unit: Index (2015=100)
+  unit: I15
   decimal: .
   native_code: prc_hicp_midx:freq=M,unit=I15,coicop=CP00,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en
@@ -3932,9 +3932,9 @@ series:
   indicator_key: eurostat_ipi_manufacturing.EU27.M
   role: primary
   theme: economy
-  geography: EU27
+  geography: EU27_2020
   frequency: M
-  unit: index_2021
+  unit: I21
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C,s_adj=SCA,unit=I21,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
@@ -4772,9 +4772,9 @@ series:
   indicator_key: eurostat_ipi_total.EU27.M
   role: primary
   theme: economy
-  geography: EU27
+  geography: EU27_2020
   frequency: M
-  unit: index_2021
+  unit: I21
   decimal: .
   native_code: sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=B-D,s_adj=SCA,unit=I21,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/sts_inpr_m/default/table?lang=en
@@ -5798,7 +5798,7 @@ series:
   theme: economy
   geography: DE
   frequency: A
-  unit: index_2010=100
+  unit: I10_2010
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=DE
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
@@ -5810,7 +5810,7 @@ series:
   theme: economy
   geography: ES
   frequency: A
-  unit: index_2010=100
+  unit: I10_2010
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=ES
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
@@ -5822,7 +5822,7 @@ series:
   theme: economy
   geography: EU27_2020
   frequency: A
-  unit: index_2010=100
+  unit: I10_2010
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
@@ -5834,7 +5834,7 @@ series:
   theme: economy
   geography: FR
   frequency: A
-  unit: index_2010=100
+  unit: I10_2010
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=FR
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
@@ -5846,7 +5846,7 @@ series:
   theme: economy
   geography: PL
   frequency: A
-  unit: index_2010=100
+  unit: I10_2010
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=PL
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
@@ -5858,7 +5858,7 @@ series:
   theme: economy
   geography: PT
   frequency: A
-  unit: index_2010=100
+  unit: I10_2010
   decimal: .
   native_code: nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW,geo=PT
   url: https://ec.europa.eu/eurostat/databrowser/view/nama_10_lp_ulc/default/table?lang=en
@@ -8088,7 +8088,7 @@ series:
   indicator_key: ipi_c29_c30.EU27.M
   role: primary
   theme: economy
-  geography: EU27
+  geography: EU27_2020
   frequency: M
   unit: I21
   decimal: .
@@ -8280,7 +8280,7 @@ series:
   indicator_key: ipi_manufacturing.EU27.M
   role: primary
   theme: economy
-  geography: EU27
+  geography: EU27_2020
   frequency: M
   unit: I21
   decimal: .
@@ -9272,7 +9272,7 @@ series:
   indicator_key: unemployment_rate.EU27.M
   role: primary
   theme: economy
-  geography: EU27
+  geography: EU27_2020
   frequency: M
   unit: '%'
   decimal: .
@@ -10086,7 +10086,7 @@ series:
   theme: demography
   geography: EU
   frequency: A
-  unit: per_1000
+  unit: /1000
   decimal: .
   native_code: SP.DYN.CBRT.IN:EUU
   url: https://api.worldbank.org/v2/country/EUU/indicator/SP.DYN.CBRT.IN
@@ -10130,7 +10130,7 @@ series:
   theme: demography
   geography: GR
   frequency: A
-  unit: per_1000
+  unit: /1000
   decimal: .
   native_code: SP.DYN.CBRT.IN:GRC
   url: https://api.worldbank.org/v2/country/GRC/indicator/SP.DYN.CBRT.IN
@@ -10680,7 +10680,7 @@ series:
   theme: demography
   geography: EU
   frequency: A
-  unit: per_1000
+  unit: /1000
   decimal: .
   native_code: SP.DYN.CDRT.IN:EUU
   url: https://api.worldbank.org/v2/country/EUU/indicator/SP.DYN.CDRT.IN
@@ -10724,7 +10724,7 @@ series:
   theme: demography
   geography: GR
   frequency: A
-  unit: per_1000
+  unit: /1000
   decimal: .
   native_code: SP.DYN.CDRT.IN:GRC
   url: https://api.worldbank.org/v2/country/GRC/indicator/SP.DYN.CDRT.IN
@@ -17464,7 +17464,7 @@ series:
   theme: demography
   geography: EU
   frequency: A
-  unit: years
+  unit: anos
   decimal: .
   native_code: SP.DYN.LE00.IN:EUU
   url: https://api.worldbank.org/v2/country/EUU/indicator/SP.DYN.LE00.IN
@@ -17508,7 +17508,7 @@ series:
   theme: demography
   geography: GR
   frequency: A
-  unit: years
+  unit: anos
   decimal: .
   native_code: SP.DYN.LE00.IN:GRC
   url: https://api.worldbank.org/v2/country/GRC/indicator/SP.DYN.LE00.IN
@@ -18058,7 +18058,7 @@ series:
   theme: demography
   geography: EU
   frequency: A
-  unit: persons
+  unit: hab.
   decimal: .
   native_code: SP.POP.TOTL:EUU
   url: https://api.worldbank.org/v2/country/EUU/indicator/SP.POP.TOTL
@@ -18102,7 +18102,7 @@ series:
   theme: demography
   geography: GR
   frequency: A
-  unit: persons
+  unit: hab.
   decimal: .
   native_code: SP.POP.TOTL:GRC
   url: https://api.worldbank.org/v2/country/GRC/indicator/SP.POP.TOTL

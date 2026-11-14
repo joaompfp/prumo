@@ -7,7 +7,7 @@ Re-running is a no-op: rows already present in that run are not written again (R
 """
 import csv
 from collections import Counter, defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -33,6 +33,37 @@ SUSPECT_UNIT_SCALE = "suspect_unit_scale"
 LEGACY_SUSPECT_SCALE = {
     "ine.exports_monthly.PT": ("2005-01", "2024-12", SUSPECT_UNIT_SCALE),
     "ine.imports_monthly.PT": ("2005-01", "2024-12", SUSPECT_UNIT_SCALE),
+}
+
+# Task 22 (final review C-I2) normalised the registry to ONE unit label per publisher unit code
+# (Eurostat unit=, World Bank indicator), keeping the dominant spelling. The legacy store kept
+# each series' former label, and validate() compares legacy unit text with spec.unit exactly, so
+# a relabelled series also accepts its FORMER label here - and only that series, only that label:
+# same unit, different spelling, never a conversion. series id -> former registry label.
+LEGACY_UNIT_SPELLINGS = {
+    "eurostat.consumer_confidence.BG": "balance %",
+    "eurostat.consumer_confidence.CY": "balance %",
+    "eurostat.consumer_confidence.LT": "balance %",
+    "eurostat.consumer_confidence.LU": "balance %",
+    "eurostat.consumer_confidence.RO": "balance %",
+    "eurostat.hicp.EU27": "index_2015",
+    "eurostat.hicp.EU27_2020": "Index (2015=100)",
+    "eurostat.ipi_manufacturing.EU27": "index_2021",
+    "eurostat.ipi_total.EU27": "index_2021",
+    "eurostat.labour_productivity_per_hour.DE": "index_2010=100",
+    "eurostat.labour_productivity_per_hour.ES": "index_2010=100",
+    "eurostat.labour_productivity_per_hour.EU27_2020": "index_2010=100",
+    "eurostat.labour_productivity_per_hour.FR": "index_2010=100",
+    "eurostat.labour_productivity_per_hour.PL": "index_2010=100",
+    "eurostat.labour_productivity_per_hour.PT": "index_2010=100",
+    "worldbank.birth_rate.EU": "per_1000",
+    "worldbank.birth_rate.GR": "per_1000",
+    "worldbank.death_rate.EU": "per_1000",
+    "worldbank.death_rate.GR": "per_1000",
+    "worldbank.life_expectancy.EU": "years",
+    "worldbank.life_expectancy.GR": "years",
+    "worldbank.population.EU": "persons",
+    "worldbank.population.GR": "persons",
 }
 
 # The legacy store filed the same geography under several labels.
@@ -97,6 +128,8 @@ def import_legacy(db: Db, csv_path: Path, registry: list[SeriesSpec] | None = No
             # Oldest fetch first: the latest vintage of a (series, period) gets the highest id.
             for fetched, spec, raw in sorted(pending[source], key=lambda t: t[0]):
                 fetched_at = _iso_z(fetched)
+                if raw.unit_raw.strip() == LEGACY_UNIT_SPELLINGS.get(spec.id):
+                    raw = replace(raw, unit_raw=spec.unit)
                 accepted, rejected = validate(spec, [raw])
                 scale = LEGACY_SUSPECT_SCALE.get(spec.id)
                 if scale and accepted and scale[0] <= accepted[0].period <= scale[1]:

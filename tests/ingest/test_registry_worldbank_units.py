@@ -9,12 +9,14 @@ unit/status columns): units are registry declarations audited against the publis
 sourceNote prose, NOT observed at verification time (the verifier honestly reports
 observed_unit=None / observed_flag=None).
 
-Multiple registry labels legitimately name the SAME publisher unit (Portuguese spellings kept
-from the legacy registry — never silently normalized):
-    '% PIB'     = '% of GDP'     (PIB = Portuguese GDP)
-    'hab.'/'persons' = de facto midyear population count
-    '/1000'/'per_1000' = crude rate per 1,000 people
-    'anos'/'years'     = years
+Registry labels are Portuguese spellings kept from the legacy registry, ONE per indicator since
+Task 22 (final review C-I2; the dominant spelling was kept, the former 'persons'/'per_1000'/'years'
+labels survive only as legacy-import spellings, ingest.legacy_import
+.LEGACY_UNIT_SPELLINGS; the inactive PPP conflict labels are preserved evidence, not relabelled):
+    '% PIB' = '% of GDP' (PIB = Portuguese GDP)
+    'hab.'  = de facto midyear population count
+    '/1000' = crude rate per 1,000 people
+    'anos'  = years
 """
 import json
 import re
@@ -53,10 +55,10 @@ WB_UNIT_LABELS = {
     # implies perfect inequality"
     "SI.POV.GINI": ("Gini index 0..100", {"0-100"}),
     # 'Population, total': "de facto definition of population ... midyear estimates"
-    "SP.POP.TOTL": ("persons (de facto midyear count)", {"hab.", "persons"}),
-    "SP.DYN.CBRT.IN": ("crude rate per 1,000 people", {"/1000", "per_1000"}),
-    "SP.DYN.CDRT.IN": ("crude rate per 1,000 people", {"/1000", "per_1000"}),
-    "SP.DYN.LE00.IN": ("years", {"anos", "years"}),
+    "SP.POP.TOTL": ("persons (de facto midyear count)", {"hab."}),
+    "SP.DYN.CBRT.IN": ("crude rate per 1,000 people", {"/1000"}),
+    "SP.DYN.CDRT.IN": ("crude rate per 1,000 people", {"/1000"}),
+    "SP.DYN.LE00.IN": ("years", {"anos"}),
 }
 
 

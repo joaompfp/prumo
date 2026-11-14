@@ -50,7 +50,7 @@ def one(rows, period):
 EXPECTED = [
     # series id, Eurostat period, canonical period, value token, registry unit, status flag
     ("eurostat.STS_INPR_M_BD.PT", "2026-09", "2026-09", "97.1", "I21", "normal"),
-    ("eurostat.ipi_total.EU27", "1991-01", "1991-01", "74.8", "index_2021", "estimated"),
+    ("eurostat.ipi_total.EU27", "1991-01", "1991-01", "74.8", "I21", "estimated"),
     ("eurostat.gdp_per_capita_eur.PT", "2025", "2025", "28560", "EUR per capita", "provisional"),
     ("eurostat.gdp_per_capita_eur.EU27_2020", "2020", "2020", "30560", "EUR per capita", "break"),
     ("eurostat.gdp_quarterly.EU27", "2026-Q3", "2026-Q3", "3471512.8", "M_EUR_2010", "normal"),
