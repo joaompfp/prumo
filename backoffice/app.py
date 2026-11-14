@@ -16,7 +16,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 
-from backoffice import reads
+from backoffice import reads, replay
 from backoffice.deps import paths_from_env
 from ingest.db import Db, ReadOnlyOpenError, read_db_readonly
 from ingest.registry import load_registry
@@ -49,7 +49,10 @@ def _templates() -> Jinja2Templates:
 
 
 def create_app(db_path: Path, registry_path: Path,
-               now: Callable[[], datetime] | None = None) -> FastAPI:
+               now: Callable[[], datetime] | None = None, *,
+               raw_dir: Path | None = None) -> FastAPI:
+    """`raw_dir` is the raw evidence store verification items are replayed from (None: the
+    replay page says it cannot replay)."""
     specs = load_registry(registry_path)  # fail fast at startup on a bad registry
     clock = now or (lambda: datetime.now(timezone.utc))
     templates = _templates()
@@ -122,9 +125,19 @@ def create_app(db_path: Path, registry_path: Path,
         return render(request, "series_detail.html", spec=spec, d=d, period=period,
                       label=reads.status_label(d.status), cap=reads.OBSERVATION_CAP)
 
+    @app.api_route("/verification/item/{item_id}", methods=PAGE_METHODS)
+    def verification_item(request: Request, item_id: int):
+        try:
+            r = read(lambda db: replay.replay(db, raw_dir, item_id, specs))
+        except KeyError:
+            return render(request, "error.html", 404, title="Unknown verification item",
+                          message=f"unknown verification item: {item_id}")
+        return render(request, "item.html", r=r, i=r.item, known=r.item["series_id"] in by_id)
+
     return app
 
 
 def app_from_env() -> FastAPI:
     """uvicorn entry point (`uvicorn backoffice.app:app_from_env --factory`)."""
-    return create_app(*paths_from_env())
+    db_path, registry_path, raw_dir = paths_from_env()
+    return create_app(db_path, registry_path, raw_dir=raw_dir)

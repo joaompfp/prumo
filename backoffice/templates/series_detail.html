@@ -95,7 +95,7 @@ values exactly as the publisher's token. Click a period for its vintages.</p>
 <tr><th>Item</th><th>Run</th><th>Verified at</th><th>Period</th><th>Expected</th><th>Observed</th>
 <th>Match</th><th>Reason drawn</th><th>Evidence</th></tr>
 {% for i in d.items %}
-<tr><td class="num">{{ i.item_id }}</td><td class="num">{{ i.run_id }}</td><td>{{ i.created_at }}</td>
+<tr><td class="num"><a href="/verification/item/{{ i.item_id }}">{{ i.item_id }}</a></td><td class="num">{{ i.run_id }}</td><td>{{ i.created_at }}</td>
 <td>{{ i.period }}</td><td class="value">{{ i.expected_text }}</td><td class="value">{{ i.observed_text }}</td>
 <td class="{{ 'good' if i.match else 'bad' }}">{{ "match" if i.match else "MISMATCH" }}</td>
 <td>{{ i.reason or "" }}</td><td class="wrap">{{ i.evidence_url | link }}</td></tr>

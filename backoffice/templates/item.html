@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Verification item {{ r.item_id }} - Prumo backoffice{% endblock %}
+{% block content %}
+<h1>Verification item {{ r.item_id }}</h1>
+<p>Series {% if known %}<a href="/series/{{ i.series_id | urlencode }}">{{ i.series_id }}</a>{% else %}{{ i.series_id }}{% endif %}
+&middot; period {{ i.period }} &middot; source {{ r.source }}
+&middot; stored decision <span class="{{ 'good' if i.match else 'bad' }}">{{ "match" if i.match else "MISMATCH" }}</span></p>
+
+<h2>Replay now</h2>
+<p>Re-reading the archived evidence:
+<span class="badge{% if r.outcome == 'match' %} good{% else %} bad{% endif %}" id="replay-outcome">{{ r.outcome }}</span></p>
+{% if r.reason %}<p class="wrap">Reason: <code>{{ r.reason }}</code></p>{% endif %}
+<p class="note">The verifier's pure re-read of the archived evidence bytes (sha256-checked) must
+reproduce the stored claim exactly, and the stored comparison is then re-decided. No network,
+nothing is written.</p>
+
+<h2>Stored claim</h2>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Expected (pipeline)</th><th>Observed (verifier)</th></tr>
+<tr><td>series</td><td>{{ i.series_id }}</td><td>{{ i.observed_series_id or "" }}</td></tr>
+<tr><td>period</td><td>{{ i.period }}</td><td>{{ i.observed_period or "" }}</td></tr>
+<tr><td>value</td><td class="value">{{ i.expected_text }}</td><td class="value">{{ i.observed_text or "" }}</td></tr>
+<tr><td>decimal separator</td><td><code>{{ i.expected_decimal or "" }}</code></td><td><code>{{ i.observed_decimal or "" }}</code></td></tr>
+<tr><td>unit</td><td>{{ i.expected_unit or "" }}</td><td>{{ i.observed_unit or "" }}{% if i.unit_not_compared %} (not compared: {{ i.unit_not_compared }}){% endif %}</td></tr>
+<tr><td>flag</td><td>{{ i.expected_flag or "" }}</td><td>{{ i.observed_flag or "" }}{% if i.flag_not_compared %} (not compared: {{ i.flag_not_compared }}){% endif %}</td></tr>
+</table></div>
+<dl class="spec">
+<dt>reason drawn</dt><dd>{{ i.reason or "-" }}</dd>
+<dt>fields compared</dt><dd>{{ i.compared or "-" }}</dd>
+<dt>stored note</dt><dd>{{ i.note or "-" }}</dd>
+<dt>evidence URL</dt><dd>{{ i.evidence_url | link if i.evidence_url else "-" }}</dd>
+<dt>evidence sha256</dt><dd class="mono">{{ i.evidence_sha256 or "none archived" }}</dd>
+</dl>
+{% endblock %}
