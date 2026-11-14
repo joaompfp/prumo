@@ -65,6 +65,7 @@ Requests are one GET per indicator per check; sleeping/throttling is the injecte
 """
 import base64
 import csv
+import decimal
 import io
 import json
 import re
@@ -100,6 +101,17 @@ _INDICATOR = re.compile(r"[A-Z0-9]+(?:\.[A-Z0-9]+)+")
 _ISO3 = re.compile(r"[A-Z]{3}")
 _PERIOD = re.compile(r"\d{4}")
 _DATE_STAMP = re.compile(r"\d{4}-\d{2}-\d{2}")
+_EXPONENT = re.compile(r"-?[0-9]+(\.[0-9]+)?E[+-][0-9]+")
+
+
+def _plain(cell: str) -> str:
+    """The CSV writes very small/large values in exponent form ('2.12913319746322E-06') where
+    the API writes the plain decimal ('0.00000212913319746322'); found by the Task 21 census
+    of every cell. Rewritten EXACTLY (Decimal, never float) into plain notation so the engine's
+    exact-Decimal comparison applies; any other token is returned verbatim."""
+    if _EXPONENT.fullmatch(cell) is None:
+        return cell
+    return format(decimal.Decimal(cell), "f")
 
 
 def _indicator_of(code: str | None) -> tuple[str, str]:
@@ -375,6 +387,6 @@ def _result(item: BlindItem, rows: dict[str, list[str]], ycol: dict[str, int], c
     row = rows.get(iso3)
     cell = row[ycol[item.period]] if row is not None else ""
     return ItemResult(series_id=item.series_id, period=item.period,
-                      observed_text=cell if cell != "" else None, evidence_url=url,
+                      observed_text=_plain(cell) if cell != "" else None, evidence_url=url,
                       observed_decimal=".", observed_unit=None, observed_flag=None,
                       evidence=evidence)

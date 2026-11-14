@@ -782,3 +782,13 @@ def test_every_item_replays_from_its_archived_evidence_via_reread(env):
     db, specs, store, r, ok = _run(env)
     assert ok
     assert assert_replays_from_evidence(db, store, WorldBankVerifier(), step=13)
+
+
+@pytest.mark.parametrize("cell,plain", [
+    ("2.12913319746322E-06", "0.00000212913319746322"),  # live census finding (AR 1960)
+    ("1E+3", "1000"), ("-1.5E-2", "-0.015"), ("12.5", "12.5"), ("-3", "-3")])
+def test_exponent_cells_are_rewritten_exactly_to_plain_decimals(cell, plain):
+    """The bulk CSV writes tiny values in exponent form where the API writes plain decimals;
+    the verifier rewrites them EXACTLY (Decimal, never float), other tokens stay verbatim."""
+    from ingest.verifiers.worldbank import _plain
+    assert _plain(cell) == plain
