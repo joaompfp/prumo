@@ -283,4 +283,5 @@ def test_0013_upgrades_a_populated_0012_database_without_changing_rows(tmp_path,
     assert any(v.startswith("0013") for (v,) in d.conn.execute(
         "SELECT version FROM schema_migration"))
     d.close()
-    assert open_db(p).conn.execute("SELECT COUNT(*) FROM schema_migration").fetchone()[0] == 13
+    assert open_db(p).conn.execute("SELECT COUNT(*) FROM schema_migration").fetchone()[0] \
+        == len(dbmod._expected_migrations())

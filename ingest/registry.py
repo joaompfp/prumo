@@ -1,4 +1,5 @@
 """Indicator registry: YAML -> validated SeriesSpec list -> DB sync."""
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -6,6 +7,7 @@ import yaml
 from pydantic import ValidationError
 
 from ingest.db import Db
+from ingest.derive import formula_label_pt
 from ingest.models import DerivedSpec, SeriesSpec, SourceSpec, normalize_period
 
 
@@ -91,6 +93,16 @@ def _validate(specs: list[SeriesSpec]) -> None:
     for key in {s.indicator_key for s in specs}:
         if primaries[key] != 1:
             raise ValueError(f"indicator {key!r} needs exactly one primary series, has {primaries[key]}")
+
+
+def sync_derived(db: Db, derived: list[DerivedSpec]) -> None:
+    """Sync the WHOLE `derived:` list (absent keys become inactive), with the formula label."""
+    db.upsert_derived_series([
+        {"key": d.key, "formula": d.formula, "base_series_id": d.base,
+         "params_json": json.dumps(d.params, sort_keys=True), "label": d.label,
+         "formula_label_pt": formula_label_pt(d.formula, d.params, d.base), "unit": d.unit,
+         "active": d.active}
+        for d in derived])
 
 
 def sync_registry(db: Db, specs: list[SeriesSpec]) -> None:

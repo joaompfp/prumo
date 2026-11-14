@@ -763,6 +763,193 @@ class Db:
         if cur.rowcount != 1:
             raise ValueError(f"no in-flight scheduler attempt for {dataset_key!r}")
 
+    # --- derived layer (project 3) ---------------------------------------------------------------
+    # Inputs are served *fetched* rows only (never legacy); values are text, never REAL.
+
+    def upsert_derived_series(self, rows: list[dict]) -> None:
+        """Idempotent sync of the WHOLE derived registry (`rows` keys: key, formula,
+        base_series_id, params_json, label, formula_label_pt, unit, active). An active key
+        absent from `rows` is set inactive (its rows stay, unserved). ValueError (nothing
+        written) when a row redefines an existing key's formula, base or params: rows computed
+        under the old definition must never be relabelled; declare a new key instead."""
+        with self.transaction() as c:
+            for r in rows:
+                old = c.execute("SELECT formula, base_series_id, params_json FROM derived_series "
+                                "WHERE key = ?", (r["key"],)).fetchone()
+                if old is not None and (old[0], old[1], json.loads(old[2])) != (
+                        r["formula"], r["base_series_id"], json.loads(r["params_json"])):
+                    raise ValueError(f"{r['key']}: formula/base/params of an existing derived "
+                                     f"key cannot change; declare a new key")
+                c.execute(
+                    "INSERT INTO derived_series(key, formula, base_series_id, params_json, label, "
+                    "formula_label_pt, unit, active) VALUES (:key, :formula, :base_series_id, "
+                    ":params_json, :label, :formula_label_pt, :unit, :active) "
+                    "ON CONFLICT(key) DO UPDATE SET label=excluded.label, "
+                    "formula_label_pt=excluded.formula_label_pt, unit=excluded.unit, "
+                    "active=excluded.active",
+                    {**r, "params_json": old[2] if old is not None else r["params_json"],
+                     "active": int(r["active"])})
+            keep = [r["key"] for r in rows]
+            c.execute("UPDATE derived_series SET active = 0 WHERE active = 1 AND key NOT IN "
+                      "(SELECT value FROM json_each(?))", (json.dumps(keep),))
+
+    def derived_series_rows(self, *, active_only: bool = True) -> list[dict]:
+        """Every (active) derived series with its base frequency, ordered by key."""
+        rows = self.conn.execute(
+            "SELECT d.id, d.key, d.formula, d.base_series_id, s.frequency, d.params_json, "
+            "d.label, d.formula_label_pt, d.unit, d.active FROM derived_series d "
+            "JOIN series s ON s.id = d.base_series_id "
+            f"{'WHERE d.active = 1 ' if active_only else ''}ORDER BY d.key").fetchall()
+        keys = ("id", "key", "formula", "base_series_id", "frequency", "params", "label",
+                "formula_label_pt", "unit", "active")
+        return [dict(zip(keys, (*r[:5], json.loads(r[5]), *r[6:9], bool(r[9])))) for r in rows]
+
+    def served_fetched_inputs(self, series_id: str) -> dict[str, tuple[int, str]]:
+        """period -> (observation id, value_text) of the served *fetched* rows of a series."""
+        return {p: (i, v) for p, i, v in self.conn.execute(
+            "SELECT period, id, value_text FROM served_observation "
+            "WHERE series_id = ? AND kind = 'fetched'", (series_id,))}
+
+    def begin_derived_run(self, started_at: str, trigger: str, scope: list[str]) -> int:
+        """New derived_run in state 'computing'; scope = the derived keys it evaluates."""
+        return self.conn.execute(
+            "INSERT INTO derived_run(started_at, state, trigger, scope_json) "
+            "VALUES (?, 'computing', ?, ?)", (started_at, trigger, json.dumps(scope))).lastrowid
+
+    def derived_known_inputs(self, derived_series_id: int) -> set[tuple[str, str]]:
+        """(period, input_obs_ids_json) of the series' matched rows in verified runs."""
+        return set(self.conn.execute(
+            "SELECT d.period, d.input_obs_ids_json FROM derived_observation d "
+            "JOIN derived_run r ON r.id = d.run_id AND r.state = 'verified' "
+            "WHERE d.derived_series_id = ? AND d.state = 'match'", (derived_series_id,)))
+
+    def write_derived_observations(self, run_id: int, computed_at: str,
+                                   rows: list[tuple[int, str, str, int, str]]) -> None:
+        """Insert (derived_series_id, period, value_text, scale, input_obs_ids_json) rows,
+        state 'pending'."""
+        self.conn.executemany(
+            "INSERT INTO derived_observation(derived_series_id, period, value_text, scale, "
+            "input_obs_ids_json, computed_at, run_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            [(*r, computed_at, run_id) for r in rows])
+
+    def add_derived_event(self, ts: str, run_id: int, derived_series_id: int | None,
+                          period: str | None, kind: str, detail: dict | None = None) -> None:
+        self.conn.execute(
+            "INSERT INTO derived_event(ts, run_id, derived_series_id, period, kind, detail_json) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (ts, run_id, derived_series_id, period, kind,
+             json.dumps(detail) if detail is not None else None))
+
+    def derived_observations_of_run(self, run_id: int) -> list[dict]:
+        """The run's derived rows with their series definition, by id."""
+        keys = ("id", "derived_series_id", "key", "formula", "params", "base_series_id",
+                "frequency", "period", "value_text", "scale", "input_ids")
+        rows = self.conn.execute(
+            "SELECT d.id, d.derived_series_id, ds.key, ds.formula, ds.params_json, "
+            "ds.base_series_id, s.frequency, d.period, d.value_text, d.scale, "
+            "d.input_obs_ids_json FROM derived_observation d "
+            "JOIN derived_series ds ON ds.id = d.derived_series_id "
+            "JOIN series s ON s.id = ds.base_series_id WHERE d.run_id = ? ORDER BY d.id",
+            (run_id,)).fetchall()
+        return [dict(zip(keys, (*r[:4], json.loads(r[4]), *r[5:10], json.loads(r[10]))))
+                for r in rows]
+
+    def observations_by_ids(self, ids: list[int]) -> dict[int, dict]:
+        """id -> {series_id, period, value_text, kind, served} for the known ids; `served` is
+        True iff the id is currently in served_observation as a fetched row."""
+        rows = self.conn.execute(
+            "SELECT o.id, o.series_id, o.period, o.value_text, o.kind, "
+            "o.id IN (SELECT id FROM served_observation WHERE kind = 'fetched' "
+            "AND id IN (SELECT value FROM json_each(?))) "
+            "FROM observation o WHERE o.id IN (SELECT value FROM json_each(?))",
+            (json.dumps(list(ids)),) * 2).fetchall()
+        return {i: {"series_id": s, "period": p, "value_text": v, "kind": k,
+                    "served": bool(served)} for i, s, p, v, k, served in rows}
+
+    def set_derived_row_states(self, states: list[tuple[int, str]]) -> None:
+        """(derived_observation id, 'match' | 'mismatch'); each row's state is set once."""
+        self.conn.executemany("UPDATE derived_observation SET state = ? WHERE id = ?",
+                              [(s, i) for i, s in states])
+
+    def finish_derived_run(self, run_id: int, state: str, finished_at: str, *, n_written: int,
+                           n_checked: int, n_mismatch: int) -> None:
+        """Compare-and-set 'computing' -> 'verified' | 'failed'; ValueError otherwise."""
+        if state not in ("verified", "failed"):
+            raise ValueError(f"a derived run finishes verified or failed, not {state!r}")
+        cur = self.conn.execute(
+            "UPDATE derived_run SET state = ?, finished_at = ?, n_written = ?, n_checked = ?, "
+            "n_mismatch = ? WHERE id = ? AND state = 'computing'",
+            (state, finished_at, n_written, n_checked, n_mismatch, run_id))
+        if cur.rowcount != 1:
+            raise ValueError(f"derived run {run_id} is not computing")
+
+    _SERVED_DERIVED_COLUMNS = (
+        "derived_key", "period", "value_text", "scale", "unit", "is_calculated", "formula",
+        "formula_label_pt", "label", "base_series_id", "inputs", "licence", "licence_url",
+        "attribution", "computed_at", "derived_run_id", "derived_observation_id")
+
+    def served_derived_rows(self, key: str, limit: int,
+                            offset: int = 0) -> tuple[int, list[dict]]:
+        """(served row count, one page newest period first) of a derived key; `inputs`
+        decoded."""
+        total = self.conn.execute("SELECT COUNT(*) FROM served_derived WHERE derived_key = ?",
+                                  (key,)).fetchone()[0]
+        rows = self.conn.execute(
+            f"SELECT {', '.join(self._SERVED_DERIVED_COLUMNS)} FROM served_derived "
+            "WHERE derived_key = ? ORDER BY period DESC LIMIT ? OFFSET ?",
+            (key, limit, offset)).fetchall()
+        out = [dict(zip(self._SERVED_DERIVED_COLUMNS, r)) for r in rows]
+        for r in out:
+            r["inputs"] = json.loads(r["inputs"])
+        return total, out
+
+    def derived_rows_of_series(self, key: str, limit: int) -> list[dict]:
+        """Every stored version of a derived key (newest period, then newest id, first) with
+        its run state and whether served_derived serves it."""
+        keys = ("id", "period", "value_text", "scale", "state", "run_id", "run_state",
+                "computed_at", "input_ids", "served")
+        rows = self.conn.execute(
+            "SELECT d.id, d.period, d.value_text, d.scale, d.state, d.run_id, r.state, "
+            "d.computed_at, d.input_obs_ids_json, d.id IN (SELECT derived_observation_id "
+            "FROM served_derived WHERE derived_key = ?) FROM derived_observation d "
+            "JOIN derived_series ds ON ds.id = d.derived_series_id "
+            "JOIN derived_run r ON r.id = d.run_id WHERE ds.key = ? "
+            "ORDER BY d.period DESC, d.id DESC LIMIT ?", (key, key, limit)).fetchall()
+        return [dict(zip(keys, (*r[:8], json.loads(r[8]), bool(r[9])))) for r in rows]
+
+    def derived_status_rows(self) -> list[dict]:
+        """Per ACTIVE derived series: served value count, the latest verified run whose scope
+        covered it, and the newest fetched_at of its served fetched base rows."""
+        keys = ("key", "base_series_id", "served_values", "last_covered_run_id",
+                "last_covered_at", "base_latest_fetched_at")
+        rows = self.conn.execute(
+            "WITH served AS (SELECT derived_key, COUNT(*) AS n FROM served_derived "
+            "GROUP BY derived_key), "
+            "base AS (SELECT series_id, MAX(fetched_at) AS latest FROM served_observation "
+            "WHERE kind = 'fetched' AND series_id IN "
+            "(SELECT base_series_id FROM derived_series WHERE active = 1) GROUP BY series_id), "
+            "covered AS (SELECT ds.id AS dsid, (SELECT r.id FROM derived_run r "
+            "WHERE r.state = 'verified' AND EXISTS (SELECT 1 FROM json_each(r.scope_json) j "
+            "WHERE j.value = ds.key) ORDER BY r.id DESC LIMIT 1) AS run_id "
+            "FROM derived_series ds WHERE ds.active = 1) "
+            "SELECT ds.key, ds.base_series_id, COALESCE(sv.n, 0), c.run_id, r.started_at, "
+            "b.latest FROM derived_series ds JOIN covered c ON c.dsid = ds.id "
+            "LEFT JOIN derived_run r ON r.id = c.run_id "
+            "LEFT JOIN served sv ON sv.derived_key = ds.key "
+            "LEFT JOIN base b ON b.series_id = ds.base_series_id "
+            "WHERE ds.active = 1 ORDER BY ds.key").fetchall()
+        return [dict(zip(keys, r)) for r in rows]
+
+    def derived_runs(self, limit: int) -> list[dict]:
+        """The newest `limit` derived runs, scope decoded."""
+        keys = ("id", "started_at", "finished_at", "state", "trigger", "scope", "n_written",
+                "n_checked", "n_mismatch")
+        rows = self.conn.execute(
+            "SELECT id, started_at, finished_at, state, trigger, scope_json, n_written, "
+            "n_checked, n_mismatch FROM derived_run ORDER BY id DESC LIMIT ?",
+            (limit,)).fetchall()
+        return [dict(zip(keys, (*r[:5], json.loads(r[5]), *r[6:]))) for r in rows]
+
     def close(self) -> None:
         self.conn.close()
 
