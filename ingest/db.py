@@ -44,6 +44,11 @@ def _parse_utc(ts: str | None) -> datetime | None:
     return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
 
 
+def _origin(kind: str) -> str:
+    """observation.kind as the backoffice names it: 'fetched' or 'legacy'."""
+    return "legacy" if kind == "legacy-unverified" else "fetched"
+
+
 class Db:
     def __init__(self, conn: sqlite3.Connection, *, immutable: bool = False):
         self.conn = conn
@@ -454,6 +459,107 @@ class Db:
             "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at "
             "FROM dataset_run r JOIN source s ON s.id = r.source_id WHERE r.id = ?",
             (run_id,)).fetchone()
+
+    # --- backoffice reads (backoffice v1, Task 1) ----------------------------------------------
+    # Read-only: plain dicts, numbers as the stored publisher token (value_text), never floats.
+
+    def series_observations(self, series_id: str, limit: int,
+                            offset: int = 0) -> tuple[int, list[dict]]:
+        """(total served rows, served rows newest period first) of one series, from the
+        served_observation view. origin is 'fetched' or 'legacy'; raw_sha is the payload hash
+        behind a fetched row (None for legacy rows, which have no payload)."""
+        total = self.conn.execute("SELECT COUNT(*) FROM served_observation WHERE series_id = ?",
+                                  (series_id,)).fetchone()[0]
+        rows = self.conn.execute(
+            "SELECT o.period, o.value_text, o.status_flag, o.dataset_run_id, o.fetched_at, "
+            "f.sha256, o.kind FROM served_observation o "
+            "LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
+            "WHERE o.series_id = ? ORDER BY o.period DESC LIMIT ? OFFSET ?",
+            (series_id, limit, offset)).fetchall()
+        keys = ("period", "value_text", "status_flag", "run_id", "fetched_at", "raw_sha")
+        return total, [{**dict(zip(keys, r[:6])), "origin": _origin(r[6])} for r in rows]
+
+    def series_vintages(self, series_id: str, period: str) -> list[dict]:
+        """Every stored version of one (series, period) across runs, in insertion order, with
+        its run's state; served is True only for the row the served_observation view
+        returns."""
+        rows = self.conn.execute(
+            "SELECT o.dataset_run_id, r.state, o.fetched_at, o.value_text, o.status_flag, o.kind, "
+            "o.id IN (SELECT id FROM served_observation WHERE series_id = ? AND period = ?) "
+            "FROM observation o JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "WHERE o.series_id = ? AND o.period = ? ORDER BY o.id",
+            (series_id, period, series_id, period)).fetchall()
+        return [{"run_id": run, "run_state": state, "fetched_at": at, "value_text": value,
+                 "status_flag": flag, "origin": _origin(kind), "served": bool(served)}
+                for run, state, at, value, flag, kind, served in rows]
+
+    def series_quarantine(self, series_id: str, limit: int = 200) -> list[dict]:
+        """Quarantined raw rows of one series, newest first."""
+        keys = ("run_id", "period", "raw_value", "reason", "created_at")
+        return [dict(zip(keys, r)) for r in self.conn.execute(
+            "SELECT dataset_run_id, raw_period, raw_value, reason, created_at FROM quarantine "
+            "WHERE series_id = ? ORDER BY id DESC LIMIT ?", (series_id, limit))]
+
+    def series_verification_items(self, series_id: str, limit: int = 200) -> list[dict]:
+        """Verification items that covered one series, newest first (match as bool;
+        created_at is the verification's)."""
+        keys = ("item_id", "verification_id", "run_id", "period", "expected_text",
+                "observed_text", "evidence_url", "match", "reason", "created_at")
+        rows = self.conn.execute(
+            "SELECT i.id, i.verification_id, v.dataset_run_id, i.period, i.expected_text, "
+            "i.observed_text, i.evidence_url, i.match, i.reason, v.created_at "
+            "FROM verification_item i JOIN verification v ON v.id = i.verification_id "
+            "WHERE i.series_id = ? ORDER BY i.id DESC LIMIT ?", (series_id, limit)).fetchall()
+        return [{**dict(zip(keys, r)), "match": bool(r[7])} for r in rows]
+
+    def series_raw_fetches(self, series_id: str) -> list[dict]:
+        """Distinct raw payloads behind the series' fetched rows (any run state), newest
+        retrieval first."""
+        keys = ("sha256", "url", "fetched_at", "http_status", "run_id")
+        return [dict(zip(keys, r)) for r in self.conn.execute(
+            "SELECT sha256, url, fetched_at, http_status, dataset_run_id FROM raw_fetch "
+            "WHERE id IN (SELECT raw_fetch_id FROM observation WHERE series_id = ? "
+            "AND raw_fetch_id IS NOT NULL) ORDER BY fetched_at DESC, id DESC", (series_id,))]
+
+    def recent_events(self, since: str | None, kinds: list[str] | None,
+                      limit: int) -> list[dict]:
+        """Events newest first: ts >= `since` (ISO-8601 UTC, stored stamps share the +00:00
+        form so text order is time order) and kind in `kinds` (None = every kind, [] =
+        none). detail is the parsed detail_json ({} when absent)."""
+        if kinds is not None and not kinds:
+            return []
+        where, args = ["1"], []
+        if since is not None:
+            where.append("ts >= ?")
+            args.append(since)
+        if kinds is not None:
+            where.append(f"kind IN ({','.join('?' * len(kinds))})")
+            args.extend(kinds)
+        rows = self.conn.execute(
+            "SELECT id, ts, kind, dataset_run_id, detail_json FROM event "
+            f"WHERE {' AND '.join(where)} ORDER BY ts DESC, id DESC LIMIT ?",
+            (*args, limit)).fetchall()
+        return [{"id": i, "ts": ts, "kind": kind, "run_id": run,
+                 "detail": json.loads(d) if d is not None else {}}
+                for i, ts, kind, run, d in rows]
+
+    def runs_in_state(self, state: str, older_than: str | None = None) -> list[dict]:
+        """Runs in `state`, oldest id first; with `older_than` (ISO-8601) only runs whose
+        started_at is strictly before it (compared as parsed UTC times, not text; an
+        unparseable started_at is kept, since its age cannot be shown to be recent)."""
+        keys = ("run_id", "source", "dataset_key", "state", "started_at", "finished_at",
+                "input_origin")
+        runs = [dict(zip(keys, r)) for r in self.conn.execute(
+            "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at, "
+            "r.input_origin FROM dataset_run r JOIN source s ON s.id = r.source_id "
+            "WHERE r.state = ? ORDER BY r.id", (state,))]
+        if older_than is None:
+            return runs
+        cutoff = _parse_utc(older_than)
+        if cutoff is None:
+            raise ValueError(f"older_than is not an ISO-8601 time: {older_than!r}")
+        return [r for r in runs
+                if (started := _parse_utc(r["started_at"])) is None or started < cutoff]
 
     # --- reviewed withdrawal and orphan runs (Task 20) -----------------------------------------
 
