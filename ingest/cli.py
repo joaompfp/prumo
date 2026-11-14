@@ -65,7 +65,7 @@ from ingest.bundle import (
     load_bundle,
 )
 from ingest.data_lag import lagging_series
-from ingest.db import open_db
+from ingest.db import ReadOnlyOpenError, open_db, open_db_readonly
 from ingest.legacy_import import DEFAULT_REGISTRY, import_legacy
 from ingest.operations import DEFAULT_CLIENT_TIMEOUT_S, RunReport, RunRequest, polite_http, run_all
 from ingest.rawstore import RawStore
@@ -81,7 +81,9 @@ BUNDLE_SOURCES = ("worldbank", "eredes")  # keyless, reviewed channels only
 
 
 def _default_db() -> str:
-    return os.environ.get("PRUMO_DB", "/data/prumo.sqlite3")
+    # PRUMO_DB_PATH is the image/scheduler contract; PRUMO_DB is the deprecated older name.
+    return (os.environ.get("PRUMO_DB_PATH") or os.environ.get("PRUMO_DB")
+            or "/data/prumo.sqlite3")
 
 
 def _default_raw() -> str:
@@ -92,7 +94,8 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="python -m ingest",
         description="Prumo base-data operations (run/status/verify/withdraw/import-legacy/replay).")
-    p.add_argument("--db", help="SQLite database (default: $PRUMO_DB or /data/prumo.sqlite3)")
+    p.add_argument("--db", help="SQLite database (default: $PRUMO_DB_PATH, else the deprecated "
+                                "$PRUMO_DB, else /data/prumo.sqlite3)")
     p.add_argument("--raw-dir", help="raw evidence store (default: $PRUMO_RAW_DIR or /data/raw)")
     p.add_argument("--registry", help=f"registry YAML (default: {DEFAULT_REGISTRY})")
     sub = p.add_subparsers(dest="command", required=True)
@@ -387,8 +390,14 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
     custom_http = http_for is not None
     http_for = http_for or (lambda name: _http_for(specs, name))
 
+    if args.command in ("status", "lag"):
+        try:
+            db = open_db_readonly(db_path)  # never migrates, never creates a file
+        except ReadOnlyOpenError as e:
+            print(f"{args.command} refused: {e}", file=sys.stderr)
+            return 2
+
     if args.command == "status":
-        db = open_db(db_path)
         try:
             report = build_status(db, specs)
         finally:
@@ -397,7 +406,6 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
         return 0
 
     if args.command == "lag":
-        db = open_db(db_path)
         try:
             latest = db.latest_fetched_periods()
         finally:

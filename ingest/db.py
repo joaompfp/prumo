@@ -14,6 +14,10 @@ BUSY_TIMEOUT_S = 30.0  # scheduler and CLI can contend for the write lock
 OperationalError = sqlite3.OperationalError
 
 
+class ReadOnlyOpenError(RuntimeError):
+    """open_db_readonly refused: missing file, or a schema this code does not match."""
+
+
 class SchedulerState(NamedTuple):
     dataset_key: str
     source_name: str
@@ -496,5 +500,52 @@ def open_db(path: str | Path) -> Db:
         _migrate(conn)
     except BaseException:
         conn.close()  # do not leak the open (WAL) handle when migration fails
+        raise
+    return Db(conn)
+
+
+def _expected_migrations() -> set[str]:
+    return {f.stem for f in MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql")}
+
+
+def open_db_readonly(path: str | Path) -> Db:
+    """Open an EXISTING database strictly read-only for reports (status, lag): sqlite URI
+    `mode=ro`, `query_only`, no migration, no journal-mode change, never a new file.
+
+    Refuses (ReadOnlyOpenError) a missing file and a schema whose applied migrations differ
+    from this code's: older means the writer (scheduler) has not migrated it yet, newer means
+    this code is older than the database. Neither is ever "fixed" from here.
+
+    A WAL database with no -wal file has no open writer; it is then opened `immutable=1`,
+    because a plain read-only WAL open would create -wal/-shm files that a read-only handle
+    cannot remove. With a writer running (the -wal file exists) the normal `mode=ro` open
+    reads its committed state."""
+    p = Path(path)
+    if not p.is_file():
+        raise ReadOnlyOpenError(f"database not found: {p} (read-only reports never create one;"
+                                " check --db / PRUMO_DB_PATH)")
+    uri = p.resolve().as_uri() + "?mode=ro"
+    if not Path(str(p) + "-wal").exists():
+        uri += "&immutable=1"
+    conn = sqlite3.connect(uri, uri=True, isolation_level=None, timeout=BUSY_TIMEOUT_S)
+    try:
+        conn.execute("PRAGMA query_only=ON")
+        try:
+            applied = {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
+        except sqlite3.DatabaseError as e:
+            raise ReadOnlyOpenError(f"{p}: no schema_migration table, not a Prumo database "
+                                    f"({e})") from None
+        expected = _expected_migrations()
+        if applied - expected:
+            raise ReadOnlyOpenError(
+                f"{p}: schema is newer than this code (unknown migrations "
+                f"{sorted(applied - expected)}); use the matching code version")
+        if expected - applied:
+            raise ReadOnlyOpenError(
+                f"{p}: schema is older than this code (missing migrations "
+                f"{sorted(expected - applied)}); the writer (scheduler) applies migrations "
+                "first - a read-only report never migrates")
+    except BaseException:
+        conn.close()
         raise
     return Db(conn)
