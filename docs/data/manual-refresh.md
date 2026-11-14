@@ -110,8 +110,16 @@ base isolada no f3nix não atualiza produção.
 
 ## Resultado e datas da importação offline
 
-`run <fonte> --bundle DIR` lê apenas os pedidos exatos gravados no pacote. Não há
-fallback de rede se faltar uma resposta. O manifesto e todos os corpos são validados
+`run <fonte> --bundle DIR` lê apenas os pedidos exatos gravados no pacote para o
+coletor. Não há fallback de rede se faltar uma resposta. O verificador independente,
+porém, lê a fonte por HTTP em direto (Task 21): um pacote editado de forma coerente não
+se consegue verificar a si próprio. Sem rede, a verificação falha com
+`failed-verification` e a razão `verifier channel unavailable` (evento
+`verification_escalated`), sem novo download. Só a opção explícita `--pinned-verifier`
+verifica contra as respostas do verificador gravadas no próprio pacote; isso NÃO é prova
+de auditoria e fica registado em cada verificação como `verifier_channel='pinned-bundle'`.
+Use-a apenas com decisão expressa do responsável, por exemplo quando a rota do
+verificador também falha no servidor. O manifesto e todos os corpos são validados
 antes da abertura da base de destino. Uma falha posterior de um grupo pode deixar
 outros grupos já importados, pelo que se devem rever todos os resultados.
 

@@ -336,6 +336,13 @@ docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw 
 )
 ```
 
+The import's verifier reads the publisher over live HTTP from the container (Task 21): if
+that route is down the import ends `failed-verification` with reason `verifier channel
+unavailable` and nothing is served. Appending `--pinned-verifier` to `RUN_ARGS` verifies
+against the bundle's own captured verifier responses instead; that is not audit-grade,
+is recorded per verification as `verifier_channel='pinned-bundle'`, and needs an explicit
+owner decision.
+
 A stop interrupts continuity: record the stop and begin a new observation window after
 resuming. Do not close the original window using interrupted uptime. On approval to
 resume, re-run the silent SOPS key check above, then:

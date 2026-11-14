@@ -106,27 +106,118 @@ publisher endpoint or format; it must not import the collector or share its pars
 or flag helpers. Static registration rules and subprocess independence tests enforce
 the reviewed boundary, not a general-purpose sandbox against malicious code.
 
-Sampling includes the latest available period of every populated series in the run,
-then random historical observations without replacement. The default target is 50;
-it grows to at least one observation per populated series and is bounded by available
-rows. If series count consumes the target, no additional historical rows are drawn.
-The stored seed makes the selected sample reproducible for the same run and size.
-A series with no accepted rows cannot be sampled and requires the coverage review above.
+### Sample design (procedure `prumo-sample-v2`, [ingest/sampling.py](../../ingest/sampling.py))
+
+Let N be the number of observations a run wrote and S its number of series. The verifier
+compares a sample built in five steps; each item stores the step that drew it
+(`verification_item.reason`):
+
+1. `latest`: the latest period of every series (S items, a census of the newest data).
+2. `changed`: every observation the run revised (event `revision`) or added to a series
+   that already had verified fetched data (event `new_periods`), at most 500 per run. Above
+   the cap, 500 are drawn at random and the rest stay in the history pool; the total, the
+   number checked and the cap are stored in `verification.sample_design`.
+3. `series-stratum`: each series' remaining observations (its history pool) are split by
+   period into an older half and a recent half, and one random observation is drawn from
+   each non-empty half (up to 2S items; fewer where a series has less history).
+4. `random`: a simple random sample, without replacement, of the history pool left after
+   step 3, of size n = the smallest n for which a sample from the whole pool of size P
+   (all observations not taken by steps 1-2) misses every one of D = ceil(0.01 * P)
+   defective observations with probability at most 5%, computed exactly from the
+   hypergeometric distribution: prod over i < n of (P - D - i) / (P - i) <= 0.05.
+   n grows with P and tends to 298: 258 for P = 1,000, 281 for 2,500, 294 for 10,000.
+5. `same-response`: every other observation that the verifier reads from a response it
+   already fetches for steps 1-4 (`Verifier.request_key`). Where one response carries a
+   series' full history, this costs no extra HTTP request and turns the check into a
+   census of that series.
+
+Statistical statement: steps 1, 2 and 5 are censuses of what they cover. Step 4 alone
+detects, with probability at least 95%, any error rate of at least 1% among the history
+pool. Steps 3 and 5 only add items, and drawing step 4 after removing step 3's items can
+only lower the miss probability (each factor 1 - D/(M - i) decreases as the population M
+decreases), so the bound holds for the whole design. A single mismatch fails the run, so
+"100% of the sample matched" means: no error was found in any compared cell, and an error
+rate of 1% or more in the unverified remainder would have been found with at least 95%
+probability.
+
+Randomness is reproducible without depending on the Python version: each candidate gets the
+rank `sha256("prumo-sample-v2" US seed US stratum US series_id US period)` (US = the 0x1F
+separator, lowercase hex) and each step takes the lowest ranks of its stratum. The seed is
+63 random bits from `secrets`, stored on `verification.seed`; `draw_sample` redraws the same
+sample from the stored seed, the run's observations and events, and the verifier's
+`request_key`. Verifications stored before migration 0012 used Python's
+`random.Random(seed).sample` with a fixed target of 50 (labelled
+`v1-python-random-sample`); their items remain stored, but that draw is not re-implemented.
+
+What this means per source, for the current registry (active groups; observation counts from
+the latest production runs):
+
+| Source (groups) | Series per group | Before (fixed 50) | After |
+|---|---|---|---|
+| Eurostat (1) | 329 | 329 latest cells, no history | every observation (one TSV per dataset key carries the full history) |
+| World Bank (18) | ~52 | ~52 latest cells per indicator (949 in all), no history | every observation (one bulk ZIP per indicator; ~45,900 cells) |
+| FRED (1) | 12 | 50 | every observation (one table page per series) |
+| OECD (1) | 6 | 50 | every observation (one CSV per series, window = the run's span) |
+| E-REDES (1) | 3 | 50 of 864 | every observation of each sampled UTC day (all days of a 3-day run) |
+| REN (1) | 14 | 50 of 182 | every series of each sampled chart-month (about all 182) |
+| INE (1) | 41 | 50 of ~1,400 | ~383 (41 latest + 82 strata + 260 random) + changed cells; one selection request each |
+| BPstat (1) | 10 | 50 of ~4,300 | ~318 (10 latest + 20 strata + 288 random) + changed cells; one request each |
+
+INE and BPstat answer one request per item, so their verification now takes several
+hundred throttled requests (minutes, at the 1 request/second policy).
+
+### What an item compares, and why a field may not be compared
 
 Every sampled item must match: exact series/period identity, exact `Decimal` numeric
 value with no tolerance, and unit/status flag when the independent channel exposes
-them. Different trailing zeroes can compare numerically equal. Missing results,
-wrong result count or order, parsing errors and mismatches fail verification. A
-100% sampled match is mandatory; it does not independently prove every unsampled row.
-A separate full-row check against archived collector bytes, when performed, has a
-different evidentiary scope and must be reported separately.
+them. Different trailing zeroes can compare numerically equal. Each item stores the fields
+it compared (`verification_item.compared`). When a channel cannot expose the unit or the
+flag, the verifier declares why (`Verifier.not_compared`) and the reason is stored on the
+item (`unit_not_compared`, `flag_not_compared`); an item without the field and without a
+declared reason fails. The declared reasons per source are:
 
-A failed verification keeps that run out of the served view and triggers a full
-refetch of its dataset group with a fresh seed, up to three total attempts by default.
-Fetch/validation failures return their own failure state; scheduler retries are a
-separate policy. World Bank runs are grouped per indicator across all its registered
-active geographies; other sources run their active series as one dataset. A failed
-World Bank indicator does not stop healthy siblings.
+| Source | Unit compared | Flag compared |
+|---|---|---|
+| Eurostat | no: the TSV shows only the unit code pinned in the requested key | yes |
+| World Bank | no: the bulk CSV has no unit column | no: no status surface |
+| FRED | yes | no: DATE/VALUE table only |
+| OECD | yes | yes |
+| E-REDES | yes (metadata labels) | no: no status surface |
+| REN | balance rows yes; market chart no unit annotation | no: no status surface |
+| INE | yes | yes |
+| BPstat | yes | no: no observation status on the portal |
+
+Missing results, wrong result count or order, parsing errors, missing evidence and
+mismatches fail verification. A 100% match of the sample is mandatory; where the sample is
+not a census it does not prove every unsampled row (the statement above quantifies it).
+A separate full-row check against archived collector bytes, when performed, has a different
+evidentiary scope and must be reported separately.
+
+### Evidence and replay
+
+Every item must carry the evidence bytes it was decided from (an item without evidence
+fails); they are archived under `verify-<source>` and the exact spec the series was verified
+with is stored in `verification_spec`. Each verifier implements a pure
+`reread(evidence, item)`. `replay_item` loads the archived evidence (integrity-checked
+against its SHA-256 name), re-reads it with the verifier's `reread`, requires the result to
+equal the stored claim (key, observed text, decimal, unit, flag), and then re-decides the
+stored comparison. A missing, corrupt or disagreeing piece of evidence does not replay as a
+match. Items stored before migration 0012 need the registry specs passed in.
+
+### Failure, outage and escalation
+
+A failed verification keeps that run out of the served view and triggers a full refetch of
+its dataset group with a fresh seed, up to three total attempts by default. A verifier
+OUTAGE is different: when the verifier channel answers a non-2xx status or the connection
+fails (`VerifierUnavailable`, `OSError`), no item could be compared, so the dataset is not
+re-downloaded; the run ends `failed-verification` with event `verifier_outage`. Giving up,
+after an outage or after the last failed attempt, writes event `verification_escalated`
+(reason, the failed run ids) and the operator report shows the reason. A verifier that
+raises on unexpected content (drift) is a genuine failure and is refetched. Fetch/validation
+failures return their own failure state; scheduler retries are a separate policy. World
+Bank runs are grouped per indicator across all its registered active geographies; other
+sources run their active series as one dataset. A failed World Bank indicator does not stop
+healthy siblings.
 
 There is an accepted exception to fresh sampling: responses with the same fingerprint
 as the immediately previous verified run of the same dataset short-circuit to
@@ -182,12 +273,21 @@ cannot be reconstructed; pipeline vintage history begins with actual ingestion.
 
 `replay --from YYYY-MM` performs a fresh re-fetch. Its cutoff scopes only E-REDES'
 explicit day window; other sources fetch their native histories. It is not an offline
-rebuild command. The `replay_item` Python helper rechecks stored comparison fields and
-hashes without network; independently reparsing archived evidence is a further audit.
+rebuild command. The `replay_item` Python helper re-reads each item's archived evidence with
+the verifier's pure `reread` and re-decides the comparison without network (see Evidence and
+replay above).
 
 Original-file imports use validated `capture` bundles for World Bank/E-REDES only.
 All attempts are marked `input_origin=recorded`; original collector receipt times
-remain the data's `fetched_at`, while processing time stays current. Older recorded
+remain the data's `fetched_at`, while processing time stays current. The collector reads
+only the bundle, but the verifier reads the publisher over live HTTP: a bundle that was
+edited consistently (collector and verifier responses together) cannot verify itself, and
+an offline replay fails verification with a clear `verifier_outage` escalation. Recorded
+input gets one attempt (re-reading the same bundle is not a refetch). Only the explicit
+`run --bundle DIR --pinned-verifier` flag verifies against the bundle's own captured
+verifier responses; that is NOT audit-grade evidence and is stored on every such
+verification as `verifier_channel='pinned-bundle'` (recorded runs verified before migration
+0012 are labelled that way too, because that is how they were verified). Older recorded
 data cannot replace newer verified group data: per-group preflight and an atomic
 write guard enforce that rule. Receipts more than five minutes in the future are
 rejected. A byte-identical bundle may use the verified-payload short-circuit rather
