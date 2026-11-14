@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{% block title %}Prumo backoffice{% endblock %}</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fbfaf7; --fg: #1d1d1b; --muted: #6b6a66; --line: #dcd9d2; --head: #f0eee8;
+  --link: #1f5f8b; --high: #a8231b; --high-bg: #fbe9e7; --medium: #8a5a00; --medium-bg: #fdf3dc;
+  --info: #3b5b7a; --info-bg: #e8eef5; --ok: #2e6b30;
+  --legacy: #6b4b00; --legacy-bg: repeating-linear-gradient(135deg, #fff4d6 0 6px, #fbe9b8 6px 12px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161615; --fg: #e8e6e1; --muted: #a09d96; --line: #3a3936; --head: #22211f;
+    --link: #8cc4ec; --high: #ff9b8f; --high-bg: #3a1a17; --medium: #f0c060; --medium-bg: #33280f;
+    --info: #a9c4e0; --info-bg: #1c2632; --ok: #8fd08f;
+    --legacy: #f3d58a; --legacy-bg: repeating-linear-gradient(135deg, #2e2510 0 6px, #3a2f14 6px 12px);
+  }
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body { margin: 0; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: baseline;
+  padding: .6rem 16px; border-bottom: 1px solid var(--line); background: var(--head); }
+header strong { margin-right: .5rem; }
+header nav a { margin-right: .9rem; }
+main { padding: 12px 16px 40px; max-width: 1400px; }
+a { color: var(--link); }
+h1 { font-size: 1.25rem; margin: .4rem 0 .6rem; }
+h2 { font-size: 1.05rem; margin: 1.4rem 0 .4rem; }
+p.note, .muted { color: var(--muted); }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: .3rem 0 1rem;
+  border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: .3rem .5rem; border-bottom: 1px solid var(--line); text-align: left;
+  vertical-align: top; white-space: nowrap; }
+th { background: var(--head); font-weight: 600; position: sticky; top: 0; }
+td.wrap { white-space: normal; min-width: 14rem; overflow-wrap: anywhere; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+code, .mono, td.value { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.sev-high { color: var(--high); background: var(--high-bg); font-weight: 600; }
+.sev-medium { color: var(--medium); background: var(--medium-bg); }
+.sev-info { color: var(--info); background: var(--info-bg); }
+.bad { color: var(--high); font-weight: 600; }
+.good { color: var(--ok); }
+tr.legacy td { background: var(--legacy-bg); color: var(--legacy); }
+.badge { display: inline-block; padding: 0 .35rem; border: 1px solid currentColor;
+  border-radius: 3px; font-size: 12px; }
+.served-mark { font-weight: 700; }
+dl.spec { display: grid; grid-template-columns: max-content 1fr; gap: .2rem .9rem; margin: 0; }
+dl.spec dt { color: var(--muted); }
+dl.spec dd { margin: 0; overflow-wrap: anywhere; }
+form.filters { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: end; margin: .4rem 0; }
+form.filters label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); }
+input, select, button { font: inherit; color: var(--fg); background: var(--bg);
+  border: 1px solid var(--line); padding: .3rem .4rem; min-height: 2.2rem; }
+details summary { cursor: pointer; }
+.pager { display: flex; gap: 1rem; align-items: center; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Prumo backoffice</strong>
+  <nav><a href="/">Overview</a><a href="/queue">Queue</a><a href="/series">Series</a></nav>
+  <span class="muted">read-only</span>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>

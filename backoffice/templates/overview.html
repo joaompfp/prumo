@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+{% set t = report.totals %}
+<h1>Overview</h1>
+<p class="note">Status schema {{ report.schema }} v{{ report.version }}, generated
+{{ report.generated_at }}. Same report as <code>python -m ingest status</code>. Stale means our
+refresh policy ({{ report.staleness_policy.meaning }}), judged on
+{{ report.staleness_policy.judged_on }}.</p>
+
+<div class="scroll"><table>
+<tr><th>Active series</th><th>Stale</th><th>Never fetched</th><th>Never verified</th>
+<th>Pending verification &gt; {{ report.staleness_policy.pending_stale_after_hours }} h</th></tr>
+<tr>
+<td class="num" id="t-active_series">{{ t.active_series }}</td>
+<td class="num{% if t.stale %} bad{% endif %}" id="t-stale">{{ t.stale }}</td>
+<td class="num" id="t-never_fetched">{{ t.never_fetched }}</td>
+<td class="num" id="t-never_verified">{{ t.never_verified }}</td>
+<td class="num{% if t.pending_stuck %} bad{% endif %}" id="t-pending_stuck">{{ t.pending_stuck }}</td>
+</tr></table></div>
+
+<h2>Sources</h2>
+<div class="scroll"><table>
+<tr><th>Source</th><th class="num">Active</th><th class="num">Inactive</th><th>Blocked</th>
+<th class="num">Stale</th><th class="num">Never fetched</th><th class="num">Never verified</th>
+<th>Latest attempt</th><th>Last verified</th><th>Last confirmed current</th>
+<th>Data fetched</th><th>Scheduler</th><th>Events 24 h</th><th>Events 7 d</th></tr>
+{% for s in report.sources %}
+<tr id="src-{{ s.name }}">
+<td><a href="/series?source={{ s.name | urlencode }}">{{ s.name }}</a></td>
+<td class="num">{{ s.active_series }}</td>
+<td class="num">{{ s.inactive_series }}</td>
+<td>{% if s.blockers %}<span class="sev-info">{{ s.blockers | join(", ") }}</span>{% else %}-{% endif %}</td>
+<td class="num{% if s.stale %} bad{% endif %}">{{ s.stale }}</td>
+<td class="num">{{ s.never_fetched }}</td>
+<td class="num">{{ s.never_verified }}</td>
+<td>{{ s.latest_attempt or "-" }} ({{ s.latest_attempt_state or "-" }})</td>
+<td>{{ s.last_verified or "never" }}</td>
+<td>{{ s.last_confirmed_current or "never" }}</td>
+<td>{{ s.real_data_fetched_at or "none" }}</td>
+<td>{% if s.datasets %}{{ s.scheduler_retrying }} retrying (max streak {{ s.scheduler_max_streak }}),
+{{ s.scheduler_running }} running/interrupted{% else %}-{% endif %}</td>
+<td class="mono">{{ s.events_24h | as_json if s.events_24h else "-" }}</td>
+<td class="mono">{{ s.events_7d | as_json if s.events_7d else "-" }}</td>
+</tr>
+{% endfor %}
+</table></div>
+
+{% for s in report.sources if s.datasets or s.pending_runs or s.stale_series %}
+<details>
+<summary><strong>{{ s.name }}</strong>: {{ s.datasets | length }} datasets,
+{{ s.pending_runs | length }} pending runs, {{ s.stale_series | length }} stale series</summary>
+{% if s.pending_runs %}
+<div class="scroll"><table>
+<tr><th>Pending run</th><th>Dataset</th><th>Input</th><th>Since</th><th>Note</th></tr>
+{% for p in s.pending_runs %}
+<tr><td class="num">{{ p.run_id }}</td><td>{{ p.dataset }}</td><td>{{ p.input_origin }}</td>
+<td>{{ p.started_at }}</td>
+<td>{% if p.stale %}<span class="bad">STALE</span>: resolve with
+<code>python -m ingest verify {{ p.run_id }}</code>{% endif %}</td></tr>
+{% endfor %}
+</table></div>
+{% endif %}
+{% if s.datasets %}
+<div class="scroll"><table>
+<tr><th>Dataset</th><th>Latest state</th><th>Latest attempt</th><th>Input</th>
+<th>Verified via</th><th>Scheduler</th><th class="num">Streak</th><th>Next eligible</th></tr>
+{% for d in s.datasets %}
+<tr><td>{{ d.label }}</td>
+<td{% if d.latest_state and d.latest_state != "verified" %} class="bad"{% endif %}>{{ d.latest_state or "no attempt" }}</td>
+<td>{{ d.latest_attempt or "-" }}</td><td>{{ d.input_origin or "-" }}</td>
+<td>{{ d.verifier_channel or "-" }}</td>
+<td>{{ d.scheduler.last_attempt_state if d.scheduler else "-" }}</td>
+<td class="num">{{ d.scheduler.failure_streak if d.scheduler else "-" }}</td>
+<td>{{ (d.scheduler.next_eligible_at or "now") if d.scheduler else "-" }}</td></tr>
+{% endfor %}
+</table></div>
+{% endif %}
+{% if s.stale_series %}
+<p>Stale:
+{% for sid in s.stale_series %}<a href="/series/{{ sid | urlencode }}">{{ sid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+{% endif %}
+</details>
+{% endfor %}
+{% endblock %}
