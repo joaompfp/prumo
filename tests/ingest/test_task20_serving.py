@@ -236,13 +236,17 @@ def test_close_orphan_runs_marks_running_runs_failed_with_event(db):
     orphan = db.begin_run("fake", "k", "2026-11-13T00:00:00+00:00")
     done = db.begin_run("fake", "k2", "2026-11-13T00:00:00+00:00")
     db.set_run_state(done, "pending-verification")
-    assert db.close_orphan_runs("2026-11-13T01:00:00+00:00") == [orphan]
+    # Task 24 (re-review 1 M-1): a run with no scheduler marker is swept only once it is
+    # older than ORPHAN_MIN_AGE (6 h); a younger one may be a live manual CLI run
+    assert db.close_orphan_runs("2026-11-13T01:00:00+00:00") == []
+    assert db.close_orphan_runs("2026-11-13T07:00:00+00:00") == [orphan]
     assert db.run_state(orphan) == "failed-operational"
     assert db.run_state(done) == "pending-verification"
     assert events(db, "operational_failure") == [
-        (orphan, {"stage": "orphaned", "error": "run left 'running' by an interrupted "
-                                                "process (closed at scheduler start)"})]
-    assert db.close_orphan_runs("2026-11-13T02:00:00+00:00") == []
+        (orphan, {"stage": "orphaned", "swept_because": "older_than_min_age",
+                  "error": "run left 'running' by an interrupted "
+                           "process (closed at scheduler start)"})]
+    assert db.close_orphan_runs("2026-11-13T08:00:00+00:00") == []
 
 
 def test_scheduler_start_closes_orphans_and_sigterm_raises_systemexit(tmp_path, monkeypatch):
@@ -253,6 +257,9 @@ def test_scheduler_start_closes_orphans_and_sigterm_raises_systemexit(tmp_path, 
     dbp = tmp_path / "s.db"
     d = open_db(dbp)
     sync_registry(d, [spec("s1")])
+    # the previous scheduler process marked its attempt, then died mid-run (Task 24: such a
+    # run is closed at start whatever its age)
+    d.scheduler_attempt_started("k", "fake", "g", "2026-11-13T00:00:00+00:00")
     orphan = d.begin_run("fake", "k", "2026-11-13T00:00:00+00:00")
     d.close()
     seen = {}

@@ -32,7 +32,7 @@ def _raw(db):
 def _obs(db, run, raw, period="2025", value=1.0, series="s1", kind="fetched"):
     return db.conn.execute(
         "INSERT INTO observation(series_id,period,value_text,value,kind,dataset_run_id,raw_fetch_id,fetched_at)"
-        " VALUES (?,?,?,?,?,?,?,'2026-01-01')",
+        " VALUES (?,?,?,?,?,?,?,'2026-01-01T00:00:00+00:00')",
         (series, period, str(value), value, kind, run, raw),
     ).lastrowid
 

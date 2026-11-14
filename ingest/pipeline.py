@@ -14,6 +14,10 @@
     any exception escaping (raw store I/O, DB, SIGTERM as SystemExit) ──> failed-operational
        + event(operational_failure) before it propagates; the scheduler closes runs left
        'running' by a hard kill at its next start (Db.close_orphan_runs)
+    every state write out of 'running' is a compare-and-set: a run closed meanwhile by
+       someone else (the orphan sweep) is never overwritten; this process rolls back what it
+       was writing, records event(operational_failure, {stage: closed_elsewhere}) and
+       returns the run's actual state
 
 Only `verified` runs are served (view `served_observation`), so no failure here can hide or
 overwrite previously verified data. Verification (Task 7) moves pending-verification onward.
@@ -112,11 +116,21 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
     run_id = db.begin_run(source.name, key, ts(), input_origin=input_origin)
 
     def finish(state: str, event: str | None = None, detail: dict | None = None,
-               n_written: int = 0, n_quarantined: int = 0) -> DatasetRunResult:
+               n_written: int = 0, n_quarantined: int = 0, *,
+               only_if: Callable[[], bool] | None = None) -> DatasetRunResult | None:
+        """Leave 'running' by compare-and-set, with the event in the same transaction.
+        `only_if` is re-checked inside that transaction (None returned, nothing written,
+        when it no longer holds). A run closed meanwhile by someone else is aborted."""
         t = ts()
-        if event:
-            db.add_event(t, event, run_id, detail)
-        db.set_run_state(run_id, state, finished_at=t)
+        try:
+            with db.transaction():
+                if only_if is not None and not only_if():
+                    return None
+                if event:
+                    db.add_event(t, event, run_id, detail)
+                _leave_running(db, run_id, state, t)
+        except RunClosedElsewhere as e:
+            return _closed_elsewhere(db, run_id, ts, e)
         return DatasetRunResult(state, run_id, n_written, n_quarantined)
 
     try:
@@ -157,8 +171,11 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
         if problems:
             return finish("failed-fetch", "fetch_failure", {"problems": problems})
 
-        if _same_as_previous_verified(db, key, run_id):
-            return finish("verified")
+        # check + state change in ONE transaction: a withdrawal of the matched run cannot land
+        # in between (it would leave a verified short-circuit onto a withdrawn vintage)
+        same = finish("verified", only_if=lambda: _same_as_previous_verified(db, key, run_id))
+        if same is not None:
+            return same
 
         try:
             parsed = source.parse(specs, responses)
@@ -191,7 +208,9 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
                 for detail in empty:
                     db.add_event(t, "format_change", run_id, detail)
                 n_written, n_quarantined = _write(db, run_id, raws, checked, t)
-                db.set_run_state(run_id, "pending-verification", finished_at=ts())
+                _leave_running(db, run_id, "pending-verification", ts())
+        except RunClosedElsewhere as e:  # rolled back: the rows never become visible
+            return _closed_elsewhere(db, run_id, ts, e)
         except StaleRecordedError as e:  # rolled back atomically: nothing of this run remains
             return finish("blocked-stale", "stale_refusal", {"error": str(e)})
         except OperationalError as e:  # e.g. 'database is locked': ours, not the publisher's
@@ -205,18 +224,46 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
         raise
 
 
+class RunClosedElsewhere(RuntimeError):
+    """The run left 'running' while this process still worked on it (e.g. the scheduler's
+    orphan sweep closed it as failed-operational). Raised inside a transaction, so the state
+    write and everything written with it roll back; run_dataset then aborts cleanly."""
+
+    def __init__(self, attempted: str, found: str):
+        super().__init__(f"run left 'running' elsewhere (now {found!r}); not moved to "
+                         f"{attempted!r}")
+        self.attempted, self.found = attempted, found
+
+
+def _leave_running(db: Db, run_id: int, state: str, at: str) -> None:
+    """Every pipeline state write out of 'running' is this compare-and-set (re-review M-1):
+    a run that someone else already closed is never silently overwritten."""
+    if not db.transition_run_state(run_id, "running", state, finished_at=at):
+        raise RunClosedElsewhere(state, db.run_state(run_id))
+
+
+def _closed_elsewhere(db: Db, run_id: int, ts: Callable[[], str],
+                      e: RunClosedElsewhere) -> DatasetRunResult:
+    """Record that this process gave up on a run closed elsewhere; report its real state."""
+    db.add_event(ts(), "operational_failure", run_id, {
+        "stage": "closed_elsewhere", "attempted_state": e.attempted, "found_state": e.found,
+        "error": str(e)})
+    return DatasetRunResult(e.found, run_id, 0, 0, detail=str(e))
+
+
 def _close_interrupted(db: Db, run_id: int, ts: Callable[[], str], exc: BaseException) -> None:
     """Best effort: a run interrupted by an exception escaping run_dataset (raw store I/O,
     DB error, SIGTERM raised as SystemExit) must not stay 'running'. Closed as
-    'failed-operational' + event(operational_failure) unless it already reached a state.
-    A secondary failure here (e.g. the DB is the broken part) is swallowed so the ORIGINAL
-    exception propagates; the scheduler's start-up sweep closes what remains."""
+    'failed-operational' + event(operational_failure) by compare-and-set, so a run that
+    already reached a state keeps it. A secondary failure here (e.g. the DB is the broken
+    part) is swallowed so the ORIGINAL exception propagates; the scheduler's start-up sweep
+    closes what remains."""
     try:
-        if db.run_state(run_id) == "running":
-            t = ts()
-            db.add_event(t, "operational_failure", run_id,
-                         {"stage": "interrupted", "error": repr(exc)})
-            db.set_run_state(run_id, "failed-operational", finished_at=t)
+        t = ts()
+        with db.transaction():
+            if db.transition_run_state(run_id, "running", "failed-operational", finished_at=t):
+                db.add_event(t, "operational_failure", run_id,
+                             {"stage": "interrupted", "error": repr(exc)})
     except Exception:
         pass
 

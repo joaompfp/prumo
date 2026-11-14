@@ -11,6 +11,7 @@ import ingest.db as dbmod
 from ingest import verifiers
 from ingest.cli import main
 from ingest.db import MIGRATIONS_DIR, open_db
+from ingest.models import Observation
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawIntegrityError, RawStore
 from ingest.registry import sync_registry
@@ -438,6 +439,12 @@ def test_0012_backfills_procedure_and_marks_old_recorded_verifications_pinned(tm
     sync_registry(d, [spec("s1")])
     live = d.begin_run("fake", "k", "t")
     rec = d.begin_run("fake", "k", "t", input_origin="recorded")
+    # the live run holds a row (Task 24: a run without observations cannot be withdrawn)
+    fid = d.record_raw_fetch(source_name="fake", run_id=live, url="http://x", params_json=None,
+                             fetched_at="2026-11-13T00:00:00+00:00", http_status=200,
+                             sha256="s", path="p", n_bytes=1, ok=True)
+    d.write_observations(live, [(Observation.from_raw("s1", "2024", "1"), fid,
+                                 "2026-11-13T00:00:00+00:00")])
     for run_id in (live, rec):
         d.set_run_state(run_id, "verified")
         d.conn.execute("INSERT INTO verification(dataset_run_id, seed, sample_size, passed, "

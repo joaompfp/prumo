@@ -65,7 +65,7 @@ def test_0006_fresh_db_accepts_pt15m(db):
     fid = c.execute("INSERT INTO raw_fetch(source_id,url,fetched_at,http_status,sha256,path,"
                     "bytes,ok) VALUES (1,'http://x','2026-11-12',200,'a','p',1,1)").lastrowid
     c.execute("INSERT INTO observation(series_id,period,value_text,value,kind,dataset_run_id,"
-              "raw_fetch_id,fetched_at) VALUES (?,?,?,?,'fetched',?,?,'2026-11-12')",
+              "raw_fetch_id,fetched_at) VALUES (?,?,?,?,'fetched',?,?,'2026-11-12T00:00:00+00:00')",
               (PT15M_SERIES["id"], PT15M_SERIES["period"], "1459190.0", 1459190.0, rid, fid))
     # bad PT15M spellings / non-quarter minutes are still rejected
     for bad in ("2026-11-10T23:46:00+00:00", "2026-11-10T23:45:01+00:00",

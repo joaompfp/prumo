@@ -1,13 +1,19 @@
 """The only module that touches SQL. Schema lives in versioned migrations/NNNN_*.sql."""
 import json
 import sqlite3
+from collections.abc import Callable
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, TypeVar
 
 MIGRATIONS_DIR = Path(__file__).parent / "migrations"
+T = TypeVar("T")
 BUSY_TIMEOUT_S = 30.0  # scheduler and CLI can contend for the write lock
+# A 'running' run older than this, with no interrupted scheduler attempt behind it, is an
+# orphan (Db.close_orphan_runs). The slowest observed full dataset run (World Bank census,
+# Eurostat) takes minutes; 6 h leaves a wide margin for a live manual CLI run.
+ORPHAN_MIN_AGE = timedelta(hours=6)
 
 # Errors of our own storage environment (lock contention, I/O, missing schema): callers
 # record them as operational failures, never as a publisher format change.
@@ -29,9 +35,19 @@ class SchedulerState(NamedTuple):
     last_finished_at: str | None
 
 
+def _parse_utc(ts: str | None) -> datetime | None:
+    """A stored ISO-8601 stamp as an aware UTC datetime (naive = UTC); None if unparseable."""
+    try:
+        dt = datetime.fromisoformat(ts)
+    except (TypeError, ValueError):
+        return None
+    return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
+
+
 class Db:
-    def __init__(self, conn: sqlite3.Connection):
+    def __init__(self, conn: sqlite3.Connection, *, immutable: bool = False):
         self.conn = conn
+        self.immutable = immutable  # opened read-only with sqlite immutable=1 (no writer seen)
 
     @contextmanager
     def transaction(self):
@@ -182,12 +198,16 @@ class Db:
                                  (run_id,)).fetchone()[0]
 
     def latest_fetched_periods(self) -> dict[str, str]:
-        """series_id -> newest period of its FETCHED rows (any run state: a period the
-        publisher gave us is data-time evidence even if that run later failed verification);
-        legacy rows are excluded. Canonical periods of one frequency sort as text."""
+        """series_id -> newest period of its FETCHED rows in runs that are 'verified' or
+        still 'pending-verification'. Rows of withdrawn or failed runs are ignored: a parser
+        defect that invented a future period (the usual reason for a withdrawal or a failed
+        verification) must not mask a frozen dataset. Legacy rows are excluded. Canonical
+        periods of one frequency sort as text."""
         return dict(self.conn.execute(
-            "SELECT series_id, MAX(period) FROM observation WHERE kind = 'fetched' "
-            "GROUP BY series_id").fetchall())
+            "SELECT o.series_id, MAX(o.period) FROM observation o "
+            "JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "WHERE o.kind = 'fetched' AND r.state IN ('verified', 'pending-verification') "
+            "GROUP BY o.series_id").fetchall())
 
     def run_changed_keys(self, run_id: int) -> set[tuple[str, str]]:
         """(series_id, period) the run revised (event 'revision') or newly added to a series
@@ -203,6 +223,27 @@ class Db:
             else:
                 out |= {(d["series_id"], p) for p in d["periods"]}
         return out
+
+    def previously_failed_keys(self, run_id: int) -> set[tuple[str, str]]:
+        """(series_id, period) of every item that MISMATCHED in a failed verification of an
+        earlier run of this run's dataset_key since that key's last 'verified' run (re-review
+        2 I1: carried into the next attempt's must-check set). Only items the verifier
+        actually answered count (observed_series_id set): an outage or a broken verifier
+        fails every item without observing anything, and those are not defects."""
+        row = self.conn.execute("SELECT dataset_key FROM dataset_run WHERE id = ?",
+                                (run_id,)).fetchone()
+        if row is None or row[0] is None:
+            return set()
+        key = row[0]
+        return set(self.conn.execute(
+            "SELECT DISTINCT i.series_id, i.period FROM verification_item i "
+            "JOIN verification v ON v.id = i.verification_id "
+            "JOIN dataset_run r ON r.id = v.dataset_run_id "
+            "WHERE r.dataset_key = ? AND r.id < ? AND v.passed = 0 AND i.match = 0 "
+            "AND i.observed_series_id IS NOT NULL "
+            "AND r.id > COALESCE((SELECT MAX(id) FROM dataset_run WHERE dataset_key = ? "
+            "AND id < ? AND state = 'verified'), 0)",
+            (key, run_id, key, run_id)).fetchall())
 
     def add_verification_spec(self, verification_id: int, series_id: str,
                               spec_json: str) -> None:
@@ -252,10 +293,13 @@ class Db:
             "JOIN dataset_run r ON r.id = v.dataset_run_id JOIN source s ON s.id = r.source_id "
             "WHERE i.id = ?", (item_id,)).fetchone()[0]
 
-    def transition_run_state(self, run_id: int, from_state: str, to_state: str) -> bool:
-        """Compare-and-set: move the run to `to_state` only if it is in `from_state`."""
-        cur = self.conn.execute("UPDATE dataset_run SET state = ? WHERE id = ? AND state = ?",
-                                (to_state, run_id, from_state))
+    def transition_run_state(self, run_id: int, from_state: str, to_state: str, *,
+                             finished_at: str | None = None) -> bool:
+        """Compare-and-set: move the run to `to_state` only if it is in `from_state`
+        (finished_at, when given, is set in the same statement)."""
+        cur = self.conn.execute(
+            "UPDATE dataset_run SET state = ?, finished_at = COALESCE(?, finished_at) "
+            "WHERE id = ? AND state = ?", (to_state, finished_at, run_id, from_state))
         return cur.rowcount == 1
 
     # --- legacy import (Task 8) ---------------------------------------------------------------
@@ -350,16 +394,32 @@ class Db:
             "LEFT JOIN source s ON s.id = r.source_id " + where +
             "GROUP BY s.name, e.kind", args).fetchall()
 
-    def verified_run_receipts(self) -> list[tuple[int, str | None, str | None, int]]:
-        """(run_id, dataset_key, latest raw_fetch.fetched_at, wrote_observations 0/1) of every
-        NON-legacy run currently in state 'verified', oldest first. A verified run that wrote
-        no observations is the identical-payload short-circuit (pipeline Ruling D)."""
+    _PINNED_RUNS = ("SELECT dataset_run_id FROM verification "
+                    "WHERE passed = 1 AND verifier_channel = 'pinned-bundle'")
+
+    def verified_run_receipts(self) -> list[tuple[int, str | None, str | None, int, int]]:
+        """(run_id, dataset_key, latest raw_fetch.fetched_at, wrote_observations 0/1,
+        pinned_bundle 0/1) of every NON-legacy run currently in state 'verified', oldest
+        first. A verified run that wrote no observations is the identical-payload
+        short-circuit (pipeline Ruling D); pinned_bundle marks a run whose passing
+        verification read the operator's bundle, not the publisher (not audit-grade)."""
         return self.conn.execute(
             "SELECT r.id, r.dataset_key, "
             "(SELECT MAX(f.fetched_at) FROM raw_fetch f WHERE f.dataset_run_id = r.id), "
-            "r.id IN (SELECT dataset_run_id FROM observation) "
+            "r.id IN (SELECT dataset_run_id FROM observation), "
+            f"r.id IN ({self._PINNED_RUNS}) "
             "FROM dataset_run r WHERE r.state = 'verified' AND r.input_origin <> 'legacy' "
             "ORDER BY r.id").fetchall()
+
+    def audit_grade_fetched_at(self) -> dict[str, str]:
+        """series_id -> latest observation fetched_at among fetched rows of 'verified' runs
+        whose verification read the publisher (live channel): a run verified only against its
+        own pinned bundle (verifier_channel 'pinned-bundle') never confirms currency."""
+        return dict(self.conn.execute(
+            "SELECT o.series_id, MAX(o.fetched_at) FROM observation o "
+            "JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "WHERE o.kind = 'fetched' AND r.state = 'verified' "
+            f"AND r.id NOT IN ({self._PINNED_RUNS}) GROUP BY o.series_id").fetchall())
 
     def series_of_runs(self, run_ids: list[int]) -> dict[int, set[str]]:
         """{run_id: distinct series ids with observations in that run} (one table scan)."""
@@ -373,10 +433,12 @@ class Db:
             out[run_id].add(sid)
         return out
 
-    def verification_overview(self) -> list[tuple[int, str | None, int, str]]:
-        """(run_id, dataset_key, passed, created_at) of every verification, oldest first."""
+    def verification_overview(self) -> list[tuple[int, str | None, int, str, str | None]]:
+        """(run_id, dataset_key, passed, created_at, verifier_channel) of every
+        verification, oldest first (channel NULL only before migration 0012)."""
         return self.conn.execute(
-            "SELECT v.dataset_run_id, r.dataset_key, v.passed, v.created_at "
+            "SELECT v.dataset_run_id, r.dataset_key, v.passed, v.created_at, "
+            "v.verifier_channel "
             "FROM verification v JOIN dataset_run r ON r.id = v.dataset_run_id "
             "ORDER BY v.id").fetchall()
 
@@ -395,46 +457,101 @@ class Db:
 
     # --- reviewed withdrawal and orphan runs (Task 20) -----------------------------------------
 
-    def withdraw_run(self, run_id: int, reason: str, at: str) -> None:
+    def withdraw_run(self, run_id: int, reason: str, at: str) -> list[int]:
         """Withdraw ONE verified fetched vintage: its rows stay in `observation` but are never
         served again ('withdrawn' is terminal). The operator's reason is recorded as
         event(withdrawal) in the same transaction; migration 0011's triggers refuse every
-        other way into 'withdrawn'. ValueError (nothing written) on an empty reason, an
-        unknown, legacy or non-verified run."""
+        other way into 'withdrawn'.
+
+        The identical-payload short-circuit (pipeline Ruling D) vouches for the run it matched
+        without holding rows, and the next identical fetch would match the short-circuit
+        again. So, in the same transaction, every LATER run of the same dataset_key that is a
+        verified short-circuit chained onto this one (the unbroken sequence of verified runs
+        with no observations right after it) is withdrawn too, each with its own
+        event(withdrawal, {..., cascaded_from: run_id}); the next identical fetch then follows
+        a withdrawn run and is re-ingested. Returns the withdrawn run ids, this one first.
+
+        ValueError (nothing written) on an empty reason, an unknown, legacy or non-verified
+        run, or a run with no observations (a short-circuit: withdraw the run that wrote the
+        rows instead)."""
         if not reason or not reason.strip():
             raise ValueError("a withdrawal needs a non-empty reason")
         with self.transaction() as c:
-            row = c.execute("SELECT state, input_origin FROM dataset_run WHERE id = ?",
-                            (run_id,)).fetchone()
+            row = c.execute("SELECT state, input_origin, dataset_key FROM dataset_run "
+                            "WHERE id = ?", (run_id,)).fetchone()
             if row is None:
                 raise ValueError(f"no such run: {run_id}")
-            state, origin = row
+            state, origin, key = row
             if origin == "legacy":
                 raise ValueError(f"run {run_id} is a legacy import run; legacy rows are "
                                  f"governed by the legacy serving settings, not withdrawal")
             if state != "verified":
                 raise ValueError(f"run {run_id} is {state!r}; only verified runs can be "
                                  f"withdrawn")
-            self.add_event(at, "withdrawal", run_id,
-                           {"reason": reason.strip(), "previous_state": state})
-            if not self.transition_run_state(run_id, "verified", "withdrawn"):
-                raise ValueError(f"run {run_id} left 'verified' concurrently")
+            if not self._run_has_observations(run_id):
+                raise ValueError(
+                    f"run {run_id} has no observations (an identical-payload short-circuit "
+                    f"that holds no rows); withdraw the run that wrote the rows - its "
+                    f"short-circuits are withdrawn with it")
+            cascade = []
+            for later, later_state in c.execute(
+                    "SELECT id, state FROM dataset_run WHERE dataset_key = ? AND id > ? "
+                    "ORDER BY id", (key, run_id)).fetchall():
+                if later_state != "verified" or self._run_has_observations(later):
+                    break
+                cascade.append(later)
+            reason = reason.strip()
+            for rid in [run_id, *cascade]:
+                detail = {"reason": reason, "previous_state": "verified"}
+                if rid != run_id:
+                    detail["cascaded_from"] = run_id
+                self.add_event(at, "withdrawal", rid, detail)
+                if not self.transition_run_state(rid, "verified", "withdrawn"):
+                    raise ValueError(f"run {rid} left 'verified' concurrently")
+        return [run_id, *cascade]
 
-    def close_orphan_runs(self, at: str) -> list[int]:
-        """Close every run still 'running' (its process was killed before it could finish)
-        as 'failed-operational' with event(operational_failure). Call only when no other
-        writer can be mid-run: the scheduler calls it at start, under its instance lock
-        (manual CLI runs must not overlap the scheduler - docs/data/operations.md)."""
+    def _run_has_observations(self, run_id: int) -> bool:
+        return self.conn.execute("SELECT EXISTS (SELECT 1 FROM observation "
+                                 "WHERE dataset_run_id = ?)", (run_id,)).fetchone()[0] == 1
+
+    def close_orphan_runs(self, at: str, *,
+                          min_age: timedelta = ORPHAN_MIN_AGE) -> list[int]:
+        """Close runs still 'running' whose process is gone, as 'failed-operational' with
+        event(operational_failure, {stage: orphaned, swept_because}). The scheduler calls it
+        at start, under its instance lock. A run is swept only when
+        - the scheduler itself started it: its dataset_key has a scheduler attempt marker
+          still 'running' (scheduler_attempt_started) from no later than the run's start.
+          Under the instance lock no scheduler is mid-attempt, so that run is orphaned
+          (`swept_because: scheduler_attempt_interrupted`); or
+        - it started at least `min_age` (ORPHAN_MIN_AGE, 6 h) before `at`: no dataset run
+          takes that long, so its process died (`older_than_min_age`).
+        A younger run without a scheduler marker may be a live manual CLI run (in the web
+        container) and is left alone; if it is swept later anyway, the pipeline's
+        compare-and-set state writes notice and abort it instead of resurrecting it."""
+        now = _parse_utc(at)
+        markers = {s.dataset_key: _parse_utc(s.last_attempt_at)
+                   for s in self.scheduler_states() if s.last_attempt_state == "running"}
         with self.transaction() as c:
-            ids = [i for (i,) in c.execute(
-                "SELECT id FROM dataset_run WHERE state = 'running' ORDER BY id")]
-            for run_id in ids:
-                self.add_event(at, "operational_failure", run_id, {
-                    "stage": "orphaned",
-                    "error": "run left 'running' by an interrupted process "
-                             "(closed at scheduler start)"})
-                self.set_run_state(run_id, "failed-operational", finished_at=at)
-        return ids
+            running = c.execute("SELECT id, dataset_key, started_at FROM dataset_run "
+                                "WHERE state = 'running' ORDER BY id").fetchall()
+            swept = []
+            for run_id, key, started_at in running:
+                started = _parse_utc(started_at)
+                marker = markers.get(key)
+                if marker is not None and started is not None and marker <= started:
+                    why = "scheduler_attempt_interrupted"
+                elif started is None or now - started >= min_age:
+                    why = "older_than_min_age"
+                else:
+                    continue
+                if self.transition_run_state(run_id, "running", "failed-operational",
+                                             finished_at=at):
+                    self.add_event(at, "operational_failure", run_id, {
+                        "stage": "orphaned", "swept_because": why,
+                        "error": "run left 'running' by an interrupted process "
+                                 "(closed at scheduler start)"})
+                    swept.append(run_id)
+        return swept
 
     # --- scheduler-owned attempts (Task 18A) ------------------------------------------------
 
@@ -542,7 +659,7 @@ def _expected_migrations() -> set[str]:
     return {f.stem for f in MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql")}
 
 
-def open_db_readonly(path: str | Path) -> Db:
+def open_db_readonly(path: str | Path, *, immutable: bool | None = None) -> Db:
     """Open an EXISTING database strictly read-only for reports (status, lag): sqlite URI
     `mode=ro`, `query_only`, no migration, no journal-mode change, never a new file.
 
@@ -550,23 +667,29 @@ def open_db_readonly(path: str | Path) -> Db:
     from this code's: older means the writer (scheduler) has not migrated it yet, newer means
     this code is older than the database. Neither is ever "fixed" from here.
 
-    A WAL database with no -wal file has no open writer; it is then opened `immutable=1`,
-    because a plain read-only WAL open would create -wal/-shm files that a read-only handle
-    cannot remove. With a writer running (the -wal file exists) the normal `mode=ro` open
-    reads its committed state."""
+    A WAL database with no -wal file has no open writer; it is then opened `immutable=1`
+    (unless `immutable=False`), because a plain read-only WAL open would create -wal/-shm
+    files that a read-only handle cannot remove. With a writer running (the -wal file exists)
+    the normal `mode=ro` open reads its committed state. The -wal test is not atomic: a
+    writer that starts meanwhile (a scheduler restart migrating, a manual CLI write) can make
+    an immutable read fail with sqlite3.DatabaseError; the schema read here then retries once
+    with plain `mode=ro`, and `read_db_readonly` does the same for the whole report."""
     p = Path(path)
     if not p.is_file():
         raise ReadOnlyOpenError(f"database not found: {p} (read-only reports never create one;"
                                 " check --db / PRUMO_DB_PATH)")
-    uri = p.resolve().as_uri() + "?mode=ro"
-    if not Path(str(p) + "-wal").exists():
-        uri += "&immutable=1"
+    if immutable is None:
+        immutable = not Path(str(p) + "-wal").exists()
+    uri = p.resolve().as_uri() + "?mode=ro" + ("&immutable=1" if immutable else "")
     conn = sqlite3.connect(uri, uri=True, isolation_level=None, timeout=BUSY_TIMEOUT_S)
     try:
         conn.execute("PRAGMA query_only=ON")
         try:
             applied = {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
         except sqlite3.DatabaseError as e:
+            if immutable:  # possibly a concurrent writer: one plain read-only retry
+                conn.close()
+                return open_db_readonly(p, immutable=False)
             raise ReadOnlyOpenError(f"{p}: no schema_migration table, not a Prumo database "
                                     f"({e})") from None
         expected = _expected_migrations()
@@ -582,4 +705,25 @@ def open_db_readonly(path: str | Path) -> Db:
     except BaseException:
         conn.close()
         raise
-    return Db(conn)
+    return Db(conn, immutable=immutable)
+
+
+def read_db_readonly(path: str | Path, read: Callable[[Db], T]) -> T:
+    """`read(db)` on a read-only handle (open_db_readonly), closed afterwards. When the handle
+    was opened `immutable=1` and the read fails with sqlite3.DatabaseError (a writer started
+    or migrated during the read: SQLite documents wrong results or SQLITE_CORRUPT for an
+    immutable reader then), the whole read is retried ONCE with plain `mode=ro`, which sees
+    the writer's committed state. Any other failure propagates."""
+    db = open_db_readonly(path)
+    try:
+        return read(db)
+    except sqlite3.DatabaseError:
+        if not db.immutable:
+            raise
+    finally:
+        db.close()
+    db = open_db_readonly(path, immutable=False)
+    try:
+        return read(db)
+    finally:
+        db.close()
