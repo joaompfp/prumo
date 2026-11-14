@@ -45,7 +45,7 @@ collector commands. The web health endpoint does not report source freshness.
   text/Decimal handling and reviewed flag mappings.
 - `ingest/operations.py`, `ingest/cli.py`: grouping and operator command semantics.
 - `ingest/scheduler.py`, `ingest/cadence.py`: deployed serial worker and shared refresh policy.
-- `app/main.py`: maintenance GET routes, static mount and `/healthz`.
+- `app/main.py`: maintenance GET/HEAD routes, favicon-only static mount and `/healthz`.
 - `tests/ingest/`, `tests/test_maintenance.py`, `tests/test_docker_contract.py`: offline
   regression coverage and image/runbook contracts.
 
@@ -59,6 +59,11 @@ supersede the current registry, methodology, operations or handoff.
   [indicator audit](docs/data/painel-indicators-audit.md).
 - [Legacy deployment runbook](docs/operations/MIGRATION_RUNBOOK.md).
 - [Design guide](docs/design-guide.md) and [design resources](docs/design/README.md).
+- [Roadmap](ROADMAP.md), [open-source notes](OPENSOURCE.md),
+  [phase 1 summary](docs/operations/PHASE_1_SUMMARY.md),
+  [phase 4 monitoring](docs/operations/PHASE_4_MONITORING.md) and the
+  [v9 test report](docs/testing/2026-03-01-v9-report.md) describe the retired AI-assisted
+  dashboard; none of those AI features exist in the current runtime.
 - Retained collector code, scripts, seeds and
   [historical audit evidence](docs/superpowers/handoff/reports/).
 

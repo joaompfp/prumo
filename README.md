@@ -52,9 +52,10 @@ populated database:
 
 GET `/healthz` returns `{"status":"ok"}`. Other non-static GET paths return the
 maintenance page, including old `/api/*` paths and `/docs`; there is no public data API
-or interactive API documentation. `/static` is a mounted static directory. Health
-reports web-process availability, not ingestion freshness. HEAD on the maintenance
-route currently returns 405.
+or interactive API documentation. `/static` serves only the maintenance page's favicon
+(the legacy UI assets are recoverable at the `legacy-ui-final` tag). Health reports
+web-process availability, not ingestion freshness. HEAD on `/`, `/healthz` and the
+maintenance routes returns 200, for uptime probes.
 
 ## Runtime layout
 
@@ -67,7 +68,7 @@ route currently returns 405.
 | `ingest/cli.py`, `ingest/operations.py` | Command-line interface and dataset-group policy |
 | `ingest/scheduler.py`, `ingest/cadence.py` | Serial refresh, persisted retry state and cadence |
 | `registry/core.yaml` | Authoritative source and series definitions, including inactive entries |
-| `app/main.py`, `static/` | Maintenance-only HTTP app and static assets |
+| `app/main.py`, `static/` | Maintenance-only HTTP app and its favicon |
 | `deploy/prumo-ingest.yml` | Worker definition installed in the f0nix infrastructure stack |
 | `tests/ingest/` | Offline pipeline, adapter, verifier and CLI tests; opt-in live tests |
 
