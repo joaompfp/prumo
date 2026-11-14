@@ -14,4 +14,8 @@ _LABELS = {
 
 def formula_label_pt(formula: str, params: dict[str, str], base_series_id: str) -> str:
     """The Portuguese reader-facing description of how a derived value was calculated."""
+    if formula not in _LABELS:
+        raise ValueError(f"unknown formula {formula!r}")
+    if formula == "rebase_100" and "base_period" not in params:
+        raise ValueError("rebase_100 needs params['base_period']")
     return _LABELS[formula].format(base=base_series_id, **params)

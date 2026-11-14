@@ -780,15 +780,15 @@ class Db:
                         r["formula"], r["base_series_id"], json.loads(r["params_json"])):
                     raise ValueError(f"{r['key']}: formula/base/params of an existing derived "
                                      f"key cannot change; declare a new key")
+                # update in place (migration 0014 refuses REPLACE/upsert-style re-inserts)
                 c.execute(
+                    "UPDATE derived_series SET label = :label, "
+                    "formula_label_pt = :formula_label_pt, unit = :unit, active = :active "
+                    "WHERE key = :key" if old is not None else
                     "INSERT INTO derived_series(key, formula, base_series_id, params_json, label, "
                     "formula_label_pt, unit, active) VALUES (:key, :formula, :base_series_id, "
-                    ":params_json, :label, :formula_label_pt, :unit, :active) "
-                    "ON CONFLICT(key) DO UPDATE SET label=excluded.label, "
-                    "formula_label_pt=excluded.formula_label_pt, unit=excluded.unit, "
-                    "active=excluded.active",
-                    {**r, "params_json": old[2] if old is not None else r["params_json"],
-                     "active": int(r["active"])})
+                    ":params_json, :label, :formula_label_pt, :unit, :active)",
+                    {**r, "active": int(r["active"])})
             keep = [r["key"] for r in rows]
             c.execute("UPDATE derived_series SET active = 0 WHERE active = 1 AND key NOT IN "
                       "(SELECT value FROM json_each(?))", (json.dumps(keep),))
@@ -873,9 +873,18 @@ class Db:
 
     def finish_derived_run(self, run_id: int, state: str, finished_at: str, *, n_written: int,
                            n_checked: int, n_mismatch: int) -> None:
-        """Compare-and-set 'computing' -> 'verified' | 'failed'; ValueError otherwise."""
+        """Compare-and-set 'computing' -> 'verified' | 'failed'; ValueError otherwise.
+        'verified' also needs every row of the run already 'match' (set_derived_row_states
+        records each verdict BEFORE finishing); a pending or mismatched row refuses it."""
         if state not in ("verified", "failed"):
             raise ValueError(f"a derived run finishes verified or failed, not {state!r}")
+        if state == "verified":
+            open_rows = [st for (st,) in self.conn.execute(
+                "SELECT DISTINCT state FROM derived_observation WHERE run_id = ? "
+                "AND state <> 'match' ORDER BY state", (run_id,))]
+            if open_rows:
+                raise ValueError(f"derived run {run_id} has {'/'.join(open_rows)} rows; "
+                                 f"it cannot be verified")
         cur = self.conn.execute(
             "UPDATE derived_run SET state = ?, finished_at = ?, n_written = ?, n_checked = ?, "
             "n_mismatch = ? WHERE id = ? AND state = 'computing'",
@@ -886,12 +895,13 @@ class Db:
     _SERVED_DERIVED_COLUMNS = (
         "derived_key", "period", "value_text", "scale", "unit", "is_calculated", "formula",
         "formula_label_pt", "label", "base_series_id", "inputs", "licence", "licence_url",
-        "attribution", "computed_at", "derived_run_id", "derived_observation_id")
+        "attribution", "computed_at", "derived_run_id", "derived_observation_id", "input_ids")
 
     def served_derived_rows(self, key: str, limit: int,
                             offset: int = 0) -> tuple[int, list[dict]]:
-        """(served row count, one page newest period first) of a derived key; `inputs`
-        decoded."""
+        """(served row count, one page newest period first) of a derived key; `inputs` and
+        `input_ids` decoded, `inputs` in input_ids (formula) order - the view's aggregate
+        order is not guaranteed by SQLite."""
         total = self.conn.execute("SELECT COUNT(*) FROM served_derived WHERE derived_key = ?",
                                   (key,)).fetchone()[0]
         rows = self.conn.execute(
@@ -900,7 +910,9 @@ class Db:
             (key, limit, offset)).fetchall()
         out = [dict(zip(self._SERVED_DERIVED_COLUMNS, r)) for r in rows]
         for r in out:
-            r["inputs"] = json.loads(r["inputs"])
+            r["input_ids"] = json.loads(r["input_ids"])
+            pos = {i: n for n, i in enumerate(r["input_ids"])}
+            r["inputs"] = sorted(json.loads(r["inputs"]), key=lambda x: pos[x["observation_id"]])
         return total, out
 
     def derived_rows_of_series(self, key: str, limit: int) -> list[dict]:

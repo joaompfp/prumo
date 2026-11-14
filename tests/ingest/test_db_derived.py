@@ -7,7 +7,7 @@ import pytest
 import ingest.db as dbmod
 from ingest.db import MIGRATIONS_DIR, open_db
 from ingest.derive import formula_label_pt
-from ingest.models import FORMULAS, Observation
+from ingest.models import FORMULAS, Observation, SourceSpec
 from ingest.registry import sync_derived, sync_registry
 from tests.ingest.derived_helpers import derived_spec, verified_values
 from tests.ingest.fakes import SOURCE, spec
@@ -199,6 +199,7 @@ def test_view_serves_verified_matched_row_with_calculated_marker(db):
     assert r["formula_label_pt"].startswith("Variação face ao período anterior (diferença)")
     assert (r["derived_run_id"], r["derived_observation_id"], r["computed_at"]) == (run, oid, NOW)
     assert r["label"] == f"Derivada {KEY}"
+    assert r["input_ids"] == [id_t, id_p]
 
 
 def test_view_excludes_pending_mismatch_and_unverified_runs(db):
@@ -207,7 +208,6 @@ def test_view_excludes_pending_mismatch_and_unverified_runs(db):
     _derive(db, state="match", run_state="computing")
     _derive(db, state="mismatch", run_state="failed")
     _derive(db, state="match", run_state="failed")
-    _derive(db, state="pending", run_state="verified")
     assert _served(db) == []
     _, oid, _ = _derive(db)
     assert _served(db) == [(KEY, "2025-01", "2", oid)]
@@ -405,3 +405,133 @@ def test_derived_reads_decode_json_and_mark_served_versions(db):
         (None, None, "missing_base_period", None)]
     with pytest.raises(sqlite3.IntegrityError):
         db.add_derived_event(NOW, run, None, None, "other")
+
+
+# --- fix round 1 (review I1-I3, M1, M3, M5) ----------------------------------------------------
+
+def _insert_raw(db, run, inputs, *, state=None, dsid=None, period="2025-01"):
+    cols = "derived_series_id, period, value_text, scale, input_obs_ids_json, computed_at, run_id"
+    args = [dsid or _dsid(db), period, "1", 0, inputs, NOW, run]
+    if state is not None:
+        cols, args = cols + ", state", [*args, state]
+    db.conn.execute(f"INSERT INTO derived_observation({cols}) "
+                    f"VALUES ({', '.join('?' * len(args))})", args)
+
+
+def test_rows_enter_only_a_computing_run_as_pending(db):
+    """I1: a row can never be served without its run's verification."""
+    _setup(db)
+    ids = json.dumps([v[0] for v in db.served_fetched_inputs("s1").values()])
+    run = db.begin_derived_run(NOW, "cli", [KEY])
+    with pytest.raises(sqlite3.IntegrityError):  # born 'match'
+        _insert_raw(db, run, ids, state="match")
+    db.finish_derived_run(run, "verified", NOW, n_written=0, n_checked=0, n_mismatch=0)
+    with pytest.raises(sqlite3.IntegrityError):  # into a verified run, even as pending
+        db.write_derived_observations(run, NOW, [(_dsid(db), "2025-01", "9", 0, ids)])
+    assert _served(db) == []
+
+
+def test_row_state_changes_only_while_run_is_computing(db):
+    """I1: a pending row of a finished run can never become 'match' afterwards."""
+    _setup(db)
+    run, oid, _ = _derive(db, state="pending", run_state="computing")
+    db.finish_derived_run(run, "failed", NOW, n_written=1, n_checked=0, n_mismatch=0)
+    with pytest.raises(sqlite3.IntegrityError):
+        db.set_derived_row_states([(oid, "match")])
+    assert _served(db) == []
+
+
+def test_finish_verified_refused_while_rows_pending_or_mismatched(db):
+    """I1: verification sets every row's verdict BEFORE finish; any pending or mismatched row
+    keeps the run from 'verified' (Db check and trigger backstop)."""
+    _setup(db)
+    for state in ("pending", "mismatch"):
+        run, _, _ = _derive(db, state=state, run_state="computing")
+        with pytest.raises(ValueError, match=state):
+            db.finish_derived_run(run, "verified", NOW, n_written=1, n_checked=1, n_mismatch=0)
+        with pytest.raises(sqlite3.IntegrityError):
+            db.conn.execute("UPDATE derived_run SET state = 'verified' WHERE id = ?", (run,))
+        assert db.derived_runs(1)[0]["state"] == "computing"
+        db.finish_derived_run(run, "failed", NOW, n_written=1, n_checked=1, n_mismatch=1)
+    assert _served(db) == []
+    with pytest.raises(sqlite3.IntegrityError):  # a run is born computing, never finished
+        db.conn.execute("INSERT INTO derived_run(started_at, state, trigger, scope_json) "
+                        "VALUES ('t', 'verified', 'cli', '[]')")
+
+
+def test_view_refuses_inputs_from_another_series(db):
+    """I2: inputs must be rows of the derived series' base series, whose source supplies the
+    licence and attribution (reviewer reproduction: s2 under CC-BY-NC)."""
+    _setup(db)
+    other = SourceSpec(name="other", licence="CC-BY-NC", licence_url="http://o",
+                       attribution="Other", redistribution_ok=True)
+    sync_registry(db, [spec("s1", frequency="M"),
+                       spec("s2", frequency="M").model_copy(update={"source": other})])
+    verified_values(db, "s2", {"2024-12": "1", "2025-01": "2"}, T1, "k2", source="other")
+    i2 = db.served_fetched_inputs("s2")
+    run = db.begin_derived_run(NOW, "cli", [KEY])
+    db.write_derived_observations(run, NOW, [(_dsid(db), "2025-01", "1", 0,
+                                              json.dumps([i2["2025-01"][0], i2["2024-12"][0]]))])
+    oid = db.derived_observations_of_run(run)[0]["id"]
+    db.set_derived_row_states([(oid, "match")])
+    db.finish_derived_run(run, "verified", NOW, n_written=1, n_checked=1, n_mismatch=0)
+    assert _served(db) == []
+
+
+@pytest.mark.parametrize("inputs", ["not json", '{"a": 1}', "[]", "[ID, ID]", '["ID"]',
+                                    "[ID.0]", "[999999]", '"ID"'])
+def test_input_list_must_be_distinct_existing_integer_ids(db, inputs):
+    """I3: input_obs_ids_json is a non-empty JSON array of distinct integer observation ids."""
+    _setup(db)
+    i = str(db.served_fetched_inputs("s1")["2025-01"][0])
+    run = db.begin_derived_run(NOW, "cli", [KEY])
+    with pytest.raises(sqlite3.IntegrityError):
+        db.write_derived_observations(run, NOW, [(_dsid(db), "2025-01", "1", 0,
+                                                  inputs.replace("ID", i))])
+
+
+@pytest.mark.parametrize("scope", ["not json", '{"a": 1}', '"derived.x"'])
+def test_run_scope_must_be_a_json_array(db, scope):
+    with pytest.raises(sqlite3.IntegrityError):
+        db.conn.execute("INSERT INTO derived_run(started_at, state, trigger, scope_json) "
+                        "VALUES ('t', 'computing', 'cli', ?)", (scope,))
+
+
+def test_derived_history_is_never_deleted_or_replaced(db):
+    """M1: derived rows, runs, events and series definitions are history."""
+    _setup(db)
+    run, oid, _ = _derive(db)
+    db.add_derived_event(NOW, run, _dsid(db), "2025-01", "mismatch")
+    for table in ("derived_observation", "derived_run", "derived_event", "derived_series"):
+        with pytest.raises(sqlite3.IntegrityError):
+            db.conn.execute(f"DELETE FROM {table}")
+    with pytest.raises(sqlite3.IntegrityError):  # REPLACE would bypass the definition guard
+        db.conn.execute("INSERT OR REPLACE INTO derived_series(key, formula, base_series_id, "
+                        "label, formula_label_pt, unit, active) "
+                        "VALUES (?, 'yoy_change', 's1', 'l', 'f', 'u', 1)", (KEY,))
+    assert db.derived_series_rows()[0]["formula"] == "period_change"
+
+
+def test_inputs_follow_the_stored_input_order(db):
+    """M3: `inputs` lists the inputs in input_obs_ids_json order whatever the id order."""
+    _setup(db)
+    inp = db.served_fetched_inputs("s1")
+    t, p = inp["2025-01"][0], inp["2024-12"][0]
+    assert p < t
+    for order in ([t, p], [p, t]):
+        run = db.begin_derived_run(NOW, "cli", [KEY])
+        db.write_derived_observations(run, NOW, [(_dsid(db), "2025-01", "2", 0,
+                                                  json.dumps(order))])
+        oid = db.derived_observations_of_run(run)[0]["id"]
+        db.set_derived_row_states([(oid, "match")])
+        db.finish_derived_run(run, "verified", NOW, n_written=1, n_checked=1, n_mismatch=0)
+        row = db.served_derived_rows(KEY, 1)[1][0]
+        assert [x["observation_id"] for x in row["inputs"]] == order
+
+
+def test_rebase_label_without_base_period_names_the_param():
+    """M5."""
+    with pytest.raises(ValueError, match="base_period"):
+        formula_label_pt("rebase_100", {}, "s1")
+    with pytest.raises(ValueError, match="ratio"):
+        formula_label_pt("ratio", {}, "s1")
