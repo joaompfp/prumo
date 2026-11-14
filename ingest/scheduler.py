@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Protocol
 
 from ingest import operations
-from ingest.cadence import group_interval, series_interval
+from ingest.cadence import BACKOFF, group_interval, next_eligible_at, series_interval
 from ingest.db import Db, SchedulerState, open_db
 from ingest.http import Http
 from ingest.models import SeriesSpec
@@ -32,7 +32,7 @@ from ingest.rawstore import RawStore
 from ingest.registry import load_registry, sync_registry
 
 TICK = timedelta(minutes=15)
-BACKOFF = (timedelta(hours=1), timedelta(hours=4), timedelta(hours=12))
+__all__ = ["BACKOFF", "TICK", "due", "main", "serve", "tick"]  # BACKOFF lives in ingest.cadence
 DEFAULT_REGISTRY = Path(__file__).resolve().parent.parent / "registry" / "core.yaml"
 
 Clock = Callable[[], datetime]
@@ -82,12 +82,11 @@ def _plan(specs: list[SeriesSpec]) -> tuple[list[DatasetGroup], list[str]]:
 def _ready(group: DatasetGroup, state: SchedulerState | None, now: datetime) -> bool:
     if state is None:
         return due(group, None, now)
-    if state.failure_streak:
-        anchor = datetime.fromisoformat(state.last_finished_at or state.last_attempt_at)
-        wait = BACKOFF[min(state.failure_streak, len(BACKOFF)) - 1]
-        return _utc(now) >= _utc(anchor) + wait
-    success = datetime.fromisoformat(state.last_success_at) if state.last_success_at else None
-    return due(group, success, now)
+    eligible = next_eligible_at(group_interval(group.specs), failure_streak=state.failure_streak,
+                                last_attempt_at=state.last_attempt_at,
+                                last_finished_at=state.last_finished_at,
+                                last_success_at=state.last_success_at)
+    return eligible is None or _utc(now) >= eligible
 
 
 def _run_group(db: Db, store: RawStore, group: DatasetGroup, *,
