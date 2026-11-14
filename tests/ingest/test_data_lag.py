@@ -64,7 +64,7 @@ def _toy_registry(tmp_path):
     return p
 
 
-def _seed(db_path, rows):
+def _seed(db_path, rows, state="verified"):
     from ingest.registry import load_registry, sync_registry
     db = open_db(db_path)
     try:
@@ -79,6 +79,7 @@ def _seed(db_path, rows):
                 "dataset_run_id, raw_fetch_id, fetched_at) VALUES (?, ?, '1', 1.0, ?, ?, ?, "
                 "'2026-11-01T00:00:00+00:00')",
                 (sid, period, kind, run, None if kind != "fetched" else raw))
+        db.set_run_state(run, state)
         db.conn.commit()
     finally:
         db.close()
@@ -91,6 +92,33 @@ def test_db_latest_fetched_period_ignores_legacy_rows(tmp_path):
                                    ("toy.frozen.PT", "2026-10", "legacy-unverified")])
     db = open_db(tmp_path / "p.sqlite3")
     try:
+        assert db.latest_fetched_periods() == {"toy.frozen.PT": "2025-12"}
+    finally:
+        db.close()
+
+
+def test_db_latest_fetched_period_ignores_withdrawn_and_failed_runs(tmp_path):
+    """Re-review 2 M4: a withdrawn or failed run's (possibly invented future) period must not
+    mask a frozen dataset; verified and pending-verification runs count."""
+    _toy_registry(tmp_path)
+    p = tmp_path / "p.sqlite3"
+    _seed(p, [("toy.frozen.PT", "2025-12", "fetched")])
+    _seed(p, [("toy.frozen.PT", "2099-01", "fetched")], state="failed-verification")
+    db = open_db(p)
+    try:
+        assert db.latest_fetched_periods() == {"toy.frozen.PT": "2025-12"}
+        wrong = db.begin_run("toy", "toy:k", "2026-11-02T00:00:00+00:00")
+        fid = db.record_raw_fetch(source_name="toy", run_id=wrong, url="u", params_json=None,
+                                  fetched_at="2026-11-02T00:00:00+00:00", http_status=200,
+                                  sha256="x", path="p", n_bytes=1, ok=True)
+        db.conn.execute(
+            "INSERT INTO observation(series_id, period, value_text, value, kind, "
+            "dataset_run_id, raw_fetch_id, fetched_at) VALUES ('toy.frozen.PT', '2098-01', "
+            "'1', 1.0, 'fetched', ?, ?, '2026-11-02T00:00:00+00:00')", (wrong, fid))
+        db.set_run_state(wrong, "pending-verification")
+        assert db.latest_fetched_periods() == {"toy.frozen.PT": "2098-01"}
+        db.set_run_state(wrong, "verified")
+        db.withdraw_run(wrong, "invented future period", "2026-11-03T00:00:00+00:00")
         assert db.latest_fetched_periods() == {"toy.frozen.PT": "2025-12"}
     finally:
         db.close()

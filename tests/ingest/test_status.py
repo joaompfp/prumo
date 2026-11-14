@@ -224,7 +224,7 @@ def test_typed_json_schema_and_readable_text(db):
                  verify_at=NOW)
     report = build_status(db, [spec], now=lambda: NOW)
     doc = report.to_dict()
-    assert doc["schema"] == "prumo-status" and doc["version"] == 2
+    assert doc["schema"] == "prumo-status" and doc["version"] == 3
     assert doc["generated_at"] == _ts(NOW)
     assert doc["staleness_policy"]["defaults_days"]["A"] == 30
     series = doc["sources"][0]["series"][0]
@@ -344,7 +344,7 @@ def test_source_and_total_counts_of_stale_never_fetched_and_never_verified(db):
     assert (src.stale, src.never_fetched, src.never_verified) == (1, 1, 1)
     assert src.stale_series == ("worldbank.pop.PT",)
     assert report.totals == {"active_series": 4, "stale": 1, "never_fetched": 1,
-                             "never_verified": 1}
+                             "never_verified": 1, "pending_stuck": 0}
     text = render_text(report)
     assert "stale 1 / never fetched 1 / never verified 1" in text
     assert "STALE worldbank.pop.PT" in text

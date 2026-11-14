@@ -65,7 +65,7 @@ from ingest.bundle import (
     load_bundle,
 )
 from ingest.data_lag import lagging_series
-from ingest.db import ReadOnlyOpenError, open_db, open_db_readonly
+from ingest.db import ReadOnlyOpenError, open_db, read_db_readonly
 from ingest.legacy_import import DEFAULT_REGISTRY, import_legacy
 from ingest.operations import DEFAULT_CLIENT_TIMEOUT_S, RunReport, RunRequest, polite_http, run_all
 from ingest.rawstore import RawStore
@@ -391,25 +391,21 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
     http_for = http_for or (lambda name: _http_for(specs, name))
 
     if args.command in ("status", "lag"):
+        # never migrates, never creates a file; one plain mode=ro retry on a concurrent writer
+        read = ((lambda db: build_status(db, specs)) if args.command == "status"
+                else (lambda db: db.latest_fetched_periods()))
         try:
-            db = open_db_readonly(db_path)  # never migrates, never creates a file
+            result = read_db_readonly(db_path, read)
         except ReadOnlyOpenError as e:
             print(f"{args.command} refused: {e}", file=sys.stderr)
             return 2
 
     if args.command == "status":
-        try:
-            report = build_status(db, specs)
-        finally:
-            db.close()
-        print(report.to_json() if args.as_json else render_text(report))
+        print(result.to_json() if args.as_json else render_text(result))
         return 0
 
     if args.command == "lag":
-        try:
-            latest = db.latest_fetched_periods()
-        finally:
-            db.close()
+        latest = result
         found = lagging_series(specs, latest, datetime.now(timezone.utc).date())
         for f in found:
             print(f"LAGGING {f.series_id} {f.frequency} latest={f.latest_period} "

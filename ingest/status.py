@@ -15,7 +15,9 @@ Honesty rules:
     that is still 'verified' and either wrote that series' observations, or is an
     identical-payload short-circuit whose matched run (followed through earlier
     short-circuits) is still 'verified' and holds that series. Legacy rows never confirm
-    anything (None);
+    anything (None), and neither does a run verified only against its own pinned bundle
+    (verifier_channel 'pinned-bundle', not audit-grade; Task 24): a series whose only
+    verified data is pinned-bundle data is stale with reason 'pinned_bundle_only';
 - 'stale' is OUR refresh policy (series.schedule when present, else frequency defaults
   A/S=30d, Q=7d, M/D/PT15M=1d - the shared knowledge lives in ingest.cadence, which the
   Task 18 scheduler also derives from), never a claimed publisher release date. It is judged
@@ -27,8 +29,12 @@ Honesty rules:
   indicator can never conceal an earlier failed indicator; each dataset also shows the
   scheduler's persisted retry state (failure streak, an in-flight or interrupted 'running'
   marker, next eligible time computed by ingest.cadence exactly as the scheduler does);
-- pending-verification runs are listed (stale after 24 h); a verified short-circuit run with
-  no observations invents no new verification;
+- each dataset shows the verifier channel of its latest passed verification ('live' or
+  'pinned-bundle');
+- pending-verification runs are listed; one pending for more than 24 h (an interrupted
+  verification: nothing sweeps it) is marked STALE with its remedy,
+  `python -m ingest verify <run_id>`, and counted in totals['pending_stuck']; a verified
+  short-circuit run with no observations invents no new verification;
 - events are counted for the last 24 h, the last 7 days and over the database's lifetime.
 
 Timestamps come from the database and the system clock only; the CLI status command accepts no
@@ -45,7 +51,9 @@ from ingest.models import SeriesSpec
 from ingest.operations import LEGACY_DATASET_PREFIX, group_specs
 
 SCHEMA = "prumo-status"
-VERSION = 2  # v2 (Task 23): stale is judged on last_confirmed_current; counts/windows/scheduler
+VERSION = 3  # v2 (Task 23): stale judged on last_confirmed_current; counts/windows/scheduler
+# v3 (Task 24): pinned-bundle verifications never confirm currency; per-dataset
+# verifier_channel; totals['pending_stuck']
 
 # Our refresh policy, not a publisher cadence claim. series.schedule ('7d', '12h'...) wins.
 # Compatible alias for the pre-extraction (Task 18A) name; the knowledge lives in ingest.cadence.
@@ -87,6 +95,7 @@ class DatasetStatus:
     latest_attempt: str | None
     input_origin: str | None  # 'live' | 'recorded' of that latest attempt (never 'legacy')
     scheduler: SchedulerView | None = None
+    verifier_channel: str | None = None  # of the latest PASSED verification of the dataset
 
 
 @dataclass(frozen=True)
@@ -115,7 +124,7 @@ class SeriesStatus:
     legacy_rows: int
     stale: bool | None
     stale_reason: str | None        # 'never_fetched' | 'never_verified' |
-                                    # 'legacy_unverified' | None
+                                    # 'legacy_unverified' | 'pinned_bundle_only' | None
 
 
 @dataclass(frozen=True)
@@ -155,7 +164,8 @@ class SourceStatus:
 class StatusReport:
     generated_at: str
     sources: tuple[SourceStatus, ...]
-    totals: dict[str, int]          # active_series / stale / never_fetched / never_verified
+    totals: dict[str, int]          # active_series / stale / never_fetched / never_verified /
+                                    # pending_stuck
     schema: str = SCHEMA
     version: int = VERSION
     staleness_policy: dict = field(default_factory=lambda: {
@@ -178,7 +188,8 @@ def _shortcut_confirmations(db: Db, runs) -> dict[str, str]:
     whose matched run (pipeline compares with the immediately previous run of the dataset,
     which had to be verified) is still verified - followed through earlier short-circuits -
     and holds observations of that series."""
-    receipts = {rid: (at, bool(wrote)) for rid, _key, at, wrote in db.verified_run_receipts()}
+    receipts = {rid: (at, bool(wrote), bool(pinned))
+                for rid, _key, at, wrote, pinned in db.verified_run_receipts()}
     previous: dict[int, int | None] = {}
     last_in_key: dict[str, int] = {}
     for run_id, _src, key, _state, _started, _finished, _origin in runs:  # id order
@@ -194,11 +205,11 @@ def _shortcut_confirmations(db: Db, runs) -> dict[str, str]:
             if prev is None or prev not in receipts:
                 return None  # matched run no longer verified (withdrawn) or absent
             if receipts[prev][1]:
-                return prev
+                return None if receipts[prev][2] else prev  # pinned-bundle confirms nothing
             run_id = prev
         return None
 
-    shortcuts = [(rid, at, base(rid)) for rid, (at, wrote) in receipts.items()
+    shortcuts = [(rid, at, base(rid)) for rid, (at, wrote, _pinned) in receipts.items()
                  if not wrote and at is not None]
     series_of = db.series_of_runs(sorted({b for _, _, b in shortcuts if b is not None}))
     out: dict[str, str] = {}
@@ -270,15 +281,20 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
 
     # real verification evidence: PASSED verification rows on non-legacy datasets
     verified_by_key: dict[str, str] = {}   # dataset_key -> latest passed created_at
-    for _run_id, key, passed, created in db.verification_overview():
+    channel_by_key: dict[str, str | None] = {}  # dataset_key -> its verifier_channel
+    for _run_id, key, passed, created, channel in db.verification_overview():
         if passed and key is not None and key not in legacy_keys:
-            verified_by_key[key] = _latest(verified_by_key.get(key), created)
+            latest = _latest(verified_by_key.get(key), created)
+            if latest == created:
+                channel_by_key[key] = channel
+            verified_by_key[key] = latest
 
     # observation stats per series/kind/state
     stats: dict[tuple, tuple] = {}
     for sid, kind, state, n, max_fetched in db.observation_stats():
         stats[(sid, kind, state)] = (n, max_fetched)
     confirmed_by_shortcut = _shortcut_confirmations(db, runs)
+    audit_grade = db.audit_grade_fetched_at()
 
     events = _event_counts(db.event_totals())
     windowed = {w: _event_counts(db.event_totals(since=(now_ts - span).astimezone(
@@ -299,7 +315,8 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
         blockers = tuple(b for b, on in (("not_verifiable", not verifiable),
                                          ("licence_withheld", not redistribution_ok)) if on)
         series_out = [_series_status(s, now_ts, label_of, key_of, latest_by_key,
-                                     verified_by_key, stats, confirmed_by_shortcut)
+                                     verified_by_key, stats, confirmed_by_shortcut,
+                                     audit_grade)
                       for s in sorted(group, key=lambda x: x.id)]
         source_keys = {key_of[s.id] for s in group if s.id in key_of}
         datasets = []
@@ -308,7 +325,8 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
                 continue
             started, state, origin = latest_by_key.get(k, (None, None, None))
             view = _scheduler_view(scheduler[k], group_of_key[k]) if k in scheduler else None
-            datasets.append(DatasetStatus(group_of_key[k].label, state, started, origin, view))
+            datasets.append(DatasetStatus(group_of_key[k].label, state, started, origin, view,
+                                          channel_by_key.get(k)))
         datasets.sort(key=lambda d: d.label)
         views = [d.scheduler for d in datasets if d.scheduler is not None]
         latest_attempt, latest_state = None, None
@@ -341,13 +359,15 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
     totals = {"active_series": sum(s.active_series for s in sources),
               "stale": sum(s.stale for s in sources),
               "never_fetched": sum(s.never_fetched for s in sources),
-              "never_verified": sum(s.never_verified for s in sources)}
+              "never_verified": sum(s.never_verified for s in sources),
+              "pending_stuck": sum(p.stale for s in sources for p in s.pending_runs)}
     return StatusReport(generated_at=now_ts.astimezone(timezone.utc).isoformat(),
                         sources=tuple(sources), totals=totals)
 
 
 def _series_status(s: SeriesSpec, now: datetime, label_of, key_of, latest_by_key,
-                   verified_by_key, stats, confirmed_by_shortcut) -> SeriesStatus:
+                   verified_by_key, stats, confirmed_by_shortcut,
+                   audit_grade) -> SeriesStatus:
     label, key = label_of.get(s.id), key_of.get(s.id)
     latest = latest_by_key.get(key) if key else None
     last_verified = verified_by_key.get(key) if key else None
@@ -362,7 +382,7 @@ def _series_status(s: SeriesSpec, now: datetime, label_of, key_of, latest_by_key
     if verified:
         availability = "verified"
         real_fetched = _latest(*(mf for _, mf in verified))
-        confirmed = _latest(real_fetched, confirmed_by_shortcut.get(s.id))
+        confirmed = _latest(audit_grade.get(s.id), confirmed_by_shortcut.get(s.id))
     elif legacy:
         availability = "legacy-unverified"
         real_fetched = _latest(*(mf for _, mf in legacy))
@@ -373,6 +393,8 @@ def _series_status(s: SeriesSpec, now: datetime, label_of, key_of, latest_by_key
         stale, reason = None, ("never_fetched" if not fetched_rows else "never_verified")
     elif availability == "legacy-unverified":
         stale, reason = True, "legacy_unverified"  # legacy rows are never confirmed current
+    elif confirmed is None:
+        stale, reason = True, "pinned_bundle_only"  # verified only against its own bundle
     else:
         stale, reason = now - _parse_ts(confirmed) > series_interval(s), None
     return SeriesStatus(
@@ -401,7 +423,9 @@ def render_text(report: StatusReport) -> str:
              "(an identical re-fetch counts), not a publisher release date; "
              "legacy-only series are always stale",
              f"all sources: {t['active_series']} active series; "
-             f"{_counts(t['stale'], t['never_fetched'], t['never_verified'])}"]
+             f"{_counts(t['stale'], t['never_fetched'], t['never_verified'])}; "
+             f"pending verification over {report.staleness_policy['pending_stale_after_hours']}"
+             f"h {t['pending_stuck']}"]
     for s in report.sources:
         flags = f" BLOCKED ({', '.join(s.blockers)})" if s.blocked else ""
         lines.append(f"{s.name}: {s.active_series} active / {s.inactive_series} inactive "
@@ -425,6 +449,8 @@ def render_text(report: StatusReport) -> str:
             origin = f", input {d.input_origin}" if d.input_origin else ""
             line = (f"  dataset {d.label}: {d.latest_state or 'no attempt'} "
                     f"({d.latest_attempt or '-'}{origin})")
+            if d.verifier_channel is not None:
+                line += f"; last verified via {d.verifier_channel}"
             v = d.scheduler
             if v is not None:
                 state = ("running (in flight, or interrupted if the worker is not "
@@ -434,7 +460,8 @@ def render_text(report: StatusReport) -> str:
                          f"{v.next_eligible_at or 'now'}")
             lines.append(line)
         for p in s.pending_runs:
-            mark = " STALE" if p.stale else ""
+            mark = (f" STALE (interrupted verification? resolve with: python -m ingest "
+                    f"verify {p.run_id})" if p.stale else "")
             lines.append(f"  PENDING run {p.run_id} ({p.dataset}, input {p.input_origin}) "
                          f"since {p.started_at}{mark}")
     return "\n".join(lines)
