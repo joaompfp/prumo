@@ -13,12 +13,14 @@ from typing import Literal, TypeVar
 from urllib.parse import urlencode
 
 from fastapi import FastAPI, Query, Request
+from fastapi import Path as PathParam
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from backoffice import reads, replay
-from backoffice.deps import paths_from_env
+from backoffice.deps import DEFAULT_ALLOWED_HOSTS, allowed_hosts_from_env, paths_from_env
 from backoffice.registry_notes import inactive_notes
 from backoffice.ttl_cache import TtlCache
 from ingest.db import Db, ReadOnlyOpenError, read_db_readonly
@@ -28,6 +30,13 @@ T = TypeVar("T")
 TEMPLATES = Path(__file__).resolve().parent / "templates"
 PAGE_METHODS = ["GET", "HEAD"]
 STATUS_TTL_S = 30.0  # the full status report is reused this long across pages
+SQLITE_MAX_INT = 2**63 - 1  # largest id SQLite can bind; above it -> 422, never a 500
+# No JavaScript anywhere: nothing may run, load or frame the pages; inline styles only.
+SECURITY_HEADERS = {
+    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; "
+                               "img-src 'self' data:; frame-ancestors 'none'",
+    "X-Content-Type-Options": "nosniff",
+}
 
 
 def link(url: str | None) -> Markup | str:
@@ -55,14 +64,23 @@ def _templates() -> Jinja2Templates:
 def create_app(db_path: Path, registry_path: Path,
                now: Callable[[], datetime] | None = None, *,
                raw_dir: Path | None = None, status_ttl_s: float = STATUS_TTL_S,
-               monotonic: Callable[[], float] = time.monotonic) -> FastAPI:
+               monotonic: Callable[[], float] = time.monotonic,
+               allowed_hosts: list[str] = DEFAULT_ALLOWED_HOSTS) -> FastAPI:
     """`raw_dir` is the raw evidence store verification items are replayed from (None: the
     replay page says it cannot replay). The full status report is computed at most once per
-    `status_ttl_s` (on the `monotonic` clock); pages show its generated_at."""
+    `status_ttl_s` (on the `monotonic` clock); pages show its generated_at and age. Requests
+    whose Host header is not in `allowed_hosts` get 400 (DNS-rebinding guard)."""
     specs = load_registry(registry_path)  # fail fast at startup on a bad registry
     clock = now or (lambda: datetime.now(timezone.utc))
     templates = _templates()
     app = FastAPI(title="Prumo backoffice", docs_url=None, redoc_url=None, openapi_url=None)
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(allowed_hosts))
+
+    @app.middleware("http")  # added last, so outermost: the 400 host refusal carries it too
+    async def security_headers(request: Request, call_next):
+        response = await call_next(request)
+        response.headers.update(SECURITY_HEADERS)
+        return response
 
     def read(fn: Callable[[Db], T]) -> T:
         return read_db_readonly(db_path, fn)
@@ -75,6 +93,11 @@ def create_app(db_path: Path, registry_path: Path,
 
     def render(request: Request, name: str, status_code: int = 200, **context):
         return templates.TemplateResponse(request, name, context, status_code=status_code)
+
+    def with_status(report) -> dict:
+        """The cached report plus how old it is now (pages say when it was generated)."""
+        return {"report": report, "report_age_s": reads.report_age_s(report, clock()),
+                "status_ttl_s": int(status_ttl_s)}
 
     @app.exception_handler(ReadOnlyOpenError)
     def refused(request: Request, exc: ReadOnlyOpenError):
@@ -93,14 +116,15 @@ def create_app(db_path: Path, registry_path: Path,
 
     @app.api_route("/", methods=PAGE_METHODS)
     def overview(request: Request):
-        return render(request, "overview.html", report=status())
+        return render(request, "overview.html", **with_status(status()))
 
     @app.api_route("/queue", methods=PAGE_METHODS)
     def queue(request: Request):
         at = clock()
         report = status()
         q = read(lambda db: reads.queue(db, specs, report, at))
-        return render(request, "queue.html", queue=q, generated_at=at.isoformat())
+        return render(request, "queue.html", queue=q, generated_at=at.isoformat(),
+                      **with_status(report))
 
     by_id = {s.id: s for s in specs}
     notes = inactive_notes(registry_path.parent, {s.id for s in specs if not s.active})
@@ -140,10 +164,11 @@ def create_app(db_path: Path, registry_path: Path,
         d = read(lambda db: reads.series_detail(db, spec, report, period or None))
         return render(request, "series_detail.html", spec=spec, d=d, period=period,
                       label=reads.status_label(d.status), cap=reads.OBSERVATION_CAP,
-                      inactive_notes=notes.get(spec.id, []), status_at=report.generated_at)
+                      inactive_notes=notes.get(spec.id, []), **with_status(report))
 
     @app.api_route("/verification/item/{item_id}", methods=PAGE_METHODS)
-    def verification_item(request: Request, item_id: int):
+    def verification_item(request: Request,
+                          item_id: int = PathParam(ge=1, le=SQLITE_MAX_INT)):
         try:
             r = read(lambda db: replay.replay(db, raw_dir, item_id, specs))
         except KeyError:
@@ -157,4 +182,5 @@ def create_app(db_path: Path, registry_path: Path,
 def app_from_env() -> FastAPI:
     """uvicorn entry point (`uvicorn backoffice.app:app_from_env --factory`)."""
     db_path, registry_path, raw_dir = paths_from_env()
-    return create_app(db_path, registry_path, raw_dir=raw_dir)
+    return create_app(db_path, registry_path, raw_dir=raw_dir,
+                      allowed_hosts=allowed_hosts_from_env())

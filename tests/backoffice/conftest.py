@@ -53,7 +53,7 @@ class Env:
         return open_db(self.db_path)
 
     def client(self):
-        return TestClient(create_app(self.db_path, self.registry, now=lambda: NOW))
+        return TestClient(create_app(self.db_path, self.registry, now=lambda: NOW), base_url="http://localhost")
 
 
 @pytest.fixture

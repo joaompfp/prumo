@@ -2,8 +2,8 @@
 {% block content %}
 {% set t = report.totals %}
 <h1>Overview</h1>
-<p class="note">Status schema {{ report.schema }} v{{ report.version }}, generated
-{{ report.generated_at }}. Same report as <code>python -m ingest status</code>. Stale means our
+<p class="note">Status schema {{ report.schema }} v{{ report.version }},
+{% include "_report_age.html" %}. Same report as <code>python -m ingest status</code>. Stale means our
 refresh policy ({{ report.staleness_policy.meaning }}), judged on
 {{ report.staleness_policy.judged_on }}.</p>
 

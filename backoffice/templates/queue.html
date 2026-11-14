@@ -4,7 +4,8 @@
 <h1>Review queue</h1>
 <p class="note">Derived at read time ({{ generated_at }}) from status, data lag, events,
 quarantine and failed fetches of the last 7 days; nothing is stored, so an item disappears when
-its cause does. {{ queue.items | length }} items.</p>
+its cause does. Stale, stuck-pending and scheduler items come from the
+{% include "_report_age.html" %}. {{ queue.items | length }} items.</p>
 {% if queue.truncated %}
 <p class="bad">These reads hit their row limit, so their items below may be incomplete:
 {{ queue.truncated | join(", ") }}.</p>

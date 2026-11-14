@@ -39,6 +39,11 @@ def status_report(db: Db, specs: list[SeriesSpec], now: datetime) -> StatusRepor
     return build_status(db, specs, now=lambda: now)
 
 
+def report_age_s(report: StatusReport, now: datetime) -> int:
+    """Whole seconds since the (possibly cached) report was generated."""
+    return max(0, int((now - datetime.fromisoformat(report.generated_at)).total_seconds()))
+
+
 @dataclass(frozen=True)
 class Queue:
     items: list[QueueItem]
@@ -98,6 +103,8 @@ class SeriesDetail:
     raw_fetches: list[dict]
     quarantine: list[dict]
     items: list[dict]
+    periods_total: int          # distinct stored periods, any run state
+    periods: list[dict]         # newest PERIOD_CAP of them (Db.series_periods)
     vintages: list[dict] | None  # only when a period was asked for
 
 
@@ -110,6 +117,7 @@ def series_detail(db: Db, spec: SeriesSpec, report: StatusReport,
         status, source, total, rows, db.series_raw_fetches(spec.id),
         db.series_quarantine(spec.id, DETAIL_LIST_CAP),
         db.series_verification_items(spec.id, DETAIL_LIST_CAP),
+        *db.series_periods(spec.id, PERIOD_CAP),
         db.series_vintages(spec.id, period) if period else None)
 
 

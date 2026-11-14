@@ -78,7 +78,7 @@ def env(verified, tmp_path):
 
 
 def _client(data: Path) -> TestClient:
-    return TestClient(create_app(data / "prumo.sqlite3", REGISTRY, raw_dir=data / "raw"))
+    return TestClient(create_app(data / "prumo.sqlite3", REGISTRY, raw_dir=data / "raw"), base_url="http://localhost")
 
 
 def _outcome(html: str) -> str:
@@ -185,7 +185,7 @@ def test_replay_reports_mismatch_with_reason(env):
 
 def test_replay_without_a_configured_raw_store_says_so(env):
     data, ids = env
-    c = TestClient(create_app(data / "prumo.sqlite3", REGISTRY))
+    c = TestClient(create_app(data / "prumo.sqlite3", REGISTRY), base_url="http://localhost")
     r = c.get(f"/verification/item/{ids[0]}")
     assert r.status_code == 200
     assert _outcome(r.text) == "cannot replay"
@@ -200,7 +200,7 @@ def test_unknown_item_404(env):
 
 
 def test_replay_refuses_missing_db_with_503(tmp_path):
-    c = TestClient(create_app(tmp_path / "nope.sqlite3", REGISTRY, raw_dir=tmp_path / "raw"))
+    c = TestClient(create_app(tmp_path / "nope.sqlite3", REGISTRY, raw_dir=tmp_path / "raw"), base_url="http://localhost")
     r = c.get("/verification/item/1")
     assert r.status_code == 503
     assert not (tmp_path / "nope.sqlite3").exists()

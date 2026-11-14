@@ -24,7 +24,7 @@ def test_healthz_stays_200_when_the_db_is_not_ready(env, tmp_path):
 
     from backoffice.app import create_app
     missing = tmp_path / "missing.sqlite3"
-    r = TestClient(create_app(missing, env.registry)).get("/healthz")
+    r = TestClient(create_app(missing, env.registry), base_url="http://localhost").get("/healthz")
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "ok" and body["db"] == "unavailable"
@@ -68,7 +68,7 @@ def test_head_on_pages(env):
 def test_missing_db_returns_503_with_message(env, tmp_path):
     app = create_app(tmp_path / "absent.sqlite3", env.registry, now=lambda: NOW)
     from fastapi.testclient import TestClient
-    c = TestClient(app)
+    c = TestClient(app, base_url="http://localhost")
     for path in ("/", "/queue"):
         r = c.get(path)
         assert r.status_code == 503
@@ -146,7 +146,7 @@ def test_status_report_is_cached_for_the_ttl(env):
     from fastapi.testclient import TestClient
     tick = [1000.0]
     c = TestClient(create_app(env.db_path, env.registry, now=lambda: NOW,
-                              status_ttl_s=30, monotonic=lambda: tick[0]))
+                              status_ttl_s=30, monotonic=lambda: tick[0]), base_url="http://localhost")
 
     def never_fetched(html):
         import re
@@ -166,7 +166,7 @@ def test_db_refusal_is_not_cached(env, tmp_path):
     from fastapi.testclient import TestClient
     path = tmp_path / "later.sqlite3"
     c = TestClient(create_app(path, env.registry, now=lambda: NOW, status_ttl_s=30,
-                              monotonic=lambda: 0.0))
+                              monotonic=lambda: 0.0), base_url="http://localhost")
     assert c.get("/").status_code == 503
     path.write_bytes(env.db_path.read_bytes())
     assert c.get("/").status_code == 200

@@ -42,7 +42,7 @@ this series, with the section they sit in.</p>
 {% endif %}
 
 <h2>Status</h2>
-<p class="note">From the status report generated {{ status_at }} (reused for up to 30 s).</p>
+<p class="note">From the {% include "_report_age.html" %}.</p>
 <dl class="spec">
 <dt>availability</dt><dd>{{ st.availability }}{% if st.legacy_rows %} ({{ st.legacy_rows }} legacy rows){% endif %}</dd>
 <dt>stale</dt><dd>{{ "unknown" if st.stale is none else ("yes" if st.stale else "no") }}{% if st.stale_reason %} ({{ st.stale_reason }}){% endif %}</dd>
@@ -75,6 +75,22 @@ the served view returns is marked served.</p>
 <p>No stored row for period <code>{{ period }}</code>.</p>
 {% endif %}
 {% endif %}
+
+<h2 id="periods">Stored periods ({{ d.periods_total }}{% if d.periods_total > d.periods | length %}, newest {{ d.periods | length }}{% endif %})</h2>
+<p class="note">Every period with any stored row, whatever its run's state (served, withdrawn,
+failed, pending, legacy) and whether or not the source may be served publicly. Click one for
+all its vintages, or type any period:</p>
+<form method="get" action="#vintages"><input name="period" value="{{ period }}" placeholder="e.g. 2024-03"> <button type="submit">Show vintages</button></form>
+{% if d.periods %}
+<div class="scroll"><table>
+<tr><th>Period</th><th class="num">Stored rows</th><th>Served</th></tr>
+{% for p in d.periods %}
+<tr><td><a href="?period={{ p.period | urlencode }}#vintages">{{ p.period }}</a></td>
+<td class="num">{{ p.rows }}</td>
+<td{% if not p.served %} class="muted"{% endif %}>{{ "served" if p.served else "not served" }}</td></tr>
+{% endfor %}
+</table></div>
+{% else %}<p class="muted">No stored rows.</p>{% endif %}
 
 <h2>Served observations</h2>
 <p class="note">{% if d.total > d.observations | length %}newest {{ d.observations | length }} of {{ d.total }} served rows{% else %}{{ d.total }} served rows{% endif %};
