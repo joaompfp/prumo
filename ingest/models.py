@@ -219,3 +219,19 @@ class SeriesSpec(BaseModel):
         if not v.strip():
             raise ValueError("unit must be non-empty")
         return v
+
+
+FORMULAS: tuple[str, ...] = ("period_change", "period_change_pct", "yoy_change", "yoy_change_pct",
+                             "rebase_100")
+
+
+class DerivedSpec(BaseModel):
+    """Registry `derived:` row: a calculated series over one base series."""
+    model_config = ConfigDict(extra="forbid")
+    key: str
+    base: str
+    formula: Literal[*FORMULAS]
+    params: dict[str, str] = {}
+    label: str = Field(min_length=1)
+    unit: str = Field(min_length=1)
+    active: bool = True
