@@ -146,3 +146,20 @@ def test_sync_registry_updates_changed_fields(tmp_path):
     sync_registry(db, load_registry(_write(tmp_path, {"ine": {**SRC, "attribution": "New"}}, [s])))
     assert db.conn.execute("SELECT unit FROM series WHERE id='a'").fetchone()[0] == "USD"
     assert db.conn.execute("SELECT attribution FROM source").fetchone()[0] == "New"
+
+
+def test_registry_rejects_two_active_series_with_one_native_code(tmp_path):
+    """Final review C-M6: two ACTIVE series of one source pinning the same native_code would
+    receive identical rows (Eurostat/INE/BPstat parse() maps by spec, not by code)."""
+    a = {**_series("a"), "native_code": "X:1"}
+    b = {**_series("b", key="other"), "native_code": "X:1"}
+    with pytest.raises(ValueError, match="native_code"):
+        load_registry(_write(tmp_path, {"ine": SRC}, [a, b]))
+
+
+def test_registry_allows_shared_native_code_when_inactive_or_cross_source(tmp_path):
+    a = {**_series("a"), "native_code": "X:1"}
+    b = {**_series("b", key="other"), "native_code": "X:1", "active": False}
+    c = {**_series("c", key="third", source="bp"), "native_code": "X:1"}
+    specs = load_registry(_write(tmp_path, {"ine": SRC, "bp": SRC}, [a, b, c]))
+    assert len(specs) == 3

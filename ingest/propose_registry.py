@@ -345,6 +345,12 @@ def propose(csv_path: Path, out_dir: Path, *, force: bool = False) -> None:
             rows.append(row)
         if len(members) > 1:
             overlaps.append((key, primary, members))
+    # A legacy code shared by several proposed series of one source names a dataset, not a
+    # series: it is not a native_code (ingest.registry rejects shared active codes, C-M6).
+    shared = Counter((r["source"], r.get("native_code")) for r in rows)
+    for r in rows:
+        if "native_code" in r and shared[(r["source"], r["native_code"])] > 1:
+            del r["native_code"]
 
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)

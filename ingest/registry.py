@@ -27,6 +27,13 @@ def _validate(specs: list[SeriesSpec]) -> None:
     dup = [i for i, n in Counter(s.id for s in specs).items() if n > 1]
     if dup:
         raise ValueError(f"duplicate series id: {dup}")
+    # One active series per (source, native_code): several adapters map rows by spec, so two
+    # active specs pinning one code would silently receive identical rows (final review C-M6).
+    codes = Counter((s.source.name, s.native_code) for s in specs
+                    if s.active and s.native_code is not None)
+    shared = sorted(k for k, n in codes.items() if n > 1)
+    if shared:
+        raise ValueError(f"active series share a native_code within a source: {shared}")
     primaries = Counter(s.indicator_key for s in specs if s.role == "primary")
     for key in {s.indicator_key for s in specs}:
         if primaries[key] != 1:
