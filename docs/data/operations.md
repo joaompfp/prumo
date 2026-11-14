@@ -474,10 +474,78 @@ body, so a database hiccup never makes the container restart-loop.
 | Page | Shows |
 |---|---|
 | `/` | Overview: the same totals and per-source table as `ingest status` |
-| `/queue` | Derived review queue: verification failures/escalations and revision bursts of the last 7 days, runs pending verification for more than 24 h, stale and lagging series, blocked sources |
+| `/queue` | Derived review queue (rules below) |
 | `/series` | Registry series with filters (source, theme, geography, frequency, active, text) and status, 100 per page |
-| `/series/<id>` | Registry spec and licence, why an inactive series is inactive (verbatim lines of `registry/unmapped-*.md`), status, newest 200 served rows (legacy rows labelled unverified), raw fetches, verification items, quarantine; `?period=` adds that period's vintages |
+| `/series/<id>` | Registry spec and licence, why an inactive series is inactive (verbatim lines of `registry/unmapped-*.md`), status, every stored period in any run state (served or not, licence-withheld sources included) with a period box, newest 200 served rows (legacy rows labelled unverified), raw fetches, verification items, quarantine; `?period=` adds that period's vintages |
 | `/verification/item/<id>` | One stored verification item and a fresh offline replay of its archived evidence (match, mismatch, evidence missing, evidence corrupt, cannot replay, with the reason) |
+
+Every page that uses the status report says when it was generated and how many seconds
+ago: the report is cached for 30 s, so a page can be up to 30 s behind `ingest status`.
+
+### Review queue rules
+
+Derived on every `/queue` request from the last 7 days; nothing is stored. Event kinds are
+the ones the pipeline emits (`ingest/pipeline.py`, `verify.py`, `db.py`):
+
+| Item | Severity | From |
+|---|---|---|
+| `verification_failed`, `verification_escalated` | high | one per event |
+| `format_change` | high | one per event, including the per-series `no_valid_observations` event written inside an otherwise successful run (that series stopped receiving data) |
+| `stale_refusal` | high | one per event (a recorded replay older than the verified data held) |
+| `stuck_pending` | high | the status report's pending runs older than 24 h (same as the overview's total) |
+| `operational_failure` | medium | one per event (orphan sweep, write lock, interrupted run) |
+| `verifier_outage` | medium | one per event whose run was not escalated (an escalated run already has a high item) |
+| `fetch_failure_streak` | medium | a dataset whose last 2+ finished runs are all `failed-fetch` (any origin, CLI included) |
+| `scheduler_streak` | medium | a dataset whose scheduler `failure_streak` is 2+ (any non-verified outcome) |
+| `stale_series`, `lagging_series` | medium | status report / `ingest lag` |
+| `revision_burst` | info | a run with 100+ revision events (counted in SQL) |
+| `new_period_gap` | info | a `new_periods` event whose added periods are not contiguous (already held in between, or missing); PT15M series are not judged |
+| `quarantine` | info | quarantined rows per source and reason |
+| `blocked_source` | info | licence-withheld or not-verifiable sources |
+
+Not queued: `refetch`, `withdrawal` and `series_deactivated` (records of actions already
+taken; the overview's per-source event counts show them). Reads are bounded: revisions,
+`new_periods` and quarantine are aggregated in SQL and each per-event kind is read with a
+200-row limit (at most 1,900 event rows per request); a read that hits its limit is named on
+the page.
+
+### Container hardening
+
+- Own plain bridge network `prumo_backoffice`, not `t2_proxy`: no other container and no
+  Traefik can reach port 8080. It is not `internal: true`, because Docker publishes no ports
+  for a container attached only to internal networks.
+- No `resolv.conf` mount: the app makes no outbound call (replay re-reads archived
+  evidence offline).
+- `read_only: true` root filesystem with a `tmpfs` on `/tmp`, `cap_drop: [ALL]`,
+  `no-new-privileges`.
+- It runs as root on purpose. The worker writes raw evidence with mode 0600
+  (`tempfile.mkstemp`), so a non-root uid could not read it for replays. Without
+  capabilities, root has no DAC override and reads only what root owns, through the `:ro`
+  mount. To move to `user: "1000:1000"`, raw evidence would first need group/world read
+  (`chmod -R a+rX` of the raw store plus a RawStore change), which is not done.
+- Host header allow-list (DNS-rebinding guard): `PRUMO_BACKOFFICE_ALLOWED_HOSTS`,
+  comma-separated, default `100.118.19.6,localhost,127.0.0.1`. Add the MagicDNS name there
+  if you browse by name. Every response carries `Content-Security-Policy: default-src 'none';
+  style-src 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'` (the pages use no
+  JavaScript).
+- Before the first deploy, confirm f0nix's Traefik runs with `exposedByDefault=false` (the
+  backoffice has no labels; this only matters if it ever joins the proxy network again).
+
+### Boot order and the Tailscale bind
+
+The port is published on `100.118.19.6` only. If `tailscaled` has not brought that address
+up when dockerd starts the container at boot, Docker fails to bind ("cannot assign requested
+address") and the container does not start. `restart: unless-stopped` does not help here:
+Docker's documentation states that "a restart policy only takes effect after a container
+starts successfully", and this one never started, so after a reboot check it and start it by hand if needed:
+
+```bash
+docker inspect prumo-backoffice --format 'running={{.State.Running}} error={{.State.Error}}'
+bash -lic "dc-web-up prumo-backoffice"
+```
+
+A durable fix is host-level (order `docker.service` after `tailscaled.service` with a
+systemd drop-in); it is not part of this repository.
 
 Deploy (controller, owner-authorized; never restart `prumo-ingest` for it):
 
@@ -486,6 +554,18 @@ bash -lic "dc-web-up prumo-backoffice"
 curl -fsS http://100.118.19.6:8089/healthz
 docker inspect prumo-ingest --format 'started={{.State.StartedAt}}'
 ```
+
+After deploy, while the worker is mid-run, confirm that the read-only mount creates nothing
+and the DB reads as ready (the review's one unobserved case: a live writer on a real EROFS
+mount):
+
+```bash
+ls -la ~/docker/stacks/web/appdata/prumo/
+curl -fsS http://100.118.19.6:8089/healthz
+curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: evil.example' http://100.118.19.6:8089/
+```
+
+The last command must print `400`.
 
 ## Rollback
 
