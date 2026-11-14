@@ -23,7 +23,7 @@ UNIT_LABELS: dict[tuple[str, str | None], frozenset[str]] = {
     ("CLV10_MEUR", None): frozenset({"M_EUR_2010"}),               # chain linked volumes (2010), million euro
     ("CP_EUR_HAB", None): frozenset({"EUR per capita"}),           # current prices, euro per capita
     ("I10", None): frozenset({"I10_2010", "index_2010=100"}),      # index, 2010=100
-    ("I15", None): frozenset({"I15", "Index (2015=100)", "index_2015"}),  # index, 2015=100
+    # I15 (index, 2015=100): no active series since Task 22 (prc_hicp_midx frozen, C-I1)
     ("I20", None): frozenset({"index 2020=100"}),                  # index, 2020=100
     ("I21", None): frozenset({"I21", "index_2021"}),               # index, 2021=100
     ("KWH", "EUR"): frozenset({"EUR/kWh"}),                        # per kWh, in euro

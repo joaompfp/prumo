@@ -14,8 +14,8 @@ Nothing was guessed; units/ids/roles were not changed.
 | | count |
 |---|---|
 | Eurostat series in registry | 697 |
-| active | 329 |
-| inactive: discontinued / rebased | 195 |
+| active | 328 |
+| inactive: discontinued / rebased | 196 (195 rebased I15 + 1 frozen dataset, below) |
 | inactive: duplicate of another active series | 18 |
 | inactive: unit conflicts | 35 |
 | inactive: dataset/filters not established | 120 |
@@ -260,6 +260,36 @@ shown, or 'no values' when Eurostat publishes no I21 data for that geo).
 | eurostat.ipi_wood_paper.PL | 2023 | sts_inpr_m | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I21,geo=PL` | — | 2026-09 |
 | eurostat.ipi_wood_paper.RO | 2023 | sts_inpr_m | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I21,geo=RO` | — | 2026-08 |
 | eurostat.ipi_wood_paper.SE | 2023 | sts_inpr_m | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C16-C18,s_adj=SCA,unit=I21,geo=SE` | — | 2026-06 |
+
+### Frozen dataset: prc_hicp_midx (Task 22, final review C-I1)
+
+| series | native_code | last period | dataset updated |
+|---|---|---|---|
+| eurostat.hicp.EU27_2020 | `prc_hicp_midx:freq=M,unit=I15,coicop=CP00,geo=EU27_2020` | 2025-12 | 2026-02-06 |
+
+Evidence (live GETs, 2026-11-14):
+- `GET https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_midx?geo=EU27_2020&coicop=CP00&unit=<U>&lastTimePeriod=2`
+  for U = I15, I05, I96: newest periods `2025-11`, `2025-12` for every unit (I96 has no values),
+  `updated` = `2026-02-06T23:00:00+0100`. I15 values 133.63 / 133.83.
+- Eurostat table of contents (`/api/dissemination/catalogue/toc/txt?lang=en`): `prc_hicp_midx` is now titled
+  "HICP - monthly data (index) (1996-2025)", filed under the folder "Harmonised index of consumer prices (HICP) -
+  ECOICOP ver.1", data end `2025-12`, last update 06.02.2026. The whole ECOICOP ver.1 family
+  (`prc_hicp_manr`, `prc_hicp_mmor`, `prc_hicp_mv12r`, `prc_hicp_aind`, `prc_hicp_fp`, ...) carries the same
+  "(…-2025)" titles and 2025-12 ends.
+- The same TOC lists the other 9 datasets behind active Eurostat series with 2026 updates and current data ends
+  (ei_bsco_m 2026-10, une_rt_m 2026-10, sts_inpr_m 2026-09, namq_10_gdp 2026-Q3, nrg_pc_204 2026-S1,
+  annual tables 2025), so prc_hicp_midx is the only frozen one.
+
+The series stays in the registry (inactive, definition unchanged); its fetched and legacy history is kept.
+
+**OWNER DECISION: successor mapping (not made here; nothing invented).** Candidates seen live, not mapped:
+- `prc_hicp_minr` — "HICP - ECOICOP ver.2 - indices and rates of change, monthly data", data to 2026-10,
+  updated 2026-11-04. Dimensions `freq, unit, coicop18, geo, time`; units `I25` (Index, 2025=100), `I15`
+  (Index, 2015=100), `RCH_M`, `RCH_A`, `RCH_MV12MAVR`; all-items code `coicop18=TOTAL`. Its `I15`/`TOTAL`/
+  `EU27_2020` values for 2025-11 / 2025-12 (133.63 / 133.83) equal the frozen series, but the classification
+  (ECOICOP ver.2) and the dimension name differ, so it is a NEW series id, not a relabel.
+- `prc_hicp_fpd` (first released data, ECOICOP ver.2, to 2026-10) and `prc_hicp_ainr` (annual).
+- Or an INE/BdP source for the EU aggregate, per the "closest to origin" rule (part C review declined to judge).
 
 ## Duplicates (same Eurostat series as an active series)
 

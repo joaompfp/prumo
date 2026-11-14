@@ -323,7 +323,8 @@ def test_registry_native_codes_complete():
         dataset = doc["extension"]["id"].lower()
         assert dims_of[dataset] == [d for d in doc["id"] if d != "time"]
     active = [s for s in specs if s.active]
-    assert len(active) == 329 and len(specs) - len(active) == 368
+    # 328: eurostat.hicp.EU27_2020 inactive since Task 22 (prc_hicp_midx frozen at 2025-12)
+    assert len(active) == 328 and len(specs) - len(active) == 369
 
 
 def test_active_native_codes_are_unique():

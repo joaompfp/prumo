@@ -3062,7 +3062,7 @@ series:
   decimal: .
   native_code: prc_hicp_midx:freq=M,unit=I15,coicop=CP00,geo=EU27_2020
   url: https://ec.europa.eu/eurostat/databrowser/view/prc_hicp_midx/default/table?lang=en
-  active: true
+  active: false  # dataset frozen at 2025-12 (C-I1); see unmapped-eurostat.md
 - id: eurostat.hourly_labour_cost_index.DE
   source: eurostat
   indicator_key: eurostat_hourly_labour_cost_index.DE.A
