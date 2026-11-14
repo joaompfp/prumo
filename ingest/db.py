@@ -53,6 +53,8 @@ class Db:
     def __init__(self, conn: sqlite3.Connection, *, immutable: bool = False):
         self.conn = conn
         self.immutable = immutable  # opened read-only with sqlite immutable=1 (no writer seen)
+        self.immutable_stamp: tuple[int, int] | None = None  # main file (mtime_ns, size)
+        # when the immutable handle was opened (open_db_readonly)
 
     @contextmanager
     def transaction(self):
@@ -823,39 +825,61 @@ def _expected_migrations() -> set[str]:
     return {f.stem for f in MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql")}
 
 
+def _file_stamp(p: Path) -> tuple[int, int]:
+    st = p.stat()
+    return st.st_mtime_ns, st.st_size
+
+
+def _wal(p: Path) -> Path:
+    return Path(str(p) + "-wal")
+
+
+def _open_refusal(p: Path, e: sqlite3.DatabaseError) -> ReadOnlyOpenError:
+    """The refusal for a failed schema read, naming the real cause (review Minor 3)."""
+    if "no such table" in str(e):
+        return ReadOnlyOpenError(f"{p}: no schema_migration table, not a Prumo database ({e})")
+    hint = ""
+    if _wal(p).exists() and not Path(str(p) + "-shm").exists():
+        hint = ("; a -wal file without its -shm cannot be read from a read-only mount: the "
+                "writer (scheduler) recovers it on its next start")
+    return ReadOnlyOpenError(f"{p}: cannot open the database read-only "
+                             f"({type(e).__module__}.{type(e).__name__}: {e}){hint}")
+
+
 def open_db_readonly(path: str | Path, *, immutable: bool | None = None) -> Db:
     """Open an EXISTING database strictly read-only for reports (status, lag): sqlite URI
     `mode=ro`, `query_only`, no migration, no journal-mode change, never a new file.
 
-    Refuses (ReadOnlyOpenError) a missing file and a schema whose applied migrations differ
-    from this code's: older means the writer (scheduler) has not migrated it yet, newer means
-    this code is older than the database. Neither is ever "fixed" from here.
+    Refuses (ReadOnlyOpenError) a missing file, a file it cannot read (the sqlite error is
+    named) and a schema whose applied migrations differ from this code's: older means the
+    writer (scheduler) has not migrated it yet, newer means this code is older than the
+    database. Neither is ever "fixed" from here.
 
     A WAL database with no -wal file has no open writer; it is then opened `immutable=1`
     (unless `immutable=False`), because a plain read-only WAL open would create -wal/-shm
     files that a read-only handle cannot remove. With a writer running (the -wal file exists)
     the normal `mode=ro` open reads its committed state. The -wal test is not atomic: a
-    writer that starts meanwhile (a scheduler restart migrating, a manual CLI write) can make
-    an immutable read fail with sqlite3.DatabaseError; the schema read here then retries once
-    with plain `mode=ro`, and `read_db_readonly` does the same for the whole report."""
+    writer that starts meanwhile can make an immutable read fail with sqlite3.DatabaseError
+    (the schema read here then retries once with plain `mode=ro`) or silently return wrong
+    results; `read_db_readonly` detects the writer afterwards and redoes the read."""
     p = Path(path)
     if not p.is_file():
         raise ReadOnlyOpenError(f"database not found: {p} (read-only reports never create one;"
                                 " check --db / PRUMO_DB_PATH)")
     if immutable is None:
-        immutable = not Path(str(p) + "-wal").exists()
+        immutable = not _wal(p).exists()
+    stamp = _file_stamp(p) if immutable else None  # taken BEFORE the immutable open
     uri = p.resolve().as_uri() + "?mode=ro" + ("&immutable=1" if immutable else "")
     conn = sqlite3.connect(uri, uri=True, isolation_level=None, timeout=BUSY_TIMEOUT_S)
     try:
-        conn.execute("PRAGMA query_only=ON")
         try:
+            conn.execute("PRAGMA query_only=ON")
             applied = {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
         except sqlite3.DatabaseError as e:
             if immutable:  # possibly a concurrent writer: one plain read-only retry
                 conn.close()
                 return open_db_readonly(p, immutable=False)
-            raise ReadOnlyOpenError(f"{p}: no schema_migration table, not a Prumo database "
-                                    f"({e})") from None
+            raise _open_refusal(p, e) from None
         expected = _expected_migrations()
         if applied - expected:
             raise ReadOnlyOpenError(
@@ -869,25 +893,61 @@ def open_db_readonly(path: str | Path, *, immutable: bool | None = None) -> Db:
     except BaseException:
         conn.close()
         raise
-    return Db(conn, immutable=immutable)
+    db = Db(conn, immutable=immutable)
+    db.immutable_stamp = stamp
+    return db
+
+
+def _read_snapshot(db: Db, read: Callable[[Db], T]) -> T:
+    """`read(db)` inside ONE deferred read transaction: every statement sees the same
+    snapshot, so a multi-statement report is never torn by a writer committing between two
+    of its SELECTs (review Minor 2). Works on mode=ro and immutable handles."""
+    db.conn.execute("BEGIN")
+    try:
+        result = read(db)
+    except BaseException:
+        if db.conn.in_transaction:
+            try:
+                db.conn.execute("ROLLBACK")
+            except sqlite3.Error:
+                pass  # the read's own error is the one to report
+        raise
+    db.conn.execute("COMMIT")
+    return result
+
+
+def _writer_appeared(db: Db, p: Path) -> bool:
+    """Did a writer touch the file while an immutable handle read it? (-wal now exists, or
+    the main file's mtime/size moved: a writer that checkpointed and exited.)"""
+    return _wal(p).exists() or _file_stamp(p) != db.immutable_stamp
 
 
 def read_db_readonly(path: str | Path, read: Callable[[Db], T]) -> T:
-    """`read(db)` on a read-only handle (open_db_readonly), closed afterwards. When the handle
-    was opened `immutable=1` and the read fails with sqlite3.DatabaseError (a writer started
-    or migrated during the read: SQLite documents wrong results or SQLITE_CORRUPT for an
-    immutable reader then), the whole read is retried ONCE with plain `mode=ro`, which sees
-    the writer's committed state. Any other failure propagates."""
-    db = open_db_readonly(path)
+    """`read(db)` on a read-only handle (open_db_readonly) in one read transaction, closed
+    afterwards. When the handle was opened `immutable=1`, its result is trusted only if no
+    writer appeared meanwhile: SQLite documents wrong results or SQLITE_CORRUPT for an
+    immutable reader whose file changes. So on sqlite3.DatabaseError, or when a -wal file
+    now exists or the main file changed, the result is discarded and the whole read is redone
+    ONCE with plain `mode=ro`, which sees the writer's committed state. Any other failure
+    propagates."""
+    p = Path(path)
+    db = open_db_readonly(p)
+    if not db.immutable:
+        try:
+            return _read_snapshot(db, read)
+        finally:
+            db.close()
     try:
-        return read(db)
+        result = _read_snapshot(db, read)
+        trusted = not _writer_appeared(db, p)
     except sqlite3.DatabaseError:
-        if not db.immutable:
-            raise
+        trusted = False
     finally:
         db.close()
-    db = open_db_readonly(path, immutable=False)
+    if trusted:
+        return result
+    db = open_db_readonly(p, immutable=False)
     try:
-        return read(db)
+        return _read_snapshot(db, read)
     finally:
         db.close()
