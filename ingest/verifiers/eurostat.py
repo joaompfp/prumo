@@ -27,8 +27,8 @@ Registration: the CLI (Task 17) calls register_verifier(EurostatVerifier()); thi
 import csv
 import io
 
-from ingest.http import Http, HttpResult
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.http import Http
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 SDMX_URL = "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/"
 
@@ -112,39 +112,57 @@ def _table(body: bytes) -> tuple[list[str], dict[tuple[str, ...], dict[str, str]
     return dims, rows
 
 
+def _group(native_code: str | None) -> tuple:
+    """The request an item is read from: (dataset, non-geo key with geo as '*')."""
+    dataset, pairs = _key(native_code)
+    return dataset, tuple((d, c) if d != "geo" else ("geo", "*") for d, c in pairs)
+
+
+def _one(item: BlindItem, dims: list[str], rows: dict[tuple[str, ...], dict[str, str]],
+         url: str, body: bytes) -> ItemResult:
+    """The item's result read from one parsed TSV (shared by check and reread)."""
+    pinned = dict(_key(item.spec.native_code)[1])
+    if set(dims) != set(pinned):
+        raise ValueError(f"TSV dimensions {dims} differ from native_code {sorted(pinned)}")
+    row = rows.get(tuple(pinned[d] for d in dims))  # includes the pinned unit code
+    cell = row.get(item.period) if row is not None else None
+    text, letters = _cell(cell) if cell is not None else (None, "")
+    flag = _vocabulary(letters) if text is not None else None
+    return ItemResult(series_id=item.series_id, period=item.period, observed_text=text,
+                      evidence_url=url, observed_decimal=".", observed_unit=None,
+                      observed_flag=flag, evidence=body)
+
+
 class EurostatVerifier:
+    """One SDMX TSV request per (dataset, non-geo key) group; the TSV carries the FULL history
+    of every requested geo, so every cell of a fetched group is compared at no extra HTTP cost
+    (request_key). Evidence = the TSV bytes; `reread` re-decides an item from them alone."""
     source_name = "eurostat"
+    not_compared = {"unit": "the SDMX TSV shows the unit only as the code pinned in the "
+                            "requested key: rows are accepted only when that code equals "
+                            "native_code's, and the code-to-registry-label pairing was reviewed "
+                            "when the registry was mapped"}
+
+    def request_key(self, item: BlindItem):
+        return _group(item.spec.native_code)
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        dims, rows = _table(evidence)
+        return _one(item, dims, rows, "", evidence)
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         groups: dict[tuple, list[int]] = {}
-        keys = []
         for n, item in enumerate(items):
-            dataset, pairs = _key(item.spec.native_code)
-            keys.append((dataset, pairs))
-            rest = tuple((d, c) if d != "geo" else ("geo", "*") for d, c in pairs)
-            groups.setdefault((dataset, rest), []).append(n)
+            groups.setdefault(_group(item.spec.native_code), []).append(n)
 
         results: list[ItemResult | None] = [None] * len(items)
         for (dataset, rest), members in groups.items():
-            geos = sorted({dict(keys[n][1])["geo"] for n in members})
+            geos = sorted({dict(_key(items[n].spec.native_code)[1])["geo"] for n in members})
             sdmx_key = ".".join("+".join(geos) if d == "geo" else c for d, c in rest)
             r = http.get(f"{SDMX_URL}{dataset}/{sdmx_key}", params={"format": "TSV"})
             if not 200 <= r.status < 300:
-                raise ValueError(f"Eurostat SDMX {r.url} answered HTTP {r.status}")
+                raise VerifierUnavailable(f"Eurostat SDMX {r.url} answered HTTP {r.status}")
             dims, rows = _table(r.body)
             for n in members:
-                results[n] = self._one(items[n], dict(keys[n][1]), dims, rows, r)
+                results[n] = _one(items[n], dims, rows, r.url, r.body)
         return results
-
-    @staticmethod
-    def _one(item: BlindItem, pinned: dict[str, str], dims: list[str],
-             rows: dict[tuple[str, ...], dict[str, str]], r: HttpResult) -> ItemResult:
-        if set(dims) != set(pinned):
-            raise ValueError(f"TSV dimensions {dims} differ from native_code {sorted(pinned)}")
-        row = rows.get(tuple(pinned[d] for d in dims))  # includes the pinned unit code
-        cell = row.get(item.period) if row is not None else None
-        text, letters = _cell(cell) if cell is not None else (None, "")
-        flag = _vocabulary(letters) if text is not None else None
-        return ItemResult(series_id=item.series_id, period=item.period, observed_text=text,
-                          evidence_url=r.url, observed_decimal=".", observed_unit=None,
-                          observed_flag=flag, evidence=r.body)

@@ -59,7 +59,7 @@ def test_live_run_with_refetch_is_verified_and_served_zero(tmp_path, monkeypatch
         sync_registry(db, specs)
         http = RequestsHttp(throttle_rps=1.0, timeout=120.0, retries=0)  # per-request bound
         result = run_with_refetch(db, RawStore(tmp_path / "raw"), FredSource(api_key=key),
-                                  verifier, specs, http, size=120, max_attempts=1)
+                                  verifier, specs, http, max_attempts=1)
         store = RawStore(tmp_path / "raw")
         per_series = db.conn.execute(
             "SELECT series_id, COUNT(*), MIN(period), MAX(period) FROM observation "

@@ -6,7 +6,6 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 from ingest import verifiers
-from ingest.db import open_db
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawStore
 from ingest.registry import sync_registry
@@ -18,6 +17,7 @@ from ingest.verify import run_with_refetch, verify_run
 from tests.ingest.eurostat_fixtures import MANIFEST, FixtureHttp, body, registry_specs, specs_of
 from tests.ingest.eurostat_verifier_entry import CASES
 from tests.ingest.fakes import FakeHttp, ok
+from tests.ingest.replay_helpers import assert_replays_from_evidence
 
 # the four base sets (one per frequency); the confidential_* sets are tested on their own
 ALL = ["monthly_sts_inpr_m", "annual_nama_10_pc", "quarterly_namq_10_gdp", "semester_nrg_pc_204"]
@@ -135,8 +135,7 @@ def test_confidential_cells_are_never_sampled(db, tmp_path):
     store, clock = RawStore(tmp_path / "raw"), Clock()
     r = run_dataset(db, store, EurostatSource(), specs, FixtureHttp(), clock)
     assert r.state == "pending-verification" and r.n_quarantined == 62
-    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=5, size=10_000,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=5, specs=specs, store=store, now=clock)
     [(n,)] = q(db, "SELECT sample_size FROM verification WHERE dataset_run_id=?", r.run_id)
     assert n == r.n_written
 
@@ -169,11 +168,11 @@ def test_verifier_matches_clean_run(env):
     db, specs, store, clock = env
     r = run_dataset(db, store, EurostatSource(), specs, FixtureHttp(), clock)
     assert r.state == "pending-verification" and r.n_written > 1000
-    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=7, size=200,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "verified"
     [(n, passed)] = q(db, "SELECT sample_size, passed FROM verification WHERE dataset_run_id=?", r.run_id)
-    assert passed == 1 and n == 200
+    # every series is fetched (latest) and its TSV carries the full history: census
+    assert passed == 1 and n == r.n_written
     flags = {f for (f,) in q(db, "SELECT DISTINCT expected_flag FROM verification_item")}
     assert "normal" in flags
     # every item compared a flag, and its evidence (the TSV) is in the raw store
@@ -184,8 +183,7 @@ def test_verifier_matches_clean_run(env):
 def test_verifier_matches_every_observation_of_a_clean_run(env):
     db, specs, store, clock = env
     r = run_dataset(db, store, EurostatSource(), specs, FixtureHttp(), clock)
-    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=1, size=10_000,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=1, specs=specs, store=store, now=clock)
     [(n,)] = q(db, "SELECT sample_size FROM verification WHERE dataset_run_id=?", r.run_id)
     assert n == r.n_written  # all of them, flags provisional/estimated/break included
 
@@ -205,8 +203,7 @@ def test_verifier_detects_tampered_value(env):
     # PT 2025 is the latest period of its series, so it is always in the sample
     r = _tampered_run(env, b'"152":28560}', b'"152":28570}')
     db, specs, store, clock = env
-    assert not verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=3, size=20,
-                          specs=specs, store=store, now=clock)
+    assert not verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=3, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, expected_text, observed_text, note FROM "
                 "verification_item WHERE match=0")
@@ -227,8 +224,7 @@ def test_verifier_detects_tampered_flag(env):
     assert doc["status"].pop(str(de_2025)) == "p"
     raw = json.dumps(doc).encode()  # values become JSON strings; the parser keeps them as tokens
     r = run_dataset(db, store, EurostatSource(), specs, FixtureHttp({doc_url: raw}), clock)
-    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=3, size=20,
-                      specs=specs, store=store, now=clock) is False
+    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=3, specs=specs, store=store, now=clock) is False
     [(sid, period, note)] = q(db, "SELECT series_id, period, note FROM verification_item "
                                   "WHERE match=0")
     assert (sid, period) == ("eurostat.gdp_per_capita_eur.DE", "2025")
@@ -239,5 +235,15 @@ def test_run_with_refetch_uses_registered_verifier(env):
     db, specs, store, clock = env
     v = EurostatVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, EurostatSource(), v, specs, FixtureHttp(), size=30, now=clock)
+    res = run_with_refetch(db, store, EurostatSource(), v, specs, FixtureHttp(), now=clock)
     assert res.state == "verified"
+
+
+def test_every_item_replays_from_its_archived_evidence_via_reread(env):
+    """Task 21 B-I4: replay re-reads the stored evidence with the verifier's pure reread
+    (recorded fixtures, no HTTP) and rejects a stored claim the evidence does not support."""
+    db, specs, store, clock = env
+    r = run_dataset(db, store, EurostatSource(), specs, FixtureHttp(), clock)
+    assert verify_run(db, r.run_id, EurostatVerifier(), FixtureHttp(), seed=3, specs=specs,
+                      store=store, now=clock)
+    assert assert_replays_from_evidence(db, store, EurostatVerifier(), step=41)

@@ -244,7 +244,7 @@ def test_registered_run_with_refetch_nov1_writes_only_valid_and_duplicate_quaran
     register_verifier(verifier)
     d = _derive_counts()
     r = run_with_refetch(db, store, _nov1_source(), verifier, specs, _BothChannels(),
-                         max_attempts=1, size=50, now=_clock())
+                         max_attempts=1, now=_clock())
     assert r.state == "verified"
     assert r.n_written == d["unique_stamps"] * 3 and r.n_quarantined == d["dup_rows"] * 3
     def q(sql, *a):
@@ -269,7 +269,8 @@ def test_registered_run_with_refetch_nov1_writes_only_valid_and_duplicate_quaran
     # verified -> served; ambiguous stamps never enter served history either
     assert q("SELECT COUNT(*) FROM served_observation") == [(d["unique_stamps"] * 3,)]
     [(n, passed)] = q("SELECT sample_size, passed FROM verification")
-    assert (n, passed) == (50, 1)
+    # the one-day CSV carries every stamp: the whole day is compared (free closure, Task 21)
+    assert (n, passed) == (d["unique_stamps"] * 3, 1)
     # both channels archived as raw evidence: metadata + records json + the deciding csv
     urls = {u for (u,) in q("SELECT DISTINCT url FROM raw_fetch")}
     assert MANIFEST["sets"]["nov1_window_json"]["url"] in urls

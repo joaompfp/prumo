@@ -29,7 +29,7 @@ from ingest.verifiers.oecd import (
     OecdVerifier,
     read_csv_evidence,
 )
-from ingest.verify import run_with_refetch, verify_run
+from ingest.verify import replay_item, run_with_refetch, verify_run
 from tests.ingest.live_bounds import (
     BoundedRequestsHttp,
     LiveBoundExceeded,
@@ -52,6 +52,7 @@ from tests.ingest.oecd_verifier_fixtures import (
     entry,
     extent,
 )
+from tests.ingest.replay_helpers import assert_replays_from_evidence
 
 CLI, EMP, OB, PR, SP, UNE = ALL_SIX
 _PERIOD = re.compile(r"[0-9]{4}-[0-9]{2}")
@@ -450,12 +451,12 @@ def test_clean_run_verifies_and_stays_unserved(env):
     db, specs, store, clock = env
     r = run_dataset(db, store, _source(), specs, SourceFixtureHttp(), clock)
     assert r.state == "pending-verification" and r.n_written == 77 and r.n_quarantined == 0
-    assert verify_run(db, r.run_id, OecdVerifier(), CsvFixtureHttp(), seed=7, size=40,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, OecdVerifier(), CsvFixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "verified"
     [(n, passed)] = q(db, "SELECT sample_size, passed FROM verification WHERE dataset_run_id=?",
                       r.run_id)
-    assert passed == 1 and n == 40
+    # one CSV per series over the run's span: every observation is compared (Task 21)
+    assert passed == 1 and n == r.n_written == 77
     # the licence gate: redistribution_ok=false -> even a verified run serves nothing
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(0,)]
     # compared surfaces: unit AND flag from the labelled CSV channel, evidence archived
@@ -475,8 +476,7 @@ def test_registry_unit_drift_fails_verification_and_serves_nothing(db, tmp_path)
     store, clock = RawStore(tmp_path / "raw"), Clock()
     v = OecdVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, _source(), v, specs, _BothChannels(), size=40,
-                           now=clock, max_attempts=1)
+    res = run_with_refetch(db, store, _source(), v, specs, _BothChannels(), now=clock, max_attempts=1)
     assert res.state == "failed-verification"
     assert q(db, "SELECT passed FROM verification") == [(0,)]
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(0,)]
@@ -486,8 +486,7 @@ def test_run_with_refetch_registered_verifier_all_six(env):
     db, specs, store, clock = env
     v = OecdVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, _source(), v, specs, _BothChannels(), size=40,
-                           now=clock, max_attempts=1)
+    res = run_with_refetch(db, store, _source(), v, specs, _BothChannels(), now=clock, max_attempts=1)
     assert res.state == "verified"
     assert q(db, "SELECT passed FROM verification") == [(1,)]
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(0,)]  # licence gate
@@ -503,11 +502,12 @@ def test_archived_verifier_evidence_replays_offline(env):
     HTTP) and decodes to exact CSV bytes; value AND unit AND flag re-derive from the body."""
     db, specs, store, clock = env
     r = run_dataset(db, store, _source(), specs, SourceFixtureHttp(), clock)
-    assert verify_run(db, r.run_id, OecdVerifier(), CsvFixtureHttp(), seed=7, size=40,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, OecdVerifier(), CsvFixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     rows = q(db, "SELECT series_id, period, evidence_url, evidence_sha256, observed_unit, "
                  "observed_flag, observed_text FROM verification_item")
-    assert len(rows) == 40
+    assert len(rows) == 77
+    for (item_id,) in q(db, "SELECT id FROM verification_item"):  # Task 21 B-I4
+        assert replay_item(db, store, item_id, OecdVerifier())
     by_id = {s.id: s for s in specs}
     for sid, period, url, sha, unit, flag, token in rows:
         blob = store.load(store.root / "verify-oecd" / sha[:2] / sha)  # raises if altered
@@ -701,7 +701,7 @@ def _assert_db_matches_archive(db, run_id, expected, archive_ids):
 
 # ------------------------------------------ whole-archive fidelity regressions (no HTTP)
 
-def _offline_run(db, tmp_path, size=12):
+def _offline_run(db, tmp_path):
     """Full run over the recorded GENUINE fixtures (SDMX-JSON + CSV doubles, zero network)."""
     specs = specs_of(ALL_SIX)
     sync_registry(db, specs)
@@ -709,7 +709,7 @@ def _offline_run(db, tmp_path, size=12):
     verifier = OecdVerifier()
     register_verifier(verifier)
     res = run_with_refetch(db, store, _source(), verifier, specs, _BothChannels(),
-                           size=size, now=Clock(), max_attempts=1)
+                           now=Clock(), max_attempts=1)
     assert res.state == "verified"
     return res, store
 
@@ -748,20 +748,19 @@ def test_quarantine_expectation_maps_only_positive_counts(db):
 
 
 def test_full_compare_catches_tampered_unsampled_interior_value(db, tmp_path):
-    """Regression I1, no HTTP: corrupt one UNSAMPLED, non-extreme row in the DB; the
-    whole-archive set comparison must fail even though counts, endpoints and the 12-item
-    verification sample would all still pass."""
+    """Regression I1, no HTTP: corrupt one non-extreme row in the DB AFTER verification; the
+    whole-archive set comparison must fail even though counts and endpoints would pass
+    (since Task 21 the verification itself is a census of OECD runs, so the victim is no
+    longer 'unsampled'; the archive check is still exercised on an interior row)."""
     res, store = _offline_run(db, tmp_path)
     responses, archive_ids = _archive_responses(db, store, res.run_id)
     expected = OecdSource().parse(specs_of(ALL_SIX), responses)
-    sampled = {(r[0], r[1]) for r in db.conn.execute(
-        "SELECT series_id, period FROM verification_item").fetchall()}
     victims = []
     for sid in ALL_SIX:
         ps = [row.period_raw for row in expected[sid]]
         extremes = {min(ps), max(ps)}
-        victims += [(sid, p) for p in ps if p not in extremes and (sid, p) not in sampled]
-    assert victims, "77 genuine rows vs a 12-item sample: unsampled interiors must exist"
+        victims += [(sid, p) for p in ps if p not in extremes]
+    assert victims
     sid, period = victims[len(victims) // 2]
     db.conn.execute("UPDATE observation SET value_text='0.0', value=0.0 "
                     "WHERE dataset_run_id=? AND series_id=? AND period=?",
@@ -816,7 +815,7 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
             with hard_deadline(150.0):
                 result = run_with_refetch(db, RawStore(tmp_path / "raw"),
                                           OecdSource(start_period=start), verifier, specs,
-                                          http, size=12, max_attempts=1)
+                                          http, max_attempts=1)
         except LiveBoundExceeded as e:
             raise AssertionError(f"live phase broke its hard bounds while running: {e}") from e
         elapsed = time.monotonic() - t0
@@ -878,3 +877,13 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
         print(f"  offline evidence replay: {len(items)} envelopes re-read without HTTP")
     finally:
         db.close()
+
+
+def test_every_item_replays_from_its_archived_evidence_via_reread(env):
+    """Task 21 B-I4: replay re-reads the stored evidence with the verifier's pure reread
+    (recorded fixtures, no HTTP) and rejects a stored claim the evidence does not support."""
+    db, specs, store, clock = env
+    r = run_dataset(db, store, _source(), specs, SourceFixtureHttp(), clock)
+    assert verify_run(db, r.run_id, OecdVerifier(), CsvFixtureHttp(), seed=3, specs=specs,
+                      store=store, now=clock)
+    assert assert_replays_from_evidence(db, store, OecdVerifier())

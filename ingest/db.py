@@ -163,16 +163,54 @@ class Db:
             "WHERE dataset_run_id = ? ORDER BY series_id, period, id", (run_id,)).fetchall()
 
     def add_verification(self, run_id: int, seed: int, sample_size: int, passed: bool,
-                         created_at: str) -> int:
+                         created_at: str, *, sample_procedure: str, sample_design: dict,
+                         input_origin: str, verifier_channel: str) -> int:
         cur = self.conn.execute(
-            "INSERT INTO verification(dataset_run_id, seed, sample_size, passed, created_at) "
-            "VALUES (?, ?, ?, ?, ?)", (run_id, seed, sample_size, int(passed), created_at))
+            "INSERT INTO verification(dataset_run_id, seed, sample_size, passed, created_at, "
+            "sample_procedure, sample_design, input_origin, verifier_channel) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (run_id, seed, sample_size, int(passed), created_at, sample_procedure,
+             json.dumps(sample_design, sort_keys=True), input_origin, verifier_channel))
         return cur.lastrowid
+
+    def run_input_origin(self, run_id: int) -> str:
+        return self.conn.execute("SELECT input_origin FROM dataset_run WHERE id = ?",
+                                 (run_id,)).fetchone()[0]
+
+    def run_changed_keys(self, run_id: int) -> set[tuple[str, str]]:
+        """(series_id, period) the run revised (event 'revision') or newly added to a series
+        that already had verified fetched data (event 'new_periods'): the run's changed set,
+        fixed at write time so a later redraw of the sample sees the same set."""
+        out: set[tuple[str, str]] = set()
+        for kind, detail in self.conn.execute(
+                "SELECT kind, detail_json FROM event WHERE dataset_run_id = ? "
+                "AND kind IN ('revision', 'new_periods')", (run_id,)):
+            d = json.loads(detail)
+            if kind == "revision":
+                out.add((d["series_id"], d["period"]))
+            else:
+                out |= {(d["series_id"], p) for p in d["periods"]}
+        return out
+
+    def add_verification_spec(self, verification_id: int, series_id: str,
+                              spec_json: str) -> None:
+        self.conn.execute(
+            "INSERT INTO verification_spec(verification_id, series_id, spec_json) "
+            "VALUES (?, ?, ?)", (verification_id, series_id, spec_json))
+
+    def verification_item_spec(self, item_id: int) -> str | None:
+        """The spec JSON the item's series was verified with (None before migration 0012)."""
+        row = self.conn.execute(
+            "SELECT s.spec_json FROM verification_item i JOIN verification_spec s "
+            "ON s.verification_id = i.verification_id AND s.series_id = i.series_id "
+            "WHERE i.id = ?", (item_id,)).fetchone()
+        return row[0] if row else None
 
     _ITEM_COLUMNS = ("series_id", "period", "expected_text", "expected_decimal", "expected_unit",
                      "expected_flag", "observed_series_id", "observed_period", "observed_text",
                      "observed_decimal", "observed_unit", "observed_flag", "evidence_url",
-                     "evidence_sha256", "match", "note")
+                     "evidence_sha256", "match", "note", "reason", "compared",
+                     "unit_not_compared", "flag_not_compared")
 
     def add_verification_item(self, verification_id: int, item: dict) -> None:
         """`item` has exactly the keys of _ITEM_COLUMNS (match as bool)."""

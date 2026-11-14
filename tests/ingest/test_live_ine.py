@@ -39,7 +39,7 @@ def test_live_run_with_refetch_is_verified_and_served(tmp_path, monkeypatch):
         # INE's JSON API answers in 15-45 s per request (registry ine.timeout_s: 300);
         # the bddXplorer table is fast, and RequestsHttp throttles to <=1 req/s
         result = run_with_refetch(db, RawStore(tmp_path / "raw"), INESource(), verifier,
-                                  specs, RequestsHttp(throttle_rps=1.0), size=24)
+                                  specs, RequestsHttp(throttle_rps=1.0))
         per_series = db.conn.execute(
             "SELECT series_id, COUNT(*), MIN(period), MAX(period), "
             "SUM(status_flag = 'provisional') FROM observation WHERE dataset_run_id = ? "

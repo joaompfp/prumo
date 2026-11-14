@@ -234,9 +234,11 @@ class RunReport:
 
 def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec], *,
                http_for: Callable[[], Http], request: RunRequest = RunRequest(),
-               max_attempts: int = 3, size: int = 50, now=None,
+               max_attempts: int = 3, now=None,
                source_factories: dict | None = None, verifier_ops: dict | None = None,
-               blocked_groups: dict[str, str] | None = None) -> list[GroupOutcome]:
+               blocked_groups: dict[str, str] | None = None,
+               verify_http_for: Callable[[], Http] | None = None,
+               verifier_channel: str = "live") -> list[GroupOutcome]:
     """Every dataset group of ONE source, isolated from each other.
 
     - `verifiable: false` (DGEG) is reported BLOCKED without ANY HTTP or run rows;
@@ -248,7 +250,9 @@ def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec
     - `blocked_groups` (dataset_key -> refusal detail) reports those groups 'blocked'
       WITHOUT attempting them (per-group stale-bundle refusal, Task 17 review R1);
     - every group runs through run_with_refetch ONLY, and one group's exception is recorded as
-      'error' while the next group/source continues.
+      'error' while the next group/source continues;
+    - `verify_http_for` builds the VERIFIER's client (default: the collector's `http_for`):
+      recorded input passes a live client here, `verifier_channel` labels what it reads.
     """
     src_specs = [s for s in specs if s.source.name == source_name]
     if not src_specs:
@@ -280,6 +284,7 @@ def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec
                              detail=f"source grouping failed: {e}")]
     try:
         http = http_for()
+        verify_http = verify_http_for() if verify_http_for is not None else http
     except Exception as e:
         return [GroupOutcome(source_name, source_name, "blocked",
                              detail=f"http client setup failed: {e}")]
@@ -291,10 +296,11 @@ def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec
             continue
         try:
             r = run_with_refetch(db, store, source, verifier, list(group.specs), http,
-                                 max_attempts=max_attempts, size=size, now=now,
-                                 input_origin=request.input_origin)
+                                 max_attempts=max_attempts, now=now,
+                                 input_origin=request.input_origin, verify_http=verify_http,
+                                 verifier_channel=verifier_channel)
             outcomes.append(GroupOutcome(source_name, group.label, r.state, r.run_id,
-                                         r.n_written, r.n_quarantined))
+                                         r.n_written, r.n_quarantined, r.detail))
         except Exception as e:
             outcomes.append(GroupOutcome(source_name, group.label, "error",
                                          detail=f"{type(e).__name__}: {e}"))
@@ -303,19 +309,25 @@ def run_source(db: Db, store: RawStore, source_name: str, specs: list[SeriesSpec
 
 def run_all(db: Db, store: RawStore, specs: list[SeriesSpec], *,
             http_for: Callable[[str], Http], request: RunRequest = RunRequest(),
-            max_attempts: int = 3, size: int = 50, now=None, only: list[str] | None = None,
+            max_attempts: int = 3, now=None, only: list[str] | None = None,
             source_factories: dict | None = None, verifier_ops: dict | None = None,
-            blocked_groups: dict[str, str] | None = None) -> RunReport:
+            blocked_groups: dict[str, str] | None = None,
+            verify_http_for: Callable[[str], Http] | None = None,
+            verifier_channel: str = "live") -> RunReport:
     """`run all`: every registry source (or `only`), one failure never stopping the rest.
     http_for(source_name) is called lazily per source, only when the source is actually
     attempted (a blocked source makes no HTTP client at all). `blocked_groups`
     (dataset_key -> refusal detail) skips those groups with a 'blocked' outcome while their
-    source's healthy groups still run."""
+    source's healthy groups still run. `verify_http_for(source_name)` (default: http_for) is the
+    verifier's client, so recorded collector input can still be verified over live HTTP."""
     names = only if only is not None else sorted({s.source.name for s in specs})
     outcomes: list[GroupOutcome] = []
     for name in names:
-        outcomes += run_source(db, store, name, specs, http_for=lambda: http_for(name),
-                               request=request, max_attempts=max_attempts, size=size, now=now,
-                               source_factories=source_factories, verifier_ops=verifier_ops,
-                               blocked_groups=blocked_groups)
+        outcomes += run_source(
+            db, store, name, specs, http_for=lambda: http_for(name), request=request,
+            max_attempts=max_attempts, now=now, source_factories=source_factories,
+            verifier_ops=verifier_ops, blocked_groups=blocked_groups,
+            verify_http_for=(None if verify_http_for is None
+                             else lambda: verify_http_for(name)),
+            verifier_channel=verifier_channel)
     return RunReport(tuple(outcomes))

@@ -64,7 +64,7 @@ from dataclasses import dataclass
 
 from ingest.http import Http
 from ingest.models import normalize_period
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 PAGE_URL = "https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp"
 REFERER = "https://www.ine.pt/"  # mandatory: without it INE answers 302 + empty body
@@ -479,11 +479,41 @@ def _cut(body: bytes, page: _Page, period: str, frequency: str,
     return matched[0][0], matched[0][1], root.get("simbolo", ""), root.get("label", "")
 
 
+def _structure(page: _Page) -> tuple:
+    return page.varcd, page.period, page.geo, page.dims
+
+
+def _decide(item: BlindItem, body: bytes, page: _Page, url: str) -> ItemResult:
+    """One item read from its selection response (shared by check and reread). The response's
+    own Classificacoes echo must describe the same classes as `page`."""
+    varcd, pins = _native(item.spec.native_code)
+    if _structure(_page_from(body, varcd)) != _structure(page):
+        raise ValueError(f"selection response for {varcd} describes other classes than its "
+                         f"indicator page")
+    cell_text, unit_symbol, simbolo, label = _cut(body, page, item.period, item.spec.frequency,
+                                                  pins)
+    observed_text, observed_flag = _value(cell_text)
+    return ItemResult(series_id=item.series_id, period=item.period, observed_text=observed_text,
+                      evidence_url=url, observed_decimal=",",
+                      observed_unit=_unit(unit_symbol, simbolo, label),
+                      observed_flag=observed_flag, evidence=body)
+
+
 class INEVerifier:
     """See the module docstring. One indicator-page fetch per indicator per check() call, then
     one selection request per sampled item; every ItemResult carries the selection response's
-    HTML as evidence bytes."""
+    HTML as evidence bytes. That response echoes the indicator's whole Classificacoes document
+    (asserted equal to the indicator page's classes), so `reread` re-decides an item from the
+    selection HTML alone."""
     source_name = "ine"
+    not_compared: dict[str, str] = {}  # value, unit symbol and conventional sign all exposed
+
+    def request_key(self, item: BlindItem):
+        return item.spec.native_code, item.period  # one selection request per item
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        varcd, _pins = _native(item.spec.native_code)
+        return _decide(item, evidence, _page_from(evidence, varcd), "")
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         pages: dict[str, _Page] = {}
@@ -494,7 +524,7 @@ class INEVerifier:
                 r = http.get(PAGE_URL, headers={"Referer": REFERER},
                              params={"indOcorrCod": varcd, "contexto": "bd", "lang": "PT"})
                 if not 200 <= r.status < 300:
-                    raise ValueError(f"INE page for {varcd} answered HTTP {r.status}")
+                    raise VerifierUnavailable(f"INE page for {varcd} answered HTTP {r.status}")
                 if len(r.body) < MIN_PAGE_BYTES:
                     raise ValueError(f"INE page for {varcd} is only {len(r.body)} B — error "
                                      f"page or a missing Referer header (302+empty without it)")
@@ -503,14 +533,7 @@ class INEVerifier:
             form = _select(page, item.period, item.spec.frequency, pins)
             r = http.get(PAGE_URL, headers={"Referer": REFERER}, params=form)
             if not 200 <= r.status < 300:
-                raise ValueError(f"INE selection for {item.series_id}/{item.period} answered "
-                                 f"HTTP {r.status}")
-            cell_text, unit_symbol, simbolo, label = _cut(
-                r.body, page, item.period, item.spec.frequency, pins)
-            observed_text, observed_flag = _value(cell_text)
-            results.append(ItemResult(
-                series_id=item.series_id, period=item.period, observed_text=observed_text,
-                evidence_url=r.url, observed_decimal=",",
-                observed_unit=_unit(unit_symbol, simbolo, label),
-                observed_flag=observed_flag, evidence=r.body))
+                raise VerifierUnavailable(f"INE selection for {item.series_id}/{item.period} "
+                                          f"answered HTTP {r.status}")
+            results.append(_decide(item, r.body, page, r.url))
         return results

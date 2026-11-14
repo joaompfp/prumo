@@ -19,6 +19,7 @@ from ingest.verifiers.independence import assert_verifier_independent
 from ingest.verifiers.worldbank import WorldBankVerifier
 from ingest.verify import replay_item, run_with_refetch, verify_run
 from tests.ingest.fakes import FakeHttp, FakeSource, ok, payload
+from tests.ingest.replay_helpers import assert_replays_from_evidence
 from tests.ingest.worldbank_fixtures import (
     GDP_PTDES,
     POP_EUGRAT,
@@ -290,8 +291,7 @@ def _run(env, src_http=None, seed=7):
     db, specs, store, clock = env
     r = run_dataset(db, store, WorldBankSource(), specs, src_http or FixtureHttp(), clock)
     assert r.state == "pending-verification" and r.n_written == 396
-    ok = verify_run(db, r.run_id, WorldBankVerifier(), VerifyFixtureHttp(), seed=seed, size=50,
-                    specs=specs, store=store, now=clock)
+    ok = verify_run(db, r.run_id, WorldBankVerifier(), VerifyFixtureHttp(), seed=seed, specs=specs, store=store, now=clock)
     return db, specs, store, r, ok
 
 
@@ -321,7 +321,7 @@ def test_archived_evidence_recovers_offline_and_replays(env):
         assert rec == {"url": url, "status": 200, "body": zip_bytes(code)}
         assert url == CSV_URL.format(code=code)
         seen_payloads.add(sha)
-        assert replay_item(db, store, item_id) is True
+        assert replay_item(db, store, item_id, WorldBankVerifier()) is True
     # content-addressed store: one archived ZIP payload per indicator used in the sample
     assert len(seen_payloads) == 2  # NY.GDP.MKTP.CD + SP.POP.TOTL
 
@@ -342,8 +342,7 @@ def test_verifier_detects_tampered_value(env):
         assert r3.state == "pending-verification"
         tampered = _zip_with_main_cell("NY.GDP.MKTP.CD", "PRT", "2025", "346639825141.999")
         assert not verify_run(dbX, r3.run_id, WorldBankVerifier(),
-                              VerifyFixtureHttp({"NY.GDP.MKTP.CD": tampered}), seed=13, size=50,
-                              specs=specs, store=store, now=Clock())
+                              VerifyFixtureHttp({"NY.GDP.MKTP.CD": tampered}), seed=13, specs=specs, store=store, now=Clock())
         assert dbX.run_state(r3.run_id) == "failed-verification"
         bad = q(dbX, "SELECT series_id, period, expected_text, observed_text, note FROM "
                      "verification_item WHERE match=0")
@@ -367,7 +366,7 @@ def test_verifier_detects_tampered_geography_row(env):
     mem[main] = text.replace(row, row.replace('"EUU"', '"XXX"', 1), 1).encode()
     assert not verify_run(db, r.run_id, WorldBankVerifier(),
                           VerifyFixtureHttp({"SP.POP.TOTL": _rezip("SP.POP.TOTL", mem)}),
-                          seed=5, size=50, specs=specs, store=store, now=clock)
+                          seed=5, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, note FROM verification_item WHERE match=0")
     assert any(sid == "worldbank.population.EU" and "not found" in note
@@ -396,8 +395,7 @@ def test_run_with_refetch_verifies_the_registered_verifier(env):
     db, specs, store, clock = env
     v = WorldBankVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, WorldBankSource(), v, specs, _BothChannels(), size=50,
-                           now=clock, max_attempts=1)
+    res = run_with_refetch(db, store, WorldBankSource(), v, specs, _BothChannels(), now=clock, max_attempts=1)
     assert res.state == "verified"
     [(passed,)] = q(db, "SELECT passed FROM verification")
     assert passed == 1
@@ -603,7 +601,7 @@ def _run_es(env, seed=7):
     r = run_dataset(db, store, _EsTruthSource(), specs, FakeHttp(ok(payload(ES_TRUTH))), clock)
     assert r.state == "pending-verification" and r.n_written == 24
     good = verify_run(db, r.run_id, WorldBankVerifier(csv_language="es"),
-                      VerifyFixtureHttp(language="es"), seed=seed, size=50, specs=specs,
+                      VerifyFixtureHttp(language="es"), seed=seed, specs=specs,
                       store=store, now=clock)
     return db, specs, store, r, good
 
@@ -632,7 +630,7 @@ def test_es_archived_evidence_recovers_offline_and_replays(env_es):
         assert rec == {"url": url, "status": 200, "body": zip_bytes(code, "es")}
         assert url == CSV_URL_ES.format(code=code)
         seen_payloads.add(sha)
-        assert replay_item(db, store, item_id) is True
+        assert replay_item(db, store, item_id, WorldBankVerifier()) is True
     # content-addressed store: one archived ZIP payload per indicator used in the sample
     assert len(seen_payloads) == 2  # NY.GDP.MKTP.KD.ZG + SL.UEM.TOTL.ZS (Spanish locales)
 
@@ -646,7 +644,7 @@ def test_es_verifier_detects_tampered_value_through_verify_run(env_es):
                                    "1.86448007464499", language="es")
     assert not verify_run(db, r.run_id, WorldBankVerifier(csv_language="es"),
                           VerifyFixtureHttp({"NY.GDP.MKTP.KD.ZG": tampered}, language="es"),
-                          seed=13, size=50, specs=specs, store=store, now=Clock())
+                          seed=13, specs=specs, store=store, now=Clock())
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, expected_text, observed_text, note FROM "
                 "verification_item WHERE match=0")
@@ -668,7 +666,7 @@ def test_es_verifier_detects_tampered_geography_row(env_es):
     assert not verify_run(db, r.run_id, WorldBankVerifier(csv_language="es"),
                           VerifyFixtureHttp({"SL.UEM.TOTL.ZS": _rezip("SL.UEM.TOTL.ZS", mem)},
                                             language="es"),
-                          seed=5, size=50, specs=specs, store=store, now=clock)
+                          seed=5, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, note FROM verification_item WHERE match=0")
     assert any(sid == "worldbank.unemployment_wb.PT" and "not found" in note
@@ -774,5 +772,13 @@ def test_indicator_locales_clean_run_through_verify_run(env_es):
     assert r.state == "pending-verification"
     good = verify_run(db, r.run_id,
                       WorldBankVerifier(indicator_locales=dict(WB_INDICATOR_LOCALES)),
-                      _RoutedHttp(), seed=7, size=50, specs=specs, store=store, now=clock)
+                      _RoutedHttp(), seed=7, specs=specs, store=store, now=clock)
     assert good and db.run_state(r.run_id) == "verified"
+
+
+def test_every_item_replays_from_its_archived_evidence_via_reread(env):
+    """Task 21 B-I4: replay re-reads the stored evidence with the verifier's pure reread
+    (recorded fixtures, no HTTP) and rejects a stored claim the evidence does not support."""
+    db, specs, store, r, ok = _run(env)
+    assert ok
+    assert assert_replays_from_evidence(db, store, WorldBankVerifier(), step=13)

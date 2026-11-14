@@ -19,7 +19,7 @@ from ingest.sources.fred import FredSource
 from ingest.verifiers import BlindItem, get_verifier, register_verifier
 from ingest.verifiers.fred import FredVerifier, read_table_page
 from ingest.verifiers.independence import assert_verifier_independent
-from ingest.verify import run_with_refetch, verify_run
+from ingest.verify import replay_item, run_with_refetch, verify_run
 from tests.ingest.fred_fixtures import (
     SENTINEL_KEY,
     FixtureHttp,
@@ -30,6 +30,7 @@ from tests.ingest.fred_fixtures import (
     table_values,
 )
 from tests.ingest.fred_verifier_fixtures import TableFixtureHttp
+from tests.ingest.replay_helpers import assert_replays_from_evidence
 
 _ALUM = "fred.aluminum.WORLD"
 
@@ -340,12 +341,12 @@ def test_clean_full_run_all_12_verifies_and_stays_unserved(env):
     r = run_dataset(db, store, _source(), specs, FixtureHttp(), clock)
     assert r.state == "pending-verification"
     assert r.n_written == 12 * 417 and r.n_quarantined == 12 * 144
-    assert verify_run(db, r.run_id, FredVerifier(), TableFixtureHttp(), seed=7, size=50,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, FredVerifier(), TableFixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "verified"
     [(n, passed)] = q(db, "SELECT sample_size, passed FROM verification WHERE "
                           "dataset_run_id=?", r.run_id)
-    assert passed == 1 and n == 50
+    # one page per series carries its full history: every observation is compared (Task 21)
+    assert passed == 1 and n == r.n_written
     # the licence gate: redistribution_ok=false -> even a verified run serves nothing
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(0,)]
     # missing '.' cells: non_numeric quarantine only, kept (never dropped, never invented)
@@ -368,8 +369,7 @@ def test_tampered_value_fails_verification_and_serves_nothing(env):
     r = run_dataset(db, store, _source(), specs,
                     FixtureHttp(override={"obs-PALUMUSDM.json": tampered}), clock)
     assert r.state == "pending-verification"
-    assert not verify_run(db, r.run_id, FredVerifier(), TableFixtureHttp(), seed=7, size=50,
-                          specs=specs, store=store, now=clock)
+    assert not verify_run(db, r.run_id, FredVerifier(), TableFixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, expected_text, observed_text, note FROM "
                 "verification_item WHERE match=0")
@@ -397,8 +397,7 @@ def test_run_with_refetch_registered_verifier_all_12(env):
     db, specs, store, clock = env
     v = FredVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, _source(), v, specs, _BothChannels(), size=50,
-                           now=clock, max_attempts=1)
+    res = run_with_refetch(db, store, _source(), v, specs, _BothChannels(), now=clock, max_attempts=1)
     assert res.state == "verified"
     assert q(db, "SELECT passed FROM verification") == [(1,)]
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(0,)]  # licence gate
@@ -415,12 +414,14 @@ def test_archived_verifier_evidence_replays_offline(env):
     HTTP) and decodes to the exact page bytes; value AND unit re-derive from the body alone."""
     db, specs, store, clock = env
     r = run_dataset(db, store, _source(), specs, FixtureHttp(), clock)
-    assert verify_run(db, r.run_id, FredVerifier(), TableFixtureHttp(), seed=7, size=50,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, FredVerifier(), TableFixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     rows = q(db, "SELECT series_id, period, evidence_url, evidence_sha256, observed_unit, "
                  "observed_text FROM verification_item")
-    assert len(rows) == 50
+    assert len(rows) == r.n_written
     by_id = {s.id: s for s in specs}
+    rows = rows[::97]  # a spread of items (each decode reparses a whole page)
+    for (item_id,) in q(db, "SELECT id FROM verification_item")[::97]:
+        assert replay_item(db, store, item_id, FredVerifier())  # reread from evidence alone
     for sid, period, url, sha, unit, token in rows:
         blob = store.load(store.root / "verify-fred" / sha[:2] / sha)  # raises if altered
         rec = _decode(blob)
@@ -428,3 +429,13 @@ def test_archived_verifier_evidence_replays_offline(env):
         assert rec["body"] == body(f"table-{by_id[sid].native_code}.html")
         got_unit, values = read_table_page(rec["body"], by_id[sid].native_code, by_id[sid])
         assert got_unit == unit and values.get(period) == token
+
+
+def test_every_item_replays_from_its_archived_evidence_via_reread(env):
+    """Task 21 B-I4: replay re-reads the stored evidence with the verifier's pure reread
+    (recorded fixtures, no HTTP) and rejects a stored claim the evidence does not support."""
+    db, specs, store, clock = env
+    r = run_dataset(db, store, _source(), specs, FixtureHttp(), clock)
+    assert verify_run(db, r.run_id, FredVerifier(), TableFixtureHttp(), seed=3, specs=specs,
+                      store=store, now=clock)
+    assert assert_replays_from_evidence(db, store, FredVerifier(), step=211)

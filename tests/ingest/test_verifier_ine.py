@@ -9,6 +9,7 @@ recording, and births/deaths/population/HICP additionally against Eurostat's SDM
 """
 import re
 from datetime import datetime, timedelta, timezone
+from fractions import Fraction
 
 import pytest
 
@@ -16,19 +17,27 @@ from ingest import verifiers
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawStore
 from ingest.registry import sync_registry
+from ingest.sampling import SamplingPolicy
 from ingest.sources.ine import INESource
 from ingest.verifiers import BlindItem, get_verifier, register_verifier
 from ingest.verifiers.independence import assert_verifier_independent
 from ingest.verifiers.ine import INEVerifier
-from ingest.verify import run_with_refetch, verify_run
+from ingest.verify import replay_item, run_with_refetch, verify_run
 from tests.ingest.fakes import FakeHttp, ok
 from tests.ingest.ine_fixtures import FixtureHttp, body, registry_specs, specs_of
 from tests.ingest.ine_verifier_fixtures import VMANIFEST, VerifyFixtureHttp, vbody
+from tests.ingest.replay_helpers import assert_replays_from_evidence
 
 # JSON fixture sets the clean pipeline run below is built from; the verifier sample (seed 7,
 # size 12) only asks for cuts whose selections are recorded in VMANIFEST.
 SETS = ["monthly_unemployment_0007983", "annual_births_0001346", "monthly_exports_0001400",
         "monthly_ipi_0011889"]
+
+
+# The recorded portal/table fixtures cover each series' latest cut only (a fresh random draw
+# needs live HTTP: tests/ingest/test_live_*.py): these recorded runs compare the must-check
+# latest cells only.
+LATEST_ONLY = SamplingPolicy(confidence=Fraction(0), history_per_series=0)
 
 
 class Clock:
@@ -197,12 +206,13 @@ def test_verifier_matches_clean_run(env):
     db, specs, store, clock = env
     r = run_dataset(db, store, INESource(), specs, FixtureHttp(), clock)
     assert r.state == "pending-verification" and r.n_written > 1000
-    assert verify_run(db, r.run_id, INEVerifier(), VerifyFixtureHttp(), seed=7, size=12,
-                      specs=specs, store=store, now=clock)
+    assert verify_run(db, r.run_id, INEVerifier(), VerifyFixtureHttp(), seed=7, specs=specs, store=store, now=clock, policy=LATEST_ONLY)
     assert db.run_state(r.run_id) == "verified"
     [(n, passed)] = q(db, "SELECT sample_size, passed FROM verification WHERE dataset_run_id=?",
                       r.run_id)
-    assert passed == 1 and n == 12
+    assert passed == 1 and n == len(specs)  # every series' latest period
+    for (item_id,) in q(db, "SELECT id FROM verification_item"):  # Task 21 B-I4
+        assert replay_item(db, store, item_id, INEVerifier())  # re-read from the HTML alone
     # every sampled item compared value AND unit AND flag, and its evidence (the selection HTML)
     # is kept in the raw store
     assert q(db, "SELECT COUNT(*) FROM verification_item WHERE observed_unit IS NULL "
@@ -226,8 +236,7 @@ def test_verifier_detects_tampered_value(env):
     r = run_dataset(db, store, INESource(), specs,
                     FixtureHttp({"annual_births_0001346": tampered}), clock)
     assert r.state == "pending-verification"
-    assert not verify_run(db, r.run_id, INEVerifier(), VerifyFixtureHttp(), seed=7, size=12,
-                          specs=specs, store=store, now=clock)
+    assert not verify_run(db, r.run_id, INEVerifier(), VerifyFixtureHttp(), seed=7, specs=specs, store=store, now=clock, policy=LATEST_ONLY)
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, expected_text, observed_text, note FROM "
                 "verification_item WHERE match=0")
@@ -254,7 +263,7 @@ def test_run_with_refetch_uses_registered_verifier(env):
     db, specs, store, clock = env
     v = INEVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, INESource(), v, specs, _BothChannels(), size=12, now=clock,
+    res = run_with_refetch(db, store, INESource(), v, specs, _BothChannels(), now=clock,
                            max_attempts=1)
     [(passed,)] = q(db, "SELECT passed FROM verification")
     if not passed:
@@ -266,3 +275,13 @@ def test_run_with_refetch_uses_registered_verifier(env):
         assert any("no recorded verifier response" in (n or "") for n in notes)
     else:
         assert res.state == "verified"
+
+
+def test_every_item_replays_from_its_archived_evidence_via_reread(env):
+    """Task 21 B-I4: replay re-reads the stored evidence with the verifier's pure reread
+    (recorded fixtures, no HTTP) and rejects a stored claim the evidence does not support."""
+    db, specs, store, clock = env
+    r = run_dataset(db, store, INESource(), specs, FixtureHttp(), clock)
+    assert verify_run(db, r.run_id, INEVerifier(), VerifyFixtureHttp(), seed=3, specs=specs,
+                      store=store, now=clock, policy=LATEST_ONLY)
+    assert assert_replays_from_evidence(db, store, INEVerifier())

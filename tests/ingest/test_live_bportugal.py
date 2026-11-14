@@ -41,7 +41,7 @@ def test_live_run_with_refetch_is_verified_and_served(tmp_path, monkeypatch):
         sync_registry(db, specs)
         http = RequestsHttp(throttle_rps=1.0, timeout=50.0)
         result = run_with_refetch(db, RawStore(tmp_path / "raw"), BPortugalSource(), verifier,
-                                  specs, http, size=24)
+                                  specs, http)
         per_series = db.conn.execute(
             "SELECT series_id, COUNT(*), MIN(period), MAX(period) FROM observation "
             "WHERE dataset_run_id = ? GROUP BY series_id", (result.run_id,)).fetchall()

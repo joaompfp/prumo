@@ -113,8 +113,8 @@ def _no_network(name):
 
 def _run_bundle(db_path, raw, reg, bundle_dir, *extra):
     return main(["--db", str(db_path), "--raw-dir", str(raw), "--registry", str(reg),
-                 "run", "worldbank", "--bundle", str(bundle_dir), *extra],
-                http_for=_no_network)
+                 "run", "worldbank", "--bundle", str(bundle_dir), "--pinned-verifier", *extra],
+                http_for=_no_network)  # offline: verifier pinned too (non-audit-grade flag)
 
 
 def _obs_stats(db_path, like):
@@ -226,7 +226,7 @@ def test_atomic_stale_guard_inside_observation_transaction(tmp_path):
     assert cap(summer_b, SUMMER_DAY) == 0        # T2: fresher capture, different payload
     db_path, raw = tmp_path / "p.sqlite3", tmp_path / "raw"
     assert main(["--db", str(db_path), "--raw-dir", str(raw), "--registry", str(reg),
-                 "run", "eredes", "--bundle", str(summer_b),
+                 "run", "eredes", "--bundle", str(summer_b), "--pinned-verifier",
                  "--from", SUMMER_DAY, "--to", SUMMER_DAY], http_for=_no_network) == 0
 
     bundle = load_bundle(winter_b, source="eredes")

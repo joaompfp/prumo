@@ -9,6 +9,7 @@ import ast
 import importlib
 import inspect
 import sys
+from collections.abc import Hashable
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Protocol
@@ -29,7 +30,8 @@ VERIFIER_INGEST_IMPORTS: dict[str, frozenset[str]] = {
     "ingest.models": frozenset({"parse_number", "SeriesSpec", "normalize_period"}),
     "ingest.rawstore": frozenset({"RawStore"}),
     "ingest.sources": frozenset({"Source", "RawResponse"}),
-    "ingest.verifiers": frozenset({"ItemResult", "BlindItem", "Verifier"}),
+    "ingest.verifiers": frozenset({"ItemResult", "BlindItem", "Verifier",
+                                   "VerifierUnavailable"}),
 }
 VERIFIER_STDLIB_IMPORTS = frozenset({
     "__future__", "typing", "dataclasses", "decimal", "re", "json", "csv", "io", "gzip",
@@ -70,9 +72,11 @@ class ItemResult:
     observed_text: the publisher's number as shown there, None = not found (a mismatch).
     evidence_url: where it was read (URL incl. query, or file URL + locator).
     observed_decimal: decimal separator of observed_text.
-    observed_unit / observed_flag: None = this channel does not expose them (not compared).
-    evidence: optional bytes the value was read from (page, file, JSON); stored in the raw
-        store by verify_run so an auditor sees exactly what the verifier saw.
+    observed_unit / observed_flag: None = not exposed for this item (not compared; the
+        verifier's `not_compared` reason is recorded).
+    evidence: the bytes the item was decided from (page, file, JSON envelope); REQUIRED (an
+        item without it fails); stored in the raw store by verify_run and re-read by the
+        verifier's `reread` on replay, so an auditor re-decides from exactly what it saw.
     """
     series_id: str
     period: str
@@ -84,12 +88,40 @@ class ItemResult:
     evidence: bytes | None = None
 
 
+class VerifierUnavailable(ValueError):
+    """The independent channel could not be read (non-2xx answer, publisher outage). Raised by
+    `check`; ingest.verify records it as a verifier OUTAGE (no dataset re-download), never as a
+    data mismatch. Transport errors (OSError, e.g. requests' ConnectionError/Timeout) are
+    outages too."""
+
+
+COMPARABLE = ("unit", "flag")  # the optional fields; value and key are always compared
+
+
 class Verifier(Protocol):
-    """source_name: the registry source this verifier checks.
-    check: one ItemResult per item, same length and order; may raise (counted as a failure)."""
+    """The contract every source verifier implements (Task 21 adds reread/request_key/
+    not_compared; register_verifier refuses a verifier without them).
+
+    source_name: the registry source this verifier checks.
+    check: one ItemResult per item, same length and order, each with `evidence` bytes (an item
+        without evidence fails); may raise (VerifierUnavailable / OSError = outage, anything
+        else = a failed verification).
+    reread: PURE re-decision of one item from its archived evidence bytes alone (no HTTP, no
+        clock, no registry beyond item.spec): must return the same series_id, period,
+        observed_text/decimal/unit/flag that `check` returned for it. replay_item runs it.
+    request_key: which response an item is read from: items with equal keys are answered by
+        one response, so the sample adds them at no extra HTTP cost (ingest.sampling step 5).
+    not_compared: {'unit'|'flag': reason} - why this channel cannot expose the field; an
+        item whose observed_unit/observed_flag is None without a declared reason fails.
+    """
     source_name: str
+    not_compared: dict[str, str]
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]: ...
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult: ...
+
+    def request_key(self, item: BlindItem) -> Hashable: ...
 
 
 def register_verifier(verifier: Verifier) -> None:
@@ -129,6 +161,7 @@ def register_verifier(verifier: Verifier) -> None:
     name = verifier.source_name
     if name in _REGISTRY:
         raise ValueError(f"a verifier for source {name!r} is already registered")
+    _check_contract(verifier)
     module = sys.modules.get(type(verifier).__module__)
     path = inspect.getsourcefile(module) if module is not None else None
     if path is None:
@@ -143,6 +176,19 @@ def register_verifier(verifier: Verifier) -> None:
     if bad:
         raise ValueError(f"verifier for {name!r} must be independent of the collector: {bad}")
     _REGISTRY[name] = verifier
+
+
+def _check_contract(verifier: Verifier) -> None:
+    """Task 21 (B-I4, B-M1): reread/request_key are required, not_compared is a
+    {'unit'|'flag': non-empty reason} mapping."""
+    missing = [m for m in ("check", "reread", "request_key")
+               if not callable(getattr(verifier, m, None))]
+    nc = getattr(verifier, "not_compared", None)
+    if missing or not isinstance(nc, dict) or set(nc) - set(COMPARABLE) or not all(
+            isinstance(v, str) and v.strip() for v in nc.values()):
+        raise ValueError(f"verifier {type(verifier).__name__} does not implement the Verifier "
+                         f"contract (missing {missing}; not_compared must map unit/flag to a "
+                         f"reason, got {nc!r})")
 
 
 def get_verifier(source_name: str) -> Verifier:

@@ -4,6 +4,7 @@ import importlib
 import json
 import uuid
 from datetime import datetime, timedelta, timezone
+from fractions import Fraction
 
 import pytest
 
@@ -13,6 +14,7 @@ from ingest.models import SourceSpec
 from ingest.pipeline import run_dataset
 from ingest.rawstore import RawIntegrityError, RawStore
 from ingest.registry import sync_registry
+from ingest.sampling import SamplingPolicy
 from ingest.verifiers import BlindItem, ItemResult, get_verifier, register_verifier
 from ingest.verify import (
     NoVerifierRegistered,
@@ -80,47 +82,60 @@ def big_env(db, tmp_path):
     return db, specs, r.run_id
 
 
+LATEST_ONLY = SamplingPolicy(confidence=Fraction(0), history_per_series=0)
+
+
 def test_sample_always_includes_latest_period_of_each_series(big_env):
     db, specs, run_id = big_env
     for seed in range(20):
-        items = draw_sample(db, run_id, seed, 5, specs=specs)
-        assert len(items) == 5
+        items = draw_sample(db, run_id, seed, specs=specs, verifier=FakeVerifier())
         assert {("s1", "2024"), ("s2", "2024"), ("s3", "2024")} <= set(keys(items))
-        assert len(set(keys(items))) == 5  # without replacement
+        assert len(set(keys(items))) == len(items)  # without replacement
+        assert {i.reason for i in items if i.period == "2024"} == {"latest"}
 
 
 def test_sample_is_reproducible_from_seed(big_env):
     db, specs, run_id = big_env
-    a = draw_sample(db, run_id, 42, 10, specs=specs)
-    assert a == draw_sample(db, run_id, 42, 10, specs=specs)
+    v = FakeVerifier()
+    pol = SamplingPolicy(tolerable_rate=Fraction(1, 5))  # a partial draw of the 72-row pool
+    a = draw_sample(db, run_id, 42, specs=specs, verifier=v, policy=pol)
+    assert a == draw_sample(db, run_id, 42, specs=specs, verifier=v, policy=pol)
     assert keys(a) == sorted(keys(a))  # deterministic order
-    assert {tuple(keys(draw_sample(db, run_id, s, 10, specs=specs))) for s in range(10)} != {
-        tuple(keys(a))}  # the seed actually drives the random part
+    assert {tuple(keys(draw_sample(db, run_id, s, specs=specs, verifier=v, policy=pol)))
+            for s in range(10)} != {tuple(keys(a))}  # the seed actually drives the random part
     item = next(i for i in a if i.series_id == "s2" and i.period == "2024")
     assert (item.expected_text, item.expected_unit, item.expected_flag) == ("2024.2", "EUR", None)
     assert item.spec == specs[1]
 
 
-def test_sample_covers_every_series_even_when_size_smaller(big_env):
+def test_sample_checks_history_beyond_the_latest_of_every_series(big_env):
+    """Replaces the old test_sample_covers_every_series_even_when_size_smaller (B-I1): the old
+    fixed target of 50 drew NO history once a group had >= 50 series. Now every series also
+    gets history cells (older half + recent half) and a discovery-sized random fill."""
     db, specs, run_id = big_env
-    items = draw_sample(db, run_id, 7, 1, specs=specs)
-    assert keys(items) == [("s1", "2024"), ("s2", "2024"), ("s3", "2024")]
+    items = draw_sample(db, run_id, 7, specs=specs, verifier=FakeVerifier())
+    by = {}
+    for i in items:
+        by.setdefault(i.series_id, []).append((i.period, i.reason))
+    for sid in ("s1", "s2", "s3"):
+        reasons = [r for _, r in by[sid]]
+        assert reasons.count("latest") == 1 and reasons.count("series-stratum") == 2
+    assert any(i.reason == "random" for i in items)
+    assert len(items) > 3
 
 
-def test_sample_takes_every_observation_when_size_exceeds_run(env):
+def test_sample_takes_every_observation_of_a_small_run(env):
     db, specs, _, _, run = env
     r = run()
-    assert keys(draw_sample(db, r.run_id, 1, 50, specs=specs)) == [
+    assert keys(draw_sample(db, r.run_id, 1, specs=specs, verifier=FakeVerifier())) == [
         ("s1", "2023"), ("s1", "2024"), ("s2", "2024")]
 
 
-def test_sample_rejects_unknown_series_and_bad_size(env):
+def test_sample_rejects_unknown_series(env):
     db, specs, _, _, run = env
     r = run()
     with pytest.raises(ValueError):
-        draw_sample(db, r.run_id, 1, 5, specs=specs[:1])
-    with pytest.raises(ValueError):
-        draw_sample(db, r.run_id, 1, 0, specs=specs)
+        draw_sample(db, r.run_id, 1, specs=specs[:1], verifier=FakeVerifier())
 
 
 # --- verify_run --------------------------------------------------------------------------------
@@ -145,27 +160,39 @@ def failure_events(db):
             q(db, "SELECT detail_json FROM event WHERE kind = 'verification_failure' ORDER BY id")]
 
 
-def vrun(env, verifier, series=BASE, seed=1, size=50):
+def vrun(env, verifier, series=BASE, seed=1):
     db, specs, store, clock, run = env
     r = run(series)
     assert r.state == "pending-verification"
-    return r.run_id, verify_run(db, r.run_id, verifier, None, seed=seed, size=size, specs=specs,
+    return r.run_id, verify_run(db, r.run_id, verifier, None, seed=seed, specs=specs,
                                 store=store, now=clock)
 
 
 class ScriptedVerifier:
     source_name = "fake"
+    not_compared = {"unit": "scripted: not exposed", "flag": "scripted: not exposed"}
 
     def __init__(self, results):
         self.results = results
+
+    def request_key(self, item):
+        return item.series_id, item.period
+
+    def reread(self, evidence, item):
+        sid, period, text = json.loads(evidence)
+        return ItemResult(sid, period, text, "u", evidence=evidence)
 
     def check(self, items, http):
         return self.results(items)
 
 
 def echo(items, truth=TRUTH, **kw):
-    return [ItemResult(i.series_id, i.period, truth.get((i.series_id, i.period)), "u", **kw)
-            for i in items]
+    out = []
+    for i in items:
+        text = truth.get((i.series_id, i.period))
+        ev = {"evidence": json.dumps([i.series_id, i.period, text]).encode()}
+        out.append(ItemResult(i.series_id, i.period, text, "u", **(ev | kw)))
+    return out
 
 
 def test_all_match_marks_verified(env):
@@ -336,9 +363,10 @@ def test_refuses_to_verify_non_pending_run(env):
 def test_random_seed_is_stored_when_not_given(env):
     db, specs, store, clock, run = env
     r = run()
-    assert verify_run(db, r.run_id, FakeVerifier(TRUTH), None, specs=specs, now=clock)
+    assert verify_run(db, r.run_id, FakeVerifier(TRUTH), None, specs=specs, store=store,
+                      now=clock)
     (seed,), = q(db, "SELECT seed FROM verification")
-    assert keys(draw_sample(db, r.run_id, seed, 50, specs=specs)) == [
+    assert keys(draw_sample(db, r.run_id, seed, specs=specs, verifier=FakeVerifier())) == [
         tuple(x[:2]) for x in items_of(db, r.run_id)]
 
 
@@ -391,7 +419,7 @@ def test_replay_refuses_legacy_item(env):
         "observed_text, evidence_url, match) VALUES (?, 's1', '2024', '2.0', '2.0', 'u', 1)",
         (vid,))
     with pytest.raises(ValueError, match="legacy item"):
-        replay_item(db, store, cur.lastrowid)
+        replay_item(db, store, cur.lastrowid, FakeVerifier())
 
 
 # --- I1: concurrent verification (compare-and-set) ---------------------------------------------
@@ -434,11 +462,11 @@ def test_evidence_bytes_saved_and_items_replayable(env):
     rows = q(db, "SELECT id, series_id, period, observed_text, expected_decimal, expected_unit, "
                  "expected_flag, evidence_sha256, match FROM verification_item ORDER BY id")
     for item_id, sid, period, observed, dec, unit, flag, sha, match in rows:
-        body = f"{sid},{period},{observed}".encode()
+        body = (store.root / "verify-fake" / sha[:2] / sha).read_bytes()
         assert sha == hashlib.sha256(body).hexdigest()
-        assert (store.root / "verify-fake" / sha[:2] / sha).read_bytes() == body
+        assert (json.loads(body)["series_id"], json.loads(body)["text"]) == (sid, observed)
         assert (dec, unit, flag) == (".", "EUR", None)
-        assert replay_item(db, store, item_id) is bool(match)
+        assert replay_item(db, store, item_id, FakeVerifier()) is bool(match)
     assert [r[-1] for r in rows] == [0, 1, 1]
 
 
@@ -454,9 +482,9 @@ def test_replay_needs_no_registry_and_reproduces_every_outcome(env):
                            decimal=","),
               FakeVerifier(TRUTH)):
         run_id, _ = vrun(env, v)
-        outcomes += [(r[7], bool(r[5])) for r in items_of(db, run_id)]
-    assert {m for _, m in outcomes} == {True, False}
-    assert all(replay_item(db, store, item_id) is match for item_id, match in outcomes)
+        outcomes += [(r[7], bool(r[5]), v) for r in items_of(db, run_id)]
+    assert {m for _, m, _ in outcomes} == {True, False}
+    assert all(replay_item(db, store, item_id, v) is match for item_id, match, v in outcomes)
 
 
 def test_replay_detects_tampered_evidence(env):
@@ -466,7 +494,7 @@ def test_replay_detects_tampered_evidence(env):
     (sha,), = q(db, "SELECT evidence_sha256 FROM verification_item WHERE id = ?", item_id)
     (store.root / "verify-fake" / sha[:2] / sha).write_bytes(b"forged")
     with pytest.raises(RawIntegrityError):
-        replay_item(db, store, item_id)
+        replay_item(db, store, item_id, FakeVerifier())
 
 
 def test_evidence_without_store_is_refused(env):
@@ -479,13 +507,13 @@ def test_evidence_without_store_is_refused(env):
 
 # --- run_with_refetch --------------------------------------------------------------------------
 
-def refetch(env, verifier, *pages, max_attempts=3, size=50):
+def refetch(env, verifier, *pages, max_attempts=3):
     db, specs, store, clock, _ = env
     if verifiers._REGISTRY.get(verifier.source_name) is not verifier:
         register_verifier(verifier)
     http = FakeHttp(*[ok(payload(p)) for p in pages])
     return run_with_refetch(db, store, FakeSource(), verifier, specs, http,
-                            max_attempts=max_attempts, size=size, now=clock)
+                            max_attempts=max_attempts, now=clock)
 
 
 def test_refetch_uses_new_seed_each_attempt(env):
@@ -617,8 +645,11 @@ def make_verifier(tmp_path, monkeypatch):
         body = (code + "\n" if top else "def _unused():\n"
                 + "".join(f"    {line}\n" for line in code.splitlines() or ["pass"]))
         (mods / f"{name}.py").write_text(
-            body + f"\n\nclass V:\n    source_name = {source_name!r}\n\n"
-              f"    def check(self, items, http):\n        return []\n")
+            body + f"\n\nclass V:\n    source_name = {source_name!r}\n"
+              f"    not_compared = {{}}\n\n"
+              f"    def check(self, items, http):\n        return []\n\n"
+              f"    def reread(self, evidence, item):\n        return None\n\n"
+              f"    def request_key(self, item):\n        return item.series_id\n")
         importlib.invalidate_caches()
         return importlib.import_module(name).V()
     return make

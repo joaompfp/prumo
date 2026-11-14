@@ -59,7 +59,7 @@ from html.parser import HTMLParser
 
 from ingest.http import Http, HttpResult
 from ingest.models import SeriesSpec
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 TABLE_URL = "https://fred.stlouisfed.org/data/"
 
@@ -354,22 +354,44 @@ class FredVerifier:
     absent from the table yields observed_text=None (honest 'not found', decided by
     ingest.verify as a mismatch)."""
     source_name = "fred"
+    not_compared = {"flag": "the /data/<code> table has no per-observation status surface "
+                            "(DATE/VALUE only; the '.' missing marker is honoured)"}
+
+    def request_key(self, item: BlindItem):
+        return _native(item.spec.native_code)  # one page per series carries its full history
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        """Pure re-decision from the archived 'fred-table-evidence' v1 envelope."""
+        code = _native(item.spec.native_code)
+        doc = json.loads(evidence)
+        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION:
+            raise ValueError("not a fred-table-evidence v1 envelope")
+        rec = doc["table"]
+        if not 200 <= rec["status"] < 300:
+            raise ValueError(f"archived response has HTTP status {rec['status']}")
+        unit, values = read_table_page(base64.b64decode(rec["body_b64"], validate=True), code,
+                                       item.spec)
+        return ItemResult(series_id=item.series_id, period=item.period,
+                          observed_text=values.get(item.period), evidence_url=rec["url"],
+                          observed_decimal=".", observed_unit=unit, observed_flag=None,
+                          evidence=evidence)
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
-        pages: dict[str, tuple[str, dict[str, str], HttpResult]] = {}
+        pages: dict[str, tuple[str, dict[str, str], HttpResult, bytes]] = {}
         results: list[ItemResult] = []
         for item in items:
             code = _native(item.spec.native_code)
             if code not in pages:
                 r = http.get(TABLE_URL + code)  # keyless public page: no params, no api_key
                 if not 200 <= r.status < 300:
-                    raise ValueError(f"FRED data table for {code} answered HTTP {r.status}")
+                    raise VerifierUnavailable(f"FRED data table for {code} answered HTTP "
+                                              f"{r.status}")
                 unit, values = read_table_page(r.body, code, item.spec)
-                pages[code] = (unit, values, r)
-            unit, values, r = pages[code]
+                pages[code] = (unit, values, r, _envelope(r))  # one envelope per page
+            unit, values, r, evidence = pages[code]
             results.append(ItemResult(
                 series_id=item.series_id, period=item.period,
                 observed_text=values.get(item.period),
                 evidence_url=r.url, observed_decimal=".", observed_unit=unit,
-                observed_flag=None, evidence=_envelope(r)))
+                observed_flag=None, evidence=evidence))
         return results

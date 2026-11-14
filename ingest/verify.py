@@ -1,20 +1,26 @@
-"""Truth verification (spec 6b): a random, seeded sample of a run's observations is re-read
-through an independent, blinded `Verifier`; only a 100% match moves the run to `verified`.
+"""Truth verification (spec 6b): a seeded sample of a run's observations (ingest.sampling,
+procedure prumo-sample-v2) is re-read through an independent, blinded `Verifier`; only a 100%
+match moves the run to `verified`.
 
     pending-verification ──verify_run──> verified             (every sampled item matches)
-                                    └──> failed-verification  (any mismatch, not-found, verifier
-                                         error / wrong count / wrong key or order) + event
-    run_with_refetch: failed-verification -> event(refetch) -> a new run_dataset + fresh seed,
-    up to max_attempts; a failed-verification run is never served (view served_observation).
+                                    └──> failed-verification  (any mismatch, not-found, missing
+                                         evidence, verifier error / wrong count / wrong key or
+                                         order) + event(verification_failure)
+                                         + event(verifier_outage) when the channel was down
+    run_with_refetch: a genuine failure -> event(refetch) -> a new run_dataset + fresh seed, up
+    to max_attempts (1 for recorded input: re-reading the same bundle proves nothing new); a
+    verifier OUTAGE never triggers a dataset re-download; giving up writes
+    event(verification_escalated). A failed-verification run is never served.
 
 The verifier sees only `BlindItem`s (key + spec); the expected side stays here. Each
-verify_run writes one `verification` row (seed, actual sample size, passed) and one
-`verification_item` per sampled observation holding every field the comparison used (expected
-and observed text/decimal/unit/flag, the key the verifier answered for, evidence URL and the
-sha256 of the evidence bytes kept in the raw store), so `replay_item` can re-decide each item
-from stored data alone and `draw_sample` can redraw the sample from the seed.
+verify_run writes one `verification` row (seed, sample procedure + design summary, input
+origin, verifier channel, passed), the spec each series was verified with (verification_spec)
+and one `verification_item` per sampled observation holding every field the comparison used
+(expected and observed text/decimal/unit/flag, the key the verifier answered for, why the item
+was drawn, which fields were compared and why unit/flag were not, evidence URL and the sha256
+of the evidence bytes kept in the raw store). `replay_item` re-reads that evidence with the
+verifier's pure `reread` and re-decides the item offline; `draw_sample` redraws the sample.
 """
-import random
 import secrets
 from collections.abc import Callable
 from dataclasses import dataclass, replace
@@ -25,8 +31,11 @@ from ingest.http import Http
 from ingest.models import SeriesSpec, parse_decimal
 from ingest.pipeline import DatasetRunResult, _iso, _utc_now, run_dataset
 from ingest.rawstore import RawStore
+from ingest.sampling import DEFAULT_POLICY, SamplingPolicy, design_sample
 from ingest.sources import Source
-from ingest.verifiers import BlindItem, ItemResult, Verifier, get_verifier
+from ingest.verifiers import BlindItem, ItemResult, Verifier, VerifierUnavailable, get_verifier
+
+VERIFIER_CHANNELS = ("live", "pinned-bundle")
 
 
 class VerificationConflict(ValueError):
@@ -54,74 +63,104 @@ class SampleItem:
     spec: SeriesSpec
     expected_unit: str
     expected_flag: str | None
+    reason: str  # why it was drawn (ingest.sampling.REASONS)
 
     def blind(self) -> BlindItem:
         return BlindItem(series_id=self.series_id, period=self.period, spec=self.spec)
 
 
-def draw_sample(db: Db, run_id: int, seed: int, size: int, *,
-                specs: list[SeriesSpec]) -> list[SampleItem]:
-    """Seeded, stratified sample of the observations written by run `run_id`.
-
-    Every series of the run contributes its latest period (if the run has more series than
-    `size`, the sample grows to one per series: no series is ever skipped); the rest of `size`
-    is drawn uniformly without replacement with random.Random(seed) from the remaining
-    observations. Same db + seed + size -> same list, ordered by (series_id, period).
-
-    `specs` (the registry specs of the run's series) supplies SampleItem.spec and the declared
-    unit; the DB does not store every spec field (e.g. decimal). ValueError if a sampled series
-    has no spec or size < 1.
-    """
-    if size < 1:
-        raise ValueError(f"sample size must be >= 1, got {size}")
+def _draw(db: Db, run_id: int, seed: int, specs: list[SeriesSpec], verifier: Verifier,
+          policy: SamplingPolicy) -> tuple[list[SampleItem], dict]:
     by_id = {s.id: s for s in specs}
     rows = db.observations_of_run(run_id)
     missing = sorted({r[0] for r in rows} - by_id.keys())
     if missing:
         raise ValueError(f"run {run_id} has series without a spec: {missing}")
-    latest = {r[0]: i for i, r in enumerate(rows)}  # rows are ordered: last index = latest period
-    must = sorted(latest.values())
-    rest = sorted(set(range(len(rows))) - set(must))
-    n_fill = min(max(size - len(must), 0), len(rest))
-    chosen = sorted(must + random.Random(seed).sample(rest, n_fill))
-    return [SampleItem(series_id=sid, period=period, expected_text=text, spec=by_id[sid],
-                       expected_unit=by_id[sid].unit, expected_flag=flag)
-            for sid, period, text, flag in (rows[i] for i in chosen)]
+
+    def request_key(key: tuple[str, str]):
+        try:
+            return ("response", verifier.request_key(BlindItem(key[0], key[1], by_id[key[0]])))
+        except Exception:  # a malformed identity: no free closure; check() fails it loudly
+            return ("item", key)
+
+    design = design_sample([(r[0], r[1]) for r in rows], seed=seed,
+                           changed=db.run_changed_keys(run_id), request_key=request_key,
+                           policy=policy)
+    items = [SampleItem(series_id=sid, period=period, expected_text=text, spec=by_id[sid],
+                        expected_unit=by_id[sid].unit, expected_flag=flag, reason=why)
+             for (sid, period, text, flag), why in ((rows[i], why) for i, why in design.chosen)]
+    return items, design.summary
+
+
+def draw_sample(db: Db, run_id: int, seed: int, *, specs: list[SeriesSpec], verifier: Verifier,
+                policy: SamplingPolicy = DEFAULT_POLICY) -> list[SampleItem]:
+    """The sample of run `run_id` (ingest.sampling, procedure prumo-sample-v2): the latest
+    period of every series, the run's changed cells (revision/new_periods events, capped),
+    per-series history strata, a discovery-sized random history sample and every cell read from
+    a response those already need (`verifier.request_key`). Same db + seed + policy + verifier
+    -> same list, ordered by (series_id, period). ValueError if a series has no spec."""
+    return _draw(db, run_id, seed, specs, verifier, policy)[0]
+
+
+@dataclass(frozen=True)
+class _Outcome:
+    passed: bool
+    outage: str | None  # the verifier channel was unavailable (no item compared)
 
 
 def verify_run(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | None = None,
-               size: int = 50, *, specs: list[SeriesSpec], store: RawStore | None = None,
-               now: Callable[[], datetime] = _utc_now) -> bool:
+               *, specs: list[SeriesSpec], store: RawStore | None = None,
+               now: Callable[[], datetime] = _utc_now, policy: SamplingPolicy = DEFAULT_POLICY,
+               verifier_channel: str = "live") -> bool:
     """Verify a `pending-verification` run; True iff it ends `verified`.
 
-    The sample is draw_sample(db, run_id, seed, size, specs=specs); seed defaults to
-    secrets.randbits(63) and is stored either way. The verifier gets the blinded items; each
-    result is turned into a stored item row and decided by `_row_mismatch` (key at the same
-    position, exact Decimal value, unit/flag when exposed). A verifier that raises or returns the
-    wrong number of results fails every item (noted). Evidence bytes are saved to `store` under
-    "verify-<source>" (ValueError if evidence is returned and store is None).
+    The sample is draw_sample(db, run_id, seed, ...); seed defaults to secrets.randbits(63)
+    and is stored either way, with the design summary. The verifier gets the blinded items;
+    each result is turned into a stored item row and decided by `_row_mismatch` (key at the
+    same position, exact Decimal value, unit/flag when exposed, a recorded reason when not).
+    A verifier that raises or returns the wrong number of results fails every item (noted;
+    VerifierUnavailable/OSError is additionally recorded as event(verifier_outage)). Evidence
+    is mandatory: it is saved to `store` under "verify-<source>"; an item without it fails.
 
-    Rows, failure event and the state change are one transaction; the state change is a
+    `verifier_channel` records what the verifier read: 'live' HTTP, or 'pinned-bundle'
+    (operator-captured responses; NOT audit-grade, only for recorded input).
+
+    Rows, events and the state change are one transaction; the state change is a
     compare-and-set from pending-verification, so if another worker finished this run meanwhile
     everything is rolled back and VerificationConflict is raised.
     ValueError (nothing written) if the run is not `pending-verification` (e.g. a short-circuit
-    `verified` run, which has no verification of its own) or the verifier/specs belong to
-    another source.
+    `verified` run, which has no verification of its own), the verifier/specs belong to
+    another source, the channel is unknown or store is None.
     """
+    return _verify(db, run_id, verifier, http, seed, specs=specs, store=store, now=now,
+                   policy=policy, verifier_channel=verifier_channel).passed
+
+
+def _verify(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | None, *,
+            specs: list[SeriesSpec], store: RawStore | None, now: Callable[[], datetime],
+            policy: SamplingPolicy, verifier_channel: str) -> _Outcome:
     state = db.run_state(run_id)
     if state != "pending-verification":
         raise ValueError(f"run {run_id} is {state!r}; only pending-verification runs are verified")
     foreign = sorted({s.source.name for s in specs} - {verifier.source_name})
     if foreign:
         raise ValueError(f"verifier for {verifier.source_name!r} cannot verify source(s) {foreign}")
+    if verifier_channel not in VERIFIER_CHANNELS:
+        raise ValueError(f"verifier_channel must be one of {VERIFIER_CHANNELS}, "
+                         f"got {verifier_channel!r}")
+    if store is None:
+        raise ValueError("verify_run needs a store: evidence is mandatory and archived")
     if seed is None:
         seed = secrets.randbits(63)
-    items = draw_sample(db, run_id, seed, size, specs=specs)
+    items, design = _draw(db, run_id, seed, specs, verifier, policy)
 
     results: list = [None] * len(items)
-    whole_note = None
+    whole_note = outage = None
     try:
         got = list(verifier.check([i.blind() for i in items], http))
+    except (VerifierUnavailable, OSError) as e:  # the channel is down: not a data mismatch
+        outage = repr(e)
+        whole_note = f"verifier unavailable: {e!r}"
     except Exception as e:  # a broken verifier is a failure, never a pass
         whole_note = f"verifier raised: {e!r}"
     else:
@@ -130,9 +169,11 @@ def verify_run(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | 
         else:
             results = got
 
+    not_compared = getattr(verifier, "not_compared", {}) or {}
+    saved: dict[int, str] = {}  # id(evidence bytes) -> sha256: shared responses saved once
     rows = []
     for item, res in zip(items, results):
-        row, note = _item_row(item, res, store, verifier.source_name)
+        row, note = _item_row(item, res, store, verifier.source_name, not_compared, saved)
         note = whole_note or note or _row_mismatch(row)
         rows.append({**row, "match": note is None, "note": note})
     bad = [r for r in rows if not r["match"]]
@@ -140,7 +181,12 @@ def verify_run(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | 
 
     t = _iso(now())
     with db.transaction():
-        vid = db.add_verification(run_id, seed, len(rows), passed, t)
+        vid = db.add_verification(
+            run_id, seed, len(rows), passed, t, sample_procedure=design["procedure"],
+            sample_design=design, input_origin=db.run_input_origin(run_id),
+            verifier_channel=verifier_channel)
+        for sid, spec in sorted({i.series_id: i.spec for i in items}.items()):
+            db.add_verification_spec(vid, sid, spec.model_dump_json())
         for row in rows:
             db.add_verification_item(vid, row)
         if not passed:
@@ -150,12 +196,15 @@ def verify_run(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | 
                     {"series_id": r["series_id"], "period": r["period"],
                      "expected": r["expected_text"], "observed": r["observed_text"]}
                     for r in bad[:5]]})
+        if outage is not None:
+            db.add_event(t, "verifier_outage", run_id, {"run_id": run_id, "error": outage,
+                                                        "verifier_channel": verifier_channel})
         new_state = "verified" if passed else "failed-verification"
         if not db.transition_run_state(run_id, "pending-verification", new_state):
             raise VerificationConflict(
                 f"run {run_id} is no longer pending-verification (now "
                 f"{db.run_state(run_id)!r}); this verification was rolled back")
-    return passed
+    return _Outcome(passed, outage)
 
 
 def _str(x: object) -> str | None:
@@ -164,35 +213,47 @@ def _str(x: object) -> str | None:
     return x if type(x) is str else None
 
 
-def _item_row(item: SampleItem, res: object, store: RawStore | None,
-              source_name: str) -> tuple[dict, str | None]:
+def _item_row(item: SampleItem, res: object, store: RawStore, source_name: str,
+              not_compared: dict[str, str], saved: dict[int, str]) -> tuple[dict, str | None]:
     """The stored row for one item (without match/note) and a shape note for a malformed result.
-    A malformed result keeps no observed fields, so its stored row can never replay as a match."""
+    A malformed result keeps no observed fields, so its stored row can never replay as a match.
+    `compared` lists the fields the decision compares; unit/flag left out carry the verifier's
+    declared reason (None when it declares none: _row_mismatch then fails the item)."""
     row = {"series_id": item.series_id, "period": item.period,
            "expected_text": item.expected_text, "expected_decimal": item.spec.decimal,
            "expected_unit": item.expected_unit, "expected_flag": item.expected_flag,
            "observed_series_id": None, "observed_period": None, "observed_text": None,
            "observed_decimal": None, "observed_unit": None, "observed_flag": None,
-           "evidence_url": None, "evidence_sha256": None}
+           "evidence_url": None, "evidence_sha256": None, "reason": item.reason,
+           "compared": None, "unit_not_compared": None, "flag_not_compared": None}
     if res is None:
         return row, None
     if type(res) is not ItemResult or (res.evidence is not None
                                        and type(res.evidence) is not bytes):
         return row, f"malformed result: {type(res).__name__}"
     if res.evidence is not None:
-        if store is None:
-            raise ValueError("verifier returned evidence bytes but verify_run has no store")
-        row["evidence_sha256"], _ = store.save(f"verify-{source_name}", res.evidence)
+        if id(res.evidence) not in saved:
+            saved[id(res.evidence)] = store.save(f"verify-{source_name}", res.evidence)[0]
+        row["evidence_sha256"] = saved[id(res.evidence)]
     row.update(observed_series_id=_str(res.series_id), observed_period=_str(res.period),
                observed_text=_str(res.observed_text),
                observed_decimal=(res.observed_decimal
                                  if _str(res.observed_decimal) in (".", ",") else None),
                observed_unit=_str(res.observed_unit), observed_flag=_str(res.observed_flag),
                evidence_url=_str(res.evidence_url))
+    exposed = {"unit": row["observed_unit"] is not None, "flag": row["observed_flag"] is not None}
+    row["compared"] = ",".join(["series_id", "period", "value"]
+                               + [f for f in ("unit", "flag") if exposed[f]])
+    row["unit_not_compared"] = None if exposed["unit"] else not_compared.get("unit")
+    row["flag_not_compared"] = None if exposed["flag"] else not_compared.get("flag")
     wrong = [f"{f}: {type(getattr(res, f)).__name__}" for f in _TEXT_FIELDS
              if getattr(res, f) is not None and _str(getattr(res, f)) is None]
     # e.g. a float observed_text (would bypass exact comparison) or a str subclass
-    return row, (f"result fields must be exact str: {', '.join(wrong)}" if wrong else None)
+    if wrong:
+        return row, f"result fields must be exact str: {', '.join(wrong)}"
+    if res.evidence is None:
+        return row, "no evidence bytes returned (evidence is mandatory)"
+    return row, None
 
 
 _TEXT_FIELDS = ("series_id", "period", "observed_text", "evidence_url", "observed_decimal",
@@ -229,49 +290,101 @@ def _row_mismatch(row: dict) -> str | None:
     if row["observed_flag"] is not None and _blank(row["observed_flag"]) != _blank(
             row["expected_flag"]):
         return f"flag differs: expected {row['expected_flag']!r}, observed {row['observed_flag']!r}"
+    if row.get("compared") is not None:  # recorded since migration 0012 (B-M1)
+        for f in ("unit", "flag"):
+            if row[f"observed_{f}"] is None and not row[f"{f}_not_compared"]:
+                return f"{f} not exposed and the verifier declares no reason it cannot be"
     return None
 
 
-def replay_item(db: Db, store: RawStore, verification_item_id: int) -> bool:
-    """Re-decide a stored verification_item from its stored fields only (no registry, no
-    network) and return the match. ValueError for a legacy (pre-0004) item. If evidence bytes
-    were kept, their file is loaded from `store` and integrity-checked (RawIntegrityError if
-    altered)."""
+def replay_check(db: Db, store: RawStore, verification_item_id: int, verifier: Verifier, *,
+                 specs: list[SeriesSpec] | None = None) -> str | None:
+    """Re-decide a stored verification_item offline (no network, no registry): None if it
+    replays as a match, else why not.
+
+    1. its evidence must have been archived (missing -> not a match) and still hash to its
+       name (RawIntegrityError if the file was altered);
+    2. `verifier.reread(evidence, item)` - the verifier's PURE re-read of those bytes, with the
+       spec the item was verified with (verification_spec; `specs` only for items verified
+       before migration 0012) - must not raise and must return exactly the stored claim
+       (key, observed text/decimal/unit/flag): a verifier that misread its evidence fails;
+    3. the stored comparison is re-decided by `_row_mismatch`.
+    ValueError for a legacy (pre-0004) item, a verifier of another source or a pre-0012 item
+    without `specs`."""
     row = db.verification_item(verification_item_id)
     if row["expected_decimal"] is None:  # always set since 0004 (spec.decimal is never None)
         raise ValueError(f"verification_item {verification_item_id} is a legacy item "
                          "(pre-0004): its comparison fields were not stored, cannot replay")
-    if row["evidence_sha256"] is not None:
-        sha = row["evidence_sha256"]
-        source = db.verification_item_source(verification_item_id)
-        store.load(store.root / f"verify-{source}" / sha[:2] / sha)
-    return _row_mismatch(row) is None
+    source = db.verification_item_source(verification_item_id)
+    if verifier.source_name != source:
+        raise ValueError(f"item {verification_item_id} belongs to {source!r}, not "
+                         f"{verifier.source_name!r}")
+    if row["evidence_sha256"] is None:
+        return "no evidence archived for this item"
+    sha = row["evidence_sha256"]
+    evidence = store.load(store.root / f"verify-{source}" / sha[:2] / sha)
+    spec_json = db.verification_item_spec(verification_item_id)
+    if spec_json is not None:
+        spec = SeriesSpec.model_validate_json(spec_json)
+    else:
+        spec = next((s for s in specs or [] if s.id == row["series_id"]), None)
+        if spec is None:
+            raise ValueError(f"verification_item {verification_item_id} predates migration 0012 "
+                             f"(no stored spec): pass the registry specs to re-read it")
+    try:
+        res = verifier.reread(evidence, BlindItem(row["series_id"], row["period"], spec))
+    except Exception as e:
+        return f"archived evidence does not re-read: {e!r}"
+    if type(res) is not ItemResult:
+        return f"reread returned {type(res).__name__}, not ItemResult"
+    got = (_str(res.series_id), _str(res.period), _str(res.observed_text),
+           res.observed_decimal if _str(res.observed_decimal) in (".", ",") else None,
+           _str(res.observed_unit), _str(res.observed_flag))
+    claim = tuple(row[k] for k in ("observed_series_id", "observed_period", "observed_text",
+                                   "observed_decimal", "observed_unit", "observed_flag"))
+    if got != claim:
+        return f"re-read of the evidence {got!r} disagrees with the stored claim {claim!r}"
+    return _row_mismatch(row)
+
+
+def replay_item(db: Db, store: RawStore, verification_item_id: int, verifier: Verifier, *,
+                specs: list[SeriesSpec] | None = None) -> bool:
+    """True iff replay_check finds the stored item to be a match re-derived from its evidence."""
+    return replay_check(db, store, verification_item_id, verifier, specs=specs) is None
 
 
 def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier,
-                     specs: list[SeriesSpec], http: Http, max_attempts: int = 3, size: int = 50,
+                     specs: list[SeriesSpec], http: Http, max_attempts: int = 3,
                      now: Callable[[], datetime] | None = None, *,
-                     input_origin: str = "live") -> DatasetRunResult:
-    """run_dataset, then verify_run with a fresh random seed; on failure emit event(refetch) and
-    re-fetch the whole dataset (a new run: identical bytes are re-processed because the previous
-    run is not verified), at most `max_attempts` runs in total.
+                     input_origin: str = "live", verify_http: Http | None = None,
+                     verifier_channel: str = "live",
+                     policy: SamplingPolicy = DEFAULT_POLICY) -> DatasetRunResult:
+    """run_dataset, then verify_run with a fresh random seed; on a genuine verification
+    failure emit event(refetch) and re-fetch the whole dataset (a new run: identical bytes are
+    re-processed because the previous run is not verified), at most `max_attempts` runs.
 
     `verifier` must be the one registered for `source.name` (register_verifier enforces the
     independence rule), else ValueError. Refuses up front (before any fetch): SourceNotVerifiable
     if the registry marks the source `verifiable: false`; NoVerifierRegistered if the source has
     no registered verifier.
 
-    `input_origin` labels EVERY attempt (refetch runs included, not just the last): 'live' is
-    the fresh-network default; 'recorded' marks a run driven by an exact validated bundle
-    capture (Task 17B) - the run clock stays the actual attempt time either way.
+    `verify_http` is the verifier's client (default: `http`). Recorded input (B-I3): the
+    collector reads a pinned bundle, so the caller passes a LIVE client here
+    (verifier_channel='live'); only an explicit non-audit-grade choice pins the verifier to the
+    bundle too (verifier_channel='pinned-bundle', recorded input only). `input_origin` labels
+    every attempt; recorded input gets ONE attempt (re-reading the same bundle is no refetch).
 
-    Returns the last run's result: `verified` on a pass; `failed-verification` after
-    max_attempts failures (left unserved; escalation is the CLI report's business); any other
-    run_dataset outcome (failed-fetch, failed-validation, or the `verified` short-circuit for a
-    payload identical to the previous verified run, which gets no verification) as-is.
+    A verifier OUTAGE (VerifierUnavailable / OSError: no item could be compared) stops the loop
+    at once - re-downloading the dataset cannot fix the verifier's channel. Giving up (outage,
+    or the last attempt failed) writes event(verification_escalated, {reason, run_ids, ...})
+    and returns `failed-verification` with `detail`. Any other run_dataset outcome
+    (failed-fetch, failed-validation, the `verified` short-circuit for a payload identical to
+    the previous verified run, which gets no verification) is returned as-is.
     """
     if max_attempts < 1:
         raise ValueError(f"max_attempts must be >= 1, got {max_attempts}")
+    if verifier_channel == "pinned-bundle" and input_origin != "recorded":
+        raise ValueError("a pinned-bundle verifier channel is only for recorded input")
     unverifiable = sorted({s.source.name for s in specs if not s.source.verifiable})
     if unverifiable:
         raise SourceNotVerifiable(
@@ -286,15 +399,33 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
     if registered is not verifier:
         raise ValueError(f"verifier is not the one registered for source {source.name!r}")
     now = now or _utc_now
-    for attempt in range(1, max_attempts + 1):
+    attempts = 1 if input_origin == "recorded" else max_attempts
+    failed: list[int] = []
+    for attempt in range(1, attempts + 1):
         result = run_dataset(db, store, source, specs, http, now, input_origin=input_origin)
         if result.state != "pending-verification":
             return result
-        if verify_run(db, result.run_id, verifier, http, size=size, specs=specs, store=store,
-                      now=now):
+        out = _verify(db, result.run_id, verifier, verify_http or http, None, specs=specs,
+                      store=store, now=now, policy=policy, verifier_channel=verifier_channel)
+        if out.passed:
             return replace(result, state="verified")
-        if attempt < max_attempts:
+        failed.append(result.run_id)
+        if out.outage is not None:
+            return _escalate(db, now, result, failed, "verifier_outage",
+                             f"verifier channel unavailable, no re-download: {out.outage}",
+                             attempts)
+        if attempt < attempts:
             db.add_event(_iso(now()), "refetch", result.run_id,
                          {"failed_run_id": result.run_id, "next_attempt": attempt + 1,
-                          "max_attempts": max_attempts})
-    return replace(result, state="failed-verification")
+                          "max_attempts": attempts})
+    reason = "recorded_input_single_attempt" if input_origin == "recorded" else "max_attempts"
+    return _escalate(db, now, result, failed, reason,
+                     f"verification failed on {len(failed)} attempt(s) ({reason})", attempts)
+
+
+def _escalate(db: Db, now: Callable[[], datetime], result: DatasetRunResult, failed: list[int],
+              reason: str, detail: str, attempts: int) -> DatasetRunResult:
+    db.add_event(_iso(now()), "verification_escalated", result.run_id,
+                 {"reason": reason, "run_ids": failed, "max_attempts": attempts,
+                  "detail": detail})
+    return replace(result, state="failed-verification", detail=detail)

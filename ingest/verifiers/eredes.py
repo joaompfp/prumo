@@ -48,7 +48,7 @@ import re
 from datetime import date, timedelta
 
 from ingest.http import Http
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 API_BASE = "https://e-redes.opendatasoft.com/api/explore/v2.1/catalog/datasets"
 PRODUCTION_DATASET = "energia-produzida-total-nacional"
@@ -128,13 +128,108 @@ def _csv_rows(body: bytes, what: str) -> list[list[str]]:
     return rows[1:]
 
 
+def _labels(meta_body: bytes, dataset: str) -> dict[str, tuple[str, object]]:
+    """{field: (unit from its '<name> (<unit>)' label, type)} from the metadata response."""
+    meta = json.loads(meta_body)  # strict metadata parse (identity + labels)
+    if meta.get("dataset_id") != dataset:
+        raise ValueError(f"E-REDES metadata dataset_id drifted from {dataset!r}")
+    labels = {}
+    for f in meta.get("fields", []):
+        if isinstance(f, dict) and f.get("name") in FIELDS:
+            m = _LABEL_UNIT.fullmatch(str(f.get("label", "")))
+            if m is None:
+                raise ValueError(f"E-REDES field {f.get('name')!r} label is not "
+                                 f"'<name> (<unit>)': {f.get('label')!r}")
+            labels[f["name"]] = (m.group(1), f.get("type"))
+    return labels
+
+
+def _day_rows(csv_body: bytes, dataset: str, day: date) -> tuple[dict, set[str]]:
+    """(rows by datahora, ambiguous stamps) of ONE requested UTC day's export."""
+    by_ts: dict[str, list[str]] = {}
+    ambiguous: set[str] = set()  # stamps repeated in THIS day file
+    for row in _csv_rows(csv_body, dataset):
+        if len(row) != len(EXPECTED_HEADER):
+            raise ValueError(f"E-REDES CSV row has {len(row)} cells: {row!r}")
+        ts = row[0]
+        if _PERIOD.fullmatch(ts) is None:
+            raise ValueError(f"E-REDES CSV datahora is not the canonical UTC spelling: {ts!r}")
+        _wall_cells(row)
+        if ts[:10] != day.isoformat():
+            raise ValueError(f"E-REDES CSV row {ts!r} outside the requested day window "
+                             f"{day.isoformat()}")
+        if ts in by_ts or ts in ambiguous:
+            # a REPEATED stamp (the portal genuinely doubles 01:00-01:45 UTC across the
+            # fall-back boundary with conflicting values): neither copy is served and no later
+            # row overwrites an earlier one - the stamp is ambiguous for every item of this
+            # day; the rest of the file is unaffected.
+            by_ts.pop(ts, None)
+            ambiguous.add(ts)
+            continue
+        by_ts[ts] = row
+    return by_ts, ambiguous
+
+
+def _result(item: BlindItem, labels: dict, by_ts: dict, ambiguous: set[str], url: str,
+            evidence: bytes) -> ItemResult:
+    """One item read from its day's export + the metadata labels (shared by check/reread)."""
+    _dataset, field = _dataset_and_field(item.spec.native_code)
+    if field not in labels or labels[field][1] != "double":
+        raise ValueError(f"E-REDES metadata field {field!r} missing or not double")
+    unit = labels[field][0]
+    row = None if item.period in ambiguous else by_ts.get(item.period)
+    if row is None:
+        # absent OR ambiguous (a duplicated stamp is 'not found', never a coin flip between
+        # conflicting copies): observed_text=None is a mismatch, not a guess
+        return ItemResult(item.series_id, item.period, None, url, ".", unit, None, evidence)
+    token = row[EXPECTED_HEADER.index(field)].strip()
+    if _NUMBER.fullmatch(token) is None:
+        raise ValueError(f"E-REDES CSV {field} @ {item.period} is not a number "
+                         f"token: {row[EXPECTED_HEADER.index(field)]!r}")
+    return ItemResult(item.series_id, item.period, token, url, ".", unit, None, evidence)
+
+
+def _check_period(item: BlindItem) -> date:
+    if _PERIOD.fullmatch(item.period) is None:
+        raise ValueError(f"E-REDES verifier reviewed canonical PT15M periods only, "
+                         f"got {item.period!r}")
+    return date.fromisoformat(item.period[:10])  # raises on a non-Gregorian date
+
+
 class EredesVerifier:
     """One CSV export per (dataset, SAMPLED UTC day) + one metadata response per check; the
     period is read FROM THE CSV's own datahora tokens (string equality with the canonical UTC
     period, never echoed from the request), observed_unit from the metadata field label,
-    observed_flag honestly None. Each item's result maps back to its OWN day's response."""
+    observed_flag honestly None. Each item's result maps back to its OWN day's response; every
+    cell of a fetched day is compared at no extra HTTP cost (request_key)."""
 
     source_name = "eredes"
+    not_compared = {"flag": "the dataset has no per-record status or quality surface on "
+                            "either channel"}
+
+    def request_key(self, item: BlindItem):
+        dataset, _ = _dataset_and_field(item.spec.native_code)
+        return dataset, _check_period(item).isoformat()
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        """Pure re-decision from the archived 'eredes-csv-evidence' v1 envelope (the item's
+        day CSV + the metadata response, in that order)."""
+        dataset, _ = _dataset_and_field(item.spec.native_code)
+        day = _check_period(item)
+        doc = json.loads(evidence)
+        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION \
+                or len(doc.get("responses") or []) != 2:
+            raise ValueError("not an eredes-csv-evidence v1 envelope of two responses")
+        csv_rec, meta_rec = doc["responses"]
+        for rec in (csv_rec, meta_rec):
+            if not 200 <= rec["status"] < 300:
+                raise ValueError(f"archived response has HTTP status {rec['status']}")
+        if "/exports/csv" not in csv_rec["url"] or not meta_rec["url"].endswith(f"/{dataset}"):
+            raise ValueError("envelope responses are not (day CSV, metadata) of the dataset")
+        labels = _labels(base64.b64decode(meta_rec["body_base64"], validate=True), dataset)
+        by_ts, ambiguous = _day_rows(base64.b64decode(csv_rec["body_base64"], validate=True),
+                                     dataset, day)
+        return _result(item, labels, by_ts, ambiguous, csv_rec["url"], evidence)
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         cache: dict[tuple, tuple[bytes, str, int]] = {}
@@ -144,37 +239,24 @@ class EredesVerifier:
             if key not in cache:
                 r = http.get(url, params=params)
                 if not 200 <= r.status < 300:
-                    raise ValueError(f"E-REDES verifier request for {url!r} answered HTTP "
-                                     f"{r.status} (fail closed on every non-2xx)")
+                    raise VerifierUnavailable(
+                        f"E-REDES verifier request for {url!r} answered HTTP {r.status} "
+                        f"(fail closed on every non-2xx)")
                 cache[key] = (r.body, r.url, r.status)
             return cache[key]
 
-        results: list[ItemResult] = []
         by_dataset: dict[str, list[BlindItem]] = {}
         for item in items:
             dataset, _field = _dataset_and_field(item.spec.native_code)
-            if _PERIOD.fullmatch(item.period) is None:
-                raise ValueError(f"E-REDES verifier reviewed canonical PT15M periods only, "
-                                 f"got {item.period!r}")
-            date.fromisoformat(item.period[:10])  # raises on a non-Gregorian date
+            _check_period(item)
             by_dataset.setdefault(dataset, []).append(item)
 
         state: dict[str, dict] = {}
         for dataset, its in by_dataset.items():
             days = sorted({i.period[:10] for i in its})
             meta_body, meta_url, meta_status = get(f"{API_BASE}/{dataset}", None)
-            meta = json.loads(meta_body)  # strict metadata parse (identity + labels)
-            if meta.get("dataset_id") != dataset:
-                raise ValueError(f"E-REDES metadata dataset_id drifted from {dataset!r}")
-            labels = {}
-            for f in meta.get("fields", []):
-                if isinstance(f, dict) and f.get("name") in FIELDS:
-                    m = _LABEL_UNIT.fullmatch(str(f.get("label", "")))
-                    if m is None:
-                        raise ValueError(f"E-REDES field {f.get('name')!r} label is not "
-                                         f"'<name> (<unit>)': {f.get('label')!r}")
-                    labels[f["name"]] = (m.group(1), f.get("type"))
-            day_state: dict[str, dict] = {}
+            labels = _labels(meta_body, dataset)
+            day_state: dict[str, tuple] = {}
             for day_s in days:
                 day = date.fromisoformat(day_s)
                 where = f'datahora >= "{day.isoformat()}" AND ' \
@@ -182,54 +264,16 @@ class EredesVerifier:
                 csv_body, csv_url, csv_status = get(f"{API_BASE}/{dataset}/exports/csv",
                                                     {"lang": "pt", "timezone": "UTC",
                                                      "where": where})
-                by_ts = {}
-                ambiguous: set[str] = set()  # stamps repeated in THIS day file
-                for row in _csv_rows(csv_body, dataset):
-                    if len(row) != len(EXPECTED_HEADER):
-                        raise ValueError(f"E-REDES CSV row has {len(row)} cells: {row!r}")
-                    ts = row[0]
-                    if _PERIOD.fullmatch(ts) is None:
-                        raise ValueError(f"E-REDES CSV datahora is not the canonical UTC "
-                                         f"spelling: {ts!r}")
-                    _wall_cells(row)
-                    if ts[:10] != day.isoformat():
-                        raise ValueError(f"E-REDES CSV row {ts!r} outside the requested day "
-                                         f"window {where!r}")
-                    if ts in by_ts or ts in ambiguous:
-                        # a REPEATED stamp (the portal genuinely doubles 01:00-01:45 UTC across
-                        # the fall-back boundary with conflicting values): neither copy is
-                        # served and no later row overwrites an earlier one - the stamp is
-                        # ambiguous for every item of this day; the rest of the file is
-                        # unaffected.
-                        by_ts.pop(ts, None)
-                        ambiguous.add(ts)
-                        continue
-                    by_ts[ts] = row
-                day_state[day.isoformat()] = {
-                    "by_ts": by_ts, "ambiguous": ambiguous, "csv_url": csv_url,
-                    "evidence": _envelope([
-                        {"url": csv_url, "status": csv_status, "body": csv_body},
-                        {"url": meta_url, "status": meta_status, "body": meta_body}])}
+                by_ts, ambiguous = _day_rows(csv_body, dataset, day)
+                day_state[day_s] = (by_ts, ambiguous, csv_url, _envelope([
+                    {"url": csv_url, "status": csv_status, "body": csv_body},
+                    {"url": meta_url, "status": meta_status, "body": meta_body}]))
             state[dataset] = {"labels": labels, "days": day_state}
 
+        results: list[ItemResult] = []
         for item in items:
-            dataset, field = _dataset_and_field(item.spec.native_code)
+            dataset, _field = _dataset_and_field(item.spec.native_code)
             st = state[dataset]
-            if field not in st["labels"] or st["labels"][field][1] != "double":
-                raise ValueError(f"E-REDES metadata field {field!r} missing or not double")
-            unit = st["labels"][field][0]
-            d = st["days"][item.period[:10]]  # every sampled day was fetched above
-            row = None if item.period in d["ambiguous"] else d["by_ts"].get(item.period)
-            if row is None:
-                # absent OR ambiguous (a duplicated stamp is 'not found', never a coin flip
-                # between conflicting copies): observed_text=None is a mismatch, not a guess
-                results.append(ItemResult(item.series_id, item.period, None,
-                                          d["csv_url"], ".", unit, None, d["evidence"]))
-                continue
-            token = row[EXPECTED_HEADER.index(field)].strip()
-            if _NUMBER.fullmatch(token) is None:
-                raise ValueError(f"E-REDES CSV {field} @ {item.period} is not a number "
-                                 f"token: {row[EXPECTED_HEADER.index(field)]!r}")
-            results.append(ItemResult(item.series_id, item.period, token, d["csv_url"],
-                                      ".", unit, None, d["evidence"]))
+            by_ts, ambiguous, csv_url, evidence = st["days"][item.period[:10]]
+            results.append(_result(item, st["labels"], by_ts, ambiguous, csv_url, evidence))
         return results

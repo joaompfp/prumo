@@ -15,6 +15,7 @@ from ingest.verifiers.ren import RenVerifier
 from ingest.verify import replay_item, run_with_refetch, verify_run
 from tests.ingest.ren_fixtures import FixtureHttp, all_specs, registry_specs
 from tests.ingest.ren_verifier_fixtures import VMANIFEST, VerifyFixtureHttp, decode_evidence, vbody
+from tests.ingest.replay_helpers import assert_replays_from_evidence
 
 
 class Clock:
@@ -245,8 +246,7 @@ def _run(env, seed=7):
     db, specs, store, clock = env
     r = run_dataset(db, store, RenSource(periods=("2026-09",)), specs, FixtureHttp(), clock)
     assert r.state == "pending-verification" and r.n_written == 14
-    ok = verify_run(db, r.run_id, RenVerifier(), VerifyFixtureHttp(), seed=seed, size=20,
-                    specs=specs, store=store, now=clock)
+    ok = verify_run(db, r.run_id, RenVerifier(), VerifyFixtureHttp(), seed=seed, specs=specs, store=store, now=clock)
     return db, specs, store, r, ok
 
 
@@ -284,7 +284,7 @@ def test_archived_evidence_recovers_offline_and_replays(env):
         assert rec == {"url": url, "status": VMANIFEST[key]["status"],
                        "body": vbody(VMANIFEST[key]["file"])}
         assert url == VMANIFEST[key]["url"]
-        assert replay_item(db, store, item_id) is True
+        assert replay_item(db, store, item_id, RenVerifier()) is True
 
 
 def test_verifier_detects_tampered_value(env):
@@ -294,8 +294,7 @@ def test_verifier_detects_tampered_value(env):
     tampered_src = _TamperedFixtureHttp()
     r = run_dataset(db, store, RenSource(periods=("2026-09",)), specs, tampered_src, clock)
     assert r.state == "pending-verification"
-    assert not verify_run(db, r.run_id, RenVerifier(), VerifyFixtureHttp(), seed=7, size=20,
-                          specs=specs, store=store, now=clock)
+    assert not verify_run(db, r.run_id, RenVerifier(), VerifyFixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, expected_text, observed_text, note FROM "
                 "verification_item WHERE match=0")
@@ -325,8 +324,7 @@ def test_verifier_detects_tampered_unit_label(env):
     r = run_dataset(db, store, RenSource(periods=("2026-09",)), specs, FixtureHttp(), clock)
     tampered = vbody(VMANIFEST["balance_2026-09"]["file"]).replace(b"[GWh]", b"[MWh]")
     assert not verify_run(db, r.run_id, RenVerifier(),
-                          VerifyFixtureHttp({"balance_2026-09": tampered}), seed=7, size=20,
-                          specs=specs, store=store, now=clock)
+                          VerifyFixtureHttp({"balance_2026-09": tampered}), seed=7, specs=specs, store=store, now=clock)
     bad = q(db, "SELECT note FROM verification_item WHERE match=0")
     assert len(bad) == 13 and all("unit differs" in n for (n,) in bad)
 
@@ -349,8 +347,16 @@ def test_run_with_refetch_verifies_the_registered_verifier(env):
     v = RenVerifier()
     register_verifier(v)
     res = run_with_refetch(db, store, RenSource(periods=("2026-09",)), v, specs,
-                           _BothChannels(), size=14, now=clock, max_attempts=1)
+                           _BothChannels(), now=clock, max_attempts=1)
     assert res.state == "verified"
     [(passed,)] = q(db, "SELECT passed FROM verification")
     assert passed == 1
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(0,)]  # licence gate
+
+
+def test_every_item_replays_from_its_archived_evidence_via_reread(env):
+    """Task 21 B-I4: replay re-reads the stored evidence with the verifier's pure reread
+    (recorded fixtures, no HTTP) and rejects a stored claim the evidence does not support."""
+    db, specs, store, r, ok = _run(env)
+    assert ok
+    assert assert_replays_from_evidence(db, store, RenVerifier())

@@ -71,7 +71,7 @@ import re
 import zipfile
 
 from ingest.http import Http
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 # The ONLY admitted export locales of the SAME publisher per-indicator CSV exporter:
 # language -> (exact URL template, expected localized Data Source title of the archive).
@@ -308,35 +308,73 @@ class WorldBankVerifier:
         url, title = CSV_LANGUAGES[lang]
         return url, title, lang
 
+    not_compared = {
+        "unit": "the bulk CSV export has no machine-readable unit column (unit evidence is the "
+                "indicator sourceNote prose; registry labels audited in "
+                "tests/ingest/test_registry_worldbank_units.py)",
+        "flag": "the bulk CSV export has no per-cell status or footnote surface"}
+
+    def request_key(self, item: BlindItem):
+        return _indicator_of(item.spec.native_code)[0]  # one ZIP per indicator: full history
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        """Pure re-decision from the archived envelope: the locale is the one the recorded
+        final URL names (exact CSV_LANGUAGES template), never this instance's configuration."""
+        code, _ = _indicator_of(item.spec.native_code)
+        doc = json.loads(evidence)
+        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION \
+                or len(doc.get("responses") or []) != 1:
+            raise ValueError("not a worldbank-csv-evidence v1 envelope of one response")
+        rec = doc["responses"][0]
+        if not 200 <= rec["status"] < 300:
+            raise ValueError(f"archived response has HTTP status {rec['status']}")
+        langs = [lang for lang, (url_t, _) in CSV_LANGUAGES.items()
+                 if url_t.format(code=code) == rec["url"]]
+        if len(langs) != 1:
+            raise ValueError(f"archived URL {rec['url']!r} is not an admitted export of {code}")
+        body = base64.b64decode(rec["body_base64"], validate=True)
+        title = CSV_LANGUAGES[langs[0]][1]
+        rows, ycol = _table(_read_export(body, code, langs[0], item.series_id), code, title,
+                            item.series_id)
+        return _result(item, rows, ycol, code, rec["url"], evidence)
+
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
-        zips: dict[str, tuple[bytes, str, int]] = {}  # code -> (body, final url, status)
-        tables: dict[str, tuple[dict[str, list[str]], dict[str, int]]] = {}
+        # code -> (rows, year columns, final url, evidence envelope built ONCE per indicator)
+        tables: dict[str, tuple[dict[str, list[str]], dict[str, int], str, bytes]] = {}
         results: list[ItemResult] = []
         for item in items:
-            code, iso3 = _indicator_of(item.spec.native_code)
-            if not _PERIOD.fullmatch(item.period):
+            code, _ = _indicator_of(item.spec.native_code)
+            if not _PERIOD.fullmatch(item.period):  # before any request
                 raise ValueError(f"World Bank verifier accepts canonical yearly periods only, "
                                  f"got {item.period!r}")
-            if code not in zips:
+            if code not in tables:
                 url_t, title, lang = self._channel(code)
                 r = http.get(url_t.format(code=code))
                 if not 200 <= r.status < 300:
-                    raise ValueError(f"World Bank CSV export for indicator {code} answered "
-                                     f"HTTP {r.status} (fail closed on every non-2xx)")
-                zips[code] = (r.body, r.url, r.status)
-                tables[code] = _table(
-                    _read_export(r.body, code, lang, item.series_id),
-                    code, title, item.series_id)
-            body, url, status = zips[code]
-            rows, ycol = tables[code]
-            row = rows.get(iso3)
-            if item.period not in ycol:
-                raise ValueError(f"World Bank CSV export for {code} has no column for the "
-                                 f"requested period {item.period!r} (export drift)")
-            cell = row[ycol[item.period]] if row is not None else ""
-            results.append(ItemResult(
-                series_id=item.series_id, period=item.period,
-                observed_text=cell if cell != "" else None,
-                evidence_url=url, observed_decimal=".", observed_unit=None,
-                observed_flag=None, evidence=_envelope(url, status, body)))
+                    raise VerifierUnavailable(
+                        f"World Bank CSV export for indicator {code} answered HTTP {r.status} "
+                        f"(fail closed on every non-2xx)")
+                rows, ycol = _table(_read_export(r.body, code, lang, item.series_id),
+                                    code, title, item.series_id)
+                tables[code] = (rows, ycol, r.url, _envelope(r.url, r.status, r.body))
+            rows, ycol, url, evidence = tables[code]
+            results.append(_result(item, rows, ycol, code, url, evidence))
         return results
+
+
+def _result(item: BlindItem, rows: dict[str, list[str]], ycol: dict[str, int], code: str,
+            url: str, evidence: bytes) -> ItemResult:
+    """One item read from a parsed export table (shared by check and reread)."""
+    _, iso3 = _indicator_of(item.spec.native_code)
+    if not _PERIOD.fullmatch(item.period):
+        raise ValueError(f"World Bank verifier accepts canonical yearly periods only, "
+                         f"got {item.period!r}")
+    if item.period not in ycol:
+        raise ValueError(f"World Bank CSV export for {code} has no column for the "
+                         f"requested period {item.period!r} (export drift)")
+    row = rows.get(iso3)
+    cell = row[ycol[item.period]] if row is not None else ""
+    return ItemResult(series_id=item.series_id, period=item.period,
+                      observed_text=cell if cell != "" else None, evidence_url=url,
+                      observed_decimal=".", observed_unit=None, observed_flag=None,
+                      evidence=evidence)

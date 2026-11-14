@@ -39,6 +39,7 @@ class DatasetRunResult:
     run_id: int
     n_written: int  # observation rows committed by this run
     n_quarantined: int  # quarantine rows committed by this run
+    detail: str | None = None  # why verification gave up (escalation), for operator reports
 
 
 class StaleRecordedError(ValueError):
@@ -98,7 +99,10 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
     Revisions: compared on `value_text` (the publisher's verbatim token, so "2.0" -> "2.10" is a
     revision) against the currently served *verified fetched* value only, never legacy or
     unverified rows. A revision emits event(revision, {series_id, period, old, new}); the new
-    value is stored as a new vintage (higher observation.id) either way.
+    value is stored as a new vintage (higher observation.id) either way. Periods new to a
+    series that already has verified fetched data emit ONE event(new_periods, {series_id,
+    periods}) per series; revisions + new periods are the run's changed set, which
+    verification checks first (ingest.sampling).
     """
     if input_origin not in ("live", "recorded"):
         raise ValueError(f"input_origin must be 'live' or 'recorded', got {input_origin!r}")
@@ -268,6 +272,9 @@ def _write(db: Db, run_id: int, raws: list[tuple[int, str]],
             if old is not None and old != o.value_text:
                 db.add_event(t, "revision", run_id, {"series_id": spec.id, "period": o.period,
                                                      "old": old, "new": o.value_text})
+        added = sorted({o.period for o in observations} - served.keys()) if served else []
+        if added:  # with the revisions, the run's changed set (must-check in verification)
+            db.add_event(t, "new_periods", run_id, {"series_id": spec.id, "periods": added})
         db.write_observations(run_id, [(o, *raws[o.response_index]) for o in observations])
         if rejections:
             db.write_quarantine(run_id, spec.id, rejections, t)

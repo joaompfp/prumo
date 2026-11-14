@@ -30,7 +30,10 @@
                                    group; E-REDES bundle runs need explicit --from/--to day
                                    bounds, also usable live for catch-up); recorded input
                                    keeps its ORIGINAL retrieval dates and is labelled
-                                   'recorded'; never replaces newer verified data
+                                   'recorded'; never replaces newer verified data; the
+                                   VERIFIER reads the publisher over live HTTP (fails
+                                   clearly offline) unless --pinned-verifier (NOT
+                                   audit-grade, recorded per verification) is given
     replay --from YYYY-MM          fresh re-fetch of every source through run_with_refetch;
                                    the cutoff scopes ONLY E-REDES' explicit day window
                                    ([<month>-01T00:00:00+00:00, today UTC day start)); other
@@ -109,6 +112,11 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--dry-run", action="store_true",
                    help="isolate: a throwaway DB/raw store under TMPDIR; --db/--raw-dir are "
                         "never opened")
+    r.add_argument("--pinned-verifier", action="store_true",
+                   help="with --bundle only, NOT AUDIT-GRADE: verify against the bundle's "
+                        "own captured verifier responses instead of live HTTP (recorded as "
+                        "verifier_channel='pinned-bundle'); default: the verifier reads the "
+                        "publisher live and fails clearly when offline")
 
     c = sub.add_parser(
         "capture",
@@ -247,6 +255,7 @@ def _open_run(args, specs, db_path: Path, raw_path: Path, request: RunRequest,
     race with a concurrent newer writer."""
     pinned = None
     source_factories = None
+    verify_http_for, verifier_channel = None, "live"
     if args.dry_run:
         tmp = tempfile.TemporaryDirectory(prefix="prumo-dry-run-")  # TMPDIR-scoped
         db_path, raw_path = Path(tmp.name) / "prumo.sqlite3", Path(tmp.name) / "raw"
@@ -257,8 +266,17 @@ def _open_run(args, specs, db_path: Path, raw_path: Path, request: RunRequest,
         source_factories = {
             args.source: lambda req: RecordedSource(
                 operations.SOURCE_FACTORIES[args.source](req), pinned)}
-        def http_for(_name):  # recorded path: the pinned bundle is the only input
+        live_http_for = http_for
+
+        def http_for(_name):  # recorded path: the pinned bundle is the only COLLECTOR input
             return pinned
+        if getattr(args, "pinned_verifier", False):
+            # NON-AUDIT-GRADE (explicit flag): the verifier reads the same operator-captured
+            # bundle as the collector, so a consistently edited bundle would still "verify";
+            # recorded on every verification row as verifier_channel='pinned-bundle'
+            verify_http_for, verifier_channel = http_for, "pinned-bundle"
+        else:  # B-I3: verification of recorded input re-reads the publisher over LIVE HTTP
+            verify_http_for = live_http_for
     db = open_db(db_path)
     try:
         store = RawStore(raw_path)
@@ -275,7 +293,8 @@ def _open_run(args, specs, db_path: Path, raw_path: Path, request: RunRequest,
         sync_registry(db, specs)
         only = None if getattr(args, "source", "all") == "all" else [args.source]
         report = run_all(db, store, specs, http_for=http_for, request=request, only=only,
-                         source_factories=source_factories, blocked_groups=blocked_groups)
+                         source_factories=source_factories, blocked_groups=blocked_groups,
+                         verify_http_for=verify_http_for, verifier_channel=verifier_channel)
         _print_report(report, sys.stdout)
         return report.exit_code()
     finally:
@@ -427,6 +446,8 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
                                          f"{today.isoformat()}T00:00:00+00:00"))
             return _open_run(args, specs, db_path, raw_path, request, http_for)
         try:  # every run-mode validation BEFORE any DB open or file mutation
+            if args.pinned_verifier and args.bundle is None:
+                raise ValueError("--pinned-verifier only applies to a recorded --bundle run")
             if args.dry_run and args.bundle:
                 raise ValueError("--dry-run and --bundle do not combine: a recorded run IS "
                                  "already the isolated path")

@@ -53,7 +53,7 @@ import re
 from datetime import date
 
 from ingest.http import Http
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 EXPORT_URL = "https://datahub.ren.pt/service/exports/csv"
 BALANCE_ENDPOINT = "ElectricityConsumptionSupplyMonthly"
@@ -242,35 +242,64 @@ class RenVerifier:
     HTTP status)."""
 
     source_name = "ren"
+    not_compared = {
+        "unit": "the market chart CSV (modelId 2649) carries no unit annotation; balance rows "
+                "compare the bracketed monthly-column unit",
+        "flag": "neither chart CSV export exposes an observation status"}
+
+    def request_key(self, item: BlindItem):
+        endpoint, _ = _endpoint_and_selector(item.spec.native_code)
+        return _params(endpoint, item.period)["modelId"], item.period  # one CSV per chart+month
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        """Pure re-decision from the archived 'ren-portal-evidence' v1 envelope."""
+        doc = json.loads(evidence)
+        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION \
+                or len(doc.get("responses") or []) != 1:
+            raise ValueError("not a ren-portal-evidence v1 envelope of one response")
+        rec = doc["responses"][0]
+        if not 200 <= rec["status"] < 300:
+            raise ValueError(f"archived response has HTTP status {rec['status']}")
+        body = base64.b64decode(rec["body_base64"], validate=True)
+        return _result(item, body, rec["url"], evidence)
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
-        cache: dict[tuple[str, str], tuple[bytes, str, int]] = {}  # per (chart model, month)
+        cache: dict[tuple[str, str], tuple[bytes, str, bytes]] = {}  # per (chart model, month)
         results: list[ItemResult] = []
         for item in items:
-            endpoint, selector = _endpoint_and_selector(item.spec.native_code)
-            y, mm = _year_month(item.period)
-            first, last = date(y, mm, 1).isoformat(), _last_day(y, mm).isoformat()
-            if endpoint == BALANCE_ENDPOINT:
-                # a single point inside the month pins it (archived: start=end=month last day)
-                params = {"startDateString": last, "endDateString": last, "culture": "pt-PT",
-                          "country": "PT", "modelId": _BALANCE_MODEL}
-            else:
-                params = {"startDateString": first, "endDateString": last, "culture": "pt-PT",
-                          "country": "PT", "modelId": _MARKET_MODEL}
+            endpoint, _selector = _endpoint_and_selector(item.spec.native_code)
+            params = _params(endpoint, item.period)
             cache_key = (params["modelId"], item.period)
             if cache_key not in cache:
                 r = http.get(EXPORT_URL, params=params)
                 if not 200 <= r.status < 300:
-                    raise ValueError(f"REN portal CSV export for {item.spec.id} {item.period} "
-                                     f"answered HTTP {r.status} (fail closed on every non-2xx)")
-                cache[cache_key] = (r.body, r.url, r.status)
-            body, url, status = cache[cache_key]
-            if endpoint == BALANCE_ENDPOINT:
-                token, unit = _parse_balance_csv(body, _BALANCE_LABEL[selector], item.period)
-            else:
-                token, unit = _parse_market_csv(body, item.period), None
-            results.append(ItemResult(
-                series_id=item.series_id, period=item.period, observed_text=token,
-                evidence_url=url, observed_decimal=".", observed_unit=unit,
-                observed_flag=None, evidence=_envelope(url, status, body)))
+                    raise VerifierUnavailable(
+                        f"REN portal CSV export for {item.spec.id} {item.period} answered "
+                        f"HTTP {r.status} (fail closed on every non-2xx)")
+                cache[cache_key] = (r.body, r.url, _envelope(r.url, r.status, r.body))
+            body, url, evidence = cache[cache_key]
+            results.append(_result(item, body, url, evidence))
         return results
+
+
+def _params(endpoint: str, period: str) -> dict[str, str]:
+    y, mm = _year_month(period)
+    first, last = date(y, mm, 1).isoformat(), _last_day(y, mm).isoformat()
+    if endpoint == BALANCE_ENDPOINT:
+        # a single point inside the month pins it (archived: start=end=month last day)
+        return {"startDateString": last, "endDateString": last, "culture": "pt-PT",
+                "country": "PT", "modelId": _BALANCE_MODEL}
+    return {"startDateString": first, "endDateString": last, "culture": "pt-PT",
+            "country": "PT", "modelId": _MARKET_MODEL}
+
+
+def _result(item: BlindItem, body: bytes, url: str, evidence: bytes) -> ItemResult:
+    """One item read from its chart-month CSV (shared by check and reread)."""
+    endpoint, selector = _endpoint_and_selector(item.spec.native_code)
+    if endpoint == BALANCE_ENDPOINT:
+        token, unit = _parse_balance_csv(body, _BALANCE_LABEL[selector], item.period)
+    else:
+        token, unit = _parse_market_csv(body, item.period), None
+    return ItemResult(series_id=item.series_id, period=item.period, observed_text=token,
+                      evidence_url=url, observed_decimal=".", observed_unit=unit,
+                      observed_flag=None, evidence=evidence)

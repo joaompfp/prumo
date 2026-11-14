@@ -22,6 +22,7 @@ from tests.ingest.eredes_verifier_fixtures import (
     decode_evidence,
     vbody,
 )
+from tests.ingest.replay_helpers import assert_replays_from_evidence
 
 
 class Clock:
@@ -223,8 +224,7 @@ def _run(env, seed=7):
     db, specs, store, clock = env
     r = run_dataset(db, store, _window_source(), specs, FixtureHttp(), clock)
     assert r.state == "pending-verification" and r.n_written == 288
-    ok = verify_run(db, r.run_id, EredesVerifier(), VerifyFixtureHttp(), seed=seed, size=50,
-                    specs=specs, store=store, now=clock)
+    ok = verify_run(db, r.run_id, EredesVerifier(), VerifyFixtureHttp(), seed=seed, specs=specs, store=store, now=clock)
     return db, specs, store, r, ok
 
 
@@ -234,11 +234,11 @@ def test_verified_run_is_served_under_cc_by(env):
     assert ok and db.run_state(r.run_id) == "verified"
     [(n, passed)] = q(db, "SELECT sample_size, passed FROM verification WHERE dataset_run_id=?",
                       r.run_id)
-    assert (n, passed) == (50, 1)
+    assert (n, passed) == (288, 1)  # the day CSV carries every stamp: whole day compared
     assert q(db, "SELECT COUNT(*) FROM served_observation") == [(288,)]
     items = q(db, "SELECT series_id, period, observed_unit, observed_flag FROM "
                   "verification_item")
-    assert len(items) == 50 and all(u == "kWh" and f is None for _, _, u, f in items)
+    assert len(items) == 288 and all(u == "kWh" and f is None for _, _, u, f in items)
     # expected/observed exact tokens stored item-side, decimal '.'
     row = q(db, "SELECT expected_text, observed_text, expected_decimal, observed_decimal FROM "
                 "verification_item WHERE period='2026-11-10T23:45:00+00:00' AND "
@@ -253,14 +253,14 @@ def test_archived_evidence_recovers_offline_and_replays(env):
     db, specs, store, r, ok = _run(env)
     assert ok
     rows = q(db, "SELECT id, evidence_url, evidence_sha256 FROM verification_item")
-    assert len(rows) == 50
+    assert len(rows) == 288
     for item_id, url, sha in rows:
         blob = store.load(store.root / "verify-eredes" / sha[:2] / sha)  # raises if altered
         rec_csv, rec_meta = decode_evidence(blob)
         assert url == VMANIFEST["window_csv"]["url"] == rec_csv["url"]
         assert rec_csv["body"] == vbody("window_csv")
         assert rec_meta["body"] == vbody("metadata")
-        assert replay_item(db, store, item_id) is True
+        assert replay_item(db, store, item_id, EredesVerifier()) is True
     # offline unit+value recovery proof: values/units of every served series come from the
     # archived evidence alone
     assert q(db, "SELECT value_text FROM served_observation WHERE series_id="
@@ -277,8 +277,7 @@ def test_verifier_detects_tampered_value(env):
     r = run_dataset(db, store, _window_source(), specs,
                     FixtureHttp({"window_json": tampered}), clock)
     assert r.state == "pending-verification"
-    assert not verify_run(db, r.run_id, EredesVerifier(), VerifyFixtureHttp(), seed=7, size=50,
-                          specs=specs, store=store, now=clock)
+    assert not verify_run(db, r.run_id, EredesVerifier(), VerifyFixtureHttp(), seed=7, specs=specs, store=store, now=clock)
     assert db.run_state(r.run_id) == "failed-verification"
     bad = q(db, "SELECT series_id, period, expected_text, observed_text, note FROM "
                 "verification_item WHERE match=0")
@@ -294,8 +293,7 @@ def test_verifier_detects_tampered_unit_label(env):
     tampered = vbody("metadata").replace(b'"label": "Market (kWh)"',
                                                             b'"label": "Market (MWh)"', 1)
     assert not verify_run(db, r.run_id, EredesVerifier(),
-                          VerifyFixtureHttp({"metadata": tampered}), seed=7, size=50,
-                          specs=specs, store=store, now=clock)
+                          VerifyFixtureHttp({"metadata": tampered}), seed=7, specs=specs, store=store, now=clock)
     bad = q(db, "SELECT series_id, note FROM verification_item WHERE match=0")
     assert bad and all("unit differs" in n for _, n in bad)
     assert all(sid.startswith("eredes.production_market") for sid, _ in bad)
@@ -324,8 +322,7 @@ def test_run_with_refetch_verifies_the_registered_verifier(env):
     db, specs, store, clock = env
     v = EredesVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, _window_source(), v, specs, _BothChannels(), size=50,
-                           now=clock, max_attempts=1)
+    res = run_with_refetch(db, store, _window_source(), v, specs, _BothChannels(), now=clock, max_attempts=1)
     assert res.state == "verified"
     [(passed,)] = q(db, "SELECT passed FROM verification")
     assert passed == 1
@@ -364,8 +361,7 @@ def test_run_with_refetch_verifies_and_serves_the_summer_window(env):
     db, specs, store, clock = env
     v = EredesVerifier()
     register_verifier(v)
-    res = run_with_refetch(db, store, _summer_source(), v, specs, _BothChannels(), size=50,
-                           now=clock, max_attempts=1)
+    res = run_with_refetch(db, store, _summer_source(), v, specs, _BothChannels(), now=clock, max_attempts=1)
     assert res.state == "verified"
     [(passed,)] = q(db, "SELECT passed FROM verification")
     assert passed == 1
@@ -380,4 +376,12 @@ def test_run_with_refetch_verifies_and_serves_the_summer_window(env):
         assert url == VMANIFEST["summer_window_csv"]["url"] == rec_csv["url"]
         assert rec_csv["body"] == vbody("summer_window_csv")
         assert rec_meta["body"] == vbody("metadata")
-        assert replay_item(db, store, item_id) is True
+        assert replay_item(db, store, item_id, EredesVerifier()) is True
+
+
+def test_every_item_replays_from_its_archived_evidence_via_reread(env):
+    """Task 21 B-I4: replay re-reads the stored evidence with the verifier's pure reread
+    (recorded fixtures, no HTTP) and rejects a stored claim the evidence does not support."""
+    db, specs, store, r, ok = _run(env)
+    assert ok
+    assert assert_replays_from_evidence(db, store, EredesVerifier(), step=7)

@@ -54,7 +54,7 @@ from datetime import date, datetime, timedelta
 
 from ingest.http import Http, HttpResult
 from ingest.models import SeriesSpec
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 SERIES_URL = "https://bpstat.bportugal.pt/api/series/"
 OBS_URL = "https://bpstat.bportugal.pt/api/observations/"
@@ -237,6 +237,29 @@ class BPortugalVerifier:
     evidence_url stays the observations URL; observed_flag is honestly None (this channel
     exposes no observation status, so ingest.verify skips the flag comparison)."""
     source_name = "bportugal"
+    not_compared = {"flag": "the portal observation rows expose no observation status (only "
+                            "privacy_code 'P' and an empty description, both asserted)"}
+
+    def request_key(self, item: BlindItem):
+        return item.series_id, item.period  # one month-window request per item
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        """Pure re-decision from the archived 'bportugal-portal-evidence' v1 envelope."""
+        sid = _native(item.spec.native_code)
+        _window(item.period)
+        doc = json.loads(evidence)
+        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION:
+            raise ValueError("not a bportugal-portal-evidence v1 envelope")
+        meta, obs = doc["metadata"], doc["observations"]
+        for rec in (meta, obs):
+            if not 200 <= rec["status"] < 300:
+                raise ValueError(f"archived response has HTTP status {rec['status']}")
+        unit = _meta_of(base64.b64decode(meta["body_b64"], validate=True), item.spec, sid)
+        observed = _current(_load(base64.b64decode(obs["body_b64"], validate=True),
+                                  "observations"), sid, item.period)
+        return ItemResult(series_id=item.series_id, period=item.period, observed_text=observed,
+                          evidence_url=obs["url"], observed_decimal=".", observed_unit=unit,
+                          observed_flag=None, evidence=evidence)
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         meta: dict[int, tuple[str, HttpResult]] = {}  # sid -> (observed_unit, wire record)
@@ -247,15 +270,16 @@ class BPortugalVerifier:
                 r = http.get(SERIES_URL, params={"view_full": "true", "page_size": "1",
                                                  "series_ids": str(sid)})
                 if not 200 <= r.status < 300:
-                    raise ValueError(f"portal series metadata for {sid} answered HTTP {r.status}")
+                    raise VerifierUnavailable(
+                        f"portal series metadata for {sid} answered HTTP {r.status}")
                 meta[sid] = (_meta_of(r.body, item.spec, sid), r)
             unit, meta_r = meta[sid]
             start, end = _window(item.period)
             params = {"series_ids": str(sid), "start_date": start, "end_date": end}
             r = http.get(OBS_URL, params=params)
             if not 200 <= r.status < 300:
-                raise ValueError(f"portal observations for {sid} {item.period} answered HTTP "
-                                 f"{r.status}")
+                raise VerifierUnavailable(f"portal observations for {sid} {item.period} "
+                                          f"answered HTTP {r.status}")
             observed = _current(_load(r.body, "observations"), sid, item.period)
             results.append(ItemResult(
                 series_id=item.series_id, period=item.period, observed_text=observed,

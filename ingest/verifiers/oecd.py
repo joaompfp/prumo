@@ -64,10 +64,11 @@ import csv
 import io
 import json
 import re
+import urllib.parse
 
 from ingest.http import Http, HttpResult
 from ingest.models import SeriesSpec
-from ingest.verifiers import BlindItem, ItemResult
+from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 API_BASE = "https://sdmx.oecd.org/public/rest"
 EVIDENCE_SCHEMA = "oecd-csv-evidence"
@@ -330,6 +331,25 @@ class OecdVerifier:
     publisher OBS_STATUS code ('A' -> 'normal'), observed_decimal '.'. A period absent from the
     response yields observed_text=None (honest 'not found', decided by ingest.verify)."""
     source_name = "oecd"
+    not_compared: dict[str, str] = {}  # value, unit and flag all come from the CSV evidence
+
+    def request_key(self, item: BlindItem):
+        return item.spec.native_code  # one bounded CSV per series (window = sampled span)
+
+    def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
+        """Pure re-decision from the archived 'oecd-csv-evidence' v1 envelope; the window
+        containment constraint is the one the archived final URL requested."""
+        doc = json.loads(evidence)
+        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION:
+            raise ValueError("not an oecd-csv-evidence v1 envelope")
+        rec = doc["csv"]
+        if not 200 <= rec["status"] < 300:
+            raise ValueError(f"archived response has HTTP status {rec['status']}")
+        query = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(rec["url"]).query))
+        unit, values = read_csv_evidence(
+            base64.b64decode(rec["body_b64"], validate=True), item.spec.native_code, item.spec,
+            start=query.get("startPeriod"), end=query.get("endPeriod"))
+        return _result(item, unit, values, rec["url"], evidence)
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         groups: dict[str, list[BlindItem]] = {}
@@ -347,17 +367,22 @@ class OecdVerifier:
                       "endPeriod": _window("endPeriod", end)}
             r = http.get(f"{API_BASE}/data/{nc}", params=params)
             if not 200 <= r.status < 300:
-                raise ValueError(f"OECD csvfilewithlabels for {nc} answered HTTP {r.status}")
+                raise VerifierUnavailable(f"OECD csvfilewithlabels for {nc} answered HTTP "
+                                          f"{r.status}")
             pages[nc] = (r, read_csv_evidence(r.body, nc, group[0].spec,
                                               start=params["startPeriod"],
-                                              end=params["endPeriod"]))
+                                              end=params["endPeriod"]), _envelope(r))
         results = []
         for item in items:
-            r, (unit, values) = pages[item.spec.native_code]
-            got = values.get(item.period)
-            results.append(ItemResult(
-                series_id=item.series_id, period=item.period,
-                observed_text=got[0] if got else None,
-                evidence_url=r.url, observed_decimal=".", observed_unit=unit,
-                observed_flag=got[1] if got else None, evidence=_envelope(r)))
+            r, (unit, values), evidence = pages[item.spec.native_code]
+            results.append(_result(item, unit, values, r.url, evidence))
         return results
+
+
+def _result(item: BlindItem, unit: str, values: dict, url: str, evidence: bytes) -> ItemResult:
+    """One item read from a decoded CSV (shared by check and reread)."""
+    got = values.get(item.period)
+    return ItemResult(series_id=item.series_id, period=item.period,
+                      observed_text=got[0] if got else None, evidence_url=url,
+                      observed_decimal=".", observed_unit=unit,
+                      observed_flag=got[1] if got else None, evidence=evidence)

@@ -327,9 +327,10 @@ def test_0011_upgrades_populated_0010_and_preserves_every_row(tmp_path, monkeypa
                      FakeHttp(ok(payload({"s1": [["2024", "2.0"]], "s2": [["2024", "x"]]}))),
                      now=lambda: NOV13)
     d.transition_run_state(r1.run_id, "pending-verification", "verified")
-    vid = d.add_verification(r1.run_id, 7, 1, True, "t")
-    d.add_verification_item(vid, {c: None for c in d._ITEM_COLUMNS} | {
-        "series_id": "s1", "period": "2024", "expected_text": "2.0", "match": True})
+    vid = d.conn.execute("INSERT INTO verification(dataset_run_id, seed, sample_size, passed, "
+                         "created_at) VALUES (?, 7, 1, 1, 't')", (r1.run_id,)).lastrowid
+    d.conn.execute("INSERT INTO verification_item(verification_id, series_id, period, "
+                   "expected_text, match) VALUES (?, 's1', '2024', '2.0', 1)", (vid,))
     # older vintage inserted LAST (the I1 shape), a failed run, an orphan running run
     _direct_verified(d, "s1", "2024", "1.0", NOV01, "late-old")
     d.set_run_state(d.begin_run("fake", "f", "t"), "failed-fetch")
@@ -341,7 +342,12 @@ def test_0011_upgrades_populated_0010_and_preserves_every_row(tmp_path, monkeypa
     before = _snapshot(d)
     d.close()
 
-    monkeypatch.setattr(dbmod, "MIGRATIONS_DIR", MIGRATIONS_DIR)
+    upto11 = tmp_path / "mig11"  # this test pins the 0011 upgrade (0012 is tested in task21)
+    upto11.mkdir()
+    for f in MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql"):
+        if f.stem < "0012":
+            (upto11 / f.name).write_bytes(f.read_bytes())
+    monkeypatch.setattr(dbmod, "MIGRATIONS_DIR", upto11)
     d = open_db(p)
     try:
         assert any(v.startswith("0011") for (v,) in

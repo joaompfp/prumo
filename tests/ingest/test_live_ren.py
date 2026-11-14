@@ -59,8 +59,7 @@ def test_live_run_with_refetch_is_verified_but_legally_withheld(tmp_path, monkey
         assert db.conn.execute("SELECT redistribution_ok FROM source WHERE name='ren'") \
             .fetchone()[0] == 0
         http = RequestsHttp(throttle_rps=1.0, timeout=50.0)
-        result = run_with_refetch(db, RawStore(tmp_path / "raw"), source, verifier, specs, http,
-                                  size=50)
+        result = run_with_refetch(db, RawStore(tmp_path / "raw"), source, verifier, specs, http)
         per_series = db.conn.execute(
             "SELECT series_id, COUNT(*), MIN(period), MAX(period) FROM observation "
             "WHERE dataset_run_id = ? GROUP BY series_id", (result.run_id,)).fetchall()

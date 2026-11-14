@@ -372,7 +372,8 @@ def test_populated_upgrade_and_failed_migration_preserve_data_view_and_fk(tmp_pa
                              sha256="test-only", path="test-only", n_bytes=1, ok=True)
     db.write_observations(run, [(Observation.from_raw(spec.id, "2025", "1.50"), raw, T0.isoformat())])
     db.set_run_state(run, "verified", T0.isoformat())
-    db.add_verification(run, 7, 1, True, T0.isoformat())
+    db.conn.execute("INSERT INTO verification(dataset_run_id, seed, sample_size, passed, "
+                    "created_at) VALUES (?, 7, 1, 1, ?)", (run, T0.isoformat()))  # 0009 shape
     db.add_event(T0.isoformat(), "revision", run, {"test": "kept"})
     legacy = db.legacy_run("worldbank", "legacy:worldbank", T0.isoformat())
     db.write_legacy_observations(legacy, [(Observation.from_raw(spec.id, "1959", "2.00"),

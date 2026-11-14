@@ -29,7 +29,7 @@ def test_live_run_with_refetch(tmp_path, monkeypatch):
         verifier = EurostatVerifier()
         register_verifier(verifier)
         result = run_with_refetch(db, RawStore(tmp_path / "raw"), EurostatSource(), verifier,
-                                  specs, RequestsHttp(throttle_rps=1.0), size=50)
+                                  specs, RequestsHttp(throttle_rps=1.0))
         rows = db.conn.execute(
             "SELECT v.dataset_run_id, v.sample_size, v.passed, "
             "SUM(i.match = 0) FROM verification v JOIN verification_item i "

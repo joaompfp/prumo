@@ -47,7 +47,7 @@ def test_live_run_with_refetch_verifies_and_serves_cc_by(tmp_path, monkeypatch, 
             "SELECT redistribution_ok FROM source WHERE name='worldbank'").fetchone()[0] == 1
         http = RequestsHttp(throttle_rps=1.0, timeout=60.0)
         result = run_with_refetch(db, RawStore(tmp_path / "raw"), WorldBankSource(), verifier,
-                                  specs, http, size=50)
+                                  specs, http)
         per_series = db.conn.execute(
             "SELECT series_id, COUNT(*), MAX(period) FROM observation WHERE dataset_run_id=? "
             "GROUP BY series_id", (result.run_id,)).fetchall()

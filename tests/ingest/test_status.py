@@ -62,7 +62,9 @@ def _fetched_run(db, key: str, rows, started: datetime, state: str = "verified",
                                      _ts(f_at))])
     db.set_run_state(run, state, finished_at=_ts(started))
     if verify_at is not None:
-        db.add_verification(run, 1, 1, verify_passed, _ts(verify_at))
+        db.add_verification(run, 1, 1, verify_passed, _ts(verify_at),
+                            sample_procedure="prumo-sample-v2", sample_design={},
+                            input_origin="live", verifier_channel="live")
     return run
 
 

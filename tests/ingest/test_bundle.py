@@ -117,12 +117,15 @@ def _record_genuine(root: Path, source: str, names: list[str], *,
     return root
 
 
-def _cli_run(db_path, raw, reg, *args):
-    # any live network use during a recorded replay fails the test loudly
+def _cli_run(db_path, raw, reg, *args, pinned=True):
+    # any live network use during a recorded replay fails the test loudly. These replays pin
+    # the verifier to the bundle too (--pinned-verifier: NON-audit-grade, Task 21 B-I3) so they
+    # stay offline; the live-verifier default is tested in test_task21_verification.py
     def no_network(name):
         raise AssertionError(f"recorded replay must not touch the network ({name})")
+    extra = ["--pinned-verifier"] if pinned and "--bundle" in args else []
     return main(["--db", str(db_path), "--raw-dir", str(raw), "--registry", str(reg),
-                 *args], http_for=lambda _name: no_network(_name))
+                 *args, *extra], http_for=lambda _name: no_network(_name))
 
 
 WINTER = ("2026-11-10", "2026-11-11")
