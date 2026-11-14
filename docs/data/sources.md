@@ -97,7 +97,7 @@ Licence URL: https://ec.europa.eu/eurostat/web/main/help/copyright-notice
 Attribution: Source: Eurostat
 Licence eligibility: allowed by registry (redistribution_ok=true).
 Independent verification policy: verifiable=true.
-Registry entries: 697 (329 active, 368 inactive).
+Registry entries: 697 (328 active, 369 inactive).
 
 Independent verification channel: Collector: Statistics API 1.0 JSON-stat. Independent channel: https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/&lt;dataset&gt;/&lt;key&gt;?format=TSV &#40;SDMX 2.1 TSV&#41;. Values and flags are read independently; unit identity is pinned by the native key, not a separate observed unit label. Reviewed implementation: ingest/verifiers/eurostat.py.
 
@@ -389,7 +389,7 @@ Exact primary-series identifiers and indicator keys, with cross-checks labelled 
 | eurostat.gov&#95;deficit&#95;pct&#95;gdp.SI | eurostat&#95;gov&#95;deficit&#95;pct&#95;gdp.SI.A | primary | active | gov&#95;10dd&#95;edpt1:freq=A,unit=PC&#95;GDP,sector=S13,na&#95;item=B9,geo=SI |
 | eurostat.gov&#95;deficit&#95;pct&#95;gdp.SK | eurostat&#95;gov&#95;deficit&#95;pct&#95;gdp.SK.A | primary | active | gov&#95;10dd&#95;edpt1:freq=A,unit=PC&#95;GDP,sector=S13,na&#95;item=B9,geo=SK |
 | eurostat.hicp.EU27 | eurostat&#95;hicp.EU27.M | primary | inactive | prc&#95;hicp&#95;midx:freq=M,unit=I15,coicop=CP00,geo=EU27&#95;2020 |
-| eurostat.hicp.EU27&#95;2020 | eurostat&#95;hicp.EU27&#95;2020.M | primary | active | prc&#95;hicp&#95;midx:freq=M,unit=I15,coicop=CP00,geo=EU27&#95;2020 |
+| eurostat.hicp.EU27&#95;2020 | eurostat&#95;hicp.EU27&#95;2020.M | primary | inactive | prc&#95;hicp&#95;midx:freq=M,unit=I15,coicop=CP00,geo=EU27&#95;2020 |
 | eurostat.hourly&#95;labour&#95;cost&#95;index.DE | eurostat&#95;hourly&#95;labour&#95;cost&#95;index.DE.A | primary | active | lc&#95;lci&#95;r2&#95;a:freq=A,unit=I20,nace&#95;r2=B-N,lcstruct=D1&#95;D4&#95;MD5,geo=DE |
 | eurostat.hourly&#95;labour&#95;cost&#95;index.ES | eurostat&#95;hourly&#95;labour&#95;cost&#95;index.ES.A | primary | active | lc&#95;lci&#95;r2&#95;a:freq=A,unit=I20,nace&#95;r2=B-N,lcstruct=D1&#95;D4&#95;MD5,geo=ES |
 | eurostat.hourly&#95;labour&#95;cost&#95;index.EU27&#95;2020 | eurostat&#95;hourly&#95;labour&#95;cost&#95;index.EU27&#95;2020.A | primary | active | lc&#95;lci&#95;r2&#95;a:freq=A,unit=I20,nace&#95;r2=B-N,lcstruct=D1&#95;D4&#95;MD5,geo=EU27&#95;2020 |

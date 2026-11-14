@@ -239,6 +239,15 @@ bash -lic 'dc-web logs --tail=200 prumo-ingest'
 bash -lic 'dc-web logs -f --tail=100 prumo-ingest'
 ```
 
+`status` judges retrieval time only. The read-only `lag` command (branch `pipeline-rebuild`
+since Task 22; not in the deployed 49a3602 image until an authorized rebuild) judges DATA time:
+`python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw lag` lists every ACTIVE series
+whose newest fetched period lags today by more than the per-frequency allowance in
+`ingest/data_lag.py` (A 3 years, S 3 halves, Q 4 quarters, M 6 months, D 30 days, PT15M 7 days)
+and exits 1 if any does. A hit means a possibly frozen or interrupted publisher series: confirm
+with the publisher and record the disposition in `registry/unmapped-<source>.md`; never
+deactivate on the lag alone.
+
 Check SQLite read-only and sample successful response receipts since observation began.
 This checks archived bytes/hash/size and original fetch timestamps, not publisher freshness
 or permission to serve. A reused content hash may already have existed; the new receipt
