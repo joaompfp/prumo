@@ -543,23 +543,81 @@ class Db:
                  "detail": json.loads(d) if d is not None else {}}
                 for i, ts, kind, run, d in rows]
 
-    def runs_in_state(self, state: str, older_than: str | None = None) -> list[dict]:
-        """Runs in `state`, oldest id first; with `older_than` (ISO-8601) only runs whose
-        started_at is strictly before it (compared as parsed UTC times, not text; an
-        unparseable started_at is kept, since its age cannot be shown to be recent)."""
-        keys = ("run_id", "source", "dataset_key", "state", "started_at", "finished_at",
-                "input_origin")
-        runs = [dict(zip(keys, r)) for r in self.conn.execute(
-            "SELECT r.id, s.name, r.dataset_key, r.state, r.started_at, r.finished_at, "
-            "r.input_origin FROM dataset_run r JOIN source s ON s.id = r.source_id "
-            "WHERE r.state = ? ORDER BY r.id", (state,))]
-        if older_than is None:
-            return runs
-        cutoff = _parse_utc(older_than)
-        if cutoff is None:
-            raise ValueError(f"older_than is not an ISO-8601 time: {older_than!r}")
-        return [r for r in runs
-                if (started := _parse_utc(r["started_at"])) is None or started < cutoff]
+    def event_counts_by_run(self, since: str | None, kind: str, *, min_count: int = 1,
+                            limit: int = 1000) -> dict[int | None, int]:
+        """run id -> number of `kind` events with ts >= `since` (None = all time), for runs
+        with at least `min_count` of them (at most `limit` runs, largest counts first),
+        counted by SQL aggregation: memory is bounded by `limit`, never by the events."""
+        where, args = "kind = ?", [kind]
+        if since is not None:
+            where += " AND ts >= ?"
+            args.append(since)
+        return dict(self.conn.execute(
+            f"SELECT dataset_run_id, COUNT(*) AS n FROM event WHERE {where} "
+            "GROUP BY dataset_run_id HAVING n >= ? ORDER BY n DESC, dataset_run_id LIMIT ?",
+            (*args, min_count, limit)).fetchall())
+
+    def failed_fetch_streaks(self, min_streak: int) -> list[dict]:
+        """Datasets whose latest finished runs are `min_streak` or more consecutive
+        'failed-fetch' runs (each emitted event(fetch_failure)), by dataset key. A run still
+        'running' neither extends nor breaks the streak; any other state breaks it."""
+        keys = ("dataset_key", "source", "streak", "last_run_id", "last_started_at")
+        return [dict(zip(keys, r)) for r in self.conn.execute(
+            # bare r.started_at comes from the MAX(r.id) row (documented SQLite behaviour)
+            "SELECT r.dataset_key, s.name, COUNT(*), MAX(r.id), r.started_at "
+            "FROM dataset_run r JOIN source s ON s.id = r.source_id "
+            "WHERE r.state = 'failed-fetch' AND r.dataset_key IS NOT NULL "
+            "AND r.id > COALESCE((SELECT MAX(b.id) FROM dataset_run b "
+            "WHERE b.dataset_key = r.dataset_key "
+            "AND b.state NOT IN ('failed-fetch', 'running')), 0) "
+            "GROUP BY r.dataset_key, s.name HAVING COUNT(*) >= ? ORDER BY r.dataset_key",
+            (min_streak,))]
+
+    def new_period_spans(self, since: str | None, limit: int) -> list[dict]:
+        """new_periods events (ts >= `since`) that added two or more periods, newest first,
+        summarised in SQL as (n, first, last) of their periods (canonical period text sorts
+        chronologically); the period lists themselves are never loaded."""
+        where, args = ["e.kind = 'new_periods'",
+                       "json_array_length(e.detail_json, '$.periods') >= 2"], []
+        if since is not None:
+            where.append("e.ts >= ?")
+            args.append(since)
+        keys = ("event_id", "ts", "run_id", "series_id", "n", "first", "last")
+        return [dict(zip(keys, r)) for r in self.conn.execute(
+            "SELECT e.id, e.ts, e.dataset_run_id, json_extract(e.detail_json, '$.series_id'), "
+            "json_array_length(e.detail_json, '$.periods'), "
+            "(SELECT MIN(value) FROM json_each(e.detail_json, '$.periods')), "
+            "(SELECT MAX(value) FROM json_each(e.detail_json, '$.periods')) "
+            f"FROM event e WHERE {' AND '.join(where)} ORDER BY e.ts DESC, e.id DESC LIMIT ?",
+            (*args, limit))]
+
+    def quarantine_summary(self, since: str | None, limit: int) -> list[dict]:
+        """Quarantined rows created at or after `since`, aggregated per (source, reason):
+        rows, distinct series, distinct runs, latest created_at; by source then reason."""
+        where, args = "1", []
+        if since is not None:
+            where, args = "q.created_at >= ?", [since]
+        keys = ("source", "reason", "rows", "series", "runs", "last_created_at")
+        return [dict(zip(keys, r)) for r in self.conn.execute(
+            "SELECT s.name, q.reason, COUNT(*), COUNT(DISTINCT q.series_id), "
+            "COUNT(DISTINCT q.dataset_run_id), MAX(q.created_at) FROM quarantine q "
+            "JOIN dataset_run r ON r.id = q.dataset_run_id JOIN source s ON s.id = r.source_id "
+            f"WHERE {where} GROUP BY s.name, q.reason ORDER BY s.name, q.reason LIMIT ?",
+            (*args, limit))]
+
+    def series_periods(self, series_id: str, limit: int) -> tuple[int, list[dict]]:
+        """(distinct stored periods, newest `limit` of them) of one series across EVERY run
+        state (served, withdrawn, failed, pending, legacy), each with its stored row count and
+        whether the served view returns a row for it."""
+        total = self.conn.execute("SELECT COUNT(DISTINCT period) FROM observation "
+                                  "WHERE series_id = ?", (series_id,)).fetchone()[0]
+        rows = self.conn.execute(
+            "SELECT period, COUNT(*), period IN (SELECT period FROM served_observation "
+            "WHERE series_id = ?) FROM observation WHERE series_id = ? "
+            "GROUP BY period ORDER BY period DESC LIMIT ?",
+            (series_id, series_id, limit)).fetchall()
+        return total, [{"period": p, "rows": n, "served": bool(served)}
+                       for p, n, served in rows]
 
     # --- reviewed withdrawal and orphan runs (Task 20) -----------------------------------------
 

@@ -2,12 +2,12 @@
 {% block title %}Queue - Prumo backoffice{% endblock %}
 {% block content %}
 <h1>Review queue</h1>
-<p class="note">Derived at read time ({{ generated_at }}) from status, data lag, events of the
-last 7 days and pending runs; nothing is stored, so an item disappears when its cause does.
-{{ queue.items | length }} items.</p>
+<p class="note">Derived at read time ({{ generated_at }}) from status, data lag, events,
+quarantine and failed fetches of the last 7 days; nothing is stored, so an item disappears when
+its cause does. {{ queue.items | length }} items.</p>
 {% if queue.truncated %}
-<p class="bad">The event read hit its ceiling of {{ event_limit }} events: verification and
-revision items below may be incomplete (revision counts are a lower bound).</p>
+<p class="bad">These reads hit their row limit, so their items below may be incomplete:
+{{ queue.truncated | join(", ") }}.</p>
 {% endif %}
 {% if queue.items %}
 <div class="scroll"><table>
@@ -16,7 +16,7 @@ revision items below may be incomplete (revision counts are a lower bound).</p>
 <tr>
 <td class="sev-{{ i.severity }}">{{ i.severity }}</td>
 <td>{{ i.kind }}</td>
-<td>{% if i.kind == "lagging_series" %}<a href="/series/{{ i.ref | urlencode }}">{{ i.ref }}</a>{% elif i.kind in ("stale_series", "blocked_source") %}<a href="/series?source={{ i.ref | urlencode }}">{{ i.ref }}</a>{% else %}{{ i.ref }}{% endif %}</td>
+<td>{% if i.kind in ("lagging_series", "new_period_gap") %}<a href="/series/{{ i.ref | urlencode }}">{{ i.ref }}</a>{% elif i.kind in ("stale_series", "blocked_source", "quarantine") %}<a href="/series?source={{ i.ref | urlencode }}">{{ i.ref }}</a>{% else %}{{ i.ref }}{% endif %}</td>
 <td class="wrap">{{ i.summary }}</td>
 <td class="wrap"><details><summary>detail</summary><code>{{ i.detail | as_json }}</code></details></td>
 </tr>

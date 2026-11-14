@@ -24,7 +24,7 @@ from ingest.models import SeriesSpec
 MAX_LAG: dict[str, int] = {"A": 3, "S": 3, "Q": 4, "M": 6, "D": 30, "PT15M": 7}
 
 
-def _index(frequency: str, period: str) -> int:
+def period_index(frequency: str, period: str) -> int:
     """Ordinal of a canonical period (ingest.models.normalize_period spelling)."""
     try:
         if frequency == "A" and len(period) == 4:
@@ -50,7 +50,7 @@ def _today(frequency: str, today: date) -> int:
 
 def period_lag(frequency: str, latest_period: str, today: date) -> int:
     """Whole periods between today's period and `latest_period` (0 = today's period)."""
-    return _today(frequency, today) - _index(frequency, latest_period)
+    return _today(frequency, today) - period_index(frequency, latest_period)
 
 
 @dataclass(frozen=True)

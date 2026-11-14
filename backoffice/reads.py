@@ -6,19 +6,32 @@ which opens the database strictly read-only and retries once on a concurrent wri
 from dataclasses import dataclass
 from datetime import datetime
 
-from backoffice.queue import EVENT_WINDOW, STUCK_PENDING_AFTER, QueueItem, derive_queue
+from backoffice.queue import (
+    EVENT_RULES,
+    EVENT_WINDOW,
+    REVISION_BURST,
+    STREAK_ALERT,
+    QueueItem,
+    derive_queue,
+)
 from ingest.data_lag import lagging_series
 from ingest.db import Db
 from ingest.models import SeriesSpec
 from ingest.status import SeriesStatus, SourceStatus, StatusReport, build_status
 
-# Revision bursts are counted per run from the events themselves: one Eurostat run alone
-# emits ~150 revision events, so the page reads every queue-relevant event of the window and
-# says so when even this ceiling is reached (the counts would then be a lower bound).
-QUEUE_EVENT_KINDS = ["verification_failure", "verification_escalated", "revision"]
-QUEUE_EVENT_LIMIT = 200_000
+# The queue never loads events in bulk: revisions are counted per run in SQL
+# (Db.event_counts_by_run), new_periods are summarised in SQL (Db.new_period_spans) and every
+# per-event kind is read newest first with its own small limit. A kind that hits its limit is
+# named on the page (its items may then be incomplete).
+EVENTS_PER_KIND = 200
+NEW_PERIOD_LIMIT = 500
+REVISION_RUN_LIMIT = 200   # burst runs listed (largest first)
+QUARANTINE_LIMIT = 200     # (source, reason) aggregate rows
+QUEUE_EVENT_ROW_BOUND = (EVENTS_PER_KIND * len(EVENT_RULES) + NEW_PERIOD_LIMIT
+                         + REVISION_RUN_LIMIT)  # most event-table rows one /queue read loads
 OBSERVATION_CAP = 200   # newest served rows shown on a series page (the total is always shown)
 DETAIL_LIST_CAP = 200   # quarantine rows / verification items shown on a series page
+PERIOD_CAP = 200        # newest stored periods listed on a series page
 
 
 def status_report(db: Db, specs: list[SeriesSpec], now: datetime) -> StatusReport:
@@ -29,17 +42,34 @@ def status_report(db: Db, specs: list[SeriesSpec], now: datetime) -> StatusRepor
 @dataclass(frozen=True)
 class Queue:
     items: list[QueueItem]
-    truncated: bool  # the event read hit QUEUE_EVENT_LIMIT
+    truncated: tuple[str, ...]  # reads that hit their limit (event kinds, 'new_periods',
+                                # 'revision', 'quarantine')
 
 
 def queue(db: Db, specs: list[SeriesSpec], report: StatusReport, now: datetime) -> Queue:
-    lagging = lagging_series(specs, db.latest_fetched_periods(), now.date())
-    events = db.recent_events((now - EVENT_WINDOW).isoformat(), QUEUE_EVENT_KINDS,
-                              QUEUE_EVENT_LIMIT)
-    stuck = db.runs_in_state("pending-verification",
-                             older_than=(now - STUCK_PENDING_AFTER).isoformat())
-    return Queue(derive_queue(report, lagging, events, stuck, now=now),
-                 len(events) >= QUEUE_EVENT_LIMIT)
+    since = (now - EVENT_WINDOW).isoformat()
+    truncated: list[str] = []
+
+    def capped(name: str, rows, limit: int):
+        if len(rows) >= limit:
+            truncated.append(name)
+        return rows
+
+    events = [e for kind in EVENT_RULES
+              for e in capped(kind, db.recent_events(since, [kind], EVENTS_PER_KIND),
+                              EVENTS_PER_KIND)]
+    items = derive_queue(
+        report, lagging_series(specs, db.latest_fetched_periods(), now.date()), events,
+        revisions=capped("revision", db.event_counts_by_run(
+            since, "revision", min_count=REVISION_BURST, limit=REVISION_RUN_LIMIT),
+            REVISION_RUN_LIMIT),
+        fetch_streaks=db.failed_fetch_streaks(STREAK_ALERT),
+        new_periods=capped("new_periods", db.new_period_spans(since, NEW_PERIOD_LIMIT),
+                           NEW_PERIOD_LIMIT),
+        quarantine=capped("quarantine", db.quarantine_summary(since, QUARANTINE_LIMIT),
+                          QUARANTINE_LIMIT),
+        frequency_of={s.id: s.frequency for s in specs}, now=now)
+    return Queue(items, tuple(truncated))
 
 
 def status_label(st: SeriesStatus) -> str:

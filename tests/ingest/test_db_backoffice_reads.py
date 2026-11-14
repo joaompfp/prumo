@@ -151,20 +151,98 @@ def test_recent_events_filters_by_kind_and_since_and_parses_detail(db):
     assert db.recent_events(None, [], 10) == []
 
 
-def test_runs_in_state_older_than(db):
+def _run(db, key, state, started_at=NOV01):
+    run = db.begin_run("fake", key, started_at)
+    if state != "running":
+        db.set_run_state(run, state)
+    return run
+
+
+def test_event_counts_by_run_aggregates_in_sql(db):
+    """Revision bursts are counted per run by GROUP BY, never by loading the events."""
     sync_registry(db, [spec("s1")])
-    old = _pending(db, "s1", "2024", "1", NOV01, "k1", started_at="2026-11-01T00:00:00+00:00")
-    young = _pending(db, "s1", "2025", "1", NOV13, "k2", started_at="2026-11-13T00:00:00+00:00")
-    _direct_verified(db, "s1", "2023", "1", NOV01, "k3")
-    got = db.runs_in_state("pending-verification")
-    assert [r["run_id"] for r in got] == [old, young]
-    assert got[0] == {"run_id": old, "source": "fake", "dataset_key": "k1",
-                      "state": "pending-verification",
-                      "started_at": "2026-11-01T00:00:00+00:00", "finished_at": None,
-                      "input_origin": "live"}
-    assert [r["run_id"] for r in db.runs_in_state(
-        "pending-verification", older_than="2026-11-12T00:00:00+00:00")] == [old]
-    assert db.runs_in_state("withdrawn") == []
+    a, b = _run(db, "k1", "verified"), _run(db, "k2", "verified")
+    for i in range(150):
+        db.add_event(NOV13, "revision", a, {"series_id": "s1", "period": str(1900 + i)})
+    for _ in range(3):
+        db.add_event(NOV13, "revision", b, {})
+    db.add_event(NOV01, "revision", b, {})          # before `since`
+    db.add_event(NOV13, "new_periods", a, {})        # another kind
+    db.add_event(NOV13, "revision", None, {})        # no run
+    since = "2026-11-05T00:00:00+00:00"
+    assert db.event_counts_by_run(since, "revision") == {a: 150, b: 3, None: 1}
+    assert db.event_counts_by_run(since, "withdrawal") == {}
+    assert db.event_counts_by_run(since, "revision", min_count=3) == {a: 150, b: 3}
+    assert db.event_counts_by_run(since, "revision", limit=1) == {a: 150}
+
+
+def test_failed_fetch_streaks_count_trailing_failed_fetch_runs_per_dataset(db):
+    sync_registry(db, [spec("s1")])
+    _run(db, "k1", "verified")
+    _run(db, "k1", "failed-fetch", "2026-11-02T00:00:00+00:00")
+    k1_last = _run(db, "k1", "failed-fetch", "2026-11-03T00:00:00+00:00")
+    _run(db, "k2", "failed-fetch")
+    _run(db, "k2", "verified")                        # streak broken by a later success
+    for d in ("04", "05", "06"):
+        k3_last = _run(db, "k3", "failed-fetch", f"2026-11-{d}T00:00:00+00:00")
+    _run(db, "k3", "running", "2026-11-07T00:00:00+00:00")  # in flight: not a breaker
+    _run(db, "k4", "failed-fetch")                    # streak 1: under the threshold
+    assert db.failed_fetch_streaks(2) == [
+        {"dataset_key": "k1", "source": "fake", "streak": 2, "last_run_id": k1_last,
+         "last_started_at": "2026-11-03T00:00:00+00:00"},
+        {"dataset_key": "k3", "source": "fake", "streak": 3, "last_run_id": k3_last,
+         "last_started_at": "2026-11-06T00:00:00+00:00"}]
+    assert [s["dataset_key"] for s in db.failed_fetch_streaks(1)] == ["k1", "k3", "k4"]
+
+
+def test_new_period_spans_summarise_multi_period_events(db):
+    sync_registry(db, [spec("s1"), spec("s2")])
+    run = _run(db, "k1", "verified")
+    db.add_event(NOV13, "new_periods", run, {"series_id": "s1",
+                                             "periods": ["2021", "2024", "2022"]})
+    db.add_event(NOV13, "new_periods", run, {"series_id": "s2", "periods": ["2024"]})
+    db.add_event(NOV01, "new_periods", run, {"series_id": "s2", "periods": ["1", "3"]})
+    since = "2026-11-05T00:00:00+00:00"
+    [got] = db.new_period_spans(since, 10)
+    assert got == {"event_id": got["event_id"], "ts": NOV13, "run_id": run,
+                   "series_id": "s1", "n": 3, "first": "2021", "last": "2024"}
+    assert db.new_period_spans(since, 0) == []
+
+
+def test_quarantine_summary_groups_by_source_and_reason(db):
+    from ingest.validate import Rejection
+    sync_registry(db, [spec("s1"), spec("s2")])
+    r1 = _run(db, "k1", "verified")
+    r2 = _run(db, "k2", "failed-validation")
+    db.write_quarantine(r1, "s1", [Rejection("2023", "n/a", "non_numeric"),
+                                   Rejection("2022", "x", "non_numeric")], NOV13)
+    db.write_quarantine(r2, "s2", [Rejection("2021", "y", "non_numeric")],
+                        "2026-11-14T00:00:00+00:00")
+    db.write_quarantine(r2, "s2", [Rejection("??", "1", "bad_period")], NOV13)
+    db.write_quarantine(r1, "s1", [Rejection("1999", "z", "non_numeric")], NOV01)  # too old
+    got = db.quarantine_summary("2026-11-05T00:00:00+00:00", 10)
+    assert got == [
+        {"source": "fake", "reason": "bad_period", "rows": 1, "series": 1, "runs": 1,
+         "last_created_at": NOV13},
+        {"source": "fake", "reason": "non_numeric", "rows": 3, "series": 2, "runs": 2,
+         "last_created_at": "2026-11-14T00:00:00+00:00"}]
+    assert len(db.quarantine_summary("2026-11-05T00:00:00+00:00", 1)) == 1
+
+
+def test_series_periods_lists_every_stored_period_any_run_state(db):
+    sync_registry(db, [spec("s1")])
+    _direct_verified(db, "s1", "2022", "1", NOV01, "k1")
+    bad = _direct_verified(db, "s1", "2023", "9", "2026-11-05T00:00:00+00:00", "k2")
+    db.withdraw_run(bad, "unit defect", "2026-11-06T00:00:00+00:00")
+    _pending(db, "s1", "2024", "1.1", NOV13, "k3")
+    _pending(db, "s1", "2022", "1.5", NOV13, "k4")
+    total, rows = db.series_periods("s1", 10)
+    assert total == 3
+    assert rows == [{"period": "2024", "rows": 1, "served": False},
+                    {"period": "2023", "rows": 1, "served": False},
+                    {"period": "2022", "rows": 2, "served": True}]
+    assert db.series_periods("s1", 1) == (3, rows[:1])
+    assert db.series_periods("nope", 10) == (0, [])
 
 
 def test_reads_work_on_a_read_only_handle(tmp_path):
@@ -179,7 +257,12 @@ def test_reads_work_on_a_read_only_handle(tmp_path):
         return (db.series_observations("s1", 10), db.series_vintages("s1", "2024"),
                 db.series_quarantine("s1"), db.series_verification_items("s1"),
                 db.series_raw_fetches("s1"), db.recent_events(None, None, 5),
-                db.runs_in_state("verified"))
-    obs, vint, quar, items, raws, evs, runs = read_db_readonly(path, read)
+                db.event_counts_by_run(None, "revision"), db.failed_fetch_streaks(1),
+                db.new_period_spans(None, 5), db.quarantine_summary(None, 5),
+                db.series_periods("s1", 5))
+    obs, vint, quar, items, raws, evs, counts, streaks, spans, qsum, periods = \
+        read_db_readonly(path, read)
     assert obs[0] == 1 and vint[0]["served"] and quar == [] and items == []
-    assert raws[0]["run_id"] == run and evs == [] and [r["run_id"] for r in runs] == [run]
+    assert raws[0]["run_id"] == run and evs == [] and counts == {} and streaks == []
+    assert spans == [] and qsum == [] and periods == (1, [{"period": "2024", "rows": 1,
+                                                           "served": True}])

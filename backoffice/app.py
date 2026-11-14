@@ -100,8 +100,7 @@ def create_app(db_path: Path, registry_path: Path,
         at = clock()
         report = status()
         q = read(lambda db: reads.queue(db, specs, report, at))
-        return render(request, "queue.html", queue=q, generated_at=at.isoformat(),
-                      event_limit=reads.QUEUE_EVENT_LIMIT)
+        return render(request, "queue.html", queue=q, generated_at=at.isoformat())
 
     by_id = {s.id: s for s in specs}
     notes = inactive_notes(registry_path.parent, {s.id for s in specs if not s.active})
