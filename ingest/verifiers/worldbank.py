@@ -101,16 +101,25 @@ _INDICATOR = re.compile(r"[A-Z0-9]+(?:\.[A-Z0-9]+)+")
 _ISO3 = re.compile(r"[A-Z]{3}")
 _PERIOD = re.compile(r"\d{4}")
 _DATE_STAMP = re.compile(r"\d{4}-\d{2}-\d{2}")
-_EXPONENT = re.compile(r"-?[0-9]+(\.[0-9]+)?E[+-][0-9]+")
+_EXPONENT = re.compile(r"-?[0-9]+(\.[0-9]+)?E([+-][0-9]+)")
+# |exponent| bound for the exponent rewrite: real WDI cells sit within about E-12..E+15, and an
+# unbounded exponent ('1E+999999999', 12 bytes) would make the plain rewrite build a ~1 GB
+# string. Larger exponents are refused as export drift (the item fails, never a silent pass).
+MAX_EXPONENT = 400
 
 
 def _plain(cell: str) -> str:
     """The CSV writes very small/large values in exponent form ('2.12913319746322E-06') where
     the API writes the plain decimal ('0.00000212913319746322'); found by the Task 21 census
     of every cell. Rewritten EXACTLY (Decimal, never float) into plain notation so the engine's
-    exact-Decimal comparison applies; any other token is returned verbatim."""
-    if _EXPONENT.fullmatch(cell) is None:
+    exact-Decimal comparison applies; any other token is returned verbatim. ValueError for an
+    exponent beyond +/-MAX_EXPONENT."""
+    m = _EXPONENT.fullmatch(cell)
+    if m is None:
         return cell
+    if abs(int(m.group(2))) > MAX_EXPONENT:
+        raise ValueError(f"World Bank CSV cell {cell[:40]!r} has an exponent beyond "
+                         f"+/-{MAX_EXPONENT} (export drift; refused)")
     return format(decimal.Decimal(cell), "f")
 
 
@@ -332,7 +341,21 @@ class WorldBankVerifier:
     def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
         """Pure re-decision from the archived envelope: the locale is the one the recorded
         final URL names (exact CSV_LANGUAGES template), never this instance's configuration."""
-        code, _ = _indicator_of(item.spec.native_code)
+        return self.reread_many(evidence, [item])[0]
+
+    def reread_many(self, evidence: bytes, items: list[BlindItem]) -> list[ItemResult]:
+        """reread of items sharing one envelope: each indicator's export is parsed once."""
+        tables: dict[str, tuple] = {}
+        out = []
+        for item in items:
+            code, _ = _indicator_of(item.spec.native_code)
+            if code not in tables:
+                tables[code] = self._archived_table(evidence, code, item.series_id)
+            rows, ycol, url = tables[code]
+            out.append(_result(item, rows, ycol, code, url, evidence))
+        return out
+
+    def _archived_table(self, evidence: bytes, code: str, what: str):
         doc = json.loads(evidence)
         if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION \
                 or len(doc.get("responses") or []) != 1:
@@ -346,9 +369,8 @@ class WorldBankVerifier:
             raise ValueError(f"archived URL {rec['url']!r} is not an admitted export of {code}")
         body = base64.b64decode(rec["body_base64"], validate=True)
         title = CSV_LANGUAGES[langs[0]][1]
-        rows, ycol = _table(_read_export(body, code, langs[0], item.series_id), code, title,
-                            item.series_id)
-        return _result(item, rows, ycol, code, rec["url"], evidence)
+        rows, ycol = _table(_read_export(body, code, langs[0], what), code, title, what)
+        return rows, ycol, rec["url"]
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         # code -> (rows, year columns, final url, evidence envelope built ONCE per indicator)
