@@ -147,8 +147,11 @@ class EurostatVerifier:
         return _group(item.spec.native_code)
 
     def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
-        dims, rows = _table(evidence)
-        return _one(item, dims, rows, "", evidence)
+        return self.reread_many(evidence, [item])[0]
+
+    def reread_many(self, evidence: bytes, items: list[BlindItem]) -> list[ItemResult]:
+        dims, rows = _table(evidence)  # parsed once for every item sharing the TSV
+        return [_one(item, dims, rows, "", evidence) for item in items]
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         groups: dict[tuple, list[int]] = {}

@@ -85,7 +85,7 @@ def _draw(db: Db, run_id: int, seed: int, specs: list[SeriesSpec], verifier: Ver
 
     design = design_sample([(r[0], r[1]) for r in rows], seed=seed,
                            changed=db.run_changed_keys(run_id), request_key=request_key,
-                           policy=policy)
+                           policy=policy, previously_failed=db.previously_failed_keys(run_id))
     items = [SampleItem(series_id=sid, period=period, expected_text=text, spec=by_id[sid],
                         expected_unit=by_id[sid].unit, expected_flag=flag, reason=why)
              for (sid, period, text, flag), why in ((rows[i], why) for i, why in design.chosen)]
@@ -95,7 +95,9 @@ def _draw(db: Db, run_id: int, seed: int, specs: list[SeriesSpec], verifier: Ver
 def draw_sample(db: Db, run_id: int, seed: int, *, specs: list[SeriesSpec], verifier: Verifier,
                 policy: SamplingPolicy = DEFAULT_POLICY) -> list[SampleItem]:
     """The sample of run `run_id` (ingest.sampling, procedure prumo-sample-v2): the latest
-    period of every series, the run's changed cells (revision/new_periods events, capped),
+    period of every series, every cell that mismatched in a failed verification of the same
+    dataset since its last verified run, the run's changed cells (revision/new_periods
+    events, capped),
     per-series history strata, a discovery-sized random history sample and every cell read from
     a response those already need (`verifier.request_key`). Same db + seed + policy + verifier
     -> same list, ordered by (series_id, period). ValueError if a series has no spec."""
@@ -171,10 +173,12 @@ def _verify(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | Non
 
     not_compared = getattr(verifier, "not_compared", {}) or {}
     saved: dict[int, str] = {}  # id(evidence bytes) -> sha256: shared responses saved once
+    built = [_item_row(item, res, store, verifier.source_name, not_compared, saved)
+             for item, res in zip(items, results)]
+    replay = _replay_notes(verifier, items, results, built) if whole_note is None else {}
     rows = []
-    for item, res in zip(items, results):
-        row, note = _item_row(item, res, store, verifier.source_name, not_compared, saved)
-        note = whole_note or note or _row_mismatch(row)
+    for i, (row, note) in enumerate(built):
+        note = whole_note or note or replay.get(i) or _row_mismatch(row)
         rows.append({**row, "match": note is None, "note": note})
     bad = [r for r in rows if not r["match"]]
     passed = bool(rows) and not bad
@@ -253,7 +257,59 @@ def _item_row(item: SampleItem, res: object, store: RawStore, source_name: str,
         return row, f"result fields must be exact str: {', '.join(wrong)}"
     if res.evidence is None:
         return row, "no evidence bytes returned (evidence is mandatory)"
+    if not res.evidence:
+        return row, "empty evidence bytes (evidence is mandatory)"
     return row, None
+
+
+_CLAIM_FIELDS = ("observed_series_id", "observed_period", "observed_text", "observed_decimal",
+                 "observed_unit", "observed_flag")
+
+
+def _claim_of(res: ItemResult) -> tuple:
+    """The stored-claim tuple (_CLAIM_FIELDS order) a verifier result makes."""
+    return (_str(res.series_id), _str(res.period), _str(res.observed_text),
+            res.observed_decimal if _str(res.observed_decimal) in (".", ",") else None,
+            _str(res.observed_unit), _str(res.observed_flag))
+
+
+def _replay_notes(verifier: Verifier, items: list[SampleItem], results: list,
+                  built: list[tuple[dict, str | None]]) -> dict[int, str]:
+    """Re-read every well-formed item from the evidence bytes it returned, with the
+    verifier's pure `reread` (re-review 2 M1): {item index: why it does not replay}. An
+    item is accepted only if what `replay_item` will later re-derive from the archived bytes
+    equals the claim stored now, so every stored match replays by construction. Items
+    sharing one evidence object go through `reread_many` (one parse) when the verifier has
+    it."""
+    groups: dict[int, list[int]] = {}
+    for i, ((_row, note), res) in enumerate(zip(built, results)):
+        if note is None and type(res) is ItemResult:
+            groups.setdefault(id(res.evidence), []).append(i)
+    many = getattr(verifier, "reread_many", None)
+    notes: dict[int, str] = {}
+    for idx in groups.values():
+        evidence = results[idx[0]].evidence
+        blind = [items[i].blind() for i in idx]
+        try:
+            got = (list(many(evidence, blind)) if many is not None
+                   else [verifier.reread(evidence, b) for b in blind])
+        except Exception as e:
+            for i in idx:
+                notes[i] = f"evidence does not re-read (replay would fail): {e!r}"
+            continue
+        if len(got) != len(idx):
+            for i in idx:
+                notes[i] = f"reread returned {len(got)} results for {len(idx)} items"
+            continue
+        for i, res in zip(idx, got):
+            if type(res) is not ItemResult:
+                notes[i] = f"reread returned {type(res).__name__}, not ItemResult"
+                continue
+            stored = tuple(built[i][0][k] for k in _CLAIM_FIELDS)
+            if _claim_of(res) != stored:
+                notes[i] = (f"re-read of the evidence {_claim_of(res)!r} disagrees with the "
+                            f"claim {stored!r} (replay would fail)")
+    return notes
 
 
 _TEXT_FIELDS = ("series_id", "period", "observed_text", "evidence_url", "observed_decimal",
@@ -337,11 +393,8 @@ def replay_check(db: Db, store: RawStore, verification_item_id: int, verifier: V
         return f"archived evidence does not re-read: {e!r}"
     if type(res) is not ItemResult:
         return f"reread returned {type(res).__name__}, not ItemResult"
-    got = (_str(res.series_id), _str(res.period), _str(res.observed_text),
-           res.observed_decimal if _str(res.observed_decimal) in (".", ",") else None,
-           _str(res.observed_unit), _str(res.observed_flag))
-    claim = tuple(row[k] for k in ("observed_series_id", "observed_period", "observed_text",
-                                   "observed_decimal", "observed_unit", "observed_flag"))
+    got = _claim_of(res)
+    claim = tuple(row[k] for k in _CLAIM_FIELDS)
     if got != claim:
         return f"re-read of the evidence {got!r} disagrees with the stored claim {claim!r}"
     return _row_mismatch(row)

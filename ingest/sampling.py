@@ -6,6 +6,13 @@ period), the run's changed cells, a stored random `seed` and the verifier's `req
 once, with the reason of the first step that takes it):
 
 1. latest          the latest period of every series (census of the newest data).
+1b. previously-failed  every row whose (series, period) MISMATCHED in a failed verification
+                   of the same dataset since its last verified run (Task 24, re-review 2
+                   I1). A parser defect is deterministic: refetched bytes re-parse to the
+                   same wrong cells, so without this step every retry (run_with_refetch
+                   attempts, scheduler retries) would be a fresh independent draw and a
+                   defect would eventually pass on a lucky one. Uncapped: the set is bounded
+                   by the earlier samples' sizes.
 2. changed         every row the run revised or newly added (revision / new_periods events),
                    at most `changed_cap`; above the cap the `changed_cap` lowest-ranked are
                    taken and the rest fall back into the pool of step 3.
@@ -32,7 +39,14 @@ most 1 - confidence (exact rational arithmetic). Steps 3 and 5 only add rows, an
 step 4 from the pool minus step 3's rows can only lower the miss probability (each factor
 1 - D/(M-i) shrinks as M shrinks), so the bound holds for the whole design: if at least
 `tolerable_rate` of the non-must rows were wrong, the verification would detect at least one
-with probability >= `confidence`. Steps 1 and 2 are a census of their rows.
+with probability >= `confidence`. Steps 1, 1b and 2 are a census of their rows.
+
+Across attempts: once one attempt has detected a defective cell, step 1b re-checks that cell
+in every later attempt of the dataset until a verification passes, so a deterministic defect
+is detected with probability 1 from the second attempt on (a transient fetch glitch clears,
+because the refetched cell then matches). The per-verification 95% bound above is therefore
+also the bound on serving a dataset with a deterministic >= 1% history defect: retries can
+no longer re-draw until a lucky sample misses it.
 """
 import hashlib
 import math
@@ -41,7 +55,8 @@ from dataclasses import asdict, dataclass, field
 from fractions import Fraction
 
 PROCEDURE = "prumo-sample-v2"
-REASONS = ("latest", "changed", "series-stratum", "random", "same-response")
+REASONS = ("latest", "previously-failed", "changed", "series-stratum", "random",
+           "same-response")
 _SEP = "\x1f"
 
 
@@ -103,10 +118,11 @@ def rank(seed: int, stratum: str, series_id: str, period: str) -> str:
 
 def design_sample(rows: list[tuple[str, str]], *, seed: int, changed: set[tuple[str, str]],
                   request_key: Callable[[tuple[str, str]], Hashable],
-                  policy: SamplingPolicy = DEFAULT_POLICY) -> Design:
-    """The sample of `rows` per the module docstring. `changed` keys absent from `rows` are
-    ignored; `request_key((series_id, period))` names the verifier response a row is read
-    from."""
+                  policy: SamplingPolicy = DEFAULT_POLICY,
+                  previously_failed: set[tuple[str, str]] = frozenset()) -> Design:
+    """The sample of `rows` per the module docstring. `changed` and `previously_failed` keys
+    absent from `rows` are ignored; `request_key((series_id, period))` names the verifier
+    response a row is read from."""
     reason: dict[int, str] = {}
     by_series: dict[str, list[int]] = {}
     for i, (sid, _period) in enumerate(rows):
@@ -117,6 +133,10 @@ def design_sample(rows: list[tuple[str, str]], *, seed: int, changed: set[tuple[
 
     for idx in by_series.values():  # 1. latest of every series
         reason[idx[-1]] = "latest"
+
+    failed_idx = [i for i, key in enumerate(rows) if key in previously_failed]
+    for i in failed_idx:  # 1b. cells that mismatched before (deterministic defects)
+        reason.setdefault(i, "previously-failed")
 
     changed_idx = [i for i, key in enumerate(rows) if key in changed and i not in reason]
     for i in lowest(changed_idx, "changed", policy.changed_cap):  # 2. changed (capped)
@@ -147,6 +167,7 @@ def design_sample(rows: list[tuple[str, str]], *, seed: int, changed: set[tuple[
     summary = {
         "procedure": PROCEDURE, "policy": policy.as_dict(),
         "n_observations": len(rows), "n_series": len(by_series),
+        "n_previously_failed": len(failed_idx),
         "n_changed_total": len(changed_idx), "n_changed_checked": counts["changed"],
         "n_pool": len(pool), "n_random_target": n_random,
         "counts": counts, "n_items": len(chosen)}

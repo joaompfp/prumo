@@ -108,7 +108,13 @@ class Verifier(Protocol):
         else = a failed verification).
     reread: PURE re-decision of one item from its archived evidence bytes alone (no HTTP, no
         clock, no registry beyond item.spec): must return the same series_id, period,
-        observed_text/decimal/unit/flag that `check` returned for it. replay_item runs it.
+        observed_text/decimal/unit/flag that `check` returned for it. replay_item runs it, and
+        verify_run runs it on every item before accepting the run (Task 24), so every stored
+        match replays by construction.
+    reread_many (OPTIONAL): reread of several items that share ONE evidence object, parsing
+        the evidence once; must equal [reread(evidence, i) for i in items]. Census sources
+        answer thousands of items from one response, where a per-item re-parse would cost
+        minutes; verify_run uses it when present.
     request_key: which response an item is read from: items with equal keys are answered by
         one response, so the sample adds them at no extra HTTP cost (ingest.sampling step 5).
     not_compared: {'unit'|'flag': reason} - why this channel cannot expose the field; an

@@ -362,19 +362,30 @@ class FredVerifier:
 
     def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
         """Pure re-decision from the archived 'fred-table-evidence' v1 envelope."""
-        code = _native(item.spec.native_code)
-        doc = json.loads(evidence)
-        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION:
-            raise ValueError("not a fred-table-evidence v1 envelope")
-        rec = doc["table"]
-        if not 200 <= rec["status"] < 300:
-            raise ValueError(f"archived response has HTTP status {rec['status']}")
-        unit, values = read_table_page(base64.b64decode(rec["body_b64"], validate=True), code,
-                                       item.spec)
-        return ItemResult(series_id=item.series_id, period=item.period,
-                          observed_text=values.get(item.period), evidence_url=rec["url"],
-                          observed_decimal=".", observed_unit=unit, observed_flag=None,
-                          evidence=evidence)
+        return self.reread_many(evidence, [item])[0]
+
+    def reread_many(self, evidence: bytes, items: list[BlindItem]) -> list[ItemResult]:
+        """reread of items sharing one envelope: each series' page is parsed once."""
+        pages: dict[str, tuple] = {}
+        out = []
+        for item in items:
+            if item.series_id not in pages:
+                code = _native(item.spec.native_code)
+                doc = json.loads(evidence)
+                if doc.get("schema") != EVIDENCE_SCHEMA \
+                        or doc.get("version") != EVIDENCE_VERSION:
+                    raise ValueError("not a fred-table-evidence v1 envelope")
+                rec = doc["table"]
+                if not 200 <= rec["status"] < 300:
+                    raise ValueError(f"archived response has HTTP status {rec['status']}")
+                pages[item.series_id] = (rec["url"], *read_table_page(
+                    base64.b64decode(rec["body_b64"], validate=True), code, item.spec))
+            url, unit, values = pages[item.series_id]
+            out.append(ItemResult(series_id=item.series_id, period=item.period,
+                                  observed_text=values.get(item.period), evidence_url=url,
+                                  observed_decimal=".", observed_unit=unit,
+                                  observed_flag=None, evidence=evidence))
+        return out
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         pages: dict[str, tuple[str, dict[str, str], HttpResult, bytes]] = {}

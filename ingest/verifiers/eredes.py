@@ -214,8 +214,22 @@ class EredesVerifier:
     def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
         """Pure re-decision from the archived 'eredes-csv-evidence' v1 envelope (the item's
         day CSV + the metadata response, in that order)."""
-        dataset, _ = _dataset_and_field(item.spec.native_code)
-        day = _check_period(item)
+        return self.reread_many(evidence, [item])[0]
+
+    def reread_many(self, evidence: bytes, items: list[BlindItem]) -> list[ItemResult]:
+        """reread of items sharing one envelope: each (dataset, day) CSV is parsed once."""
+        parsed: dict[tuple, tuple] = {}
+        out = []
+        for item in items:
+            dataset, _ = _dataset_and_field(item.spec.native_code)
+            day = _check_period(item)
+            if (dataset, day) not in parsed:
+                parsed[(dataset, day)] = self._archived_day(evidence, dataset, day)
+            labels, by_ts, ambiguous, url = parsed[(dataset, day)]
+            out.append(_result(item, labels, by_ts, ambiguous, url, evidence))
+        return out
+
+    def _archived_day(self, evidence: bytes, dataset: str, day):
         doc = json.loads(evidence)
         if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION \
                 or len(doc.get("responses") or []) != 2:
@@ -229,7 +243,7 @@ class EredesVerifier:
         labels = _labels(base64.b64decode(meta_rec["body_base64"], validate=True), dataset)
         by_ts, ambiguous = _day_rows(base64.b64decode(csv_rec["body_base64"], validate=True),
                                      dataset, day)
-        return _result(item, labels, by_ts, ambiguous, csv_rec["url"], evidence)
+        return labels, by_ts, ambiguous, csv_rec["url"]
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         cache: dict[tuple, tuple[bytes, str, int]] = {}

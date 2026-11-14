@@ -339,17 +339,28 @@ class OecdVerifier:
     def reread(self, evidence: bytes, item: BlindItem) -> ItemResult:
         """Pure re-decision from the archived 'oecd-csv-evidence' v1 envelope; the window
         containment constraint is the one the archived final URL requested."""
-        doc = json.loads(evidence)
-        if doc.get("schema") != EVIDENCE_SCHEMA or doc.get("version") != EVIDENCE_VERSION:
-            raise ValueError("not an oecd-csv-evidence v1 envelope")
-        rec = doc["csv"]
-        if not 200 <= rec["status"] < 300:
-            raise ValueError(f"archived response has HTTP status {rec['status']}")
-        query = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(rec["url"]).query))
-        unit, values = read_csv_evidence(
-            base64.b64decode(rec["body_b64"], validate=True), item.spec.native_code, item.spec,
-            start=query.get("startPeriod"), end=query.get("endPeriod"))
-        return _result(item, unit, values, rec["url"], evidence)
+        return self.reread_many(evidence, [item])[0]
+
+    def reread_many(self, evidence: bytes, items: list[BlindItem]) -> list[ItemResult]:
+        """reread of items sharing one envelope: each series' CSV is parsed once."""
+        parsed: dict[str, tuple] = {}
+        out = []
+        for item in items:
+            if item.series_id not in parsed:
+                doc = json.loads(evidence)
+                if doc.get("schema") != EVIDENCE_SCHEMA \
+                        or doc.get("version") != EVIDENCE_VERSION:
+                    raise ValueError("not an oecd-csv-evidence v1 envelope")
+                rec = doc["csv"]
+                if not 200 <= rec["status"] < 300:
+                    raise ValueError(f"archived response has HTTP status {rec['status']}")
+                query = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(rec["url"]).query))
+                parsed[item.series_id] = (rec["url"], *read_csv_evidence(
+                    base64.b64decode(rec["body_b64"], validate=True), item.spec.native_code,
+                    item.spec, start=query.get("startPeriod"), end=query.get("endPeriod")))
+            url, unit, values = parsed[item.series_id]
+            out.append(_result(item, unit, values, url, evidence))
+        return out
 
     def check(self, items: list[BlindItem], http: Http) -> list[ItemResult]:
         groups: dict[str, list[BlindItem]] = {}
