@@ -3,6 +3,7 @@ from collections import Counter
 from pathlib import Path
 
 import yaml
+from pydantic import ValidationError
 
 from ingest.db import Db
 from ingest.models import DerivedSpec, SeriesSpec, SourceSpec, normalize_period
@@ -27,25 +28,33 @@ def load_derived(path: Path, specs: list[SeriesSpec]) -> list[DerivedSpec]:
     """The top-level `derived:` list, validated against the loaded series (absent -> [])."""
     doc = yaml.safe_load(Path(path).read_text()) or {}
     by_id = {s.id: s for s in specs}
+    rows = doc.get("derived") or []
+    if not isinstance(rows, list):
+        raise ValueError("derived: section must be a list")
     derived, seen = [], set()
-    for row in doc.get("derived") or []:
-        d = DerivedSpec(**row)
+    for i, row in enumerate(rows):
+        if not isinstance(row, dict):
+            raise ValueError(f"derived[{i}]: entry must be a mapping")
+        try:
+            d = DerivedSpec(**row)
+        except (ValidationError, TypeError) as e:
+            raise ValueError(f"{row.get('key', f'derived[{i}]')}: invalid entry: {e}") from e
         if d.key in seen:
-            raise ValueError(f"derived {d.key!r}: duplicate key")
+            raise ValueError(f"{d.key}: duplicate key")
         seen.add(d.key)
-        if not d.key.startswith("derived."):
-            raise ValueError(f"derived {d.key!r}: key must start with 'derived.'")
+        if not d.key.startswith("derived.") or d.key == "derived.":
+            raise ValueError(f"{d.key}: key must start with 'derived.' plus a name")
         if d.key in by_id:
-            raise ValueError(f"derived {d.key!r}: key equals a series id")
+            raise ValueError(f"{d.key}: key equals a series id")
         base = by_id.get(d.base)
         if base is None:
-            raise ValueError(f"derived {d.key!r}: unknown base {d.base!r}")
+            raise ValueError(f"{d.key}: unknown base {d.base!r}")
         if d.active and not base.active:
-            raise ValueError(f"derived {d.key!r}: active entry on inactive base {d.base!r}")
+            raise ValueError(f"{d.key}: active entry on inactive base {d.base!r}")
         if base.frequency not in ("M", "Q", "A"):
-            raise ValueError(f"derived {d.key!r}: base frequency {base.frequency!r} unsupported (M/Q/A only)")
+            raise ValueError(f"{d.key}: base frequency {base.frequency!r} unsupported (M/Q/A only)")
         if base.decimal != ".":
-            raise ValueError(f"derived {d.key!r}: base decimal separator {base.decimal!r} unsupported")
+            raise ValueError(f"{d.key}: base decimal separator {base.decimal!r} unsupported")
         _validate_params(d, base.frequency)
         derived.append(d)
     return derived
@@ -54,17 +63,17 @@ def load_derived(path: Path, specs: list[SeriesSpec]) -> list[DerivedSpec]:
 def _validate_params(d: DerivedSpec, frequency: str) -> None:
     if d.formula != "rebase_100":
         if d.params:
-            raise ValueError(f"derived {d.key!r}: formula {d.formula!r} takes no params")
+            raise ValueError(f"{d.key}: formula {d.formula!r} takes no params")
         return
     if set(d.params) != {"base_period"}:
-        raise ValueError(f"derived {d.key!r}: rebase_100 needs exactly params {{base_period}}")
+        raise ValueError(f"{d.key}: rebase_100 needs exactly params {{base_period}}")
     period = d.params["base_period"]
     try:
         ok = normalize_period(period, frequency) == period
     except ValueError:
         ok = False
     if not ok:
-        raise ValueError(f"derived {d.key!r}: base_period {period!r} is not a canonical {frequency} period")
+        raise ValueError(f"{d.key}: base_period {period!r} is not a canonical {frequency} period")
 
 
 def _validate(specs: list[SeriesSpec]) -> None:

@@ -39,17 +39,17 @@ def test_valid_entries_load_in_file_order(tmp_path):
 
 
 def test_unknown_formula_rejected(tmp_path):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"(?s)^derived\.a: invalid entry.*formula"):
         _load(tmp_path, [_entry(formula="median")])
 
 
 def test_unknown_base_rejected(tmp_path):
-    with pytest.raises(ValueError, match="derived.a"):
+    with pytest.raises(ValueError, match="derived.a: unknown base"):
         _load(tmp_path, [_entry(base="nope")])
 
 
 def test_active_entry_on_inactive_base_rejected(tmp_path):
-    with pytest.raises(ValueError, match="derived.a"):
+    with pytest.raises(ValueError, match="derived.a: active entry on inactive base"):
         _load(tmp_path, [_entry(base="s2")])
 
 
@@ -59,32 +59,84 @@ def test_inactive_entry_on_inactive_base_allowed(tmp_path):
 
 @pytest.mark.parametrize("freq", ["D", "S", "PT15M"])
 def test_daily_semester_and_pt15m_bases_rejected(tmp_path, freq):
-    with pytest.raises(ValueError, match="derived.a"):
+    with pytest.raises(ValueError, match=r"derived.a: base frequency .* \(M/Q/A only\)"):
         _load(tmp_path, [_entry()], series=[_series("s1", frequency=freq)])
 
 
 def test_decimal_comma_base_rejected(tmp_path):
-    with pytest.raises(ValueError, match="derived.a"):
+    with pytest.raises(ValueError, match="derived.a: base decimal separator"):
         _load(tmp_path, [_entry()], series=[_series("s1", decimal=",")])
 
 
 def test_duplicate_key_rejected(tmp_path):
-    with pytest.raises(ValueError, match="derived.a"):
+    with pytest.raises(ValueError, match="derived.a: duplicate key"):
         _load(tmp_path, [_entry(), _entry()])
 
 
 def test_key_must_start_with_derived_and_not_shadow_series(tmp_path):
-    with pytest.raises(ValueError, match="plain"):
+    with pytest.raises(ValueError, match="^plain: key must start with"):
         _load(tmp_path, [_entry("plain")])
-    with pytest.raises(ValueError, match="derived.s1"):
+    with pytest.raises(ValueError, match="^derived.s1: key equals a series id"):
         _load(tmp_path, [_entry("derived.s1")], series=[_series("derived.s1")])
 
 
-@pytest.mark.parametrize("params", [{}, {"base_period": "2021-13"}, {"base_period": "2021"},
-                                    {"base_period": "2021-01", "x": "1"}])
-def test_rebase_requires_valid_base_period(tmp_path, params):
-    with pytest.raises(ValueError, match="derived.a"):
+@pytest.mark.parametrize("params", [{}, {"base_period": "2021-01", "x": "1"}, {"x": "1"}])
+def test_rebase_requires_exactly_base_period_param(tmp_path, params):
+    with pytest.raises(ValueError, match="derived.a: rebase_100 needs exactly params"):
         _load(tmp_path, [_entry(formula="rebase_100", params=params)])
+
+
+@pytest.mark.parametrize("period", ["2021-13", "2021", "2021-1", "2021-Q1"])
+def test_rebase_refuses_non_canonical_base_period_for_monthly(tmp_path, period):
+    with pytest.raises(ValueError, match="derived.a: base_period .* not a canonical M period"):
+        _load(tmp_path, [_entry(formula="rebase_100", params={"base_period": period})])
+
+
+@pytest.mark.parametrize("freq,period", [("Q", "2021-Q1"), ("A", "2021")])
+def test_rebase_base_period_positive_for_quarterly_and_annual(tmp_path, freq, period):
+    out = _load(tmp_path, [_entry(formula="rebase_100", params={"base_period": period})],
+                series=[_series("s1", frequency=freq)])
+    assert out[0].params == {"base_period": period}
+
+
+def test_rebase_base_period_wrong_frequency_form_rejected(tmp_path):
+    with pytest.raises(ValueError, match="not a canonical Q period"):
+        _load(tmp_path, [_entry(formula="rebase_100", params={"base_period": "2021-01"})],
+              series=[_series("s1", frequency="Q")])
+
+
+def test_int_base_period_raises_value_error_naming_key(tmp_path):
+    with pytest.raises(ValueError, match="^derived.a: invalid entry"):
+        _load(tmp_path, [_entry(formula="rebase_100", params={"base_period": 2021})],
+              series=[_series("s1", frequency="A")])
+
+
+def test_unknown_field_rejected_naming_key(tmp_path):
+    with pytest.raises(ValueError, match="(?s)^derived.a: invalid entry.*foo"):
+        _load(tmp_path, [_entry(foo="x")])
+
+
+@pytest.mark.parametrize("field", ["label", "unit"])
+def test_empty_label_or_unit_rejected(tmp_path, field):
+    with pytest.raises(ValueError, match=rf"(?s)^derived.a: invalid entry.*{field}"):
+        _load(tmp_path, [_entry(**{field: ""})])
+
+
+def test_bare_derived_dot_key_rejected(tmp_path):
+    with pytest.raises(ValueError, match="^derived.: key must start with"):
+        _load(tmp_path, [_entry("derived.")])
+    with pytest.raises(ValueError, match="(?s)invalid entry.*key"):
+        _load(tmp_path, [_entry("")])
+
+
+def test_non_mapping_entry_rejected(tmp_path):
+    with pytest.raises(ValueError, match=r"^derived\[0\]: entry must be a mapping"):
+        _load(tmp_path, ["derived.a"])
+
+
+def test_non_list_section_rejected(tmp_path):
+    with pytest.raises(ValueError, match="^derived: section must be a list"):
+        _load(tmp_path, {"derived.a": _entry()})
 
 
 def test_rebase_valid_base_period_loads(tmp_path):
@@ -93,7 +145,7 @@ def test_rebase_valid_base_period_loads(tmp_path):
 
 
 def test_params_refused_for_non_rebase(tmp_path):
-    with pytest.raises(ValueError, match="derived.a"):
+    with pytest.raises(ValueError, match="derived.a: formula .* takes no params"):
         _load(tmp_path, [_entry(params={"base_period": "2021-01"})])
 
 

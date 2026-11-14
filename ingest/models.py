@@ -228,8 +228,8 @@ FORMULAS: tuple[str, ...] = ("period_change", "period_change_pct", "yoy_change",
 class DerivedSpec(BaseModel):
     """Registry `derived:` row: a calculated series over one base series."""
     model_config = ConfigDict(extra="forbid")
-    key: str
-    base: str
+    key: str = Field(min_length=1)
+    base: str = Field(min_length=1)
     formula: Literal[*FORMULAS]
     params: dict[str, str] = {}
     label: str = Field(min_length=1)
