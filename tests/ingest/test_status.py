@@ -224,10 +224,204 @@ def test_typed_json_schema_and_readable_text(db):
                  verify_at=NOW)
     report = build_status(db, [spec], now=lambda: NOW)
     doc = report.to_dict()
-    assert doc["schema"] == "prumo-status" and doc["version"] == 1
+    assert doc["schema"] == "prumo-status" and doc["version"] == 2
     assert doc["generated_at"] == _ts(NOW)
     assert doc["staleness_policy"]["defaults_days"]["A"] == 30
     series = doc["sources"][0]["series"][0]
     assert series["availability"] == "verified" and series["last_verified"] == _ts(NOW)
     text = render_text(report)
     assert "worldbank" in text and "verified" in text and "staleness" in text
+
+
+# --- Task 23 (final review part D): confirmed-current staleness, counts, windows, scheduler ---
+
+from ingest import verifiers as _verifiers  # noqa: E402
+from ingest.pipeline import run_dataset  # noqa: E402
+from ingest.rawstore import RawStore  # noqa: E402
+from ingest.verify import verify_run  # noqa: E402
+from tests.ingest.fake_verifier import FakeVerifier  # noqa: E402
+from tests.ingest.fakes import FakeHttp, FakeSource, ok, payload, truth_of  # noqa: E402
+from tests.ingest.fakes import spec as fake_spec  # noqa: E402
+
+T0 = datetime(2026, 11, 10, 0, 0, tzinfo=timezone.utc)
+MONTHLY = {"m1": [["2026-08", "1.0"], ["2026-09", "1.1"]]}
+
+
+@pytest.fixture
+def pipe(db, tmp_path, monkeypatch):
+    """Real pipeline + verification over the fake source (monthly: 1-day refresh policy)."""
+    monkeypatch.setattr(_verifiers, "_REGISTRY", {})
+    specs = [fake_spec("m1", frequency="M")]
+    sync_registry(db, specs)
+    store = RawStore(tmp_path / "raw")
+
+    def fetch(at: datetime, series=MONTHLY, verify: bool = True):
+        r = run_dataset(db, store, FakeSource(), specs, FakeHttp(ok(payload(series))),
+                        lambda: at)
+        if verify and r.state == "pending-verification":
+            assert verify_run(db, r.run_id, FakeVerifier(truth_of(series)), None,
+                              specs=specs, store=store, now=lambda: at)
+        return r
+    return db, specs, fetch
+
+
+def test_identical_refetch_30h_later_is_confirmed_current_not_stale(pipe):
+    """Regression (D-I1): an identical-payload re-fetch short-circuits to 'verified' without
+    writing observations. It confirms the retained data is current, so the series must not be
+    flagged stale while the scheduler keeps re-checking it."""
+    db, specs, fetch = pipe
+    fetch(T0)
+    t1 = T0 + timedelta(hours=30)
+    again = fetch(t1)
+    assert again.state == "verified" and again.n_written == 0      # the short-circuit
+    s = _series(build_status(db, specs, now=lambda: t1 + timedelta(hours=1)), "m1")
+    assert s.real_data_fetched_at == _ts(T0)          # latest observation fetched_at: unchanged
+    assert s.last_confirmed_current == _ts(t1)        # the identical re-fetch confirmed it
+    assert s.stale is False and s.stale_reason is None
+
+
+def test_no_verified_run_within_the_policy_window_is_stale(pipe):
+    db, specs, fetch = pipe
+    fetch(T0)
+    fetch(T0 + timedelta(hours=30))
+    later = T0 + timedelta(hours=30 + 25)             # 25h since the last confirmation, 1d policy
+    s = _series(build_status(db, specs, now=lambda: later), "m1")
+    assert s.last_confirmed_current == _ts(T0 + timedelta(hours=30))
+    assert s.stale is True
+
+
+def test_a_failed_refetch_never_confirms_currency(pipe):
+    db, specs, fetch = pipe
+    fetch(T0)
+    failed = fetch(T0 + timedelta(hours=30), series={"m1": [["bad", "1"]]})
+    assert failed.state != "verified"
+    s = _series(build_status(db, specs, now=lambda: T0 + timedelta(hours=31)), "m1")
+    assert s.last_confirmed_current == _ts(T0) and s.stale is True
+
+
+def test_shortcut_confirming_a_withdrawn_vintage_confirms_nothing(pipe):
+    """The identical re-fetch vouches for the bytes of the run it matched. Once that run is
+    withdrawn, the re-fetch no longer confirms anything; an older verified vintage keeps its
+    own (old) confirmation time."""
+    db, specs, fetch = pipe
+    fetch(T0)
+    newer = {"m1": [*MONTHLY["m1"], ["2026-10", "1.2"]]}
+    base = fetch(T0 + timedelta(hours=2), series=newer)
+    fetch(T0 + timedelta(hours=30), series=newer)     # short-circuit onto `base`
+    db.withdraw_run(base.run_id, "test: wrong vintage", _ts(T0 + timedelta(hours=31)))
+    s = _series(build_status(db, specs, now=lambda: T0 + timedelta(hours=32)), "m1")
+    assert s.availability == "verified"
+    assert s.last_confirmed_current == _ts(T0) and s.stale is True
+
+
+def test_legacy_rows_never_count_as_confirmed_current_even_when_recent(db):
+    spec = _wb("worldbank.gdp.PT", "NY.GDP.MKTP.KD.ZG")
+    sync_registry(db, [spec])
+    _legacy_rows(db, spec, [("2024", "9.0", NOW - timedelta(hours=1))])
+    s = _series(build_status(db, [spec], now=lambda: NOW), spec.id)
+    assert s.availability == "legacy-unverified"
+    assert s.last_confirmed_current is None
+    assert (s.stale, s.stale_reason) == (True, "legacy_unverified")
+
+
+def test_source_and_total_counts_of_stale_never_fetched_and_never_verified(db):
+    fresh = _wb("worldbank.gdp.PT", "NY.GDP.MKTP.KD.ZG")
+    old = _wb("worldbank.pop.PT", "SP.POP.TOTL")
+    never = _wb("worldbank.co2.PT", "EN.CO2")
+    unverified = _wb("worldbank.gni.PT", "NY.GNI")
+    gone = _wb("worldbank.dead.PT", "X.DEAD", active=False)
+    specs = [fresh, old, never, unverified, gone]
+    sync_registry(db, specs)
+    keys = {g.label: g.key() for g in group_specs([fresh, old, never, unverified])}
+    _fetched_run(db, keys["NY.GDP.MKTP.KD.ZG"], [(fresh, "2025", "1", NOW)], NOW,
+                 verify_at=NOW)
+    _fetched_run(db, keys["SP.POP.TOTL"], [(old, "2025", "1", NOW - timedelta(days=40))],
+                 NOW - timedelta(days=40), verify_at=NOW - timedelta(days=40))
+    _fetched_run(db, keys["NY.GNI"], [(unverified, "2025", "1", NOW)], NOW,
+                 state="failed-verification", verify_at=NOW, verify_passed=False)
+    report = build_status(db, specs, now=lambda: NOW)
+    src = _source(report, "worldbank")
+    assert (src.stale, src.never_fetched, src.never_verified) == (1, 1, 1)
+    assert src.stale_series == ("worldbank.pop.PT",)
+    assert report.totals == {"active_series": 4, "stale": 1, "never_fetched": 1,
+                             "never_verified": 1}
+    text = render_text(report)
+    assert "stale 1 / never fetched 1 / never verified 1" in text
+    assert "STALE worldbank.pop.PT" in text
+    assert "all sources: 4 active series; stale 1 / never fetched 1 / never verified 1" in text
+
+
+def test_stale_series_list_in_text_is_capped(db):
+    specs = [_wb(f"worldbank.s{i:02d}.PT", f"X.S{i:02d}") for i in range(12)]
+    sync_registry(db, specs)
+    for s in specs:
+        _fetched_run(db, group_specs([s])[0].key(), [(s, "2025", "1", NOW - timedelta(days=40))],
+                     NOW - timedelta(days=40), verify_at=NOW - timedelta(days=40))
+    text = render_text(build_status(db, specs, now=lambda: NOW))
+    assert text.count("STALE worldbank.") == 1
+    assert "(+2 more)" in text
+
+
+def test_events_are_counted_per_window_and_lifetime(db):
+    spec = _wb("worldbank.gdp.PT", "NY.GDP.MKTP.KD.ZG")
+    sync_registry(db, [spec])
+    run = _fetched_run(db, group_specs([spec])[0].key(), [], NOW, state="failed-fetch")
+    db.add_event(_ts(NOW - timedelta(days=10)), "fetch_failure", run, {"e": 1})
+    db.add_event(_ts(NOW - timedelta(days=3)), "fetch_failure", run, {"e": 2})
+    db.add_event(_ts(NOW - timedelta(hours=2)), "fetch_failure", run, {"e": 3})
+    src = _source(build_status(db, [spec], now=lambda: NOW), "worldbank")
+    assert src.events == {"fetch_failure": 3}
+    assert src.events_24h == {"fetch_failure": 1}
+    assert src.events_7d == {"fetch_failure": 2}
+    text = render_text(build_status(db, [spec], now=lambda: NOW))
+    assert "events 24h {'fetch_failure': 1}; 7d {'fetch_failure': 2}; " \
+           "lifetime {'fetch_failure': 3}" in text
+
+
+def test_scheduler_retry_streaks_and_interrupted_attempts_are_reported(db):
+    gdp, pop, co2 = (_wb("worldbank.gdp.PT", "NY.GDP"), _wb("worldbank.pop.PT", "SP.POP"),
+                     _wb("worldbank.co2.PT", "EN.CO2"))
+    specs = [gdp, pop, co2]
+    sync_registry(db, specs)
+    keys = {g.label: g.key() for g in group_specs(specs)}
+    # failed twice: streak 2, waits BACKOFF[1] = 4h from its finish
+    for at in (NOW - timedelta(hours=3), NOW - timedelta(hours=2)):
+        db.scheduler_attempt_started(keys["NY.GDP"], "worldbank", "NY.GDP", _ts(at))
+        db.scheduler_attempt_finished(keys["NY.GDP"], "failed-fetch",
+                                      _ts(at + timedelta(minutes=1)))
+    # interrupted: 'running' marker, no finish (process killed mid-attempt)
+    db.scheduler_attempt_started(keys["SP.POP"], "worldbank", "SP.POP",
+                                 _ts(NOW - timedelta(minutes=30)))
+    # healthy: verified 1h ago, annual 30d policy
+    db.scheduler_attempt_started(keys["EN.CO2"], "worldbank", "EN.CO2",
+                                 _ts(NOW - timedelta(hours=1)))
+    db.scheduler_attempt_finished(keys["EN.CO2"], "verified", _ts(NOW - timedelta(hours=1)))
+    report = build_status(db, specs, now=lambda: NOW)
+    src = _source(report, "worldbank")
+    by = {d.label: d.scheduler for d in src.datasets}
+    assert by["NY.GDP"].last_attempt_state == "failed-fetch"
+    assert by["NY.GDP"].failure_streak == 2
+    assert by["NY.GDP"].next_eligible_at == _ts(NOW - timedelta(hours=2, minutes=-1)
+                                                + timedelta(hours=4))
+    assert by["SP.POP"].last_attempt_state == "running" and by["SP.POP"].failure_streak == 1
+    assert by["SP.POP"].next_eligible_at == _ts(NOW + timedelta(minutes=30))  # 1h from start
+    assert by["EN.CO2"].failure_streak == 0
+    assert by["EN.CO2"].next_eligible_at == _ts(NOW - timedelta(hours=1) + timedelta(days=30))
+    assert (src.scheduler_retrying, src.scheduler_running) == (2, 1)
+    text = render_text(report)
+    assert "scheduler: 2 retrying (max streak 2), 1 running or interrupted" in text
+    assert "scheduler failed-fetch, streak 2, next eligible" in text
+    assert "scheduler running (in flight, or interrupted if the worker is not mid-attempt)" \
+        in text
+
+
+def test_datasets_are_sorted_by_label_and_pending_policy_hours_is_24(db):
+    specs = [_wb("worldbank.z.PT", "ZZ.LAST"), _wb("worldbank.a.PT", "AA.FIRST"),
+             _wb("worldbank.m.PT", "MM.MID")]
+    sync_registry(db, specs)
+    for g in group_specs(specs):
+        _fetched_run(db, g.key(), [], NOW, state="failed-fetch")
+    report = build_status(db, specs, now=lambda: NOW)
+    assert [d.label for d in _source(report, "worldbank").datasets] == [
+        "AA.FIRST", "MM.MID", "ZZ.LAST"]
+    assert report.to_dict()["staleness_policy"]["pending_stale_after_hours"] == 24

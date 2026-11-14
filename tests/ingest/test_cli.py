@@ -88,7 +88,7 @@ def test_cli_run_worldbank_offline_end_to_end_then_status(tmp_path, capsys):
     rc = main(["--db", str(db_path), "--registry", str(reg), "status", "--json"])
     assert rc == 0
     doc = json.loads(capsys.readouterr().out)
-    assert doc["schema"] == "prumo-status" and doc["version"] == 1
+    assert doc["schema"] == "prumo-status" and doc["version"] == 2
     wb = next(s for s in doc["sources"] if s["name"] == "worldbank")
     assert wb["latest_attempt_state"] == "verified"
     assert all(s["availability"] == "verified" for s in wb["series"])

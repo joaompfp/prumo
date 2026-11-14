@@ -339,12 +339,39 @@ class Db:
             "FROM observation o JOIN dataset_run r ON r.id = o.dataset_run_id "
             "GROUP BY o.series_id, o.kind, r.state").fetchall()
 
-    def event_totals(self) -> list[tuple[str | None, str, int]]:
-        """(source_name or None, kind, total count) of events over all time."""
+    def event_totals(self, since: str | None = None) -> list[tuple[str | None, str, int]]:
+        """(source_name or None, kind, count) of events over all time, or of events with
+        ts >= `since` (ISO-8601 UTC; stored stamps share the +00:00 form, so text order is
+        time order)."""
+        where, args = ("WHERE e.ts >= ? ", (since,)) if since is not None else ("", ())
         return self.conn.execute(
             "SELECT s.name, e.kind, COUNT(*) FROM event e "
             "LEFT JOIN dataset_run r ON r.id = e.dataset_run_id "
-            "LEFT JOIN source s ON s.id = r.source_id GROUP BY s.name, e.kind").fetchall()
+            "LEFT JOIN source s ON s.id = r.source_id " + where +
+            "GROUP BY s.name, e.kind", args).fetchall()
+
+    def verified_run_receipts(self) -> list[tuple[int, str | None, str | None, int]]:
+        """(run_id, dataset_key, latest raw_fetch.fetched_at, wrote_observations 0/1) of every
+        NON-legacy run currently in state 'verified', oldest first. A verified run that wrote
+        no observations is the identical-payload short-circuit (pipeline Ruling D)."""
+        return self.conn.execute(
+            "SELECT r.id, r.dataset_key, "
+            "(SELECT MAX(f.fetched_at) FROM raw_fetch f WHERE f.dataset_run_id = r.id), "
+            "r.id IN (SELECT dataset_run_id FROM observation) "
+            "FROM dataset_run r WHERE r.state = 'verified' AND r.input_origin <> 'legacy' "
+            "ORDER BY r.id").fetchall()
+
+    def series_of_runs(self, run_ids: list[int]) -> dict[int, set[str]]:
+        """{run_id: distinct series ids with observations in that run} (one table scan)."""
+        if not run_ids:
+            return {}
+        marks = ",".join("?" * len(run_ids))
+        out: dict[int, set[str]] = {r: set() for r in run_ids}
+        for run_id, sid in self.conn.execute(
+                "SELECT DISTINCT dataset_run_id, series_id FROM observation "
+                f"WHERE dataset_run_id IN ({marks})", list(run_ids)):
+            out[run_id].add(sid)
+        return out
 
     def verification_overview(self) -> list[tuple[int, str | None, int, str]]:
         """(run_id, dataset_key, passed, created_at) of every verification, oldest first."""
@@ -418,6 +445,13 @@ class Db:
             "last_attempt_state, last_success_at, failure_streak, last_finished_at "
             "FROM scheduler_state WHERE dataset_key = ?", (dataset_key,)).fetchone()
         return SchedulerState(*row) if row is not None else None
+
+    def scheduler_states(self) -> list[SchedulerState]:
+        """Every persisted scheduler_state row (read-only status view), by dataset key."""
+        return [SchedulerState(*row) for row in self.conn.execute(
+            "SELECT dataset_key, source_name, group_label, last_attempt_at, "
+            "last_attempt_state, last_success_at, failure_streak, last_finished_at "
+            "FROM scheduler_state ORDER BY dataset_key")]
 
     def scheduler_attempt_started(self, dataset_key: str, source_name: str,
                                   group_label: str, at: str) -> None:
