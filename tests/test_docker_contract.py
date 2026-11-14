@@ -220,3 +220,25 @@ def test_operator_runbook_links_authoritative_manual_refresh_and_has_valid_shell
         assert result.returncode == 0, result.stderr
     assert "docker compose" not in "\n".join(scripts)
     assert "docker run" not in "\n".join(scripts)
+
+
+def _requirement_names(path: Path) -> set[str]:
+    names = set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.split("#", 1)[0].strip()
+        if line and not line.startswith("-"):
+            names.add(re.split(r"[<>=!~\[ ;]", line, maxsplit=1)[0].lower())
+    return names
+
+
+def test_test_only_packages_stay_out_of_the_production_image():
+    """The image installs requirements.txt only (D-M7); pytest and friends live in
+    requirements-dev.txt, which the deny-by-default build context never includes."""
+    runtime = _requirement_names(REPO / "requirements.txt")
+    dev = _requirement_names(REPO / "requirements-dev.txt")
+    test_only = {"pytest", "pytest-cov", "httpx"}
+    assert not runtime & test_only, runtime & test_only
+    assert test_only <= dev
+    assert {"fastapi", "uvicorn", "requests", "pydantic", "pyyaml"} <= runtime
+    ci = (REPO / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "requirements-dev.txt" in ci

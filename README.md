@@ -101,7 +101,10 @@ its current definitions. [Licence decisions](registry/licences-todo.md) and
 
 ## Tests and lint
 
+Test-only packages are in `requirements-dev.txt`, which the production image never installs.
+
 ```bash
+.venv/bin/pip install -r requirements-dev.txt
 .venv/bin/python -m pytest tests -q
 .venv/bin/ruff check app/ ingest/
 ```

@@ -1,0 +1,5 @@
+# Test-only packages: never installed in the production image (it installs requirements.txt).
+# Install both files for development and CI.
+pytest>=9,<10
+pytest-cov>=5
+httpx>=0.24,<1

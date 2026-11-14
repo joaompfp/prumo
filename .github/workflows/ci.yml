@@ -28,10 +28,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      # Runtime requirements only. The ingest pipeline runs on sqlite3 and never
-      # imports DuckDB/pyarrow; the legacy seed scripts are not exercised in CI.
+      # Runtime requirements plus test-only tools (requirements-dev.txt, never in the
+      # image). The ingest pipeline runs on sqlite3 and never imports DuckDB/pyarrow;
+      # the legacy seed scripts are not exercised in CI.
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt -r requirements-dev.txt
       # Full offline suite. pytest.ini's default `not live` selection applies;
       # real publisher (live) tests never run in CI.
       - name: Run tests
