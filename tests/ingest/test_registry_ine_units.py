@@ -60,3 +60,24 @@ def test_tables_have_no_stale_entries():
 def test_a_mislabelled_registry_row_would_be_caught():
     s, varcd = next((s, v) for s, v in _pairs() if v == "0011889")
     assert "%" not in UNIT_LABELS[INE_UNIT_OF[varcd]]  # the inactive ine.ipi_seasonal_cae.PT case
+
+
+# Final review C-I3: seasonal adjustment from INE's own indicator name (IndicadorDsg), only where
+# the name states it; every other varcd stays None (the name says nothing).
+# varcd -> (phrase in the indicator name, registry seasonal_adjustment)
+INE_ADJUSTMENT = {
+    "0011889": ("ajustado de efeitos de calendário e de sazonalidade", "SCA"),
+    "0007983": ("Ajustada de sazonalidade", "SA"),
+}
+
+
+def test_seasonal_adjustment_follows_the_indicator_name():
+    import json
+    fix = Path(__file__).resolve().parent / "fixtures" / "ine"
+    for varcd, (phrase, _) in INE_ADJUSTMENT.items():
+        (path,) = fix.glob(f"*_{varcd}.json")
+        doc = json.loads(path.read_text())
+        assert phrase in (doc[0] if isinstance(doc, list) else doc)["IndicadorDsg"], varcd
+    bad = [(s.id, s.seasonal_adjustment) for s, varcd in _pairs()
+           if s.seasonal_adjustment != INE_ADJUSTMENT.get(varcd, (None, None))[1]]
+    assert not bad, bad

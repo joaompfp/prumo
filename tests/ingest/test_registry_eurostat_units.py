@@ -53,3 +53,15 @@ def test_every_label_in_use_is_in_the_table():
     # and the table has no stale code: every code is used by an active series
     assert {code for _, code in _pairs()} == set(UNIT_LABELS)  # no stale code in the table
 
+
+def test_seasonal_adjustment_is_the_pinned_s_adj_code():
+    """Final review C-I3: `seasonal_adjustment` carries the Eurostat s_adj code pinned in
+    native_code (SA = seasonally adjusted, SCA = seasonally and calendar adjusted, NSA), and
+    stays None where the dataset has no s_adj dimension (annual/bi-annual tables, HICP)."""
+    bad = []
+    for s in load_registry(REGISTRY):
+        if s.source.name == "eurostat" and s.native_code:
+            want = dict(parse_native_code(s.native_code)[1]).get("s_adj")
+            if s.seasonal_adjustment != want:
+                bad.append((s.id, want, s.seasonal_adjustment))
+    assert not bad, bad
