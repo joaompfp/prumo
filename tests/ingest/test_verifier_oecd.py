@@ -857,7 +857,7 @@ def test_live_run_with_refetch_all_six_verified_and_served_zero(tmp_path, monkey
                                 max(r.period_raw for r in rows))
             assert _PERIOD.fullmatch(lo) and _PERIOD.fullmatch(hi)
         assert served == 0  # redistribution_ok=false: verified is not served
-        assert verifs == [(12, 1)]
+        assert verifs == [(result.n_written, 1)]  # Task 21: one CSV per series -> census
         # GROUP BY over an empty quarantine set returns []; positive counts only.
         assert sorted(quar) == sorted(_expected_quarantine(expected).items())
         # offline evidence replay (no HTTP): every sampled item's archived CSV envelope
