@@ -234,12 +234,20 @@ Since Task 23 (not in the deployed 49a3602 image until an authorized rebuild), `
 `lag` open the database strictly read-only (SQLite `mode=ro`): they never migrate and never
 create a file. They exit 2 with a clear message when the file is missing or its schema is
 older or newer than the code (the scheduler applies migrations; a report never does).
+If a writer starts or migrates during a read made without one (SQLite `immutable=1`), the
+report retries once with plain `mode=ro` instead of failing (Task 24).
 The text report shows, per source and in total, the active series that are stale, never
 fetched and never verified (stale series ids listed, capped at 10); `last confirmed current`
 next to the retained data's fetch date (stale is judged on the former, see
 [methodology](methodology.md)); events in the last 24h, 7d and lifetime; and per dataset the
 scheduler's persisted state: failure streak, next eligible time and any `running` marker
-(in flight, or an attempt interrupted by a killed process). The scheduler logs one
+(in flight, or an attempt interrupted by a killed process), and the verifier channel of the
+dataset's latest passed verification (`last verified via live|pinned-bundle`). A run
+verified only against its own pinned bundle never counts as confirmed current: its series
+stay stale with reason `pinned_bundle_only` until a live verification (Task 24). A
+`pending-verification` run older than 24 h is marked `STALE` with its remedy and counted
+in the `all sources` line (`pending verification over 24h N`, JSON
+`totals.pending_stuck`); see "Interrupted runs" below. The scheduler logs one
 `blocked` record per `verifiable: false` source (DGEG) at process start, not every pass.
 
 ```bash
@@ -256,7 +264,9 @@ since Task 22; not in the deployed 49a3602 image until an authorized rebuild) ju
 `python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw lag` lists every ACTIVE series
 whose newest fetched period lags today by more than the per-frequency allowance in
 `ingest/data_lag.py` (A 3 years, S 3 halves, Q 4 quarters, M 6 months, D 30 days, PT15M 7 days)
-and exits 1 if any does. A hit means a possibly frozen or interrupted publisher series: confirm
+and exits 1 if any does. Only periods of `verified` and `pending-verification` runs count:
+a withdrawn or failed run (possibly a parser that invented a future period) never masks a
+frozen series (Task 24). A hit means a possibly frozen or interrupted publisher series: confirm
 with the publisher and record the disposition in `registry/unmapped-<source>.md`; never
 deactivate on the lag alone.
 
@@ -399,12 +409,22 @@ command below with an explicit reason. Only a `verified`, non-legacy run can be 
 `withdrawn` is terminal, its rows are kept in `observation` but never served again, and the
 reason is stored as event `withdrawal`. The view then falls back to the newest remaining
 verified vintage for each period, if any. The database refuses any other path into
-`withdrawn` (hand-written SQL included). Withdrawal removes that one vintage only: if the
-publisher still returns the same values, the next scheduled run re-ingests them as a new
-run and serves them once verified. To stop serving a series persistently, inactivate it.
+`withdrawn`, and from migration 0013 also an `INSERT OR REPLACE` that would recreate a
+withdrawn run id (hand-written SQL included).
+
+Withdraw the run that WROTE the rows. A run whose fetched bytes were identical to the
+previous verified run is recorded `verified` with no observations (the identical-payload
+short-circuit) and vouches for that run; `withdraw` refuses such a run ("has no
+observations"). Withdrawing the run that wrote the rows also withdraws, in the same
+transaction and each with its own `withdrawal` event (`cascaded_from` = the run you named),
+every later verified short-circuit of the same dataset chained onto it, up to the next run
+that wrote rows or ended in another state. The command prints every run it withdrew. The
+next fetch of the same bytes then follows a withdrawn run, so it is re-ingested as a new
+run and served once verified, and `status` no longer counts the withdrawn short-circuits
+as confirming the data current. To stop serving a series persistently, inactivate it.
 
 ```bash
-: "${RUN_ID:?Set the dataset_run id to withdraw}"
+: "${RUN_ID:?Set the dataset_run id that wrote the rows}"
 : "${REASON:?Set the reviewed reason, e.g. a defect reference}"
 docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
     withdraw "$RUN_ID" --reason "$REASON"
@@ -416,8 +436,23 @@ error such as `database is locked` after the 30 s busy timeout, or `docker stop`
 ends `failed-operational` with event `operational_failure`, never `failed-fetch` or
 `failed-validation`/`format_change`, which describe the publisher. A run left `running` by a
 hard kill (OOM, SIGKILL) is closed the same way, with stage `orphaned`, when the scheduler
-next starts. That start-up sweep assumes no manual CLI writer is running at the same time,
-which this runbook already requires (stop the worker before a manual import).
+next starts. Since Task 24 that start-up sweep closes only a run the scheduler itself started
+(its dataset has a scheduler attempt marker still `running` from no later than the run's
+start; `swept_because: scheduler_attempt_interrupted`) or a run that started at least 6 h
+earlier (`ORPHAN_MIN_AGE` in `ingest/db.py`; `swept_because: older_than_min_age`). A
+younger manual run in the web container is left alone. Every state change the pipeline
+makes out of `running` is a compare-and-set: if a run is closed while its process still
+works on it, that process rolls back what it was writing, records
+`operational_failure` with stage `closed_elsewhere` and reports the run's real state, so a
+swept run is never resurrected. Stopping the worker before a manual import remains the rule.
+
+**Interrupted verification.** A run stopped during verification (SIGTERM or a crash inside
+`run_with_refetch`'s verify stage) stays `pending-verification`; nothing sweeps it. It is
+never served, it still counts as held data for the recorded-replay stale guard, and
+`status` marks it `STALE` after 24 h. The remedy is to verify that run with the verifier
+registered for its source: `python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw
+verify <run_id>` (in the web container, worker stopped as for any manual write). It ends
+`verified` or `failed-verification`; the next scheduled run fetches afresh either way.
 
 ## Rollback
 

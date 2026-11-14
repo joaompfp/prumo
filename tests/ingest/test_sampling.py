@@ -51,7 +51,9 @@ def test_discovery_size_known_values():
     assert discovery_size(0, **one_pct) == 0
     assert discovery_size(50, **one_pct) == 48  # one defect in 50: nearly a census
     assert 250 < discovery_size(1_400, **one_pct) < 300
-    assert 280 < discovery_size(100_000, **one_pct) <= 300  # tends to ln(.05)/ln(.99) = 298.1
+    # tends to 299: the binomial limit ln(.05)/ln(.99) = 298.07, rounded up
+    assert 280 < discovery_size(100_000, **one_pct) <= 300
+    assert discovery_size(1_000_000, **one_pct) == 299
     assert discovery_size(10_000, tolerable_rate=Fraction(1, 100),
                           confidence=Fraction(0)) == 0
 

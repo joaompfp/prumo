@@ -109,10 +109,16 @@ the reviewed boundary, not a general-purpose sandbox against malicious code.
 ### Sample design (procedure `prumo-sample-v2`, [ingest/sampling.py](../../ingest/sampling.py))
 
 Let N be the number of observations a run wrote and S its number of series. The verifier
-compares a sample built in five steps; each item stores the step that drew it
-(`verification_item.reason`):
+compares a sample built in five steps (plus step 1b); each item stores the step that drew
+it (`verification_item.reason`):
 
 1. `latest`: the latest period of every series (S items, a census of the newest data).
+1b. `previously-failed` (Task 24): every observation whose (series, period) MISMATCHED in a
+   failed verification of the same dataset since that dataset's last verified run. Items
+   the verifier never answered (an outage or a broken verifier fails every item without
+   observing anything) are not carried. This step is uncapped; its size is bounded by the
+   earlier samples. The number carried is stored as `n_previously_failed` in
+   `verification.sample_design`.
 2. `changed`: every observation the run revised (event `revision`) or added to a series
    that already had verified fetched data (event `new_periods`), at most 500 per run. Above
    the cap, 500 are drawn at random and the rest stay in the history pool; the total, the
@@ -125,13 +131,14 @@ compares a sample built in five steps; each item stores the step that drew it
    (all observations not taken by steps 1-2) misses every one of D = ceil(0.01 * P)
    defective observations with probability at most 5%, computed exactly from the
    hypergeometric distribution: prod over i < n of (P - D - i) / (P - i) <= 0.05.
-   n grows with P and tends to 298: 258 for P = 1,000, 281 for 2,500, 294 for 10,000.
+   n grows with P and tends to 299 (the binomial limit ln 0.05 / ln 0.99 = 298.07, rounded
+   up): 258 for P = 1,000, 281 for 2,500, 294 for 10,000, 299 from P = 1,000,000.
 5. `same-response`: every other observation that the verifier reads from a response it
    already fetches for steps 1-4 (`Verifier.request_key`). Where one response carries a
    series' full history, this costs no extra HTTP request and turns the check into a
    census of that series.
 
-Statistical statement: steps 1, 2 and 5 are censuses of what they cover. Step 4 alone
+Statistical statement: steps 1, 1b, 2 and 5 are censuses of what they cover. Step 4 alone
 detects, with probability at least 95%, any error rate of at least 1% among the history
 pool. Steps 3 and 5 only add items, and drawing step 4 after removing step 3's items can
 only lower the miss probability (each factor 1 - D/(M - i) decreases as the population M
@@ -139,6 +146,19 @@ decreases), so the bound holds for the whole design. A single mismatch fails the
 "100% of the sample matched" means: no error was found in any compared cell, and an error
 rate of 1% or more in the unverified remainder would have been found with at least 95%
 probability.
+
+Retries do not weaken this bound. Each refetch attempt (`run_with_refetch`, up to three)
+and each later scheduler retry of a failed dataset draws a fresh seed, and a parser defect is
+deterministic: the refetched bytes re-parse to the same wrong cells. Without step 1b every
+attempt would be an independent chance (up to 5% each) to miss the defect, so the
+probability of eventually serving it would grow with every retry, and the identical-payload
+short-circuit would then keep the lucky pass served (re-review 2 I1 measured 9.1% within
+three attempts on a BPstat-shaped run). With step 1b, once any attempt has caught a
+defective cell, every later attempt of that dataset re-checks it until a verification
+passes: the defect is detected with probability 1 from then on, while a transient fetch
+glitch still clears because the refetched cell then matches. The 95% / 1% statement
+therefore holds per served dataset, not only per verification. It matters for INE and
+BPstat, whose samples are not censuses; the census sources were already unaffected.
 
 Randomness is reproducible without depending on the Python version: each candidate gets the
 rank `sha256("prumo-sample-v2" US seed US stratum US series_id US period)` (US = the 0x1F
@@ -204,6 +224,12 @@ equal the stored claim (key, observed text, decimal, unit, flag), and then re-de
 stored comparison. A missing, corrupt or disagreeing piece of evidence does not replay as a
 match. Items stored before migration 0012 need the registry specs passed in.
 
+Since Task 24 `verify_run` runs the same `reread` on every item before accepting the run,
+on the very evidence bytes it archives, and fails any item whose re-read differs from the
+claim `check` made (or whose evidence is empty or cannot be re-read): every stored match
+replays by construction. Census verifiers implement `reread_many`, which parses a response
+shared by many items once (equal to calling `reread` per item).
+
 ### Failure, outage and escalation
 
 A failed verification keeps that run out of the served view and triggers a full refetch of
@@ -224,7 +250,9 @@ as the immediately previous verified run of the same dataset short-circuit to
 `verified`, with no new observations or verification sample. Prior verified rows stay
 queryable; no new independent verification date is invented, but the re-fetch does count
 as confirming the retained data current for staleness (see the status definition below).
-Identical bytes after a failed run are fully processed again.
+Identical bytes after a failed or withdrawn run are fully processed again; withdrawing the
+run that wrote the rows also withdraws the later short-circuit runs chained onto it, so the
+next identical fetch is re-ingested (Task 24).
 
 The per-source collector and reviewed independent channel are documented in
 [sources.md](sources.md), including blocked definitions and unknown channels. Technical
@@ -312,7 +340,11 @@ latest possible release. `status` reports two retrieval dates per series:
   short-circuit whose matched run (followed through earlier short-circuits) is still
   `verified` and holds that series. An unchanged publisher file that the scheduler
   re-fetched and found byte-identical therefore confirms the data current, without a new
-  verification date. A failed, pending or withdrawn run confirms nothing.
+  verification date. A failed, pending or withdrawn run confirms nothing, and neither does
+  a run verified only against its own pinned bundle (`verifier_channel='pinned-bundle'`,
+  not audit-grade): a series whose verified data all comes from such runs is stale with
+  `stale_reason=pinned_bundle_only`. Withdrawing a run also withdraws the short-circuits
+  chained onto it (see [operations](operations.md)), so they stop confirming it.
 
 A series is **stale** when `now - last_confirmed_current` exceeds its refresh interval.
 Legacy-only series (`legacy-unverified`) are always stale (`stale_reason=legacy_unverified`):
