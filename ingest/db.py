@@ -177,6 +177,14 @@ class Db:
         return self.conn.execute("SELECT input_origin FROM dataset_run WHERE id = ?",
                                  (run_id,)).fetchone()[0]
 
+    def latest_fetched_periods(self) -> dict[str, str]:
+        """series_id -> newest period of its FETCHED rows (any run state: a period the
+        publisher gave us is data-time evidence even if that run later failed verification);
+        legacy rows are excluded. Canonical periods of one frequency sort as text."""
+        return dict(self.conn.execute(
+            "SELECT series_id, MAX(period) FROM observation WHERE kind = 'fetched' "
+            "GROUP BY series_id").fetchall())
+
     def run_changed_keys(self, run_id: int) -> set[tuple[str, str]]:
         """(series_id, period) the run revised (event 'revision') or newly added to a series
         that already had verified fetched data (event 'new_periods'): the run's changed set,

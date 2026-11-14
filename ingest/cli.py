@@ -7,6 +7,9 @@
                                    indicator's outage never blocks the healthy others; a
                                    failing source/group never stops the rest; exit 1 if any
                                    ACTIVE, verifiable source did not verify
+    lag                            read-only data-time check: ACTIVE series whose newest
+                                   fetched period lags today beyond ingest.data_lag.MAX_LAG
+                                   (possibly frozen publisher dataset); exit 1 if any
     status [--json]                typed report from Db records: per source/series latest
                                    attempt, last REAL verification, the retained data's genuine
                                    retrieval date, staleness (our refresh policy), event
@@ -61,6 +64,7 @@ from ingest.bundle import (
     RecordingHttp,
     load_bundle,
 )
+from ingest.data_lag import lagging_series
 from ingest.db import open_db
 from ingest.legacy_import import DEFAULT_REGISTRY, import_legacy
 from ingest.operations import DEFAULT_CLIENT_TIMEOUT_S, RunReport, RunRequest, polite_http, run_all
@@ -144,6 +148,12 @@ def build_parser() -> argparse.ArgumentParser:
                         "request, each request's timeout is clamped to the remaining budget, "
                         "a stalled server is KILLED at the deadline and a late response is "
                         "discarded rather than returned")
+
+    sub.add_parser("lag", help="read-only data-time check: active series whose newest "
+                               "fetched period lags today beyond the per-frequency allowance "
+                               "(ingest.data_lag.MAX_LAG); exit 1 if any",
+                   description="Flags possibly frozen/discontinued publisher datasets. A hit "
+                               "means investigate, never deactivate automatically.")
 
     s = sub.add_parser("status", help="operational status report (read-only)")
     s.add_argument("--json", dest="as_json", action="store_true", help="typed JSON report")
@@ -385,6 +395,23 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
             db.close()
         print(report.to_json() if args.as_json else render_text(report))
         return 0
+
+    if args.command == "lag":
+        db = open_db(db_path)
+        try:
+            latest = db.latest_fetched_periods()
+        finally:
+            db.close()
+        found = lagging_series(specs, latest, datetime.now(timezone.utc).date())
+        for f in found:
+            print(f"LAGGING {f.series_id} {f.frequency} latest={f.latest_period} "
+                  f"lag={f.lag} > {f.max_lag}")
+        never = sorted(s.id for s in specs if s.active and s.id not in latest)
+        for sid in never:
+            print(f"NO-FETCHED-DATA {sid}")
+        print(f"{len(found)} lagging, {len(never)} without fetched data, "
+              f"{sum(s.active for s in specs)} active")
+        return 1 if found else 0
 
     if args.command == "import-legacy":
         csv_path = Path(args.csv)
