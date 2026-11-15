@@ -1,5 +1,25 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## STATUS 2026-11-15 22:25 UTC (public site built and reviewed; NOT deployed)
+
+**Project 4 (public UI) is built, independently reviewed and ready to deploy. Production still serves the "Em manutencao" page.** Work sits on `pipeline-rebuild`: `b00cb05` (the site) plus `28bb362` (the fix round that closed the review). Nothing is merged to `main` and nothing is deployed.
+
+The site, in the `prumo` container on the same read-only SQLite handle: home with 12 curated figures, three theme catalogues with filters and pagination, series pages with chart, value table, provenance (publisher, receipt, run, payload hash, verification and whether that value was sampled), revisions and cross-checks; calculated pages with the badge, the formula in Portuguese, the input values and the caveats; search, sources, methodology and CSV exports. Server-rendered Jinja with inline SVG, no JavaScript, no third-party asset, no cookie. Reader text comes only from `presentation/catalog/pt.py`; links and assets are built from `X-Forwarded-Prefix` so `cae.joao.date` and `joao.date/dados` both work.
+
+Review and fix round (`28bb362`), against the spec and the production copy:
+- BLOCKER fixed: `served_observation` also serves `legacy-unverified` rows (worldbank is scoped-allowed) and a fetched row only shadows the same period, so withdrawing a fetched execution would publish unverified values. Every public read and both CSV exports now filter `kind = 'fetched'`; a calculated series on a withheld base is refused. Probe on a copy of production: withdrawing a real World Bank run uncovered 3,376 legacy rows across 54 series in the view, and every public read and CSV returned 0 violations.
+- 500 instead of 503 fixed: `MissingText` (a catalogue key missing for a stored code) and `sqlite3.OperationalError` (right schema version, missing view) now render the 503 page and log the code at ERROR. The page no longer echoes the database path or the schema versions.
+- Reader text fixed on the export path: CSV `estado`/`unidade` columns now carry `provisorio`/`%`/`saldo` instead of `provisional`/`pct`/`balance`; the derived CSV 404s when nothing is served; the formula names its base by title. Search, the derived page and the sources page no longer show series ids, derived keys or stored licence strings (`UNVERIFIED ...`, `pending ...`) - withheld sources get reader notes from the catalogue.
+- `X-Forwarded-Prefix` accepts only a plain path (a hostile `//evil.example` became the prefix and turned every link cross-host) and responses carry `Vary: X-Forwarded-Prefix`. `pt.FLAGS` gained `revised` and a test now asserts it equals `ingest.flags.FLAGS` (a missing `revised` 500'd every page carrying such a Eurostat row).
+- Home cards: the change line is always a slot and a long value shrinks instead of overflowing (`7 609 586 380` was clipped at the card edge).
+- First review: CHANGES REQUIRED (1 major, 12 minors); scoped re-review after the fixes: APPROVED, all 13 findings closed, no regressions. Full suite `2112 passed, 7 deselected` in 850.9 s; `tests/app` re-run after the final template change: 72 passed; `ruff` clean.
+
+Measured on a copy of production (176 MB, 172,512 served rows): home 87-91 ms, `/fontes` 27 ms, the 15-minute series page 186 ms, catalogue under 60 ms; CSVs 13 ms. Visual QA at 1440 and 390 px on home, catalogue, series, calculated, sources, methodology and search.
+
+DEPLOY (needs owner authorization; code only, no migration): `bash -lic 'dc-web-up prumo'` rebuilds the shared image and recreates only the web container; `prumo-ingest` and `prumo-backoffice` are not restarted (the public read methods added to `ingest/db.py` are additive). Post-deploy checks, both public URLs and rollback: `docs/data/operations.md` "Public site (project 4)". Rollback is the previous commit on `main` plus the same command; the database is untouched by this release.
+
+OPEN (unchanged by this work): Task 18's real 24-hour observation and the final owner acceptance; the identical-content short-circuit proof in production (next INE fetch); licence gates for FRED/OECD/REN/DGEG; backoffice v1.1 (migration 0018+).
+
 ## STATUS 2026-11-15 19:15 UTC (0015-0017 DEPLOYED; supersedes the paragraph below where they differ)
 
 **DEPLOYED by owner authorization on `main` 761590e** (fast-forward from `pipeline-rebuild`, pushed; infra pointer `287f0e7` on f0nix branch, not pushed). Deploy was ONE run in the required order: `dc-web-up prumo-ingest` (applied 0015, 0016, 0017 at 19:14:41 UTC) -> `dc-web-up prumo` -> `dc-web-up prumo-backoffice`. Pre-migration online backup of the production database: `/home/joao/docker/stacks/web/appdata/prumo/prumo-pre-0017.sqlite3` (152 MB, 497,338 observations, `integrity_check` ok, schema 0014).
