@@ -539,8 +539,9 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
 
 
 def _cmd_derive(args, registry: Path, specs, db_path: Path) -> int:
-    """Validate the registry's derived list and any --series keys BEFORE opening the DB, then
-    sync the derived registry and run one derived run."""
+    """Validate the registry's derived list and any --series keys BEFORE opening the DB; refuse
+    (exit 2, nothing written) a missing database file or one lacking a base series; then sync
+    the derived registry and run one derived run."""
     try:
         derived = load_derived(registry, specs)
     except ValueError as e:
@@ -552,8 +553,17 @@ def _cmd_derive(args, registry: Path, specs, db_path: Path) -> int:
         print(f"derive refused: unknown or inactive derived series {bad}; active keys: "
               f"{active}", file=sys.stderr)
         return 2
+    if not db_path.is_file():
+        print(f"derive refused: database not found: {db_path} (derive never creates one; "
+              f"run 'run' first)", file=sys.stderr)
+        return 2
     db = open_db(db_path)
     try:
+        missing = sorted({d.base for d in derived} - db.series_ids())
+        if missing:  # sync_derived needs every base row (foreign key), inactive entries too
+            print(f"derive refused: base series {missing} not in the database "
+                  f"(run 'run' first)", file=sys.stderr)
+            return 2
         sync_derived(db, derived)
         report = run_derive(db, keys=args.series, trigger="cli",
                             now=lambda: datetime.now(timezone.utc))

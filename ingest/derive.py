@@ -89,6 +89,12 @@ def format_fixed(value: Decimal, scale: int) -> str:
     return format(q, "f")
 
 
+def _canonical_ids(input_ids: tuple[int, ...]) -> tuple[int, ...]:
+    """Stored input id list: formula order, duplicates collapsed (a rebase at its own base
+    period is (t, t) from `compute` and is stored as [t]; migration 0014 refuses duplicates)."""
+    return tuple(dict.fromkeys(input_ids))
+
+
 @dataclass(frozen=True)
 class DerivedValue:
     period: str
@@ -101,6 +107,7 @@ class DerivedValue:
 class Skip:
     period: str | None
     reason: Literal["zero_denominator", "missing_base_period"]
+    input_ids: tuple[int, ...] = ()  # canonical (current, reference) ids; () when none
 
 
 def _decimals(token: str) -> int:
@@ -124,7 +131,8 @@ def compute(formula: str, params: dict[str, str], frequency: str,
         for period in sorted(inputs):
             obs_id, text = inputs[period]
             if base == 0:
-                skips.append(Skip(period, "zero_denominator"))
+                skips.append(Skip(period, "zero_denominator",
+                                  _canonical_ids((obs_id, base_id))))
                 continue
             v = CONTEXT.multiply(CONTEXT.divide(parse_decimal(text, "."), base), _HUNDRED)
             values.append(DerivedValue(period, format_fixed(v, INDEX_SCALE), INDEX_SCALE,
@@ -141,7 +149,7 @@ def compute(formula: str, params: dict[str, str], frequency: str,
         diff = CONTEXT.subtract(cur, ref)
         if formula.endswith("_pct"):
             if ref == 0:
-                skips.append(Skip(period, "zero_denominator"))
+                skips.append(Skip(period, "zero_denominator", (cur_id, ref_id)))
                 continue
             text = format_fixed(CONTEXT.multiply(CONTEXT.divide(diff, ref), _HUNDRED), PCT_SCALE)
             scale = PCT_SCALE
@@ -160,15 +168,11 @@ class DeriveReport:
     state: Literal["verified", "failed"]
     n_series: int
     n_written: int    # new derived rows (unchanged values are not rewritten)
-    n_skipped: int    # formula refusals recorded as events (zero_denominator, missing_base_period)
+    n_skipped: int    # NEW formula refusals recorded as events (zero_denominator,
+    #                   missing_base_period); one already recorded by a verified run with the
+    #                   same inputs is not repeated
     n_mismatch: int   # rows the independent recomputation refused
     n_errors: int = 0  # series whose formula raised (derived_event 'compute_error')
-
-
-def _canonical_ids(input_ids: tuple[int, ...]) -> tuple[int, ...]:
-    """Stored input id list: formula order, duplicates collapsed (a rebase at its own base
-    period is (t, t) from `compute` and is stored as [t]; migration 0014 refuses duplicates)."""
-    return tuple(dict.fromkeys(input_ids))
 
 
 def _select(db: "Db", keys: list[str] | None, base_series: set[str] | None) -> list[dict]:
@@ -206,10 +210,14 @@ def _evaluate(db: "Db", run_id: int, series: list[dict], at: str) -> tuple[int, 
             if (v.period, ids) not in known:
                 rows.append((s["id"], v.period, v.value_text, v.scale, json.dumps(list(ids))))
         db.write_derived_observations(run_id, at, rows)
-        for sk in skips:
-            db.add_derived_event(at, run_id, s["id"], sk.period, sk.reason)
+        known_skips = db.derived_known_skips(s["id"])
+        new_skips = [sk for sk in skips
+                     if (sk.period, sk.reason, sk.input_ids) not in known_skips]
+        for sk in new_skips:
+            db.add_derived_event(at, run_id, s["id"], sk.period, sk.reason,
+                                 {"input_ids": list(sk.input_ids)})
         n_written += len(rows)
-        n_skipped += len(skips)
+        n_skipped += len(new_skips)
     return n_written, n_skipped, n_errors
 
 
@@ -224,7 +232,9 @@ def run_derive(db: "Db", *, keys: list[str] | None = None, base_series: set[str]
     are not rewritten) -> pending rows + skip events -> verify_run sets each row's verdict ->
     finish 'verified' only with no mismatch and no compute error, else 'failed' (nothing from
     a failed run is served). All of it is ONE transaction. An exception after the run row is
-    written finishes the run 'failed' (committed) and is re-raised."""
+    written finishes the run 'failed' (committed) and is re-raised; when the run cannot be
+    recorded (SQLite already rolled back, or finishing fails) everything rolls back and the
+    original exception is re-raised."""
     series = _select(db, keys, base_series)
     if not series:
         return None
@@ -239,12 +249,15 @@ def run_derive(db: "Db", *, keys: list[str] | None = None, base_series: set[str]
             db.finish_derived_run(run_id, state, now().isoformat(), n_written=n_written,
                                   n_checked=outcome.n_checked, n_mismatch=outcome.n_mismatch)
         except Exception as e:
+            if not db.conn.in_transaction:
+                raise  # SQLite already rolled the run back itself: nothing left to record
+            try:  # record the failure in the same transaction ...
+                db.finish_derived_run(run_id, "failed", now().isoformat(),
+                                      n_written=len(db.derived_observations_of_run(run_id)),
+                                      n_checked=0, n_mismatch=0)
+            except Exception:
+                raise e from None  # ... or roll the whole run back; the ORIGINAL error wins
             failure = e
-            # record the failure in the same transaction; if even that fails, the whole run
-            # rolls back and the original error propagates
-            db.finish_derived_run(run_id, "failed", now().isoformat(),
-                                  n_written=len(db.derived_observations_of_run(run_id)),
-                                  n_checked=0, n_mismatch=0)
     if failure is not None:
         raise failure
     return DeriveReport(run_id, state, len(series), n_written, n_skipped, outcome.n_mismatch,

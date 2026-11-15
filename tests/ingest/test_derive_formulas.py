@@ -66,7 +66,7 @@ def test_missing_reference_period_yields_nothing_and_no_skip():
 
 def test_zero_denominator_skipped_with_reason():
     vals, skips = _one("period_change_pct", "5", "0")
-    assert vals == [] and skips == [Skip("2025-02", "zero_denominator")]
+    assert vals == [] and skips == [Skip("2025-02", "zero_denominator", (2, 1))]
 
 
 def test_negative_denominator_keeps_sign_as_published():
@@ -91,7 +91,8 @@ def test_rebase_zero_base_is_zero_denominator():
     vals, skips = compute("rebase_100", {"base_period": "2025-01"}, "M",
                           {"2025-01": (1, "0"), "2025-02": (2, "5")})
     assert vals == []
-    assert skips and all(s.reason == "zero_denominator" for s in skips)
+    assert skips == [Skip("2025-01", "zero_denominator", (1,)),  # base period: one id
+                     Skip("2025-02", "zero_denominator", (2, 1))]
 
 
 def test_input_ids_are_current_then_reference_and_ordered():

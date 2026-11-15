@@ -1,5 +1,6 @@
 """Task 5 (derived layer v1): run orchestration `derive.run_derive` and the `derive` CLI."""
 import json
+import sqlite3
 from datetime import datetime, timezone
 
 import pytest
@@ -248,8 +249,65 @@ def test_skip_events_are_written(db):
                       derived_spec(RB, "s1", "rebase_100", params={"base_period": "2020-01"})])
     rep = _run(db)
     assert (rep.state, rep.n_written, rep.n_skipped) == ("verified", 0, 2)
-    assert sorted((k, p) for k, p, _ in _events(db, rep.run_id)) == [
-        ("missing_base_period", None), ("zero_denominator", "2025-01")]
+    ids = db.served_fetched_inputs("s1")
+    assert sorted((k, p, d) for k, p, d in _events(db, rep.run_id)) == [
+        ("missing_base_period", None, {"input_ids": []}),
+        ("zero_denominator", "2025-01",
+         {"input_ids": [ids["2025-01"][0], ids["2024-12"][0]]})]
+
+
+def test_skip_events_are_written_once_per_inputs(db):
+    sync_registry(db, [spec("s1", frequency="M")])
+    verified_values(db, "s1", {"2024-12": "0", "2025-01": "5"}, T1, "k1")
+    sync_derived(db, [derived_spec("derived.s1_pcp", "s1", "period_change_pct"),
+                      derived_spec(RB, "s1", "rebase_100", params={"base_period": "2020-01"})])
+    reps = [_run(db) for _ in range(3)]
+    assert [r.n_skipped for r in reps] == [2, 0, 0]
+    assert [len(_events(db, r.run_id)) for r in reps] == [2, 0, 0]
+    # a new vintage of the zero reference is a new skip with new inputs: recorded again
+    verified_values(db, "s1", {"2024-12": "0.0"}, T2, "k1b")
+    rep = _run(db)
+    assert [(k, p) for k, p, _ in _events(db, rep.run_id)] == [("zero_denominator", "2025-01")]
+
+
+def test_skip_events_of_a_failed_run_are_recorded_again(db, monkeypatch):
+    sync_registry(db, [spec("s1", frequency="M")])
+    verified_values(db, "s1", {"2024-11": "1", "2024-12": "0", "2025-01": "5"}, T1, "k1")
+    sync_derived(db, [derived_spec("derived.s1_pcp", "s1", "period_change_pct")])
+    monkeypatch.setattr(derive, "compute", _wrong(derive.compute))
+    assert _run(db).state == "failed"
+    monkeypatch.undo()
+    rep = _run(db)
+    assert rep.state == "verified" and rep.n_skipped == 1
+
+
+def test_auto_rollback_does_not_mask_the_original_error(db, monkeypatch):
+    _setup(db)
+
+    def rolled_back(*a, **k):  # SQLite aborted the transaction itself (e.g. SQLITE_FULL)
+        db.conn.execute("ROLLBACK")
+        raise sqlite3.OperationalError("database or disk is full")
+    monkeypatch.setattr(db, "write_derived_observations", rolled_back)
+    with pytest.raises(sqlite3.OperationalError, match="disk is full"):
+        _run(db)
+    assert not db.conn.in_transaction
+    assert db.derived_runs(10) == []  # the run row went with SQLite's rollback
+
+
+def test_failed_recovery_does_not_mask_the_original_error(db, monkeypatch):
+    _setup(db)
+
+    def boom(*a, **k):
+        raise RuntimeError("verifier crashed")
+
+    def cannot_finish(*a, **k):
+        raise ValueError("finish refused")
+    monkeypatch.setattr(derive, "verify_run", boom)
+    monkeypatch.setattr(db, "finish_derived_run", cannot_finish)
+    with pytest.raises(RuntimeError, match="verifier crashed"):
+        _run(db)
+    assert not db.conn.in_transaction
+    assert db.derived_runs(10) == []  # nothing recorded: the whole run rolled back
 
 
 def test_base_series_filter_selects_dependents_only(db):
@@ -360,6 +418,33 @@ def test_cli_derive_nothing_to_derive(tmp_path, capsys):
     assert main(["--db", str(path), "--registry", str(reg), "derive"]) == 0
     assert capsys.readouterr().out == "nothing to derive\n"
     assert _derived_runs(path) == []
+
+
+def test_cli_missing_database_is_refused_without_creating_it(tmp_path, capsys):
+    reg = _registry(tmp_path / "r.yaml", _cli_entries())
+    fresh = tmp_path / "never.sqlite3"
+    assert main(["--db", str(fresh), "--registry", str(reg), "derive"]) == 2
+    assert "database not found" in capsys.readouterr().err
+    assert not fresh.exists()
+
+
+def test_cli_base_series_missing_from_database_is_refused(tmp_path, capsys):
+    path = tmp_path / "prumo.sqlite3"
+    db = open_db(path)
+    try:
+        sync_registry(db, [spec("s2", frequency="M")])  # s1, the base of PC/RB, never synced
+    finally:
+        db.close()
+    reg = _registry(tmp_path / "r.yaml", _cli_entries())
+    assert main(["--db", str(path), "--registry", str(reg), "derive"]) == 2
+    err = capsys.readouterr().err
+    assert "derive refused: base series ['s1'] not in the database (run 'run' first)" in err
+    db = open_db(path)
+    try:
+        assert db.derived_runs(10) == []
+        assert db.derived_series_rows(active_only=False) == []  # nothing synced either
+    finally:
+        db.close()
 
 
 def test_cli_unknown_series_key_writes_nothing(tmp_path, capsys):

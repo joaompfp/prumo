@@ -62,7 +62,8 @@ class Db:
         try:
             yield self.conn
         except BaseException:
-            self.conn.execute("ROLLBACK")
+            if self.conn.in_transaction:  # SQLite may have rolled back already (e.g. FULL)
+                self.conn.execute("ROLLBACK")
             raise
         else:
             self.conn.execute("COMMIT")
@@ -822,6 +823,22 @@ class Db:
             "SELECT d.period, d.input_obs_ids_json FROM derived_observation d "
             "JOIN derived_run r ON r.id = d.run_id AND r.state = 'verified' "
             "WHERE d.derived_series_id = ? AND d.state = 'match'", (derived_series_id,)))
+
+    def derived_known_skips(self, derived_series_id: int
+                            ) -> set[tuple[str | None, str, tuple[int, ...]]]:
+        """(period, kind, input ids) of the series' zero_denominator / missing_base_period
+        events in verified runs (input ids from detail_json, () when absent)."""
+        return {(p, k, tuple(json.loads(d or "{}").get("input_ids", [])))
+                for p, k, d in self.conn.execute(
+                    "SELECT e.period, e.kind, e.detail_json FROM derived_event e "
+                    "JOIN derived_run r ON r.id = e.run_id AND r.state = 'verified' "
+                    "WHERE e.derived_series_id = ? "
+                    "AND e.kind IN ('zero_denominator', 'missing_base_period')",
+                    (derived_series_id,))}
+
+    def series_ids(self) -> set[str]:
+        """Every series id in the database (active or not)."""
+        return {i for (i,) in self.conn.execute("SELECT id FROM series")}
 
     def write_derived_observations(self, run_id: int, computed_at: str,
                                    rows: list[tuple[int, str, str, int, str]]) -> None:
