@@ -257,17 +257,24 @@ def _event_counts(rows) -> dict[str, dict[str, int]]:
     return out
 
 
+def derived_state(row: dict) -> str:
+    """One active derived series' state from a Db.derived_status_rows row: 'no_base_data'
+    (nothing served to derive from: neither stale nor never computed), 'never_computed',
+    'stale' (base fetched later, as time, than the latest covering run started) or
+    'current'. The one place this rule lives (status report and backoffice)."""
+    base_at = _parse_ts(row["base_latest_fetched_at"])
+    if base_at is None:
+        return "no_base_data"
+    if row["last_covered_run_id"] is None:
+        return "never_computed"
+    return "stale" if base_at > _parse_ts(row["last_covered_at"]) else "current"
+
+
 def _derived_status(db: Db, now: datetime) -> DerivedStatus:
     rows = db.derived_status_rows()
-    stale, never = [], 0
-    for r in rows:
-        base_at = _parse_ts(r["base_latest_fetched_at"])
-        if base_at is None:
-            continue  # nothing served to derive from: neither stale nor never computed
-        if r["last_covered_run_id"] is None:
-            never += 1
-        elif base_at > _parse_ts(r["last_covered_at"]):
-            stale.append(r["key"])
+    states = {r["key"]: derived_state(r) for r in rows}
+    stale = [k for k, s in states.items() if s == "stale"]
+    never = sum(s == "never_computed" for s in states.values())
     last = db.derived_runs(1)
     since = (now - DERIVED_FAILED_WINDOW).astimezone(timezone.utc).isoformat()
     return DerivedStatus(
