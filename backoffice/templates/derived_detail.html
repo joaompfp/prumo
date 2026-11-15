@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ s.key }} - Prumo backoffice{% endblock %}
+{% macro input_links(inputs) -%}
+{% for i in inputs %}{% if i.series_id is not none %}<a href="/series/{{ i.series_id | urlencode }}?period={{ i.period | urlencode }}">{{ i.series_id }} {{ i.period }}</a>{% else %}<span class="bad">unknown</span>{% endif %} <span class="muted">obs {{ i.observation_id }}</span>{% if not loop.last %}; {% endif %}{% endfor %}
+{%- endmacro %}
+{% block content %}
+<h1>{{ s.key }} {% include "_calc_badge.html" %}</h1>
+<p>{{ s.label }}{% if not s.active %} <span class="badge muted">inactive</span>{% endif %}
+&middot; {{ d.total }} served values</p>
+
+<h2>Definition</h2>
+<dl class="spec">
+<dt>formula</dt><dd>{{ s.formula_label_pt }} (<code>{{ s.formula }}</code>)</dd>
+<dt>params</dt><dd>{% if s.params %}{% for k, v in s.params | dictsort %}<code>{{ k }} = {{ v }}</code>{% if not loop.last %}, {% endif %}{% endfor %}{% else %}none{% endif %}</dd>
+<dt>unit</dt><dd>{{ s.unit }}</dd>
+<dt>base series</dt><dd><a href="/series/{{ s.base_series_id | urlencode }}">{{ s.base_series_id }}</a> ({{ s.frequency }})</dd>
+<dt>attribution</dt><dd>{% if d.served %}{{ d.served[0].attribution }}{% elif base %}{{ base.source.attribution }} <span class="muted">(base source; no value served now)</span>{% else %}<span class="muted">base series not in the registry</span>{% endif %}</dd>
+{% if d.served %}<dt>licence</dt><dd>{{ d.served[0].licence }} &middot; {{ d.served[0].licence_url | link }}</dd>{% endif %}
+</dl>
+
+<h2>Served values</h2>
+<p class="note">{% if d.total > d.served | length %}newest {{ d.served | length }} of {{ d.total }}{% else %}{{ d.total }}{% endif %}
+rows of <code>served_derived</code>: recomputed independently (match), from a verified derived
+run, every input currently served. Values are the stored text. Inputs link to the base
+series' vintages of that period (current input first).</p>
+{% if d.served %}
+<div class="scroll"><table>
+<tr><th>Period</th><th>Value</th><th>Inputs</th><th>Run</th><th>Computed</th><th class="num">Row</th></tr>
+{% for o in d.served %}
+<tr class="served-row">
+<td>{{ o.period }}</td>
+<td class="value">{{ o.value_text }} {% include "_calc_badge.html" %}</td>
+<td>{{ input_links(o.inputs) }}</td>
+<td class="num">{{ o.derived_run_id }}</td><td>{{ o.computed_at }}</td>
+<td class="num">{{ o.derived_observation_id }}</td>
+</tr>
+{% endfor %}
+</table></div>
+{% else %}<p class="muted">No served values.</p>{% endif %}
+
+<h2>Stored versions ({{ d.versions | length }}{% if d.versions | length >= list_cap %}, newest {{ list_cap }}{% endif %})</h2>
+<p class="note">Every stored derived row, any state: row state is the independent
+recomputation's verdict (<code>match</code> / <code>mismatch</code> / <code>pending</code>);
+only the version the served view returns is served.</p>
+{% if d.versions %}
+<div class="scroll"><table>
+<tr><th class="num">Row</th><th>Period</th><th>Value</th><th>Row state</th><th>Run</th>
+<th>Run state</th><th>Served</th><th>Inputs</th><th>Computed</th></tr>
+{% for v in d.versions %}
+<tr class="version-row" id="v-{{ v.id }}">
+<td class="num">{{ v.id }}</td><td>{{ v.period }}</td>
+<td class="value">{{ v.value_text }} {% include "_calc_badge.html" %}</td>
+<td class="{{ 'good' if v.state == 'match' else 'bad' }}">{{ v.state }}</td>
+<td class="num">{{ v.run_id }}</td>
+<td{% if v.run_state != "verified" %} class="bad"{% endif %}>{{ v.run_state }}</td>
+<td{% if not v.served %} class="muted"{% endif %}>{% if v.served %}<span class="served-mark">served</span>{% else %}not served{% endif %}</td>
+<td>{{ input_links(v.inputs) }}</td>
+<td>{{ v.computed_at }}</td>
+</tr>
+{% endfor %}
+</table></div>
+{% else %}<p class="muted">No stored versions.</p>{% endif %}
+
+<h2>Derived runs (newest {{ d.runs | length }}, all series)</h2>
+{% if d.runs %}
+<div class="scroll"><table>
+<tr><th class="num">Run</th><th>State</th><th>Trigger</th><th>Started</th><th>Finished</th>
+<th>Covers this series</th><th class="num">Written</th><th class="num">Checked</th><th class="num">Mismatch</th></tr>
+{% for r in d.runs %}
+<tr class="run-row" id="run-{{ r.id }}">
+<td class="num">{{ r.id }}</td>
+<td{% if r.state != "verified" %} class="bad"{% endif %}>{{ r.state }}</td>
+<td>{{ r.trigger }}</td><td>{{ r.started_at }}</td><td>{{ r.finished_at or "-" }}</td>
+<td>{{ "yes" if s.key in r.scope else "no" }}</td>
+<td class="num">{{ r.n_written if r.n_written is not none else "-" }}</td>
+<td class="num">{{ r.n_checked if r.n_checked is not none else "-" }}</td>
+<td class="num{% if r.n_mismatch %} bad{% endif %}">{{ r.n_mismatch if r.n_mismatch is not none else "-" }}</td>
+</tr>
+{% endfor %}
+</table></div>
+{% else %}<p class="muted">No derived runs.</p>{% endif %}
+{% endblock %}

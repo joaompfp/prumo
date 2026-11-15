@@ -17,7 +17,13 @@ from backoffice.queue import (
 from ingest.data_lag import lagging_series
 from ingest.db import Db
 from ingest.models import SeriesSpec
-from ingest.status import SeriesStatus, SourceStatus, StatusReport, build_status
+from ingest.status import (
+    SeriesStatus,
+    SourceStatus,
+    StatusReport,
+    build_status,
+    derived_state,
+)
 
 # The queue never loads events in bulk: revisions are counted per run in SQL
 # (Db.event_counts_by_run), new_periods are summarised in SQL (Db.new_period_spans) and every
@@ -32,6 +38,7 @@ QUEUE_EVENT_ROW_BOUND = (EVENTS_PER_KIND * len(EVENT_RULES) + NEW_PERIOD_LIMIT
 OBSERVATION_CAP = 200   # newest served rows shown on a series page (the total is always shown)
 DETAIL_LIST_CAP = 200   # quarantine rows / verification items shown on a series page
 PERIOD_CAP = 200        # newest stored periods listed on a series page
+DERIVED_RUN_CAP = 20    # newest derived runs listed on a derived series page
 
 
 def status_report(db: Db, specs: list[SeriesSpec], now: datetime) -> StatusReport:
@@ -138,3 +145,53 @@ def filter_specs(specs: list[SeriesSpec], *, source: str = "", theme: str = "",
            and (not needle or any(needle in (v or "").lower()
                                   for v in (s.id, s.indicator_key, s.native_code)))]
     return sorted(out, key=lambda s: s.id)
+
+
+# --- derived layer (project 3) -------------------------------------------------------------
+DERIVED_STATE_LABEL = {"no_base_data": "no base data", "never_computed": "never computed",
+                       "stale": "stale", "current": "current", None: "inactive"}
+
+
+def derived_list(db: Db) -> list[dict]:
+    """Every derived series (active or not, by key) with its served-value count and state.
+    The state rule is ingest.status.derived_state (never re-derived here); inactive series
+    have no status row (state None, 'inactive')."""
+    status = {r["key"]: r for r in db.derived_status_rows()}
+    out = []
+    for s in db.derived_series_rows(active_only=False):
+        st = status.get(s["key"])
+        state = derived_state(st) if st else None
+        out.append({k: s[k] for k in ("key", "label", "formula_label_pt", "base_series_id",
+                                      "unit", "active")}
+                   | {"served_values": st["served_values"] if st else 0,
+                      "stale": state == "stale",
+                      "last_covered_at": st["last_covered_at"] if st else None,
+                      "state": DERIVED_STATE_LABEL[state]})
+    return out
+
+
+@dataclass(frozen=True)
+class DerivedDetail:
+    series: dict          # Db.derived_series_rows row
+    total: int            # rows served_derived serves for the key
+    served: list[dict]    # newest OBSERVATION_CAP of them (Db.served_derived_rows)
+    versions: list[dict]  # newest DETAIL_LIST_CAP stored versions, each with `inputs`
+    runs: list[dict]      # newest DERIVED_RUN_CAP derived runs (any scope)
+
+
+def derived_detail(db: Db, key: str) -> DerivedDetail | None:
+    """None for a key not in derived_series. Each stored version's input ids are resolved to
+    {series_id, period, observation_id} (formula order) so every input can be linked."""
+    series = next((s for s in db.derived_series_rows(active_only=False) if s["key"] == key),
+                  None)
+    if series is None:
+        return None
+    total, served = db.served_derived_rows(key, OBSERVATION_CAP)
+    versions = db.derived_rows_of_series(key, DETAIL_LIST_CAP)
+    obs = db.observations_by_ids(sorted({i for v in versions for i in v["input_ids"]}))
+    versions = [v | {"inputs": [{"observation_id": i, "series_id": obs[i]["series_id"],
+                                 "period": obs[i]["period"]} if i in obs else
+                                {"observation_id": i, "series_id": None, "period": None}
+                                for i in v["input_ids"]]}
+                for v in versions]
+    return DerivedDetail(series, total, served, versions, db.derived_runs(DERIVED_RUN_CAP))

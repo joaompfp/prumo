@@ -166,6 +166,20 @@ def create_app(db_path: Path, registry_path: Path,
                       label=reads.status_label(d.status), cap=reads.OBSERVATION_CAP,
                       inactive_notes=notes.get(spec.id, []), **with_status(report))
 
+    @app.api_route("/derived", methods=PAGE_METHODS)
+    def derived_list(request: Request):
+        return render(request, "derived_list.html", rows=read(reads.derived_list))
+
+    @app.api_route("/derived/{key}", methods=PAGE_METHODS)
+    def derived_detail(request: Request, key: str):
+        d = read(lambda db: reads.derived_detail(db, key))
+        if d is None:
+            return render(request, "error.html", 404, title="Unknown derived series",
+                          message=f"unknown derived series: {key} (not in the database)")
+        return render(request, "derived_detail.html", d=d, s=d.series,
+                      base=by_id.get(d.series["base_series_id"]),
+                      cap=reads.OBSERVATION_CAP, list_cap=reads.DETAIL_LIST_CAP)
+
     @app.api_route("/verification/item/{item_id}", methods=PAGE_METHODS)
     def verification_item(request: Request,
                           item_id: int = PathParam(ge=1, le=SQLITE_MAX_INT)):

@@ -51,6 +51,9 @@ tr.legacy td { background: var(--legacy-bg); color: var(--legacy); }
 .badge { display: inline-block; padding: 0 .35rem; border: 1px solid currentColor;
   border-radius: 3px; font-size: 12px; }
 .served-mark { font-weight: 700; }
+.calc { display: inline-block; padding: 0 .35rem; border-radius: 3px; font-size: 11px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-style: italic;
+  color: var(--info); background: var(--info-bg); border: 1px dashed currentColor; }
 dl.spec { display: grid; grid-template-columns: max-content 1fr; gap: .2rem .9rem; margin: 0; }
 dl.spec dt { color: var(--muted); }
 dl.spec dd { margin: 0; overflow-wrap: anywhere; }
@@ -65,7 +68,7 @@ details summary { cursor: pointer; }
 <body>
 <header>
   <strong>Prumo backoffice</strong>
-  <nav><a href="/">Overview</a><a href="/queue">Queue</a><a href="/series">Series</a></nav>
+  <nav><a href="/">Overview</a><a href="/queue">Queue</a><a href="/series">Series</a><a href="/derived">Derivadas</a></nav>
   <span class="muted">read-only</span>
 </header>
 <main>

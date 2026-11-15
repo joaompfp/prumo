@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 
 from backoffice.app import create_app
 from ingest.db import open_db
-from ingest.registry import load_registry, sync_registry
+from ingest.registry import load_derived, load_registry, sync_derived, sync_registry
 
 NOW = datetime(2026, 11, 14, 12, 0, tzinfo=timezone.utc)
 
@@ -37,15 +37,18 @@ DEFAULT_SERIES = [
 class Env:
     """A registry + DB pair; `db()` opens it read-write for arranging data in a test."""
 
-    def __init__(self, tmp_path, series):
+    def __init__(self, tmp_path, series, derived=None):
         self.registry = tmp_path / "core.yaml"
-        self.registry.write_text(yaml.safe_dump({"sources": SOURCES, "series": series},
-                                                sort_keys=False))
+        doc = {"sources": SOURCES, "series": series}
+        if derived is not None:
+            doc["derived"] = derived
+        self.registry.write_text(yaml.safe_dump(doc, sort_keys=False))
         self.db_path = tmp_path / "prumo.sqlite3"
         self.specs = load_registry(self.registry)
         db = open_db(self.db_path)
         try:
             sync_registry(db, self.specs)
+            sync_derived(db, load_derived(self.registry, self.specs))
         finally:
             db.close()
 
@@ -58,7 +61,7 @@ class Env:
 
 @pytest.fixture
 def make_env(tmp_path):
-    return lambda series=DEFAULT_SERIES: Env(tmp_path, series)
+    return lambda series=DEFAULT_SERIES, derived=None: Env(tmp_path, series, derived)
 
 
 @pytest.fixture

@@ -18,6 +18,13 @@ refresh policy ({{ report.staleness_policy.meaning }}), judged on
 <td class="num{% if t.pending_stuck %} bad{% endif %}" id="t-pending_stuck">{{ t.pending_stuck }}</td>
 </tr></table></div>
 
+{% set dv = report.derived %}
+<p id="derived-line"><a href="/derived">Derived layer</a>: {{ dv.active_series }} active derived series,
+{{ dv.served_values }} served values {% include "_calc_badge.html" %};
+<span{% if dv.stale %} class="bad"{% endif %}>stale {{ dv.stale }}</span>, never computed {{ dv.never_computed }};
+last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }} (<span{% if dv.last_run_state == "failed" %} class="bad"{% endif %}>{{ dv.last_run_state }}</span>, {{ dv.last_run_at }}){% else %}none{% endif %};
+<span{% if dv.failed_runs_7d %} class="bad"{% endif %}>failed runs 7 d {{ dv.failed_runs_7d }}</span>.</p>
+
 <h2>Sources</h2>
 <div class="scroll"><table>
 <tr><th>Source</th><th class="num">Active</th><th class="num">Inactive</th><th>Blocked</th>
