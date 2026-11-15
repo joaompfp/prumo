@@ -6,7 +6,10 @@ Only GET and HEAD are routed. Assets are local; the CSP forbids everything else.
 """
 import csv
 import io
+import logging
 import os
+import re
+import sqlite3
 from pathlib import Path
 
 from fastapi import FastAPI, Query, Request
@@ -19,6 +22,7 @@ from app import reads
 from app.charts import line_chart, sparkline
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
+from presentation import MissingText
 
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATES_DIR = BASE_DIR / "templates"
@@ -35,14 +39,27 @@ SECURITY_HEADERS = {
 }
 
 
+_PREFIX = re.compile(r"/(?:[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*)?")
+log = logging.getLogger("prumo.app")
+
+
 def _base(request: Request) -> str:
-    """The mount prefix Traefik strips (`/dados`), normalised to '' or '/dados'."""
+    """The mount prefix Traefik strips (`/dados`), normalised to '' or '/dados'.
+
+    Anything that is not a plain path is ignored rather than echoed: `//evil.example` would
+    turn every `href` into a protocol-relative link to another host, and a query, fragment,
+    backslash or `.`/`..` segment has no business in a prefix."""
     prefix = request.headers.get("x-forwarded-prefix", "").strip()
-    if not prefix:
+    if not prefix or "\\" in prefix or "//" in prefix:
         return ""
     if not prefix.startswith("/"):
         prefix = "/" + prefix
-    return prefix.rstrip("/")
+    prefix = prefix.rstrip("/")
+    if not _PREFIX.fullmatch(prefix):
+        return ""
+    if any(part in (".", "..") for part in prefix.split("/")):
+        return ""
+    return prefix
 
 
 def _templates() -> Jinja2Templates:
@@ -90,7 +107,19 @@ def create_app(db_path: str | None = None) -> FastAPI:
         response = await call_next(request)
         for name, value in SECURITY_HEADERS.items():
             response.headers.setdefault(name, value)
+        # A cached page must not be reused across mount prefixes.
+        vary = response.headers.get("Vary")
+        if not vary:
+            response.headers["Vary"] = "X-Forwarded-Prefix"
+        elif "x-forwarded-prefix" not in vary.lower():
+            response.headers["Vary"] = f"{vary}, X-Forwarded-Prefix"
         return response
+
+    def unavailable(request: Request, exc: Exception):
+        """503 for an unusable database: the reason belongs in the log, not on a public page
+        (the exception string carries the database path and the schema versions)."""
+        log.error("database unusable on %s: %s", request.url.path, exc)
+        return _render(templates, request, "503.html", {}, status=503)
 
     def page(name: str, work, status: int = 200):
         """Decorator: read on a read-only handle, render `name`, 503 on an unusable database."""
@@ -98,8 +127,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
             try:
                 data = _read(request, work)
             except ReadOnlyOpenError as exc:
-                return _render(templates, request, "503.html", {"message": str(exc)},
-                               status=503)
+                return unavailable(request, exc)
             if data is None:
                 return _render(templates, request, "404.html", {}, status=404)
             return _render(templates, request, name, {"page": data}, status=status)
@@ -115,7 +143,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
         try:
             export = _read(request, lambda db: reads.series_csv(db, series_id))
         except ReadOnlyOpenError as exc:
-            return PlainTextResponse(str(exc), status_code=503)
+            log.error("database unusable on %s: %s", request.url.path, exc)
+            return PlainTextResponse(status_code=503)
         if export is None:
             return PlainTextResponse("Série não publicada.", status_code=404)
         return _csv_response(export)
@@ -125,7 +154,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
         try:
             export = _read(request, lambda db: reads.derived_csv(db, key))
         except ReadOnlyOpenError as exc:
-            return PlainTextResponse(str(exc), status_code=503)
+            log.error("database unusable on %s: %s", request.url.path, exc)
+            return PlainTextResponse(status_code=503)
         if export is None:
             return PlainTextResponse("Série não publicada.", status_code=404)
         return _csv_response(export)
@@ -140,7 +170,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
             data = _read(request, lambda db: reads.theme(
                 db, code, group=grupo, source=fonte, frequency=frequencia, page=pagina))
         except ReadOnlyOpenError as exc:
-            return _render(templates, request, "503.html", {"message": str(exc)}, status=503)
+            return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
         return _render(templates, request, "theme.html", {"page": data})
@@ -151,7 +181,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
             data = _read(request, lambda db: reads.series_page(
                 db, series_id, window=janela, day=dia))
         except ReadOnlyOpenError as exc:
-            return _render(templates, request, "503.html", {"message": str(exc)}, status=503)
+            return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
         return _render(templates, request, "series.html", {"page": data})
@@ -161,7 +191,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
         try:
             data = _read(request, lambda db: reads.derived_page(db, key))
         except ReadOnlyOpenError as exc:
-            return _render(templates, request, "503.html", {"message": str(exc)}, status=503)
+            return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
         return _render(templates, request, "derived.html", {"page": data})
@@ -171,7 +201,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
         try:
             rows = _read(request, lambda db: reads.search(db, q))
         except ReadOnlyOpenError as exc:
-            return _render(templates, request, "503.html", {"message": str(exc)}, status=503)
+            return unavailable(request, exc)
         return _render(templates, request, "search.html", {"query": q, "rows": rows})
 
     @app.api_route("/fontes", methods=PAGE_METHODS, response_class=HTMLResponse)
@@ -179,12 +209,25 @@ def create_app(db_path: str | None = None) -> FastAPI:
         try:
             data = _read(request, lambda db: reads.sources_page(db))
         except ReadOnlyOpenError as exc:
-            return _render(templates, request, "503.html", {"message": str(exc)}, status=503)
+            return unavailable(request, exc)
         return _render(templates, request, "sources.html", {"page": data})
 
     @app.api_route("/metodologia", methods=PAGE_METHODS, response_class=HTMLResponse)
     def methodology(request: Request):
         return _render(templates, request, "methodology.html", {})
+
+    @app.exception_handler(MissingText)
+    def missing_reader_text(request: Request, exc: MissingText):
+        """A code with no catalogue text is an operator fault, not a reader's: serve the
+        same 503 page as an unusable database, but log the code so the gap can be fixed."""
+        log.error("MissingText on %s: %s", request.url.path, exc)
+        return _render(templates, request, "503.html", {}, status=503)
+
+    @app.exception_handler(sqlite3.OperationalError)
+    def unusable_database(request: Request, exc: sqlite3.OperationalError):
+        """Right schema version but a view or table this code expects is missing."""
+        log.exception("unusable database on %s", request.url.path)
+        return _render(templates, request, "503.html", {}, status=503)
 
     @app.exception_handler(404)
     def not_found(request: Request, exc):

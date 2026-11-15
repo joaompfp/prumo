@@ -25,11 +25,11 @@ def _lookup(table: dict[str, str], kind: str, lang: str, code: str) -> str:
 
 
 def describe_formula(lang: str, formula: str, params: dict[str, str],
-                     base_series_id: str) -> str:
+                     base_label: str) -> str:
     template = _lookup(_catalog(lang).FORMULAS, "formula", lang, formula)
     if formula == "rebase_100" and "base_period" not in params:
         raise ValueError("rebase_100 needs params['base_period']")
-    return template.format(base=base_series_id, **params)
+    return template.format(base=base_label, **params)
 
 
 def unit_text(lang: str, code: str) -> str:
@@ -89,6 +89,11 @@ def seasonal_text(lang: str, code: str) -> str:
 
 def source_title(lang: str, name: str) -> str:
     return _lookup(_catalog(lang).SOURCE_TITLES, "source", lang, name)
+
+
+def withheld_note(lang: str, name: str) -> str:
+    """Why a withheld institution publishes nothing here, in reader words."""
+    return _lookup(_catalog(lang).WITHHELD_NOTES, "withheld source", lang, name)
 
 
 def series_title(lang: str, family: str, geography: str) -> str:

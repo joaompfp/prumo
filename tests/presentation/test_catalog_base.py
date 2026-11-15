@@ -20,6 +20,7 @@ from presentation import (
     series_title,
     source_title,
     theme_text,
+    withheld_note,
 )
 from presentation.catalog import en, pt
 
@@ -69,10 +70,26 @@ def test_series_title_composes_with_geography():
     assert series_title("pt", "eur_usd", "EA") == "Taxa de câmbio euro-dólar"
 
 
-def test_flags_cover_the_stored_codes():
-    assert set(pt.FLAGS) == {"normal", "estimated", "provisional", "break"}
+def test_flags_match_the_ingest_vocabulary():
+    # A hand-written list missed `revised` once: one such Eurostat row 500s every page that
+    # renders it, so the catalogue is compared with the vocabulary the adapters write.
+    from ingest.flags import FLAGS as INGEST_FLAGS
+
+    assert set(pt.FLAGS) == set(INGEST_FLAGS)
     assert flag_text("pt", "provisional") == "provisório"
     assert flag_text("pt", "normal") == ""
+    assert flag_text("pt", "revised") == "revisto"
+
+
+def test_every_withheld_source_has_a_reader_note():
+    data = _registry()
+    withheld = {name for name, src in data["sources"].items()
+                if not src.get("redistribution_ok")}
+    assert withheld, "registry has no withheld source"
+    for name in withheld:
+        note = withheld_note("pt", name)
+        assert note and "UNVERIFIED" not in note and "pending" not in note
+    assert set(pt.WITHHELD_NOTES) == withheld
 
 
 def test_missing_base_key_raises():

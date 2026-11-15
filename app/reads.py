@@ -27,6 +27,7 @@ from presentation import (
     theme_blurb,
     theme_text,
     unit_text,
+    withheld_note,
 )
 from presentation.catalog import pt
 
@@ -401,20 +402,20 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
     _, rows = db.served_derived_rows(key, 1)
     newest = rows[0] if rows else None
     values = db.public_derived_values(key)
+    base_title = series_title(lang, _family_of(d["base_indicator_key"]), d["base_geography"])
     inputs = ()
     if newest is not None:
         observed = db.observations_by_ids([i["observation_id"] for i in newest["inputs"]])
         inputs = tuple(InputView(
             series_id=i["series_id"],
-            title=series_title(lang, _family_of(base["indicator_key"]),
-                               base["geography"]) if base else i["series_id"],
+            title=base_title,
             period_text=format_period(i["period"], frequency),
             value_display=format_value(observed[i["observation_id"]]["value_text"])
             if i["observation_id"] in observed else "")
             for i in newest["inputs"])
     return DerivedDetail(
         key=key, title=derived_title(lang, key), frequency=frequency,
-        formula_text=describe_formula(lang, d["formula"], d["params"], d["base_series_id"]),
+        formula_text=describe_formula(lang, d["formula"], d["params"], base_title),
         unit_text=unit_text(lang, d["unit"]),
         caveats=tuple(caveat_text(lang, c) for c in d["caveats"]),
         latest=ValueView(period=d["latest_period"],
@@ -645,6 +646,7 @@ class SourceView:
     series: int
     last_fetched_text: str
     published: bool
+    note: str
 
 
 @dataclass(frozen=True)
@@ -660,7 +662,8 @@ def sources_page(db: Db, lang: str = "pt") -> SourcesPage:
                           licence=s["licence"], licence_url=s["licence_url"],
                           attribution=s["attribution"], series=s["series"],
                           last_fetched_text=format_datetime(s["last_fetched_at"]),
-                          published=s["redistribution_ok"])
+                          published=s["redistribution_ok"],
+                          note=withheld_note(lang, s["name"]) if not s["redistribution_ok"] else "")
         (published if s["redistribution_ok"] else withheld).append(view)
     return SourcesPage(published=tuple(published), withheld=tuple(withheld))
 
@@ -689,10 +692,12 @@ def series_csv(db: Db, series_id: str) -> CsvExport | None:
     return CsvExport(
         filename=f"{series_id}.csv",
         header=("periodo", "valor", "estado", "recolhido_em"),
-        rows=tuple((v["period"], v["value_text"], v["status_flag"] or "", v["fetched_at"])
+        rows=tuple((v["period"], v["value_text"],
+                    flag_text("pt", v["status_flag"]) if v["status_flag"] else "",
+                    v["fetched_at"])
                    for v in values),
-        footer=(f"Série: {series_id}",
-                f"Unidade: {row['unit']}",
+        footer=(f"Série: {series_title('pt', _family_of(row['indicator_key']), row['geography'])}",
+                f"Unidade: {base_unit_text('pt', row['unit'])}",
                 f"{row['attribution']}",
                 f"Licença: {row['licence']} — {row['licence_url']}",
                 f"Exportado a {_export_stamp()}"))
@@ -701,18 +706,23 @@ def series_csv(db: Db, series_id: str) -> CsvExport | None:
 def derived_csv(db: Db, key: str) -> CsvExport | None:
     """The served values of one calculated series, with its formula and inherited licence."""
     d = db.public_derived(key)
-    if d is None:
+    if d is None or d["latest_period"] is None:
         return None
     values = db.public_derived_values(key)
+    if not values:
+        return None
     _, rows = db.served_derived_rows(key, 1)
     newest = rows[0] if rows else None
+    base_title = series_title("pt", _family_of(d["base_indicator_key"]), d["base_geography"])
+    footer = tuple(line for line in (
+        f"Série calculada: {derived_title('pt', key)}",
+        f"Base: {base_title}",
+        describe_formula("pt", d["formula"], d["params"], base_title),
+        f"{calculated_attribution('pt', newest['attribution'])}" if newest else "",
+        f"Licença: {newest['licence']} — {newest['licence_url']}" if newest else "",
+        f"Exportado a {_export_stamp()}") if line)
     return CsvExport(
         filename=f"{key}.csv",
         header=("periodo", "valor", "unidade"),
-        rows=tuple((v["period"], v["value_text"], d["unit"]) for v in values),
-        footer=(f"Série calculada: {key}",
-                f"Base: {d['base_series_id']}",
-                describe_formula("pt", d["formula"], d["params"], d["base_series_id"]),
-                f"{newest['attribution']} — Calculado pelo Prumo" if newest else "",
-                f"Licença: {newest['licence']} — {newest['licence_url']}" if newest else "",
-                f"Exportado a {_export_stamp()}"))
+        rows=tuple((v["period"], v["value_text"], unit_text("pt", d["unit"])) for v in values),
+        footer=footer)

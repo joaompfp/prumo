@@ -77,5 +77,6 @@ THEME_BLURBS: dict[str, str] = {}
 FREQUENCIES: dict[str, str] = {}
 SEASONAL: dict[str, str] = {}
 SOURCE_TITLES: dict[str, str] = {}
+WITHHELD_NOTES: dict[str, str] = {}
 CURATED_HOME: list[dict] = []
 SEARCH_ALIASES: dict[str, str] = {}

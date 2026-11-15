@@ -1098,6 +1098,14 @@ class Db:
     # --- public site reads (project 4) ---------------------------------------------------------
     # Read-only, plain dicts, numbers exactly as stored (value_text). Only redistributable
     # sources appear: served_observation and served_derived already gate the licence.
+    #
+    # INVARIANT: every read here filters `kind = 'fetched'` explicitly. served_observation also
+    # serves legacy-unverified rows -- for every source when the global `legacy_served` switch is
+    # on, and for one source with `legacy_served_source:<name>` -- and a fetched row only shadows
+    # a legacy row of the same period, so withdrawing a fetched execution (or a period no fetched
+    # vintage covered) would put unverified values on the site. The filter is written out in each
+    # query on purpose: a missed one is a silent leak, and grep for `kind = 'fetched'` must find
+    # one per query that touches served_observation.
 
     def public_counts(self) -> dict:
         """Headline counts for the home page: served primary series, publishing sources and the
@@ -1138,8 +1146,9 @@ class Db:
         One indexed lookup per id: the IN-list form makes SQLite evaluate the view per row and
         is two orders of magnitude slower. Missing ids are absent from the result."""
         sql = ("SELECT period, value_text, status_flag, fetched_at FROM served_observation "
-               "WHERE series_id = ? AND id = (SELECT w.id FROM served_observation w "
-               "WHERE w.series_id = ? ORDER BY w.period DESC LIMIT 1)")
+               "WHERE series_id = ? AND kind = 'fetched' AND id = (SELECT w.id "
+               "FROM served_observation w WHERE w.series_id = ? AND w.kind = 'fetched' "
+               "ORDER BY w.period DESC LIMIT 1)")
         keys = ("period", "value_text", "status_flag", "fetched_at")
         out: dict[str, dict] = {}
         for sid in series_ids:
@@ -1162,8 +1171,9 @@ class Db:
                "p.attribution, p.licence, p.licence_url "
                "FROM series s JOIN source p ON p.id = s.source_id "
                "JOIN served_observation o ON o.id = (SELECT w.id FROM served_observation w "
-               "WHERE w.series_id = s.id ORDER BY w.period DESC LIMIT 1) "
-               "WHERE s.id = ? AND s.active = 1 AND p.redistribution_ok = 1")
+               "WHERE w.series_id = s.id AND w.kind = 'fetched' ORDER BY w.period DESC LIMIT 1) "
+               "WHERE s.id = ? AND s.active = 1 AND p.redistribution_ok = 1 "
+               "AND o.kind = 'fetched'")
         row = self.conn.execute(sql, (series_id,)).fetchone()
         return dict(zip(keys, row)) | {"family": _family_of(row[1])} if row else None
 
@@ -1174,7 +1184,7 @@ class Db:
         rows = self.conn.execute(
             "SELECT o.period, o.value_text, o.status_flag, o.fetched_at, o.dataset_run_id, "
             "f.sha256 FROM served_observation o LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
-            "WHERE o.series_id = ? ORDER BY o.period", (series_id,)).fetchall()
+            "WHERE o.series_id = ? AND o.kind = 'fetched' ORDER BY o.period", (series_id,)).fetchall()
         return [dict(zip(keys, r)) for r in rows]
 
     def public_recent_values(self, series_id: str, limit: int) -> list[dict]:
@@ -1184,7 +1194,8 @@ class Db:
         rows = self.conn.execute(
             "SELECT o.period, o.value_text, o.status_flag, o.fetched_at, o.dataset_run_id, "
             "f.sha256 FROM served_observation o LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
-            "WHERE o.series_id = ? ORDER BY o.period DESC LIMIT ?", (series_id, limit)).fetchall()
+            "WHERE o.series_id = ? AND o.kind = 'fetched' ORDER BY o.period DESC LIMIT ?",
+            (series_id, limit)).fetchall()
         return [dict(zip(keys, r)) for r in reversed(rows)]
 
     def public_values_between(self, series_id: str, start: str,
@@ -1194,7 +1205,7 @@ class Db:
         keys = ("period", "value_text", "status_flag", "fetched_at", "run_id", "raw_sha")
         sql = ("SELECT o.period, o.value_text, o.status_flag, o.fetched_at, o.dataset_run_id, "
                "f.sha256 FROM served_observation o LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
-               "WHERE o.series_id = ? AND o.period >= ?")
+               "WHERE o.series_id = ? AND o.kind = 'fetched' AND o.period >= ?")
         params: list[str] = [series_id, start]
         if end is not None:
             sql += " AND o.period <= ?"
@@ -1207,7 +1218,8 @@ class Db:
         a 15-minute series needs the counts: the newest day is often partial."""
         rows = self.conn.execute(
             "SELECT substr(period, 1, 10) AS day, COUNT(*) FROM served_observation "
-            "WHERE series_id = ? GROUP BY day ORDER BY day DESC", (series_id,)).fetchall()
+            "WHERE series_id = ? AND kind = 'fetched' GROUP BY day ORDER BY day DESC",
+            (series_id,)).fetchall()
         return tuple((r[0], r[1]) for r in rows)
 
     def public_provenance(self, series_id: str) -> dict | None:
@@ -1230,7 +1242,8 @@ class Db:
             "LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
             "LEFT JOIN verification v ON v.dataset_run_id = o.dataset_run_id "
             "JOIN series s ON s.id = o.series_id JOIN source p ON p.id = s.source_id "
-            "WHERE o.series_id = ? ORDER BY o.period DESC LIMIT 1", (series_id,)).fetchone()
+            "WHERE o.series_id = ? AND o.kind = 'fetched' ORDER BY o.period DESC LIMIT 1",
+            (series_id,)).fetchone()
         return dict(zip(keys, row)) if row else None
 
     def public_revisions(self, series_id: str) -> tuple[list[dict], int]:
@@ -1243,8 +1256,10 @@ class Db:
             "WITH verified AS (SELECT o.id, o.period, o.value_text, o.status_flag, o.fetched_at, "
             "                         o.dataset_run_id "
             "                  FROM observation o JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "                  JOIN series s ON s.id = o.series_id "
+            "                  JOIN source p ON p.id = s.source_id AND p.redistribution_ok = 1 "
             "                  WHERE o.series_id = ? AND o.kind = 'fetched' "
-            "                    AND r.state = 'verified'), "
+            "                    AND s.active = 1 AND r.state = 'verified'), "
             "     changed AS (SELECT period FROM verified GROUP BY period "
             "                 HAVING COUNT(DISTINCT value_text || char(31) || "
             "                                COALESCE(status_flag, '')) > 1) "
@@ -1267,7 +1282,10 @@ class Db:
         total = self.conn.execute(
             "SELECT COUNT(DISTINCT o.period) FROM observation o "
             "JOIN dataset_run r ON r.id = o.dataset_run_id "
-            "WHERE o.series_id = ? AND o.kind = 'fetched' AND r.state = 'verified'",
+            "JOIN series s ON s.id = o.series_id "
+            "JOIN source p ON p.id = s.source_id AND p.redistribution_ok = 1 "
+            "WHERE o.series_id = ? AND o.kind = 'fetched' AND s.active = 1 "
+            "AND r.state = 'verified'",
             (series_id,)).fetchone()[0]
         return ([{"period": p, "versions": grouped[p]} for p in grouped], total - len(grouped))
 
@@ -1281,7 +1299,9 @@ class Db:
             " ORDER BY sd.period DESC LIMIT 1), "
             "(SELECT sd.value_text FROM served_derived sd WHERE sd.derived_key = ds.key "
             " ORDER BY sd.period DESC LIMIT 1) "
-            "FROM derived_series ds WHERE ds.base_series_id = ? AND ds.active = 1 "
+            "FROM derived_series ds JOIN series b ON b.id = ds.base_series_id "
+            "JOIN source p ON p.id = b.source_id AND p.redistribution_ok = 1 "
+            "WHERE ds.base_series_id = ? AND ds.active = 1 "
             "ORDER BY ds.key", (series_id,)).fetchall()
         return [dict(zip(keys, r)) | {"caveats": json.loads(r[3])} for r in rows]
 
@@ -1300,7 +1320,8 @@ class Db:
             " ORDER BY sd.period DESC LIMIT 1), "
             "b.indicator_key, b.geography, p.name, p.attribution "
             "FROM derived_series ds JOIN series b ON b.id = ds.base_series_id "
-            "JOIN source p ON p.id = b.source_id WHERE ds.key = ? AND ds.active = 1",
+            "JOIN source p ON p.id = b.source_id AND p.redistribution_ok = 1 "
+            "WHERE ds.key = ? AND ds.active = 1",
             (key,)).fetchone()
         if row is None:
             return None
@@ -1331,14 +1352,14 @@ class Db:
             "AND s2.id <> s1.id AND s2.active = 1 AND s2.role = 'cross_check' "
             "JOIN source p ON p.id = s2.source_id AND p.redistribution_ok = 1 "
             "JOIN served_observation o ON o.id = (SELECT w.id FROM served_observation w "
-            "WHERE w.series_id = s2.id ORDER BY w.period DESC LIMIT 1) "
-            "WHERE s1.id = ? ORDER BY s2.id", (series_id,)).fetchall()
+            "WHERE w.series_id = s2.id AND w.kind = 'fetched' ORDER BY w.period DESC LIMIT 1) "
+            "WHERE s1.id = ? AND o.kind = 'fetched' ORDER BY s2.id", (series_id,)).fetchall()
         return [dict(zip(keys, r)) for r in rows]
 
     def public_sources(self) -> list[dict]:
-        """Every source with its licence and counts. Withheld sources have series 0 and no
-        last receipt: the site names them without publishing a value. Two small aggregates
-        over series/dataset_run/raw_fetch replace per-source scans of the serving view."""
+        """Every source with its licence and counts. A withheld source publishes nothing: its
+        series count is 0 and only `/fontes` names it (receipts are not rendered). Two small
+        aggregates over series/dataset_run/raw_fetch replace per-source scans of the view."""
         sources = self.conn.execute(
             "SELECT id, name, licence, licence_url, attribution, redistribution_ok "
             "FROM source ORDER BY redistribution_ok DESC, name").fetchall()

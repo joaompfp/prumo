@@ -3,8 +3,7 @@
 {% block content %}
 <section class="hero error-page">
   <h1>Serviço indisponível</h1>
-  <p class="lede">A base de dados não está acessível ou tem uma versão diferente da que este código espera. O Prumo prefere não mostrar nada a mostrar um número que não consegue defender.</p>
-  {% if message %}<p class="note"><code>{{ message }}</code></p>{% endif %}
+  <p class="lede">Esta página não está disponível neste momento. O Prumo prefere não mostrar nada a mostrar um número que não consegue defender. Tenta de novo dentro de instantes.</p>
   <p><a href="{{ base }}/">Tentar novamente</a></p>
 </section>
 {% endblock %}

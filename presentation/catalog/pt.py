@@ -247,6 +247,7 @@ FLAGS = {
     "normal": "",
     "estimated": "estimado",
     "provisional": "provisório",
+    "revised": "revisto",
     "break": "quebra de série",
 }
 
@@ -288,6 +289,20 @@ SOURCE_TITLES = {
     "fred": "FRED — Federal Reserve Bank of St. Louis",
     "oecd": "OCDE",
     "dgeg": "DGEG — Direção-Geral de Energia e Geologia",
+}
+
+# What a withheld institution would contribute and why no value is shown. The stored licence
+# string is an operator's note; readers get this text instead.
+WITHHELD_NOTES = {
+    "ren": "Preços e produção de eletricidade em Portugal. Os termos de reutilização não "
+           "permitem publicar os valores, que ficam retidos.",
+    "fred": "Preços internacionais de matérias-primas, publicados pelo FMI. Os direitos de "
+            "redistribuição não estão confirmados, por isso os valores ficam retidos.",
+    "oecd": "Indicadores económicos comparáveis entre países. Os direitos de cada conjunto de "
+            "dados não estão confirmados, por isso os valores ficam retidos.",
+    "dgeg": "Estatísticas de energia e geologia. Os termos de reutilização não estão "
+            "confirmados e não existe ainda um canal independente que permita verificar os "
+            "valores, por isso ficam retidos.",
 }
 
 # The home page's figures, in reading order. `derived` names the calculated series whose latest

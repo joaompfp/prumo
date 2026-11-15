@@ -239,3 +239,43 @@ def test_recent_values_reads_the_tail_oldest_first(db):
         [("2026-02", "2.0"), ("2026-03", "3.0")]
     assert len(db.public_recent_values("s1", 1)) == 1
     assert db.public_recent_values("nope", 5) == []
+
+
+def test_a_withdrawn_execution_never_publishes_legacy_rows(db):
+    """`served_observation` lets legacy rows through when their source is scoped-allowed and no
+    fetched row shadows them. Withdrawing the only execution would therefore put an unverified
+    value on the site, so every public read filters `kind = 'fetched'` itself."""
+    sync_registry(db, [_series(), _series("s2", role="cross_check")])
+    db.conn.execute("INSERT OR REPLACE INTO setting(key, value) VALUES (?, '1')",
+                    ("legacy_served_source:fake",))
+    legacy = db.legacy_run("fake", "legacy:fake", T1)
+    db.write_legacy_observations(legacy, [
+        (Observation.from_raw("s1", "2026-01", "9.99"), T1),
+        (Observation.from_raw("s2", "2026-01", "9.99"), T1),
+    ])
+    run = _verified(db, "s1", "2026-01", "1.50", T2, "k1")
+    assert [r["value_text"] for r in db.public_series_values("s1")] == ["1.50"]
+
+    db.withdraw_run(run, "test withdrawal", T3)
+    # the view does serve the legacy rows now; the public layer must not
+    assert [r[0] for r in db.conn.execute(
+        "SELECT kind FROM served_observation WHERE series_id = 's1'")] == ["legacy-unverified"]
+    assert db.public_series("s1") is None
+    assert db.public_series_values("s1") == []
+    assert db.public_recent_values("s1", 10) == []
+    assert db.public_values_between("s1", "2026-01") == []
+    assert db.public_day_counts("s1") == ()
+    assert db.public_provenance("s1") is None
+    assert db.public_latest_values(["s1"]) == {}
+    assert db.public_catalogue() == []
+    assert db.public_cross_checks("s1") == []
+    assert db.public_counts()["series"] == 0
+    assert db.public_revisions("s1") == ([], 0)
+
+
+def test_a_calculated_series_on_a_withheld_base_is_refused(db):
+    sync_registry(db, [_series("s3", source=CLOSED)])
+    sync_derived(db, [derived_spec(KEY, "s3", "yoy_change")])
+    _verified(db, "s3", "2026-01", "1.00", T1, "kc", source="closed")
+    assert db.public_derived(KEY) is None
+    assert db.public_derived_for_base("s3") == []

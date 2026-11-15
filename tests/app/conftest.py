@@ -100,7 +100,7 @@ def build(path):
             "observed_unit", "observed_flag", "evidence_url", "evidence_sha256", "note",
             "reason", "compared", "unit_not_compared", "flag_not_compared")},
         "series_id": HICP, "period": "2026-10", "match": True})
-    fetch(db, UNEMP, {"2026-09": "6.4", "2026-10": "6.2"}, T3)
+    fetch(db, UNEMP, {"2026-09": "6.4", "2026-10": "6.2"}, T3, flag="provisional")
     fetch(db, XCHECK, {"2026-10": "1.8"}, T3, source=EUROSTAT.name, sha="c" * 64)
     fetch(db, WITHHELD, {"2026-10": "99.9"}, T3, source=REN.name, sha="d" * 64)
     fetch(db, WORLD, {"2024": "2.3"}, T2, source=WORLDBANK.name, sha="e" * 64)

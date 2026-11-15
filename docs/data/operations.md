@@ -309,9 +309,9 @@ with sqlite3.connect("file:/data/prumo.sqlite3?mode=ro", uri=True) as db:
 PY
 curl -fsS http://100.118.19.6:8088/healthz
 curl -fsS https://cae.joao.date/ | \
-    python3 -c 'import sys; assert "Em manutenção" in sys.stdin.read()'
-curl -fsS https://joao.date/dados | \
-    python3 -c 'import sys; assert "Em manutenção" in sys.stdin.read()'
+    python3 -c 'import sys; assert "Estatísticas oficiais" in sys.stdin.read()'
+curl -fsS https://joao.date/dados/ | \
+    python3 -c 'import sys; assert "Estatísticas oficiais" in sys.stdin.read()'
 ```
 
 ## Manual update with original response bundles
@@ -774,6 +774,53 @@ for the daily INE vintage (12,034 rows): `run_content` 40.9 ms against 88.1 ms w
 index, `content_base_run` 26-32 ms against 214-228 ms. Whole-view and per-key derived reads
 were unchanged within noise (0.9 ms list, 9.3 -> 9.6 ms for 500 detail rows).
 
+## Public site (project 4)
+
+The `prumo` container serves the public statistics site from the same image and the same SQLite
+file as before; the maintenance page is gone. No new service, no migration, no write path: every
+request opens the database through `read_db_readonly` and the app never migrates it.
+
+- Routes: `/` (curated figures), `/temas/{economy,demography,energy}` (catalogue with filters and
+  pagination), `/series/{id}` (chart, table, provenance, revisions, cross-checks), `/calculadas/{key}`,
+  `/pesquisa?q=`, `/fontes`, `/metodologia`, `/series/{id}.csv`, `/calculadas/{key}.csv`, `/healthz`.
+- Two public URLs: `cae.joao.date` at root and `joao.date/dados` behind Traefik `StripPrefix`; every
+  link and asset URL is built from `X-Forwarded-Prefix`, and responses carry
+  `Vary: X-Forwarded-Prefix`.
+- Reader text comes from `presentation/catalog/pt.py`: no series id, derived key, unit or flag code
+  reaches a page or an export. A missing catalogue key, or a view this code expects but the database
+  lacks, answers the 503 page and logs `MissingText`/`database unusable` at ERROR in `docker logs
+  prumo`. Withheld sources (REN, FRED, OECD, DGEG) are named on `/fontes` with a reader note and are
+  never queried for a value.
+- The catalogue and home counts are cached in-process for 30 s; series pages are computed per request
+  (measured on a copy of production: home 87-91 ms, 15-minute series 186 ms, `/fontes` 27 ms,
+  catalogue under 60 ms).
+
+Deploy, code only, with owner authorization:
+
+```bash
+bash -lic 'dc-web-up prumo'
+```
+
+This rebuilds the shared image and recreates only the web container. No schema change is involved,
+so `prumo-ingest` and `prumo-backoffice` are not restarted; the public read methods added to
+`ingest/db.py` are additive and the backoffice's own reads are untouched.
+
+After deploy, all of these must hold:
+
+```bash
+curl -fsS https://cae.joao.date/healthz
+curl -fsS https://cae.joao.date/ | grep -q 'Estatísticas oficiais'
+curl -fsS https://cae.joao.date/fontes | grep -c 'withheld-note'   # 4
+curl -fsS https://cae.joao.date/series/ine.hicp_yoy.PT | grep -q 'IHPC'
+curl -fsSI https://cae.joao.date/ | grep -i 'content-security-policy'
+curl -fsS https://joao.date/dados/ | grep -q '/dados/static/css/prumo.css'
+docker logs prumo --since 5m 2>&1 | grep -E 'MissingText|database unusable' || true
+```
+
+Rollback: deploy the previous commit on `main` again (`git checkout <prev> && bash -lic
+'dc-web-up prumo'`). The database is not touched by this release, so there is no data step; the
+previous image is the maintenance page.
+
 ## Rollback
 
 The safe ingestion rollback is to stop the worker and retain the new maintenance web app,
@@ -791,7 +838,7 @@ docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw 
     status --json > "$OP/status-stopped.json"
 curl -fsS http://100.118.19.6:8088/healthz
 curl -fsS https://cae.joao.date/ | \
-    python3 -c 'import sys; assert "Em manutenção" in sys.stdin.read()'
+    python3 -c 'import sys; assert "Estatísticas oficiais" in sys.stdin.read()'
 ```
 
 If the web image itself needs reversal, the controller must first review the recorded

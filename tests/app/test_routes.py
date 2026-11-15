@@ -86,6 +86,44 @@ def test_prefix_is_normalised_when_it_arrives_unclean(client):
         assert 'href="//dados' not in html
 
 
+def test_hostile_prefix_is_ignored_not_echoed(client):
+    # `//evil.example` would turn every href into a link to another host.
+    for prefix in ("//evil.example", "/dados//x", "https://evil.example", "/dados?x=1",
+                   "/../x", "\\evil.example"):
+        html = client.get("/fontes", headers={"X-Forwarded-Prefix": prefix}).text
+        assert "evil.example" not in html
+        assert 'href="/fontes"' in html
+
+
+def test_responses_vary_on_the_forwarded_prefix(client):
+    assert client.get("/").headers["vary"] == "X-Forwarded-Prefix"
+
+
+def test_a_catalogue_gap_is_a_503_not_a_500(client, monkeypatch):
+    from presentation.catalog import pt
+
+    monkeypatch.delitem(pt.FAMILIES, "hicp_yoy")
+    response = client.get(f"/series/{HICP}")
+    assert response.status_code == 503
+    assert "Serviço indisponível" in response.text
+
+
+def test_a_missing_view_is_a_503_not_a_500(site_path, tmp_path):
+    import shutil
+    import sqlite3
+
+    path = tmp_path / "noview.db"
+    shutil.copy(site_path, path)
+    connection = sqlite3.connect(path)
+    connection.execute("DROP VIEW served_observation")
+    connection.commit()
+    connection.close()
+    with TestClient(create_app(str(path))) as broken:
+        response = broken.get("/")
+    assert response.status_code == 503
+    assert "Serviço indisponível" in response.text
+
+
 def test_unusable_database_renders_the_503_page(tmp_path):
     app = create_app(str(tmp_path / "missing.db"))
     with TestClient(app) as failing:
@@ -162,6 +200,21 @@ def test_series_csv_refuses_a_withheld_series(client):
     assert client.get("/series/ine.nope.PT.csv").status_code == 404
 
 
+def test_csv_exports_ship_reader_text_not_internal_codes(client):
+    body = client.get(f"/series/{UNEMP}.csv").text
+    lines = body.lstrip("\ufeff").splitlines()
+    assert "2026-10;6.2;provisório;2026-11-03T09:00:00+00:00" in lines
+    for code in ("normal", "provisional", "estimated", "revised", "break",
+                 "UNVERIFIED", "pending", UNEMP, "unemployment_rate"):
+        assert code not in body, code
+    derived = client.get(f"/calculadas/{DERIVED}.csv").text
+    rows = [line.split(";") for line in derived.lstrip("\ufeff").splitlines()
+            if re.match(r"^\d{4}-\d{2};", line)]
+    assert rows and all(row[2] == "p.p." for row in rows)
+    for code in ("pct", "pp;", "balance", "index_2015_100", DERIVED):
+        assert code not in derived, code
+
+
 def test_derived_page_shows_the_badge_formula_and_inputs(client):
     html = client.get(f"/calculadas/{DERIVED}").text
     text = visible(html)
@@ -171,6 +224,46 @@ def test_derived_page_shows_the_badge_formula_and_inputs(client):
     assert "0,3" in text and "p.p." in text or "pontos percentuais" in text
     assert "Este valor não é publicado pelo editor" in text or "não publicado pelo editor" in text
     assert client.get("/calculadas/derived.nope").status_code == 404
+
+
+def test_derived_page_names_the_base_by_title_never_by_id(client):
+    text = visible(client.get(f"/calculadas/{DERIVED}").text)
+    assert "a partir de Taxa de desemprego" in text
+    assert DERIVED not in text and UNEMP not in text
+
+
+def test_search_finds_by_id_but_never_renders_it(client):
+    html = client.get(f"/pesquisa?q={UNEMP}").text
+    assert "Taxa de desemprego" in html
+    # the query itself is echoed in the heading; the result row must not carry the id
+    meta = re.findall(r'<span class="row-meta">(.*?)</span>', html)
+    assert meta and all(UNEMP not in line for line in meta)
+
+
+def test_a_withdrawn_execution_never_publishes_legacy_rows(tmp_path):
+    from ingest.db import open_db
+    from ingest.models import Observation
+    from tests.app.conftest import T2, T3, WORLD, build
+
+    path = tmp_path / "legacy.db"
+    build(path)
+    db = open_db(path)
+    legacy = db.legacy_run("worldbank", "legacy:worldbank", T2)
+    db.write_legacy_observations(legacy,
+                                 [(Observation.from_raw(WORLD, "2023", "9.99"), T2)])
+    fetched = db.conn.execute(
+        "SELECT r.id FROM dataset_run r JOIN source p ON p.id = r.source_id "
+        "WHERE p.name = 'worldbank' AND r.state = 'verified' "
+        "AND r.input_origin <> 'legacy' ORDER BY r.id").fetchone()[0]
+    db.withdraw_run(fetched, "test withdrawal", T3)
+    db.close()
+
+    with TestClient(create_app(str(path))) as site:
+        assert site.get(f"/series/{WORLD}").status_code == 404
+        assert site.get(f"/series/{WORLD}.csv").status_code == 404
+        for page in ("/", "/temas/economy", f"/pesquisa?q={WORLD}"):
+            body = site.get(page).text
+            assert "9.99" not in body and "9,99" not in body, page
 
 
 def test_derived_csv_carries_the_formula_and_inherited_licence(client):
@@ -247,7 +340,10 @@ def test_sources_page_separates_published_and_withheld(client):
     assert "INE — Instituto Nacional de Estatística" in text
     assert "Redes Energéticas Nacionais" in text
     assert "Fontes em avaliação" in text
-    assert "Uso restrito" in text
+    # the stored licence string is an operator note; readers get the catalogue's sentence
+    assert "Preços e produção de eletricidade em Portugal" in text
+    assert "Uso restrito" not in text
+    assert "UNVERIFIED" not in text and "pending" not in text
     assert "99.9" not in text and "99,9" not in text  # no value of a withheld source
 
 

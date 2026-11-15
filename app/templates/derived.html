@@ -66,7 +66,6 @@
     <dt>Calculado em</dt><dd>{{ page.computed_text }}</dd>
     <dt>Atribuição</dt><dd>{{ page.attribution }}</dd>
     <dt>Licença</dt><dd>{{ page.licence }}{% if page.licence_url and page.licence_url.startswith('https://') %} · <a href="{{ page.licence_url }}" rel="noopener noreferrer">termos</a>{% endif %}</dd>
-    <dt>Chave</dt><dd><code>{{ page.key }}</code></dd>
   </dl>
 </section>
 {% endblock %}
