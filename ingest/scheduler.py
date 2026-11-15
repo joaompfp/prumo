@@ -9,6 +9,10 @@ The CLI holds an advisory file lock for its whole lifetime. Embedded tick/serve 
 provide equivalent exclusive ownership. There is a 15-minute pause AFTER each serial pass,
 so slow sources delay later groups and the next pass. No catch-up windows, push alerts,
 health server, whole-pass deadline or automatic data/licence changes are implemented here.
+
+After a group's attempt is recorded as 'verified', the deriver recomputes the derived series
+whose base is in THAT group (one poison base value fails only that scope's derived run). Its
+outcome is log-only: it never touches scheduler_state, retry/streak, or the --once exit code.
 """
 import argparse
 import fcntl
@@ -25,11 +29,12 @@ from typing import Protocol
 from ingest import operations
 from ingest.cadence import BACKOFF, group_interval, next_eligible_at, series_interval
 from ingest.db import Db, SchedulerState, open_db
+from ingest.derive import DeriveReport, run_derive
 from ingest.http import Http
 from ingest.models import SeriesSpec
 from ingest.operations import DatasetGroup, GroupOutcome, RunRequest
 from ingest.rawstore import RawStore
-from ingest.registry import load_registry, sync_registry
+from ingest.registry import load_derived, load_registry, sync_derived, sync_registry
 
 TICK = timedelta(minutes=15)
 __all__ = ["BACKOFF", "TICK", "due", "main", "serve", "tick"]  # BACKOFF lives in ingest.cadence
@@ -38,6 +43,7 @@ DEFAULT_REGISTRY = Path(__file__).resolve().parent.parent / "registry" / "core.y
 Clock = Callable[[], datetime]
 Log = Callable[[dict], None]
 HttpFor = Callable[[str], Http]
+Deriver = Callable[[Db, set[str]], DeriveReport | None]
 
 
 class GroupRunner(Protocol):
@@ -48,6 +54,11 @@ class GroupRunner(Protocol):
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+def _derive_after(db: Db, series_ids: set[str]) -> DeriveReport | None:
+    """Default deriver: the active derived series whose base is one of `series_ids`."""
+    return run_derive(db, base_series=series_ids, trigger="scheduler", now=_utc_now)
 
 
 def _utc(value: datetime) -> datetime:
@@ -121,12 +132,35 @@ def _record(at: datetime, event: str, outcome: GroupOutcome, group: str) -> dict
             "detail": outcome.detail}
 
 
+def _derive_record(at: datetime, group: str, report: DeriveReport | None,
+                   error: Exception | None) -> dict | None:
+    base = {"schema": "prumo-scheduler", "version": 1, "ts": _utc(at).isoformat(),
+            "event": "derive", "group": group}
+    if error is not None:
+        return {**base, "state": "error", "detail": f"{type(error).__name__}: {error}"}
+    if report is None:
+        return None  # no active derived series on this group's bases
+    return {**base, "run_id": report.run_id, "state": report.state,
+            "n_written": report.n_written, "n_mismatch": report.n_mismatch}
+
+
+def _derive(db: Db, group: DatasetGroup, deriver: Deriver, now: Clock) -> dict | None:
+    """Never raises an Exception: a derive failure is a log record, not a scheduler failure."""
+    report, error = None, None
+    try:
+        report = deriver(db, {s.id for s in group.specs})
+    except Exception as exc:
+        error = exc
+    return _derive_record(now(), group.label, report, error)
+
+
 def tick(db: Db, store: RawStore, specs: list[SeriesSpec], *, now: Clock = _utc_now,
          runner: GroupRunner = _run_group, log: Log = _stdout,
-         http_for: HttpFor | None = None) -> list[dict]:
+         http_for: HttpFor | None = None, deriver: Deriver = _derive_after) -> list[dict]:
     """One pass. Source failures are isolated; persistence/logging failures remain fatal.
 
-    Returned records are the same records sent to log: one per attempted group. Blocked
+    Returned records are the same records sent to log: one 'attempt' per attempted group,
+    then one 'derive' after a verified attempt when derived series were run. Blocked
     sources are reported once per process start by main() (report_blocked), not per pass.
     There are no synthetic success heartbeats.
     """
@@ -161,6 +195,10 @@ def tick(db: Db, store: RawStore, specs: list[SeriesSpec], *, now: Clock = _utc_
         finished = _utc(now())
         db.scheduler_attempt_finished(key, outcome.state, finished.isoformat())
         emit(_record(finished, "attempt", outcome, group.label))
+        if outcome.state == "verified":
+            derived = _derive(db, group, deriver, now)
+            if derived is not None:
+                emit(derived)
     return records
 
 
@@ -182,14 +220,15 @@ def report_blocked(specs: list[SeriesSpec], *, now: Clock = _utc_now,
 def serve(db: Db, store: RawStore, specs: list[SeriesSpec], *, now: Clock = _utc_now,
           sleep: Callable[[float], None] = time.sleep, runner: GroupRunner = _run_group,
           log: Log = _stdout, http_for: HttpFor | None = None,
-          max_ticks: int | None = None) -> None:
+          max_ticks: int | None = None, deriver: Deriver = _derive_after) -> None:
     """Serial passes with an injectable wait; max_ticks is an offline test seam only."""
     if max_ticks is not None and max_ticks < 1:
         raise ValueError("max_ticks must be positive or None")
     http_for = http_for if http_for is not None else _polite_clients(specs)
     count = 0
     while True:
-        tick(db, store, specs, now=now, runner=runner, log=log, http_for=http_for)
+        tick(db, store, specs, now=now, runner=runner, log=log, http_for=http_for,
+             deriver=deriver)
         count += 1
         if max_ticks is not None and count >= max_ticks:
             return
@@ -214,7 +253,8 @@ def _instance_lock(db_path: Path) -> Iterator[None]:
 
 def main(argv: list[str] | None = None, *, now: Clock = _utc_now,
          sleep: Callable[[float], None] = time.sleep, runner: GroupRunner = _run_group,
-         log: Log = _stdout, http_for: HttpFor | None = None) -> int:
+         log: Log = _stdout, http_for: HttpFor | None = None,
+         deriver: Deriver = _derive_after) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m ingest.scheduler",
         description="Serial base-data refresh scheduler; 15-minute pause between passes.")
@@ -228,13 +268,14 @@ def main(argv: list[str] | None = None, *, now: Clock = _utc_now,
     args = parser.parse_args(argv)  # help exits before registry/files/clients/credentials
     specs = load_registry(args.registry)
     _plan(specs)  # also fail on schedule/grouping errors before DB, lock or network
+    derived = load_derived(args.registry, specs)  # same fail-fast as the registry
     db_path = Path(args.db).expanduser().resolve()
     db_path.parent.mkdir(parents=True, exist_ok=True)
     previous_sigterm = signal.signal(signal.SIGTERM, _on_sigterm)
     try:
         with _instance_lock(db_path):
-            return _locked_main(args, db_path, specs, now=now, sleep=sleep, runner=runner,
-                                log=log, http_for=http_for)
+            return _locked_main(args, db_path, specs, derived, now=now, sleep=sleep,
+                                runner=runner, log=log, http_for=http_for, deriver=deriver)
     finally:
         signal.signal(signal.SIGTERM, previous_sigterm)
 
@@ -245,22 +286,24 @@ def _on_sigterm(signum, _frame):
     raise SystemExit(128 + signum)
 
 
-def _locked_main(args, db_path: Path, specs, *, now: Clock, sleep, runner, log, http_for) -> int:
+def _locked_main(args, db_path: Path, specs, derived, *, now: Clock, sleep, runner, log,
+                 http_for, deriver) -> int:
     db = open_db(db_path)
     try:
         # Under the instance lock no other scheduler is mid-run: any 'running' run was left by
         # a killed process (OOM, SIGKILL) and is closed honestly before new work starts.
         db.close_orphan_runs(now().astimezone(timezone.utc).isoformat())
         sync_registry(db, specs)
+        sync_derived(db, derived)
         report_blocked(specs, now=now, log=log)
         store = RawStore(Path(args.raw_dir))
         if args.once:
             records = tick(db, store, specs, now=now, runner=runner, log=log,
-                           http_for=http_for)
+                           http_for=http_for, deriver=deriver)
             return int(any(r["event"] == "attempt" and r["state"] != "verified"
                            for r in records))
         serve(db, store, specs, now=now, sleep=sleep, runner=runner, log=log,
-              http_for=http_for)
+              http_for=http_for, deriver=deriver)
     except KeyboardInterrupt:
         return 130
     finally:
