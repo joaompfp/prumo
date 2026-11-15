@@ -330,9 +330,14 @@ when every input it needs is served.
 - Provenance and history: each row stores its formula order input observation ids
   (`[t, t-1]`, `[t, t-1y]`, `[t, base]`, one id for the base period itself). Rows are
   immutable; a revised input yields a new row version and the old one is kept.
-- Serving: `served_derived` serves, per (key, period), the newest `match` row of a
-  `verified` run whose inputs are ALL still served as fetched. Licence and licence URL are
-  the base source's; attribution is the base attribution plus ` — Calculado pelo Prumo`.
+- Serving: `served_derived` takes, per (key, period), the newest version - the highest-id
+  `match` row of a `verified` derive run - and serves it only while ALL its inputs are the
+  currently served fetched observations of the base. Older versions are never served again:
+  after a base vintage is withdrawn, the periods it touched serve no derived value until
+  `python -m ingest derive` writes a new version on the inputs now served (the old versions
+  stay in history). A pending, mismatched or failed-run row never hides an older served
+  one. Licence and licence URL are the base source's; attribution is the base attribution
+  plus ` — Calculado pelo Prumo`.
 
 Visual-cue contract for the UI (project 4): every `served_derived` row has
 `is_calculated = 1`, `formula_label_pt` (for example "Variação homóloga (%), calculada pelo

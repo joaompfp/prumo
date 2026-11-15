@@ -383,6 +383,13 @@ bash -lic 'dc-web-up prumo-ingest'
 bash -lic 'dc-web logs --tail=100 prumo-ingest'
 ```
 
+Then run `derive` (see "Derived layer"): a manual `run` does not trigger one, and the
+scheduler derives only after its next verified attempt of that group.
+
+```bash
+docker exec prumo-ingest python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw derive
+```
+
 Recorded imports have `input_origin=recorded`; `started_at` is the import attempt time,
 while `real_data_fetched_at` remains the original capture time. A passed recorded
 verification does not make an old download fresh. Identical bytes after a verified run
@@ -429,6 +436,14 @@ as confirming the data current. To stop serving a series persistently, inactivat
 docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
     withdraw "$RUN_ID" --reason "$REASON"
 docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw status --json
+```
+
+Then run `derive` (see "Derived layer"): derived values built on the withdrawn vintage are
+no longer served, and the vintage served again gets derived values only from a new derive
+run (status shows `DERIVED STALE` until then):
+
+```bash
+docker exec prumo-ingest python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw derive
 ```
 
 **Interrupted runs.** A run whose process failed on our side (raw store I/O, a database
@@ -603,15 +618,21 @@ Scheduler trigger: after a group's attempt is recorded `verified`, the scheduler
 derive over the active keys whose base is in that group and logs a JSON line
 `{"event": "derive", "group": ..., "run_id", "state", "n_written", "n_mismatch"}` (or
 `"state": "error"` with the exception text). A derive failure never changes the base
-attempt, its retry/streak state or the `--once` exit code.
+attempt, its retry/streak state or the `--once` exit code. `derive` exits 2 with one
+`derive refused: ...` line on a refused registry edit (see Known limitations) or a
+database error such as `database is locked`.
 
-Withdrawal and revision propagate through the `served_derived` view, without a derive run:
-a derived row is served only while EVERY input observation id it used is still in
-`served_observation` as `fetched`. A new verified base vintage therefore hides the derived
-rows built from the old vintage at once; the next derive (scheduler, or manual) adds new
-row versions and keeps the old ones in `derived_observation`. Withdrawing a base run, making
-a base inactive or withholding its source licence unserves its derived rows; if the older
-vintage is served again, the derived rows built from it come back without recomputation.
+Serving rule (`served_derived`): per (derived key, period) only the NEWEST version - the
+highest-id `match` row of a `verified` derive run - is a candidate, and it is served only
+while EVERY input observation id it used is still in `served_observation` as `fetched`.
+Older versions are never served again. A new verified base vintage therefore hides the
+derived rows built from the old vintage at once; the next derive (scheduler, or manual)
+adds new row versions and keeps the old ones in `derived_observation`. Withdrawing a base
+run, making a base inactive or withholding its source licence unserves its derived rows.
+After a base withdrawal the older vintage is served again, but its periods serve NO derived
+value until `python -m ingest derive` runs (it writes a new version on the older inputs;
+history keeps every version); status shows those keys as `DERIVED STALE` meanwhile. A newer
+pending, mismatched or failed-run row never hides an older served one.
 
 Events (`derived_event`, migration 0014): `zero_denominator` (no row for that period),
 `missing_base_period` (`rebase_100` base period not served: no rows for that key),
@@ -626,8 +647,11 @@ derived: A active series; V served values; stale S / never computed N; last run 
 
 plus `DERIVED STALE <keys>` (capped at 10) when any. A key is `stale` when its base's
 newest served `fetched_at` is later than the start of the latest verified derive run that
-covered it, `never computed` when its base has served fetched data but no verified run
-covered it; a base with nothing served counts as neither.
+covered it, or when its base has served fetched data but the key serves 0 values (for
+example after a base withdrawal, until `derive` runs); `never computed` when its base has
+served fetched data but no verified run covered it; a base with nothing served counts as
+neither. `/derived` reuses its list for 30 s (the status cache TTL) and says when it was
+generated.
 
 Backoffice (read-only, same rules as above): `/derived` lists every derived series (label,
 formula, base, unit, active, state, last covering run); `/derived/<key>` shows the
@@ -645,22 +669,49 @@ Known limitations and rules (v1):
   to a formula's code, existing rows would NOT be recomputed: add a NEW derived key (and
   deactivate the old one). The `formula`, `base` and `params` of an existing key are
   immutable (0014 rows are never relabelled); a new definition needs a new key.
+- A registry edit that changes the `formula`, `base` or `params` of an existing key is
+  refused: the scheduler logs one `{"event": "derive", "group": null, "state": "error"}`
+  record at start and keeps refreshing base data, deriving with the definitions already
+  stored in the DB (a NEW key added in the same edit is not synced either until the edit is
+  reverted); `python -m ingest derive` prints `derive refused: ...` and exits 2.
 - Percent formulas keep the denominator's sign and are not meaningful on series that cross
   zero. The starter set forbids `%` formulas on `%`, `balance` and `% GDP` bases (a test
   enforces it); rate series use differences in `p.p.`.
 - Migration `0014_derived_layer.sql` must never be edited after deploy: migrations are
   tracked by name, not checksum, so an edit would silently not apply on an existing DB (it
   was edited in place before its first deploy, which is safe only because no DB had run it).
-- Deploy order: rebuild and start the WORKER first (`bash -lic "dc-web-up prumo-ingest"`;
-  it migrates to 0014), then the backoffice in the SAME deploy
-  (`bash -lic "dc-web-up prumo-backoffice"`). Between the two the old backoffice refuses the
-  newer schema with HTTP 503 (short window, expected). The running worker image contains no
-  derived code until it is rebuilt.
+- Deploy order: one image builds all three containers, and old code refuses a 0014 database
+  ("schema is newer than this code", exit 2 / HTTP 503). In ONE deploy, in this order:
+  1. `bash -lic "dc-web-up prumo-ingest"` (the worker; it migrates to 0014);
+  2. `bash -lic "dc-web-up prumo"` (the web container, where the runbook runs `status`,
+     `withdraw` and manual imports);
+  3. `bash -lic "dc-web-up prumo-backoffice"`.
+  Between steps the not-yet-rebuilt containers refuse the newer schema (short window,
+  expected). The running worker image contains no derived code until it is rebuilt.
+- Read cost: per-key reads (`/derived/<key>`) search by key and stay well under 1 s; the
+  whole-view reads (status derived line, `/derived`) cost about 1.7 s at ~50 daily base
+  vintages (production copy, 2026-11-15), most of it in the 0011 `served_observation`
+  lookup, which grows with the number of vintages of a period. INE re-stores a full,
+  value-identical vintage on every daily fetch; value-level dedupe of base vintages is the
+  open decision that bounds this (HANDOFF).
 - The `docker exec prumo-ingest chmod -R a+rX /data/raw` note under Container hardening
   still applies until the worker image that writes 0644 evidence is running.
 
-After deploy: `ingest status` shows the derived line, `/derived` answers 200, and
-`served_derived` has rows only with `is_calculated = 1`.
+After deploy, in this order:
+
+- in `prumo` (the web container; proves step 2 ran):
+  `docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw status`
+  shows the `derived:` line;
+- in `prumo-ingest` (the worker; first derive without waiting for the scheduler):
+  `docker exec prumo-ingest python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw derive`;
+- from the host: `curl -s -o /dev/null -w '%{http_code}\n' http://100.118.19.6:8089/derived`
+  prints `200` (the backoffice, `prumo-backoffice`);
+- `served_derived` has rows only with `is_calculated = 1` (read-only, in `prumo`; prints
+  `(N, 1, 1)` with N > 0):
+
+```bash
+docker exec prumo python -c 'import sqlite3; c = sqlite3.connect("file:/data/prumo.sqlite3?mode=ro", uri=True); print(c.execute("SELECT COUNT(*), MIN(is_calculated), MAX(is_calculated) FROM served_derived").fetchone())'
+```
 
 ## Rollback
 
