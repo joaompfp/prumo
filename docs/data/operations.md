@@ -440,7 +440,8 @@ docker exec prumo python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw 
 
 Then run `derive` (see "Derived layer"): derived values built on the withdrawn vintage are
 no longer served, and the vintage served again gets derived values only from a new derive
-run (status shows `DERIVED STALE` until then):
+run. Do not wait for status to ask for it: `DERIVED STALE` appears only when a key is left
+with no served value at all, not when some of its periods lost theirs:
 
 ```bash
 docker exec prumo-ingest python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw derive
@@ -631,7 +632,9 @@ adds new row versions and keeps the old ones in `derived_observation`. Withdrawi
 run, making a base inactive or withholding its source licence unserves its derived rows.
 After a base withdrawal the older vintage is served again, but its periods serve NO derived
 value until `python -m ingest derive` runs (it writes a new version on the older inputs;
-history keeps every version); status shows those keys as `DERIVED STALE` meanwhile. A newer
+history keeps every version). Status shows a key as `DERIVED STALE` meanwhile only when the
+withdrawal left it with no served value at all; a key that lost some periods still reads
+`current`, so run `derive` after every withdrawal without waiting for status. A newer
 pending, mismatched or failed-run row never hides an older served one.
 
 Events (`derived_event`, migration 0014): `zero_denominator` (no row for that period),
@@ -647,8 +650,13 @@ derived: A active series; V served values; stale S / never computed N; last run 
 
 plus `DERIVED STALE <keys>` (capped at 10) when any. A key is `stale` when its base's
 newest served `fetched_at` is later than the start of the latest verified derive run that
-covered it, or when its base has served fetched data but the key serves 0 values (for
-example after a base withdrawal, until `derive` runs); `never computed` when its base has
+covered it, or when its base has served fetched data but the key serves 0 values. The
+second case has two causes. After a base withdrawal it clears when `derive` runs. A key
+that can produce no value at all stays `stale` however often `derive` runs: a `rebase_100`
+whose base period is not served, a year-on-year key whose base has under a year of periods,
+or a key whose every period has a zero denominator. The reason is in `derived_event` for
+that key (`missing_base_period`, `zero_denominator`); the backoffice does not list events
+yet. A key is `never computed` when its base has
 served fetched data but no verified run covered it; a base with nothing served counts as
 neither. `/derived` reuses its list for 30 s (the status cache TTL) and says when it was
 generated.
