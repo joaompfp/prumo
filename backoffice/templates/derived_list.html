@@ -10,15 +10,15 @@ the series, or that base data is served but no derived value is (run derive). Th
 list generated {{ generated_at }} ({{ age_s }} s ago; reused for up to {{ status_ttl_s }} s).</p>
 {% if rows %}
 <div class="scroll"><table>
-<tr><th>Derived series</th><th>Label</th><th>Formula</th><th>Base series</th><th>Unit</th>
+<tr><th>Derived series</th><th>Title</th><th>Formula</th><th>Base series</th><th>Unit</th>
 <th>Active</th><th class="num">Served values</th><th>State</th><th>Last covered</th></tr>
 {% for r in rows %}
 <tr class="derived-row" id="row-{{ r.key }}">
 <td><a href="/derived/{{ r.key | urlencode }}">{{ r.key }}</a> {% include "_calc_badge.html" %}</td>
-<td class="wrap">{{ r.label }}</td>
-<td class="wrap">{{ r.formula_label_pt }}</td>
+<td class="wrap">{% if r.title is not none %}{{ r.title }}{% else %}<span class="muted">no title in the catalog</span>{% endif %}</td>
+<td class="wrap">{{ r.formula_text }}</td>
 <td><a href="/series/{{ r.base_series_id | urlencode }}">{{ r.base_series_id }}</a></td>
-<td>{{ r.unit }}</td>
+<td>{{ r.unit_text }} <span class="muted"><code>{{ r.unit }}</code></span></td>
 <td>{{ "yes" if r.active else "no" }}</td>
 <td class="num">{{ r.served_values }}</td>
 <td{% if r.stale or r.state == "never computed" %} class="bad"{% elif r.state == "current" %} class="good"{% endif %}>{{ r.state }}</td>

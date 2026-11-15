@@ -1,7 +1,10 @@
 """Derived layer v1, Task 8: /derived and /derived/{key} with the visible 'calculado' cue."""
 import re
 
+import pytest
+
 from ingest.derive import run_derive
+from presentation.catalog import pt
 from tests.backoffice.conftest import DEFAULT_SERIES, NOW
 from tests.ingest.derived_helpers import verified_values
 
@@ -9,11 +12,17 @@ BADGE = '<span class="calc" title="Valor calculado pelo Prumo">calculado</span>'
 YOY = "derived.s1.yoy_change_pct"
 CHG = "derived.s1.period_change"
 DERIVED = [
-    {"key": YOY, "base": "s1", "formula": "yoy_change_pct", "label": "Variação homóloga s1",
-     "unit": "%"},
-    {"key": CHG, "base": "s1", "formula": "period_change", "label": "Variação s1",
-     "unit": "EUR"},
+    {"key": YOY, "base": "s1", "formula": "yoy_change_pct", "unit": "pct"},
+    {"key": CHG, "base": "s1", "formula": "period_change", "unit": "pp"},
 ]
+TITLES = {YOY: "Variação homóloga s1", CHG: "Variação s1"}
+
+
+@pytest.fixture(autouse=True)
+def _pt_titles(monkeypatch):
+    """The test keys' pt titles (the backoffice renders titles from the presentation catalog)."""
+    for key, title in TITLES.items():
+        monkeypatch.setitem(pt.TITLES, key, title)
 FETCHED = "2026-11-13T00:00:00+00:00"
 
 
@@ -120,12 +129,22 @@ def test_unknown_derived_key_404(make_env):
     assert "unknown derived series" in r.text
 
 
-def test_derived_label_html_is_escaped(make_env):
-    env = _env(make_env, [{**DERIVED[0], "label": "<script>x()</script>"}])
+def test_derived_title_html_is_escaped(make_env, monkeypatch):
+    monkeypatch.setitem(pt.TITLES, YOY, "<script>x()</script>")
+    env = _env(make_env, [DERIVED[0]])
     for path in ("/derived", f"/derived/{YOY}"):
         html = env.client().get(path).text
         assert "<script>x()</script>" not in html
         assert "&lt;script&gt;x()&lt;/script&gt;" in html
+
+
+def test_key_without_a_catalog_title_still_renders(make_env, monkeypatch):
+    """A retired key (in the database, no longer in the catalog) degrades visibly, not 500."""
+    monkeypatch.delitem(pt.TITLES, CHG)
+    env = _env(make_env)
+    for path in ("/derived", f"/derived/{CHG}"):
+        r = env.client().get(path)
+        assert r.status_code == 200 and "no title in the catalog" in r.text
 
 
 def test_detail_renders_without_any_derived_data(make_env):

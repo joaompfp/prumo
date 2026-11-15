@@ -223,6 +223,9 @@ class SeriesSpec(BaseModel):
 
 FORMULAS: tuple[str, ...] = ("period_change", "period_change_pct", "yoy_change", "yoy_change_pct",
                              "rebase_100")
+# Unit CODES of derived series (reader text: presentation.unit_text). Migration 0016 keeps the
+# same closed list as a CHECK on derived_series.unit.
+DERIVED_UNITS: tuple[str, ...] = ("pct", "pp", "balance", "index_2015_100")
 
 
 class DerivedSpec(BaseModel):
@@ -232,6 +235,5 @@ class DerivedSpec(BaseModel):
     base: str = Field(min_length=1)
     formula: Literal[*FORMULAS]
     params: dict[str, str] = {}
-    label: str = Field(min_length=1)
-    unit: str = Field(min_length=1)
+    unit: Literal[*DERIVED_UNITS]
     active: bool = True

@@ -384,11 +384,11 @@ def _registry(path, derived):
 
 
 def _cli_entries():
-    return [{"key": PC, "base": "s1", "formula": "period_change", "label": "Var", "unit": "EUR"},
-            {"key": RB, "base": "s1", "formula": "rebase_100", "label": "Idx", "unit": "idx",
+    return [{"key": PC, "base": "s1", "formula": "period_change", "unit": "pp"},
+            {"key": RB, "base": "s1", "formula": "rebase_100", "unit": "index_2015_100",
              "params": {"base_period": "2025-01"}},
-            {"key": S2PC, "base": "s2", "formula": "period_change", "label": "Var2",
-             "unit": "EUR", "active": False}]
+            {"key": S2PC, "base": "s2", "formula": "period_change",
+             "unit": "pp", "active": False}]
 
 
 def _cli_db(tmp_path):

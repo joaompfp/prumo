@@ -6,7 +6,6 @@ import pytest
 
 import ingest.db as dbmod
 from ingest.db import MIGRATIONS_DIR, open_db
-from ingest.derive import formula_label_pt
 from ingest.models import FORMULAS, Observation, SourceSpec
 from ingest.registry import sync_derived, sync_registry
 from tests.ingest.derived_helpers import derived_spec, verified_values
@@ -69,9 +68,8 @@ def test_0014_applies_on_fresh_db_and_tables_are_strict(db):
                         "n_written) VALUES ('t', 'computing', 'cli', '[]', 'x')")
     _setup(db)
     with pytest.raises(sqlite3.IntegrityError):  # formula CHECK follows FORMULAS
-        db.conn.execute("INSERT INTO derived_series(key, formula, base_series_id, label, "
-                        "formula_label_pt, unit, active) "
-                        "VALUES ('derived.x', 'ratio', 's1', 'l', 'f', 'u', 1)")
+        db.conn.execute("INSERT INTO derived_series(key, formula, base_series_id, unit, active) "
+                        "VALUES ('derived.x', 'ratio', 's1', 'pp', 1)")
 
 
 def _migrations_up_to(tmp_path, last):
@@ -135,10 +133,8 @@ def test_sync_derived_deactivates_absent_keys(db):
     rb = rows[1]
     assert rb["params"] == {"base_period": "2021-01"} and rb["frequency"] == "M"
     assert rb["active"] is True and isinstance(rb["id"], int)
-    assert rb["formula_label_pt"] == formula_label_pt("rebase_100", {"base_period": "2021-01"},
-                                                      "s1")
-    assert rb["formula_label_pt"] == ("Índice rebaseado (2021-01 = 100), calculado pelo Prumo "
-                                      "a partir de s1")
+    assert rb["unit"] == "index_2015_100"
+    assert not {"label", "formula_label_pt"} & set(rb)  # reader text is presentation's
     sync_derived(db, [a])  # b left the registry
     assert [r["key"] for r in db.derived_series_rows()] == ["derived.a"]
     assert [(r["key"], r["active"]) for r in db.derived_series_rows(active_only=False)] == [
@@ -154,17 +150,6 @@ def test_schema_formula_check_accepts_exactly_the_registry_formulas(db):
     assert sorted(r["formula"] for r in db.derived_series_rows()) == sorted(FORMULAS)
 
 
-def test_formula_labels_are_exact():
-    assert formula_label_pt("period_change", {}, "x") == (
-        "Variação face ao período anterior (diferença), calculada pelo Prumo a partir de x")
-    assert formula_label_pt("period_change_pct", {}, "x") == (
-        "Variação face ao período anterior (%), calculada pelo Prumo a partir de x")
-    assert formula_label_pt("yoy_change", {}, "x") == (
-        "Variação homóloga (diferença), calculada pelo Prumo a partir de x")
-    assert formula_label_pt("yoy_change_pct", {}, "x") == (
-        "Variação homóloga (%), calculada pelo Prumo a partir de x")
-
-
 def test_sync_derived_refuses_redefining_an_existing_key(db):
     """A key's formula/base/params are its meaning: changing them would relabel rows computed
     under the old definition. A new definition needs a new key."""
@@ -174,8 +159,8 @@ def test_sync_derived_refuses_redefining_an_existing_key(db):
                     derived_spec("derived.a", "s2", "yoy_change")):
         with pytest.raises(ValueError, match="derived.a"):
             sync_derived(db, [changed])
-    sync_derived(db, [derived_spec("derived.a", "s1", "yoy_change", label="Novo")])  # cosmetic ok
-    assert db.derived_series_rows()[0]["label"] == "Novo"
+    sync_derived(db, [derived_spec("derived.a", "s1", "yoy_change", unit="balance")])  # unit ok
+    assert db.derived_series_rows()[0]["unit"] == "balance"
     with pytest.raises(sqlite3.IntegrityError):
         db.conn.execute("UPDATE derived_series SET formula = 'period_change'")
 
@@ -189,16 +174,15 @@ def test_view_serves_verified_matched_row_with_calculated_marker(db):
     assert rows[0] == 1
     r = rows[1][0]
     assert r["is_calculated"] == 1
-    assert r["attribution"] == "Fake — Calculado pelo Prumo"
+    assert r["attribution"] == "Fake"  # publisher's own; "Calculado pelo Prumo" is presentation
     assert r["inputs"] == [{"series_id": "s1", "period": "2025-01", "observation_id": id_t},
                            {"series_id": "s1", "period": "2024-12", "observation_id": id_p}]
     assert (r["derived_key"], r["period"], r["value_text"], r["scale"], r["unit"]) == (
-        KEY, "2025-01", "2", 0, "EUR")
+        KEY, "2025-01", "2", 0, "pp")
     assert (r["formula"], r["base_series_id"], r["licence"], r["licence_url"]) == (
         "period_change", "s1", SOURCE.licence, SOURCE.licence_url)
-    assert r["formula_label_pt"].startswith("Variação face ao período anterior (diferença)")
     assert (r["derived_run_id"], r["derived_observation_id"], r["computed_at"]) == (run, oid, NOW)
-    assert r["label"] == f"Derivada {KEY}"
+    assert not {"label", "formula_label_pt"} & set(r)
     assert r["input_ids"] == [id_t, id_p]
 
 
@@ -531,8 +515,7 @@ def test_derived_history_is_never_deleted_or_replaced(db):
             db.conn.execute(f"DELETE FROM {table}")
     with pytest.raises(sqlite3.IntegrityError):  # REPLACE would bypass the definition guard
         db.conn.execute("INSERT OR REPLACE INTO derived_series(key, formula, base_series_id, "
-                        "label, formula_label_pt, unit, active) "
-                        "VALUES (?, 'yoy_change', 's1', 'l', 'f', 'u', 1)", (KEY,))
+                        "unit, active) VALUES (?, 'yoy_change', 's1', 'pp', 1)", (KEY,))
     assert db.derived_series_rows()[0]["formula"] == "period_change"
 
 
@@ -551,14 +534,6 @@ def test_inputs_follow_the_stored_input_order(db):
         db.finish_derived_run(run, "verified", NOW, n_written=1, n_checked=1, n_mismatch=0)
         row = db.served_derived_rows(KEY, 1)[1][0]
         assert [x["observation_id"] for x in row["inputs"]] == order
-
-
-def test_rebase_label_without_base_period_names_the_param():
-    """M5."""
-    with pytest.raises(ValueError, match="base_period"):
-        formula_label_pt("rebase_100", {}, "s1")
-    with pytest.raises(ValueError, match="ratio"):
-        formula_label_pt("ratio", {}, "s1")
 
 
 # --- read cost (review I3) ---------------------------------------------------------------------

@@ -14,7 +14,7 @@ def _series(sid, frequency="M", active=True, **extra):
 
 
 def _entry(key="derived.a", base="s1", formula="period_change", **extra):
-    return {"key": key, "base": base, "formula": formula, "label": "Variação", "unit": "EUR", **extra}
+    return {"key": key, "base": base, "formula": formula, "unit": "pp", **extra}
 
 
 def _load(tmp_path, derived, series=None):
@@ -116,10 +116,15 @@ def test_unknown_field_rejected_naming_key(tmp_path):
         _load(tmp_path, [_entry(foo="x")])
 
 
-@pytest.mark.parametrize("field", ["label", "unit"])
-def test_empty_label_or_unit_rejected(tmp_path, field):
-    with pytest.raises(ValueError, match=rf"(?s)^derived.a: invalid entry.*{field}"):
-        _load(tmp_path, [_entry(**{field: ""})])
+@pytest.mark.parametrize("unit", ["", "%", "EUR"])
+def test_empty_or_non_code_unit_rejected(tmp_path, unit):
+    with pytest.raises(ValueError, match=r"(?s)^derived.a: invalid entry.*unit"):
+        _load(tmp_path, [_entry(unit=unit)])
+
+
+def test_reader_text_label_is_not_a_registry_field(tmp_path):
+    with pytest.raises(ValueError, match=r"(?s)^derived.a: invalid entry.*label"):
+        _load(tmp_path, [_entry(label="Variação")])
 
 
 def test_bare_derived_dot_key_rejected(tmp_path):

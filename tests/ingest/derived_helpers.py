@@ -17,6 +17,6 @@ def verified_values(db, sid: str, values: dict[str, str], fetched_at: str, key: 
 
 
 def derived_spec(key: str, base: str, formula: str, **kw) -> DerivedSpec:
-    kw.setdefault("label", f"Derivada {key}")
-    kw.setdefault("unit", "%" if formula.endswith("_pct") else "EUR")
+    kw.setdefault("unit", "pct" if formula.endswith("_pct") else
+                  "index_2015_100" if formula == "rebase_100" else "pp")
     return DerivedSpec(key=key, base=base, formula=formula, **kw)

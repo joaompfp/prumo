@@ -42,6 +42,7 @@ def test_image_copies_only_runtime_inputs_including_registry_and_migrations(inst
         ["static/", "./static/"],
         ["ingest/", "./ingest/"],
         ["backoffice/", "./backoffice/"],
+        ["presentation/", "./presentation/"],
         ["registry/", "./registry/"],
         ["entrypoint.sh", "./"],
     ]
@@ -87,7 +88,7 @@ def test_build_context_is_deny_by_default_with_only_runtime_reinclusions():
         "!Dockerfile", "!.dockerignore", "!requirements.txt", "!entrypoint.sh",
         "!app/", "!app/**", "!static/", "!static/**",
         "!ingest/", "!ingest/**", "!backoffice/", "!backoffice/**",
-        "!registry/", "!registry/**",
+        "!presentation/", "!presentation/**", "!registry/", "!registry/**",
     }
     assert {rule for rule in rules if rule.startswith("!")} == allowed
     last_allow = max(i for i, rule in enumerate(rules) if rule.startswith("!"))

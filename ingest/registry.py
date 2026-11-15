@@ -7,7 +7,6 @@ import yaml
 from pydantic import ValidationError
 
 from ingest.db import Db
-from ingest.derive import formula_label_pt
 from ingest.models import DerivedSpec, SeriesSpec, SourceSpec, normalize_period
 
 
@@ -96,11 +95,11 @@ def _validate(specs: list[SeriesSpec]) -> None:
 
 
 def sync_derived(db: Db, derived: list[DerivedSpec]) -> None:
-    """Sync the WHOLE `derived:` list (absent keys become inactive), with the formula label."""
+    """Sync the WHOLE `derived:` list (absent keys become inactive); codes only, no reader
+    text (that is rendered by the presentation package)."""
     db.upsert_derived_series([
         {"key": d.key, "formula": d.formula, "base_series_id": d.base,
-         "params_json": json.dumps(d.params, sort_keys=True), "label": d.label,
-         "formula_label_pt": formula_label_pt(d.formula, d.params, d.base), "unit": d.unit,
+         "params_json": json.dumps(d.params, sort_keys=True), "unit": d.unit,
          "active": d.active}
         for d in derived])
 

@@ -661,7 +661,7 @@ served fetched data but no verified run covered it; a base with nothing served c
 neither. `/derived` reuses its list for 30 s (the status cache TTL) and says when it was
 generated.
 
-Backoffice (read-only, same rules as above): `/derived` lists every derived series (label,
+Backoffice (read-only, same rules as above): `/derived` lists every derived series (pt title,
 formula, base, unit, active, state, last covering run); `/derived/<key>` shows the
 definition, served values with their input observations, every stored version (row state,
 run state, served or not) and the newest derived runs. Derived series carry a "calculado"

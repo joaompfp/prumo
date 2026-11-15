@@ -5,6 +5,7 @@ from pathlib import Path
 DEFAULT_DB = "/data/prumo.sqlite3"  # the scheduler's default (ingest/scheduler.py)
 DEFAULT_RAW = "/data/raw"           # the scheduler's default raw evidence store
 DEFAULT_REGISTRY = Path(__file__).resolve().parent.parent / "registry" / "core.yaml"
+LANG = "pt"  # the language the backoffice renders reader text in (presentation package)
 
 
 def paths_from_env() -> tuple[Path, Path, Path]:

@@ -6,6 +6,7 @@ which opens the database strictly read-only and retries once on a concurrent wri
 from dataclasses import dataclass
 from datetime import datetime
 
+from backoffice.deps import LANG
 from backoffice.queue import (
     EVENT_RULES,
     EVENT_WINDOW,
@@ -23,6 +24,13 @@ from ingest.status import (
     StatusReport,
     build_status,
     derived_state,
+)
+from presentation import (
+    MissingText,
+    calculated_attribution,
+    derived_title,
+    describe_formula,
+    unit_text,
 )
 
 # The queue never loads events in bulk: revisions are counted per run in SQL
@@ -152,6 +160,20 @@ DERIVED_STATE_LABEL = {"no_base_data": "no base data", "never_computed": "never 
                        "stale": "stale", "current": "current", None: "inactive"}
 
 
+def _with_text(s: dict) -> dict:
+    """A Db.derived_series_rows row plus its LANG reader text: `title` (None when the catalog
+    has no title for the key, e.g. a retired key; the page shows that instead of failing),
+    `formula_text` and `unit_text` (closed code lists: a missing text raises)."""
+    try:
+        title = derived_title(LANG, s["key"])
+    except MissingText:
+        title = None
+    return s | {"title": title,
+                "formula_text": describe_formula(LANG, s["formula"], s["params"],
+                                                 s["base_series_id"]),
+                "unit_text": unit_text(LANG, s["unit"])}
+
+
 def derived_list(db: Db) -> list[dict]:
     """Every derived series (active or not, by key) with its served-value count and state.
     The state rule is ingest.status.derived_state (never re-derived here); inactive series
@@ -161,8 +183,9 @@ def derived_list(db: Db) -> list[dict]:
     for s in db.derived_series_rows(active_only=False):
         st = status.get(s["key"])
         state = derived_state(st) if st else None
-        out.append({k: s[k] for k in ("key", "label", "formula_label_pt", "base_series_id",
-                                      "unit", "active")}
+        out.append({k: v for k, v in _with_text(s).items()
+                    if k in ("key", "title", "formula_text", "base_series_id", "unit",
+                             "unit_text", "active")}
                    | {"served_values": st["served_values"] if st else 0,
                       "stale": state == "stale",
                       "last_covered_at": st["last_covered_at"] if st else None,
@@ -172,9 +195,10 @@ def derived_list(db: Db) -> list[dict]:
 
 @dataclass(frozen=True)
 class DerivedDetail:
-    series: dict          # Db.derived_series_rows row
+    series: dict          # Db.derived_series_rows row + title/formula_text/unit_text
     total: int            # rows served_derived serves for the key
-    served: list[dict]    # newest OBSERVATION_CAP of them (Db.served_derived_rows)
+    served: list[dict]    # newest OBSERVATION_CAP of them (Db.served_derived_rows), with
+                          # `attribution` rendered as the LANG calculated attribution
     versions: list[dict]  # newest DETAIL_LIST_CAP stored versions, each with `inputs`
     runs: list[dict]      # newest DERIVED_RUN_CAP derived runs (any scope)
 
@@ -187,6 +211,8 @@ def derived_detail(db: Db, key: str) -> DerivedDetail | None:
     if series is None:
         return None
     total, served = db.served_derived_rows(key, OBSERVATION_CAP)
+    served = [r | {"attribution": calculated_attribution(LANG, r["attribution"])}
+              for r in served]
     versions = db.derived_rows_of_series(key, DETAIL_LIST_CAP)
     obs = db.observations_by_ids(sorted({i for v in versions for i in v["input_ids"]}))
     versions = [v | {"inputs": [{"observation_id": i, "series_id": obs[i]["series_id"],
@@ -194,4 +220,5 @@ def derived_detail(db: Db, key: str) -> DerivedDetail | None:
                                 {"observation_id": i, "series_id": None, "period": None}
                                 for i in v["input_ids"]]}
                 for v in versions]
-    return DerivedDetail(series, total, served, versions, db.derived_runs(DERIVED_RUN_CAP))
+    return DerivedDetail(_with_text(series), total, served, versions,
+                         db.derived_runs(DERIVED_RUN_CAP))

@@ -6,6 +6,7 @@ COPY app/ ./app/
 COPY static/ ./static/
 COPY ingest/ ./ingest/
 COPY backoffice/ ./backoffice/
+COPY presentation/ ./presentation/
 COPY registry/ ./registry/
 COPY entrypoint.sh ./
 RUN chmod +x ./entrypoint.sh

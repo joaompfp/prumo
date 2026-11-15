@@ -12,6 +12,8 @@
 !ingest/**
 !backoffice/
 !backoffice/**
+!presentation/
+!presentation/**
 !registry/
 !registry/**
 

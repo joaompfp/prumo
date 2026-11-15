@@ -4,11 +4,12 @@ from pathlib import Path
 import pytest
 
 from ingest.registry import load_derived, load_registry
+from presentation import derived_title
 
 CORE = Path(__file__).resolve().parents[2] / "registry" / "core.yaml"
 PCT_FORMULAS = {"period_change_pct", "yoy_change_pct"}
 NO_PCT_UNITS = {"%", "balance", "% GDP"}
-# Portuguese wording each label must carry for its formula (the reader-facing reading).
+# Portuguese wording each pt title must carry for its formula (the reader-facing reading).
 LABEL_WORDS = {
     "period_change": "variação face ao período anterior",
     "period_change_pct": "variação face ao período anterior",
@@ -56,14 +57,16 @@ def test_no_pct_formula_on_percent_or_balance_units(derived, specs):
 def test_pp_entries_declare_pp_unit(derived, specs):
     for d in derived:
         if d.formula in {"period_change", "yoy_change"} and specs[d.base].unit == "%":
-            assert d.unit == "p.p.", d.key
+            assert d.unit == "pp", d.key
         if d.formula in PCT_FORMULAS:
-            assert d.unit == "%", d.key
+            assert d.unit == "pct", d.key
 
 
-def test_every_label_is_nonempty_portuguese_text(derived):
+def test_every_pt_title_is_nonempty_portuguese_text(derived):
+    """The titles live in the presentation catalog now (the registry carries codes only)."""
     for d in derived:
-        label = d.label.strip()
-        assert label and label == d.label, d.key
+        title = derived_title("pt", d.key)
+        label = title.strip()
+        assert label and label == title, d.key
         assert label != d.key and d.base not in label, d.key
         assert LABEL_WORDS[d.formula] in label.lower(), d.key

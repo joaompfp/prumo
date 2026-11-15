@@ -336,15 +336,28 @@ when every input it needs is served.
   after a base vintage is withdrawn, the periods it touched serve no derived value until
   `python -m ingest derive` writes a new version on the inputs now served (the old versions
   stay in history). A pending, mismatched or failed-run row never hides an older served
-  one. Licence and licence URL are the base source's; attribution is the base attribution
-  plus ` — Calculado pelo Prumo`.
+  one. Licence, licence URL and attribution are the base source's own (the data layer
+  never appends reader text; see below).
+
+Data layer vs reader text (migration 0016). The data layer (registry `derived:` rows,
+`derived_series`, `served_derived`) carries codes only: the derived `key`, the `formula`
+code, `params`, the base series id, and a `unit` CODE from a closed list (`pct`, `pp`,
+`balance`, `index_2015_100`; `ingest.models.DERIVED_UNITS`, also a CHECK in the schema).
+There is no title, formula sentence or "calculado" suffix in the database. Every
+reader-facing sentence is rendered by the `presentation` package per language
+(`presentation/catalog/pt.py`, `en.py`): `derived_title(lang, key)`,
+`describe_formula(lang, formula, params, base_series_id)` (pt for example "Variação homóloga
+(%), calculada pelo Prumo a partir de ine.ipi_seasonal_cae_TOT.PT"), `unit_text(lang, code)`
+and `calculated_attribution(lang, attribution)` (pt: `<attribution> — Calculado pelo
+Prumo`). A missing text raises; a test checks every catalog covers every formula, unit code
+and registry key.
 
 Visual-cue contract for the UI (project 4): every `served_derived` row has
-`is_calculated = 1`, `formula_label_pt` (for example "Variação homóloga (%), calculada pelo
-Prumo a partir de ine.ipi_seasonal_cae_TOT.PT") and `inputs` (JSON list of
+`is_calculated = 1`, `formula`, `unit` (code), `base_series_id` and `inputs` (JSON list of
 `{series_id, period, observation_id}` in formula order). The UI must badge every value with
-`is_calculated = 1` and make the label and inputs reachable; the backoffice already shows a
-"calculado" badge.
+`is_calculated = 1`, render the title, formula sentence, unit and calculated attribution
+through `presentation`, and make the inputs reachable; the backoffice (language `pt`,
+`backoffice.deps.LANG`) already does, with a "calculado" badge.
 
 ## Dates, catch-up and recorded input
 

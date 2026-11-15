@@ -134,8 +134,7 @@ def _with_derived(reg: Path, derived: list[dict]) -> Path:
 
 def test_main_refuses_invalid_derived_registry_before_lock(tmp_path):
     reg = _with_derived(_tiny_registry(tmp_path), [
-        {"key": "derived.x", "base": "wb.ghost.PT", "formula": "period_change",
-         "label": "Variação", "unit": "u"}])
+        {"key": "derived.x", "base": "wb.ghost.PT", "formula": "period_change", "unit": "pp"}])
     path = tmp_path / "invalid.db"
     calls: list = []
     with pytest.raises(ValueError, match="derived.x: unknown base"):
@@ -149,8 +148,7 @@ def test_main_refuses_invalid_derived_registry_before_lock(tmp_path):
 
 def test_main_syncs_derived_series(tmp_path):
     reg = _with_derived(_tiny_registry(tmp_path), [
-        {"key": "derived.one.mom", "base": "wb.one.PT", "formula": "period_change_pct",
-         "label": "Variação mensal", "unit": "%"}])
+        {"key": "derived.one.mom", "base": "wb.one.PT", "formula": "period_change_pct", "unit": "pct"}])
     path = tmp_path / "p.db"
     derive_calls: list = []
     assert scheduler.main(["--once", "--registry", str(reg), "--db", str(path),
@@ -164,15 +162,14 @@ def test_main_syncs_derived_series(tmp_path):
     finally:
         d.close()
     assert [(r["key"], r["formula"], r["base_series_id"], r["unit"]) for r in rows] == [
-        ("derived.one.mom", "period_change_pct", "wb.one.PT", "%")]
+        ("derived.one.mom", "period_change_pct", "wb.one.PT", "pct")]
 
 
 def test_default_deriver_runs_real_derive_scoped_to_group(tmp_path):
     """No injected deriver: the real run_derive runs for the verified group's derived series
     (no served inputs yet -> a verified run that writes nothing) with trigger 'scheduler'."""
     reg = _with_derived(_tiny_registry(tmp_path), [
-        {"key": "derived.one.mom", "base": "wb.one.PT", "formula": "period_change",
-         "label": "Variação mensal", "unit": "u"}])
+        {"key": "derived.one.mom", "base": "wb.one.PT", "formula": "period_change", "unit": "pp"}])
     logged: list = []
     assert scheduler.main(["--once", "--registry", str(reg), "--db", str(tmp_path / "p.db"),
                            "--raw-dir", str(tmp_path / "raw")],
@@ -188,15 +185,14 @@ def test_redefined_derived_key_logs_one_error_and_base_refresh_continues(tmp_pat
     """Review I1: a registry edit to an existing key's formula/base/params must not stop the
     worker. One 'derive' error record; base refresh runs; exit code as without the slip;
     the definition stored in the DB stays the one derive uses."""
-    entry = {"key": "derived.one.mom", "base": "wb.one.PT", "formula": "period_change",
-             "label": "Variação mensal", "unit": "u"}
+    entry = {"key": "derived.one.mom", "base": "wb.one.PT", "formula": "period_change", "unit": "pp"}
     reg = _with_derived(_tiny_registry(tmp_path), [entry])
     path = tmp_path / "p.db"
     argv = ["--once", "--registry", str(reg), "--db", str(path),
             "--raw-dir", str(tmp_path / "raw")]
     assert scheduler.main(argv, now=lambda: T0, runner=_runner({}, []), log=lambda r: None,
                           deriver=_recording_deriver([])) == 0
-    _with_derived(reg, [{**entry, "formula": "period_change_pct", "unit": "%"}])
+    _with_derived(reg, [{**entry, "formula": "period_change_pct", "unit": "pct"}])
     runner_calls: list = []
     derive_calls: list = []
     logged: list = []
@@ -217,4 +213,4 @@ def test_redefined_derived_key_logs_one_error_and_base_refresh_continues(tmp_pat
     finally:
         d.close()
     assert [(r["key"], r["formula"], r["unit"]) for r in rows] == [
-        ("derived.one.mom", "period_change", "u")]
+        ("derived.one.mom", "period_change", "pp")]

@@ -96,5 +96,7 @@ def test_catalog_covers_registry():
         assert set(cat.TITLES) == {r["key"] for r in rows}
         assert set(cat.UNITS) == {"pct", "pp", "balance", "index_2015_100"}
         assert set(cat.CAVEATS) == {"sa_base", "stock_base"}
-    for row in rows:
-        assert derived_title("pt", row["key"]) == row["label"]
+    for row in rows:  # the registry carries codes only; its units all have text
+        assert "label" not in row
+        for lang in LANGUAGES:
+            assert unit_text(lang, row["unit"])
