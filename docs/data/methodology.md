@@ -265,11 +265,13 @@ of INE, BPstat, FRED and OECD) are kept, not deleted. Identical bytes or identic
 after a failed or withdrawn run are fully processed again; a value that reverts (A, then B,
 then A) is stored again, because only the base of the unbroken chain counts; withdrawing the
 run that wrote the rows also withdraws the later short-circuit runs chained onto it, so the
-next identical fetch is re-ingested (Task 24). Two runs are never a base, for identical
-bytes or identical values: a run verified only against its own pinned bundle (not
-audit-grade, so the live fetch gets its own live verification), and a run whose series
-another dataset has since written with verified rows at least as recent (a short-circuit
-would leave that other dataset's value served instead of re-asserting this one).
+next identical fetch is re-ingested (Task 24). For the identical-values rule, two runs are
+never a base: a run verified only against its own pinned bundle (not audit-grade, so the
+live fetch gets its own live verification), and a run whose series another dataset has
+since written with verified rows at least as recent (a short-circuit would leave that other
+dataset's value served instead of re-asserting this one). These two guards apply to the
+identical-values path only: a byte-identical refetch after a pinned-bundle run, or after
+another dataset superseded the base, still short-circuits under Ruling D, as it always did.
 
 The per-source collector and reviewed independent channel are documented in
 [sources.md](sources.md), including blocked definitions and unknown channels. Technical
