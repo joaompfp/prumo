@@ -13,6 +13,7 @@ import pytest
 
 import ingest.pipeline as pipeline_mod
 from ingest import verifiers as _verifiers
+from ingest.db import RunContent, observation_content, quarantine_content
 from ingest.pipeline import DatasetRunResult, run_dataset
 from ingest.rawstore import RawStore
 from ingest.registry import sync_registry
@@ -109,23 +110,23 @@ def test_different_bytes_identical_values_short_circuit(env):
 
 # --- (b) released_at is part of the identity -------------------------------------------------------
 
-def _validate_with_released_at(monkeypatch, released: list):
-    """released[0] is stamped as released_at on every observation the pipeline validates
-    (the fake source carries no release date of its own)."""
+def _stamp_observations(monkeypatch, fields: dict):
+    """Every observation the pipeline validates gets `fields` (read at each call, so a test
+    can change them between runs): the fake source carries no release date or flag."""
     real = pipeline_mod.validate
 
     def stamped(s, rows):
         obs, rej = real(s, rows)
-        return [o.model_copy(update={"released_at": released[0]}) for o in obs], rej
+        return [o.model_copy(update=dict(fields)) for o in obs], rej
     monkeypatch.setattr(pipeline_mod, "validate", stamped)
 
 
 def test_identical_values_different_released_at_are_stored(env, monkeypatch):
     db, _, _, _, run = env
-    released = [datetime(2026, 11, 1, tzinfo=timezone.utc)]
-    _validate_with_released_at(monkeypatch, released)
+    fields = {"released_at": datetime(2026, 11, 1, tzinfo=timezone.utc)}
+    _stamp_observations(monkeypatch, fields)
     run(body(), verify=True)
-    released[0] = datetime(2026, 11, 14, tzinfo=timezone.utc)
+    fields["released_at"] = datetime(2026, 11, 14, tzinfo=timezone.utc)
     r = run(body(variant=1))
     assert (r.state, r.n_written) == ("pending-verification", 3)
     assert {x for (x,) in q(db, "SELECT released_at FROM observation WHERE dataset_run_id = ?",
@@ -134,7 +135,7 @@ def test_identical_values_different_released_at_are_stored(env, monkeypatch):
 
 def test_identical_values_and_released_at_short_circuit(env, monkeypatch):
     db, _, _, _, run = env
-    _validate_with_released_at(monkeypatch, [datetime(2026, 11, 1, tzinfo=timezone.utc)])
+    _stamp_observations(monkeypatch, {"released_at": datetime(2026, 11, 1, tzinfo=timezone.utc)})
     base = run(body(), verify=True)
     assert_content_shortcut(db, run(body(variant=1)), base.run_id)
 
@@ -384,3 +385,107 @@ def test_run_with_refetch_returns_the_content_short_circuit_without_verifying(en
                          now=clock)
     assert_content_shortcut(db, r, base.run_id)
     assert v.calls == []
+
+
+# --- fix round 1 ----------------------------------------------------------------------------------
+
+def test_identical_values_different_status_flag_are_stored(env, monkeypatch):
+    db, _, _, _, run = env
+    fields = {"status_flag": None}
+    _stamp_observations(monkeypatch, fields)
+    run(body(), verify=True)
+    fields["status_flag"] = "p"  # provisional now
+    r = run(body(variant=1))
+    assert (r.state, r.n_written) == ("pending-verification", 3)
+
+
+NULLS = {"s1": [["2023", "1.5"], ["2024", "2.0"], [None, "7"], ["2025", "null"]],
+         "s2": [["2024", "10"]]}
+
+
+def test_quarantine_rows_with_null_period_or_value_short_circuit(env):
+    db, _, _, _, run = env
+    base = run(body(NULLS), verify=True)
+    assert sorted(db.run_content(base.run_id).quarantine, key=str) == sorted(
+        [("s1", None, "7", "bad_period"), ("s1", "2025", None, "non_numeric")], key=str)
+    assert_content_shortcut(db, run(body(NULLS, variant=1)), base.run_id)
+
+
+def test_a_a_shortcut_b_a_last_run_is_stored(env):
+    db, _, _, _, run = env
+    b_vals = {"s1": [["2023", "1.5"], ["2024", "2.1"]], "s2": [["2024", "10"]]}
+    a = run(body(), verify=True)
+    assert_content_shortcut(db, run(body(variant=1)), a.run_id)
+    run(body(b_vals), verify=True)
+    r = run(body(variant=2))
+    assert (r.state, r.n_written) == ("pending-verification", 3)
+
+
+def test_stored_run_content_equals_the_would_be_content_of_the_shared_helpers(env, monkeypatch):
+    """What the writers store reads back exactly as the tuples the comparison builds."""
+    db, specs, _, _, run = env
+    _stamp_observations(monkeypatch, {"status_flag": "e",
+                                      "released_at": datetime(2026, 11, 2, 9, 30,
+                                                              tzinfo=timezone.utc)})
+    r = run(body(NULLS))
+    resp = RawResponse(url="u", params=None, status=200, body=body(NULLS))
+    parsed = FakeSource().parse(specs, [resp])
+    obs, quar = [], []
+    for sp in specs:
+        accepted, rejected = pipeline_mod.validate(sp, parsed.get(sp.id) or [])
+        obs += [observation_content(o) for o in accepted]
+        quar += [quarantine_content(sp.id, x) for x in rejected]
+    assert db.run_content(r.run_id) == RunContent.of(obs, quar)
+    assert db.run_content(r.run_id) == RunContent.of(reversed(obs), reversed(quar))
+
+
+def _pinned_or_live_base(db, tmp_path, channel):
+    sp = spec("s1")
+    sync_registry(db, [sp])
+    store = RawStore(tmp_path / "raw")
+    vals = {"s1": [["2024", "2.0"]]}
+    rec = run_dataset(db, store, Recorded(body(vals), NOV01), [sp], None,
+                      now=lambda: NOV13, input_origin="recorded")
+    assert rec.state == "pending-verification"
+    db.add_verification(rec.run_id, 1, 1, True, _ts(NOV13), sample_procedure="prumo-sample-v2",
+                        sample_design={}, input_origin="recorded", verifier_channel=channel)
+    assert db.transition_run_state(rec.run_id, "pending-verification", "verified")
+    live = run_dataset(db, store, FakeSource(), [sp], FakeHttp(ok(body(vals, variant=1))),
+                       now=lambda: NOV13 + timedelta(days=1))
+    return rec, live
+
+
+def test_pinned_bundle_verified_run_is_never_a_base(db, tmp_path):
+    """Not audit-grade: a live fetch with the same values must be stored and verified live."""
+    rec, live = _pinned_or_live_base(db, tmp_path, "pinned-bundle")
+    assert (live.state, live.n_written) == ("pending-verification", 1)
+
+
+def test_live_verified_recorded_run_is_a_base(db, tmp_path):
+    rec, live = _pinned_or_live_base(db, tmp_path, "live")
+    assert_content_shortcut(db, live, rec.run_id)
+
+
+def test_base_superseded_by_another_dataset_is_not_a_base(env):
+    """K1={s1} writes s1=A; K2={s1,s2} later writes s1=B (served: newer); K1 fetches A
+    again. A short-circuit would leave K2's B served, so the run is stored in full."""
+    db, specs, store, clock, _ = env
+
+    def run(sps, series, variant=0):
+        r = run_dataset(db, store, FakeSource(), sps, FakeHttp(ok(body(series, variant))),
+                        clock)
+        assert db.transition_run_state(r.run_id, "pending-verification", "verified")
+        return r
+    run(specs[:1], {"s1": [["2024", "1.0"]]})
+    run(specs, {"s1": [["2024", "2.0"]], "s2": [["2024", "10"]]})
+    assert served(db)[("s1", "2024")] == "2.0"
+    r3 = run_dataset(db, store, FakeSource(), specs[:1],
+                     FakeHttp(ok(body({"s1": [["2024", "1.0"]]}, variant=1))), clock)
+    assert (r3.state, r3.n_written) == ("pending-verification", 1)
+    assert db.transition_run_state(r3.run_id, "pending-verification", "verified")
+    assert served(db)[("s1", "2024")] == "1.0"
+    # once K1 holds the newest rows again, its next identical fetch short-circuits
+    r4 = run_dataset(db, store, FakeSource(), specs[:1],
+                     FakeHttp(ok(body({"s1": [["2024", "1.0"]]}, variant=2))), clock)
+    assert_content_shortcut(db, r4, r3.run_id)
+

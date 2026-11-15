@@ -152,9 +152,9 @@ and each later scheduler retry of a failed dataset draws a fresh seed, and a par
 deterministic: the refetched bytes re-parse to the same wrong cells. Without step 1b every
 attempt would be an independent chance (up to 5% each) to miss the defect, so the
 probability of eventually serving it would grow with every retry, and the short-circuit for
-identical bytes or identical values would then keep the lucky pass served (re-review 2 I1 measured 9.1% within
-three attempts on a BPstat-shaped run). With step 1b, once any attempt has caught a
-defective cell, every later attempt of that dataset re-checks it until a verification
+identical bytes or identical values would then keep the lucky pass served (re-review 2 I1
+measured 9.1% within three attempts on a BPstat-shaped run). With step 1b, once any attempt
+has caught a defective cell, every later attempt of that dataset re-checks it until a verification
 passes: the defect is detected with probability 1 from then on, while a transient fetch
 glitch still clears because the refetched cell then matches. The 95% / 1% statement
 therefore holds per served dataset, not only per verification. It matters for INE and
@@ -265,7 +265,11 @@ of INE, BPstat, FRED and OECD) are kept, not deleted. Identical bytes or identic
 after a failed or withdrawn run are fully processed again; a value that reverts (A, then B,
 then A) is stored again, because only the base of the unbroken chain counts; withdrawing the
 run that wrote the rows also withdraws the later short-circuit runs chained onto it, so the
-next identical fetch is re-ingested (Task 24).
+next identical fetch is re-ingested (Task 24). Two runs are never a base, for identical
+bytes or identical values: a run verified only against its own pinned bundle (not
+audit-grade, so the live fetch gets its own live verification), and a run whose series
+another dataset has since written with verified rows at least as recent (a short-circuit
+would leave that other dataset's value served instead of re-asserting this one).
 
 The per-source collector and reviewed independent channel are documented in
 [sources.md](sources.md), including blocked definitions and unknown channels. Technical
@@ -422,12 +426,13 @@ latest possible release. `status` reports two retrieval dates per series:
   `verified` and either wrote that series' observations, or is a short-circuit for identical
   bytes or identical values whose matched run (followed through earlier short-circuits) is
   still `verified` and holds that series. An unchanged publisher file that the scheduler
-  re-fetched and found identical in bytes or in values therefore confirms the data current, without a new
-  verification date. A failed, pending or withdrawn run confirms nothing, and neither does
-  a run verified only against its own pinned bundle (`verifier_channel='pinned-bundle'`,
-  not audit-grade): a series whose verified data all comes from such runs is stale with
-  `stale_reason=pinned_bundle_only`. Withdrawing a run also withdraws the short-circuits
-  chained onto it (see [operations](operations.md)), so they stop confirming it.
+  re-fetched and found identical in bytes or in values therefore confirms the data current,
+  without a new verification date. A failed, pending or withdrawn run confirms nothing, and
+  neither does a run verified only against its own pinned bundle
+  (`verifier_channel='pinned-bundle'`, not audit-grade): a series whose verified data all
+  comes from such runs is stale with `stale_reason=pinned_bundle_only`. Withdrawing a run
+  also withdraws the short-circuits chained onto it (see [operations](operations.md)), so
+  they stop confirming it.
 
 A series is **stale** when `now - last_confirmed_current` exceeds its refresh interval.
 Legacy-only series (`legacy-unverified`) are always stale (`stale_reason=legacy_unverified`):

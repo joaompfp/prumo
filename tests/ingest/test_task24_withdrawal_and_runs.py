@@ -1,7 +1,7 @@
 """Task 24: re-review 1 fixes (docs/superpowers/handoff/reports/final-review/
 rereview-1-serving-migrations.md).
 
-- I-1: withdrawal and the identical-payload short-circuit. A short-circuit run holds no rows,
+- I-1: withdrawal and the short-circuit (identical bytes or values). A short-circuit holds no rows,
   so withdrawing it is refused; withdrawing the run that holds the rows also withdraws the
   later verified short-circuit runs that vouched for it, so the next identical fetch is
   re-ingested and status stops crediting them as "confirmed current".

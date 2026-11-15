@@ -183,7 +183,10 @@ class Db:
         Walks back from the previous run: a `verified` run holding neither observations nor
         quarantine rows is an earlier short-circuit and is skipped; the first run holding
         content is the base and must be `verified`; any other state met on the way (failed,
-        blocked, pending, withdrawn, ...) means no base. The chain's end also means None."""
+        blocked, pending, withdrawn, ...) means no base. The chain's end also means None.
+        Neither is a base: a run verified only against its own pinned bundle (not
+        audit-grade: a live fetch must get its own live verification), nor a run whose rows
+        another dataset has since superseded (`_superseded_elsewhere`)."""
         cursor = before_run_id
         while (prev := self.previous_run(dataset_key, cursor)) is not None:
             run_id, state = prev
@@ -192,9 +195,27 @@ class Db:
             if self._run_has_observations(run_id) or self.conn.execute(
                     "SELECT EXISTS (SELECT 1 FROM quarantine WHERE dataset_run_id = ?)",
                     (run_id,)).fetchone()[0]:
+                pinned = self.conn.execute(f"SELECT ? IN ({self._PINNED_RUNS})",
+                                           (run_id,)).fetchone()[0]
+                if pinned or self._superseded_elsewhere(run_id, dataset_key):
+                    return None
                 return run_id
             cursor = run_id
         return None
+
+    def _superseded_elsewhere(self, run_id: int, dataset_key: str) -> bool:
+        """A verified fetched row of another dataset_key, for a series this run wrote, is at
+        least as recent (fetched_at) as this run's own rows of that series: the served view
+        may prefer it, so a short-circuit onto this run would not re-assert its values.
+        Per series, not per period (conservative). Reads only the run's rows (index
+        observation_run) and those series' rows (the UNIQUE(series_id, ...) index)."""
+        return self.conn.execute(
+            "SELECT EXISTS (SELECT 1 FROM (SELECT series_id, MAX(fetched_at) AS at "
+            "FROM observation WHERE dataset_run_id = ? GROUP BY series_id) b "
+            "JOIN observation o ON o.series_id = b.series_id AND o.fetched_at >= b.at "
+            "JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "WHERE o.kind = 'fetched' AND r.state = 'verified' AND r.dataset_key IS NOT ?)",
+            (run_id, dataset_key)).fetchone()[0] == 1
 
     def record_raw_fetch(self, *, source_name: str, run_id: int, url: str, params_json: str | None,
                          fetched_at: str, http_status: int | None, sha256: str, path: str,
@@ -692,8 +713,9 @@ class Db:
 
         The short-circuit for identical bytes or identical values (pipeline Ruling D) vouches
         for the run it matched without holding rows, and the next identical fetch would match
-        the short-circuit (or, for values, the same base run) again. So, in the same transaction, every LATER run of the same dataset_key that is a
-        verified short-circuit chained onto this one (the unbroken sequence of verified runs
+        the short-circuit (or, for values, the same base run) again. So, in the same
+        transaction, every LATER run of the same dataset_key that is a verified
+        short-circuit chained onto this one (the unbroken sequence of verified runs
         with no observations right after it) is withdrawn too, each with its own
         event(withdrawal, {..., cascaded_from: run_id}); the next identical fetch then follows
         a withdrawn run and is re-ingested. Returns the withdrawn run ids, this one first.
@@ -718,8 +740,8 @@ class Db:
             if not self._run_has_observations(run_id):
                 raise ValueError(
                     f"run {run_id} has no observations (a short-circuit for identical bytes "
-                    f"or identical values, which holds no rows); withdraw the run that wrote the rows - its "
-                    f"short-circuits are withdrawn with it")
+                    f"or identical values, which holds no rows); withdraw the run that wrote "
+                    f"the rows - its short-circuits are withdrawn with it")
             cascade = []
             for later, later_state in c.execute(
                     "SELECT id, state FROM dataset_run WHERE dataset_key = ? AND id > ? "

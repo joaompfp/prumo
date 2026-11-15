@@ -212,7 +212,7 @@ def test_atomic_stale_guard_inside_observation_transaction(tmp_path):
     recorded mode must refuse OLD recorded receipts INSIDE the write transaction, leaving
     held verified rows byte-identical and the run honestly terminal ('blocked-stale')."""
     # E-REDES gives two genuinely DIFFERENT payloads of the same dataset (one winter day,
-    # one summer day), so the identical-payload short-circuit cannot mask the guard.
+    # one summer day), so neither short-circuit (identical bytes or values) can mask the guard.
     reg = _write_registry(tmp_path / "registry.yaml", eredes_fx.all_specs())
     winter_b, summer_b = tmp_path / "winter", tmp_path / "summer"
 

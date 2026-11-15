@@ -415,7 +415,8 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
                      policy: SamplingPolicy = DEFAULT_POLICY) -> DatasetRunResult:
     """run_dataset, then verify_run with a fresh random seed; on a genuine verification
     failure emit event(refetch) and re-fetch the whole dataset (a new run: identical bytes or
-    identical values are re-processed because the previous run is not verified), at most `max_attempts` runs.
+    identical values are re-processed because the previous run is not verified), at most
+    `max_attempts` runs.
 
     `verifier` must be the one registered for `source.name` (register_verifier enforces the
     independence rule), else ValueError. Refuses up front (before any fetch): SourceNotVerifiable

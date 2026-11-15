@@ -13,18 +13,20 @@ Honesty rules:
     legacy rows the ORIGINAL legacy fetch date), i.e. when the bytes now held were received;
   * `last_confirmed_current`: the latest publisher retrieval (raw_fetch.fetched_at) of a run
     that is still 'verified' and either wrote that series' observations, or is a
-    short-circuit for identical bytes or identical values whose matched run (followed through earlier
-    short-circuits) is still 'verified' and holds that series. Legacy rows never confirm
-    anything (None), and neither does a run verified only against its own pinned bundle
-    (verifier_channel 'pinned-bundle', not audit-grade; Task 24): a series whose only
-    verified data is pinned-bundle data is stale with reason 'pinned_bundle_only';
+    short-circuit for identical bytes or identical values whose matched run (followed
+    through earlier short-circuits) is still 'verified' and holds that series. Legacy rows
+    never confirm anything (None), and neither does a run verified only against its own
+    pinned bundle (verifier_channel 'pinned-bundle', not audit-grade; Task 24): a series
+    whose only verified data is pinned-bundle data is stale with reason
+    'pinned_bundle_only';
 - 'stale' is OUR refresh policy (series.schedule when present, else frequency defaults
   A/S=30d, Q=7d, M/D/PT15M=1d - the shared knowledge lives in ingest.cadence, which the
   Task 18 scheduler also derives from), never a claimed publisher release date. It is judged
   on `last_confirmed_current`, so unchanged publisher data that the scheduler keeps
-  re-verifying is not stale. Legacy-only series are always stale (reason
-  'legacy_unverified'); never-fetched / never-verified series report stale=None with an
-  explicit reason;
+  re-fetching is not stale: an identical re-fetch (identical bytes or identical values) is
+  confirmed by its short-circuit onto a verified run, without a verification of its own.
+  Legacy-only series are always stale (reason 'legacy_unverified'); never-fetched /
+  never-verified series report stale=None with an explicit reason;
 - latest state is per DATASET (ingest.operations.group_specs): a healthy final World Bank
   indicator can never conceal an earlier failed indicator; each dataset also shows the
   scheduler's persisted retry state (failure streak, an in-flight or interrupted 'running'

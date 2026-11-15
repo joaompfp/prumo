@@ -2,11 +2,12 @@
 
     running ──fetch──> raw store + raw_fetch rows (always kept: audit evidence)
        ├─ http.get raised / non-2xx / empty / HTML body ──> failed-fetch       + event(fetch_failure)
-       ├─ same payload as the previous run, which is verified ──> verified (no rows, see below)
+       ├─ same bytes as the previous run, which is verified ──> verified (no rows, see below)
        ├─ parse/validate raised, or a series has no rows ──> failed-validation + event(format_change)
-       └─ ONE transaction: observations + quarantine + revision events + state
-          ──> pending-verification      (any exception inside: rolled back, failed-validation)
-          ├─ same values as the verified base run ──> verified (no rows, see run_dataset)
+       └─ ONE transaction (after the recorded-input stale guard below):
+          ├─ same values as the verified base run, no empty series ──> verified (no rows)
+          └─ else observations + quarantine + revision events + state
+             ──> pending-verification   (any exception inside: rolled back, failed-validation)
        a recorded replay whose ORIGINAL receipts are older than held (verified or still
           pending-verification) fetched rows
           ──> rolled back atomically as 'blocked-stale' + event(stale_refusal) instead
@@ -88,11 +89,13 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
     verification of its own (callers such as Task 7 must not verify it; the previously verified
     rows stay served) when either
       - bytes: the sha256 fingerprint of its responses equals that of the previous run of the
-        same dataset_key AND that run is `verified` (checked before parsing); or
+        same dataset_key AND that run is `verified` (checked before parsing; the pinned-bundle
+        and superseded guards below apply to values only); or
       - values: it would write exactly the observation rows (series_id, period, value_text,
         status_flag, released_at) and quarantine rows (series_id, raw_period, raw_value,
         reason) of its base run (Db.content_base_run: the latest run holding content, reached
-        over verified short-circuits only, and itself verified), compared as sorted
+        over verified short-circuits only, itself verified against the publisher, not only
+        a pinned bundle, and not superseded by another dataset), compared as sorted
         multisets. Checked inside the write transaction, after the recorded-input stale guard
         (a stale bundle stays blocked-stale) and never for a run with an empty series (its
         Ruling M format_change event must be recorded). DatasetRunResult.detail names the base.
@@ -298,9 +301,9 @@ def _guard_recorded_not_stale(db: Db, raws: list[tuple[int, str]], checked: list
     Per series, when the held VERIFIED fetched rows reach past that bound, inserting would
     let the served view's last-inserted tie-break replace NEWER verified data with old
     recorded rows: refuse the whole dataset atomically instead. Equal-time re-imports pass
-    (the short-circuit for identical bytes or identical values keeps them no-ops), genuinely newer bundles advance
-    the data, and legacy-unverified rows never count as held verified data, so a legacy-only
-    or empty database is free to accept any recorded bundle."""
+    (the short-circuit for identical bytes or identical values keeps them no-ops),
+    genuinely newer bundles advance the data, and legacy-unverified rows never count as held
+    verified data, so a legacy-only or empty database is free to accept any recorded bundle."""
     stale = []
     oldests = []
     for spec, _n_raw, observations, _rejections in checked:

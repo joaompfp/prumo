@@ -474,7 +474,7 @@ def test_replay_needs_no_registry_and_reproduces_every_outcome(env):
     db = env[0]
     store = env[2]
     outcomes = []
-    # every verifier but the last fails, so no run is short-circuited by an identical payload
+    # every verifier but the last fails, so no run is short-circuited (identical bytes or values)
     for v in (FakeVerifier({}), FakeVerifier(TRUTH, unit="USD"),
               FakeVerifier(raises=RuntimeError("x")),
               ScriptedVerifier(lambda items: echo(list(reversed(items)))),

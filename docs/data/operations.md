@@ -705,7 +705,9 @@ Known limitations and rules (v1):
   lookup, which grows with the number of vintages of a period. Since the identical-values
   short-circuit (vintage dedupe, Decision 1) a daily fetch whose values are unchanged stores
   nothing; when any INE value changes a complete INE vintage is still stored, because INE is
-  one dataset. Unchanged days get no independent re-verification of their own (as for
+  one dataset. A run in which any series has no valid observations is always stored, so
+  its `format_change` event is kept (a dataset with a permanently empty series is never
+  deduplicated). Unchanged days get no independent re-verification of their own (as for
   identical bytes). Duplicate vintages stored before the rule are kept.
 - The `docker exec prumo-ingest chmod -R a+rX /data/raw` note under Container hardening
   still applies until the worker image that writes 0644 evidence is running.
