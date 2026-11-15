@@ -3,6 +3,7 @@ import json
 import sqlite3
 from collections.abc import Callable
 from contextlib import contextmanager
+from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import NamedTuple, TypeVar
@@ -22,6 +23,19 @@ OperationalError = sqlite3.OperationalError
 
 class ReadOnlyOpenError(RuntimeError):
     """open_db_readonly refused: missing file, or a schema this code does not match."""
+
+
+@dataclass(frozen=True)
+class RunContent:
+    """What a run wrote, as sorted multisets (identity of vintage content, Decision 1).
+    observations: (series_id, period, value_text, status_flag, released_at);
+    quarantine: (series_id, raw_period, raw_value, reason), the first three nullable."""
+    observations: tuple[tuple[str, str, str, str | None, str | None], ...]
+    quarantine: tuple[tuple[str | None, str | None, str | None, str], ...]
+
+
+def _none_safe(row: tuple) -> tuple:
+    return tuple((v is not None, v if v is not None else "") for v in row)
 
 
 class SchedulerState(NamedTuple):
@@ -133,6 +147,36 @@ class Db:
         return self.conn.execute(
             "SELECT id, state FROM dataset_run WHERE dataset_key = ? AND id < ? "
             "ORDER BY id DESC LIMIT 1", (dataset_key, before_run_id)).fetchone()
+
+    def run_content(self, run_id: int) -> RunContent:
+        """Observation and quarantine rows of the run, sorted (insertion order is irrelevant;
+        a (series, period) written from two responses appears twice)."""
+        obs = self.conn.execute(
+            "SELECT series_id, period, value_text, status_flag, released_at FROM observation "
+            "WHERE dataset_run_id = ?", (run_id,)).fetchall()
+        quar = self.conn.execute(
+            "SELECT series_id, raw_period, raw_value, reason FROM quarantine "
+            "WHERE dataset_run_id = ?", (run_id,)).fetchall()
+        return RunContent(tuple(sorted(map(tuple, obs), key=_none_safe)),
+                          tuple(sorted(map(tuple, quar), key=_none_safe)))
+
+    def content_base_run(self, dataset_key: str, before_run_id: int) -> int | None:
+        """The run whose content a new run of `dataset_key` is compared with, or None.
+        Walks back from the previous run: a `verified` run holding neither observations nor
+        quarantine rows is an earlier short-circuit and is skipped; the first run holding
+        content is the base and must be `verified`; any other state met on the way (failed,
+        blocked, pending, withdrawn, ...) means no base. The chain's end also means None."""
+        cursor = before_run_id
+        while (prev := self.previous_run(dataset_key, cursor)) is not None:
+            run_id, state = prev
+            if state != "verified":
+                return None
+            if self._run_has_observations(run_id) or self.conn.execute(
+                    "SELECT EXISTS (SELECT 1 FROM quarantine WHERE dataset_run_id = ?)",
+                    (run_id,)).fetchone()[0]:
+                return run_id
+            cursor = run_id
+        return None
 
     def record_raw_fetch(self, *, source_name: str, run_id: int, url: str, params_json: str | None,
                          fetched_at: str, http_status: int | None, sha256: str, path: str,
