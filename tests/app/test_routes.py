@@ -232,6 +232,18 @@ def test_derived_page_names_the_base_by_title_never_by_id(client):
     assert DERIVED not in text and UNEMP not in text
 
 
+def test_derived_chart_states_the_unit_once(client):
+    """A derived title already ends with its unit, so the chart must not append it again:
+    the chart's accessible name is exactly the page title, never '... (p.p.) (p.p.)'."""
+    html = client.get(f"/calculadas/{DERIVED}").text
+    match = re.search(r"<h1>(.*?)</h1>", html, re.S)
+    assert match, "derived page carries no h1"
+    heading = match.group(1)
+    labels = re.findall(r'<svg class="chart"[^>]*aria-label="([^"]*)"', html)
+    assert labels == [heading]
+    assert "(p.p.) (p.p.)" not in html
+
+
 def test_search_finds_by_id_but_never_renders_it(client):
     html = client.get(f"/pesquisa?q={UNEMP}").text
     assert "Taxa de desemprego" in html

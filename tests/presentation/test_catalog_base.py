@@ -4,6 +4,7 @@ The registry is the authority: every active series whose source may be redistrib
 resolve a Portuguese family, geography, unit, theme, frequency and (when declared) adjustment,
 so a page render can never fall back to a raw code.
 """
+import re
 from pathlib import Path
 
 import pytest
@@ -132,6 +133,17 @@ def test_curated_home_resolves_to_active_series_and_declared_derived():
             assert card["derived"] in derived, card["derived"]
             assert derived[card["derived"]]["base"] == card["series"]
             assert derived[card["derived"]].get("active") is not False
+
+
+def test_every_derived_title_states_its_unit():
+    """The derived page's chart omits the separate unit because the title already ends with
+    it. A key whose title lacks that parenthetical would render a chart with no unit at all."""
+    data = _registry()
+    for d in data["derived"]:
+        key = d["key"]
+        title = pt.TITLES.get(key)
+        assert title, f"derived key with no Portuguese title: {key}"
+        assert re.search(r"\([^)]*\)$", title), (key, title)
 
 
 def test_no_visible_text_is_a_raw_code():
