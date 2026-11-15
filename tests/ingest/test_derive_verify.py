@@ -288,3 +288,63 @@ def test_empty_run_checks_nothing(db):
     _setup(db)
     run = _run(db, [])
     assert verify_run(db, run, NOW) == VerifyOutcome(0, 0, [])
+
+
+# --- period rollovers (Dec / Q4 / year) through verify_run ---------------------------------------
+
+ROLLOVERS = [  # (frequency, formula, params, periods, {row period: reference period})
+    ("M", "period_change", {}, ["2024-11", "2024-12", "2025-01"],
+     {"2024-12": "2024-11", "2025-01": "2024-12"}),
+    ("M", "yoy_change_pct", {}, ["2023-12", "2024-01", "2024-12", "2025-01"],
+     {"2024-12": "2023-12", "2025-01": "2024-01"}),
+    ("Q", "period_change_pct", {}, ["2024-Q3", "2024-Q4", "2025-Q1"],
+     {"2024-Q4": "2024-Q3", "2025-Q1": "2024-Q4"}),
+    ("Q", "yoy_change", {}, ["2023-Q4", "2024-Q1", "2024-Q4", "2025-Q1"],
+     {"2024-Q4": "2023-Q4", "2025-Q1": "2024-Q1"}),
+    ("Q", "rebase_100", {"base_period": "2024-Q4"}, ["2024-Q3", "2024-Q4", "2025-Q1"],
+     {"2024-Q3": "2024-Q4", "2024-Q4": "2024-Q4", "2025-Q1": "2024-Q4"}),
+    ("A", "period_change_pct", {}, ["2023", "2024", "2025"], {"2024": "2023", "2025": "2024"}),
+    ("A", "yoy_change", {}, ["2023", "2024", "2025"], {"2024": "2023", "2025": "2024"}),
+]
+
+
+def _rollover_setup(db, frequency, formula, params, periods):
+    sync_registry(db, [spec("s9", frequency=frequency)])
+    verified_values(db, "s9", {p: f"{100 + 7 * n}.{n}" for n, p in enumerate(periods)}, T1,
+                    "k9")
+    sync_derived(db, [derived_spec("derived.s9_x", "s9", formula, params=params)])
+    dsid = db.derived_series_rows()[0]["id"]
+    inputs = db.served_fetched_inputs("s9")
+    vals, _ = derive.compute(formula, params, frequency, inputs)
+    rows = [(dsid, v.period, v.value_text, v.scale,
+             json.dumps(list(dict.fromkeys(v.input_ids)))) for v in vals]
+    return dsid, inputs, rows
+
+
+@pytest.mark.parametrize("frequency,formula,params,periods,refs", ROLLOVERS)
+def test_verify_period_rollovers_match(db, frequency, formula, params, periods, refs):
+    _, inputs, rows = _rollover_setup(db, frequency, formula, params, periods)
+    by_id = {i: p for p, (i, _) in inputs.items()}
+    got = {r[1]: by_id[json.loads(r[4])[-1]] for r in rows}
+    assert got == refs  # derive's reference periods across the year boundary
+    run = db.begin_derived_run(NOW, "cli", ["derived.s9_x"])
+    db.write_derived_observations(run, NOW, rows)
+    out = verify_run(db, run, NOW)
+    assert (out.n_checked, out.n_mismatch) == (len(refs), 0)
+
+
+@pytest.mark.parametrize("frequency,formula,periods,period,wrong_ref", [
+    ("M", "yoy_change", ["2024-01", "2024-12", "2025-01"], "2025-01", "2024-12"),
+    ("M", "period_change", ["2024-11", "2024-12", "2025-01"], "2025-01", "2024-11"),
+    ("Q", "period_change", ["2024-Q3", "2024-Q4", "2025-Q1"], "2025-Q1", "2024-Q3"),
+    ("Q", "yoy_change", ["2024-Q1", "2024-Q4", "2025-Q1"], "2025-Q1", "2024-Q4"),
+    ("A", "yoy_change", ["2023", "2024", "2025"], "2025", "2023"),
+])
+def test_verify_wrong_rollover_reference_is_mismatch(db, frequency, formula, periods, period,
+                                                    wrong_ref):
+    dsid, inputs, _ = _rollover_setup(db, frequency, formula, {}, periods)
+    run = db.begin_derived_run(NOW, "cli", ["derived.s9_x"])
+    db.write_derived_observations(run, NOW, [(dsid, period, "1", 0, json.dumps(
+        [inputs[period][0], inputs[wrong_ref][0]]))])
+    [m] = verify_run(db, run, NOW).mismatches
+    assert m["reason"] == "input_wrong_period"

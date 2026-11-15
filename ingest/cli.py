@@ -38,6 +38,10 @@
                                    VERIFIER reads the publisher over live HTTP (fails
                                    clearly offline) unless --pinned-verifier (NOT
                                    audit-grade, recorded per verification) is given
+    derive [--series KEY ...]      compute the registry's ACTIVE derived series (all, or the
+                                   named keys) from served verified fetched data, verify every
+                                   value by independent recomputation; exit 1 if the run failed,
+                                   2 on an unknown or inactive key (nothing written)
     replay --from YYYY-MM          fresh re-fetch of every source through run_with_refetch;
                                    the cutoff scopes ONLY E-REDES' explicit day window
                                    ([<month>-01T00:00:00+00:00, today UTC day start)); other
@@ -45,7 +49,7 @@
                                    vintages are NOT recreated; legacy rows/runs are untouched
 
 argparse/printing ONLY: domain work lives in ingest.operations / ingest.verify /
-ingest.legacy_import / ingest.status; SQL lives in ingest.db.
+ingest.legacy_import / ingest.status / ingest.derive; SQL lives in ingest.db.
 """
 import argparse
 import os
@@ -67,10 +71,11 @@ from ingest.bundle import (
 )
 from ingest.data_lag import lagging_series
 from ingest.db import ReadOnlyOpenError, open_db, read_db_readonly
+from ingest.derive import run_derive
 from ingest.legacy_import import DEFAULT_REGISTRY, import_legacy
 from ingest.operations import DEFAULT_CLIENT_TIMEOUT_S, RunReport, RunRequest, polite_http, run_all
 from ingest.rawstore import RawStore
-from ingest.registry import load_registry, sync_registry
+from ingest.registry import load_derived, load_registry, sync_derived, sync_registry
 from ingest.sources.worldbank import parse_native_code as wb_parse_native_code
 from ingest.status import build_status, render_text
 from ingest.verifiers import get_verifier
@@ -94,7 +99,8 @@ def _default_raw() -> str:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="python -m ingest",
-        description="Prumo base-data operations (run/status/verify/withdraw/import-legacy/replay).")
+        description="Prumo base-data operations (run/status/verify/withdraw/import-legacy/replay/"
+                    "derive).")
     p.add_argument("--db", help="SQLite database (default: $PRUMO_DB_PATH, else the deprecated "
                                 "$PRUMO_DB, else /data/prumo.sqlite3)")
     p.add_argument("--raw-dir", help="raw evidence store (default: $PRUMO_RAW_DIR or /data/raw)")
@@ -171,6 +177,11 @@ def build_parser() -> argparse.ArgumentParser:
     w.add_argument("run_id", type=int, help="dataset_run.id in state verified (not legacy)")
     w.add_argument("--reason", required=True,
                    help="why the vintage is withdrawn (recorded in event 'withdrawal')")
+
+    d = sub.add_parser("derive", help="compute and verify the registry's active derived series "
+                                      "(all, or --series KEY; repeatable)")
+    d.add_argument("--series", action="append", metavar="KEY",
+                   help="one active derived key from the registry 'derived:' list (repeatable)")
 
     i = sub.add_parser("import-legacy", help="import the legacy indicators CSV export "
                                              "(Ruling U)")
@@ -418,6 +429,9 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
               f"{sum(s.active for s in specs)} active")
         return 1 if found else 0
 
+    if args.command == "derive":
+        return _cmd_derive(args, registry, specs, db_path)
+
     if args.command == "import-legacy":
         csv_path = Path(args.csv)
         if csv_path.suffix.lower() != ".csv":
@@ -522,6 +536,39 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
             print(str(e), file=sys.stderr)
             return 2
     raise AssertionError("unreachable")  # argparse required=True already enforced the command
+
+
+def _cmd_derive(args, registry: Path, specs, db_path: Path) -> int:
+    """Validate the registry's derived list and any --series keys BEFORE opening the DB, then
+    sync the derived registry and run one derived run."""
+    try:
+        derived = load_derived(registry, specs)
+    except ValueError as e:
+        print(f"derive refused: {e}", file=sys.stderr)
+        return 2
+    active = sorted(d.key for d in derived if d.active)
+    bad = sorted(set(args.series or []) - set(active))
+    if bad:
+        print(f"derive refused: unknown or inactive derived series {bad}; active keys: "
+              f"{active}", file=sys.stderr)
+        return 2
+    db = open_db(db_path)
+    try:
+        sync_derived(db, derived)
+        report = run_derive(db, keys=args.series, trigger="cli",
+                            now=lambda: datetime.now(timezone.utc))
+    finally:
+        db.close()
+    if report is None:
+        print("nothing to derive")
+        return 0
+    line = (f"derive run {report.run_id}: {report.state}; {report.n_series} series, "
+            f"{report.n_written} new values, {report.n_skipped} skipped, "
+            f"{report.n_mismatch} mismatches")
+    if report.n_errors:
+        line += f", {report.n_errors} compute errors"
+    print(line)
+    return 0 if report.state == "verified" else 1
 
 
 def _select_indicator(specs, code: str):

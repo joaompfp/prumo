@@ -1,9 +1,19 @@
-"""Derived layer (project 3): calculated series over verified served observations."""
-from dataclasses import dataclass
-from decimal import ROUND_HALF_EVEN, Context, Decimal, DivisionByZero, InvalidOperation, Overflow
-from typing import Literal
+"""Derived layer (project 3): calculated series over verified served observations.
 
+Pure Decimal formulas (`compute`) and the run orchestration (`run_derive`); SQL stays in
+ingest/db.py, the independent recomputation in ingest/derive_verify.py."""
+import json
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import datetime
+from decimal import ROUND_HALF_EVEN, Context, Decimal, DivisionByZero, InvalidOperation, Overflow
+from typing import TYPE_CHECKING, Literal
+
+from ingest.derive_verify import verify_run
 from ingest.models import parse_decimal
+
+if TYPE_CHECKING:
+    from ingest.db import Db
 
 CONTEXT = Context(prec=60, rounding=ROUND_HALF_EVEN,
                   traps=[InvalidOperation, DivisionByZero, Overflow])
@@ -140,3 +150,102 @@ def compute(formula: str, params: dict[str, str], frequency: str,
             text = format_fixed(diff, scale)
         values.append(DerivedValue(period, text, scale, (cur_id, ref_id)))
     return values, skips
+
+
+# --- run orchestration -------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class DeriveReport:
+    run_id: int
+    state: Literal["verified", "failed"]
+    n_series: int
+    n_written: int    # new derived rows (unchanged values are not rewritten)
+    n_skipped: int    # formula refusals recorded as events (zero_denominator, missing_base_period)
+    n_mismatch: int   # rows the independent recomputation refused
+    n_errors: int = 0  # series whose formula raised (derived_event 'compute_error')
+
+
+def _canonical_ids(input_ids: tuple[int, ...]) -> tuple[int, ...]:
+    """Stored input id list: formula order, duplicates collapsed (a rebase at its own base
+    period is (t, t) from `compute` and is stored as [t]; migration 0014 refuses duplicates)."""
+    return tuple(dict.fromkeys(input_ids))
+
+
+def _select(db: "Db", keys: list[str] | None, base_series: set[str] | None) -> list[dict]:
+    if keys is not None and base_series is not None:
+        raise ValueError("pick derived series by keys or by base series, not both")
+    active = db.derived_series_rows()
+    if keys is not None:
+        known = {r["key"] for r in active}
+        bad = sorted(set(keys) - known)
+        if bad:
+            raise ValueError(f"unknown or inactive derived series: {bad}")
+        return [r for r in active if r["key"] in set(keys)]
+    if base_series is not None:
+        return [r for r in active if r["base_series_id"] in base_series]
+    return active
+
+
+def _evaluate(db: "Db", run_id: int, series: list[dict], at: str) -> tuple[int, int, int]:
+    """Compute every selected series, write its NEW values as pending rows and its formula
+    refusals as events. Returns (n_written, n_skipped, n_errors)."""
+    n_written = n_skipped = n_errors = 0
+    for s in series:
+        try:
+            values, skips = compute(s["formula"], s["params"], s["frequency"],
+                                    db.served_fetched_inputs(s["base_series_id"]))
+        except (ValueError, ArithmeticError) as e:  # never a silent skip: the run fails
+            db.add_derived_event(at, run_id, s["id"], None, "compute_error",
+                                 {"error": f"{type(e).__name__}: {e}"})
+            n_errors += 1
+            continue
+        known = {(p, tuple(json.loads(ids))) for p, ids in db.derived_known_inputs(s["id"])}
+        rows = []
+        for v in values:
+            ids = _canonical_ids(v.input_ids)
+            if (v.period, ids) not in known:
+                rows.append((s["id"], v.period, v.value_text, v.scale, json.dumps(list(ids))))
+        db.write_derived_observations(run_id, at, rows)
+        for sk in skips:
+            db.add_derived_event(at, run_id, s["id"], sk.period, sk.reason)
+        n_written += len(rows)
+        n_skipped += len(skips)
+    return n_written, n_skipped, n_errors
+
+
+def run_derive(db: "Db", *, keys: list[str] | None = None, base_series: set[str] | None = None,
+               trigger: Literal["cli", "scheduler"],
+               now: Callable[[], datetime]) -> DeriveReport | None:
+    """One derived run over the ACTIVE derived series (all, those named in `keys`, or those
+    whose base series is in `base_series`); None, with no run row, when nothing is selected.
+    ValueError (no run row) on an unknown/inactive key or when both selectors are given.
+
+    begin -> compute (values already held as 'match' in a verified run with the same inputs
+    are not rewritten) -> pending rows + skip events -> verify_run sets each row's verdict ->
+    finish 'verified' only with no mismatch and no compute error, else 'failed' (nothing from
+    a failed run is served). All of it is ONE transaction. An exception after the run row is
+    written finishes the run 'failed' (committed) and is re-raised."""
+    series = _select(db, keys, base_series)
+    if not series:
+        return None
+    failure: BaseException | None = None
+    with db.transaction():
+        run_id = db.begin_derived_run(now().isoformat(), trigger, [s["key"] for s in series])
+        try:
+            at = now().isoformat()
+            n_written, n_skipped, n_errors = _evaluate(db, run_id, series, at)
+            outcome = verify_run(db, run_id, at)
+            state = "verified" if outcome.n_mismatch == 0 and n_errors == 0 else "failed"
+            db.finish_derived_run(run_id, state, now().isoformat(), n_written=n_written,
+                                  n_checked=outcome.n_checked, n_mismatch=outcome.n_mismatch)
+        except Exception as e:
+            failure = e
+            # record the failure in the same transaction; if even that fails, the whole run
+            # rolls back and the original error propagates
+            db.finish_derived_run(run_id, "failed", now().isoformat(),
+                                  n_written=len(db.derived_observations_of_run(run_id)),
+                                  n_checked=0, n_mismatch=0)
+    if failure is not None:
+        raise failure
+    return DeriveReport(run_id, state, len(series), n_written, n_skipped, outcome.n_mismatch,
+                        n_errors)

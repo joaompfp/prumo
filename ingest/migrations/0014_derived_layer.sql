@@ -14,7 +14,8 @@
 --      exact input observation ids (JSON list, formula order: [t, t-1] or [t, base]). The
 --      value and provenance are immutable; state moves once, from 'pending' to the
 --      independent recomputation's verdict ('match' / 'mismatch').
---    - derived_event: zero denominators, missing rebase base periods, mismatches.
+--    - derived_event: zero denominators, missing rebase base periods, mismatches, and
+--      compute errors (a formula that raised; its run is finished 'failed').
 -- 2. Guards (triggers and CHECKs). A derived value reaches served_derived only through its
 --    run's verification, and derived history is never rewritten or removed:
 --    - a run is inserted only as 'computing', never over an existing id (REPLACE deletes
@@ -99,7 +100,8 @@ CREATE TABLE derived_event(
   run_id INTEGER NOT NULL REFERENCES derived_run(id),
   derived_series_id INTEGER REFERENCES derived_series(id),
   period TEXT,
-  kind TEXT NOT NULL CHECK (kind IN ('zero_denominator','missing_base_period','mismatch')),
+  kind TEXT NOT NULL CHECK (kind IN ('zero_denominator','missing_base_period','mismatch',
+                                'compute_error')),
   detail_json TEXT
 ) STRICT;
 
