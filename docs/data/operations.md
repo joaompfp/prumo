@@ -780,6 +780,10 @@ The `prumo` container serves the public statistics site from the same image and 
 file as before; the maintenance page is gone. No new service, no migration, no write path: every
 request opens the database through `read_db_readonly` and the app never migrates it.
 
+Deployed 2026-11-15: `main` `4fd3de8`, web container recreated at 22:39 UTC and again at 22:58 UTC
+(after a post-deploy fix: a calculated chart appended its unit a second time), `prumo-ingest` and
+`prumo-backoffice` not restarted. Pre-deploy rollback point: `main` `6f47894`, image `1a547dae…`.
+
 - Routes: `/` (curated figures), `/temas/{economy,demography,energy}` (catalogue with filters and
   pagination), `/series/{id}` (chart, table, provenance, revisions, cross-checks), `/calculadas/{key}`,
   `/pesquisa?q=`, `/fontes`, `/metodologia`, `/series/{id}.csv`, `/calculadas/{key}.csv`, `/healthz`.
