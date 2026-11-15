@@ -20699,3 +20699,144 @@ series:
   url: https://e-redes.opendatasoft.com/explore/dataset/energia-produzida-total-nacional/information/
   active: true
   schedule: 1d
+derived:
+- key: derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct
+  base: ine.ipi_seasonal_cae_TOT.PT
+  formula: yoy_change_pct
+  label: 'Índice de produção industrial, total — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.ipi_seasonal_cae_TOT.PT.period_change_pct
+  base: ine.ipi_seasonal_cae_TOT.PT
+  formula: period_change_pct
+  label: 'Índice de produção industrial, total — variação face ao período anterior (%)'
+  unit: '%'
+  active: true
+- key: derived.ipi_seasonal_cae_B.PT.yoy_change_pct
+  base: ine.ipi_seasonal_cae_B.PT
+  formula: yoy_change_pct
+  label: 'Índice de produção industrial, indústrias extrativas — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.ipi_seasonal_cae_C.PT.yoy_change_pct
+  base: ine.ipi_seasonal_cae_C.PT
+  formula: yoy_change_pct
+  label: 'Índice de produção industrial, indústrias transformadoras — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.ipi_seasonal_cae_D.PT.yoy_change_pct
+  base: ine.ipi_seasonal_cae_D.PT
+  formula: yoy_change_pct
+  label: 'Índice de produção industrial, eletricidade, gás e vapor — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.ipi_seasonal_cae_E.PT.yoy_change_pct
+  base: ine.ipi_seasonal_cae_E.PT
+  formula: yoy_change_pct
+  label: 'Índice de produção industrial, água, saneamento e resíduos — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.exports_monthly.PT.yoy_change_pct
+  base: ine.exports_monthly.PT
+  formula: yoy_change_pct
+  label: 'Exportações de bens — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.imports_monthly.PT.yoy_change_pct
+  base: ine.imports_monthly.PT
+  formula: yoy_change_pct
+  label: 'Importações de bens — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.credit_housing.PT.yoy_change_pct
+  base: bportugal.credit_housing.PT
+  formula: yoy_change_pct
+  label: 'Crédito à habitação — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.credit_consumer.PT.yoy_change_pct
+  base: bportugal.credit_consumer.PT
+  formula: yoy_change_pct
+  label: 'Crédito ao consumo — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.deposits_households.PT.yoy_change_pct
+  base: bportugal.deposits_households.PT
+  formula: yoy_change_pct
+  label: 'Depósitos das famílias — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.metals.PT.yoy_change_pct
+  base: eurostat.metals.PT
+  formula: yoy_change_pct
+  label: 'Produção industrial, metalurgia e produtos metálicos — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.chemicals_pharma.PT.yoy_change_pct
+  base: eurostat.chemicals_pharma.PT
+  formula: yoy_change_pct
+  label: 'Produção industrial, química e farmacêutica — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.population.PT.yoy_change_pct
+  base: ine.population.PT
+  formula: yoy_change_pct
+  label: 'População residente — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.live_births.PT.yoy_change_pct
+  base: ine.live_births.PT
+  formula: yoy_change_pct
+  label: 'Nados-vivos — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.deaths.PT.yoy_change_pct
+  base: ine.deaths.PT
+  formula: yoy_change_pct
+  label: 'Óbitos — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.gdp_per_capita_eur.PT.yoy_change_pct
+  base: eurostat.gdp_per_capita_eur.PT
+  formula: yoy_change_pct
+  label: 'PIB per capita — variação homóloga (%)'
+  unit: '%'
+  active: true
+- key: derived.unemployment_monthly.PT.period_change
+  base: ine.unemployment_monthly.PT
+  formula: period_change
+  label: 'Taxa de desemprego — variação face ao período anterior (p.p.)'
+  unit: 'p.p.'
+  active: true
+- key: derived.unemployment_monthly.PT.yoy_change
+  base: ine.unemployment_monthly.PT
+  formula: yoy_change
+  label: 'Taxa de desemprego — variação homóloga (p.p.)'
+  unit: 'p.p.'
+  active: true
+- key: derived.pt_10y.PT.period_change
+  base: bportugal.pt_10y.PT
+  formula: period_change
+  label: 'Taxa de juro das obrigações do Tesouro a 10 anos — variação face ao período anterior (p.p.)'
+  unit: 'p.p.'
+  active: true
+- key: derived.pt_10y.PT.yoy_change
+  base: bportugal.pt_10y.PT
+  formula: yoy_change
+  label: 'Taxa de juro das obrigações do Tesouro a 10 anos — variação homóloga (p.p.)'
+  unit: 'p.p.'
+  active: true
+- key: derived.cci.PT.period_change
+  base: eurostat.cci.PT
+  formula: period_change
+  label: 'Indicador de confiança dos consumidores — variação face ao período anterior (saldo)'
+  unit: 'balance'
+  active: true
+- key: derived.unit_labour_cost_hour.PT.rebase_100
+  base: eurostat.unit_labour_cost_hour.PT
+  formula: rebase_100
+  params:
+    base_period: '2015'
+  label: 'Custo unitário do trabalho por hora — índice rebaseado (2015 = 100)'
+  unit: 'index 2015=100'
+  active: true

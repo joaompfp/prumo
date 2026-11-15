@@ -290,6 +290,57 @@ the reviewed scoped switch permits only active, licensed World Bank legacy conti
 Fresh eligible data supersedes it for the same period. Other sources are not granted
 legacy continuity by that decision.
 
+## Derived values
+
+Derived values (project 3) are numbers the publisher did not publish, calculated by Prumo
+from one base series. They are declared in the `derived:` list of `registry/core.yaml`
+(key, base, formula, params, Portuguese label, unit) and never invented: a value exists only
+when every input it needs is served.
+
+| Formula | Value for period t | Scale (fractional digits) |
+|---|---|---|
+| `period_change` | `v(t) - v(t-1)` | max of the two input tokens' digits |
+| `period_change_pct` | `(v(t) - v(t-1)) / v(t-1) * 100` | 4 |
+| `yoy_change` | `v(t) - v(t - 1 year)` | max of the two input tokens' digits |
+| `yoy_change_pct` | `(v(t) - v(t - 1 year)) / v(t - 1 year) * 100` | 4 |
+| `rebase_100` | `v(t) / v(base_period) * 100` | 4 |
+
+- Periods: previous period and same period last year come from the period label and the
+  base frequency (`M`, `Q`, `A` only; `S`, `D`, `PT15M` and bases with `decimal: ","` are
+  refused at registry load).
+- Inputs: only `kind='fetched'` rows currently in `served_observation` (verified run,
+  redistributable source, active series). Legacy rows are never inputs.
+- No interpolation or imputation: a missing input period gives no derived value and no
+  event. A zero denominator gives no row and a `zero_denominator` event; a `rebase_100`
+  base period that is not served gives no rows for that key and a `missing_base_period`
+  event.
+- Arithmetic: exact `decimal.Decimal` (precision 60, traps on invalid operation, division
+  by zero and overflow), quantized with ROUND_HALF_EVEN to the scale above. Never float.
+  Stored text is plain fixed-point with exactly `scale` digits, `.` separator, no exponent,
+  no `+`, and no negative zero (`-0.0000` is written `0.0000`).
+- Percent formulas keep the denominator's sign; they are not meaningful on series that
+  cross zero. Rates (`%`), balances and `% GDP` bases therefore take differences in
+  percentage points (`p.p.`), never `%` changes; this is the provisional reading pending the
+  owner's decision.
+- Independent recomputation of 100% of values: `ingest/derive_verify.py` re-reads each
+  row's stored input observations by id, recomputes with `fractions.Fraction` using its own
+  parsing and period arithmetic (it imports neither `ingest.derive` nor `decimal`) and
+  compares the exact text after the same quantization. Any mismatch (or a formula error)
+  fails the whole derive run; nothing from a failed run is served.
+- Provenance and history: each row stores its formula order input observation ids
+  (`[t, t-1]`, `[t, t-1y]`, `[t, base]`, one id for the base period itself). Rows are
+  immutable; a revised input yields a new row version and the old one is kept.
+- Serving: `served_derived` serves, per (key, period), the newest `match` row of a
+  `verified` run whose inputs are ALL still served as fetched. Licence and licence URL are
+  the base source's; attribution is the base attribution plus ` — Calculado pelo Prumo`.
+
+Visual-cue contract for the UI (project 4): every `served_derived` row has
+`is_calculated = 1`, `formula_label_pt` (for example "Variação homóloga (%), calculada pelo
+Prumo a partir de ine.ipi_seasonal_cae_TOT.PT") and `inputs` (JSON list of
+`{series_id, period, observation_id}` in formula order). The UI must badge every value with
+`is_calculated = 1` and make the label and inputs reachable; the backoffice already shows a
+"calculado" badge.
+
 ## Dates, catch-up and recorded input
 
 The reference `period` states what was measured. `fetched_at` records actual retrieval;

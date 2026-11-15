@@ -567,6 +567,101 @@ curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: evil.example' http://100.118.
 
 The last command must print `400`.
 
+## Derived layer
+
+Derived layer v1 (project 3; migration 0014, status schema v4) computes a closed set of
+calculated series from verified served data only. Definitions live in the top-level
+`derived:` list of `registry/core.yaml` (kept byte-identical in `core.proposed.yaml`); the
+method is in [methodology](methodology.md#derived-values).
+
+What is computed: for each ACTIVE derived key, `period_change`, `period_change_pct`,
+`yoy_change`, `yoy_change_pct` or `rebase_100` over ONE base series, using only that base's
+`kind='fetched'` rows currently in `served_observation` (never legacy rows). Each run
+recomputes 100% of its new values independently (`ingest/derive_verify.py`, fractions) and
+is `verified` only when every value matches; a `failed` run serves nothing. The starter set
+is 23 keys over 20 PT bases (industrial production, trade, credit/deposits, demography, GDP
+per capita as `yoy_change_pct`; unemployment rate and 10-year yield as `period_change` /
+`yoy_change` in `p.p.`; consumer confidence as `period_change` in `balance`; unit labour
+cost rebased to 2015 = 100).
+
+Manual run, inside the worker container (it holds the writable DB):
+
+```bash
+docker exec prumo-ingest python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw derive
+docker exec prumo-ingest python -m ingest --db /data/prumo.sqlite3 --raw-dir /data/raw \
+    derive --series derived.unemployment_monthly.PT.period_change   # repeatable
+```
+
+`derive` validates the registry's `derived:` list and every `--series` key before opening
+the DB, never creates a DB, syncs the derived registry (a key removed from YAML becomes
+inactive, never deleted) and prints
+`derive run N: <state>; S series, W new values, K skipped, M mismatches[, E compute errors]`.
+`nothing to derive` means no active key was in scope. A second run with unchanged inputs
+writes 0 new values.
+
+Scheduler trigger: after a group's attempt is recorded `verified`, the scheduler runs one
+derive over the active keys whose base is in that group and logs a JSON line
+`{"event": "derive", "group": ..., "run_id", "state", "n_written", "n_mismatch"}` (or
+`"state": "error"` with the exception text). A derive failure never changes the base
+attempt, its retry/streak state or the `--once` exit code.
+
+Withdrawal and revision propagate through the `served_derived` view, without a derive run:
+a derived row is served only while EVERY input observation id it used is still in
+`served_observation` as `fetched`. A new verified base vintage therefore hides the derived
+rows built from the old vintage at once; the next derive (scheduler, or manual) adds new
+row versions and keeps the old ones in `derived_observation`. Withdrawing a base run, making
+a base inactive or withholding its source licence unserves its derived rows; if the older
+vintage is served again, the derived rows built from it come back without recomputation.
+
+Events (`derived_event`, migration 0014): `zero_denominator` (no row for that period),
+`missing_base_period` (`rebase_100` base period not served: no rows for that key),
+`mismatch` (independent recomputation disagrees: run `failed`) and `compute_error` (a
+formula raised: run `failed`). Refusals are recorded once per (period, reason, inputs).
+
+Status: `python -m ingest status` (schema v4) prints one line
+
+```text
+derived: A active series; V served values; stale S / never computed N; last run R (state, started_at); failed runs 7d F
+```
+
+plus `DERIVED STALE <keys>` (capped at 10) when any. A key is `stale` when its base's
+newest served `fetched_at` is later than the start of the latest verified derive run that
+covered it, `never computed` when its base has served fetched data but no verified run
+covered it; a base with nothing served counts as neither.
+
+Backoffice (read-only, same rules as above): `/derived` lists every derived series (label,
+formula, base, unit, active, state, last covering run); `/derived/<key>` shows the
+definition, served values with their input observations, every stored version (row state,
+run state, served or not) and the newest derived runs. Derived series carry a "calculado"
+badge.
+
+Known limitations and rules (v1):
+
+- One poison base value fails the WHOLE derive run of its scope (every key in that run is
+  served from no row of that run). In the CLI, isolate it with `derive --series KEY` for the
+  healthy keys; the scheduler has no workaround (its scope is the group's bases) until the
+  base value is corrected or the derived key deactivated.
+- The "already computed" skip compares input observation ids, not formula code. After a fix
+  to a formula's code, existing rows would NOT be recomputed: add a NEW derived key (and
+  deactivate the old one). The `formula`, `base` and `params` of an existing key are
+  immutable (0014 rows are never relabelled); a new definition needs a new key.
+- Percent formulas keep the denominator's sign and are not meaningful on series that cross
+  zero. The starter set forbids `%` formulas on `%`, `balance` and `% GDP` bases (a test
+  enforces it); rate series use differences in `p.p.`.
+- Migration `0014_derived_layer.sql` must never be edited after deploy: migrations are
+  tracked by name, not checksum, so an edit would silently not apply on an existing DB (it
+  was edited in place before its first deploy, which is safe only because no DB had run it).
+- Deploy order: rebuild and start the WORKER first (`bash -lic "dc-web-up prumo-ingest"`;
+  it migrates to 0014), then the backoffice in the SAME deploy
+  (`bash -lic "dc-web-up prumo-backoffice"`). Between the two the old backoffice refuses the
+  newer schema with HTTP 503 (short window, expected). The running worker image contains no
+  derived code until it is rebuilt.
+- The `docker exec prumo-ingest chmod -R a+rX /data/raw` note under Container hardening
+  still applies until the worker image that writes 0644 evidence is running.
+
+After deploy: `ingest status` shows the derived line, `/derived` answers 200, and
+`served_derived` has rows only with `is_calculated = 1`.
+
 ## Rollback
 
 The safe ingestion rollback is to stop the worker and retain the new maintenance web app,
