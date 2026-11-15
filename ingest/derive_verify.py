@@ -13,19 +13,21 @@ if TYPE_CHECKING:
 
 _FIXED_SCALE = {"period_change_pct": 4, "yoy_change_pct": 4, "rebase_100": 4}
 _ABS = ("period_change", "yoy_change")
-_SEPARATORS = (",", " ", " ", " ")
-_TOKEN = re.compile(r"[+-]?[0-9]+(\.[0-9]+)?")
+_SPACES = " \u00a0\u202f"
+# A thousands separator (',' or a space) only between groups of the integer part: 1-3 digits,
+# then groups of exactly 3 digits, one separator throughout. '.' is the decimal point.
+_TOKEN = re.compile(r"(?P<sign>[+-]?)(?:(?P<grouped>[0-9]{1,3}(?P<sep>[, \u00a0\u202f])"
+                    r"[0-9]{3}(?:(?P=sep)[0-9]{3})*)|(?P<plain>[0-9]+))(?P<frac>\.[0-9]+)?")
 
 
 def _parse(token: str) -> tuple[Fraction, int]:
     """(exact value, fractional digits) of a '.'-decimal token; ValueError if not a number."""
-    s = token.strip()
-    for sep in _SEPARATORS:
-        s = s.replace(sep, "")
-    m = _TOKEN.fullmatch(s)
+    m = _TOKEN.fullmatch(token.strip(_SPACES))
     if not m:
         raise ValueError(f"not a number: {token!r}")
-    return Fraction(s), len(m.group(1)) - 1 if m.group(1) else 0
+    integer = m["plain"] or m["grouped"].replace(m["sep"], "")
+    frac = m["frac"] or ""
+    return Fraction(f"{m['sign']}{integer}{frac}"), max(len(frac) - 1, 0)
 
 
 def _fixed(value: Fraction, scale: int) -> str:

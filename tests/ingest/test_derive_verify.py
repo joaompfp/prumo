@@ -7,7 +7,7 @@ import pytest
 
 from ingest import derive, derive_verify
 from ingest.derive_verify import VerifyOutcome, expected_text, verify_run
-from ingest.models import FORMULAS
+from ingest.models import FORMULAS, parse_decimal
 from ingest.registry import sync_derived, sync_registry
 from tests.ingest.derived_helpers import derived_spec, verified_values
 from tests.ingest.fakes import spec
@@ -93,6 +93,47 @@ def test_expected_text_zero_denominator_propagates(formula):
 def test_expected_text_refuses_unparseable_tokens(bad):
     with pytest.raises(ValueError):
         expected_text("period_change", bad, "1")
+
+
+@pytest.mark.parametrize("bad", ["1,23", "1,2345", "12,34,567", "1 23", "1234,567",
+                                 ",123", "1,234,", "1.2,3", "1.234,5", "1,234 567",
+                                 "1\u00a0234,567", "1,234.5 6", " 5\n", "\t5"])
+def test_expected_text_refuses_misplaced_thousands_separators(bad):
+    """Review M5: a separator is accepted only between thousands groups of the integer part
+    (1-3 digits, then groups of exactly 3, one separator throughout), as parse_decimal."""
+    with pytest.raises(ValueError):
+        expected_text("period_change", bad, "1")
+    with pytest.raises(ValueError):
+        parse_decimal(bad)
+
+
+def test_token_parsers_agree_on_acceptance_and_value():
+    """The verifier's own parser accepts exactly the tokens parse_decimal accepts, with the
+    same value (fuzzed over the characters that matter)."""
+    import random
+    from decimal import Decimal
+    from fractions import Fraction
+    rng = random.Random(20261115)
+    alphabet = "0123456789" * 3 + ",. +-\u00a0\u202f"
+    tokens = {"".join(rng.choice(alphabet) for _ in range(rng.randint(1, 12)))
+              for _ in range(60000)}
+    tokens |= {f"{a},{b:03d}" for a in range(0, 1200, 7) for b in (0, 5, 999)}
+    accepted = 0
+    for tok in sorted(tokens):
+        try:
+            want = parse_decimal(tok)
+        except (ValueError, ArithmeticError):
+            want = None
+        try:
+            got = derive_verify._parse(tok)[0]
+        except ValueError:
+            got = None
+        if want is None:
+            assert got is None, tok
+        else:
+            accepted += 1
+            assert got == Fraction(Decimal(want)), tok
+    assert accepted > 1000
 
 
 def test_expected_text_unknown_formula():
