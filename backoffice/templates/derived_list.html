@@ -6,7 +6,8 @@
 <code>derived:</code> list of <code>registry/core.yaml</code>, synced to the database). Every
 value is calculated, never published: each one carries {% include "_calc_badge.html" %}.
 Stale means a newer verified base vintage arrived after the latest derived run that covered
-the series.</p>
+the series, or that base data is served but no derived value is (run derive). The
+list generated {{ generated_at }} ({{ age_s }} s ago; reused for up to {{ status_ttl_s }} s).</p>
 {% if rows %}
 <div class="scroll"><table>
 <tr><th>Derived series</th><th>Label</th><th>Formula</th><th>Base series</th><th>Unit</th>

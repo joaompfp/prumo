@@ -224,14 +224,21 @@ def test_view_hides_row_whose_input_was_superseded(db):
     assert db.conn.execute("SELECT COUNT(*) FROM derived_observation").fetchone() == (2,)
 
 
-def test_view_follows_base_withdrawal_back_to_older_vintage(db):
+def test_view_serves_only_the_newest_candidate_after_base_withdrawal(db):
+    """Review I3: the view picks the newest verified match row per period FIRST, then checks
+    its inputs. Withdrawing the base vintage under that row serves nothing for the period
+    (fail closed) - the older row built on the vintage served again does NOT come back
+    until a derive writes a new version on those inputs."""
     _setup(db)
-    _, oid_a, _ = _derive(db)
+    _, oid_a, ids_a = _derive(db)
     run_b = verified_values(db, "s1", {"2024-12": "101", "2025-01": "104"}, T2, "k2")
     _, oid_b, _ = _derive(db, value="3")
     assert _served(db) == [(KEY, "2025-01", "3", oid_b)]
     db.withdraw_run(run_b, "defect", T3)
-    assert _served(db) == [(KEY, "2025-01", "2", oid_a)]
+    assert _served(db) == []
+    _, oid_c, ids_c = _derive(db)                  # a new version on the older inputs
+    assert ids_c == ids_a and oid_c > oid_b
+    assert _served(db) == [(KEY, "2025-01", "2", oid_c)]
 
 
 def test_view_excludes_inactive_base_series_and_withheld_licence(db):
@@ -283,9 +290,27 @@ def test_view_never_uses_legacy_inputs_even_when_legacy_served(db):
 def test_view_picks_highest_id_among_eligible_versions(db):
     _setup(db)
     _derive(db, value="2")
-    _, oid2, _ = _derive(db, value="2")
-    _derive(db, value="9", state="mismatch", run_state="failed")  # higher id, not eligible
+    _, oid2, ids2 = _derive(db, value="2")
+    # newer rows that are not candidates never hide the older still-valid one
+    _derive(db, value="9", state="mismatch", run_state="failed")
+    _derive(db, value="8", state="match", run_state="failed")
+    _derive(db, value="7", state="match", run_state="computing")
+    _derive(db, value="6", state="pending", run_state="computing")
     assert _served(db) == [(KEY, "2025-01", "2", oid2)]
+    assert db.derived_known_inputs(_dsid(db)) == {("2025-01", json.dumps(ids2))}
+
+
+def test_known_inputs_are_the_newest_candidate_per_period_only(db):
+    """Review I3: the derive skip compares against the same newest candidate row per period
+    that the view serves, never any historical row."""
+    _setup(db)
+    _, _, ids_a = _derive(db)
+    run_b = verified_values(db, "s1", {"2024-12": "101"}, T2, "k2")
+    _, _, ids_b = _derive(db, value="1")
+    assert db.derived_known_inputs(_dsid(db)) == {("2025-01", json.dumps(ids_b))}
+    db.withdraw_run(run_b, "defect", T3)
+    assert db.derived_known_inputs(_dsid(db)) == {("2025-01", json.dumps(ids_b))}
+    assert ids_a != ids_b
 
 
 # --- guards ------------------------------------------------------------------------------------
@@ -384,8 +409,7 @@ def test_derived_reads_decode_json_and_mark_served_versions(db):
     verified_values(db, "s1", {"2024-12": "101"}, T2, "k2")
     run2, oid2, ids2 = _derive(db, value="1")
     dsid = _dsid(db)
-    assert db.derived_known_inputs(dsid) == {("2025-01", json.dumps(ids1)),
-                                             ("2025-01", json.dumps(ids2))}
+    assert db.derived_known_inputs(dsid) == {("2025-01", json.dumps(ids2))}  # newest only
     rows = db.derived_rows_of_series(KEY, 10)
     assert [(r["id"], r["served"], r["run_state"], r["input_ids"]) for r in rows] == [
         (oid2, True, "verified", ids2), (oid1, False, "verified", ids1)]
@@ -535,3 +559,53 @@ def test_rebase_label_without_base_period_names_the_param():
         formula_label_pt("rebase_100", {}, "s1")
     with pytest.raises(ValueError, match="ratio"):
         formula_label_pt("ratio", {}, "s1")
+
+
+# --- read cost (review I3) ---------------------------------------------------------------------
+
+def _plan(db, sql, *args):
+    return [r[3] for r in db.conn.execute("EXPLAIN QUERY PLAN " + sql, args)]
+
+
+@pytest.mark.parametrize("sql", [
+    "SELECT COUNT(*) FROM served_derived WHERE derived_key = ?",
+    "SELECT * FROM served_derived WHERE derived_key = ? ORDER BY period DESC LIMIT 50"])
+def test_per_key_view_read_never_scans_a_table(db, sql):
+    """The key predicate reaches the scan: derived rows are searched by the key index and
+    every observation/derived lookup is by key, never a full scan; the only scans are the
+    json_each table-valued function and the ordered inputs co-routine."""
+    plan = _plan(db, sql, KEY)
+    assert "SEARCH ds USING INDEX sqlite_autoindex_derived_series_1 (key=?)" in plan
+    assert "SEARCH d USING INDEX derived_observation_key (derived_series_id=?)" in plan
+    scans = [p for p in plan if p.startswith("SCAN") and "VIRTUAL TABLE" not in p
+             and p != "SCAN x"]
+    assert scans == []
+    assert "USE TEMP B-TREE FOR ORDER BY" not in plan[:5]  # served in index (period) order
+
+
+def test_per_key_reads_stay_cheap_after_30_base_vintages(db):
+    """~30 full base vintages, a derive after each: history grows to 30 versions per period,
+    the per-key reads still answer well inside a generous bound."""
+    import time
+    from datetime import datetime
+
+    from ingest.derive import run_derive
+    sync_registry(db, [spec("s1", frequency="M")])
+    sync_derived(db, [derived_spec(KEY, "s1", "period_change"),
+                      derived_spec("derived.s1_yoyp", "s1", "yoy_change_pct")])
+    periods = [f"{y}-{m:02d}" for y in range(2021, 2026) for m in range(1, 13)]
+    for n in range(30):
+        at = f"2026-10-{n + 1:02d}T00:00:00+00:00"
+        with db.transaction():  # one commit per vintage keeps the setup fast
+            verified_values(db, "s1", {p: f"{100 + i}.{n}" for i, p in enumerate(periods)},
+                            at, f"k{n}")
+        run_derive(db, trigger="scheduler", now=lambda: datetime.fromisoformat(at))
+    history = db.conn.execute("SELECT COUNT(*) FROM derived_observation").fetchone()[0]
+    assert history == 30 * (59 + 48)
+    t = time.perf_counter()
+    total, rows = db.served_derived_rows(KEY, 500)
+    versions = db.derived_rows_of_series(KEY, 200)
+    elapsed = time.perf_counter() - t
+    assert total == 59 and (rows[0]["period"], rows[0]["value_text"]) == ("2025-12", "1.00")
+    assert [v["served"] for v in versions[:30]] == [True] + [False] * 29  # newest only
+    assert elapsed < 2.0, elapsed

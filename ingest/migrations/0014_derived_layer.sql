@@ -31,19 +31,25 @@
 --    - no DELETE on any derived table and no REPLACE of a derived_series row. 0011-0013 do not
 --      guard deletes of observation/dataset_run either, but nothing there deletes them; here
 --      the guard is cheap and makes "history is kept" a property of the schema.
--- 3. View served_derived: among rows with state 'match' in a 'verified' run of an ACTIVE
---    derived series whose EVERY input id is currently in served_observation as a 'fetched'
---    row OF THE DERIVED SERIES' BASE SERIES (so: verified base run, licence ok, base series
---    active, latest data-time vintage; legacy rows and other series never qualify, and the
---    licence/attribution shown are the inputs' own), the highest id per
---    (derived_series_id, period). A revised or withdrawn input therefore unserves the derived
---    row at once, and withdrawing a base run brings back the derived row built on the vintage
---    that is served again.
---    The input check is a correlated per-id lookup on purpose: SQLite pushes `so.id = ?` into
---    served_observation instead of evaluating the whole served view per query. Measured on a
---    synthetic 270k-observation / 12k-derived-row database: one key's page 0.44 s (2.4 s with
---    an uncorrelated `IN (SELECT id FROM served_observation)`); the remaining cost is the
---    latest-version window over every eligible row.
+-- 3. View served_derived. Per (derived_series_id, period) the CANDIDATE is the newest
+--    (highest id) row with state 'match' in a 'verified' run; it is served only while its
+--    derived series is ACTIVE and EVERY one of its input ids is currently in
+--    served_observation as a 'fetched' row OF THE DERIVED SERIES' BASE SERIES (so: verified
+--    base run, licence ok, base series active, latest data-time vintage; legacy rows and
+--    other series never qualify, and the licence/attribution shown are the inputs' own).
+--    Older versions are never served, even when their inputs are served again: after a base
+--    withdrawal back to an older vintage the period serves nothing until a derive writes a
+--    new version on those inputs (Db.derived_known_inputs compares against the same
+--    candidate). A newer pending/mismatch row, or a match row of a computing/failed run, is
+--    not a candidate and never hides an older served one.
+--    Cost (review I3): the candidate is chosen FIRST by a correlated `ORDER BY id DESC
+--    LIMIT 1` on derived_observation_key, and the input check (a correlated per-id lookup
+--    into served_observation, `so.id = ?` pushed down) runs only for that row - CASE fixes
+--    the order. No window or aggregate: the view flattens, so `derived_key = ?` reaches the
+--    derived_series key index and per-key reads search, never scan (a test asserts the
+--    plan). Measured on a production copy with ~50 daily vintages of the 20 bases (340k
+--    derived rows): one key's page 0.09 s, the whole view 1.35 s; most of the latter is the
+--    0011 served_observation per-id lookup, whose cost grows with the vintages of a period.
 --    `inputs` element order is NOT guaranteed by SQLite before 3.44 (no aggregate ORDER BY);
 --    `input_ids` is the stored array in formula order, and Db.served_derived_rows returns
 --    `inputs` in that order. Every row carries is_calculated = 1 and the base source's
@@ -194,29 +200,28 @@ BEGIN
 END;
 
 CREATE VIEW served_derived AS
-WITH eligible AS (
-  SELECT d.*, ROW_NUMBER() OVER (PARTITION BY d.derived_series_id, d.period
-                                 ORDER BY d.id DESC) AS rn
-  FROM derived_observation d
-  JOIN derived_run r ON r.id = d.run_id AND r.state = 'verified'
-  JOIN derived_series ds ON ds.id = d.derived_series_id AND ds.active = 1
-  WHERE d.state = 'match'
-    AND NOT EXISTS (SELECT 1 FROM json_each(d.input_obs_ids_json) j
-                    WHERE NOT EXISTS (SELECT 1 FROM served_observation so
-                                      WHERE so.id = j.value AND so.kind = 'fetched'
-                                        AND so.series_id = ds.base_series_id))
-)
-SELECT ds.key AS derived_key, e.period, e.value_text, e.scale, ds.unit,
+SELECT ds.key AS derived_key, d.period, d.value_text, d.scale, ds.unit,
   1 AS is_calculated, ds.formula, ds.formula_label_pt, ds.label, ds.base_series_id,
   (SELECT json_group_array(json_object('series_id', x.series_id, 'period', x.period,
                                        'observation_id', x.id))
-   FROM (SELECT o.series_id, o.period, o.id FROM json_each(e.input_obs_ids_json) j
+   FROM (SELECT o.series_id, o.period, o.id FROM json_each(d.input_obs_ids_json) j
          JOIN observation o ON o.id = j.value ORDER BY j.key) x) AS inputs,
-  e.input_obs_ids_json AS input_ids,
+  d.input_obs_ids_json AS input_ids,
   p.licence, p.licence_url, p.attribution || ' — Calculado pelo Prumo' AS attribution,
-  e.computed_at, e.run_id AS derived_run_id, e.id AS derived_observation_id
-FROM eligible e
-JOIN derived_series ds ON ds.id = e.derived_series_id
+  d.computed_at, d.run_id AS derived_run_id, d.id AS derived_observation_id
+FROM derived_series ds
+JOIN derived_observation d ON d.derived_series_id = ds.id
 JOIN series s ON s.id = ds.base_series_id
 JOIN source p ON p.id = s.source_id
-WHERE e.rn = 1;
+WHERE ds.active = 1
+  -- CASE keeps the order: the candidate test first, the input test only for that one row
+  AND CASE WHEN d.id = (SELECT c.id FROM derived_observation c
+                        JOIN derived_run r ON r.id = c.run_id AND r.state = 'verified'
+                        WHERE c.derived_series_id = d.derived_series_id
+                          AND c.period = d.period AND c.state = 'match'
+                        ORDER BY c.id DESC LIMIT 1)
+      THEN NOT EXISTS (SELECT 1 FROM json_each(d.input_obs_ids_json) j
+                       WHERE NOT EXISTS (SELECT 1 FROM served_observation so
+                                         WHERE so.id = j.value AND so.kind = 'fetched'
+                                           AND so.series_id = ds.base_series_id))
+      ELSE 0 END;

@@ -818,11 +818,16 @@ class Db:
             "VALUES (?, 'computing', ?, ?)", (started_at, trigger, json.dumps(scope))).lastrowid
 
     def derived_known_inputs(self, derived_series_id: int) -> set[tuple[str, str]]:
-        """(period, input_obs_ids_json) of the series' matched rows in verified runs."""
+        """(period, input_obs_ids_json) of the series' serving candidate per period: the
+        newest (highest id) 'match' row of a verified run - the same row served_derived
+        considers. Older versions never count: after a base withdrawal back to an older
+        vintage, derive writes a new version on those inputs (the old row is not revived)."""
         return set(self.conn.execute(
             "SELECT d.period, d.input_obs_ids_json FROM derived_observation d "
-            "JOIN derived_run r ON r.id = d.run_id AND r.state = 'verified' "
-            "WHERE d.derived_series_id = ? AND d.state = 'match'", (derived_series_id,)))
+            "WHERE d.derived_series_id = ? AND d.id = (SELECT c.id FROM derived_observation c "
+            "JOIN derived_run r ON r.id = c.run_id AND r.state = 'verified' "
+            "WHERE c.derived_series_id = d.derived_series_id AND c.period = d.period "
+            "AND c.state = 'match' ORDER BY c.id DESC LIMIT 1)", (derived_series_id,)))
 
     def derived_known_skips(self, derived_series_id: int
                             ) -> set[tuple[str | None, str, tuple[int, ...]]]:
@@ -954,9 +959,17 @@ class Db:
         rows = self.conn.execute(
             "WITH served AS (SELECT derived_key, COUNT(*) AS n FROM served_derived "
             "GROUP BY derived_key), "
-            "base AS (SELECT series_id, MAX(fetched_at) AS latest FROM served_observation "
-            "WHERE kind = 'fetched' AND series_id IN "
-            "(SELECT base_series_id FROM derived_series WHERE active = 1) GROUP BY series_id), "
+            # Newest fetched_at among a base's served fetched rows: walk its fetched rows
+            # newest first and stop at the first one served_observation serves (same answer
+            # as MAX over the view; the whole-series view scan costs O(vintages^2) per base).
+            # `LIMIT -1` keeps the ordered subquery from being flattened into the outer
+            # WHERE, which would test every row before sorting.
+            "base AS (SELECT b.base_series_id AS series_id, (SELECT n.fetched_at FROM "
+            "(SELECT o.id, o.fetched_at FROM observation o WHERE o.series_id = "
+            "b.base_series_id AND o.kind = 'fetched' ORDER BY o.fetched_at DESC, o.id DESC "
+            "LIMIT -1) n WHERE EXISTS (SELECT 1 FROM served_observation so WHERE so.id = n.id) "
+            "LIMIT 1) AS latest "
+            "FROM (SELECT DISTINCT base_series_id FROM derived_series WHERE active = 1) b), "
             "covered AS (SELECT ds.id AS dsid, (SELECT r.id FROM derived_run r "
             "WHERE r.state = 'verified' AND EXISTS (SELECT 1 FROM json_each(r.scope_json) j "
             "WHERE j.value = ds.key) ORDER BY r.id DESC LIMIT 1) AS run_id "

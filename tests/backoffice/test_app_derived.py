@@ -142,3 +142,23 @@ def test_overview_shows_derived_line(make_env):
     assert 'href="/derived"' in html
     m = re.search(r'<p id="derived-line">(.*?)</p>', html, re.S)
     assert m and "2 active derived series" in m.group(1) and "1 served" in m.group(1)
+
+
+def test_derived_list_is_cached_for_the_status_ttl(make_env):
+    """Review I3: /derived evaluates served_derived for every key; like the overview, the
+    list is reused for status_ttl_s (monotonic clock), then recomputed."""
+    from fastapi.testclient import TestClient
+
+    from backoffice.app import create_app
+    env = _env(make_env)
+    tick = [1000.0]
+    c = TestClient(create_app(env.db_path, env.registry, now=lambda: NOW, status_ttl_s=30,
+                              monotonic=lambda: tick[0]), base_url="http://localhost")
+    html = c.get("/derived").text
+    assert "no base data" in _row(html, YOY)
+    assert f"list generated {NOW.isoformat()} (0 s ago; reused for up to 30 s)" in html
+    _derive_yoy(env)
+    tick[0] += 29
+    assert "no base data" in _row(c.get("/derived").text, YOY)  # still the cached list
+    tick[0] += 2
+    assert "current" in _row(c.get("/derived").text, YOY)

@@ -109,6 +109,28 @@ def test_revision_adds_new_version_and_keeps_old(db):
         assert kept[oid]["served"] is False
 
 
+def test_withdrawn_newest_base_vintage_unserves_until_derive_writes_a_new_version(db):
+    """Review I3: withdrawing the newest base vintage serves nothing for the affected periods
+    until derive runs; derive then writes a NEW row version on the older inputs (history
+    keeps all three versions) and serves it; an identical re-run writes 0 rows."""
+    _setup(db, [derived_spec(PC, "s1", "period_change")])
+    _run(db)
+    first = _values(db, PC)
+    run_b = verified_values(db, "s1", {"2025-01": "102.6"}, T2, "k1b")
+    _run(db)
+    assert _values(db, PC) == {"2025-01": "2.6", "2025-02": "-3.6"}
+    db.withdraw_run(run_b, "defect", T3)
+    assert _values(db, PC) == {}                    # fail closed until derive runs
+    rep = _run(db)
+    assert (rep.state, rep.n_written) == ("verified", 2)
+    assert _values(db, PC) == first == {"2025-01": "2.5", "2025-02": "-3.5"}
+    versions = db.derived_rows_of_series(PC, 100)
+    jan = [v for v in versions if v["period"] == "2025-01"]
+    assert len(jan) == 3 and [v["served"] for v in jan] == [True, False, False]
+    assert jan[0]["input_ids"] == jan[2]["input_ids"] != jan[1]["input_ids"]
+    assert _run(db).n_written == 0
+
+
 def test_unchanged_periods_are_not_rewritten_after_a_partial_revision(db):
     sync_registry(db, [spec("s1", frequency="M")])
     verified_values(db, "s1", {"2024-11": "1", "2024-12": "2", "2025-01": "4"}, T1, "k1")

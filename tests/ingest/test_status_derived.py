@@ -15,6 +15,7 @@ from tests.ingest.fakes import spec
 from tests.ingest.test_cli import _write_registry
 
 T1 = "2026-11-01T00:00:00+00:00"
+T2 = "2026-11-02T00:00:00+00:00"
 NOW = datetime(2026, 11, 14, tzinfo=timezone.utc)
 LATER = NOW + timedelta(hours=6)
 S1 = {"2024-12": "100", "2025-01": "102.5", "2025-02": "99"}
@@ -79,6 +80,23 @@ def test_staleness_is_compared_as_time_not_text(db):
     # base fetched at 02:00Z: textually EARLIER than the run's stamp, later in time
     verified_values(db, "s1", {**S1, "2025-02": "98"}, "2026-11-14T02:00:00+00:00", "k1")
     assert _derived(db).stale_series == (PC, RB)
+
+
+def test_zero_served_values_with_base_data_is_stale(db):
+    """Review M3: after the newest base vintage is withdrawn, the older vintage is served
+    again (older fetched_at than the last run) but no derived row is served for it until
+    derive runs: the series is 'stale', not 'current'."""
+    _setup(db)
+    _derive(db)
+    run_b = verified_values(db, "s1", {**S1, "2025-02": "98"}, T2, "k1b")
+    _derive(db, at=NOW + timedelta(minutes=1))
+    assert _derived(db).stale == 0
+    db.withdraw_run(run_b, "defect", T2)
+    d = _derived(db)
+    assert (d.served_values, d.stale, d.stale_series) == (0, 2, (PC, RB))
+    _derive(db, at=NOW + timedelta(minutes=2))
+    d = _derived(db)
+    assert (d.served_values, d.stale) == (5, 0)
 
 
 def test_derived_never_computed(db):

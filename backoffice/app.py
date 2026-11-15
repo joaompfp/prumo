@@ -68,7 +68,8 @@ def create_app(db_path: Path, registry_path: Path,
                allowed_hosts: list[str] = DEFAULT_ALLOWED_HOSTS) -> FastAPI:
     """`raw_dir` is the raw evidence store verification items are replayed from (None: the
     replay page says it cannot replay). The full status report is computed at most once per
-    `status_ttl_s` (on the `monotonic` clock); pages show its generated_at and age. Requests
+    `status_ttl_s` (on the `monotonic` clock), and so is the /derived list; pages show
+    their generated_at and age. Requests
     whose Host header is not in `allowed_hosts` get 400 (DNS-rebinding guard)."""
     specs = load_registry(registry_path)  # fail fast at startup on a bad registry
     clock = now or (lambda: datetime.now(timezone.utc))
@@ -86,6 +87,7 @@ def create_app(db_path: Path, registry_path: Path,
         return read_db_readonly(db_path, fn)
 
     status_cache = TtlCache(status_ttl_s, monotonic)
+    derived_cache = TtlCache(status_ttl_s, monotonic)  # /derived evaluates every derived key
 
     def status():
         """The full-registry status report (ingest.status.build_status), cached."""
@@ -168,7 +170,12 @@ def create_app(db_path: Path, registry_path: Path,
 
     @app.api_route("/derived", methods=PAGE_METHODS)
     def derived_list(request: Request):
-        return render(request, "derived_list.html", rows=read(reads.derived_list))
+        generated_at, rows = derived_cache.get(
+            lambda: (clock(), read(reads.derived_list)))
+        return render(request, "derived_list.html", rows=rows,
+                      generated_at=generated_at.isoformat(),
+                      age_s=max(0, int((clock() - generated_at).total_seconds())),
+                      status_ttl_s=int(status_ttl_s))
 
     @app.api_route("/derived/{key}", methods=PAGE_METHODS)
     def derived_detail(request: Request, key: str):

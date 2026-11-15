@@ -260,13 +260,17 @@ def _event_counts(rows) -> dict[str, dict[str, int]]:
 def derived_state(row: dict) -> str:
     """One active derived series' state from a Db.derived_status_rows row: 'no_base_data'
     (nothing served to derive from: neither stale nor never computed), 'never_computed',
-    'stale' (base fetched later, as time, than the latest covering run started) or
-    'current'. The one place this rule lives (status report and backoffice)."""
+    'stale' (base fetched later, as time, than the latest covering run started, OR base data
+    served but no derived value served - e.g. after a base withdrawal back to an older
+    vintage, until derive runs) or 'current'. The one place this rule lives (status report
+    and backoffice)."""
     base_at = _parse_ts(row["base_latest_fetched_at"])
     if base_at is None:
         return "no_base_data"
     if row["last_covered_run_id"] is None:
         return "never_computed"
+    if row["served_values"] == 0:
+        return "stale"
     return "stale" if base_at > _parse_ts(row["last_covered_at"]) else "current"
 
 
