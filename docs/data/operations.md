@@ -730,8 +730,8 @@ docker exec prumo python -c 'import sqlite3; c = sqlite3.connect("file:/data/pru
 
 ## Vintage dedupe, caveats and language-neutral data (0015-0017)
 
-Not yet deployed: the running image (`a05dd47`) predates these migrations and refuses a 0017
-database ("schema is newer than this code", exit 2 / HTTP 503).
+Deployed 2026-11-15 19:14 UTC from `main` 761590e (image rebuilt for all three containers). This
+section stays as the record of what the migrations do; the deploy steps below are history.
 
 - `0015_observation_run_index`: index `observation_run` on `observation(dataset_run_id,
   series_id)`. The per-run reads of the identical-content short-circuit (`Db.run_content`,
