@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pytest
 import yaml
 
-from ingest import derive
+from ingest import cli, derive
 from ingest.cli import main
 from ingest.db import open_db
 from ingest.derive import DerivedValue, DeriveReport, run_derive
@@ -459,3 +459,33 @@ def test_cli_unknown_series_key_writes_nothing(tmp_path, capsys):
     assert main(["--db", str(path), "--registry", str(reg), "derive", "--series", PC,
                  "--series", "derived.nope"]) == 2
     assert _derived_runs(path) == []
+
+
+def test_cli_redefined_key_exits_2_with_one_line(tmp_path, capsys):
+    """Review I1: a changed formula/base/params of an existing key -> one stderr line, exit 2."""
+    path, reg = _cli_db(tmp_path), _registry(tmp_path / "r.yaml", _cli_entries())
+    assert main(["--db", str(path), "--registry", str(reg), "derive"]) == 0
+    capsys.readouterr()
+    entries = _cli_entries()
+    entries[1]["params"] = {"base_period": "2024-12"}
+    reg = _registry(tmp_path / "r.yaml", entries)
+    assert main(["--db", str(path), "--registry", str(reg), "derive"]) == 2
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert err.count("\n") == 1 and "Traceback" not in err
+    assert err.startswith(f"derive refused: {RB}: formula/base/params of an existing derived "
+                          f"key cannot change")
+    assert [r["state"] for r in _derived_runs(path)] == ["verified"]
+
+
+def test_cli_database_locked_exits_2_with_one_line(tmp_path, capsys, monkeypatch):
+    """Review M1: sqlite3.OperationalError (e.g. a database locked past the busy timeout)."""
+    path, reg = _cli_db(tmp_path), _registry(tmp_path / "r.yaml", _cli_entries())
+
+    def locked(*_a, **_k):
+        raise sqlite3.OperationalError("database is locked")
+
+    monkeypatch.setattr(cli, "run_derive", locked)
+    assert main(["--db", str(path), "--registry", str(reg), "derive"]) == 2
+    out, err = capsys.readouterr()
+    assert out == "" and err == "derive refused: database is locked\n"

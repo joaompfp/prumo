@@ -54,6 +54,7 @@ ingest.legacy_import / ingest.status / ingest.derive; SQL lives in ingest.db.
 import argparse
 import os
 import re
+import sqlite3
 import sys
 import tempfile
 from datetime import date, datetime, timedelta, timezone
@@ -538,6 +539,10 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
     raise AssertionError("unreachable")  # argparse required=True already enforced the command
 
 
+def _one_line(error: Exception) -> str:
+    return " ".join(str(error).split())
+
+
 def _cmd_derive(args, registry: Path, specs, db_path: Path) -> int:
     """Validate the registry's derived list and any --series keys BEFORE opening the DB; refuse
     (exit 2, nothing written) a missing database file or one lacking a base series; then sync
@@ -564,9 +569,16 @@ def _cmd_derive(args, registry: Path, specs, db_path: Path) -> int:
             print(f"derive refused: base series {missing} not in the database "
                   f"(run 'run' first)", file=sys.stderr)
             return 2
-        sync_derived(db, derived)
+        try:
+            sync_derived(db, derived)
+        except ValueError as e:  # an existing key redefined; nothing written
+            print(f"derive refused: {_one_line(e)}", file=sys.stderr)
+            return 2
         report = run_derive(db, keys=args.series, trigger="cli",
                             now=lambda: datetime.now(timezone.utc))
+    except sqlite3.OperationalError as e:  # e.g. database locked past the busy timeout
+        print(f"derive refused: {_one_line(e)}", file=sys.stderr)
+        return 2
     finally:
         db.close()
     if report is None:

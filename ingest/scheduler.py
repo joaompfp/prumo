@@ -132,7 +132,7 @@ def _record(at: datetime, event: str, outcome: GroupOutcome, group: str) -> dict
             "detail": outcome.detail}
 
 
-def _derive_record(at: datetime, group: str, report: DeriveReport | None,
+def _derive_record(at: datetime, group: str | None, report: DeriveReport | None,
                    error: Exception | None) -> dict | None:
     base = {"schema": "prumo-scheduler", "version": 1, "ts": _utc(at).isoformat(),
             "event": "derive", "group": group}
@@ -286,6 +286,16 @@ def _on_sigterm(signum, _frame):
     raise SystemExit(128 + signum)
 
 
+def _sync_derived_or_log(db: Db, derived, *, now: Clock, log: Log) -> None:
+    """A registry edit that redefines an existing derived key (ValueError, nothing written)
+    must never stop base refresh: log ONE 'derive' error record (group null) and keep the
+    definitions already stored in the DB, which derive keeps using."""
+    try:
+        sync_derived(db, derived)
+    except ValueError as exc:
+        log(_derive_record(now(), None, None, exc))
+
+
 def _locked_main(args, db_path: Path, specs, derived, *, now: Clock, sleep, runner, log,
                  http_for, deriver) -> int:
     db = open_db(db_path)
@@ -294,7 +304,7 @@ def _locked_main(args, db_path: Path, specs, derived, *, now: Clock, sleep, runn
         # a killed process (OOM, SIGKILL) and is closed honestly before new work starts.
         db.close_orphan_runs(now().astimezone(timezone.utc).isoformat())
         sync_registry(db, specs)
-        sync_derived(db, derived)
+        _sync_derived_or_log(db, derived, now=now, log=log)
         report_blocked(specs, now=now, log=log)
         store = RawStore(Path(args.raw_dir))
         if args.once:

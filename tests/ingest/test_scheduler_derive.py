@@ -182,3 +182,39 @@ def test_default_deriver_runs_real_derive_scoped_to_group(tmp_path):
     assert (derive[0]["group"], derive[0]["state"], derive[0]["n_written"],
             derive[0]["n_mismatch"]) == ("X.ONE", "verified", 0, 0)
     assert isinstance(derive[0]["run_id"], int)
+
+
+def test_redefined_derived_key_logs_one_error_and_base_refresh_continues(tmp_path):
+    """Review I1: a registry edit to an existing key's formula/base/params must not stop the
+    worker. One 'derive' error record; base refresh runs; exit code as without the slip;
+    the definition stored in the DB stays the one derive uses."""
+    entry = {"key": "derived.one.mom", "base": "wb.one.PT", "formula": "period_change",
+             "label": "Variação mensal", "unit": "u"}
+    reg = _with_derived(_tiny_registry(tmp_path), [entry])
+    path = tmp_path / "p.db"
+    argv = ["--once", "--registry", str(reg), "--db", str(path),
+            "--raw-dir", str(tmp_path / "raw")]
+    assert scheduler.main(argv, now=lambda: T0, runner=_runner({}, []), log=lambda r: None,
+                          deriver=_recording_deriver([])) == 0
+    _with_derived(reg, [{**entry, "formula": "period_change_pct", "unit": "%"}])
+    runner_calls: list = []
+    derive_calls: list = []
+    logged: list = []
+    code = scheduler.main(argv, now=lambda: T0 + timedelta(days=30),
+                          runner=_runner({}, runner_calls), log=logged.append,
+                          deriver=_recording_deriver(derive_calls))
+    assert code == 0
+    assert [c[1] for c in runner_calls] == ["X.ONE"]          # base refresh still ran
+    assert derive_calls == [{"wb.one.PT"}]                    # derive still runs (stored defs)
+    errors = [r for r in logged if r["event"] == "derive"]
+    assert len(errors) == 1
+    assert errors[0]["state"] == "error" and errors[0]["group"] is None
+    assert errors[0]["detail"].startswith("ValueError: derived.one.mom: formula/base/params")
+    assert [r["event"] for r in logged if r["event"] == "attempt"] == ["attempt"]
+    d = open_db(path)
+    try:
+        rows = d.derived_series_rows()
+    finally:
+        d.close()
+    assert [(r["key"], r["formula"], r["unit"]) for r in rows] == [
+        ("derived.one.mom", "period_change", "u")]
