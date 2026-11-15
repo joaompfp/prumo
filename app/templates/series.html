@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}{{ page.series.title }} — Prumo{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/temas/{{ page.series.theme }}">{{ page.series.theme_text }}</a> <span aria-hidden="true">/</span> {{ page.series.family_title }}
+</nav>
+
+<header class="page-head">
+  <h1>{{ page.series.title }}</h1>
+  <p class="meta">
+    {{ page.series.geography_text }} · {{ page.series.frequency_text }} · {{ page.series.unit_text }}{% if page.series.seasonal_text %} · {{ page.series.seasonal_text }}{% endif %}{% if page.series.base_year %} · base {{ page.series.base_year }}{% endif %}
+  </p>
+</header>
+
+<section class="figure-block" aria-label="Valor mais recente">
+  <div class="figure-main">
+    <p class="figure-value">{{ page.series.latest.value_display }} <span class="figure-unit">{{ page.series.unit_text }}</span></p>
+    <p class="figure-period"><span class="mini-label">Período</span>{{ page.series.latest.period_text }}{% if page.series.latest.status_text %} · <span class="flag">{{ page.series.latest.status_text }}</span>{% endif %}</p>
+    <p class="figure-source"><span class="mini-label">Recolhido</span>{{ page.series.latest.fetched_text }}</p>
+  </div>
+  <dl class="figure-meta">
+    <dt>Fonte</dt><dd>{{ page.series.source_title }}</dd>
+    {% if page.provenance and page.provenance.verification_created_text %}
+    <dt>Verificação</dt><dd>{{ page.provenance.verification_created_text }}{% if page.provenance.sample_size_text %}, amostra de {{ page.provenance.sample_size_text }} valores do conjunto{% endif %}{% if page.provenance.verification_passed %}, 100% coincidentes{% endif %}</dd>
+    {% endif %}
+    <dt>Licença</dt><dd>{{ page.series.licence }}</dd>
+  </dl>
+</section>
+
+<section class="chart-section" aria-labelledby="grafico">
+  <div class="section-head">
+    <h2 id="grafico">Série</h2>
+    {% if not page.is_15m %}
+    <nav class="windows" aria-label="Janela temporal">
+      {% for code, label in page.windows %}<a href="{{ base }}/series/{{ page.series.id }}?janela={{ code }}"{% if code == page.window %} aria-current="true"{% endif %}>{{ label }}</a>{% endfor %}
+    </nav>
+    {% endif %}
+  </div>
+  {% if page.is_15m %}
+  <form class="filters" action="{{ base }}/series/{{ page.series.id }}" method="get">
+    <label>Dia (UTC)
+      <select name="dia">
+        {% for d in page.days %}<option value="{{ d }}"{% if d == page.day %} selected{% endif %}>{{ format_date(d) }}</option>{% endfor %}
+      </select>
+    </label>
+    <button type="submit">Ver</button>
+  </form>
+  <p class="note">Intervalos de 15 minutos, no dia UTC escolhido. O Prumo não agrega esta série: cada ponto é o valor publicado.</p>
+  {% endif %}
+  <figure class="chart-figure">
+    {{ chart(page.chart_points, frequency=page.series.frequency, title=page.series.title, unit=page.series.unit_text) }}
+    <figcaption>{{ page.series.title }}. Fonte: {{ page.series.source_title }}. Último valor em {{ page.series.latest.period_text }}.</figcaption>
+  </figure>
+  <details class="table-details">
+    <summary>Ver tabela de valores</summary>
+    <table class="data-table">
+      <thead><tr><th scope="col">Período</th><th scope="col" class="num">Valor</th><th scope="col">Estado</th><th scope="col">Recolhido</th></tr></thead>
+      <tbody>
+        {% for v in page.values %}
+        <tr><td>{{ v.period_text }}</td><td class="num">{{ v.value_display }}</td><td>{{ v.status_text or "—" }}</td><td>{{ v.fetched_text }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="note">{{ page.table_note }}</p>
+  </details>
+  <p class="download"><a href="{{ base }}/series/{{ page.series.id }}.csv">Descarregar CSV</a></p>
+</section>
+
+<section class="provenance" aria-labelledby="proveniencia">
+  <div class="section-head">
+    <h2 id="proveniencia">Proveniência</h2>
+    <p class="section-note">O caminho deste número, do editor até esta página.</p>
+  </div>
+  <dl class="provenance-list">
+    <dt>Publicado por</dt><dd>{{ page.series.source_title }}</dd>
+    <dt>Atribuição</dt><dd>{{ page.series.attribution }}</dd>
+    <dt>Série original</dt><dd>{% if page.series.native_code %}<code>{{ page.series.native_code }}</code>{% else %}—{% endif %}{% if page.series.series_url and page.series.series_url.startswith('https://') %} · <a href="{{ page.series.series_url }}" rel="noopener noreferrer">página do editor</a>{% endif %}</dd>
+    {% if page.provenance %}
+    <dt>Recolhido</dt><dd>{{ page.provenance.fetched_text }}</dd>
+    <dt>Execução</dt><dd>#{{ page.provenance.run_id }}</dd>
+    <dt>Ficheiro arquivado</dt><dd>{% if page.provenance.sha256 %}<code title="{{ page.provenance.sha256 }}">{{ page.provenance.sha256[:12] }}…{{ page.provenance.sha256[-6:] }}</code>{% else %}—{% endif %}{% if page.provenance.bytes_text %} · {{ page.provenance.bytes_text }} bytes{% endif %}{% if page.provenance.http_status %} · HTTP {{ page.provenance.http_status }}{% endif %}</dd>
+    <dt>Verificação</dt>
+    <dd>
+      {% if page.provenance.verification_created_text %}
+      {{ page.provenance.verification_created_text }}{% if page.provenance.sample_size_text %}, amostra de {{ page.provenance.sample_size_text }} valores do conjunto de dados{% endif %}{% if page.provenance.verification_passed %}, 100% coincidentes{% endif %}.
+      {% if page.provenance.sampled %}Este valor foi um dos comparados.{% else %}Este valor não foi um dos amostrados; a verificação cobre o conjunto de onde ele vem.{% endif %}
+      A amostra é retirada do conjunto de dados inteiro desta execução, que inclui outras séries; não é uma contagem dos períodos desta série, que aparece no histórico abaixo.
+      {% else %}Sem registo de verificação para esta execução.{% endif %}
+    </dd>
+    {% endif %}
+    <dt>Licença</dt><dd>{{ page.series.licence }}{% if page.series.licence_url and page.series.licence_url.startswith('https://') %} · <a href="{{ page.series.licence_url }}" rel="noopener noreferrer">termos</a>{% endif %}</dd>
+  </dl>
+</section>
+
+<section aria-labelledby="revisoes">
+  <div class="section-head">
+    <h2 id="revisoes">Histórico de revisões</h2>
+    <p class="section-note">Quando o editor altera um valor, o anterior fica registado com a data em que foi publicado. Os períodos contados aqui são os desta série; o número de valores verificados, na Proveniência, conta o conjunto de dados inteiro dessa execução.</p>
+  </div>
+  {% if page.revisions %}
+  <table class="data-table revisions">
+    <thead><tr><th scope="col">Período</th><th scope="col" class="num">Versão</th><th scope="col">Recolhido</th><th scope="col">Situação</th></tr></thead>
+    <tbody>
+      {% for rev in page.revisions %}
+      {% for v in rev.versions %}
+      <tr>
+        <td>{% if loop.first %}{{ rev.period_text }}{% endif %}</td>
+        <td class="num">{{ v.value_display }}</td>
+        <td>{{ v.fetched_text }}</td>
+        <td>{% if v.served %}<span class="badge badge-quiet">em vigor</span>{% else %}substituído{% endif %}</td>
+      </tr>
+      {% endfor %}
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="note">{{ format_count(page.revised_periods) }} períodos com revisões; {{ format_count(page.unchanged_periods) }} sem alterações.</p>
+  {% else %}
+  <p class="note">Sem revisões desde o início desta recolha. {{ format_count(page.unchanged_periods) }} períodos desta série, todos com o valor original.</p>
+  {% endif %}
+</section>
+
+{% if page.derived %}
+<section aria-labelledby="calculadas">
+  <div class="section-head">
+    <h2 id="calculadas">Valores calculados a partir desta série</h2>
+    <p class="section-note">Aritmética declarada sobre os valores publicados. Não são valores do editor.</p>
+  </div>
+  <ul class="derived-list">
+    {% for d in page.derived %}
+    <li>
+      <a href="{{ base }}/calculadas/{{ d.key }}"><span class="badge">Calculado</span> {{ d.title }}</a>
+      {% if d.latest_value_display %}<span class="num">{{ d.latest_value_display }} {{ d.unit_text }}</span> <span class="muted">{{ d.latest_period_text }}</span>{% else %}<span class="muted">sem valor publicado</span>{% endif %}
+      {% for c in d.caveats %}<p class="caveat">{{ c }}</p>{% endfor %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if page.cross_checks %}
+<section aria-labelledby="cruzada">
+  <div class="section-head">
+    <h2 id="cruzada">Verificação cruzada</h2>
+    <p class="section-note">Outra publicação do mesmo indicador. Serve para confirmar o valor principal e nunca o substitui.</p>
+  </div>
+  <table class="data-table">
+    <thead><tr><th scope="col">Fonte</th><th scope="col" class="num">Último valor</th><th scope="col">Período</th><th scope="col">Recolhido</th></tr></thead>
+    <tbody>
+      {% for c in page.cross_checks %}
+      <tr><td>{{ c.source_title }}</td><td class="num">{{ c.value_display }} <span class="unit">{{ c.unit_text }}</span></td><td>{{ c.period_text }}</td><td>{{ c.fetched_text }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+{% endblock %}

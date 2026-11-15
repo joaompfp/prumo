@@ -1,0 +1,718 @@
+"""Page composition for the public site: Db reads turned into reader-facing values.
+
+No SQL here (every query is a Db method) and no reader text outside `presentation`. Values keep
+their stored token; dates, periods and flags get Portuguese text. Dataclasses are frozen so a
+template cannot mutate what the page was assembled from.
+"""
+import time
+import unicodedata
+from dataclasses import dataclass
+
+from app.formatting import format_count, format_date, format_datetime, format_period, format_value
+from ingest.db import Db
+from presentation import (
+    base_unit_text,
+    calculated_attribution,
+    caveat_text,
+    derived_title,
+    describe_formula,
+    family_title,
+    flag_text,
+    frequency_text,
+    geography_name,
+    search_aliases,
+    seasonal_text,
+    series_title,
+    source_title,
+    theme_blurb,
+    theme_text,
+    unit_text,
+)
+from presentation.catalog import pt
+
+PAGE_SIZE = 50
+SEARCH_CAP = 100
+TABLE_CAP = 60
+REVISION_CAP = 30
+CATALOGUE_TTL_S = 30.0
+
+THEME_ORDER = ("economy", "demography", "energy")
+EU_GEOS = frozenset({"EU27_2020", "EA", "EU", "EL", "GR"})
+PT_GEOS = frozenset({"PT", "Continente"})
+GROUPS = (("", "Todos"), ("pt", "Portugal"), ("eu", "União Europeia"), ("world", "Mundo"))
+
+_catalogue_cache: dict[str, tuple[float, list[dict]]] = {}
+_day_cache: dict[tuple[str, str], tuple[float, tuple[tuple[str, int], ...]]] = {}
+DAY_COUNTS_TTL_S = 60.0
+
+
+def clear_cache() -> None:
+    _catalogue_cache.clear()
+    _day_cache.clear()
+
+
+def _db_key(db: Db) -> str:
+    row = db.conn.execute("PRAGMA database_list").fetchone()
+    return str(row[2] or row[1])
+
+
+def catalogue(db: Db, *, fresh: bool = False) -> list[dict]:
+    """The served primary catalogue, cached for a few seconds per database file."""
+    key = _db_key(db)
+    now = time.monotonic()
+    hit = _catalogue_cache.get(key)
+    if hit is not None and hit[0] > now and not fresh:
+        return hit[1]
+    rows = db.public_catalogue()
+    _catalogue_cache[key] = (now + CATALOGUE_TTL_S, rows)
+    return rows
+
+
+def _day_counts(db: Db, series_id: str) -> tuple[tuple[str, int], ...]:
+    """Days and interval counts of a 15-minute series, cached: one scan of the series is 80 ms
+    and the page only needs to know which day to open and which days exist."""
+    key = (_db_key(db), series_id)
+    now = time.monotonic()
+    hit = _day_cache.get(key)
+    if hit is not None and hit[0] > now:
+        return hit[1]
+    rows = db.public_day_counts(series_id)
+    _day_cache[key] = (now + DAY_COUNTS_TTL_S, rows)
+    return rows
+
+
+def _family_of(indicator_key: str) -> str:
+    parts = indicator_key.split(".")
+    return ".".join(parts[:-2]) if len(parts) >= 3 else indicator_key
+
+
+def _title(row: dict, lang: str) -> str:
+    return series_title(lang, row["family"], row["geography"])
+
+
+def _flag(row: dict, lang: str) -> str:
+    code = row.get("latest_status_flag") or row.get("status_flag")
+    return flag_text(lang, code) if code else ""
+
+
+def _geo_group(geography: str) -> str:
+    if geography in PT_GEOS:
+        return "pt"
+    if geography in EU_GEOS:
+        return "eu"
+    return "world"
+
+
+def _window_start(latest: str, frequency: str, window: str) -> str | None:
+    if window not in ("10", "25") or not latest[:4].isdigit():
+        return None
+    target_year = int(latest[:4]) - (int(window) - 1)
+    if frequency == "A":
+        return str(target_year)
+    if frequency == "M" and len(latest) >= 7:
+        return f"{target_year}-{latest[5:7]}"
+    if frequency in ("Q", "S") and len(latest) >= 7:
+        return f"{target_year}{latest[4:7]}"
+    return None
+
+
+@dataclass(frozen=True)
+class ValueView:
+    period: str
+    period_text: str
+    value_text: str
+    value_display: str
+    status: str | None
+    status_text: str
+    fetched_at: str
+    fetched_text: str
+    raw_sha: str | None = None
+
+
+def _value_view(row: dict, frequency: str, lang: str) -> ValueView:
+    status = row.get("status_flag")
+    return ValueView(period=row["period"],
+                     period_text=format_period(row["period"], frequency),
+                     value_text=row["value_text"],
+                     value_display=format_value(row["value_text"]),
+                     status=status, status_text=flag_text(lang, status) if status else "",
+                     fetched_at=row.get("fetched_at") or "",
+                     fetched_text=format_datetime(row.get("fetched_at")),
+                     raw_sha=row.get("raw_sha"))
+
+
+@dataclass(frozen=True)
+class ProvenanceView:
+    value_display: str
+    period_text: str
+    fetched_text: str
+    run_id: int
+    run_state: str
+    http_status: int | None
+    sha256: str | None
+    bytes_text: str
+    raw_url: str | None
+    verification_created_text: str
+    sample_size_text: str
+    verification_passed: bool
+    sample_procedure: str
+    verifier_channel: str
+    sampled: bool
+    native_code: str | None
+    series_url: str | None
+    licence: str
+    licence_url: str
+    attribution: str
+
+
+@dataclass(frozen=True)
+class VersionView:
+    value_display: str
+    status_text: str
+    fetched_text: str
+    served: bool
+
+
+@dataclass(frozen=True)
+class RevisionView:
+    period: str
+    period_text: str
+    versions: tuple[VersionView, ...]
+
+
+@dataclass(frozen=True)
+class DerivedLink:
+    key: str
+    title: str
+    unit_text: str
+    latest_value_text: str | None
+    latest_value_display: str | None
+    latest_period_text: str | None
+    caveats: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class CrossCheck:
+    id: str
+    source_title: str
+    attribution: str
+    value_display: str
+    period_text: str
+    fetched_text: str
+    status_text: str
+    unit_text: str
+
+
+@dataclass(frozen=True)
+class SeriesView:
+    id: str
+    title: str
+    family_title: str
+    geography: str
+    geography_text: str
+    theme: str
+    theme_text: str
+    frequency: str
+    frequency_text: str
+    unit: str
+    unit_text: str
+    seasonal_text: str
+    base_year: int | None
+    source: str
+    source_title: str
+    attribution: str
+    licence: str
+    licence_url: str
+    native_code: str | None
+    series_url: str | None
+    latest: ValueView
+
+
+@dataclass(frozen=True)
+class SeriesDetail:
+    series: SeriesView
+    values: tuple[ValueView, ...]
+    chart_points: tuple[dict, ...]
+    provenance: ProvenanceView | None
+    revisions: tuple[RevisionView, ...]
+    revised_periods: int
+    unchanged_periods: int
+    derived: tuple[DerivedLink, ...]
+    cross_checks: tuple[CrossCheck, ...]
+    window: str
+    windows: tuple[tuple[str, str], ...]
+    is_15m: bool
+    days: tuple[str, ...]
+    day: str | None
+    total_periods: int
+    table_note: str
+
+
+def _provenance_view(p: dict, frequency: str, lang: str) -> ProvenanceView:
+    return ProvenanceView(
+        value_display=format_value(p["value_text"]),
+        period_text=format_period(p["period"], frequency),
+        fetched_text=format_datetime(p["fetched_at"]),
+        run_id=p["run_id"], run_state=p["run_state"], http_status=p["http_status"],
+        sha256=p["sha256"], bytes_text=format_count(p["bytes"]) if p["bytes"] is not None else "",
+        raw_url=p["raw_url"],
+        verification_created_text=format_datetime(p["verification_created_at"]),
+        sample_size_text=format_count(p["sample_size"]) if p["sample_size"] is not None else "",
+        verification_passed=bool(p["verification_passed"]),
+        sample_procedure=p["sample_procedure"] or "",
+        verifier_channel=p["verifier_channel"] or "",
+        sampled=bool(p["sampled"]),
+        native_code=p["native_code"], series_url=p["series_url"],
+        licence=p["licence"], licence_url=p["licence_url"], attribution=p["attribution"])
+
+
+def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None = None,
+                lang: str = "pt") -> SeriesDetail | None:
+    row = db.public_series(series_id)
+    if row is None or row["role"] != "primary":
+        return None
+    if row["latest_period"] is None:
+        return None
+    frequency = row["frequency"]
+    is_15m = frequency == "PT15M"
+    days: tuple[str, ...] = ()
+    chosen_day = None
+    if is_15m:
+        counts = _day_counts(db, series_id)
+        if not counts:
+            return None
+        days = tuple(d for d, _ in counts)
+        # The newest day is usually partial; open on the newest day that can draw a line.
+        if day in days:
+            chosen_day = day
+        else:
+            chosen_day = next((d for d, n in counts if n > 1), days[0])
+        # Only the chosen day is read: a 15-minute series holds tens of thousands of rows.
+        shown = db.public_values_between(series_id, chosen_day, f"{chosen_day}T99")
+        total_periods = len(shown)
+        table_rows = list(reversed(shown))[:96]
+        table_note = (f"{format_count(total_periods)} intervalos neste dia."
+                      if total_periods else "Sem intervalos neste dia.")
+    else:
+        start = _window_start(row["latest_period"], frequency, window)
+        shown = (db.public_values_between(series_id, start) if start
+                 else db.public_series_values(series_id))
+        total_periods = len(shown)
+        table_rows = list(reversed(shown))[:TABLE_CAP]
+        table_note = (f"A mostrar os {len(table_rows)} períodos mais recentes de "
+                      f"{format_count(len(shown))}." if len(shown) > len(table_rows)
+                      else f"{format_count(len(shown))} períodos.")
+    provenance = db.public_provenance(series_id)
+    revised, unchanged = db.public_revisions(series_id)
+    revisions = []
+    for r in revised[:REVISION_CAP]:
+        revisions.append(RevisionView(
+            period=r["period"], period_text=format_period(r["period"], frequency),
+            versions=tuple(VersionView(value_display=format_value(v["value_text"]),
+                                       status_text=flag_text(lang, v["status_flag"])
+                                       if v["status_flag"] else "",
+                                       fetched_text=format_datetime(v["fetched_at"]),
+                                       served=v["served"]) for v in r["versions"])))
+    derived = []
+    for d in db.public_derived_for_base(series_id):
+        derived.append(DerivedLink(
+            key=d["key"], title=derived_title(lang, d["key"]),
+            unit_text=unit_text(lang, d["unit"]),
+            latest_value_text=d["latest_value_text"],
+            latest_value_display=format_value(d["latest_value_text"])
+            if d["latest_value_text"] is not None else None,
+            latest_period_text=format_period(d["latest_period"], frequency)
+            if d["latest_period"] is not None else None,
+            caveats=tuple(caveat_text(lang, c) for c in d["caveats"])))
+    cross = tuple(CrossCheck(id=c["id"], source_title=source_title(lang, c["source"]),
+                             attribution=c["attribution"],
+                             value_display=format_value(c["latest_value_text"]),
+                             period_text=format_period(c["latest_period"], frequency),
+                             fetched_text=format_datetime(c["latest_fetched_at"]),
+                             status_text=flag_text(lang, c["latest_status_flag"])
+                             if c["latest_status_flag"] else "",
+                             unit_text=base_unit_text(lang, c["unit"]))
+                  for c in db.public_cross_checks(series_id))
+    latest = _value_view({"period": row["latest_period"], "value_text": row["latest_value_text"],
+                          "status_flag": row["latest_status_flag"],
+                          "fetched_at": row["latest_fetched_at"]}, frequency, lang)
+    series = SeriesView(
+        id=row["id"], title=_title(row, lang), family_title=family_title(lang, row["family"]),
+        geography=row["geography"], geography_text=geography_name(lang, row["geography"]),
+        theme=row["theme"], theme_text=theme_text(lang, row["theme"]), frequency=frequency,
+        frequency_text=frequency_text(lang, frequency), unit=row["unit"],
+        unit_text=base_unit_text(lang, row["unit"]),
+        seasonal_text=seasonal_text(lang, row["seasonal_adjustment"])
+        if row["seasonal_adjustment"] else "",
+        base_year=row["base_year"], source=row["source"],
+        source_title=source_title(lang, row["source"]), attribution=row["attribution"],
+        licence=row["licence"], licence_url=row["licence_url"],
+        native_code=row["native_code"], series_url=row["url"], latest=latest)
+    return SeriesDetail(
+        series=series,
+        values=tuple(_value_view(v, frequency, lang) for v in table_rows),
+        chart_points=tuple({"period": v["period"], "value_text": v["value_text"]} for v in shown),
+        provenance=_provenance_view(provenance, frequency, lang) if provenance else None,
+        revisions=tuple(revisions), revised_periods=len(revised), unchanged_periods=unchanged,
+        derived=tuple(derived), cross_checks=cross,
+        window=window if window in ("10", "25") else "max",
+        windows=(("10", "10 anos"), ("25", "25 anos"), ("max", "Máximo")),
+        is_15m=is_15m, days=days, day=chosen_day, total_periods=total_periods,
+        table_note=table_note)
+
+
+@dataclass(frozen=True)
+class InputView:
+    series_id: str
+    title: str
+    period_text: str
+    value_display: str
+
+
+@dataclass(frozen=True)
+class DerivedDetail:
+    key: str
+    title: str
+    frequency: str
+    formula_text: str
+    unit_text: str
+    caveats: tuple[str, ...]
+    latest: ValueView
+    values: tuple[ValueView, ...]
+    chart_points: tuple[dict, ...]
+    base_id: str
+    base_title: str
+    inputs: tuple[InputView, ...]
+    computed_text: str
+    licence: str
+    licence_url: str
+    attribution: str
+    served_count: int
+
+
+def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
+    d = db.public_derived(key)
+    if d is None or d["latest_period"] is None:
+        return None
+    frequency = "M"
+    base = db.public_series(d["base_series_id"])
+    if base is not None:
+        frequency = base["frequency"]
+    _, rows = db.served_derived_rows(key, 1)
+    newest = rows[0] if rows else None
+    values = db.public_derived_values(key)
+    inputs = ()
+    if newest is not None:
+        observed = db.observations_by_ids([i["observation_id"] for i in newest["inputs"]])
+        inputs = tuple(InputView(
+            series_id=i["series_id"],
+            title=series_title(lang, _family_of(base["indicator_key"]),
+                               base["geography"]) if base else i["series_id"],
+            period_text=format_period(i["period"], frequency),
+            value_display=format_value(observed[i["observation_id"]]["value_text"])
+            if i["observation_id"] in observed else "")
+            for i in newest["inputs"])
+    return DerivedDetail(
+        key=key, title=derived_title(lang, key), frequency=frequency,
+        formula_text=describe_formula(lang, d["formula"], d["params"], d["base_series_id"]),
+        unit_text=unit_text(lang, d["unit"]),
+        caveats=tuple(caveat_text(lang, c) for c in d["caveats"]),
+        latest=ValueView(period=d["latest_period"],
+                         period_text=format_period(d["latest_period"], frequency),
+                         value_text=d["latest_value_text"],
+                         value_display=format_value(d["latest_value_text"]), status=None,
+                         status_text="", fetched_at="", fetched_text=""),
+        values=tuple(ValueView(period=v["period"],
+                               period_text=format_period(v["period"], frequency),
+                               value_text=v["value_text"],
+                               value_display=format_value(v["value_text"]), status=None,
+                               status_text="", fetched_at="", fetched_text="")
+                     for v in reversed(values)),
+        chart_points=tuple({"period": v["period"], "value_text": v["value_text"]}
+                           for v in values),
+        base_id=d["base_series_id"],
+        base_title=series_title(lang, _family_of(d["base_indicator_key"]),
+                                d["base_geography"]),
+        inputs=inputs,
+        computed_text=format_datetime(newest["computed_at"]) if newest else "",
+        licence=newest["licence"] if newest else "",
+        licence_url=newest["licence_url"] if newest else "",
+        attribution=calculated_attribution(lang, newest["attribution"]) if newest else "",
+        served_count=d["served_count"])
+
+
+@dataclass(frozen=True)
+class Card:
+    series_id: str
+    href: str
+    label: str
+    title: str
+    value_display: str
+    unit_text: str
+    period_text: str
+    source_title: str
+    fetched_text: str
+    status_text: str
+    derived_title: str | None
+    derived_label: str | None
+    derived_value_display: str | None
+    derived_unit_text: str | None
+    derived_period_text: str | None
+    spark_points: tuple[dict, ...]
+
+
+@dataclass(frozen=True)
+class ThemeCard:
+    code: str
+    title: str
+    blurb: str
+    count: int
+    href: str
+
+
+@dataclass(frozen=True)
+class HomePage:
+    series_count: int
+    source_count: int
+    last_update_text: str
+    last_update_iso: str
+    cards: tuple[Card, ...]
+    themes: tuple[ThemeCard, ...]
+    sources: tuple[str, ...]
+
+
+def home(db: Db, lang: str = "pt") -> HomePage:
+    rows = catalogue(db)
+    by_id = {r["id"]: r for r in rows}
+    counts = db.public_counts()
+    cards = []
+    wanted = [(c["series"], c["label"], c["derived"]) for c in pt.CURATED_HOME]
+    ids = [sid for sid, _, _ in wanted if sid in by_id]
+    latest = db.public_latest_values(ids)
+    for sid, label, derived_key in wanted:
+        row = by_id.get(sid)
+        if row is None or sid not in latest:
+            continue
+        value = latest[sid]
+        badge = db.public_derived(derived_key) if derived_key else None
+        spark = db.public_recent_values(sid, 24)
+        cards.append(Card(
+            series_id=sid, href=f"/series/{sid}", label=label, title=_title(row, lang),
+            value_display=format_value(value["value_text"]),
+            unit_text=base_unit_text(lang, row["unit"]),
+            period_text=format_period(value["period"], row["frequency"]),
+            source_title=source_title(lang, row["source"]),
+            fetched_text=format_date(value["fetched_at"]),
+            status_text=flag_text(lang, value["status_flag"]) if value["status_flag"] else "",
+            derived_title=derived_title(lang, derived_key)
+            if badge and badge["latest_value_text"] is not None else None,
+            derived_label=("Variação homóloga" if badge["formula"].startswith("yoy")
+                           else "Face ao período anterior")
+            if badge and badge["latest_value_text"] is not None else None,
+            derived_value_display=format_value(badge["latest_value_text"])
+            if badge and badge["latest_value_text"] is not None else None,
+            derived_unit_text=unit_text(lang, badge["unit"])
+            if badge and badge["latest_value_text"] is not None else None,
+            derived_period_text=format_period(badge["latest_period"], row["frequency"])
+            if badge and badge["latest_period"] is not None else None,
+            spark_points=tuple({"period": p["period"], "value_text": p["value_text"]}
+                               for p in spark)))
+    themes = tuple(ThemeCard(code=code, title=theme_text(lang, code),
+                             blurb=theme_blurb(lang, code),
+                             count=sum(1 for r in rows if r["theme"] == code),
+                             href=f"/temas/{code}") for code in THEME_ORDER)
+    published = tuple(source_title(lang, s["name"]) for s in db.public_sources()
+                      if s["redistribution_ok"] and s["series"])
+    return HomePage(series_count=counts["series"], source_count=counts["sources"],
+                    last_update_text=format_datetime(counts["last_fetched_at"]),
+                    last_update_iso=counts["last_fetched_at"] or "",
+                    cards=tuple(cards), themes=themes, sources=published)
+
+
+@dataclass(frozen=True)
+class Row:
+    id: str
+    href: str
+    title: str
+    family_title: str
+    geography_text: str
+    frequency_text: str
+    unit_text: str
+    source_title: str
+    value_display: str
+    period_text: str
+    status_text: str
+    fetched_text: str
+
+
+@dataclass(frozen=True)
+class Group:
+    title: str
+    rows: tuple[Row, ...]
+
+
+@dataclass(frozen=True)
+class ThemePage:
+    code: str
+    title: str
+    blurb: str
+    groups: tuple[Group, ...]
+    total: int
+    page: int
+    pages: int
+    group: str
+    source: str
+    frequency: str
+    sources: tuple[tuple[str, str], ...]
+    frequencies: tuple[tuple[str, str], ...]
+    groups_filter: tuple[tuple[str, str], ...] = GROUPS
+
+
+def _row(row: dict, value: dict, lang: str) -> Row:
+    return Row(id=row["id"], href=f"/series/{row['id']}", title=_title(row, lang),
+               family_title=family_title(lang, row["family"]),
+               geography_text=geography_name(lang, row["geography"]),
+               frequency_text=frequency_text(lang, row["frequency"]),
+               unit_text=base_unit_text(lang, row["unit"]),
+               source_title=source_title(lang, row["source"]),
+               value_display=format_value(value["value_text"]),
+               period_text=format_period(value["period"], row["frequency"]),
+               status_text=flag_text(lang, value["status_flag"])
+               if value["status_flag"] else "",
+               fetched_text=format_date(value["fetched_at"]))
+
+
+def theme(db: Db, code: str, *, group: str = "", source: str = "", frequency: str = "",
+          page: int = 1, lang: str = "pt") -> ThemePage | None:
+    if code not in THEME_ORDER:
+        return None
+    rows = [r for r in catalogue(db) if r["theme"] == code]
+    sources = sorted({r["source"] for r in rows})
+    frequencies = sorted({r["frequency"] for r in rows})
+    filtered = [r for r in rows
+                if (not group or _geo_group(r["geography"]) == group)
+                and (not source or r["source"] == source)
+                and (not frequency or r["frequency"] == frequency)]
+    ordered = sorted(filtered, key=lambda r: (family_title(lang, r["family"]),
+                                              geography_name(lang, r["geography"]), r["id"]))
+    pages = max(1, (len(ordered) + PAGE_SIZE - 1) // PAGE_SIZE)
+    page = min(max(1, page), pages)
+    chunk = ordered[(page - 1) * PAGE_SIZE: page * PAGE_SIZE]
+    latest = db.public_latest_values([r["id"] for r in chunk])
+    grouped: dict[str, list[Row]] = {}
+    for r in chunk:
+        if r["id"] not in latest:
+            continue
+        grouped.setdefault(family_title(lang, r["family"]), []).append(_row(r, latest[r["id"]], lang))
+    return ThemePage(
+        code=code, title=theme_text(lang, code), blurb=theme_blurb(lang, code),
+        groups=tuple(Group(title=k, rows=tuple(v)) for k, v in grouped.items()),
+        total=len(ordered), page=page, pages=pages, group=group, source=source,
+        frequency=frequency,
+        sources=tuple((s, source_title(lang, s)) for s in sources),
+        frequencies=tuple((f, frequency_text(lang, f)) for f in frequencies))
+
+
+def _norm(text: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", text.casefold())
+    return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
+
+
+def search(db: Db, query: str, lang: str = "pt") -> tuple[Row, ...]:
+    needle = _norm(query.strip())
+    if not needle:
+        return ()
+    rows = []
+    for r in catalogue(db):
+        haystack = " ".join((_title(r, lang), geography_name(lang, r["geography"]),
+                             source_title(lang, r["source"]), r["id"], r["indicator_key"],
+                             search_aliases(lang, r["family"])))
+        if needle in _norm(haystack):
+            rows.append(r)
+            if len(rows) >= SEARCH_CAP:
+                break
+    latest = db.public_latest_values([r["id"] for r in rows])
+    return tuple(_row(r, latest[r["id"]], lang) for r in rows if r["id"] in latest)
+
+
+@dataclass(frozen=True)
+class SourceView:
+    name: str
+    title: str
+    licence: str
+    licence_url: str
+    attribution: str
+    series: int
+    last_fetched_text: str
+    published: bool
+
+
+@dataclass(frozen=True)
+class SourcesPage:
+    published: tuple[SourceView, ...]
+    withheld: tuple[SourceView, ...]
+
+
+def sources_page(db: Db, lang: str = "pt") -> SourcesPage:
+    published, withheld = [], []
+    for s in db.public_sources():
+        view = SourceView(name=s["name"], title=source_title(lang, s["name"]),
+                          licence=s["licence"], licence_url=s["licence_url"],
+                          attribution=s["attribution"], series=s["series"],
+                          last_fetched_text=format_datetime(s["last_fetched_at"]),
+                          published=s["redistribution_ok"])
+        (published if s["redistribution_ok"] else withheld).append(view)
+    return SourcesPage(published=tuple(published), withheld=tuple(withheld))
+
+
+@dataclass(frozen=True)
+class CsvExport:
+    filename: str
+    header: tuple[str, ...]
+    rows: tuple[tuple[str, ...], ...]
+    footer: tuple[str, ...]
+
+
+def _export_stamp() -> str:
+    from datetime import datetime, timezone
+    return f"{datetime.now(timezone.utc):%d/%m/%Y, %H:%M} UTC"
+
+
+def series_csv(db: Db, series_id: str) -> CsvExport | None:
+    """The served values of one series exactly as stored, with the licence in the footer."""
+    row = db.public_series(series_id)
+    if row is None or row["role"] != "primary":
+        return None
+    values = db.public_series_values(series_id)
+    if not values:
+        return None
+    return CsvExport(
+        filename=f"{series_id}.csv",
+        header=("periodo", "valor", "estado", "recolhido_em"),
+        rows=tuple((v["period"], v["value_text"], v["status_flag"] or "", v["fetched_at"])
+                   for v in values),
+        footer=(f"Série: {series_id}",
+                f"Unidade: {row['unit']}",
+                f"{row['attribution']}",
+                f"Licença: {row['licence']} — {row['licence_url']}",
+                f"Exportado a {_export_stamp()}"))
+
+
+def derived_csv(db: Db, key: str) -> CsvExport | None:
+    """The served values of one calculated series, with its formula and inherited licence."""
+    d = db.public_derived(key)
+    if d is None:
+        return None
+    values = db.public_derived_values(key)
+    _, rows = db.served_derived_rows(key, 1)
+    newest = rows[0] if rows else None
+    return CsvExport(
+        filename=f"{key}.csv",
+        header=("periodo", "valor", "unidade"),
+        rows=tuple((v["period"], v["value_text"], d["unit"]) for v in values),
+        footer=(f"Série calculada: {key}",
+                f"Base: {d['base_series_id']}",
+                describe_formula("pt", d["formula"], d["params"], d["base_series_id"]),
+                f"{newest['attribution']} — Calculado pelo Prumo" if newest else "",
+                f"Licença: {newest['licence']} — {newest['licence_url']}" if newest else "",
+                f"Exportado a {_export_stamp()}"))

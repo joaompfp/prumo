@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} — Prumo{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.title }}
+</nav>
+<header class="page-head">
+  <h1>{{ page.title }}</h1>
+  <p class="lede">{{ page.blurb }}</p>
+  <p class="meta">{{ format_count(page.total) }} séries publicadas nesta secção.</p>
+</header>
+
+<form class="filters" action="{{ base }}/temas/{{ page.code }}" method="get">
+  <label>Geografia
+    <select name="grupo">
+      {% for code, label in page.groups_filter %}<option value="{{ code }}"{% if code == page.group %} selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Fonte
+    <select name="fonte">
+      <option value="">Todas</option>
+      {% for code, label in page.sources %}<option value="{{ code }}"{% if code == page.source %} selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Frequência
+    <select name="frequencia">
+      <option value="">Todas</option>
+      {% for code, label in page.frequencies %}<option value="{{ code }}"{% if code == page.frequency %} selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+  </label>
+  <button type="submit">Aplicar</button>
+</form>
+
+{% if page.groups %}
+{% for group in page.groups %}
+<section class="family" aria-labelledby="fam-{{ loop.index }}">
+  <h2 id="fam-{{ loop.index }}">{{ group.title }}</h2>
+  <table class="data-table">
+    <thead>
+      <tr><th scope="col">Série</th><th scope="col" class="num">Último valor</th><th scope="col">Período</th><th scope="col">Fonte</th><th scope="col">Recolhido</th></tr>
+    </thead>
+    <tbody>
+      {% for row in group.rows %}
+      <tr>
+        <td><a href="{{ base }}{{ row.href }}">{{ row.title }}</a><span class="row-meta">{{ row.geography_text }} · {{ row.frequency_text }}</span></td>
+        <td class="num">{{ row.value_display }} <span class="unit">{{ row.unit_text }}</span>{% if row.status_text %}<span class="flag">{{ row.status_text }}</span>{% endif %}</td>
+        <td>{{ row.period_text }}</td>
+        <td>{{ row.source_title }}</td>
+        <td>{{ row.fetched_text }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endfor %}
+
+<nav class="pager" aria-label="Paginação">
+  {% if page.page > 1 %}
+  <a href="{{ base }}/temas/{{ page.code }}?grupo={{ page.group }}&amp;fonte={{ page.source }}&amp;frequencia={{ page.frequency }}&amp;pagina={{ page.page - 1 }}">Página anterior</a>
+  {% endif %}
+  <span>Página {{ page.page }} de {{ page.pages }}</span>
+  {% if page.page < page.pages %}
+  <a href="{{ base }}/temas/{{ page.code }}?grupo={{ page.group }}&amp;fonte={{ page.source }}&amp;frequencia={{ page.frequency }}&amp;pagina={{ page.page + 1 }}">Página seguinte</a>
+  {% endif %}
+</nav>
+{% else %}
+<p class="empty-state">Nenhuma série corresponde a estes filtros. <a href="{{ base }}/temas/{{ page.code }}">Limpar filtros</a>.</p>
+{% endif %}
+{% endblock %}

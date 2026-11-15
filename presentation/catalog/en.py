@@ -63,3 +63,19 @@ TITLES = {
     "derived.unit_labour_cost_hour.PT.rebase_100":
         "Unit labour cost per hour — rebased index (2015 = 100)",
 }
+
+# --- base-series catalogue (project 4) -------------------------------------------------------
+# The English edition is not shipped in v1: the tables exist so a render in `en` fails with
+# MissingText (a clean refusal) instead of AttributeError. Populate with the PT review.
+FAMILIES: dict[str, str] = {}
+SELF_LOCATING_FAMILIES: frozenset[str] = frozenset()
+GEOGRAPHIES: dict[str, str] = {}
+BASE_UNITS: dict[str, str] = {}
+FLAGS: dict[str, str] = {}
+THEMES: dict[str, str] = {}
+THEME_BLURBS: dict[str, str] = {}
+FREQUENCIES: dict[str, str] = {}
+SEASONAL: dict[str, str] = {}
+SOURCE_TITLES: dict[str, str] = {}
+CURATED_HOME: list[dict] = []
+SEARCH_ALIASES: dict[str, str] = {}

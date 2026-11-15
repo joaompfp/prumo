@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Prumo — estatísticas oficiais com proveniência{% endblock %}</title>
+<meta name="description" content="Estatísticas oficiais de Portugal, da Europa e do mundo, cada valor ligado à publicação original e à data em que foi recolhido e verificado.">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="{{ base }}/static/images/prumo/favicon.svg">
+<link rel="stylesheet" href="{{ base }}/static/css/prumo.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="{{ base }}/">
+      <img class="brand-icon" src="{{ base }}/static/images/prumo/favicon.svg" alt="" width="28" height="28">
+      <span class="brand-name">Prumo</span>
+    </a>
+    <nav class="site-nav" aria-label="Secções">
+      {% for href, label in nav %}
+      <a href="{{ base }}{{ href }}"{% if path == href or (href != '/' and path.startswith(href)) %} aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
+    </nav>
+    <form class="search" action="{{ base }}/pesquisa" method="get" role="search">
+      <label class="sr-only" for="q">Pesquisar séries</label>
+      <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
+      <button type="submit">Procurar</button>
+    </form>
+  </div>
+</header>
+<main id="conteudo" class="wrap">
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <p><strong>Prumo</strong> publica números de instituições oficiais com a proveniência à vista. Sem cookies, sem rastreio, sem publicidade.</p>
+    <p class="footer-links"><a href="{{ base }}/fontes">Fontes e licenças</a> · <a href="{{ base }}/metodologia">Metodologia</a> · <a href="{{ base }}/pesquisa">Pesquisar</a></p>
+  </div>
+</footer>
+</body>
+</html>

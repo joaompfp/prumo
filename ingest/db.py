@@ -82,6 +82,13 @@ def _origin(kind: str) -> str:
     return "legacy" if kind == "legacy-unverified" else "fetched"
 
 
+def _family_of(indicator_key: str) -> str:
+    """The indicator family: the key without its trailing geography and frequency parts.
+    `consumer_confidence.AT.M` -> `consumer_confidence`; a two-part key stays whole."""
+    parts = indicator_key.split(".")
+    return ".".join(parts[:-2]) if len(parts) >= 3 else indicator_key
+
+
 class Db:
     def __init__(self, conn: sqlite3.Connection, *, immutable: bool = False):
         self.conn = conn
@@ -1087,6 +1094,269 @@ class Db:
 
     def close(self) -> None:
         self.conn.close()
+
+    # --- public site reads (project 4) ---------------------------------------------------------
+    # Read-only, plain dicts, numbers exactly as stored (value_text). Only redistributable
+    # sources appear: served_observation and served_derived already gate the licence.
+
+    def public_counts(self) -> dict:
+        """Headline counts for the home page: served primary series, publishing sources and the
+        newest verified receipt. Built from small aggregates (series, dataset_run, raw_fetch);
+        a global COUNT over the serving view costs seconds and is never used here."""
+        per_source = dict(self.conn.execute(
+            "SELECT s.source_id, COUNT(*) FROM series s JOIN source p ON p.id = s.source_id "
+            "WHERE s.active = 1 AND s.role = 'primary' AND p.redistribution_ok = 1 "
+            "AND EXISTS (SELECT 1 FROM observation o JOIN dataset_run r "
+            "            ON r.id = o.dataset_run_id WHERE o.series_id = s.id "
+            "            AND o.kind = 'fetched' AND r.state = 'verified') GROUP BY s.source_id"
+        ).fetchall())
+        last = self.conn.execute(
+            "SELECT MAX(f.fetched_at) FROM raw_fetch f JOIN dataset_run r "
+            "ON r.id = f.dataset_run_id WHERE r.state = 'verified'").fetchone()[0]
+        return {"series": sum(per_source.values()),
+                "sources": len(per_source),
+                "last_fetched_at": last}
+
+    def public_catalogue(self) -> list[dict]:
+        """Every served primary series (metadata only, no value), ordered by series id.
+        Latest values are fetched for the visible rows through `public_latest_values`: a
+        global join over the serving view costs seconds, a 50-id loop costs milliseconds."""
+        keys = ("id", "indicator_key", "geography", "theme", "frequency", "unit", "multiplier",
+                "seasonal_adjustment", "base_year", "native_code", "url", "role", "source")
+        rows = self.conn.execute(
+            "SELECT s.id, s.indicator_key, s.geography, s.theme, s.frequency, s.unit, "
+            "s.multiplier, s.seasonal_adjustment, s.base_year, s.native_code, s.url, s.role, "
+            "p.name FROM series s JOIN source p ON p.id = s.source_id "
+            "WHERE s.active = 1 AND s.role = 'primary' AND p.redistribution_ok = 1 "
+            "AND EXISTS (SELECT 1 FROM observation o JOIN dataset_run r "
+            "            ON r.id = o.dataset_run_id WHERE o.series_id = s.id "
+            "            AND o.kind = 'fetched' AND r.state = 'verified') ORDER BY s.id").fetchall()
+        return [dict(zip(keys, r)) | {"family": _family_of(r[1])} for r in rows]
+
+    def public_latest_values(self, series_ids: list[str]) -> dict[str, dict]:
+        """Newest served row of each requested series (id -> period/value/flag/fetched_at).
+        One indexed lookup per id: the IN-list form makes SQLite evaluate the view per row and
+        is two orders of magnitude slower. Missing ids are absent from the result."""
+        sql = ("SELECT period, value_text, status_flag, fetched_at FROM served_observation "
+               "WHERE series_id = ? AND id = (SELECT w.id FROM served_observation w "
+               "WHERE w.series_id = ? ORDER BY w.period DESC LIMIT 1)")
+        keys = ("period", "value_text", "status_flag", "fetched_at")
+        out: dict[str, dict] = {}
+        for sid in series_ids:
+            row = self.conn.execute(sql, (sid, sid)).fetchone()
+            if row is not None:
+                out[sid] = dict(zip(keys, row))
+        return out
+
+    def public_series(self, series_id: str) -> dict | None:
+        """One series with source text and its newest served value; None when the series does
+        not exist, is inactive, or its source is not redistributable. `role` is returned so the
+        caller can refuse a cross-check entry."""
+        keys = ("id", "indicator_key", "geography", "theme", "frequency", "unit", "multiplier",
+                "base_year", "seasonal_adjustment", "native_code", "url", "role", "source",
+                "latest_period", "latest_value_text", "latest_status_flag", "latest_fetched_at",
+                "attribution", "licence", "licence_url")
+        sql = ("SELECT s.id, s.indicator_key, s.geography, s.theme, s.frequency, s.unit, "
+               "s.multiplier, s.base_year, s.seasonal_adjustment, s.native_code, s.url, s.role, "
+               "p.name, o.period, o.value_text, o.status_flag, o.fetched_at, "
+               "p.attribution, p.licence, p.licence_url "
+               "FROM series s JOIN source p ON p.id = s.source_id "
+               "JOIN served_observation o ON o.id = (SELECT w.id FROM served_observation w "
+               "WHERE w.series_id = s.id ORDER BY w.period DESC LIMIT 1) "
+               "WHERE s.id = ? AND s.active = 1 AND p.redistribution_ok = 1")
+        row = self.conn.execute(sql, (series_id,)).fetchone()
+        return dict(zip(keys, row)) | {"family": _family_of(row[1])} if row else None
+
+    def public_series_values(self, series_id: str) -> list[dict]:
+        """All served values of one series, oldest period first, with the payload hash of each
+        fetched row. No cap here: the caller slices a window for display."""
+        keys = ("period", "value_text", "status_flag", "fetched_at", "run_id", "raw_sha")
+        rows = self.conn.execute(
+            "SELECT o.period, o.value_text, o.status_flag, o.fetched_at, o.dataset_run_id, "
+            "f.sha256 FROM served_observation o LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
+            "WHERE o.series_id = ? ORDER BY o.period", (series_id,)).fetchall()
+        return [dict(zip(keys, r)) for r in rows]
+
+    def public_recent_values(self, series_id: str, limit: int) -> list[dict]:
+        """The newest `limit` served values, oldest period first (card sparklines). Reads the
+        tail through the period index instead of materialising the whole history."""
+        keys = ("period", "value_text", "status_flag", "fetched_at", "run_id", "raw_sha")
+        rows = self.conn.execute(
+            "SELECT o.period, o.value_text, o.status_flag, o.fetched_at, o.dataset_run_id, "
+            "f.sha256 FROM served_observation o LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
+            "WHERE o.series_id = ? ORDER BY o.period DESC LIMIT ?", (series_id, limit)).fetchall()
+        return [dict(zip(keys, r)) for r in reversed(rows)]
+
+    def public_values_between(self, series_id: str, start: str,
+                              end: str | None = None) -> list[dict]:
+        """Served values from `start` (inclusive) to `end` (inclusive), oldest first. One index
+        range instead of the whole history, so a 15-minute series reads a day, not 65k rows."""
+        keys = ("period", "value_text", "status_flag", "fetched_at", "run_id", "raw_sha")
+        sql = ("SELECT o.period, o.value_text, o.status_flag, o.fetched_at, o.dataset_run_id, "
+               "f.sha256 FROM served_observation o LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
+               "WHERE o.series_id = ? AND o.period >= ?")
+        params: list[str] = [series_id, start]
+        if end is not None:
+            sql += " AND o.period <= ?"
+            params.append(end)
+        rows = self.conn.execute(sql + " ORDER BY o.period", params).fetchall()
+        return [dict(zip(keys, r)) for r in rows]
+
+    def public_day_counts(self, series_id: str) -> tuple[tuple[str, int], ...]:
+        """Each UTC day a series publishes with its interval count, newest first. The picker of
+        a 15-minute series needs the counts: the newest day is often partial."""
+        rows = self.conn.execute(
+            "SELECT substr(period, 1, 10) AS day, COUNT(*) FROM served_observation "
+            "WHERE series_id = ? GROUP BY day ORDER BY day DESC", (series_id,)).fetchall()
+        return tuple((r[0], r[1]) for r in rows)
+
+    def public_provenance(self, series_id: str) -> dict | None:
+        """The receipt, run and verification behind one series' newest served value. `sampled`
+        says whether THIS value was one of the independently checked items (not whether the
+        dataset was verified)."""
+        keys = ("period", "value_text", "fetched_at", "run_id", "run_started_at",
+                "run_finished_at", "run_state", "raw_url", "raw_fetched_at", "http_status",
+                "sha256", "bytes", "verification_id", "verification_created_at", "sample_size",
+                "verification_passed", "sample_procedure", "verifier_channel", "sampled",
+                "native_code", "series_url", "licence", "licence_url", "attribution")
+        row = self.conn.execute(
+            "SELECT o.period, o.value_text, o.fetched_at, o.dataset_run_id, r.started_at, "
+            "r.finished_at, r.state, f.url, f.fetched_at, f.http_status, f.sha256, f.bytes, "
+            "v.id, v.created_at, v.sample_size, v.passed, v.sample_procedure, v.verifier_channel, "
+            "EXISTS (SELECT 1 FROM verification_item i WHERE i.verification_id = v.id "
+            "        AND i.series_id = o.series_id AND i.period = o.period), "
+            "s.native_code, s.url, p.licence, p.licence_url, p.attribution "
+            "FROM served_observation o JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
+            "LEFT JOIN verification v ON v.dataset_run_id = o.dataset_run_id "
+            "JOIN series s ON s.id = o.series_id JOIN source p ON p.id = s.source_id "
+            "WHERE o.series_id = ? ORDER BY o.period DESC LIMIT 1", (series_id,)).fetchone()
+        return dict(zip(keys, row)) if row else None
+
+    def public_revisions(self, series_id: str) -> tuple[list[dict], int]:
+        """(periods whose published value or flag changed at least once, count of periods with
+        no change). Re-fetches of an unchanged value are not revisions: only a different
+        value_text or status_flag counts, and consecutive identical vintages collapse to the
+        first. The last kept version of a changed period is marked `served` when the site
+        serves that period. Failed, pending and withdrawn runs are never published history."""
+        rows = self.conn.execute(
+            "WITH verified AS (SELECT o.id, o.period, o.value_text, o.status_flag, o.fetched_at, "
+            "                         o.dataset_run_id "
+            "                  FROM observation o JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "                  WHERE o.series_id = ? AND o.kind = 'fetched' "
+            "                    AND r.state = 'verified'), "
+            "     changed AS (SELECT period FROM verified GROUP BY period "
+            "                 HAVING COUNT(DISTINCT value_text || char(31) || "
+            "                                COALESCE(status_flag, '')) > 1) "
+            "SELECT period, value_text, status_flag, fetched_at, dataset_run_id, "
+            "       EXISTS (SELECT 1 FROM served_observation so WHERE so.id = verified.id) "
+            "FROM verified WHERE period IN (SELECT period FROM changed) "
+            "ORDER BY period DESC, fetched_at, id", (series_id,)).fetchall()
+        grouped: dict[str, list[dict]] = {}
+        served: set[str] = set()
+        for period, value, flag, fetched_at, run_id, is_served in rows:
+            versions = grouped.setdefault(period, [])
+            if not versions or (versions[-1]["value_text"], versions[-1]["status_flag"]) != (value, flag):
+                versions.append({"value_text": value, "status_flag": flag,
+                                 "fetched_at": fetched_at, "run_id": run_id, "served": False})
+            if is_served:
+                served.add(period)
+        for period, versions in grouped.items():
+            if period in served:
+                versions[-1]["served"] = True
+        total = self.conn.execute(
+            "SELECT COUNT(DISTINCT o.period) FROM observation o "
+            "JOIN dataset_run r ON r.id = o.dataset_run_id "
+            "WHERE o.series_id = ? AND o.kind = 'fetched' AND r.state = 'verified'",
+            (series_id,)).fetchone()[0]
+        return ([{"period": p, "versions": grouped[p]} for p in grouped], total - len(grouped))
+
+    def public_derived_for_base(self, series_id: str) -> list[dict]:
+        """Active calculated series computed from this base, with their newest served value
+        (None when a declared series has no served value yet)."""
+        keys = ("key", "formula", "unit", "caveats", "latest_period", "latest_value_text")
+        rows = self.conn.execute(
+            "SELECT ds.key, ds.formula, ds.unit, ds.caveats_json, "
+            "(SELECT sd.period FROM served_derived sd WHERE sd.derived_key = ds.key "
+            " ORDER BY sd.period DESC LIMIT 1), "
+            "(SELECT sd.value_text FROM served_derived sd WHERE sd.derived_key = ds.key "
+            " ORDER BY sd.period DESC LIMIT 1) "
+            "FROM derived_series ds WHERE ds.base_series_id = ? AND ds.active = 1 "
+            "ORDER BY ds.key", (series_id,)).fetchall()
+        return [dict(zip(keys, r)) | {"caveats": json.loads(r[3])} for r in rows]
+
+    def public_derived(self, key: str) -> dict | None:
+        """One calculated series' definition and its newest served value."""
+        keys = ("key", "formula", "base_series_id", "params", "unit", "caveats", "active",
+                "served_count", "latest_period", "latest_value_text", "base_indicator_key",
+                "base_geography", "base_source", "base_attribution")
+        row = self.conn.execute(
+            "SELECT ds.key, ds.formula, ds.base_series_id, ds.params_json, ds.unit, "
+            "ds.caveats_json, ds.active, "
+            "(SELECT COUNT(*) FROM served_derived sd WHERE sd.derived_key = ds.key), "
+            "(SELECT sd.period FROM served_derived sd WHERE sd.derived_key = ds.key "
+            " ORDER BY sd.period DESC LIMIT 1), "
+            "(SELECT sd.value_text FROM served_derived sd WHERE sd.derived_key = ds.key "
+            " ORDER BY sd.period DESC LIMIT 1), "
+            "b.indicator_key, b.geography, p.name, p.attribution "
+            "FROM derived_series ds JOIN series b ON b.id = ds.base_series_id "
+            "JOIN source p ON p.id = b.source_id WHERE ds.key = ? AND ds.active = 1",
+            (key,)).fetchone()
+        if row is None:
+            return None
+        out = dict(zip(keys[:7], row[:7]))
+        out["params"] = json.loads(row[3])
+        out["caveats"] = json.loads(row[5])
+        for name, value in zip(keys[7:], row[7:]):
+            out[name] = value
+        return out
+
+    def public_derived_values(self, key: str) -> list[dict]:
+        """All served values of one calculated series, oldest period first."""
+        keys = ("period", "value_text", "computed_at", "run_id", "scale")
+        rows = self.conn.execute(
+            "SELECT period, value_text, computed_at, derived_run_id, scale FROM served_derived "
+            "WHERE derived_key = ? ORDER BY period", (key,)).fetchall()
+        return [dict(zip(keys, r)) for r in rows]
+
+    def public_cross_checks(self, series_id: str) -> list[dict]:
+        """Other publishers' series with the same indicator key, served and active, shown as
+        cross-checks and never as catalogue entries."""
+        keys = ("id", "source", "attribution", "unit", "latest_period", "latest_value_text",
+                "latest_status_flag", "latest_fetched_at")
+        rows = self.conn.execute(
+            "SELECT s2.id, p.name, p.attribution, s2.unit, o.period, o.value_text, "
+            "o.status_flag, o.fetched_at "
+            "FROM series s1 JOIN series s2 ON s2.indicator_key = s1.indicator_key "
+            "AND s2.id <> s1.id AND s2.active = 1 AND s2.role = 'cross_check' "
+            "JOIN source p ON p.id = s2.source_id AND p.redistribution_ok = 1 "
+            "JOIN served_observation o ON o.id = (SELECT w.id FROM served_observation w "
+            "WHERE w.series_id = s2.id ORDER BY w.period DESC LIMIT 1) "
+            "WHERE s1.id = ? ORDER BY s2.id", (series_id,)).fetchall()
+        return [dict(zip(keys, r)) for r in rows]
+
+    def public_sources(self) -> list[dict]:
+        """Every source with its licence and counts. Withheld sources have series 0 and no
+        last receipt: the site names them without publishing a value. Two small aggregates
+        over series/dataset_run/raw_fetch replace per-source scans of the serving view."""
+        sources = self.conn.execute(
+            "SELECT id, name, licence, licence_url, attribution, redistribution_ok "
+            "FROM source ORDER BY redistribution_ok DESC, name").fetchall()
+        counts = dict(self.conn.execute(
+            "SELECT s.source_id, COUNT(*) FROM series s JOIN source p ON p.id = s.source_id "
+            "WHERE s.active = 1 AND s.role = 'primary' AND p.redistribution_ok = 1 "
+            "AND EXISTS (SELECT 1 FROM observation o JOIN dataset_run r "
+            "            ON r.id = o.dataset_run_id WHERE o.series_id = s.id "
+            "            AND o.kind = 'fetched' AND r.state = 'verified') GROUP BY s.source_id"
+        ).fetchall())
+        last = dict(self.conn.execute(
+            "SELECT r.source_id, MAX(f.fetched_at) FROM raw_fetch f "
+            "JOIN dataset_run r ON r.id = f.dataset_run_id "
+            "WHERE r.state = 'verified' GROUP BY r.source_id").fetchall())
+        return [{"name": name, "licence": licence, "licence_url": url,
+                 "attribution": attribution, "redistribution_ok": bool(ok),
+                 "series": counts.get(sid, 0), "last_fetched_at": last.get(sid)}
+                for sid, name, licence, url, attribution, ok in sources]
 
 
 def _migrate(conn: sqlite3.Connection) -> None:

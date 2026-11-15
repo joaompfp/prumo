@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Prumo — estatísticas oficiais com proveniência{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">Dados oficiais · proveniência verificada</p>
+  <h1>Estatísticas oficiais, com a proveniência à vista.</h1>
+  <p class="lede">{{ format_count(page.series_count) }} séries de {{ page.source_count }} instituições. Cada valor liga à publicação original, à data em que foi recolhido e à verificação independente que o acompanhou.</p>
+  <p class="hero-actions"><a class="button" href="{{ base }}/temas/economy">Explorar os dados</a> <a class="button-quiet" href="{{ base }}/metodologia">Como verificamos</a></p>
+  <p class="freshness"><span class="dot" aria-hidden="true"></span>Última recolha verificada: {{ page.last_update_text }}</p>
+</section>
+
+<section aria-labelledby="destaques">
+  <div class="section-head">
+    <h2 id="destaques">Números em destaque</h2>
+    <p class="section-note">Portugal. Valores publicados tal como a fonte os publica.</p>
+  </div>
+  <div class="cards">
+    {% for card in page.cards %}
+    <article class="card">
+      <p class="card-label">{{ card.label }}</p>
+      <p class="card-value">{{ card.value_display }} <span class="card-unit">{{ card.unit_text }}</span></p>
+      <p class="card-period">{{ card.period_text }}</p>
+      <p class="card-tags">{% if card.status_text %}<span class="flag">{{ card.status_text }}</span>{% endif %}{% if card.derived_value_display %}<span class="badge">Calculado</span>{% endif %}</p>
+      {% if card.derived_value_display %}
+      <p class="calc-line">{{ card.derived_label }}: {{ card.derived_value_display }} {{ card.derived_unit_text }} <span class="calc-period">{{ card.derived_period_text }}</span></p>
+      {% endif %}
+      <div class="card-spark">{{ spark(card.spark_points) }}</div>
+      <p class="card-source">{{ card.source_title }} · recolhido a {{ card.fetched_text }}</p>
+      <a class="card-link" href="{{ base }}{{ card.href }}">Série e proveniência</a>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section aria-labelledby="temas">
+  <div class="section-head">
+    <h2 id="temas">Temas</h2>
+    <p class="section-note">Todo o catálogo, por assunto.</p>
+  </div>
+  <div class="themes">
+    {% for theme in page.themes %}
+    <a class="theme-card" href="{{ base }}{{ theme.href }}">
+      <span class="theme-title">{{ theme.title }}</span>
+      <span class="theme-blurb">{{ theme.blurb }}</span>
+      <span class="theme-count">{{ format_count(theme.count) }} séries</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="method-strip" aria-labelledby="verificacao">
+  <div class="section-head">
+    <h2 id="verificacao">A cadeia de verificação</h2>
+  </div>
+  <ol class="steps">
+    <li><strong>Recolha.</strong> O ficheiro original é guardado intacto, com o endereço, a hora e o resumo criptográfico.</li>
+    <li><strong>Validação.</strong> Unidade, período, sinal e duplicados são verificados antes de qualquer valor ser aceite.</li>
+    <li><strong>Verificação independente.</strong> Uma amostra aleatória é comparada com outra via da mesma instituição, exigindo 100% de coincidência.</li>
+  </ol>
+  <p><a href="{{ base }}/metodologia">Ler a metodologia completa</a></p>
+</section>
+
+<section aria-labelledby="fontes">
+  <div class="section-head">
+    <h2 id="fontes">Instituições publicadas</h2>
+  </div>
+  <p class="sources-strip">{{ page.sources|join(' · ') }}</p>
+  <p class="section-note"><a href="{{ base }}/fontes">Licenças, atribuições e fontes em avaliação</a></p>
+</section>
+{% endblock %}

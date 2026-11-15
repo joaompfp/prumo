@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} — Prumo{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/series/{{ page.base_id }}">{{ page.base_title }}</a> <span aria-hidden="true">/</span> Calculada
+</nav>
+<header class="page-head">
+  <p class="eyebrow"><span class="badge">Calculado pelo Prumo</span></p>
+  <h1>{{ page.title }}</h1>
+  <p class="meta">Calculada a partir de <a href="{{ base }}/series/{{ page.base_id }}">{{ page.base_title }}</a> · unidade: {{ page.unit_text }}</p>
+</header>
+
+<section class="figure-block" aria-label="Valor mais recente">
+  <p class="figure-value">{{ page.latest.value_display }} <span class="figure-unit">{{ page.unit_text }}</span></p>
+  <p class="figure-period">{{ page.latest.period_text }}</p>
+  <p class="figure-source">Valor calculado, não publicado pelo editor.</p>
+</section>
+
+<section class="formula" aria-labelledby="formula">
+  <h2 id="formula">Como é calculado</h2>
+  <p>{{ page.formula_text }}</p>
+  <p class="note">O cálculo usa exatamente os valores publicados que aparecem abaixo. Qualquer pessoa pode refazê-lo.</p>
+</section>
+
+<section class="chart-section" aria-labelledby="grafico">
+  <div class="section-head"><h2 id="grafico">Série calculada</h2></div>
+  <figure class="chart-figure">
+    {{ chart(page.chart_points, frequency=page.frequency, title=page.title, unit=page.unit_text) }}
+    <figcaption>{{ page.title }}. Calculado pelo Prumo a partir de {{ page.base_title }}.</figcaption>
+  </figure>
+  <details class="table-details">
+    <summary>Ver tabela de valores</summary>
+    <table class="data-table">
+      <thead><tr><th scope="col">Período</th><th scope="col" class="num">Valor</th></tr></thead>
+      <tbody>{% for v in page.values %}<tr><td>{{ v.period_text }}</td><td class="num">{{ v.value_display }}</td></tr>{% endfor %}</tbody>
+    </table>
+  </details>
+  <p class="download"><a href="{{ base }}/calculadas/{{ page.key }}.csv">Descarregar CSV</a></p>
+</section>
+
+<section aria-labelledby="entradas">
+  <div class="section-head">
+    <h2 id="entradas">Valores usados no último cálculo</h2>
+  </div>
+  <table class="data-table">
+    <thead><tr><th scope="col">Série</th><th scope="col">Período</th><th scope="col" class="num">Valor</th></tr></thead>
+    <tbody>
+      {% for i in page.inputs %}
+      <tr><td><a href="{{ base }}/series/{{ i.series_id }}">{{ i.title }}</a></td><td>{{ i.period_text }}</td><td class="num">{{ i.value_display }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% if page.caveats %}
+<section aria-labelledby="ressalvas">
+  <h2 id="ressalvas">Ressalvas</h2>
+  {% for c in page.caveats %}<p class="caveat">{{ c }}</p>{% endfor %}
+</section>
+{% endif %}
+
+<section class="provenance" aria-labelledby="proveniencia">
+  <div class="section-head"><h2 id="proveniencia">Proveniência</h2></div>
+  <dl class="provenance-list">
+    <dt>Calculada a partir de</dt><dd><a href="{{ base }}/series/{{ page.base_id }}">{{ page.base_title }}</a></dd>
+    <dt>Calculado em</dt><dd>{{ page.computed_text }}</dd>
+    <dt>Atribuição</dt><dd>{{ page.attribution }}</dd>
+    <dt>Licença</dt><dd>{{ page.licence }}{% if page.licence_url and page.licence_url.startswith('https://') %} · <a href="{{ page.licence_url }}" rel="noopener noreferrer">termos</a>{% endif %}</dd>
+    <dt>Chave</dt><dd><code>{{ page.key }}</code></dd>
+  </dl>
+</section>
+{% endblock %}

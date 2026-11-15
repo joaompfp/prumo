@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Página não encontrada — Prumo{% endblock %}
+{% block content %}
+<section class="hero error-page">
+  <h1>Página não encontrada</h1>
+  <p class="lede">O endereço não corresponde a nenhuma série publicada. Pode ter sido retirado, estar reservado a uma fonte sem autorização de publicação, ou conter um erro.</p>
+  <p><a href="{{ base }}/">Voltar ao início</a> · <a href="{{ base }}/pesquisa">Pesquisar séries</a></p>
+</section>
+{% endblock %}

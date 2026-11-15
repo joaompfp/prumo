@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Metodologia — Prumo{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Metodologia</h1>
+  <p class="lede">O que o Prumo faz, como cada número é recolhido e verificado, e o que deliberadamente não faz.</p>
+</header>
+
+<section aria-labelledby="oque">
+  <h2 id="oque">O que é o Prumo</h2>
+  <p>O Prumo reúne estatísticas oficiais sobre a economia, a demografia e a energia de Portugal, da Europa e do mundo. A promessa é simples: cada número apresentado é um número que uma instituição publicou, ligado à publicação original, à data em que foi recolhido e à verificação que o acompanhou.</p>
+  <p>Não há estimativas próprias, interpolações, previsões nem comentário automático. Quando um valor é calculado pelo Prumo, está identificado como tal e pode ser refeito a partir dos valores publicados que o compõem.</p>
+</section>
+
+<section aria-labelledby="fontes">
+  <h2 id="fontes">De onde vêm os dados</h2>
+  <p>Cada indicador tem uma única fonte primária: a instituição mais próxima da origem e de maior autoridade para o publicar. Os dados portugueses vêm de instituições portuguesas — INE, Banco de Portugal, E-REDES — e os dados europeus e mundiais do Eurostat e do Banco Mundial. Outras publicações do mesmo indicador são usadas apenas como verificação cruzada e nunca substituem a fonte primária.</p>
+  <p>A lista completa, com licenças e atribuições, está em <a href="{{ base }}/fontes">Fontes e licenças</a>.</p>
+</section>
+
+<section aria-labelledby="recolha">
+  <h2 id="recolha">Recolha</h2>
+  <p>O ficheiro devolvido pelo editor é guardado intacto, com o endereço exato, a hora da recolha, o estado HTTP e um resumo criptográfico (SHA-256). A base de dados é construída a partir desse ficheiro, não de valores copiados à mão. Se o editor mudar o formato, a recolha falha e o valor anterior mantém-se; uma falha nunca apaga um valor bom.</p>
+</section>
+
+<section aria-labelledby="validacao">
+  <h2 id="validacao">Validação</h2>
+  <p>Antes de qualquer valor ser aceite, são verificados o esquema do ficheiro, a unidade, o formato do período, o intervalo plausível, os duplicados e os sinais de estado publicados pelo editor. Uma linha que não passa fica em quarentena com o motivo registado, e não é publicada.</p>
+</section>
+
+<section aria-labelledby="verificacao">
+  <h2 id="verificacao">Verificação independente</h2>
+  <p>Passar a validação não chega. Depois de cada conjunto de dados ser recolhido, uma amostra aleatória de valores é comparada com o mesmo editor através de uma via diferente da usada na recolha — outra tabela, outro formato ou outro ponto de acesso —, sem partilhar o código que interpretou o ficheiro original. A comparação exige 100% de coincidência em valor, unidade, período e estado.</p>
+  <p>A amostra, a semente aleatória e a evidência usada em cada comparação ficam guardadas, para que a verificação possa ser repetida por outra pessoa. Se um valor não coincidir, o conjunto não é publicado e é recolhido e verificado de novo. Na página de cada série, a secção «Proveniência» diz a data da verificação, o tamanho da amostra e se aquele valor em concreto foi um dos comparados.</p>
+</section>
+
+<section aria-labelledby="revisoes">
+  <h2 id="revisoes">Revisões e histórico</h2>
+  <p>Um valor revisto pelo editor nunca substitui o anterior sem rasto. Cada recolha guarda uma versão; a página da série mostra os períodos cujo valor mudou, com o valor anterior, o novo e as datas de cada recolha. A versão em vigor está assinalada. É assim possível responder à pergunta «que valor mostrávamos nesta data, e porquê».</p>
+</section>
+
+<section aria-labelledby="precisao">
+  <h2 id="precisao">Precisão, unidades e arredondamento</h2>
+  <p>O Prumo guarda e mostra o número tal como o editor o publicou, com a mesma precisão e a mesma unidade. Não há arredondamento, conversão de unidades nem mudança de escala. Nos gráficos, apenas as marcas do eixo são arredondadas para leitura; os valores em texto e nas tabelas mantêm a precisão original.</p>
+</section>
+
+<section aria-labelledby="estados">
+  <h2 id="estados">Estados e ressalvas</h2>
+  <p>Quando o editor marca um valor como provisório, estimado ou assinala uma quebra de série, essa marca aparece junto ao valor. Nos valores calculados, uma ressalva explica quando o cálculo usa uma base ajustada de sazonalidade ou montantes em saldo e, por isso, não corresponde à taxa oficial do editor.</p>
+</section>
+
+<section aria-labelledby="calculados">
+  <h2 id="calculados">Valores calculados</h2>
+  <p>As variações homólogas, as variações face ao período anterior e os índices rebaseados são calculados com aritmética decimal exata a partir de valores já publicados e verificados. Cada valor calculado leva a marca «Calculado pelo Prumo», indica a fórmula, a série base e os valores exatos usados, e é recalculado por uma segunda implementação independente. Se as duas não coincidirem, o valor não é publicado.</p>
+</section>
+
+<section aria-labelledby="licencas">
+  <h2 id="licencas">Licenças e reutilização</h2>
+  <p>Cada série indica a licença e a atribuição da instituição que a publica. O Prumo só publica valores de fontes cujos termos permitem a redistribuição. As instituições cujos termos estão em avaliação são nomeadas em <a href="{{ base }}/fontes">Fontes e licenças</a>, sem que nenhum dos seus valores seja mostrado.</p>
+</section>
+
+<section aria-labelledby="naofaz">
+  <h2 id="naofaz">O que o Prumo não faz</h2>
+  <ul class="plain-list">
+    <li>Não prevê, não interpola e não preenche lacunas.</li>
+    <li>Não converte unidades nem arredonda valores publicados.</li>
+    <li>Não apresenta comentário automático nem pontuações compostas.</li>
+    <li>Não usa cookies, rastreio ou publicidade.</li>
+    <li>Não esconde uma fonte em avaliação: nomeia-a e explica porque não publica os seus valores.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="faq">
+  <h2 id="faq">Perguntas frequentes</h2>
+  <details>
+    <summary>Porque é que o valor do Prumo pode diferir de uma notícia?</summary>
+    <p>Porque a notícia pode citar outro período, outra série (por exemplo, ajustada de sazonalidade) ou outro editor. A página da série mostra a unidade, o período e a fonte exata do valor apresentado.</p>
+  </details>
+  <details>
+    <summary>Com que frequência os dados são atualizados?</summary>
+    <p>Cada fonte é recolhida segundo o seu calendário de publicação. A data da última recolha aparece na página da série e em <a href="{{ base }}/fontes">Fontes e licenças</a>. Uma falha de recolha é visível: o valor anterior mantém-se com a data em que foi obtido.</p>
+  </details>
+  <details>
+    <summary>Posso reutilizar os dados?</summary>
+    <p>Depende da licença de cada fonte, indicada em cada série e em <a href="{{ base }}/fontes">Fontes e licenças</a>. A atribuição ao editor original é obrigatória; nos valores calculados, acresce a menção «Calculado pelo Prumo».</p>
+  </details>
+  <details>
+    <summary>O que significa «Calculado»?</summary>
+    <p>Que o número não foi publicado por nenhuma instituição: resulta de aritmética declarada sobre valores publicados. A fórmula e os valores usados estão sempre à vista.</p>
+  </details>
+  <details>
+    <summary>Porque é que uma fonte aparece em avaliação?</summary>
+    <p>Porque os seus termos não permitem, de forma clara, a redistribuição dos valores. O Prumo pode recolher e verificar esses dados, mas não os publica enquanto a autorização não estiver estabelecida.</p>
+  </details>
+</section>
+{% endblock %}

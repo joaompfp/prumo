@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Fontes e licenças — Prumo{% endblock %}
+{% block content %}
+<header class="page-head">
+  <h1>Fontes e licenças</h1>
+  <p class="lede">Cada série tem uma única fonte primária, a mais próxima da origem. As condições de reutilização são as que o editor publica; quando não permitem redistribuição, os valores não são publicados.</p>
+</header>
+
+<section aria-labelledby="publicadas">
+  <div class="section-head"><h2 id="publicadas">Instituições publicadas</h2></div>
+  <table class="data-table sources-table">
+    <thead>
+      <tr><th scope="col">Instituição</th><th scope="col" class="num">Séries</th><th scope="col">Última recolha</th><th scope="col">Licença</th><th scope="col">Atribuição</th></tr>
+    </thead>
+    <tbody>
+      {% for source in page.published %}
+      <tr>
+        <td>{{ source.title }}</td>
+        <td class="num">{{ format_count(source.series) }}</td>
+        <td>{{ source.last_fetched_text or "—" }}</td>
+        <td>{{ source.licence }}{% if source.licence_url and source.licence_url.startswith('https://') %} · <a href="{{ source.licence_url }}" rel="noopener noreferrer">termos</a>{% endif %}</td>
+        <td class="attribution">{{ source.attribution }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section aria-labelledby="avaliacao">
+  <div class="section-head">
+    <h2 id="avaliacao">Fontes em avaliação</h2>
+    <p class="section-note">Instituições cujos termos de reutilização ainda não estão estabelecidos. Nenhum valor destas fontes é publicado.</p>
+  </div>
+  <ul class="withheld-list">
+    {% for source in page.withheld %}
+    <li><strong>{{ source.title }}</strong><span class="withheld-note">{{ source.licence }}</span></li>
+    {% endfor %}
+  </ul>
+  <p class="note">Os dados destas instituições podem estar recolhidos e verificados, mas ficam retidos até haver autorização de redistribuição. A recolha e a retenção são registadas; a publicação não.</p>
+</section>
+
+<section aria-labelledby="calculados">
+  <div class="section-head"><h2 id="calculados">Valores calculados</h2></div>
+  <p>Os valores calculados pelo Prumo herdam a licença e a atribuição da série de onde vêm, com a menção «Calculado pelo Prumo». Quando a série base não pode ser redistribuída, o valor calculado também não é publicado.</p>
+</section>
+{% endblock %}
