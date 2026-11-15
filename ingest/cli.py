@@ -16,7 +16,8 @@
                                    totals, pending-verification runs
     withdraw <run_id> --reason R   withdraw ONE verified fetched run from serving (terminal,
                                    recorded as event 'withdrawal' with the reason; rows kept)
-                                   with its later identical-payload short-circuit runs
+                                   with its later short-circuit runs (identical bytes or
+                                   identical values)
     verify <run_id>                verify ONE existing pending-verification run with the
                                    verifier registered for its source (this command exists to
                                    resolve a specific pending run; normal flows never call it)
@@ -474,7 +475,8 @@ def main(argv: list[str] | None = None, *, http_for=None) -> int:
             db.close()
         print(f"run {args.run_id} withdrawn: its rows are kept but no longer served")
         if ids[1:]:
-            print(f"also withdrawn (identical-payload short-circuits of run {args.run_id}): "
+            print(f"also withdrawn (identical bytes or identical values short-circuits of "
+                  f"run {args.run_id}): "
                   f"{', '.join(map(str, ids[1:]))}")
         return 0
 

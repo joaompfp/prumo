@@ -151,8 +151,8 @@ Retries do not weaken this bound. Each refetch attempt (`run_with_refetch`, up t
 and each later scheduler retry of a failed dataset draws a fresh seed, and a parser defect is
 deterministic: the refetched bytes re-parse to the same wrong cells. Without step 1b every
 attempt would be an independent chance (up to 5% each) to miss the defect, so the
-probability of eventually serving it would grow with every retry, and the identical-payload
-short-circuit would then keep the lucky pass served (re-review 2 I1 measured 9.1% within
+probability of eventually serving it would grow with every retry, and the short-circuit for
+identical bytes or identical values would then keep the lucky pass served (re-review 2 I1 measured 9.1% within
 three attempts on a BPstat-shaped run). With step 1b, once any attempt has caught a
 defective cell, every later attempt of that dataset re-checks it until a verification
 passes: the defect is detected with probability 1 from then on, while a transient fetch
@@ -245,12 +245,25 @@ Bank runs are grouped per indicator across all its registered active geographies
 sources run their active series as one dataset. A failed World Bank indicator does not stop
 healthy siblings.
 
-There is an accepted exception to fresh sampling: responses with the same fingerprint
-as the immediately previous verified run of the same dataset short-circuit to
-`verified`, with no new observations or verification sample. Prior verified rows stay
-queryable; no new independent verification date is invented, but the re-fetch does count
-as confirming the retained data current for staleness (see the status definition below).
-Identical bytes after a failed or withdrawn run are fully processed again; withdrawing the
+There is an accepted exception to fresh sampling: a run with identical bytes or identical
+values short-circuits to `verified`, with no new observations, quarantine rows, events or
+verification sample. Identical bytes: the responses have the same fingerprint as the
+immediately previous run of the same dataset, which is verified. Identical values: the run
+would write exactly the observation rows (series, period, publisher token, status flag,
+release date) and quarantine rows of its base run, compared as multisets; the base is the
+latest run of the dataset that holds rows, reached only over earlier short-circuits, and it
+must be verified. A run in which a series has no valid observations is always stored, so its
+`format_change` event is kept. Prior verified rows stay queryable; no new independent
+verification date is invented, but the re-fetch does count as confirming the retained data
+current for staleness (see the status definition below).
+
+Consequences, accepted as for identical bytes: unchanged days get no independent
+re-verification of their own (the base run's verification vouches for them). A dataset is
+compared as a whole, so when any INE value changes a complete INE vintage is still stored,
+because INE is one dataset. Duplicate vintages stored before this rule (value-identical runs
+of INE, BPstat, FRED and OECD) are kept, not deleted. Identical bytes or identical values
+after a failed or withdrawn run are fully processed again; a value that reverts (A, then B,
+then A) is stored again, because only the base of the unbroken chain counts; withdrawing the
 run that wrote the rows also withdraws the later short-circuit runs chained onto it, so the
 next identical fetch is re-ingested (Task 24).
 
@@ -388,8 +401,9 @@ verification as `verifier_channel='pinned-bundle'` (recorded runs verified befor
 0012 are labelled that way too, because that is how they were verified). Older recorded
 data cannot replace newer verified group data: per-group preflight and an atomic
 write guard enforce that rule. Receipts more than five minutes in the future are
-rejected. A byte-identical bundle may use the verified-payload short-circuit rather
-than draw another sample. Browser files without real HTTP receipts remain unaccepted
+rejected. A bundle with identical bytes or identical values may use the short-circuit
+rather than draw another sample; a stale bundle is refused (`blocked-stale`) before the
+values are compared. Browser files without real HTTP receipts remain unaccepted
 originals, not importable bundles with invented dates/statuses.
 
 Follow [manual refresh](manual-refresh.md) for capture rules and the linked
@@ -405,10 +419,10 @@ latest possible release. `status` reports two retrieval dates per series:
 - `real_data_fetched_at`: the latest `fetched_at` of the retained observations, i.e. when
   the bytes now held were received from the publisher.
 - `last_confirmed_current`: the latest publisher retrieval of a run that is still
-  `verified` and either wrote that series' observations, or is an identical-payload
-  short-circuit whose matched run (followed through earlier short-circuits) is still
-  `verified` and holds that series. An unchanged publisher file that the scheduler
-  re-fetched and found byte-identical therefore confirms the data current, without a new
+  `verified` and either wrote that series' observations, or is a short-circuit for identical
+  bytes or identical values whose matched run (followed through earlier short-circuits) is
+  still `verified` and holds that series. An unchanged publisher file that the scheduler
+  re-fetched and found identical in bytes or in values therefore confirms the data current, without a new
   verification date. A failed, pending or withdrawn run confirms nothing, and neither does
   a run verified only against its own pinned bundle (`verifier_channel='pinned-bundle'`,
   not audit-grade): a series whose verified data all comes from such runs is stale with

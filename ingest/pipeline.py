@@ -6,6 +6,7 @@
        ├─ parse/validate raised, or a series has no rows ──> failed-validation + event(format_change)
        └─ ONE transaction: observations + quarantine + revision events + state
           ──> pending-verification      (any exception inside: rolled back, failed-validation)
+          ├─ same values as the verified base run ──> verified (no rows, see run_dataset)
        a recorded replay whose ORIGINAL receipts are older than held (verified or still
           pending-verification) fetched rows
           ──> rolled back atomically as 'blocked-stale' + event(stale_refusal) instead
@@ -28,7 +29,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
-from ingest.db import Db, OperationalError
+from ingest.db import Db, OperationalError, RunContent, observation_content, quarantine_content
 from ingest.http import Http
 from ingest.models import Observation, SeriesSpec
 from ingest.rawstore import RawStore
@@ -43,7 +44,9 @@ class DatasetRunResult:
     run_id: int
     n_written: int  # observation rows committed by this run
     n_quarantined: int  # quarantine rows committed by this run
-    detail: str | None = None  # why verification gave up (escalation), for operator reports
+    # for operator reports: why verification gave up (escalation), or which verified run an
+    # identical-values short-circuit matched
+    detail: str | None = None
 
 
 class StaleRecordedError(ValueError):
@@ -80,12 +83,23 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
     Preconditions (ValueError otherwise): `specs` non-empty, all from `source.name`, already
     synced to the DB (registry); `now()` returns a timezone-aware datetime (stored as UTC ISO-8601).
 
-    Identical payload (Ruling D): if the sha256 fingerprint of this run's responses equals that of
-    the previous run of the same dataset_key AND that run is `verified`, this run is recorded as
-    `verified` with no observations, no quarantine, no events and no verification of its own
-    (callers such as Task 7 must not verify it). The previously verified rows stay served. After a
-    previous run in any other state, identical bytes are fully re-processed so a failed dataset
-    can be retried.
+    Identical bytes or identical values (Ruling D, generalised by vintage-dedupe Decision 1):
+    this run is recorded as `verified` with no observations, no quarantine, no events and no
+    verification of its own (callers such as Task 7 must not verify it; the previously verified
+    rows stay served) when either
+      - bytes: the sha256 fingerprint of its responses equals that of the previous run of the
+        same dataset_key AND that run is `verified` (checked before parsing); or
+      - values: it would write exactly the observation rows (series_id, period, value_text,
+        status_flag, released_at) and quarantine rows (series_id, raw_period, raw_value,
+        reason) of its base run (Db.content_base_run: the latest run holding content, reached
+        over verified short-circuits only, and itself verified), compared as sorted
+        multisets. Checked inside the write transaction, after the recorded-input stale guard
+        (a stale bundle stays blocked-stale) and never for a run with an empty series (its
+        Ruling M format_change event must be recorded). DatasetRunResult.detail names the base.
+    After a previous run in any other state, identical bytes or values are fully re-processed so
+    a failed dataset can be retried. Consequence: unchanged days get no independent
+    re-verification of their own (the base's verification vouches for them); one changed value
+    stores the dataset's complete vintage again.
 
     Fetch is consumed incrementally: each response is saved to the raw store and gets its own
     raw_fetch row (linked by raw_fetch.dataset_run_id) as it arrives, so pages received before
@@ -204,11 +218,16 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
             with db.transaction():
                 if input_origin == "recorded":
                     _guard_recorded_not_stale(db, raws, checked)
-                t = ts()
-                for detail in empty:
-                    db.add_event(t, "format_change", run_id, detail)
-                n_written, n_quarantined = _write(db, run_id, raws, checked, t)
-                _leave_running(db, run_id, "pending-verification", ts())
+                # Ruling M events cannot be dropped, so a run with an empty series is stored
+                base = None if empty else _identical_content_base(db, key, run_id, checked)
+                if base is not None:
+                    _leave_running(db, run_id, "verified", ts())
+                else:
+                    t = ts()
+                    for detail in empty:
+                        db.add_event(t, "format_change", run_id, detail)
+                    n_written, n_quarantined = _write(db, run_id, raws, checked, t)
+                    _leave_running(db, run_id, "pending-verification", ts())
         except RunClosedElsewhere as e:  # rolled back: the rows never become visible
             return _closed_elsewhere(db, run_id, ts, e)
         except StaleRecordedError as e:  # rolled back atomically: nothing of this run remains
@@ -218,6 +237,9 @@ def run_dataset(db: Db, store: RawStore, source: Source, specs: list[SeriesSpec]
                           {"error": repr(e), "stage": "write"})
         except Exception as e:  # rolled back: none of this run's observations/quarantine remain
             return finish("failed-validation", "format_change", {"error": repr(e), "stage": "write"})
+        if base is not None:
+            return DatasetRunResult("verified", run_id, 0, 0, detail=(
+                f"values identical to verified run {base}: nothing stored"))
         return DatasetRunResult("pending-verification", run_id, n_written, n_quarantined)
     except BaseException as e:  # our own environment failed (I/O, DB, SIGTERM->SystemExit)
         _close_interrupted(db, run_id, ts, e)
@@ -276,7 +298,7 @@ def _guard_recorded_not_stale(db: Db, raws: list[tuple[int, str]], checked: list
     Per series, when the held VERIFIED fetched rows reach past that bound, inserting would
     let the served view's last-inserted tie-break replace NEWER verified data with old
     recorded rows: refuse the whole dataset atomically instead. Equal-time re-imports pass
-    (the identical-payload short-circuit keeps them no-ops), genuinely newer bundles advance
+    (the short-circuit for identical bytes or identical values keeps them no-ops), genuinely newer bundles advance
     the data, and legacy-unverified rows never count as held verified data, so a legacy-only
     or empty database is free to accept any recorded bundle."""
     stale = []
@@ -328,6 +350,22 @@ def _write(db: Db, run_id: int, raws: list[tuple[int, str]],
         n_written += len(observations)
         n_quarantined += len(rejections)
     return n_written, n_quarantined
+
+
+def _content(checked: list[tuple[SeriesSpec, int, list[Observation], list[Rejection]]]
+             ) -> RunContent:
+    """What `_write` would store for `checked`, in the shape Db.run_content reads back."""
+    return RunContent.of(
+        (observation_content(o) for _, _, observations, _ in checked for o in observations),
+        (quarantine_content(spec.id, r) for spec, _, _, rejections in checked for r in rejections))
+
+
+def _identical_content_base(db: Db, key: str, run_id: int, checked: list) -> int | None:
+    """The base run (Db.content_base_run) when this run's content equals it, else None."""
+    base = db.content_base_run(key, run_id)
+    if base is not None and db.run_content(base) == _content(checked):
+        return base
+    return None
 
 
 def _fetch_problem(resp: RawResponse, expected_format: str | None) -> str | None:

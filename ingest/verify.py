@@ -130,8 +130,9 @@ def verify_run(db: Db, run_id: int, verifier: Verifier, http: Http, seed: int | 
     Rows, events and the state change are one transaction; the state change is a
     compare-and-set from pending-verification, so if another worker finished this run meanwhile
     everything is rolled back and VerificationConflict is raised.
-    ValueError (nothing written) if the run is not `pending-verification` (e.g. a short-circuit
-    `verified` run, which has no verification of its own), the verifier/specs belong to
+    ValueError (nothing written) if the run is not `pending-verification` (e.g. a `verified`
+    short-circuit run for identical bytes or identical values, which has no verification of
+    its own), the verifier/specs belong to
     another source, the channel is unknown or store is None.
     """
     return _verify(db, run_id, verifier, http, seed, specs=specs, store=store, now=now,
@@ -413,8 +414,8 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
                      verifier_channel: str = "live",
                      policy: SamplingPolicy = DEFAULT_POLICY) -> DatasetRunResult:
     """run_dataset, then verify_run with a fresh random seed; on a genuine verification
-    failure emit event(refetch) and re-fetch the whole dataset (a new run: identical bytes are
-    re-processed because the previous run is not verified), at most `max_attempts` runs.
+    failure emit event(refetch) and re-fetch the whole dataset (a new run: identical bytes or
+    identical values are re-processed because the previous run is not verified), at most `max_attempts` runs.
 
     `verifier` must be the one registered for `source.name` (register_verifier enforces the
     independence rule), else ValueError. Refuses up front (before any fetch): SourceNotVerifiable
@@ -431,8 +432,9 @@ def run_with_refetch(db: Db, store: RawStore, source: Source, verifier: Verifier
     at once - re-downloading the dataset cannot fix the verifier's channel. Giving up (outage,
     or the last attempt failed) writes event(verification_escalated, {reason, run_ids, ...})
     and returns `failed-verification` with `detail`. Any other run_dataset outcome
-    (failed-fetch, failed-validation, the `verified` short-circuit for a payload identical to
-    the previous verified run, which gets no verification) is returned as-is.
+    (failed-fetch, failed-validation, the `verified` short-circuit for identical bytes or
+    identical values to the previous verified run, which gets no independent re-verification
+    of its own) is returned as-is.
     """
     if max_attempts < 1:
         raise ValueError(f"max_attempts must be >= 1, got {max_attempts}")

@@ -468,8 +468,8 @@ class Db:
     def verified_run_receipts(self) -> list[tuple[int, str | None, str | None, int, int]]:
         """(run_id, dataset_key, latest raw_fetch.fetched_at, wrote_observations 0/1,
         pinned_bundle 0/1) of every NON-legacy run currently in state 'verified', oldest
-        first. A verified run that wrote no observations is the identical-payload
-        short-circuit (pipeline Ruling D); pinned_bundle marks a run whose passing
+        first. A verified run that wrote no observations is a short-circuit for identical
+        bytes or identical values (pipeline Ruling D); pinned_bundle marks a run whose passing
         verification read the operator's bundle, not the publisher (not audit-grade)."""
         return self.conn.execute(
             "SELECT r.id, r.dataset_key, "
@@ -690,9 +690,9 @@ class Db:
         event(withdrawal) in the same transaction; migration 0011's triggers refuse every
         other way into 'withdrawn'.
 
-        The identical-payload short-circuit (pipeline Ruling D) vouches for the run it matched
-        without holding rows, and the next identical fetch would match the short-circuit
-        again. So, in the same transaction, every LATER run of the same dataset_key that is a
+        The short-circuit for identical bytes or identical values (pipeline Ruling D) vouches
+        for the run it matched without holding rows, and the next identical fetch would match
+        the short-circuit (or, for values, the same base run) again. So, in the same transaction, every LATER run of the same dataset_key that is a
         verified short-circuit chained onto this one (the unbroken sequence of verified runs
         with no observations right after it) is withdrawn too, each with its own
         event(withdrawal, {..., cascaded_from: run_id}); the next identical fetch then follows
@@ -717,8 +717,8 @@ class Db:
                                  f"withdrawn")
             if not self._run_has_observations(run_id):
                 raise ValueError(
-                    f"run {run_id} has no observations (an identical-payload short-circuit "
-                    f"that holds no rows); withdraw the run that wrote the rows - its "
+                    f"run {run_id} has no observations (a short-circuit for identical bytes "
+                    f"or identical values, which holds no rows); withdraw the run that wrote the rows - its "
                     f"short-circuits are withdrawn with it")
             cascade = []
             for later, later_state in c.execute(

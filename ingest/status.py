@@ -12,8 +12,8 @@ Honesty rules:
   * `real_data_fetched_at`: the latest observation fetched_at of the retained data (for
     legacy rows the ORIGINAL legacy fetch date), i.e. when the bytes now held were received;
   * `last_confirmed_current`: the latest publisher retrieval (raw_fetch.fetched_at) of a run
-    that is still 'verified' and either wrote that series' observations, or is an
-    identical-payload short-circuit whose matched run (followed through earlier
+    that is still 'verified' and either wrote that series' observations, or is a
+    short-circuit for identical bytes or identical values whose matched run (followed through earlier
     short-circuits) is still 'verified' and holds that series. Legacy rows never confirm
     anything (None), and neither does a run verified only against its own pinned bundle
     (verifier_channel 'pinned-bundle', not audit-grade; Task 24): a series whose only
@@ -190,8 +190,9 @@ class StatusReport:
     version: int = VERSION
     staleness_policy: dict = field(default_factory=lambda: {
         "meaning": "our refresh policy, not a publisher release date",
-        "judged_on": "last_confirmed_current (latest verified retrieval, including an "
-                     "identical-payload re-fetch); legacy-only series are always stale",
+        "judged_on": "last_confirmed_current (latest verified retrieval, including a "
+                     "re-fetch with identical bytes or identical values); legacy-only series are "
+                     "always stale",
         "defaults_days": {k: v.days for k, v in DEFAULT_STALE_AFTER.items()},
         "schedule_overrides": "series.schedule (e.g. '1d') when present",
         "pending_stale_after_hours": int(PENDING_STALE_AFTER.total_seconds() // 3600)})
@@ -204,9 +205,10 @@ class StatusReport:
 
 
 def _shortcut_confirmations(db: Db, runs) -> dict[str, str]:
-    """series id -> latest retrieval of a still-verified identical-payload short-circuit run
-    whose matched run (pipeline compares with the immediately previous run of the dataset,
-    which had to be verified) is still verified - followed through earlier short-circuits -
+    """series id -> latest retrieval of a still-verified short-circuit run (identical bytes or
+    identical values) whose matched run (pipeline compares with the immediately previous run
+    of the dataset, or for values the base reached over verified short-circuits; either way
+    every run in between is verified) is still verified - followed through earlier short-circuits -
     and holds observations of that series."""
     receipts = {rid: (at, bool(wrote), bool(pinned))
                 for rid, _key, at, wrote, pinned in db.verified_run_receipts()}

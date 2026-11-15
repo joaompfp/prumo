@@ -392,8 +392,9 @@ docker exec prumo-ingest python -m ingest --db /data/prumo.sqlite3 --raw-dir /da
 
 Recorded imports have `input_origin=recorded`; `started_at` is the import attempt time,
 while `real_data_fetched_at` remains the original capture time. A passed recorded
-verification does not make an old download fresh. Identical bytes after a verified run
-can short-circuit without a new sample. A stale/partial/invalid bundle refusal
+verification does not make an old download fresh. Identical bytes or identical values
+after a verified run can short-circuit without a new sample (a stale bundle is refused as
+`blocked-stale` before its values are compared). A stale/partial/invalid bundle refusal
 must remain visible and cannot justify replacing newer verified data.
 
 ## Withdrawing data, inactive series and interrupted runs
@@ -420,13 +421,15 @@ verified vintage for each period, if any. The database refuses any other path in
 withdrawn run id (hand-written SQL included).
 
 Withdraw the run that WROTE the rows. A run whose fetched bytes were identical to the
-previous verified run is recorded `verified` with no observations (the identical-payload
-short-circuit) and vouches for that run; `withdraw` refuses such a run ("has no
+previous verified run, or whose parsed values (with status flags, release dates and
+quarantine rows) were identical to its verified base run, is recorded `verified` with no
+observations (the short-circuit for identical bytes or identical values; its result detail
+names the base run) and vouches for that run; `withdraw` refuses such a run ("has no
 observations"). Withdrawing the run that wrote the rows also withdraws, in the same
 transaction and each with its own `withdrawal` event (`cascaded_from` = the run you named),
 every later verified short-circuit of the same dataset chained onto it, up to the next run
 that wrote rows or ended in another state. The command prints every run it withdrew. The
-next fetch of the same bytes then follows a withdrawn run, so it is re-ingested as a new
+next fetch of the same bytes or values then follows a withdrawn run, so it is re-ingested as a new
 run and served once verified, and `status` no longer counts the withdrawn short-circuits
 as confirming the data current. To stop serving a series persistently, inactivate it.
 
@@ -699,9 +702,11 @@ Known limitations and rules (v1):
 - Read cost: per-key reads (`/derived/<key>`) search by key and stay well under 1 s; the
   whole-view reads (status derived line, `/derived`) cost about 1.7 s at ~50 daily base
   vintages (production copy, 2026-11-15), most of it in the 0011 `served_observation`
-  lookup, which grows with the number of vintages of a period. INE re-stores a full,
-  value-identical vintage on every daily fetch; value-level dedupe of base vintages is the
-  open decision that bounds this (HANDOFF).
+  lookup, which grows with the number of vintages of a period. Since the identical-values
+  short-circuit (vintage dedupe, Decision 1) a daily fetch whose values are unchanged stores
+  nothing; when any INE value changes a complete INE vintage is still stored, because INE is
+  one dataset. Unchanged days get no independent re-verification of their own (as for
+  identical bytes). Duplicate vintages stored before the rule are kept.
 - The `docker exec prumo-ingest chmod -R a+rX /data/raw` note under Container hardening
   still applies until the worker image that writes 0644 evidence is running.
 

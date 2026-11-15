@@ -495,8 +495,8 @@ class Bundle:
     def max_fetched_at(self) -> datetime | None:
         """NEWEST ORIGINAL receipt fetch time (parsed), or None for an empty bundle. The
         stale-bundle rule refuses a bundle only when the held verified data is STRICTLY newer
-        than every receipt in it; an equal-time bundle replays idempotently (the identical-
-        payload shortcut keeps it a no-op), and a genuinely newer bundle advances the data."""
+        than every receipt in it; an equal-time bundle replays idempotently (the short-
+        circuit for identical bytes or identical values keeps it a no-op), and a genuinely newer bundle advances the data."""
         stamps = [datetime.fromisoformat(e.fetched_at) for e in self.entries]
         return max(stamps, default=None)
 
