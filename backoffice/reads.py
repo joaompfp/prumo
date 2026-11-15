@@ -28,6 +28,7 @@ from ingest.status import (
 from presentation import (
     MissingText,
     calculated_attribution,
+    caveat_text,
     derived_title,
     describe_formula,
     unit_text,
@@ -162,13 +163,17 @@ DERIVED_STATE_LABEL = {"no_base_data": "no base data", "never_computed": "never 
 
 def _with_text(s: dict) -> dict:
     """A Db.derived_series_rows row plus its LANG reader text: `title` (None when the catalog
-    has no title for the key, e.g. a retired key; the page shows that instead of failing),
-    `formula_text` and `unit_text` (closed code lists: a missing text raises)."""
+    has no title for an INACTIVE key, e.g. a retired one: the page shows a placeholder; an
+    active key without a title is a missing translation and raises), `formula_text`,
+    `unit_text` and `caveat_texts` (closed code lists: a missing text raises)."""
     try:
         title = derived_title(LANG, s["key"])
     except MissingText:
+        if s["active"]:
+            raise
         title = None
     return s | {"title": title,
+                "caveat_texts": [caveat_text(LANG, c) for c in s["caveats"]],
                 "formula_text": describe_formula(LANG, s["formula"], s["params"],
                                                  s["base_series_id"]),
                 "unit_text": unit_text(LANG, s["unit"])}
@@ -185,7 +190,7 @@ def derived_list(db: Db) -> list[dict]:
         state = derived_state(st) if st else None
         out.append({k: v for k, v in _with_text(s).items()
                     if k in ("key", "title", "formula_text", "base_series_id", "unit",
-                             "unit_text", "active")}
+                             "unit_text", "active", "caveat_texts")}
                    | {"served_values": st["served_values"] if st else 0,
                       "stale": state == "stale",
                       "last_covered_at": st["last_covered_at"] if st else None,

@@ -100,7 +100,7 @@ def sync_derived(db: Db, derived: list[DerivedSpec]) -> None:
     db.upsert_derived_series([
         {"key": d.key, "formula": d.formula, "base_series_id": d.base,
          "params_json": json.dumps(d.params, sort_keys=True), "unit": d.unit,
-         "active": d.active}
+         "caveats_json": json.dumps(sorted(d.caveats)), "active": d.active}
         for d in derived])
 
 

@@ -138,13 +138,36 @@ def test_derived_title_html_is_escaped(make_env, monkeypatch):
         assert "&lt;script&gt;x()&lt;/script&gt;" in html
 
 
-def test_key_without_a_catalog_title_still_renders(make_env, monkeypatch):
-    """A retired key (in the database, no longer in the catalog) degrades visibly, not 500."""
+def test_inactive_key_without_a_catalog_title_still_renders(make_env, monkeypatch):
+    """A retired (inactive) key, no longer in the catalog, degrades visibly, not 500."""
     monkeypatch.delitem(pt.TITLES, CHG)
-    env = _env(make_env)
+    env = _env(make_env, [DERIVED[0], DERIVED[1] | {"active": False}])
     for path in ("/derived", f"/derived/{CHG}"):
         r = env.client().get(path)
         assert r.status_code == 200 and "no title in the catalog" in r.text
+
+
+def test_active_key_without_a_catalog_title_is_a_bug(make_env, monkeypatch):
+    """An ACTIVE key the catalog cannot title is a missing translation: fail, never a placeholder."""
+    from presentation import MissingText
+    monkeypatch.delitem(pt.TITLES, CHG)
+    env = _env(make_env)
+    with pytest.raises(MissingText):
+        env.client().get(f"/derived/{CHG}")
+
+
+def test_detail_shows_caveat_sentence_only_for_caveated_series(make_env):
+    from presentation import caveat_text
+    derived = [DERIVED[0] | {"caveats": ["sa_base"]}, DERIVED[1]]
+    env = _env(make_env, derived)
+    caveated = env.client().get(f"/derived/{YOY}").text
+    plain = env.client().get(f"/derived/{CHG}").text
+    assert '<p class="caveat note">' in caveated
+    assert caveat_text("pt", "sa_base") in caveated
+    assert 'class="caveat note"' not in plain and "taxa oficial do editor" not in plain
+    listing = env.client().get("/derived").text
+    assert 'class="caveat-mark"' in _row(listing, YOY)
+    assert 'class="caveat-mark"' not in _row(listing, CHG)
 
 
 def test_detail_renders_without_any_derived_data(make_env):

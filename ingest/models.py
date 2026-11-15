@@ -226,6 +226,9 @@ FORMULAS: tuple[str, ...] = ("period_change", "period_change_pct", "yoy_change",
 # Unit CODES of derived series (reader text: presentation.unit_text). Migration 0016 keeps the
 # same closed list as a CHECK on derived_series.unit.
 DERIVED_UNITS: tuple[str, ...] = ("pct", "pp", "balance", "index_2015_100")
+# Why a calculated rate may differ from the publisher's headline rate (reader sentences live in
+# presentation/): the base is seasonally adjusted / is a stock (outstanding amount) series.
+DERIVED_CAVEATS: tuple[str, ...] = ("sa_base", "stock_base")
 
 
 class DerivedSpec(BaseModel):
@@ -236,4 +239,5 @@ class DerivedSpec(BaseModel):
     formula: Literal[*FORMULAS]
     params: dict[str, str] = {}
     unit: Literal[*DERIVED_UNITS]
+    caveats: list[Literal[*DERIVED_CAVEATS]] = []
     active: bool = True

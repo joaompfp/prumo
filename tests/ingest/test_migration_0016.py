@@ -8,6 +8,7 @@
 """
 import json
 import sqlite3
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -15,6 +16,7 @@ from pydantic import ValidationError
 
 import ingest.db as dbmod
 from ingest.db import MIGRATIONS_DIR, open_db
+from ingest.derive import run_derive
 from ingest.models import DERIVED_UNITS, DerivedSpec
 from ingest.registry import load_derived, load_registry, sync_derived, sync_registry
 from tests.ingest.derived_helpers import verified_values
@@ -127,12 +129,25 @@ def test_data_layer_has_no_portuguese_prose(tmp_path):
     try:
         sync_registry(db, specs)
         sync_derived(db, derived)
+        # one verified base value so served_derived has rows and the ASCII scan covers the view
+        base = next(d.base for d in derived if d.formula == "period_change")
+        source = next(sp.source.name for sp in specs if sp.id == base)
+        verified_values(db, base, {"2024-12": "100", "2025-01": "102"}, T1, "k1", source=source)
+        run_derive(db, keys=[next(d.key for d in derived if d.base == base
+                                  and d.formula == "period_change")],
+                   trigger="cli", now=lambda: datetime.fromisoformat(NOW))
         rows = db.conn.execute("SELECT * FROM derived_series").fetchall()
         assert len(rows) == 23
         served = db.conn.execute("SELECT * FROM served_derived").fetchall()
-        for row in rows + served:
-            for v in row:
-                assert not isinstance(v, str) or v.isascii(), row
+        assert served, "the scan must see at least one served row"
+        publisher_text = {"attribution", "licence", "licence_url"}  # the publisher's own words
+        cur = db.conn.execute("SELECT * FROM served_derived")
+        served_cols = [c[0] for c in cur.description]
+        series_cols = [c[1] for c in db.conn.execute("PRAGMA table_info(derived_series)")]
+        for cols, table in ((series_cols, rows), (served_cols, served)):
+            for row in table:
+                for k, v in zip(cols, row):
+                    assert k in publisher_text or not isinstance(v, str) or v.isascii(), (k, row)
         assert {r["unit"] for r in db.derived_series_rows()} <= set(DERIVED_UNITS)
     finally:
         db.close()

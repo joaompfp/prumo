@@ -20704,31 +20704,37 @@ derived:
   base: ine.ipi_seasonal_cae_TOT.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [sa_base]
   active: true
 - key: derived.ipi_seasonal_cae_TOT.PT.period_change_pct
   base: ine.ipi_seasonal_cae_TOT.PT
   formula: period_change_pct
   unit: pct
+  caveats: [sa_base]
   active: true
 - key: derived.ipi_seasonal_cae_B.PT.yoy_change_pct
   base: ine.ipi_seasonal_cae_B.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [sa_base]
   active: true
 - key: derived.ipi_seasonal_cae_C.PT.yoy_change_pct
   base: ine.ipi_seasonal_cae_C.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [sa_base]
   active: true
 - key: derived.ipi_seasonal_cae_D.PT.yoy_change_pct
   base: ine.ipi_seasonal_cae_D.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [sa_base]
   active: true
 - key: derived.ipi_seasonal_cae_E.PT.yoy_change_pct
   base: ine.ipi_seasonal_cae_E.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [sa_base]
   active: true
 - key: derived.exports_monthly.PT.yoy_change_pct
   base: ine.exports_monthly.PT
@@ -20744,16 +20750,19 @@ derived:
   base: bportugal.credit_housing.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [stock_base]
   active: true
 - key: derived.credit_consumer.PT.yoy_change_pct
   base: bportugal.credit_consumer.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [stock_base]
   active: true
 - key: derived.deposits_households.PT.yoy_change_pct
   base: bportugal.deposits_households.PT
   formula: yoy_change_pct
   unit: pct
+  caveats: [stock_base]
   active: true
 - key: derived.metals.PT.yoy_change_pct
   base: eurostat.metals.PT

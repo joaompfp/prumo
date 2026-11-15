@@ -7,7 +7,8 @@
 <h1>{{ s.key }} {% include "_calc_badge.html" %}</h1>
 <p>{% if s.title is not none %}{{ s.title }}{% else %}<span class="muted">no title in the catalog</span>{% endif %}{% if not s.active %} <span class="badge muted">inactive</span>{% endif %}
 &middot; {{ d.total }} served values</p>
-
+{% for text in s.caveat_texts %}<p class="caveat note">{{ text }}</p>
+{% endfor %}
 <h2>Definition</h2>
 <dl class="spec">
 <dt>formula</dt><dd>{{ s.formula_text }} (<code>{{ s.formula }}</code>)</dd>

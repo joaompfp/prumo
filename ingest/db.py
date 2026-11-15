@@ -769,7 +769,8 @@ class Db:
 
     def upsert_derived_series(self, rows: list[dict]) -> None:
         """Idempotent sync of the WHOLE derived registry (`rows` keys: key, formula,
-        base_series_id, params_json, unit, active; unit is a DERIVED_UNITS code). An active key
+        base_series_id, params_json, unit, caveats_json, active; unit is a DERIVED_UNITS code,
+        caveats_json a JSON array of DERIVED_CAVEATS codes). An active key
         absent from `rows` is set inactive (its rows stay, unserved). ValueError (nothing
         written) when a row redefines an existing key's formula, base or params: rows computed
         under the old definition must never be relabelled; declare a new key instead."""
@@ -783,11 +784,12 @@ class Db:
                                      f"key cannot change; declare a new key")
                 # update in place (migration 0014 refuses REPLACE/upsert-style re-inserts)
                 c.execute(
-                    "UPDATE derived_series SET unit = :unit, active = :active "
+                    "UPDATE derived_series SET unit = :unit, caveats_json = :caveats_json, "
+                    "active = :active "
                     "WHERE key = :key" if old is not None else
                     "INSERT INTO derived_series(key, formula, base_series_id, params_json, unit, "
-                    "active) VALUES (:key, :formula, :base_series_id, :params_json, :unit, "
-                    ":active)",
+                    "caveats_json, active) VALUES (:key, :formula, :base_series_id, "
+                    ":params_json, :unit, :caveats_json, :active)",
                     {**r, "active": int(r["active"])})
             keep = [r["key"] for r in rows]
             c.execute("UPDATE derived_series SET active = 0 WHERE active = 1 AND key NOT IN "
@@ -797,11 +799,13 @@ class Db:
         """Every (active) derived series with its base frequency, ordered by key."""
         rows = self.conn.execute(
             "SELECT d.id, d.key, d.formula, d.base_series_id, s.frequency, d.params_json, "
-            "d.unit, d.active FROM derived_series d "
+            "d.unit, d.active, d.caveats_json FROM derived_series d "
             "JOIN series s ON s.id = d.base_series_id "
             f"{'WHERE d.active = 1 ' if active_only else ''}ORDER BY d.key").fetchall()
-        keys = ("id", "key", "formula", "base_series_id", "frequency", "params", "unit", "active")
-        return [dict(zip(keys, (*r[:5], json.loads(r[5]), r[6], bool(r[7])))) for r in rows]
+        keys = ("id", "key", "formula", "base_series_id", "frequency", "params", "unit", "active",
+                "caveats")
+        return [dict(zip(keys, (*r[:5], json.loads(r[5]), r[6], bool(r[7]), json.loads(r[8]))))
+                for r in rows]
 
     def served_fetched_inputs(self, series_id: str) -> dict[str, tuple[int, str]]:
         """period -> (observation id, value_text) of the served *fetched* rows of a series."""
@@ -915,7 +919,8 @@ class Db:
     _SERVED_DERIVED_COLUMNS = (
         "derived_key", "period", "value_text", "scale", "unit", "is_calculated", "formula",
         "base_series_id", "inputs", "licence", "licence_url",
-        "attribution", "computed_at", "derived_run_id", "derived_observation_id", "input_ids")
+        "attribution", "computed_at", "derived_run_id", "derived_observation_id", "input_ids",
+        "caveats")
 
     def served_derived_rows(self, key: str, limit: int,
                             offset: int = 0) -> tuple[int, list[dict]]:
@@ -931,6 +936,7 @@ class Db:
         out = [dict(zip(self._SERVED_DERIVED_COLUMNS, r)) for r in rows]
         for r in out:
             r["input_ids"] = json.loads(r["input_ids"])
+            r["caveats"] = json.loads(r["caveats"])
             pos = {i: n for n, i in enumerate(r["input_ids"])}
             r["inputs"] = sorted(json.loads(r["inputs"]), key=lambda x: pos[x["observation_id"]])
         return total, out
