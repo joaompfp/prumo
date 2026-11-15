@@ -1,0 +1,46 @@
+# Task 5 report: run orchestration `run_derive` and CLI `derive`
+
+Status: DONE (see Concerns)
+
+## What was built
+
+- `ingest/derive.py`
+  - `DeriveReport(run_id, state, n_series, n_written, n_skipped, n_mismatch, n_errors=0)`. `n_errors` is an addition at the end with a default, so the brief's fields and positional order are unchanged.
+  - `run_derive(db, *, keys=None, base_series=None, trigger, now)`. It selects ACTIVE derived series: all of them, the ones named in `keys`, or the ones whose base is in `base_series`. If nothing is selected it returns `None` and writes no run row. It raises ValueError, with no run row, when a key is unknown or inactive or when both selectors are given. The whole run is one `db.transaction()`: `begin_derived_run` -> per series `compute(served_fetched_inputs)` -> the input ids are collapsed to their canonical form ((t,t)->[t]) -> values whose `(period, canonical ids)` is already in `derived_known_inputs` are skipped (the comparison uses decoded ids, so JSON spacing does not matter) -> pending rows are written, and Skip events are written -> `verify_run` -> `finish_derived_run(verified only when there are 0 mismatches and 0 compute errors, else failed)`.
+  - `compute` raising `ValueError` or `ArithmeticError` (which covers InvalidOperation, DivisionByZero and Overflow) is recorded as `derived_event(kind='compute_error', detail={"error": "<Type>: <msg>"})` for that series. The other series are still computed and verified, so the diagnostics are complete, and the run finishes `failed`. Nothing from a failed run is served, because the view requires a verified run. This path returns a report rather than raising, so the CLI exits 1 with its normal output line.
+  - Any other exception after the run row exists: inside the same transaction the run is finished `failed` (`n_written` = rows written so far, n_checked/n_mismatch 0), the transaction commits, and the exception is re-raised. If finishing also fails, the whole transaction rolls back and the error propagates.
+- `ingest/cli.py`: `python -m ingest derive [--series KEY ...]` (`action="append"`). `load_derived` and the key validation run BEFORE `open_db`: an invalid registry or an unknown/inactive key goes to stderr with exit 2, and no DB file is created or written. It then calls `sync_derived` and `run_derive(trigger="cli")`. Output is `derive run <id>: <state>; <n> series, <w> new values, <s> skipped, <m> mismatches`, with `, <e> compute errors` appended only when that count is nonzero, or `nothing to derive`. Exit codes: 0 verified/nothing, 1 failed. The module docstring and parser description were updated.
+- `ingest/migrations/0014_derived_layer.sql`: added `'compute_error'` to the `derived_event.kind` CHECK and to the header comment (ruling 3 needs an event, and the vocabulary had no fitting kind). 0014 has not been deployed (deploy is deferred), so the migration was edited in place rather than a 0015 added.
+- `tests/backoffice/test_boundaries.py`: also scans `ingest/derive.py` and `ingest/derive_verify.py` for SQL, plus a positive control showing the pattern does catch SQL.
+
+## Decisions
+
+1. `n_skipped` = the number of Skip events (zero_denominator / missing_base_period) in this run. Values not rewritten because they are already known are NOT counted. They show up as "0 new values" on a no-change run.
+2. Skip events repeat on every run that evaluates the series. That is honest per run, but it adds event volume once the scheduler hook exists.
+3. The CLI does not call `sync_registry`. `sync_derived` needs the base series already present in `series` (foreign key). That holds on any DB that has had a run, but a fresh empty DB would raise IntegrityError.
+
+## Tests (TDD: the new module failed first with ImportError on `DeriveReport`)
+
+`tests/ingest/test_derive_run.py` (17): first run writes and verifies (rebase base row stores one id); a second run writes nothing but records a verified run; a revision adds a new version and keeps the old one (unserved before derive); a partial revision rewrites only the affected period; incremental equals full recompute (5 formulas on M plus 2 on Q with zero denominators; base steps 1 initial, 2 revision + new period + another revision run, 3 withdrawal; DB A derives after each step, DB B once; served_derived compared on (period, value_text, scale, input (series, period)) -> equal, plus spot checks); a mismatch fails the run, nothing is served, and an honest rerun rewrites the rows; an exception marks the run failed and is re-raised; a compute ValueError/ArithmeticError fails the run with a compute_error event; skip events are written; base_series filter; keys filter; empty selection -> None; unknown/inactive key and both selectors -> ValueError with no run; CLI exit codes 0/1/2 and verbatim output; CLI nothing to derive; CLI unknown/inactive key writes nothing (no DB file created).
+
+`tests/ingest/test_derive_verify.py` (+12): verify_run over M Dec, Q Q4/Q1, A rollovers for period, yoy and rebase formulas (reference periods asserted), and wrong-rollover references -> `input_wrong_period`.
+
+Results: targeted suites (derive_run, cli, boundaries, derive_verify, db_derived, derive_formulas, derived_registry) 166 passed; ruff clean. Full suite `tests/ingest tests/backoffice tests/test_docker_contract.py`: 1820 passed, 7 deselected (10:36).
+
+## Concerns
+
+- Migration 0014 was edited in place to add `compute_error`. This is safe only because 0014 has not been deployed anywhere persistent. A DB that already applied the old 0014 would refuse `compute_error` events, and the whole run would then roll back.
+- `n_skipped` semantics (decision 1) and repeated skip events (decision 2) need a reviewer's eye.
+- Both the CLI and the scheduler need the base series synced before `sync_derived` (decision 3).
+
+## Fix round 1
+
+Red first: 8 new or changed tests failed before the fix (2 skip-event tests, 2 recovery tests, 2 CLI tests, 2 Skip tests in test_derive_formulas), then passed after it.
+
+1. (Important) CLI on a DB without the base series, and on a missing DB. `_cmd_derive` now refuses with exit 2, without creating a file, when `--db` is not an existing file: `derive refused: database not found: <p> (derive never creates one; run 'run' first)`. This follows the read-only commands, which never create a DB. After `open_db` it also refuses with exit 2 if any base of ANY registry derived entry is absent from `series`: `derive refused: base series [...] not in the database (run 'run' first)`. That includes inactive entries, because `sync_derived` writes them all and the foreign key would fail. Nothing is synced and no run row is written. `sync_registry` is not called. New `Db.series_ids()`. Tests: `test_cli_missing_database_is_refused_without_creating_it`, `test_cli_base_series_missing_from_database_is_refused`. Note: an existing DB at an older schema is still migrated by `open_db` before this check runs. That is the normal writer behaviour.
+2. (Minor) Skip events are deduplicated. `Skip` has a new `input_ids: tuple[int, ...] = ()` field. `compute` fills in the canonical (current, reference) ids for zero_denominator (a rebase at its zero base period gives `(t,)`); missing_base_period keeps `()`. The ids are stored in `detail_json {"input_ids": [...]}`. New `Db.derived_known_skips(dsid)` returns (period, kind, ids) from verified runs. An event is written, and counted in `n_skipped`, only when it is new. This mirrors the known-inputs skip: a new vintage of a zero reference is recorded again, and skips from a failed run are recorded again. Tests: `test_skip_events_are_written_once_per_inputs` (3 runs give [2, 0, 0] events, then a new vintage gives 1), `test_skip_events_of_a_failed_run_are_recorded_again`, and `test_skip_events_are_written` now pins the detail. The test_derive_formulas expectations were updated for the new field.
+3. (Minor) Recovery no longer masks the original error. In `run_derive`, if `not db.conn.in_transaction` the original exception is re-raised. If finishing the run as failed itself raises, the original exception is raised (`from None`) and the whole run rolls back. `Db.transaction()` now issues ROLLBACK only when a transaction is still open (db.py; this applies to every caller and is strictly safer). Tests: `test_auto_rollback_does_not_mask_the_original_error` (simulated SQLite auto-rollback followed by OperationalError: that error surfaces and no run row remains) and `test_failed_recovery_does_not_mask_the_original_error`.
+
+Coordinator probe probe5.py after the fix: P1 shows events total 2/2/2 over 3 runs (n_skipped 2/0/0); P4 the failed run is recorded; P2, P3 and P6 are unchanged. P5 errors with a thread-affinity ProgrammingError in the probe itself, so it tells us nothing about concurrency.
+
+Command: `.venv-ci/bin/python -m pytest tests/ingest/test_derive_run.py tests/ingest/test_cli.py tests/backoffice/test_boundaries.py tests/ingest/test_derive_verify.py tests/ingest/test_db_derived.py tests/ingest/test_derive_formulas.py tests/ingest/test_db.py -q` gives `156 passed, 1 warning in 65.16s`. `.venv-ci/bin/ruff check ingest backoffice tests` gives `All checks passed!`. The full suite was not re-run, since only cli.py, derive.py, db.py and their tests changed.

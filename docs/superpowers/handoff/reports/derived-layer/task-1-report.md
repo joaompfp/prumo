@@ -1,0 +1,8 @@
+# Task 1 report
+DONE. Added FORMULAS + DerivedSpec (ingest/models.py), load_derived + _validate_params (ingest/registry.py), tests/ingest/test_derived_registry.py (19 tests). 69 passed across new + test_registry + test_docgen; ruff clean. Note: red-first run was not separately executed (implementation written before first run).
+
+## Fix round 1
+Changes: load_derived wraps DerivedSpec validation (ValidationError/TypeError -> ValueError "<key>: invalid entry: ..."), rejects non-list section ("derived: section must be a list") and non-mapping rows ("derived[i]: entry must be a mapping"); all messages now start with the key and are distinct; key/base min_length=1; bare "derived." key refused. Tests: pinned match= per rule, extra field, empty label/unit, int base_period, non-list/non-dict, bare key, Q/A positives, "2021-1" rejection.
+Command: .venv-ci/bin/python -m pytest tests/ingest/test_derived_registry.py tests/ingest/test_registry.py -q -p no:cacheprovider
+Output: ============================== 57 passed in 8.86s ==============================; ruff: All checks passed.
+Mutation check (each check disabled with "if False:"; failing tests): duplicate -> duplicate_key test; prefix -> key_must_start...shadow combined test + bare_derived_dot test; shadow -> combined test; unknown_base, inactive_base, decimal, params_nonrebase, non_list, non_dict -> their own single test; freq -> 3 parametrized cases; rebase_exact -> its 3 cases; rebase_canonical -> its non-canonical cases. Registry restored (diff vs backup empty). Note: prefix/shadow share one test (as in the brief's test name); bare-key test is the other prefix pin.
