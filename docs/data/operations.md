@@ -728,6 +728,52 @@ After deploy, in this order:
 docker exec prumo python -c 'import sqlite3; c = sqlite3.connect("file:/data/prumo.sqlite3?mode=ro", uri=True); print(c.execute("SELECT COUNT(*), MIN(is_calculated), MAX(is_calculated) FROM served_derived").fetchone())'
 ```
 
+## Vintage dedupe, caveats and language-neutral data (0015-0017)
+
+Not yet deployed: the running image (`a05dd47`) predates these migrations and refuses a 0017
+database ("schema is newer than this code", exit 2 / HTTP 503).
+
+- `0015_observation_run_index`: index `observation_run` on `observation(dataset_run_id,
+  series_id)`. The per-run reads of the identical-content short-circuit (`Db.run_content`,
+  `Db.content_base_run`) stop scanning `observation`.
+- `0016_language_neutral_derived`: `derived_series` loses `label` and `formula_label_pt`;
+  `unit` becomes a closed code (`pct`, `pp`, `balance`, `index_2015_100`) and `served_derived`
+  exposes codes plus the publisher's attribution only. Reader text lives in the `presentation/`
+  package (`pt`, `en`); a missing catalogue key raises instead of rendering a raw code.
+- `0017_derived_caveats`: `derived_series.caveats_json` (default `[]`) and a `caveats` column
+  on `served_derived`. Nine keys carry one: `sa_base` on the six seasonally-adjusted IPI keys,
+  `stock_base` on the three credit/deposit keys. A caveat says a calculated rate may differ
+  from the publisher's own headline rate for a stated reason; the data layer stores codes, and
+  the sentence comes from `presentation/`.
+
+Identical-content short-circuit (vintage dedupe): when a dataset's new content equals the
+stored content of its base run, the run ends `verified` with 0 observations and 0 quarantine
+rows and the CLI prints `values identical to verified run N: nothing stored`. No new
+verification is invented: status counts the series as current through its verified
+short-circuit chain. A run of a dataset with an empty series, a superseded base, a base
+verified only from its own pinned bundle, or a base in any non-verified state is stored in
+full. Vintages stored before this rule are kept; compacting them is a later, optional
+decision. Because INE is one dataset, any changed INE value still stores its complete vintage.
+
+Deploy, in ONE run and only with owner authorization (`old code refuses a newer schema`; the
+backoffice reads `formula_label_pt`, which 0016 removes, so it must be rebuilt in the same run):
+
+1. `bash -lic "dc-web-up prumo-ingest"` (worker; applies 0015-0017);
+2. `bash -lic "dc-web-up prumo"`;
+3. `bash -lic "dc-web-up prumo-backoffice"`.
+
+After deploy: `status` prints the same derived line as before (23 of the 23 keys stay
+`current`); a manual `derive` writes 0 new values; `/derived` answers 200 and a caveated key
+shows its sentence; `served_derived` still holds 6,665 rows for 23 keys.
+
+Measured on a copy of the production database at 0014 (2026-11-15, 158.7 MB): migrations
+0015-0017 applied in 2.4 s, `integrity_check` ok, 0 foreign-key violations, every derived row
+and event unchanged (23 series, 6,665 observations, 6,665 served, 0 events), `observation`
+497,338 and `quarantine` 34,157 unchanged, file 176.9 MB afterwards (the new index). Read cost
+for the daily INE vintage (12,034 rows): `run_content` 40.9 ms against 88.1 ms without the
+index, `content_base_run` 26-32 ms against 214-228 ms. Whole-view and per-key derived reads
+were unchanged within noise (0.9 ms list, 9.3 -> 9.6 ms for 500 detail rows).
+
 ## Rollback
 
 The safe ingestion rollback is to stop the worker and retain the new maintenance web app,
