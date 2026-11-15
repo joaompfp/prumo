@@ -979,6 +979,13 @@ class Db:
             (limit,)).fetchall()
         return [dict(zip(keys, (*r[:5], json.loads(r[5]), *r[6:]))) for r in rows]
 
+    def derived_run_counts(self, since: str) -> dict[str, int]:
+        """state -> number of derived runs started at or after `since` (ISO-8601 UTC; stored
+        stamps share the +00:00 form, so text order is time order, as in event_totals)."""
+        return dict(self.conn.execute(
+            "SELECT state, COUNT(*) FROM derived_run WHERE started_at >= ? GROUP BY state",
+            (since,)).fetchall())
+
     def close(self) -> None:
         self.conn.close()
 

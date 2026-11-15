@@ -51,15 +51,17 @@ from ingest.models import SeriesSpec
 from ingest.operations import LEGACY_DATASET_PREFIX, group_specs
 
 SCHEMA = "prumo-status"
-VERSION = 3  # v2 (Task 23): stale judged on last_confirmed_current; counts/windows/scheduler
+VERSION = 4  # v2 (Task 23): stale judged on last_confirmed_current; counts/windows/scheduler
 # v3 (Task 24): pinned-bundle verifications never confirm currency; per-dataset
 # verifier_channel; totals['pending_stuck']
+# v4 (derived layer v1): top-level `derived` (DerivedStatus)
 
 # Our refresh policy, not a publisher cadence claim. series.schedule ('7d', '12h'...) wins.
 # Compatible alias for the pre-extraction (Task 18A) name; the knowledge lives in ingest.cadence.
 DEFAULT_STALE_AFTER = DEFAULT_INTERVAL
 PENDING_STALE_AFTER = timedelta(hours=24)
 EVENT_WINDOWS = {"24h": timedelta(hours=24), "7d": timedelta(days=7)}
+DERIVED_FAILED_WINDOW = timedelta(days=7)
 STALE_LIST_CAP = 10  # stale series ids listed per source in the text form
 
 
@@ -161,11 +163,29 @@ class SourceStatus:
 
 
 @dataclass(frozen=True)
+class DerivedStatus:
+    """The derived layer (ACTIVE derived series in the database, not the registry specs).
+    A series is `never_computed` when its base has served fetched data and no verified derived
+    run covered it; `stale` when its base's newest served fetched_at is later (as time, not
+    text) than the start of the latest verified run that covered it."""
+    active_series: int
+    served_values: int              # rows currently in served_derived
+    stale: int
+    never_computed: int
+    stale_series: tuple[str, ...]   # derived keys, sorted
+    last_run_id: int | None         # newest derived run, any state
+    last_run_state: str | None
+    last_run_at: str | None         # its started_at
+    failed_runs_7d: int
+
+
+@dataclass(frozen=True)
 class StatusReport:
     generated_at: str
     sources: tuple[SourceStatus, ...]
     totals: dict[str, int]          # active_series / stale / never_fetched / never_verified /
                                     # pending_stuck
+    derived: DerivedStatus
     schema: str = SCHEMA
     version: int = VERSION
     staleness_policy: dict = field(default_factory=lambda: {
@@ -235,6 +255,28 @@ def _event_counts(rows) -> dict[str, dict[str, int]]:
         if src is not None:
             out.setdefault(src, {})[kind] = n
     return out
+
+
+def _derived_status(db: Db, now: datetime) -> DerivedStatus:
+    rows = db.derived_status_rows()
+    stale, never = [], 0
+    for r in rows:
+        base_at = _parse_ts(r["base_latest_fetched_at"])
+        if base_at is None:
+            continue  # nothing served to derive from: neither stale nor never computed
+        if r["last_covered_run_id"] is None:
+            never += 1
+        elif base_at > _parse_ts(r["last_covered_at"]):
+            stale.append(r["key"])
+    last = db.derived_runs(1)
+    since = (now - DERIVED_FAILED_WINDOW).astimezone(timezone.utc).isoformat()
+    return DerivedStatus(
+        active_series=len(rows), served_values=sum(r["served_values"] for r in rows),
+        stale=len(stale), never_computed=never, stale_series=tuple(sorted(stale)),
+        last_run_id=last[0]["id"] if last else None,
+        last_run_state=last[0]["state"] if last else None,
+        last_run_at=last[0]["started_at"] if last else None,
+        failed_runs_7d=db.derived_run_counts(since).get("failed", 0))
 
 
 def build_status(db: Db, specs: list[SeriesSpec], *,
@@ -362,7 +404,8 @@ def build_status(db: Db, specs: list[SeriesSpec], *,
               "never_verified": sum(s.never_verified for s in sources),
               "pending_stuck": sum(p.stale for s in sources for p in s.pending_runs)}
     return StatusReport(generated_at=now_ts.astimezone(timezone.utc).isoformat(),
-                        sources=tuple(sources), totals=totals)
+                        sources=tuple(sources), totals=totals,
+                        derived=_derived_status(db, now_ts))
 
 
 def _series_status(s: SeriesSpec, now: datetime, label_of, key_of, latest_by_key,
@@ -426,6 +469,16 @@ def render_text(report: StatusReport) -> str:
              f"{_counts(t['stale'], t['never_fetched'], t['never_verified'])}; "
              f"pending verification over {report.staleness_policy['pending_stale_after_hours']}"
              f"h {t['pending_stuck']}"]
+    d = report.derived
+    lines.append(f"derived: {d.active_series} active series; {d.served_values} served values; "
+                 f"stale {d.stale} / never computed {d.never_computed}; last run "
+                 f"{d.last_run_id if d.last_run_id is not None else '-'} "
+                 f"({d.last_run_state or '-'}, {d.last_run_at or '-'}); "
+                 f"failed runs 7d {d.failed_runs_7d}")
+    if d.stale_series:
+        shown = d.stale_series[:STALE_LIST_CAP]
+        more = len(d.stale_series) - len(shown)
+        lines.append(f"  DERIVED STALE {', '.join(shown)}" + (f" (+{more} more)" if more else ""))
     for s in report.sources:
         flags = f" BLOCKED ({', '.join(s.blockers)})" if s.blocked else ""
         lines.append(f"{s.name}: {s.active_series} active / {s.inactive_series} inactive "

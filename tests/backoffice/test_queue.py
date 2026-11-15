@@ -4,9 +4,19 @@ from datetime import datetime, timezone
 
 from backoffice.queue import QueueItem, derive_queue
 from ingest.data_lag import Lagging
-from ingest.status import DatasetStatus, PendingRun, SchedulerView, SourceStatus, StatusReport
+from ingest.status import (
+    DatasetStatus,
+    DerivedStatus,
+    PendingRun,
+    SchedulerView,
+    SourceStatus,
+    StatusReport,
+)
 
 NOW = datetime(2026, 11, 14, 12, 0, tzinfo=timezone.utc)
+NO_DERIVED = DerivedStatus(active_series=0, served_values=0, stale=0, never_computed=0,
+                           stale_series=(), last_run_id=None, last_run_state=None,
+                           last_run_at=None, failed_runs_7d=0)
 
 
 def _source(name, *, stale=0, stale_series=(), blockers=(), pending_runs=(), datasets=()):
@@ -22,7 +32,8 @@ def _source(name, *, stale=0, stale_series=(), blockers=(), pending_runs=(), dat
 
 
 def _report(*sources):
-    return StatusReport(generated_at=NOW.isoformat(), sources=tuple(sources), totals={})
+    return StatusReport(generated_at=NOW.isoformat(), sources=tuple(sources), totals={},
+                        derived=NO_DERIVED)
 
 
 def _event(id, kind, ts="2026-11-14T00:00:00+00:00", run_id=7, detail=None):

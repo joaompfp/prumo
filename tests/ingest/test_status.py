@@ -224,7 +224,7 @@ def test_typed_json_schema_and_readable_text(db):
                  verify_at=NOW)
     report = build_status(db, [spec], now=lambda: NOW)
     doc = report.to_dict()
-    assert doc["schema"] == "prumo-status" and doc["version"] == 3
+    assert doc["schema"] == "prumo-status" and doc["version"] == 4
     assert doc["generated_at"] == _ts(NOW)
     assert doc["staleness_policy"]["defaults_days"]["A"] == 30
     series = doc["sources"][0]["series"][0]
