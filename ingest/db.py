@@ -1,7 +1,7 @@
 """The only module that touches SQL. Schema lives in versioned migrations/NNNN_*.sql."""
 import json
 import sqlite3
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -33,9 +33,28 @@ class RunContent:
     observations: tuple[tuple[str, str, str, str | None, str | None], ...]
     quarantine: tuple[tuple[str | None, str | None, str | None, str], ...]
 
+    @classmethod
+    def of(cls, observations: Iterable[tuple], quarantine: Iterable[tuple]) -> "RunContent":
+        """From unordered row tuples (shapes above): the one place that orders them."""
+        return cls(tuple(sorted(map(tuple, observations), key=_none_safe)),
+                   tuple(sorted(map(tuple, quarantine), key=_none_safe)))
+
 
 def _none_safe(row: tuple) -> tuple:
     return tuple((v is not None, v if v is not None else "") for v in row)
+
+
+def observation_content(o) -> tuple[str, str, str, str | None, str | None]:
+    """The content columns an `ingest.models.Observation` is stored as (and RunContent
+    compares): (series_id, period, value_text, status_flag, released_at ISO text)."""
+    return (o.series_id, o.period, o.value_text, o.status_flag,
+            o.released_at.isoformat() if o.released_at else None)
+
+
+def quarantine_content(series_id: str, r) -> tuple[str, str | None, str | None, str]:
+    """The content columns an `ingest.validate.Rejection` of `series_id` is stored as:
+    (series_id, raw_period, raw_value, reason)."""
+    return (series_id, r.period_raw, r.value_raw, r.reason)
 
 
 class SchedulerState(NamedTuple):
@@ -157,8 +176,7 @@ class Db:
         quar = self.conn.execute(
             "SELECT series_id, raw_period, raw_value, reason FROM quarantine "
             "WHERE dataset_run_id = ?", (run_id,)).fetchall()
-        return RunContent(tuple(sorted(map(tuple, obs), key=_none_safe)),
-                          tuple(sorted(map(tuple, quar), key=_none_safe)))
+        return RunContent.of(obs, quar)
 
     def content_base_run(self, dataset_key: str, before_run_id: int) -> int | None:
         """The run whose content a new run of `dataset_key` is compared with, or None.
@@ -204,21 +222,19 @@ class Db:
         """Insert (`ingest.models.Observation`, raw_fetch_id, fetched_at) triples in order
         (order = vintage: highest id is latest); raw_fetch_id is the payload the row came from."""
         self.conn.executemany(
-            "INSERT INTO observation(series_id, period, value_text, value, status_flag, kind, "
-            "dataset_run_id, raw_fetch_id, fetched_at, released_at) "
-            "VALUES (?, ?, ?, ?, ?, 'fetched', ?, ?, ?, ?)",
-            [(o.series_id, o.period, o.value_text, o.value, o.status_flag, run_id, raw_fetch_id,
-              fetched_at, o.released_at.isoformat() if o.released_at else None)
+            "INSERT INTO observation(series_id, period, value_text, status_flag, released_at, "
+            "value, kind, dataset_run_id, raw_fetch_id, fetched_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, 'fetched', ?, ?, ?)",
+            [(*observation_content(o), o.value, run_id, raw_fetch_id, fetched_at)
              for o, raw_fetch_id, fetched_at in rows])
 
     def write_quarantine(self, run_id: int, series_id: str, rejections: list,
                          created_at: str) -> None:
         """Insert `ingest.validate.Rejection`s for one series."""
         self.conn.executemany(
-            "INSERT INTO quarantine(dataset_run_id, series_id, raw_period, raw_value, reason, "
+            "INSERT INTO quarantine(series_id, raw_period, raw_value, reason, dataset_run_id, "
             "created_at) VALUES (?, ?, ?, ?, ?, ?)",
-            [(run_id, series_id, r.period_raw, r.value_raw, r.reason, created_at)
-             for r in rejections])
+            [(*quarantine_content(series_id, r), run_id, created_at) for r in rejections])
 
     def add_event(self, ts: str, kind: str, run_id: int | None, detail: dict | None = None) -> None:
         self.conn.execute(
