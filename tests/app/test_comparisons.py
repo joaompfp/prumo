@@ -3,20 +3,24 @@
 The pair fixture adds three Banco de Portugal series to the shared site database so all three
 catalogue pairs render; the shared fixture is left untouched because other tests assert its counts.
 """
+import re
+
 import pytest
 from fastapi.testclient import TestClient
 
+from app import reads
 from app.charts import two_series_chart
 from app.formatting import format_value
 from app.main import create_app
-from ingest.db import open_db
+from ingest.db import open_db, read_db_readonly
 from presentation.catalog import pt
-from tests.app.conftest import T2, build, fetch
+from tests.app.conftest import T2, T3, build, fetch
 
 BP = "bportugal"
 EUR3 = "bportugal.euribor_3m.EA"
 EUR12 = "bportugal.euribor_12m.EA"
 CREDIT = "bportugal.credit_housing.PT"
+UNEMP = "ine.unemployment_monthly.PT"
 SLUGS = ("inflacao-e-desemprego", "euribor-e-inflacao", "credito-e-taxa")
 
 
@@ -43,6 +47,9 @@ def _add_bp(path):
         fetch(db, EUR3, {"2026-08": "2.1", "2026-09": "2.0", "2026-10": "1.9"}, T2,
               source=BP, sha="1" * 64)
         fetch(db, EUR12, {"2026-08": "2.6", "2026-09": "2.5"}, T2, source=BP, sha="2" * 64)
+        # A newer period, in its own later run, so the pair's last COMMON period sits in the
+        # earlier run: the page must cite the run behind the value it shows.
+        fetch(db, EUR12, {"2026-10": "2.4"}, T3, source=BP, sha="4" * 64)
         fetch(db, CREDIT, {"2026-07": "100000", "2026-08": "101000", "2026-09": "102000"},
               T2, source=BP, sha="3" * 64)
     finally:
@@ -63,30 +70,54 @@ def pairs_client(pairs_path):
         yield client
 
 
+def _page(path, slug):
+    return read_db_readonly(path, lambda db: reads.comparison_page(db, slug))
+
+
+def _chart_paths(html):
+    return re.findall(r'<path class="chart-line chart-line-[ab]" d="([^"]+)"', html)
+
+
 def test_index_lists_every_pair_in_catalogue_order(pairs_client):
     html = pairs_client.get("/comparar").text
     positions = [html.index(f"/comparar/{slug}") for slug in SLUGS]
     assert positions == sorted(positions)
+    assert len(re.findall(r'class="compare-link"', html)) == len(SLUGS)
     assert "Não há escolha livre" in html
 
 
-def test_each_pair_renders_both_series_and_both_publishers(pairs_client):
+def test_each_pair_draws_two_distinct_lines(pairs_client):
     for slug in SLUGS:
         response = pairs_client.get(f"/comparar/{slug}")
         assert response.status_code == 200, slug
         html = response.text
-        assert html.count("chart-line-a") == 1 and html.count("chart-line-b") == 1
+        paths = _chart_paths(html)
+        assert len(paths) == 2, slug
+        assert paths[0] != paths[1], slug
         assert "legend-swatch" in html
-        assert "Proveniência" in html
         assert "<script" not in html and "style=" not in html
 
 
-def test_pair_one_pins_the_exact_stored_tokens(pairs_client):
+def test_each_pair_names_both_publishers(pairs_client):
+    assert "INE — Instituto Nacional de Estatística" in pairs_client.get(
+        "/comparar/inflacao-e-desemprego").text
+    credit = pairs_client.get("/comparar/credito-e-taxa").text
+    assert "Banco de Portugal" in credit
+    # Both sides of the pair carry their own provenance block.
+    assert credit.count('class="provenance-list"') == 2
+
+
+def test_pair_one_pins_the_exact_stored_tokens_in_the_table(pairs_client):
     html = pairs_client.get("/comparar/inflacao-e-desemprego").text
-    # HICP 2026-10 is 1.8 (revised), unemployment 2026-10 is 6.2; both are the last common period.
-    assert format_value("1.8") in html
-    assert format_value("6.2") in html
-    assert "INE — Instituto Nacional de Estatística" in html
+    # Last common period 2026-10: HICP 1.8 (the revised token), unemployment 6.2.
+    assert f'<td class="num">{format_value("1.8")}</td>' in html
+    assert f'<td class="num">{format_value("6.2")}</td>' in html
+
+
+def test_table_renders_every_period_the_chart_draws(pairs_path):
+    for slug in SLUGS:
+        page = _page(pairs_path, slug)
+        assert len(page.table_rows) == len(page.chart_points), slug
 
 
 def test_alignment_states_what_each_side_loses(pairs_client):
@@ -96,14 +127,65 @@ def test_alignment_states_what_each_side_loses(pairs_client):
     assert "sem par na outra série" in html
 
 
+def test_alignment_counts_the_periods_lost_by_the_second_series(pairs_client):
+    # EUR12 has 2026-10 that the credit stock lacks; the stock has 2026-07 that EUR12 lacks.
+    html = pairs_client.get("/comparar/credito-e-taxa").text
+    assert "2 períodos comuns, de agosto de 2026 a setembro de 2026." in html
+    assert ("Ficam de fora 1 período de Taxa Euribor a 12 meses — Área do euro e "
+            "1 período de Crédito à habitação — Portugal") in html
+
+
 def test_dual_axis_pair_labels_both_sides(pairs_client):
     html = pairs_client.get("/comparar/credito-e-taxa").text
     assert html.count("chart-axis-label") == 2
     assert "Percentagem à esquerda, milhões de euros à direita" in html
 
 
+def test_provenance_names_the_run_behind_the_period_shown(pairs_path, pairs_client):
+    db = open_db(pairs_path)
+    try:
+        def run_of(period):
+            return db.conn.execute(
+                "SELECT dataset_run_id FROM served_observation WHERE series_id = ? "
+                "AND period = ? AND kind = 'fetched'", (EUR12, period)).fetchone()[0]
+        run_september = run_of("2026-09")
+        run_october = run_of("2026-10")
+    finally:
+        db.close()
+    assert run_september != run_october
+    html = pairs_client.get("/comparar/credito-e-taxa").text
+    assert f"#{run_september}" in html           # the value the page shows
+    assert f"#{run_october}" not in html         # the series' newer, unpaired period
+
+
 def test_unknown_slug_is_404(pairs_client):
     assert pairs_client.get("/comparar/nao-existe").status_code == 404
+
+
+def test_missing_catalogue_key_is_503(pairs_client, monkeypatch):
+    broken = dict(pt.COMPARISONS["inflacao-e-desemprego"])
+    del broken["subtitle"]
+    monkeypatch.setitem(pt.COMPARISONS, "inflacao-e-desemprego", broken)
+    assert pairs_client.get("/comparar/inflacao-e-desemprego").status_code == 503
+    assert pairs_client.get("/comparar").status_code == 503
+
+
+def test_a_non_numeric_token_leaves_the_chart_and_is_declared(tmp_path):
+    path = tmp_path / "na.db"
+    build(path)
+    db = open_db(path)
+    try:
+        db.conn.execute("UPDATE observation SET value_text = 'n.d.' "
+                        "WHERE series_id = ? AND period = '2026-10'", (UNEMP,))
+        db.conn.commit()
+    finally:
+        db.close()
+    with TestClient(create_app(str(path))) as client:
+        html = client.get("/comparar/inflacao-e-desemprego").text
+    # 2026-10 is common but undrawable, so the page must not call it the last period shown.
+    assert "1 período comum, de setembro de 2026 a setembro de 2026." in html
+    assert "Últimos valores no período comum de setembro de 2026" in html
+    assert "1 período comum sem valor numérico na fonte fica fora do gráfico e da tabela." in html
 
 
 def test_withheld_source_hides_the_pair_whole(tmp_path):
@@ -127,13 +209,16 @@ def test_withheld_source_hides_the_pair_whole(tmp_path):
 def test_links_carry_the_mount_prefix(pairs_client):
     html = pairs_client.get("/comparar", headers={"X-Forwarded-Prefix": "/dados"}).text
     assert 'href="/dados/comparar/inflacao-e-desemprego"' in html
+    assert 'href="/dados/static/css/prumo.css"' in html
 
 
-def test_headers_and_no_javascript(pairs_client):
-    response = pairs_client.get("/comparar")
-    assert "default-src 'none'" in response.headers["content-security-policy"]
-    assert "x-forwarded-prefix" in response.headers["vary"].lower()
-    assert "<script" not in response.text
+def test_headers_and_no_javascript_on_index_and_pair(pairs_client):
+    for path in ("/comparar", "/comparar/credito-e-taxa"):
+        response = pairs_client.get(path)
+        assert "default-src 'none'" in response.headers["content-security-policy"], path
+        assert "x-forwarded-prefix" in response.headers["vary"].lower(), path
+        assert "<script" not in response.text, path
+        assert "style=" not in response.text, path
 
 
 def test_unusable_database_is_503(tmp_path):
@@ -142,21 +227,24 @@ def test_unusable_database_is_503(tmp_path):
         assert client.get("/comparar/inflacao-e-desemprego").status_code == 503
 
 
-def test_nav_carries_the_section_once(pairs_client):
-    html = pairs_client.get("/").text
-    assert html.count('href="/comparar"') == 1
-    assert ">Comparações<" in html
+def test_nav_carries_the_section_once_per_page(pairs_client):
+    for path in ("/", "/comparar", "/comparar/credito-e-taxa"):
+        html = pairs_client.get(path).text
+        nav = re.search(r'<nav class="site-nav".*?</nav>', html, re.S)
+        assert nav is not None, path
+        assert nav.group(0).count('href="/comparar"') == 1, path
+        assert ">Comparações<" in nav.group(0), path
 
 
 # --- catalogue and chart, without a database -------------------------------------------------
 
 def test_catalogue_pairs_are_internally_consistent():
     for slug, pair in pt.COMPARISONS.items():
+        for key in ("series_a", "series_b", "title", "subtitle", "mechanism", "caption_note",
+                    "scale"):
+            assert pair.get(key, "").strip(), (slug, key)
         assert pair["series_a"] != pair["series_b"], slug
         assert pair["scale"] in ("one_axis", "dual_axis"), slug
-        assert pair["mechanism"].strip() and pair["caption_note"].strip(), slug
-        if pair["scale"] == "dual_axis":
-            assert pair["caption_note"], slug
     titles = [pair["title"] for pair in pt.COMPARISONS.values()]
     assert len(titles) == len(set(titles))
 
@@ -168,15 +256,28 @@ def test_scale_mode_is_declared_per_pair():
 
 
 def test_unit_rule_holds_against_the_served_series(pairs_path):
+    """Every pair's two series are publishable and the declared scale matches the units."""
     db = open_db(pairs_path)
     try:
         for slug, pair in pt.COMPARISONS.items():
             a = db.public_series(pair["series_a"])
             b = db.public_series(pair["series_b"])
-            if a is None or b is None:
-                continue
+            assert a is not None and b is not None, slug
+            assert a["role"] == "primary" and b["role"] == "primary", slug
             same = a["unit"] == b["unit"]
             assert same == (pair["scale"] == "one_axis"), slug
+    finally:
+        db.close()
+
+
+def test_no_pair_names_a_withheld_source(pairs_path):
+    db = open_db(pairs_path)
+    try:
+        for slug, pair in pt.COMPARISONS.items():
+            for series_id in (pair["series_a"], pair["series_b"]):
+                row = db.public_series(series_id)
+                assert row is not None, (slug, series_id)
+                assert row["licence"], (slug, series_id)
     finally:
         db.close()
 
@@ -189,24 +290,50 @@ def test_chart_one_axis_draws_two_lines_and_one_axis_label():
     svg = str(two_series_chart(_points([("2026-01", "1.0", "2.0"), ("2026-02", "1.5", "2.5")]),
                                frequency="M", title="Par", labels=("A", "B"), unit_a="%",
                                unit_b="%"))
-    assert svg.count("chart-line-a") == 1 and svg.count("chart-line-b") == 1
+    assert len(re.findall(r'class="chart-line chart-line-a"', svg)) == 1
+    assert len(re.findall(r'class="chart-line chart-line-b"', svg)) == 1
     assert svg.count("chart-axis-label") == 1
     assert "Par: A (%) e B (%)" in svg
 
 
-def test_chart_dual_axis_draws_two_axis_labels():
-    svg = str(two_series_chart(_points([("2026-01", "1.0", "100000"), ("2026-02", "1.5", "101000")]),
+def test_chart_dual_flag_wins_over_equal_units():
+    svg = str(two_series_chart(_points([("2026-01", "1.0", "2.0"), ("2026-02", "1.5", "2.5")]),
                                frequency="M", title="Par", labels=("A", "B"), unit_a="%",
-                               unit_b="milhões de euros"))
+                               unit_b="%", dual=True))
+    assert svg.count("chart-axis-label") == 2
+
+
+def test_chart_dual_axis_draws_two_axis_labels():
+    svg = str(two_series_chart(
+        _points([("2026-01", "1.0", "100000"), ("2026-02", "1.5", "101000")]),
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="milhões de euros"))
     assert svg.count("chart-axis-label") == 2
     assert "milhões de euros" in svg
 
 
 def test_chart_drops_a_period_whose_token_is_not_numeric():
-    svg = str(two_series_chart(_points([("2026-01", "1.0", "x"), ("2026-02", "1.5", "2.5")]),
+    svg = str(two_series_chart(_points([("2026-01", "1.0", "n.d."), ("2026-02", "1.5", "2.5")]),
                                frequency="M", title="Par", labels=("A", "B"), unit_a="%",
                                unit_b="%"))
-    assert svg.count("<circle") == 2          # one point per series, one period only
+    # Two series at the one drawable period, and the undrawable period named in neither line.
+    assert svg.count('class="chart-point"') == 2
+    assert 'title="A — janeiro de 2026' not in svg
+
+
+def test_chart_single_period_leaves_a_visible_mark():
+    svg = str(two_series_chart(_points([("2026-01", "1.0", "2.0")]), frequency="M",
+                               title="Par", labels=("A", "B"), unit_a="%", unit_b="%"))
+    assert svg.count('class="chart-last chart-last-a"') == 1
+    assert svg.count('class="chart-last chart-last-b"') == 1
+
+
+def test_chart_breaks_the_line_across_a_missing_period():
+    svg = str(two_series_chart(
+        _points([("2026-01", "1.0", "2.0"), ("2026-02", "1.5", "2.5"), ("2026-06", "1.2", "2.2")]),
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%"))
+    paths = re.findall(r'class="chart-line chart-line-a" d="([^"]+)"', svg)
+    assert len(paths) == 1
+    assert paths[0].count("M") == 2      # the line restarts after the gap instead of crossing it
 
 
 def test_chart_empty_state():

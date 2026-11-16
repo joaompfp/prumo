@@ -22,27 +22,26 @@
     <h2 id="grafico">As duas séries</h2>
   </div>
   <figure class="chart-figure">
-    {{ chart_two(page.chart_points, frequency=page.a.frequency, title=page.chart_title, labels=[page.a.title, page.b.title], unit_a=page.a.unit_text, unit_b=page.b.unit_text) }}
+    {{ chart_two(page.chart_points, frequency=page.a.frequency, title=page.chart_title, labels=[page.a.title, page.b.title], unit_a=page.a.unit_text, unit_b=page.b.unit_text, dual=(page.scale == 'dual_axis')) }}
     <figcaption>{{ page.caption_note }} Últimos valores no período comum de {{ page.a.latest_period_text }}.</figcaption>
   </figure>
   <p class="note">{{ page.alignment_text }}</p>
   <details class="table-details">
-    <summary>Ver tabela de valores</summary>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th scope="col">Período</th>
-          <th scope="col" class="num">{{ page.a.title }} ({{ page.a.unit_text }})</th>
-          <th scope="col" class="num">{{ page.b.title }} ({{ page.b.unit_text }})</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in page.table_rows %}
-        <tr><td>{{ row.period_text }}</td><td class="num">{{ row.a_display }}</td><td class="num">{{ row.b_display }}</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <p class="note">{{ page.table_note }}</p>
+  <summary>Ver tabela de valores</summary>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th scope="col">Período</th>
+        <th scope="col" class="num">{{ page.a.title }} ({{ page.a.unit_text }})</th>
+        <th scope="col" class="num">{{ page.b.title }} ({{ page.b.unit_text }})</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.table_rows %}
+      <tr><td>{{ row.period_text }}</td><td class="num">{{ row.a_display }}</td><td class="num">{{ row.b_display }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
   </details>
 </section>
 
@@ -61,9 +60,16 @@
       {% if side.provenance %}
       <dt>Recolhido</dt><dd>{{ side.provenance.fetched_text }}</dd>
       <dt>Execução</dt><dd>#{{ side.provenance.run_id }}</dd>
-      {% if side.provenance.verification_created_text %}
-      <dt>Verificação</dt><dd>{{ side.provenance.verification_created_text }}{% if side.provenance.sample_size_text %}, amostra de {{ side.provenance.sample_size_text }} valores{% endif %}{% if side.provenance.verification_passed %}, 100% coincidentes{% endif %}</dd>
-      {% endif %}
+      <dt>Ficheiro arquivado</dt><dd>{% if side.provenance.sha256 %}<code title="{{ side.provenance.sha256 }}">{{ side.provenance.sha256[:12] }}…{{ side.provenance.sha256[-6:] }}</code>{% else %}—{% endif %}</dd>
+      <dt>Verificação</dt>
+      <dd>
+        {% if side.provenance.verification_created_text %}
+        {{ side.provenance.verification_created_text }}{% if side.provenance.sample_size_text %}, amostra de {{ side.provenance.sample_size_text }} valores do conjunto{% endif %}{% if side.provenance.verification_passed %}, 100% coincidentes{% endif %}.
+        {% if side.provenance.sampled %}Este valor foi um dos comparados.{% else %}Este valor não foi um dos amostrados; a verificação cobre o conjunto de onde ele vem.{% endif %}
+        {% else %}Sem registo de verificação para esta execução.{% endif %}
+      </dd>
+      {% else %}
+      <dt>Recolha</dt><dd>Sem registo de recolha para este período.</dd>
       {% endif %}
       <dt>Licença</dt><dd>{{ side.licence }}</dd>
     </dl>

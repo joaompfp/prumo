@@ -9,7 +9,14 @@ import time
 import unicodedata
 from dataclasses import dataclass
 
-from app.formatting import format_count, format_date, format_datetime, format_period, format_value
+from app.formatting import (
+    decimal_or_none,
+    format_count,
+    format_date,
+    format_datetime,
+    format_period,
+    format_value,
+)
 from ingest.db import Db
 from ingest.editorial_rules import SlotFacts, page_problems
 from presentation import (
@@ -865,7 +872,6 @@ class ComparisonPage:
     chart_title: str
     chart_points: tuple[dict, ...]
     table_rows: tuple[dict, ...]
-    table_note: str
     alignment_text: str
     a: ComparisonSeries
     b: ComparisonSeries
@@ -890,22 +896,34 @@ def _periods(n: int) -> str:
     return "1 período" if n == 1 else f"{format_count(n)} períodos"
 
 
-def _align(a_values: list[dict], b_values: list[dict]) -> tuple[tuple[dict, ...], int, int]:
-    """The periods both series publish, oldest first, plus the count each side loses.
+def _common(n: int) -> str:
+    return "1 período comum" if n == 1 else f"{format_count(n)} períodos comuns"
 
-    No interpolation, no carry-forward, no resampling: a period only one series has is stated in
-    the alignment line, not drawn as if the other side had a value.
+
+def _align(a_values: list[dict],
+           b_values: list[dict]) -> tuple[tuple[dict, ...], int, int, int]:
+    """The periods both series publish with a numeric value on both sides, oldest first.
+
+    No interpolation, no carry-forward, no resampling. Returns the points, the count of periods
+    each side has that the other lacks, and the count of common periods dropped because a
+    publisher token was not a number ("n.d.", an empty cell): the chart cannot draw those, and the
+    page must not call the last drawn period "the last common period".
     """
     a_map = {v["period"]: v["value_text"] for v in a_values}
     b_map = {v["period"]: v["value_text"] for v in b_values}
     common = sorted(set(a_map) & set(b_map))
-    return (tuple({"period": p, "a": a_map[p], "b": b_map[p]} for p in common),
-            len(a_map) - len(common), len(b_map) - len(common))
+    points = tuple({"period": p, "a": a_map[p], "b": b_map[p]}
+                   for p in common
+                   if decimal_or_none(a_map[p]) is not None
+                   and decimal_or_none(b_map[p]) is not None)
+    return (points, len(a_map) - len(common), len(b_map) - len(common),
+            len(common) - len(points))
 
 
 def _comparison_side(db: Db, row: dict, token: str, period: str, frequency: str,
                      lang: str) -> ComparisonSeries:
-    provenance = db.public_provenance(row["id"])
+    # The provenance of the value this page shows, not of the series' newest one.
+    provenance = db.public_provenance_at(row["id"], period)
     return ComparisonSeries(
         id=row["id"], title=_title(row, lang), source_title=source_title(lang, row["source"]),
         attribution=row["attribution"], unit_text=base_unit_text(lang, row["unit"]),
@@ -917,7 +935,7 @@ def _comparison_side(db: Db, row: dict, token: str, period: str, frequency: str,
 
 
 def _published_pair(db: Db, pair: dict[str, str],
-                    slug: str = "") -> tuple[dict, dict, tuple[dict, ...], int, int] | None:
+                    slug: str = "") -> tuple[dict, dict, tuple[dict, ...], int, int, int] | None:
     """Both series of a pair, or None when the pair cannot be drawn as it was curated.
 
     A pair whose series lost its licence or its served values disappears whole: half a
@@ -938,19 +956,19 @@ def _published_pair(db: Db, pair: dict[str, str],
         log.error("comparison %s mixes frequencies %s and %s", slug,
                   a_row["frequency"], b_row["frequency"])
         return None
-    points, dropped_a, dropped_b = _align(db.public_series_values(a_row["id"]),
-                                          db.public_series_values(b_row["id"]))
+    points, dropped_a, dropped_b, unparsed = _align(db.public_series_values(a_row["id"]),
+                                                   db.public_series_values(b_row["id"]))
     if not points:
         log.warning("comparison %s hidden: no common period", slug)
         return None
-    return a_row, b_row, points, dropped_a, dropped_b
+    return a_row, b_row, points, dropped_a, dropped_b, unparsed
 
 
-def _alignment_text(points: tuple[dict, ...], dropped_a: int, dropped_b: int,
+def _alignment_text(points: tuple[dict, ...], dropped_a: int, dropped_b: int, unparsed: int,
                     a_title: str, b_title: str, frequency: str) -> str:
     first = format_period(points[0]["period"], frequency)
     last = format_period(points[-1]["period"], frequency)
-    parts = [f"{_periods(len(points))} comuns, de {first} a {last}."]
+    parts = [f"{_common(len(points))}, de {first} a {last}."]
     missing = []
     if dropped_a:
         missing.append(f"{_periods(dropped_a)} de {a_title}")
@@ -958,45 +976,50 @@ def _alignment_text(points: tuple[dict, ...], dropped_a: int, dropped_b: int,
         missing.append(f"{_periods(dropped_b)} de {b_title}")
     if missing:
         parts.append("Ficam de fora " + " e ".join(missing) + ", sem par na outra série.")
-    else:
+    if unparsed:
+        parts.append(f"{_common(unparsed)} sem valor numérico na fonte "
+                     + ("fica" if unparsed == 1 else "ficam") + " fora do gráfico e da tabela.")
+    if not missing and not unparsed:
         parts.append("As duas séries cobrem exactamente os mesmos períodos.")
     return " ".join(parts)
 
 
 def comparison_page(db: Db, slug: str, *, lang: str = "pt") -> ComparisonPage | None:
-    try:
-        pair = comparison_pair(lang, slug)
-    except MissingText:
+    # An unknown slug is a reader's 404; a pair with a missing key raises MissingText and the app
+    # answers 503 with a log line, because that is an operator fault on a page that should exist.
+    if slug not in comparisons(lang):
         return None
+    pair = comparison_pair(lang, slug)
     published = _published_pair(db, pair, slug)
     if published is None:
         return None
-    a_row, b_row, points, dropped_a, dropped_b = published
+    a_row, b_row, points, dropped_a, dropped_b, unparsed = published
     frequency = a_row["frequency"]
     last = points[-1]
     a = _comparison_side(db, a_row, last["a"], last["period"], frequency, lang)
     b = _comparison_side(db, b_row, last["b"], last["period"], frequency, lang)
+    # Every plotted period is in the table: the reader can check any point the chart draws.
     rows = tuple(
         {"period_text": format_period(p["period"], frequency),
          "a_display": format_value(p["a"]), "b_display": format_value(p["b"])}
-        for p in reversed(points))[:TABLE_CAP]
-    note = (f"A mostrar os {len(rows)} períodos mais recentes de {_periods(len(points))}."
-            if len(rows) < len(points) else f"{_periods(len(points))}.")
+        for p in reversed(points))
     return ComparisonPage(
         slug=slug, title=pair["title"], subtitle=pair["subtitle"], mechanism=pair["mechanism"],
         caption_note=pair["caption_note"], scale=pair["scale"], chart_title=pair["title"],
-        chart_points=points, table_rows=rows, table_note=note,
-        alignment_text=_alignment_text(points, dropped_a, dropped_b, a.title, b.title, frequency),
+        chart_points=points, table_rows=rows,
+        alignment_text=_alignment_text(points, dropped_a, dropped_b, unparsed,
+                                       a.title, b.title, frequency),
         a=a, b=b)
 
 
 def comparisons_index(db: Db, *, lang: str = "pt") -> ComparisonIndex:
     rows = []
-    for slug, pair in comparisons(lang).items():
+    for slug in comparisons(lang):
+        pair = comparison_pair(lang, slug)
         published = _published_pair(db, pair, slug)
         if published is None:
             continue
-        a_row, _b_row, points, _da, _db = published
+        a_row, _b_row, points, _dropped_a, _dropped_b, _unparsed = published
         frequency = a_row["frequency"]
         rows.append(ComparisonSummary(
             slug=slug, title=pair["title"], mechanism=pair["mechanism"],

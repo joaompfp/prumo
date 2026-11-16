@@ -142,9 +142,18 @@ def comparisons(lang: str) -> dict[str, dict[str, str]]:
     return _catalog(lang).COMPARISONS
 
 
+PAIR_KEYS = ("series_a", "series_b", "title", "subtitle", "mechanism", "scale", "caption_note")
+
+
 def comparison_pair(lang: str, slug: str) -> dict[str, str]:
+    """One curated pair, with every key it needs. A missing key is an operator fault and raises
+    MissingText (the app renders 503 and logs the slug), never a KeyError 500 on a public page."""
     catalog = _catalog(lang)
     try:
-        return catalog.COMPARISONS[slug]
+        pair = catalog.COMPARISONS[slug]
     except KeyError:
         raise MissingText(f"no {lang} comparison for {slug!r}") from None
+    for key in PAIR_KEYS:
+        if key not in pair or not str(pair[key]).strip():
+            raise MissingText(f"comparison {slug!r} has no {lang} {key}")
+    return pair

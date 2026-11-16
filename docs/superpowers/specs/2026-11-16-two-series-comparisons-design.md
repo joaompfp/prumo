@@ -39,8 +39,8 @@ Not included, and why: the E-REDES production components (`eredes.production_mar
 
 `scale` is `one_axis` or `dual_axis`, written in the catalogue:
 
-- `one_axis` requires both series to share the same unit token, and requires that both are rates of the same kind (a rate of change against a rate, or two levels). A level and a year-on-year rate may share the `%` token and still never share an axis.
-- `dual_axis` is allowed only for a curated pair, is labelled on both sides, and its caption states that the two magnitudes are not comparable and that the chart shows direction, not size.
+- `one_axis` requires both series to share the same unit token, and requires that both are rates of the same kind (a rate of change against a rate, or two levels). A level and a year-on-year rate may share the `%` token and still never share an axis. The unit half is asserted against the served data by a test; the "same kind" half is a curation rule checked at review, because the data layer stores a unit code and nothing that says what kind of thing the number is, and inventing that metadata for three pairs would be a field nobody else reads.
+- `dual_axis` is allowed only for a curated pair, is labelled on both sides, and its caption states that the two magnitudes are not comparable and that the chart shows direction, not size. The pair's `scale` decides the chart mode; the unit comparison is only the chart's fallback when no mode is given.
 
 Pairs 1 and 2 are `one_axis`; pair 3 is `dual_axis`.
 
@@ -90,11 +90,13 @@ One `<h1>`, one introductory sentence from the catalogue, then one block per pai
 New function in `app/charts.py`:
 
 ```python
-two_series_chart(points_a, points_b, *, frequency, title, labels, unit_a, unit_b=None,
+two_series_chart(points, *, frequency, title, labels, unit_a, unit_b=None, dual=None,
                  width=WIDTH, height=HEIGHT) -> Markup
 ```
 
-- `unit_b is None` → one axis, ticks from the union of both ranges, one set of gridlines, one y-axis label.
+`points` are dicts with `period`, `a` and `b` (the stored tokens), already aligned by the read layer.
+
+- `dual` is the pair's `scale`: `True` forces two axes even when both units read the same; `None` falls back to comparing `unit_a` and `unit_b`.
 - `unit_b` set → dual axis: left ticks from series A, right ticks from series B, gridlines from the left axis only, each side labelled with its unit. The two independent scales are never mixed into one tick set.
 - Both lines are `path.chart-line` with an additional class (`chart-line-a`, `chart-line-b`) so colour comes from CSS, never from a `style` attribute.
 - Each point carries a `<title>` naming its series, period, exact value and unit.
@@ -166,5 +168,14 @@ Three defects were found in visual QA against the production copy, after the cod
 2. **The meta line repeated the geography.** `series_title` already ends with the region ("Taxa Euribor a 12 meses — Área do euro"), so appending `geography_text` printed "— Área do euro — Área do euro". The meta line is now title · frequency · unit, and the geography reaches the reader once, through the title. `ComparisonSeries` therefore carries no `geography_text`.
 3. **Pair 3's title did not match its axis order.** It was "Crédito à habitação e taxa" while the rate is series A and the left axis; a reader meeting the legend sees the rate first. The title is now "Taxa e crédito à habitação".
 
-One deliberate re-capture: `tests/app/golden/home_code_list.html` (see D6). The previous file, `home_before_editorial.html`, stays in the tree; `diff` between them is exactly one navigation anchor.
+One deliberate re-capture: `tests/app/golden/home_code_list.html` (see D6). The previous file, `home_before_editorial.html`, stays in the tree; `diff` between them is exactly one navigation anchor (plus the whitespace line the nav loop emits around it).
+
+The independent review found five more, all closed in the fix commit:
+
+4. **The table was capped at 60 rows** while the chart drew 344/359/393, which broke D3's promise that a reader can check any drawn point. Comparisons now render every plotted period; `TABLE_CAP` stays for series pages, where the table is a sample of a longer history and says so.
+5. **Provenance described the series' newest value, not the value on the page.** `_comparison_side` used `public_provenance`, which is `ORDER BY period DESC LIMIT 1`, so a pair whose last common period was older than either series' newest cited the wrong run. The new `Db.public_provenance_at(series_id, period)` reads the record for exactly the period shown, and the block now carries the archived file hash and the "this value was / was not one of the sampled items" sentence, as the series page does.
+6. **A common period with a non-numeric token was counted as plotted.** The chart silently dropped it while the page still called it the last common period. Alignment now keeps only periods where both tokens parse as finite numbers, and the note states how many common periods a publisher left without a number.
+7. **A missing catalogue key answered 500.** `comparison_pair` now validates the seven keys and raises `MissingText`, which the app already maps to 503 with a log line; an unknown slug is still a 404.
+8. **Two smaller ones from the same review:** `_year_indices` could raise `StopIteration` on an annual series missing a boundary year, and a one-period pair drew an invisible one-command path (it now gets a dot per line). Both fixed.
+
 

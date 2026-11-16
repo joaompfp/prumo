@@ -71,7 +71,10 @@ def _year_indices(periods: list[str]) -> list[int]:
         return []
     out: list[int] = []
     for year in wanted:
-        index = next(i for i, value in enumerate(years) if value == year)
+        try:
+            index = years.index(year)
+        except ValueError:
+            continue
         if index not in out:
             out.append(index)
     return out
@@ -122,19 +125,8 @@ def line_chart(points: list[dict], *, frequency: str, title: str, unit: str = ""
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
 
     periods = [v[0] for v in values]
-    numbers = [v[1] for v in values]
-    lo, hi = min(numbers), max(numbers)
-    if lo == hi:
-        pad = abs(lo) * Decimal("0.1") or Decimal(1)
-        lo, hi = lo - pad, hi + pad
-    else:
-        pad = (hi - lo) * Decimal("0.08")
-        lo, hi = lo - pad, hi + pad
-    if min(numbers) < 0:
-        lo, hi = min(lo, Decimal(0)), max(hi, Decimal(0))
-    ticks = _ticks(lo, hi)
-    if ticks:
-        lo, hi = min(lo, ticks[0]), max(hi, ticks[-1])
+    numbers = [v[1] for v in values if v[1] is not None]
+    lo, hi, ticks = _range(numbers)
 
     plot_w = width - LEFT - RIGHT
     plot_h = height - TOP - BOTTOM
@@ -209,14 +201,16 @@ def _range(nums: list[Decimal]) -> tuple[Decimal, Decimal, list[Decimal]]:
 
 
 def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: tuple[str, str],
-                     unit_a: str, unit_b: str | None = None,
+                     unit_a: str, unit_b: str | None = None, dual: bool | None = None,
                      width: int = WIDTH, height: int = HEIGHT) -> Markup:
     """Two series as two SVG lines over the periods the caller aligned.
 
     `points` are dicts with `period`, `a` and `b` (the stored tokens), oldest first. Equal units
-    (or no `unit_b`) share one axis; different units get two independent axes, gridlines from the
-    left one and both sides labelled, because two scales on one gridline set would let any two
-    series look related. Nothing is interpolated: a missing token drops that period for both lines.
+    share one axis; different units get two independent axes, gridlines from the left one and both
+    sides labelled, because two scales on one gridline set would let any two series look related.
+    `dual` is the catalogue's decision for the pair and wins over the unit comparison: a level and
+    a rate can share the `%` token and still be two different things. Nothing is interpolated: a
+    missing token drops that period for both lines, and a gap breaks the line instead of crossing it.
     """
     rows = []
     for p in points:
@@ -228,7 +222,8 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
 
     periods = [r[0] for r in rows]
-    dual = unit_b is not None and unit_b != unit_a
+    if dual is None:
+        dual = unit_b is not None and unit_b != unit_a
     if dual:
         lo_a, hi_a, ticks_a = _range([r[1] for r in rows])
         lo_b, hi_b, ticks_b = _range([r[2] for r in rows])
@@ -260,7 +255,9 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
 
     for tick in ticks_a:
         ty = round(y_of(tick, lo_a, hi_a), 1)
-        cls = "chart-grid chart-zero" if tick == 0 else "chart-grid"
+        # With two scales the highlighted "zero" belongs to the left series only, so a thick line
+        # there would read as zero for both.
+        cls = "chart-grid" if dual or tick != 0 else "chart-grid chart-zero"
         parts.append(f'<line class="{cls}" x1="{LEFT}" y1="{ty}" x2="{width - right}" '
                      f'y2="{ty}" />')
         parts.append(f'<text class="chart-tick" x="{LEFT - 8}" y="{ty + 4}" '
@@ -279,9 +276,17 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
         parts.append(f'<text class="chart-axis-label" x="{width - 4}" y="{TOP - 6}" '
                      f'text-anchor="end">{escape(unit_b)}</text>')
 
+    # A period missing from the middle must break the line, not be crossed by it: compare every
+    # step with the typical step of this pair.
+    steps = [ordinals[i] - ordinals[i - 1] for i in range(1, len(ordinals))]
+    typical = sorted(steps)[(len(steps) - 1) // 2] if steps else 0.0
+    breaks = {i for i, step in enumerate(steps, start=1) if typical and step > typical * 1.5}
+
     for index, lo, hi, cls in ((1, lo_a, hi_a, "chart-line-a"), (2, lo_b, hi_b, "chart-line-b")):
-        d = " ".join(f"{'M' if i == 0 else 'L'}{round(xs[i], 1)},"
-                     f"{round(y_of(row[index], lo, hi), 1)}" for i, row in enumerate(rows))
+        commands = [f"{'M' if i == 0 or i in breaks else 'L'}"
+                    f"{round(xs[i], 1)},{round(y_of(row[index], lo, hi), 1)}"
+                    for i, row in enumerate(rows)]
+        d = " ".join(commands)
         parts.append(f'<path class="chart-line {cls}" d="{d}" />')
 
     for i, (period, a, b, token_a, token_b) in enumerate(rows):
@@ -298,7 +303,7 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
     last_y_a = y_of(rows[-1][1], lo_a, hi_a)
     last_y_b = y_of(rows[-1][2], lo_b, hi_b)
     lx = round(xs[-1], 1)
-    anchor = "end" if lx > width - 40 else "middle"
+    anchor = "end" if lx > width - right - 40 else "middle"
     dx = -6 if anchor == "end" else 0
     marks = [(last_y_a, format_value(rows[-1][3]), "a")]
     if abs(last_y_a - last_y_b) >= 22:
@@ -308,6 +313,12 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
         parts.append(f'<text class="chart-last-label chart-last-{suffix}" '
                      f'x="{round(lx + dx, 1)}" y="{round(label_y, 1)}" '
                      f'text-anchor="{anchor}">{escape(text)}</text>')
+
+    # A dot on each last point: a pair with one common period draws a one-command path, which is
+    # invisible, so the dot is what makes the value locatable.
+    for cy, suffix in ((last_y_a, "a"), (last_y_b, "b")):
+        parts.append(f'<circle class="chart-last chart-last-{suffix}" cx="{lx}" '
+                     f'cy="{round(cy, 1)}" r="3.5" />')
 
     for index, label in _x_labels(periods, frequency):
         parts.append(f'<text class="chart-tick" x="{round(xs[index], 1)}" '

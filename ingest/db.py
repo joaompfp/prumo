@@ -1277,11 +1277,26 @@ class Db:
         """The receipt, run and verification behind one series' newest served value. `sampled`
         says whether THIS value was one of the independently checked items (not whether the
         dataset was verified)."""
+        return self._public_provenance(series_id)
+
+    def public_provenance_at(self, series_id: str, period: str) -> dict | None:
+        """The same record for one specific period, for a page that shows an older period than
+        the series' newest (a comparison draws the last period both series publish)."""
+        return self._public_provenance(series_id, period)
+
+    def _public_provenance(self, series_id: str, period: str | None = None) -> dict | None:
         keys = ("period", "value_text", "fetched_at", "run_id", "run_started_at",
                 "run_finished_at", "run_state", "raw_url", "raw_fetched_at", "http_status",
                 "sha256", "bytes", "verification_id", "verification_created_at", "sample_size",
                 "verification_passed", "sample_procedure", "verifier_channel", "sampled",
                 "native_code", "series_url", "licence", "licence_url", "attribution")
+        where = "o.series_id = ? AND o.kind = 'fetched'"
+        params: list = [series_id]
+        tail = " ORDER BY o.period DESC LIMIT 1"
+        if period is not None:
+            where += " AND o.period = ?"
+            params.append(period)
+            tail = ""
         row = self.conn.execute(
             "SELECT o.period, o.value_text, o.fetched_at, o.dataset_run_id, r.started_at, "
             "r.finished_at, r.state, f.url, f.fetched_at, f.http_status, f.sha256, f.bytes, "
@@ -1293,8 +1308,7 @@ class Db:
             "LEFT JOIN raw_fetch f ON f.id = o.raw_fetch_id "
             "LEFT JOIN verification v ON v.dataset_run_id = o.dataset_run_id "
             "JOIN series s ON s.id = o.series_id JOIN source p ON p.id = s.source_id "
-            "WHERE o.series_id = ? AND o.kind = 'fetched' ORDER BY o.period DESC LIMIT 1",
-            (series_id,)).fetchone()
+            f"WHERE {where}{tail}", params).fetchone()
         return dict(zip(keys, row)) if row else None
 
     def public_revisions(self, series_id: str) -> tuple[list[dict], int]:

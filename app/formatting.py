@@ -102,6 +102,8 @@ def format_date(iso: str | None) -> str:
 
 def decimal_or_none(token: str) -> Decimal | None:
     try:
-        return Decimal(token)
+        value = Decimal(token)
     except (InvalidOperation, TypeError, ValueError):
         return None
+    # "NaN"/"Infinity" parse but cannot be plotted or scaled; treat them as no value.
+    return value if value.is_finite() else None
