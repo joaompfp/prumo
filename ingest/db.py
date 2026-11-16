@@ -2102,24 +2102,41 @@ CMS_TABLES = frozenset({"cms_document", "cms_revision", "cms_event"})
 RESTRICTED_WRITE_TABLES = EDITORIAL_TABLES | CMS_TABLES
 
 
+# PRAGMA functions (and bare reads) that only describe the schema. They are the sole
+# pragmas the restricted handle keeps: every assignment is refused because each one can
+# disable a guard the authored content depends on (FKs, CHECKs, the append-only triggers,
+# or the schema text itself).
+READ_ONLY_PRAGMAS = frozenset({
+    "collation_list", "compile_options", "database_list", "foreign_key_list",
+    "function_list", "index_info", "index_list", "index_xinfo", "module_list",
+    "pragma_list", "table_info", "table_list", "table_xinfo",
+})
+
+
 def _restricted_authorizer(action: int, arg1, arg2, dbname, trigger) -> int:
     """Allow reads everywhere and writes only to the editorial and CMS tables.
 
     The `:rw` mount makes a write possible; this makes it true that the write path can only
     touch authored composition/documents. `arg1` is the table name for
     INSERT/UPDATE/DELETE; DDL is refused outright because the worker owns the schema.
-    Assignments to `recursive_triggers` are refused too: the append-only triggers only fire
-    for REPLACE's internal DELETE while it is ON.
+
+    On PRAGMA, `arg1` is the pragma name and `arg2` is its argument: non-None for both
+    assignments (`foreign_keys=OFF`) and metadata functions (`table_info(t)`). Reads
+    (`arg2` is None) stay allowed, as do the read-only metadata functions; every other
+    pragma with an argument is refused. SQLite normalizes schema-qualified, quoted and
+    parenthesized spellings to the same name, so the allowlist cannot be side-stepped by
+    syntax. This closes `foreign_keys`, `ignore_check_constraints`, `recursive_triggers`,
+    `writable_schema` and `trusted_schema`: each would otherwise let this handle defeat the
+    FKs, CHECKs and append-only triggers that the write path exists to preserve.
     """
     if action in (sqlite3.SQLITE_INSERT, sqlite3.SQLITE_UPDATE, sqlite3.SQLITE_DELETE):
         return sqlite3.SQLITE_OK if arg1 in RESTRICTED_WRITE_TABLES else sqlite3.SQLITE_DENY
     if action == sqlite3.SQLITE_PRAGMA:
-        # 0019's append-only triggers fire for REPLACE's internal DELETE only while
-        # recursive_triggers is ON. Reads (arg2 is None) stay allowed; every assignment,
-        # including ON, is refused so the setting cannot be weakened through this handle.
-        if (arg1 or "").lower() == "recursive_triggers" and arg2 is not None:
-            return sqlite3.SQLITE_DENY
-        return sqlite3.SQLITE_OK
+        if arg2 is None:
+            return sqlite3.SQLITE_OK
+        if (arg1 or "").lower() in READ_ONLY_PRAGMAS:
+            return sqlite3.SQLITE_OK
+        return sqlite3.SQLITE_DENY
     if action in (sqlite3.SQLITE_CREATE_TABLE, sqlite3.SQLITE_DROP_TABLE,
                   sqlite3.SQLITE_ALTER_TABLE, sqlite3.SQLITE_CREATE_INDEX,
                   sqlite3.SQLITE_DROP_INDEX, sqlite3.SQLITE_CREATE_TRIGGER,
