@@ -8,6 +8,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import NamedTuple, TypeVar
 
+from ingest.editorial_rules import MAX_SLOTS
+
 MIGRATIONS_DIR = Path(__file__).parent / "migrations"
 T = TypeVar("T")
 BUSY_TIMEOUT_S = 30.0  # scheduler and CLI can contend for the write lock
@@ -46,6 +48,26 @@ class SchemaMismatchError(RuntimeError):
                 parts.append(f"missing migrations {sorted(expected - applied)}")
             body = "; ".join(parts) or "schema does not match"
         super().__init__(f"{path}: {body}; this opener never migrates")
+
+
+class EditorialConflict(RuntimeError):
+    """A composition write was rendered against a version that is no longer current."""
+
+    def __init__(self, slug: str, expected: int, actual: int | None):
+        self.slug = slug
+        self.expected = expected
+        self.actual = actual
+        super().__init__(
+            f"{slug}: the composition is at version {actual}, this form was rendered at "
+            f"{expected}; nothing was written")
+
+
+class EditorialRefused(RuntimeError):
+    """A composition mutation the store refuses (cap, duplicate, unknown slot, empty draft)."""
+
+
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 
 @dataclass(frozen=True)
@@ -1401,6 +1423,205 @@ class Db:
                  "attribution": attribution, "redistribution_ok": bool(ok),
                  "series": counts.get(sid, 0), "last_fetched_at": last.get(sid)}
                 for sid, name, licence, url, attribution, ok in sources]
+
+    # --- editorial composition (backoffice v1.1, part 1) --------------------------------------
+    #
+    # A page's composition is a private, ordered list of series ids per state. It is written
+    # only by the backoffice, through a separate writable handle (open_db_for_write), and it
+    # never touches served data. Draft and published live in the same table so publish can be
+    # one transaction; every mutation rewrites the whole draft list, so positions are always
+    # contiguous 0..n-1 and no renumbering code exists.
+
+    def editorial_pages(self) -> list[dict]:
+        """Every page that has a composition row, with both counts. Two small subqueries per
+        page, never a scan of the serving view."""
+        rows = self.conn.execute(
+            "SELECT p.slug, p.version, p.published_version, p.published_at, p.draft_saved_at, "
+            " (SELECT COUNT(*) FROM editorial_slot s WHERE s.slug = p.slug AND s.state = 'draft'), "
+            " (SELECT COUNT(*) FROM editorial_slot s WHERE s.slug = p.slug "
+            "  AND s.state = 'published') "
+            "FROM editorial_page p ORDER BY p.slug").fetchall()
+        keys = ("slug", "version", "published_version", "published_at", "draft_saved_at",
+                "draft_count", "published_count")
+        return [dict(zip(keys, r)) for r in rows]
+
+    def editorial_page(self, slug: str) -> dict | None:
+        rows = [p for p in self.editorial_pages() if p["slug"] == slug]
+        return rows[0] if rows else None
+
+    def editorial_slots(self, slug: str, state: str) -> list[dict]:
+        """Ordered slots of one state ('draft' or 'published'). The state is a closed
+        vocabulary in the schema, so an unknown value returns nothing rather than raising."""
+        rows = self.conn.execute(
+            "SELECT position, series_id, derived_key FROM editorial_slot "
+            "WHERE slug = ? AND state = ? ORDER BY position", (slug, state)).fetchall()
+        return [{"position": r[0], "series_id": r[1], "derived_key": r[2]} for r in rows]
+
+    def editorial_events(self, slug: str, limit: int = 20) -> list[dict]:
+        rows = self.conn.execute(
+            "SELECT id, ts, slug, action, version, note, detail_json FROM editorial_event "
+            "WHERE slug = ? ORDER BY id DESC LIMIT ?", (slug, limit)).fetchall()
+        keys = ("id", "ts", "slug", "action", "version", "note", "detail_json")
+        return [dict(zip(keys, r)) for r in rows]
+
+    def _editorial_event(self, c, slug: str, action: str, version: int, note: str,
+                         detail: dict | None) -> None:
+        c.execute(
+            "INSERT INTO editorial_event(ts, slug, action, version, note, detail_json) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (_utc_now(), slug, action, version, note,
+             json.dumps(detail, sort_keys=True) if detail is not None else None))
+
+    def _editorial_store(self, c, slug: str, state: str,
+                         slots: list[tuple[str, str | None]]) -> None:
+        """Replace one state's whole slot list, refusing what the schema would refuse later."""
+        if len(slots) > MAX_SLOTS:
+            raise EditorialRefused(
+                f"{slug}: {len(slots)} slots, the page holds at most {MAX_SLOTS}")
+        seen: set[str] = set()
+        for series_id, _ in slots:
+            if series_id in seen:
+                raise EditorialRefused(f"{slug}: {series_id} is already on this page")
+            seen.add(series_id)
+        c.execute("DELETE FROM editorial_slot WHERE slug = ? AND state = ?", (slug, state))
+        for position, (series_id, derived_key) in enumerate(slots):
+            c.execute(
+                "INSERT INTO editorial_slot(slug, state, position, series_id, derived_key) "
+                "VALUES (?, ?, ?, ?, ?)", (slug, state, position, series_id, derived_key))
+
+    def _editorial_write(self, slug: str, expected_version: int, action: str, note: str,
+                         build, detail: dict | None = None) -> int:
+        """One draft mutation: version check, rebuild the draft, one event, one transaction.
+
+        `build(draft)` receives the current draft as (series_id, derived_key) and returns the
+        new list. A stale `expected_version` raises EditorialConflict before anything is
+        written, which is what stops two tabs from clobbering each other.
+        """
+        self._require_note(note)
+        with self.transaction() as c:
+            version = self._editorial_version(c, slug, expected_version)
+            draft = [(r[0], r[1]) for r in c.execute(
+                "SELECT series_id, derived_key FROM editorial_slot "
+                "WHERE slug = ? AND state = 'draft' ORDER BY position", (slug,))]
+            slots = build(draft)
+            self._editorial_store(c, slug, "draft", slots)
+            return self._editorial_commit(c, slug, action, version + 1, note, detail)
+
+    def _require_note(self, note: str) -> None:
+        if not note or not note.strip():
+            raise ValueError("every editorial change needs a non-empty note")
+
+    def _editorial_version(self, c, slug: str, expected_version: int) -> int:
+        """The page's current version, creating the row on first write. The create-then-check
+        order would hide a stale tab on an empty page, so the check comes first: on an absent
+        page only version 0 (nothing yet) may write."""
+        row = c.execute("SELECT version FROM editorial_page WHERE slug = ?", (slug,)).fetchone()
+        if row is None:
+            if expected_version != 0:
+                raise EditorialConflict(slug, expected_version, None)
+            c.execute("INSERT INTO editorial_page(slug, version) VALUES (?, 0)", (slug,))
+            return 0
+        if row[0] != expected_version:
+            raise EditorialConflict(slug, expected_version, row[0])
+        return row[0]
+
+    def _editorial_commit(self, c, slug: str, action: str, new_version: int, note: str,
+                          detail: dict | None) -> int:
+        c.execute("UPDATE editorial_page SET version = ?, draft_saved_at = ? WHERE slug = ?",
+                  (new_version, _utc_now(), slug))
+        self._editorial_event(c, slug, action, new_version, note, detail)
+        return new_version
+
+    def editorial_add(self, slug: str, series_id: str, derived_key: str | None,
+                      expected_version: int, note: str) -> int:
+        return self._editorial_write(
+            slug, expected_version, "slot_added", note,
+            lambda draft: draft + [(series_id, derived_key)],
+            {"series_id": series_id, "derived_key": derived_key})
+
+    def editorial_move(self, slug: str, series_id: str, to_position: int,
+                       expected_version: int, note: str) -> int:
+        if to_position < 0:
+            raise EditorialRefused(f"{slug}: position {to_position} does not exist")
+
+        def move(draft):
+            ids = [s for s in draft]
+            current = [sid for sid, _ in ids]
+            if series_id not in current:
+                raise EditorialRefused(f"{slug}: {series_id} is not in the draft")
+            if to_position >= len(ids):
+                raise EditorialRefused(f"{slug}: position {to_position} does not exist")
+            item = ids.pop(current.index(series_id))
+            ids.insert(to_position, item)
+            return ids
+
+        return self._editorial_write(slug, expected_version, "slot_moved", note, move,
+                                     {"series_id": series_id, "to_position": to_position})
+
+    def editorial_remove(self, slug: str, series_id: str, expected_version: int,
+                         note: str) -> int:
+        def remove(draft):
+            if series_id not in [sid for sid, _ in draft]:
+                raise EditorialRefused(f"{slug}: {series_id} is not in the draft")
+            return [s for s in draft if s[0] != series_id]
+
+        return self._editorial_write(slug, expected_version, "slot_removed", note, remove,
+                                     {"series_id": series_id})
+
+    def editorial_discard(self, slug: str, expected_version: int, note: str) -> int:
+        """Draft := published. With nothing published, the draft becomes empty, which is the
+        same state as a page that never had a composition."""
+        return self._editorial_write(
+            slug, expected_version, "draft_discarded", note,
+            lambda draft: [(r["series_id"], r["derived_key"])
+                           for r in self.editorial_slots(slug, "published")])
+
+    def editorial_publish(self, slug: str, expected_version: int, note: str) -> int:
+        """Published := draft, in one transaction, with the list recorded in the event.
+
+        Eligibility is checked by the caller (the backoffice service) before this call: the
+        rule needs catalogue titles, which do not belong in the data layer. What can be
+        enforced without them is enforced here: a non-empty draft, no duplicates, the cap.
+        """
+        self._require_note(note)
+        with self.transaction() as c:
+            version = self._editorial_version(c, slug, expected_version)
+            draft = [(r[0], r[1]) for r in c.execute(
+                "SELECT series_id, derived_key FROM editorial_slot "
+                "WHERE slug = ? AND state = 'draft' ORDER BY position", (slug,))]
+            if not draft:
+                raise EditorialRefused(
+                    f"{slug}: the draft is empty; publish nothing is not a state - use reset "
+                    "to return the page to the code list")
+            self._editorial_store(c, slug, "published", draft)
+            new_version = version + 1
+            c.execute("UPDATE editorial_page SET version = ?, published_version = ?, "
+                      "published_at = ?, draft_saved_at = ? WHERE slug = ?",
+                      (new_version, new_version, _utc_now(), _utc_now(), slug))
+            self._editorial_event(c, slug, "published", new_version, note,
+                                  {"slots": [{"position": p, "series_id": sid,
+                                              "derived_key": key}
+                                             for p, (sid, key) in enumerate(draft)]})
+            return new_version
+
+    def editorial_reset(self, slug: str, expected_version: int, note: str) -> int:
+        """Delete the composition and return the page to the code list. The event carries the
+        deleted slots, so the reset itself stays reconstructible after the page row is gone."""
+        self._require_note(note)
+        with self.transaction() as c:
+            row = c.execute("SELECT version FROM editorial_page WHERE slug = ?",
+                            (slug,)).fetchone()
+            if row is None:
+                raise EditorialRefused(f"{slug}: no composition to reset")
+            if row[0] != expected_version:
+                raise EditorialConflict(slug, expected_version, row[0])
+            deleted = {"draft": self.editorial_slots(slug, "draft"),
+                       "published": self.editorial_slots(slug, "published")}
+            c.execute("DELETE FROM editorial_slot WHERE slug = ?", (slug,))
+            c.execute("DELETE FROM editorial_page WHERE slug = ?", (slug,))
+            # The page row is gone, so this version has no successor: the event is the record.
+            self._editorial_event(c, slug, "reset_to_code", row[0] + 1, note, deleted)
+            return row[0] + 1
 
 
 def _migrate(conn: sqlite3.Connection) -> None:
