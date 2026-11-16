@@ -160,6 +160,30 @@ def test_chart_block_is_dropped_when_its_chart_is_unpublished(client, cms):
     assert client.get(f"/graficos/{CHART}").status_code == 404
 
 
+def test_chart_block_is_dropped_when_its_series_licence_is_revoked(
+        client, cms, site_path, caplog):
+    publish(cms, "chart", CHART, _chart())
+    publish(cms, "page", PAGE, _page([
+        {"type": "text", "text": "Texto que fica."},
+        {"type": "chart", "chart_slug": CHART},
+    ]))
+    assert f'href="/graficos/{CHART}"' in client.get(f"/paginas/{PAGE}").text
+    db = open_db(site_path)
+    try:
+        db.conn.execute("UPDATE source SET redistribution_ok = 0 WHERE name = 'ine'")
+    finally:
+        db.close()
+    with caplog.at_level("WARNING", logger="prumo.app"):
+        response = client.get(f"/paginas/{PAGE}")
+    assert response.status_code == 200
+    assert "Texto que fica." in response.text
+    assert f'href="/graficos/{CHART}"' not in response.text
+    assert "Parte desta página não está disponível neste momento." in response.text
+    assert client.get(f"/graficos/{CHART}").status_code == 404
+    assert any("cms page block dropped" in message and CHART in message
+               for message in caplog.messages)
+
+
 def test_calculated_chart_shows_badge_formula_base_and_caveats_without_raw_keys(
         client, cms):
     publish(cms, "chart", "desemprego-calculado", _chart(
@@ -172,8 +196,29 @@ def test_calculated_chart_shows_badge_formula_base_and_caveats_without_raw_keys(
     assert "Variação homóloga (diferença), calculada pelo Prumo a partir de" in html
     assert "Taxa de desemprego - Portugal" in html
     assert "0,3" in html
-    assert DERIVED not in html and UNEMP not in html
+    assert f'href="/calculadas/{DERIVED}"' in html
+    assert f'href="/series/{UNEMP}"' in html
+    assert DERIVED not in visible(html) and UNEMP not in visible(html)
     assert "Base" in html and "p.p." in html
+
+
+def test_chart_provenance_links_each_line_to_its_own_data_page(client, cms):
+    publish(cms, "chart", CHART, _chart())
+    html = client.get(f"/graficos/{CHART}").text
+    assert f'href="/series/{HICP}"' in html
+    assert f'href="/series/{UNEMP}"' in html
+    assert HICP not in visible(html) and UNEMP not in visible(html)
+
+
+def test_page_index_is_reachable_when_empty_and_the_footer_links_both_hosts(client):
+    empty = client.get("/paginas")
+    assert empty.status_code == 200
+    assert "Ainda não há páginas publicadas." in empty.text
+    for headers, prefix in (({}, ""), ({"X-Forwarded-Prefix": "/dados"}, "/dados")):
+        home = client.get("/", headers=headers).text
+        assert f'href="{prefix}/paginas">Páginas</a>' in home
+        assert home.count(f'href="{prefix}/paginas"') == 1  # footer only, NAV unchanged
+        assert client.get("/paginas", headers=headers).status_code == 200
 
 
 def test_page_with_two_charts_uses_distinct_dom_ids_and_one_bundle(client, cms, site_path):

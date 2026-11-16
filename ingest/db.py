@@ -1256,6 +1256,18 @@ class Db:
                 out[sid] = dict(zip(keys, row))
         return out
 
+    def public_served_bounds(self, series_id: str) -> tuple[str | None, str | None]:
+        """(first, newest) served period of one series, from one indexed per-id read.
+
+        The editor labels a series choice with the range it actually covers. An aggregate over
+        one series' index range keeps that affordable for the whole registry; loading each
+        series' history would not be.
+        """
+        row = self.conn.execute(
+            "SELECT MIN(period), MAX(period) FROM served_observation "
+            "WHERE series_id = ? AND kind = 'fetched'", (series_id,)).fetchone()
+        return (row[0], row[1]) if row is not None else (None, None)
+
     def public_series(self, series_id: str) -> dict | None:
         """One series with source text and its newest served value; None when the series does
         not exist, is inactive, or its source is not redistributable. `role` is returned so the
@@ -2032,9 +2044,14 @@ class Db:
                 revision_id=new_id, actor=actor, note=note)
             return self._cms_metadata_for(c, kind, slug)
 
-    def cms_duplicate(self, kind: str, slug: str, new_slug: str, *, actor: str,
-                      note: str) -> dict:
-        """Create an independent draft copy of the CURRENT draft under a new slug."""
+    def cms_duplicate(self, kind: str, slug: str, new_slug: str, *, expected_version: int,
+                      actor: str, note: str) -> dict:
+        """Create an independent draft copy of the CURRENT draft under a new slug.
+
+        `expected_version` is the source's version the editor rendered. The check is the first
+        thing the transaction does, so a stale tab cannot copy a draft it never saw: it raises
+        CmsConflict and leaves the source head, history and events and the destination absent.
+        """
         kind = self._cms_kind(kind)
         slug = self._cms_slug(slug)
         new_slug = self._cms_slug(new_slug, "new_slug")
@@ -2044,8 +2061,7 @@ class Db:
         now = _utc_now()
         with self.transaction() as c:
             source = self._cms_document_row(c, kind, slug)
-            if source is None:
-                raise CmsNotFound(kind, slug)
+            self._cms_version(source, kind, slug, expected_version)
             draft_id = source[1]
             if draft_id is None:
                 raise CmsRefused(f"{kind}/{slug}: there is no draft to duplicate")

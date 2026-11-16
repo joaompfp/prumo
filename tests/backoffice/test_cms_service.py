@@ -11,7 +11,7 @@ import pytest
 from app import cms_reads
 from backoffice.cms import Cms, CmsConflict, CmsRefused, CmsUnavailable
 from ingest import cms as documents
-from ingest.db import open_db, open_db_for_write, read_db_readonly
+from ingest.db import Db, open_db, open_db_for_write, read_db_readonly
 from presentation.catalog import pt
 from tests.app.conftest import (
     DERIVED,
@@ -264,12 +264,14 @@ def test_restore_creates_a_new_draft_and_duplicate_a_new_slug(env):
     assert got["history"][0]["id"] != first_revision      # a new revision, not a rewrite
     assert public_page(path, "precos").title == "Editada"
 
-    copy = cms.duplicate("page", "precos", "precos-copia", actor="owner", note="duplicar")
+    copy = cms.duplicate("page", "precos", "precos-copia", version=restored["version"],
+                         actor="owner", note="duplicar")
     assert copy["slug"] == "precos-copia"
     assert cms.get("page", "precos-copia")["draft"].title == "Original"
     assert cms.get("page", "precos")["draft"].title == "Original"
     with pytest.raises(CmsRefused):
-        cms.duplicate("page", "precos", "precos", actor="owner", note="duplicar")
+        cms.duplicate("page", "precos", "precos", version=restored["version"],
+                      actor="owner", note="duplicar")
 
 
 def test_chart_usages_show_draft_and_published_pages(env):
@@ -304,13 +306,147 @@ def test_choices_are_eligible_and_carry_raw_and_reader_tokens(env):
         {"key": DERIVED, "title": pt.TITLES[DERIVED]},)
 
 
+def test_choices_carry_the_served_period_range_and_an_optional_label(env):
+    cms, path = env
+    add_series(path, "ine.meur_test.PT", key="credit_consumer.PT.M", unit="MEUR")
+    db = open_db(path)
+    try:
+        fetch(db, "ine.meur_test.PT", {"2025-01": "10.0", "2026-10": "12.0"}, T1)
+    finally:
+        db.close()
+    choices = {choice["id"]: choice for choice in cms.choices()}
+    hicp = choices[HICP]
+    assert (hicp["first_period"], hicp["latest_period"]) == ("2026-08", "2026-10")
+    assert hicp["coverage_text"] == "agosto de 2026 a outubro de 2026"
+    assert hicp["option_label"] == (
+        "Taxa de variação homóloga do IHPC - Portugal | agosto de 2026 a outubro de 2026"
+        " | % | Mensal | Portugal | INE - Instituto Nacional de Estatística")
+    meur = choices["ine.meur_test.PT"]
+    assert meur["unit_text"] == "milhões de euros"
+    assert meur["coverage_text"] == "janeiro de 2025 a outubro de 2026"
+    assert "| MEUR |" in meur["option_label"]
+    assert "milhões de euros" not in meur["option_label"]
+
+
+def test_choices_never_load_a_series_history(env, monkeypatch):
+    cms, _path = env
+
+    def boom(*_args, **_kwargs):
+        raise AssertionError("choices must not materialise a series history")
+
+    monkeypatch.setattr(Db, "public_series_values", boom)
+    monkeypatch.setattr(Db, "public_recent_values", boom)
+    assert {choice["id"] for choice in cms.choices()} >= {HICP, UNEMP}
+
+
+def test_stale_duplicate_conflicts_and_creates_nothing(env):
+    cms, _path = env
+    meta = cms.create("page", "precos", _page(), actor="owner", note="criar")
+    meta = cms.save("page", "precos", meta["version"], _page(title="Segunda"),
+                    actor="owner", note="editar")
+    before = _document_state(cms, "page", "precos")
+    with pytest.raises(CmsConflict) as exc:
+        cms.duplicate("page", "precos", "copia", version=meta["version"] - 1,
+                      actor="owner", note="duplicar")
+    assert exc.value.expected == meta["version"] - 1 and exc.value.actual == meta["version"]
+    assert _document_state(cms, "page", "precos") == before
+    assert cms.get("page", "copia") is None
+    assert [summary["slug"] for summary in cms.list("page")] == ["precos"]
+
+
+def _page_with_chart(cms, chart_slug="inflacao"):
+    meta = cms.create("chart", chart_slug, _chart(), actor="owner", note="criar")
+    published(cms, "chart", chart_slug, _chart(), meta["version"])
+    blocks = [{"type": "chart", "chart_slug": chart_slug}]
+    page = cms.create("page", "precos", _page(blocks), actor="owner", note="criar")
+    published(cms, "page", "precos", _page(blocks), page["version"])
+
+
+def _document_state(cms, kind, slug):
+    got = cms.get(kind, slug)
+    return (got["meta"]["version"], got["meta"]["published_revision_id"],
+            len(got["history"]), len(got["events"]))
+
+
+def _refused_page_republish(cms, path):
+    """Save an identical draft after the data changed, then prove publish writes nothing."""
+    blocks = [{"type": "chart", "chart_slug": "inflacao"}]
+    meta = cms.get("page", "precos")["meta"]
+    saved = cms.save("page", "precos", meta["version"], _page(blocks), actor="owner",
+                     note="novo rascunho")
+    before = _document_state(cms, "page", "precos")
+    live = cms.get("page", "precos")["published"]
+    with pytest.raises(CmsRefused):
+        cms.publish("page", "precos", saved["version"], actor="owner", note="publicar")
+    assert _document_state(cms, "page", "precos") == before
+    assert cms.get("page", "precos")["published"].title == live.title
+    public = public_page(path, "precos")
+    assert public is not None and public.availability_note
+
+
+def test_page_publish_refuses_a_chart_whose_licence_was_revoked_after_publication(env):
+    cms, path = env
+    _page_with_chart(cms)
+    db = open_db(path)
+    try:
+        db.conn.execute("UPDATE source SET redistribution_ok = 0 WHERE name = 'ine'")
+    finally:
+        db.close()
+    _refused_page_republish(cms, path)
+
+
+def test_page_publish_refuses_a_chart_whose_run_was_withdrawn(env):
+    cms, path = env
+    _page_with_chart(cms)
+    db = open_db(path)
+    try:
+        runs = [row[0] for row in db.conn.execute(
+            "SELECT DISTINCT dataset_run_id FROM observation WHERE series_id = ?", (HICP,))]
+        for run_id in runs:
+            db.withdraw_run(run_id, "correção do publicador", T2)
+    finally:
+        db.close()
+    _refused_page_republish(cms, path)
+
+
+def test_page_publish_refuses_a_chart_whose_reader_text_disappeared(env, monkeypatch):
+    cms, path = env
+    _page_with_chart(cms)
+    monkeypatch.delitem(pt.FAMILIES, "hicp_yoy")
+    _refused_page_republish(cms, path)
+
+
+def test_page_publish_refuses_a_chart_with_only_non_finite_values(env):
+    cms, path = env
+    add_series(path, "ine.nan_test.PT", key="consumer_confidence.PT.M", unit="%")
+    db = open_db(path)
+    try:
+        fetch(db, "ine.nan_test.PT", {"2026-10": "50.0"}, T1)
+    finally:
+        db.close()
+    chart = _chart(series_a="ine.nan_test.PT")
+    meta = cms.create("chart", "inflacao", chart, actor="owner", note="criar")
+    published(cms, "chart", "inflacao", chart, meta["version"])
+    blocks = [{"type": "chart", "chart_slug": "inflacao"}]
+    page = cms.create("page", "precos", _page(blocks), actor="owner", note="criar")
+    published(cms, "page", "precos", _page(blocks), page["version"])
+    db = open_db(path)
+    try:
+        db.conn.execute("UPDATE observation SET value_text = 'NaN', value = 1.0 "
+                        "WHERE series_id = 'ine.nan_test.PT'")
+    finally:
+        db.close()
+    assert public_chart(path, "inflacao") is None
+    _refused_page_republish(cms, path)
+
+
 def test_invalid_shapes_and_slugs_are_refused_not_raised(env):
     cms, _path = env
     with pytest.raises(CmsRefused):
         cms.create("page", "Mau-Slug", _page(), actor="owner", note="criar")
     with pytest.raises(CmsRefused):
-        cms.create("page", "bom", _page(title="Título — com travessão"), actor="owner",
-                   note="criar")
+        cms.create("page", "bom", _page(title=f"Título {chr(0x2014)} com travessão"),
+                   actor="owner", note="criar")
     with pytest.raises(CmsRefused):
         cms.create("page", "bom", {**_page(), "extra": True}, actor="owner", note="criar")
     with pytest.raises(CmsRefused):
@@ -343,7 +479,9 @@ def test_cms_lifecycle_does_not_change_source_or_observation_fingerprints(env):
     page = cms.save("page", "precos", page["version"], _page(title="Editada"),
                     actor="owner", note="editar")
     cms.restore("page", "precos", page["version"], page_first, actor="owner", note="recuperar")
-    cms.duplicate("page", "precos", "precos-copia", actor="owner", note="duplicar")
+    current = cms.get("page", "precos")["meta"]["version"]
+    cms.duplicate("page", "precos", "precos-copia", version=current, actor="owner",
+                  note="duplicar")
     chart_version = cms.get("chart", "inflacao")["meta"]["version"]
     cms.unpublish("chart", "inflacao", chart_version, actor="owner", note="retirar")
     assert fingerprint(path) == before

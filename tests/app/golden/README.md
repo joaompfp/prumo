@@ -3,10 +3,15 @@
 `home_before_editorial.html` is the home page rendered by commit `7e563b2` (the deployed public
 site, before the editorial composition existed), against a database built by
 `tests/app/conftest.py::build` with its fixed timestamps. It stays the historical reference and
-is never edited. `home_code_list.html` started as a copy of it and has two audited deltas: the
-Comparações navigation item added by the comparisons release, and the single absolute
+is never edited. `home_code_list.html` started as a copy of it and has three audited deltas:
+the Comparações navigation item added by the comparisons release, the single absolute
 `<a href="https://joao.date/dados/admin/">Admin</a>` footer anchor added by the Admin-entry
-slice (both public hosts use the same absolute URL; no `X-Forwarded-Prefix` applies to it).
+slice (both public hosts use the same absolute URL; no `X-Forwarded-Prefix` applies to it),
+and the relative `<a href="/paginas">Páginas</a>` footer anchor added by the statistics CMS
+(index discoverability; `NAV` is unchanged, so the anchor exists only in `footer-links`, once,
+rendered from the mount base on both hosts). Each footer delta is exactly one `<a>` element
+plus its ` · ` separator; the nav capture also carries the whitespace line the nav loop emits
+around it. The commit diff between the golden files shows those deltas and nothing else.
 
 Both committed captures use ASCII hyphens after the owner's repository-wide
 punctuation correction. Only U+2014 was replaced with `-`; neither capture was

@@ -144,6 +144,7 @@ def test_dashboard_lists_both_kinds_create_forms_and_nav(env):
     # choices show the statistical identity next to the reference
     assert "ine.hicp_yoy.PT" in r.text and "| Mensal |" in r.text
     assert "| Portugal |" in r.text and "INE" in r.text
+    assert "| janeiro de 2026 |" in r.text      # served coverage, not an assumed range
 
 
 def test_create_page_redirects_to_editor_and_records_the_actor(env):
@@ -258,6 +259,26 @@ def test_duplicate_creates_an_independent_draft(env):
     body = json.loads(env.revisions("page", "copia")[0]["body_json"])
     assert body["blocks"][0]["text"] == "Original."
     assert env.meta("page", "precos")["version"] == 2
+
+
+def test_stale_duplicate_form_is_409_and_creates_nothing(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    assert c.post("/cms/page/precos/save",
+                  data=page_form(1, blocks=[{"type": "text", "text": "Original."}]),
+                  headers=ORIGIN).status_code == 303
+    source_before = env.meta("page", "precos")
+    source_history = len(env.revisions("page", "precos"))
+    source_events = len(env.events("page", "precos"))
+    r = c.post("/cms/page/precos/duplicate",
+               data={"version": "1", "new_slug": "copia", "note": "duplicar"},
+               headers=ORIGIN)
+    assert r.status_code == 409
+    assert env.meta("page", "precos") == source_before
+    assert len(env.revisions("page", "precos")) == source_history
+    assert len(env.events("page", "precos")) == source_events
+    assert env.meta("page", "copia") is None
+    assert env.revisions("page", "copia") == [] and env.events("page", "copia") == []
 
 
 def test_publish_diff_unpublish_and_restore_keep_live_content(env):

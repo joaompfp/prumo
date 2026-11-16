@@ -75,7 +75,7 @@
   <div class="compare-provenance">
     {% for line in page.provenance %}
     <dl class="provenance-list">
-      <dt>Série</dt><dd>{{ line.title }}</dd>
+      <dt>Série</dt><dd><a href="{{ base }}{{ line.href }}">{{ line.title }}</a>{% if line.base_href %}, a partir de <a href="{{ base }}{{ line.base_href }}">{{ line.base_title }}</a>{% endif %}</dd>
       <dt>Publicado por</dt><dd>{{ line.source_title }}</dd>
       <dt>Atribuição</dt><dd>{{ line.attribution }}</dd>
       <dt>Último período desenhado</dt><dd>{{ line.period_text }}: {{ line.value_display }} {{ line.unit_text }}</dd>

@@ -166,7 +166,9 @@ def test_duplicate_copies_the_current_draft_to_an_independent_unpublished_docume
     source_draft = db.cms_save("page", PAGE, 2, draft_body, actor="owner", note="rascunho")
     source_before = _state(db)
 
-    target = db.cms_duplicate("page", PAGE, "precos-copia", actor="owner", note="duplicar")
+    target = db.cms_duplicate("page", PAGE, "precos-copia",
+                              expected_version=source_draft["version"], actor="owner",
+                              note="duplicar")
     assert target["version"] == 1
     assert target["published_revision_id"] is None
     assert set(target) == {
@@ -193,7 +195,9 @@ def test_every_mutation_is_stale_checked_and_stale_writes_nothing(db):
             lambda: db.cms_save("page", PAGE, 0, _page(), actor="owner", note="x"),
             lambda: db.cms_publish("page", PAGE, 0, actor="owner", note="x"),
             lambda: db.cms_unpublish("page", PAGE, 0, actor="owner", note="x"),
-            lambda: db.cms_restore("page", PAGE, 0, revision, actor="owner", note="x")):
+            lambda: db.cms_restore("page", PAGE, 0, revision, actor="owner", note="x"),
+            lambda: db.cms_duplicate("page", PAGE, "copia", expected_version=0,
+                                     actor="owner", note="x")):
         with pytest.raises(CmsConflict) as exc:
             call()
         assert exc.value.expected == 0
@@ -209,7 +213,8 @@ def test_missing_documents_are_clear_domain_errors(db):
         lambda: db.cms_publish("page", "ausente", 0, actor="owner", note="x"),
         lambda: db.cms_unpublish("page", "ausente", 0, actor="owner", note="x"),
         lambda: db.cms_restore("page", "ausente", 0, 1, actor="owner", note="x"),
-        lambda: db.cms_duplicate("page", "ausente", "copia", actor="owner", note="x"),
+        lambda: db.cms_duplicate("page", "ausente", "copia", expected_version=0,
+                                     actor="owner", note="x"),
     )
     for call in calls:
         with pytest.raises(CmsNotFound) as exc:
@@ -227,7 +232,8 @@ def test_refused_actions_write_nothing(db):
     with pytest.raises(CmsRefused):
         db.cms_unpublish("page", PAGE, 1, actor="owner", note="nada publicado")
     with pytest.raises(CmsRefused):
-        db.cms_duplicate("page", PAGE, PAGE, actor="owner", note="mesmo slug")
+        db.cms_duplicate("page", PAGE, PAGE, expected_version=1,
+                         actor="owner", note="mesmo slug")
     with pytest.raises(CmsRefused):
         db.cms_restore("page", PAGE, 1, 999_999, actor="owner", note="revisao alheia")
     assert _state(db) == before
@@ -240,7 +246,8 @@ def test_duplicate_target_must_not_exist(db):
     before_source = _state(db)
     before_target = _state(db, slug="precos-copia")
     with pytest.raises(CmsRefused):
-        db.cms_duplicate("page", PAGE, "precos-copia", actor="owner", note="colidir")
+        db.cms_duplicate("page", PAGE, "precos-copia", expected_version=1,
+                         actor="owner", note="colidir")
     assert _state(db) == before_source
     assert _state(db, slug="precos-copia") == before_target
 
@@ -311,7 +318,8 @@ def test_a_corrupt_revision_cannot_be_restored_or_duplicated(db):
     with pytest.raises(CmsRefused):
         db.cms_restore("page", PAGE, meta["version"], bad_id, actor="owner", note="x")
     with pytest.raises(CmsRefused):
-        db.cms_duplicate("page", PAGE, "copia", actor="owner", note="x")
+        db.cms_duplicate("page", PAGE, "copia", expected_version=meta["version"],
+                         actor="owner", note="x")
     assert db.cms_get("page", PAGE)["version"] == before_version
     assert len(db.cms_history("page", PAGE)) == history_count
     assert len(db.cms_events("page", PAGE)) == event_count

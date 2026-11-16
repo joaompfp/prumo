@@ -12,7 +12,10 @@ nav loop emits around it (see the commit diff); the deterministic fixture
 adds exactly one footer anchor on the same `footer-links` line:
 `<a href="https://joao.date/dados/admin/">Admin</a>` and its ` · ` separator. It is absolute on
 both public hosts (`cae.joao.date` and `joao.date/dados`) and does not depend on
-`X-Forwarded-Prefix`. No other byte changed. From here
+`X-Forwarded-Prefix`. The statistics CMS slice adds a third audited delta: one relative
+`<a href="/paginas">Páginas</a>` footer anchor plus its ` · ` separator, rendered from the
+mount base on both hosts; `NAV` is unchanged, so the anchor appears only in `footer-links`.
+No other byte changed. From here
 on the byte comparison is again frozen: any unintended change to the home with no composition
 fails, and a future re-capture needs the same kind of auditable reason.
 """

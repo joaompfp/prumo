@@ -9,8 +9,9 @@ things the storage deliberately does not:
 * eligibility at publication: the draft body is checked inside the storage publish
   transaction (`Db.cms_publish(check=...)`), so the decision and the pointer swap see the same
   snapshot. Saving an unfinished, currently ineligible draft stays allowed;
-* reader choices: eligible primary series with both their raw tokens and rendered text, so the
-  editor labels fields without reimplementing the catalogue.
+* reader choices: eligible primary series with raw tokens, rendered text and the served period
+  range they actually cover, so the editor labels fields without reimplementing the catalogue
+  and without loading each series' history.
 
 `preview` returns exactly `(template_name, view)` where the name is `cms_page.html` or
 `cms_chart.html`; the backoffice renders it with `preview=True` and its own `admin_base`.
@@ -19,6 +20,7 @@ import logging
 from pathlib import Path
 
 from app import cms_reads, reads
+from app.formatting import format_period
 from ingest import cms as documents
 from ingest.db import (
     CmsConflict,  # noqa: F401 - re-exported as the service's own exception surface
@@ -81,7 +83,7 @@ class Cms:
         return self._read(lambda db: self._get(db, kind, slug))
 
     def choices(self) -> tuple[dict, ...]:
-        """Eligible primary series: raw tokens plus reader text, with their derived keys."""
+        """Eligible primary series: raw tokens, reader text and the period range they cover."""
         def build(db: Db):
             ids = db.all_series_ids()
             facts, raw = reads.slot_facts(db, [(sid, None) for sid in ids], self.lang)
@@ -103,18 +105,33 @@ class Cms:
                     continue
                 row = raw[series_id]
                 try:
+                    unit_text_value = base_unit_text(self.lang, row["unit"])
+                    frequency_text_value = self._text(frequency_text, row["frequency"])
+                    geography_text_value = self._text(geography_name, row["geography"])
+                    source_title_value = self._text(source_title, row["source"])
+                    title = fact.titles.get(self.lang) or ""
+                    first, latest = db.public_served_bounds(series_id)
+                    coverage = self._coverage_text(row["frequency"], first, latest)
                     out.append({
                         "id": series_id,
-                        "title": fact.titles[self.lang],
+                        "title": title,
                         "unit": row["unit"],
-                        "unit_text": base_unit_text(self.lang, row["unit"]),
+                        "unit_text": unit_text_value,
                         "frequency": row["frequency"],
-                        "frequency_text": self._text(frequency_text, row["frequency"]),
+                        "frequency_text": frequency_text_value,
                         "geography": row["geography"],
-                        "geography_text": self._text(geography_name, row["geography"]),
+                        "geography_text": geography_text_value,
                         "source": row["source"],
-                        "source_title": self._text(source_title, row["source"]),
+                        "source_title": source_title_value,
                         "theme": row["theme"],
+                        "first_period": first,
+                        "latest_period": latest,
+                        "coverage_text": coverage,
+                        "option_label": self._option_label(
+                            title, coverage, row["unit"],
+                            frequency_text_value or row["frequency"],
+                            geography_text_value or row["geography"],
+                            source_title_value or row["source"]),
                         "derived": tuple(sorted(companions.get(series_id, []),
                                                 key=lambda item: item["key"])),
                     })
@@ -184,15 +201,40 @@ class Cms:
         return self._write(lambda db: db.cms_restore(kind, slug, version, revision_id,
                                                      actor=actor, note=note))
 
-    def duplicate(self, kind: str, slug: str, new_slug: str, *, actor: str,
+    def duplicate(self, kind: str, slug: str, new_slug: str, *, version: int, actor: str,
                   note: str) -> dict:
         kind = self._kind(kind)
         slug = self._slug(slug)
         new_slug = self._slug(new_slug, "new_slug")
-        return self._write(lambda db: db.cms_duplicate(kind, slug, new_slug, actor=actor,
+        return self._write(lambda db: db.cms_duplicate(kind, slug, new_slug,
+                                                       expected_version=version, actor=actor,
                                                        note=note))
 
     # --- internals -----------------------------------------------------------------------
+
+    @staticmethod
+    def _coverage_text(frequency: str, first: str | None, latest: str | None) -> str:
+        """The served period range in reader words, empty when the series has no value."""
+        if not first or not latest:
+            return ""
+        first_text = format_period(first, frequency)
+        latest_text = format_period(latest, frequency)
+        return first_text if first_text == latest_text else f"{first_text} a {latest_text}"
+
+    @staticmethod
+    def _option_label(title: str, coverage: str, unit: str, frequency: str,
+                      geography: str, source: str) -> str:
+        """One option's label: the exact raw unit token, reader text for the rest.
+
+        The operator picks the stored registry object, so the unit stays the raw code the
+        series carries (the editor also gets `unit_text` separately); coverage comes from the
+        served periods, never from an assumed range.
+        """
+        parts = [title]
+        if coverage:
+            parts.append(coverage)
+        parts.extend((unit, frequency, geography, source))
+        return " | ".join(part for part in parts if part)
 
     def _read(self, fn):
         try:
@@ -339,7 +381,16 @@ class Cms:
             if row is None:
                 return f"o gráfico {block.chart_slug} não tem revisão publicada"
             try:
-                documents.require_canonical_body("chart", row["body_json"])
+                body = documents.require_canonical_body("chart", row["body_json"])
+                chart_doc = documents.parse_body("chart", body)
             except (documents.CmsDocumentError, ValueError):
                 return f"o gráfico {block.chart_slug} tem um corpo inválido"
+            if not isinstance(chart_doc, documents.ChartDocument):
+                return f"o gráfico {block.chart_slug} tem um corpo inválido"
+            # The page's eligibility depends on the chart's CURRENT data, not on the fact that
+            # the chart was publishable when its own pointer moved. Same transaction, same
+            # snapshot: a licence revoked or a run withdrawn since then refuses the page too.
+            problem = cms_reads.chart_problem(db, chart_doc, self.lang)
+            if problem:
+                return f"o gráfico {block.chart_slug} já não pode ser publicado: {problem}"
         return None

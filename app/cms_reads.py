@@ -61,6 +61,7 @@ class ChartLine:
     """One plotted series at the LAST PERIOD THE CHART DRAWS, with its own provenance."""
 
     title: str
+    href: str
     unit_text: str
     frequency_text: str
     source_title: str
@@ -70,6 +71,8 @@ class ChartLine:
     period_text: str
     value_display: str
     provenance: reads.ProvenanceView | None
+    base_href: str = ""
+    base_title: str = ""
     is_derived: bool = False
 
 
@@ -224,6 +227,7 @@ def _primary_line(db: Db, row: dict, period: str, token: str, frequency: str,
     provenance = db.public_provenance_at(row["id"], period)
     return ChartLine(
         title=series_title(lang, family_of(row["indicator_key"]), row["geography"]),
+        href=f"/series/{row['id']}",
         unit_text=base_unit_text(lang, row["unit"]),
         frequency_text=_frequency_text(lang, frequency),
         source_title=source_title(lang, row["source"]),
@@ -318,6 +322,8 @@ def _single_chart_view(db: Db, slug: str, doc: documents.ChartDocument,
     points = tuple({"period": v["period"], "value_text": v["value_text"]} for v in values)
     prepared = reads.prepare_line_chart(points, frequency=frequency, title=doc.title,
                                         unit=base_unit_text(lang, row["unit"]))
+    if prepared.chart is None:
+        return None  # every stored token is non-finite: not a drawable chart
     last = values[-1]
     line = _primary_line(db, row, last["period"], last["value_text"], frequency, lang)
     table = tuple(ChartTableRow(period_text=format_period(v["period"], frequency),
@@ -361,6 +367,8 @@ def _pair_chart_view(db: Db, slug: str, doc: documents.ChartDocument,
     prepared = reads.prepare_comparison_chart(
         points, frequency=frequency, title=doc.title, labels=(title_a, title_b),
         unit_a=unit_a, unit_b=unit_b, dual=dual)
+    if prepared.chart is None:
+        return None
     last = points[-1]
     lines = (_primary_line(db, row_a, last["period"], last["a"], frequency, lang),
              _primary_line(db, row_b, last["period"], last["b"], frequency, lang))
@@ -392,20 +400,24 @@ def _derived_chart_view(db: Db, slug: str, doc: documents.ChartDocument, key: st
     badge = chart_ui(lang, "calculated")
     prepared = reads.prepare_line_chart(points, frequency=frequency, title=doc.title,
                                         display_unit=calc_unit, badge=badge)
+    if prepared.chart is None:
+        return None
     base_title = fact.titles.get(lang) or doc.series_a
     base = db.public_series(doc.series_a)
     newest = db.served_derived_rows(key, 1)[1]
     newest = newest[0] if newest else None
     last = shown[-1]
     line = ChartLine(
-        title=derived_title(lang, key), unit_text=calc_unit,
+        title=derived_title(lang, key), href=f"/calculadas/{key}",
+        unit_text=calc_unit,
         frequency_text=_frequency_text(lang, frequency),
         source_title=source_title(lang, base_row["source"]),
         attribution=calculated_attribution(lang, newest["attribution"]) if newest else "",
         licence=source_text(newest["licence"]) if newest else "",
         licence_url=newest["licence_url"] if newest else "",
         period_text=format_period(last["period"], frequency),
-        value_display=format_value(last["value_text"]), provenance=None, is_derived=True)
+        value_display=format_value(last["value_text"]), provenance=None,
+        base_href=f"/series/{doc.series_a}", base_title=base_title, is_derived=True)
     table = tuple(ChartTableRow(period_text=format_period(v["period"], frequency),
                                 a_display=format_value(v["value_text"]))
                   for v in reversed(shown))

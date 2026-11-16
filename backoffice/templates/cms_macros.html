@@ -1,14 +1,14 @@
-{# Shared option lists. Every choice carries unit, frequency, geography and source, so the
-   operator sees the statistical identity, not just an opaque registry id. A selected value
-   that is no longer eligible stays visible and selected: saving a draft must not silently
-   replace a withheld reference. #}
+{# Shared option lists. Every choice carries title, served period coverage, unit, frequency,
+   geography and source, so the operator sees the statistical identity and the range actually
+   covered, not just an opaque registry id. A selected value that is no longer eligible stays
+   visible and selected: saving a draft must not silently replace a withheld reference. #}
 {% macro series_options(choices, selected=None, blank=None) %}
 {%- if blank %}<option value="">{{ blank }}</option>{% endif %}
 {%- set found = namespace(value=false) %}
 {%- for c in choices %}{% if c.id == selected %}{% set found.value = true %}{% endif %}{% endfor %}
 {%- if selected and not found.value %}<option value="{{ selected }}" selected>{{ selected }} (indisponível)</option>{% endif %}
 {%- for c in choices %}
-<option value="{{ c.id }}"{% if c.id == selected %} selected{% endif %}>{{ c.title }} | {{ c.unit_text or c.unit }} | {{ c.frequency_text or c.frequency }} | {{ c.geography_text or c.geography }} | {{ c.source_title or c.source }}</option>
+<option value="{{ c.id }}"{% if c.id == selected %} selected{% endif %}>{{ c.option_label }}</option>
 {%- endfor %}
 {% endmacro %}
 

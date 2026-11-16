@@ -140,8 +140,8 @@ def test_the_lifecycle_still_works_through_both_writable_openers(writable):
     unpub = writable.cms_unpublish("page", "precos", 3, actor="owner", note="retirar")
     restored = writable.cms_restore("page", "precos", 4, original, actor="owner",
                                     note="recuperar")
-    copied = writable.cms_duplicate("page", "precos", "precos-copia", actor="owner",
-                                    note="duplicar")
+    copied = writable.cms_duplicate("page", "precos", "precos-copia", expected_version=5,
+                                    actor="owner", note="duplicar")
 
     assert [first["version"], saved["version"], published["version"], unpub["version"],
             restored["version"], copied["version"]] == [1, 2, 3, 4, 5, 1]

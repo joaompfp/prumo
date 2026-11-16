@@ -453,7 +453,7 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
                                         actor=admin.actor(request), note=note)
             elif action == "duplicate":
                 result = await run_in_threadpool(cms.duplicate, kind, slug,
-                                                 fields.get("new_slug", ""),
+                                                 fields.get("new_slug", ""), version=version,
                                                  actor=admin.actor(request), note=note)
             else:  # pragma: no cover - each route below names its action
                 raise FormError(f"ação desconhecida: {action}")
