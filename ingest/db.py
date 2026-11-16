@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import NamedTuple, TypeVar
 
+from ingest import cms
 from ingest.editorial_rules import MAX_SLOTS
 
 MIGRATIONS_DIR = Path(__file__).parent / "migrations"
@@ -64,6 +65,53 @@ class EditorialConflict(RuntimeError):
 
 class EditorialRefused(RuntimeError):
     """A composition mutation the store refuses (cap, duplicate, unknown slot, empty draft)."""
+
+
+class CmsConflict(RuntimeError):
+    """A CMS write was rendered against a version that is no longer current."""
+
+    def __init__(self, kind: str, slug: str, expected: int, actual: int | None):
+        self.kind = kind
+        self.slug = slug
+        self.expected = expected
+        self.actual = actual
+        super().__init__(
+            f"{kind}/{slug}: the document is at version {actual}, this form was rendered at "
+            f"{expected}; nothing was written")
+
+
+class CmsRefused(RuntimeError):
+    """A CMS action the store refuses (duplicate slug, invalid body, bad reference, no-op)."""
+
+
+class CmsNotFound(RuntimeError):
+    """A CMS document the caller named does not exist."""
+
+    def __init__(self, kind: str, slug: str):
+        self.kind = kind
+        self.slug = slug
+        super().__init__(f"{kind}/{slug}: no such document")
+
+
+_METADATA_COLUMNS = (
+    "kind", "slug", "version", "draft_revision_id", "published_revision_id",
+    "created_at", "updated_at",
+)
+_REVISION_COLUMNS = ("id", "kind", "slug", "body_json", "created_at", "actor")
+_EVENT_COLUMNS = ("id", "ts", "kind", "slug", "action", "version", "revision_id", "actor",
+                  "note")
+
+
+def _cms_metadata_row(row) -> dict:
+    return dict(zip(_METADATA_COLUMNS, row))
+
+
+def _cms_revision_row(row) -> dict:
+    return dict(zip(_REVISION_COLUMNS, row))
+
+
+def _cms_event_row(row) -> dict:
+    return dict(zip(_EVENT_COLUMNS, row))
 
 
 def _utc_now() -> str:
@@ -1698,6 +1746,290 @@ class Db:
             self._editorial_event(c, slug, "reset_to_code", new_version, note, deleted)
             return new_version
 
+    # --- statistics CMS documents (B1) --------------------------------------------------------
+    #
+    # A document is a typed body plus immutable revisions and optimistic version. Draft and
+    # published pointers live on the head row so a publish or unpublish is one transaction.
+    # Every successful action writes exactly one revision (except unpublish, which reuses the
+    # published one) and one audit event, then bumps the version. Source and observation
+    # tables are never touched by this path.
+
+    @staticmethod
+    def _cms_kind(kind: str) -> str:
+        try:
+            return cms.validate_kind(kind)
+        except cms.CmsDocumentError as exc:
+            raise CmsRefused(str(exc)) from None
+
+    @staticmethod
+    def _cms_slug(slug: str, role: str = "slug") -> str:
+        try:
+            return cms.validate_slug(slug)
+        except cms.CmsDocumentError as exc:
+            raise CmsRefused(f"{role}: {exc}") from None
+
+    @staticmethod
+    def _cms_body(kind: str, body_json: str) -> str:
+        """Canonical, kind-valid body only: no malformed document can enter storage."""
+        try:
+            return cms.require_canonical_body(kind, body_json)
+        except (cms.CmsDocumentError, ValueError) as exc:
+            raise CmsRefused(f"{kind}: invalid document body: {exc}") from None
+
+    @staticmethod
+    def _cms_audit(actor: str, note: str) -> None:
+        for label, value, limit in (("actor", actor, 200), ("note", note, cms.MAX_TEXT)):
+            if not isinstance(value, str) or not value.strip():
+                raise CmsRefused(f"every CMS change needs a non-empty {label}")
+            if len(value) > limit:
+                raise CmsRefused(f"{label} is longer than {limit} characters")
+
+    @staticmethod
+    def _cms_document_row(c, kind: str, slug: str):
+        return c.execute(
+            "SELECT version, draft_revision_id, published_revision_id "
+            "FROM cms_document WHERE kind = ? AND slug = ?", (kind, slug)).fetchone()
+
+    @staticmethod
+    def _cms_version(row, kind: str, slug: str, expected_version: int) -> int:
+        if row is None:
+            raise CmsNotFound(kind, slug)
+        if row[0] != expected_version:
+            raise CmsConflict(kind, slug, expected_version, row[0])
+        return row[0]
+
+    @staticmethod
+    def _cms_metadata_for(c, kind: str, slug: str) -> dict:
+        row = c.execute(
+            "SELECT " + ", ".join(_METADATA_COLUMNS) +
+            " FROM cms_document WHERE kind = ? AND slug = ?", (kind, slug)).fetchone()
+        return _cms_metadata_row(row)
+
+    @staticmethod
+    def _cms_insert_revision(c, kind: str, slug: str, body_json: str, actor: str,
+                             created_at: str) -> int:
+        cur = c.execute(
+            "INSERT INTO cms_revision(kind, slug, body_json, created_at, actor) "
+            "VALUES (?, ?, ?, ?, ?)", (kind, slug, body_json, created_at, actor))
+        return cur.lastrowid
+
+    @staticmethod
+    def _cms_audit_event(c, *, ts: str, kind: str, slug: str, action: str, version: int,
+                         revision_id: int, actor: str, note: str) -> None:
+        c.execute(
+            "INSERT INTO cms_event(ts, kind, slug, action, version, revision_id, actor, note) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (ts, kind, slug, action, version, revision_id, actor, note))
+
+    def cms_get(self, kind: str, slug: str) -> dict | None:
+        """The mutable head metadata, or None. The body lives in a revision."""
+        kind = self._cms_kind(kind)
+        row = self.conn.execute(
+            "SELECT " + ", ".join(_METADATA_COLUMNS) +
+            " FROM cms_document WHERE kind = ? AND slug = ?", (kind, slug)).fetchone()
+        return _cms_metadata_row(row) if row is not None else None
+
+    def cms_list(self, kind: str, published_only: bool = False) -> list[dict]:
+        """Head metadata of every document of one kind, by slug."""
+        kind = self._cms_kind(kind)
+        sql = ("SELECT " + ", ".join(_METADATA_COLUMNS) +
+               " FROM cms_document WHERE kind = ?")
+        if published_only:
+            sql += " AND published_revision_id IS NOT NULL"
+        sql += " ORDER BY slug"
+        return [_cms_metadata_row(row) for row in self.conn.execute(sql, (kind,))]
+
+    def cms_revision(self, kind: str, slug: str, revision_id: int) -> dict | None:
+        """One revision row of this exact document, or None. Never another document's row."""
+        kind = self._cms_kind(kind)
+        row = self.conn.execute(
+            "SELECT " + ", ".join(_REVISION_COLUMNS) +
+            " FROM cms_revision WHERE kind = ? AND slug = ? AND id = ?",
+            (kind, slug, revision_id)).fetchone()
+        return _cms_revision_row(row) if row is not None else None
+
+    def cms_history(self, kind: str, slug: str) -> list[dict]:
+        """Every revision of one document, newest first. Rows are immutable."""
+        kind = self._cms_kind(kind)
+        rows = self.conn.execute(
+            "SELECT " + ", ".join(_REVISION_COLUMNS) +
+            " FROM cms_revision WHERE kind = ? AND slug = ? ORDER BY id DESC",
+            (kind, slug)).fetchall()
+        return [_cms_revision_row(row) for row in rows]
+
+    def cms_events(self, kind: str, slug: str) -> list[dict]:
+        """The append-only audit trail of one document, newest first."""
+        kind = self._cms_kind(kind)
+        rows = self.conn.execute(
+            "SELECT " + ", ".join(_EVENT_COLUMNS) +
+            " FROM cms_event WHERE kind = ? AND slug = ? ORDER BY id DESC",
+            (kind, slug)).fetchall()
+        return [_cms_event_row(row) for row in rows]
+
+    def cms_create(self, kind: str, slug: str, body_json: str, *, actor: str,
+                   note: str) -> dict:
+        """Create a document at version 1 with its first draft revision and one event."""
+        kind = self._cms_kind(kind)
+        slug = self._cms_slug(slug)
+        body_json = self._cms_body(kind, body_json)
+        self._cms_audit(actor, note)
+        now = _utc_now()
+        with self.transaction() as c:
+            if c.execute("SELECT 1 FROM cms_document WHERE kind = ? AND slug = ?",
+                         (kind, slug)).fetchone() is not None:
+                raise CmsRefused(f"{kind}/{slug}: already exists; duplicate it for a new slug")
+            c.execute(
+                "INSERT INTO cms_document(kind, slug, version, created_at, updated_at) "
+                "VALUES (?, ?, 1, ?, ?)", (kind, slug, now, now))
+            revision_id = self._cms_insert_revision(c, kind, slug, body_json, actor, now)
+            c.execute(
+                "UPDATE cms_document SET draft_revision_id = ? WHERE kind = ? AND slug = ?",
+                (revision_id, kind, slug))
+            self._cms_audit_event(
+                c, ts=now, kind=kind, slug=slug, action="created", version=1,
+                revision_id=revision_id, actor=actor, note=note)
+            return self._cms_metadata_for(c, kind, slug)
+
+    def cms_save(self, kind: str, slug: str, expected_version: int, body_json: str, *,
+                 actor: str, note: str) -> dict:
+        """Append a new draft revision if the head is still at `expected_version`."""
+        kind = self._cms_kind(kind)
+        slug = self._cms_slug(slug)
+        body_json = self._cms_body(kind, body_json)
+        self._cms_audit(actor, note)
+        now = _utc_now()
+        with self.transaction() as c:
+            row = self._cms_document_row(c, kind, slug)
+            version = self._cms_version(row, kind, slug, expected_version)
+            new_version = version + 1
+            revision_id = self._cms_insert_revision(c, kind, slug, body_json, actor, now)
+            c.execute(
+                "UPDATE cms_document SET version = ?, draft_revision_id = ?, updated_at = ? "
+                "WHERE kind = ? AND slug = ?",
+                (new_version, revision_id, now, kind, slug))
+            self._cms_audit_event(
+                c, ts=now, kind=kind, slug=slug, action="saved", version=new_version,
+                revision_id=revision_id, actor=actor, note=note)
+            return self._cms_metadata_for(c, kind, slug)
+
+    def cms_publish(self, kind: str, slug: str, expected_version: int, *, actor: str,
+                    note: str) -> dict:
+        """Point published at the exact draft current in this transaction."""
+        kind = self._cms_kind(kind)
+        slug = self._cms_slug(slug)
+        self._cms_audit(actor, note)
+        now = _utc_now()
+        with self.transaction() as c:
+            row = self._cms_document_row(c, kind, slug)
+            version = self._cms_version(row, kind, slug, expected_version)
+            draft_id = row[1]
+            if draft_id is None:
+                raise CmsRefused(f"{kind}/{slug}: there is no draft to publish")
+            draft = c.execute(
+                "SELECT body_json FROM cms_revision WHERE kind = ? AND slug = ? AND id = ?",
+                (kind, slug, draft_id)).fetchone()
+            if draft is None:
+                raise CmsRefused(f"{kind}/{slug}: the draft revision is missing")
+            self._cms_body(kind, draft[0])
+            new_version = version + 1
+            c.execute(
+                "UPDATE cms_document SET version = ?, published_revision_id = ?, "
+                "updated_at = ? WHERE kind = ? AND slug = ?",
+                (new_version, draft_id, now, kind, slug))
+            self._cms_audit_event(
+                c, ts=now, kind=kind, slug=slug, action="published", version=new_version,
+                revision_id=draft_id, actor=actor, note=note)
+            return self._cms_metadata_for(c, kind, slug)
+
+    def cms_unpublish(self, kind: str, slug: str, expected_version: int, *, actor: str,
+                      note: str) -> dict:
+        """Clear the published pointer; the draft and every revision stay where they are."""
+        kind = self._cms_kind(kind)
+        slug = self._cms_slug(slug)
+        self._cms_audit(actor, note)
+        now = _utc_now()
+        with self.transaction() as c:
+            row = self._cms_document_row(c, kind, slug)
+            version = self._cms_version(row, kind, slug, expected_version)
+            published_id = row[2]
+            if published_id is None:
+                raise CmsRefused(f"{kind}/{slug}: the document is not published")
+            new_version = version + 1
+            c.execute(
+                "UPDATE cms_document SET version = ?, published_revision_id = NULL, "
+                "updated_at = ? WHERE kind = ? AND slug = ?",
+                (new_version, now, kind, slug))
+            self._cms_audit_event(
+                c, ts=now, kind=kind, slug=slug, action="unpublished", version=new_version,
+                revision_id=published_id, actor=actor, note=note)
+            return self._cms_metadata_for(c, kind, slug)
+
+    def cms_restore(self, kind: str, slug: str, expected_version: int, revision_id: int, *,
+                    actor: str, note: str) -> dict:
+        """Copy an old revision into a NEW draft revision. History is never mutated."""
+        kind = self._cms_kind(kind)
+        slug = self._cms_slug(slug)
+        self._cms_audit(actor, note)
+        now = _utc_now()
+        with self.transaction() as c:
+            row = self._cms_document_row(c, kind, slug)
+            version = self._cms_version(row, kind, slug, expected_version)
+            source = c.execute(
+                "SELECT body_json FROM cms_revision WHERE kind = ? AND slug = ? AND id = ?",
+                (kind, slug, revision_id)).fetchone()
+            if source is None:
+                raise CmsRefused(
+                    f"{kind}/{slug}: revision {revision_id} does not belong to this document")
+            body_json = self._cms_body(kind, source[0])
+            new_version = version + 1
+            new_id = self._cms_insert_revision(c, kind, slug, body_json, actor, now)
+            c.execute(
+                "UPDATE cms_document SET version = ?, draft_revision_id = ?, updated_at = ? "
+                "WHERE kind = ? AND slug = ?",
+                (new_version, new_id, now, kind, slug))
+            self._cms_audit_event(
+                c, ts=now, kind=kind, slug=slug, action="restored", version=new_version,
+                revision_id=new_id, actor=actor, note=note)
+            return self._cms_metadata_for(c, kind, slug)
+
+    def cms_duplicate(self, kind: str, slug: str, new_slug: str, *, actor: str,
+                      note: str) -> dict:
+        """Create an independent draft copy of the CURRENT draft under a new slug."""
+        kind = self._cms_kind(kind)
+        slug = self._cms_slug(slug)
+        new_slug = self._cms_slug(new_slug, "new_slug")
+        self._cms_audit(actor, note)
+        if new_slug == slug:
+            raise CmsRefused(f"{kind}/{slug}: duplicate needs a different slug")
+        now = _utc_now()
+        with self.transaction() as c:
+            source = self._cms_document_row(c, kind, slug)
+            if source is None:
+                raise CmsNotFound(kind, slug)
+            draft_id = source[1]
+            if draft_id is None:
+                raise CmsRefused(f"{kind}/{slug}: there is no draft to duplicate")
+            revision = c.execute(
+                "SELECT body_json FROM cms_revision WHERE kind = ? AND slug = ? AND id = ?",
+                (kind, slug, draft_id)).fetchone()
+            if revision is None:
+                raise CmsRefused(f"{kind}/{slug}: the draft revision is missing")
+            body_json = self._cms_body(kind, revision[0])
+            if c.execute("SELECT 1 FROM cms_document WHERE kind = ? AND slug = ?",
+                         (kind, new_slug)).fetchone() is not None:
+                raise CmsRefused(f"{kind}/{new_slug}: already exists")
+            c.execute(
+                "INSERT INTO cms_document(kind, slug, version, created_at, updated_at) "
+                "VALUES (?, ?, 1, ?, ?)", (kind, new_slug, now, now))
+            new_id = self._cms_insert_revision(c, kind, new_slug, body_json, actor, now)
+            c.execute(
+                "UPDATE cms_document SET draft_revision_id = ? WHERE kind = ? AND slug = ?",
+                (new_id, kind, new_slug))
+            self._cms_audit_event(
+                c, ts=now, kind=kind, slug=new_slug, action="duplicated", version=1,
+                revision_id=new_id, actor=actor, note=note)
+            return self._cms_metadata_for(c, kind, new_slug)
+
 
 def _migrate(conn: sqlite3.Connection) -> None:
     conn.execute(
@@ -1762,36 +2094,44 @@ def _applied_migrations(conn: sqlite3.Connection) -> set[str]:
 
 
 EDITORIAL_TABLES = frozenset({"editorial_page", "editorial_slot", "editorial_event"})
+CMS_TABLES = frozenset({"cms_document", "cms_revision", "cms_event"})
+RESTRICTED_WRITE_TABLES = EDITORIAL_TABLES | CMS_TABLES
 
 
-def _editorial_authorizer(action: int, arg1, arg2, dbname, trigger) -> int:
-    """Allow reads and writes to the editorial tables and nothing else.
+def _restricted_authorizer(action: int, arg1, arg2, dbname, trigger) -> int:
+    """Allow reads everywhere and writes only to the editorial and CMS tables.
 
     The `:rw` mount makes a write possible; this makes it true that the write path can only
-    touch the composition. `arg1` is the table name for INSERT/UPDATE/DELETE; DDL is refused
-    outright because the worker owns the schema.
+    touch authored composition/documents. `arg1` is the table name for
+    INSERT/UPDATE/DELETE; DDL is refused outright because the worker owns the schema.
     """
     if action in (sqlite3.SQLITE_INSERT, sqlite3.SQLITE_UPDATE, sqlite3.SQLITE_DELETE):
-        return sqlite3.SQLITE_OK if arg1 in EDITORIAL_TABLES else sqlite3.SQLITE_DENY
+        return sqlite3.SQLITE_OK if arg1 in RESTRICTED_WRITE_TABLES else sqlite3.SQLITE_DENY
     if action in (sqlite3.SQLITE_CREATE_TABLE, sqlite3.SQLITE_DROP_TABLE,
                   sqlite3.SQLITE_ALTER_TABLE, sqlite3.SQLITE_CREATE_INDEX,
                   sqlite3.SQLITE_DROP_INDEX, sqlite3.SQLITE_CREATE_TRIGGER,
                   sqlite3.SQLITE_DROP_TRIGGER, sqlite3.SQLITE_CREATE_VIEW,
-                  sqlite3.SQLITE_DROP_VIEW):
+                  sqlite3.SQLITE_DROP_VIEW, sqlite3.SQLITE_CREATE_TEMP_TABLE,
+                  sqlite3.SQLITE_DROP_TEMP_TABLE, sqlite3.SQLITE_CREATE_TEMP_INDEX,
+                  sqlite3.SQLITE_DROP_TEMP_INDEX, sqlite3.SQLITE_CREATE_TEMP_TRIGGER,
+                  sqlite3.SQLITE_DROP_TEMP_TRIGGER, sqlite3.SQLITE_CREATE_TEMP_VIEW,
+                  sqlite3.SQLITE_DROP_TEMP_VIEW, sqlite3.SQLITE_CREATE_VTABLE,
+                  sqlite3.SQLITE_DROP_VTABLE):
         return sqlite3.SQLITE_DENY
     return sqlite3.SQLITE_OK
 
 
 def open_db_for_write(path: str | Path) -> Db:
-    """Open an EXISTING database for the backoffice's editorial writes.
+    """Open an EXISTING database for the backoffice's editorial and CMS writes.
 
     Never migrates: the worker owns migrations. Refuses a schema that differs from this
     code's in either direction (older: the worker has not migrated yet; newer: this code is
     behind the database), so a write can never land on a table shape it does not know.
-    `foreign_keys=ON` is not optional here: the composition's integrity is the FKs.
+    `foreign_keys=ON` is not optional here: the authored content's integrity is the FKs.
     The handle carries an authorizer that refuses any write outside the three editorial
-    tables, so "the backoffice only edits the composition" is enforced, not documented.
-    The handle is not cached by callers; one write, one handle, one transaction.
+    tables and the three CMS tables, so "the backoffice only edits authored content" is
+    enforced, not documented. The handle is not cached by callers; one write, one handle,
+    one transaction.
     """
     p = Path(path)
     if not p.is_file():
@@ -1812,7 +2152,7 @@ def open_db_for_write(path: str | Path) -> Db:
         expected = _expected_migrations()
         if applied != expected:
             raise SchemaMismatchError(p, applied, expected)
-        conn.set_authorizer(_editorial_authorizer)
+        conn.set_authorizer(_restricted_authorizer)
     except BaseException:
         conn.close()  # never leak a writable handle on refusal
         raise

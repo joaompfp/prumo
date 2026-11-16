@@ -70,7 +70,7 @@ def test_never_migrates(tmp_path, monkeypatch):
     partial = tmp_path / "migrations_0017"
     partial.mkdir()
     for f in sorted(MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql")):
-        if f.stem.startswith("0018"):
+        if f.stem.startswith(("0018", "0019")):
             continue
         shutil.copy(f, partial / f.name)
     monkeypatch.setattr(db_module, "MIGRATIONS_DIR", partial)
@@ -83,6 +83,7 @@ def test_never_migrates(tmp_path, monkeypatch):
     names = {r[0] for r in _sql(
         old, "SELECT name FROM sqlite_master WHERE type = 'table'")}
     assert "editorial_page" not in names
+    assert "cms_document" not in names
     applied = {r[0] for r in _sql(old, "SELECT version FROM schema_migration")}
     assert CURRENT not in applied
 
