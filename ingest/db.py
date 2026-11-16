@@ -1839,6 +1839,36 @@ class Db:
         sql += " ORDER BY slug"
         return [_cms_metadata_row(row) for row in self.conn.execute(sql, (kind,))]
 
+    def cms_chart_usages(self, chart_slug: str) -> list[dict]:
+        """Pages whose CURRENT draft or published body references this chart, by slug.
+
+        One JSON walk over the two head revisions (never every old revision). `published` is
+        true only when the LIVE revision is one of the referencing bodies: a draft that just
+        added a chart does not claim the public page already shows it.
+        """
+        reference = (
+            "EXISTS (SELECT 1 FROM json_each({body}, '$.blocks') b"
+            "        WHERE json_extract(b.value, '$.type') = 'chart'"
+            "          AND json_extract(b.value, '$.chart_slug') = ?)")
+        rows = self.conn.execute(
+            "SELECT d.slug,"
+            "  CASE WHEN d.published_revision_id IS NOT NULL AND " +
+            reference.format(body="pr.body_json") + " THEN 1 ELSE 0 END"
+            " FROM cms_document d"
+            " LEFT JOIN cms_revision pr ON pr.kind = d.kind AND pr.slug = d.slug"
+            "   AND pr.id = d.published_revision_id"
+            " WHERE d.kind = 'page' AND ("
+            "   EXISTS (SELECT 1 FROM cms_revision dr"
+            "           WHERE dr.kind = d.kind AND dr.slug = d.slug"
+            "             AND dr.id = d.draft_revision_id AND " +
+            reference.format(body="dr.body_json") + ")"
+            "   OR (d.published_revision_id IS NOT NULL AND " +
+            reference.format(body="pr.body_json") + "))"
+            " ORDER BY d.slug",
+            (chart_slug, chart_slug, chart_slug)).fetchall()
+        return [{"kind": "page", "slug": slug, "published": bool(published)}
+                for slug, published in rows]
+
     def cms_revision(self, kind: str, slug: str, revision_id: int) -> dict | None:
         """One revision row of this exact document, or None. Never another document's row."""
         kind = self._cms_kind(kind)
@@ -1913,8 +1943,16 @@ class Db:
             return self._cms_metadata_for(c, kind, slug)
 
     def cms_publish(self, kind: str, slug: str, expected_version: int, *, actor: str,
-                    note: str) -> dict:
-        """Point published at the exact draft current in this transaction."""
+                    note: str, check: Callable[[str, str], None] | None = None) -> dict:
+        """Point published at the exact draft current in this transaction.
+
+        `check(kind, body_json)` runs INSIDE this write transaction, on this connection,
+        after the stored body is proven canonical and before the published pointer moves.
+        It is the atomic eligibility hook: the reads it makes see the same snapshot the swap
+        commits, so a licence revoked concurrently either refuses this publication or is
+        visible to it. It must only read; raising aborts the whole publish and nothing is
+        written.
+        """
         kind = self._cms_kind(kind)
         slug = self._cms_slug(slug)
         self._cms_audit(actor, note)
@@ -1931,6 +1969,8 @@ class Db:
             if draft is None:
                 raise CmsRefused(f"{kind}/{slug}: the draft revision is missing")
             self._cms_body(kind, draft[0])
+            if check is not None:
+                check(kind, draft[0])
             new_version = version + 1
             c.execute(
                 "UPDATE cms_document SET version = ?, published_revision_id = ?, "

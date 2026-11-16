@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Páginas - Prumo{% endblock %}
+{% block content %}
+{% if preview %}
+<div class="preview-banner" role="status">
+  <p><strong>Pré-visualização.</strong> Rascunho do backoffice; o índice público não foi alterado.</p>
+  <p><a class="button" href="{{ admin_base }}">Voltar ao editor</a></p>
+</div>
+{% endif %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> Páginas
+</nav>
+
+<header class="page-head">
+  <h1>Páginas</h1>
+  <p class="lede">Leituras editoriais dos números oficiais, cada valor ligado à fonte e à data da recolha.</p>
+</header>
+
+{% if page.sections %}
+{% for section in page.sections %}
+<section class="family" aria-labelledby="seccao-{{ section.code }}">
+  <div class="section-head">
+    <h2 id="seccao-{{ section.code }}">{{ section.title }}</h2>
+  </div>
+  <ul class="cms-link-list">
+    {% for item in section.pages %}
+    <li>
+      <a href="{{ base }}/paginas/{{ item.slug }}">{{ item.title }}</a>
+      {% if item.introduction %}<span class="row-meta">{{ item.introduction }}</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}
+{% else %}
+<p class="empty-state">Ainda não há páginas publicadas.</p>
+{% endif %}
+{% endblock %}

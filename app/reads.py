@@ -8,6 +8,7 @@ import logging
 import time
 import unicodedata
 from dataclasses import dataclass
+from typing import Generic, TypeVar
 
 from app import chart_model, interactive
 from app.chart_model import ComparisonModel, LineChartModel
@@ -20,7 +21,7 @@ from app.formatting import (
     format_value,
 )
 from ingest.db import Db
-from ingest.editorial_rules import SlotFacts, page_problems
+from ingest.editorial_rules import SlotFacts, page_problems, slot_problem
 from presentation import (
     MissingText,
     base_unit_text,
@@ -121,10 +122,27 @@ def _geo_group(geography: str) -> str:
     return "world"
 
 
-def _window_start(latest: str, frequency: str, window: str) -> str | None:
-    if window not in ("10", "25") or not latest[:4].isdigit():
+# Built-in series pages count calendar years (10/25 includes the current year); the CMS
+# vocabulary is a rolling window that starts that many years before the latest data time.
+_CALENDAR_WINDOW_YEARS = {"10": 10, "25": 25}
+_ROLLING_WINDOW_YEARS = {"1y": 1, "5y": 5, "10y": 10}
+
+
+def window_start(latest: str, frequency: str, window: str) -> str | None:
+    """First canonical period a window must include, measured from the latest data time.
+
+    None means "no lower bound" (the maximum window, an unknown token or a series whose
+    periods are not year-shaped). The clock is never consulted: a stale dataset still shows
+    its own newest periods instead of an empty window.
+    """
+    if not latest[:4].isdigit():
         return None
-    target_year = int(latest[:4]) - (int(window) - 1)
+    if window in _CALENDAR_WINDOW_YEARS:
+        target_year = int(latest[:4]) - (_CALENDAR_WINDOW_YEARS[window] - 1)
+    elif window in _ROLLING_WINDOW_YEARS:
+        target_year = int(latest[:4]) - _ROLLING_WINDOW_YEARS[window]
+    else:
+        return None
     if frequency == "A":
         return str(target_year)
     if frequency == "M" and len(latest) >= 7:
@@ -270,7 +288,7 @@ class SeriesDetail:
     table_note: str
 
 
-def _provenance_view(p: dict, frequency: str, lang: str) -> ProvenanceView:
+def provenance_view(p: dict, frequency: str, lang: str) -> ProvenanceView:
     return ProvenanceView(
         value_display=format_value(p["value_text"]),
         period_text=format_period(p["period"], frequency),
@@ -287,6 +305,49 @@ def _provenance_view(p: dict, frequency: str, lang: str) -> ProvenanceView:
         native_code=p["native_code"], series_url=p["series_url"],
         licence=source_text(p["licence"]), licence_url=p["licence_url"],
         attribution=source_text(p["attribution"]))
+
+
+ChartModel = TypeVar("ChartModel", LineChartModel, ComparisonModel)
+
+
+@dataclass(frozen=True)
+class PreparedChart(Generic[ChartModel]):
+    """One prepared chart: the SVG model, its optional browser payload and its control copy.
+
+    The same object feeds the built-in detail pages and a CMS chart block, so the fallback and
+    the interactive canvas can never come from two different preparations.
+    """
+
+    chart: ChartModel | None
+    chart_payload: dict | None
+    chart_range_label: str
+    chart_hint: str
+
+
+def prepare_line_chart(points, *, frequency: str, title: str, unit: str = "",
+                       display_unit: str | None = None, badge: str = "",
+                       lang: str = "pt") -> PreparedChart[LineChartModel]:
+    """Prepare a single-series line from stored tokens (`points`: period/value_text)."""
+    chart = chart_model.line_model(list(points), frequency=frequency, title=title, unit=unit,
+                                   display_unit=display_unit)
+    return PreparedChart(
+        chart=chart,
+        chart_payload=interactive.build_payload(chart, badge=badge) if chart is not None else None,
+        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"))
+
+
+def prepare_comparison_chart(points, *, frequency: str, title: str,
+                             labels: tuple[str, str], unit_a: str, unit_b: str,
+                             dual: bool, badge: str = "",
+                             lang: str = "pt") -> PreparedChart[ComparisonModel]:
+    """Prepare a two-series chart from already aligned points (`a`/`b` tokens)."""
+    chart = chart_model.comparison_model(list(points), frequency=frequency, title=title,
+                                         labels=labels, unit_a=unit_a, unit_b=unit_b,
+                                         dual=dual)
+    return PreparedChart(
+        chart=chart,
+        chart_payload=interactive.build_payload(chart, badge=badge) if chart is not None else None,
+        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"))
 
 
 def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None = None,
@@ -325,7 +386,7 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
         table_note = (f"{format_count(total_periods)} intervalos neste dia."
                       if total_periods else "Sem intervalos neste dia.")
     else:
-        start = _window_start(row["latest_period"], frequency, window)
+        start = window_start(row["latest_period"], frequency, window)
         shown = (db.public_values_between(series_id, start) if start
                  else db.public_series_values(series_id))
         total_periods = len(shown)
@@ -380,16 +441,16 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
         source_title=source_title(lang, row["source"]), attribution=source_text(row["attribution"]),
         licence=source_text(row["licence"]), licence_url=row["licence_url"],
         native_code=row["native_code"], series_url=row["url"], latest=latest)
-    chart = chart_model.line_model(list(chart_points), frequency=frequency,
-                                   title=series.title, unit=series.unit_text)
+    prepared = prepare_line_chart(chart_points, frequency=frequency, title=series.title,
+                                  unit=series.unit_text)
     return SeriesDetail(
         series=series,
         values=tuple(_value_view(v, frequency, lang) for v in table_rows),
         chart_points=chart_points,
-        chart=chart,
-        chart_payload=interactive.build_payload(chart) if chart is not None else None,
-        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"),
-        provenance=_provenance_view(provenance, frequency, lang) if provenance else None,
+        chart=prepared.chart,
+        chart_payload=prepared.chart_payload,
+        chart_range_label=prepared.chart_range_label, chart_hint=prepared.chart_hint,
+        provenance=provenance_view(provenance, frequency, lang) if provenance else None,
         revisions=tuple(revisions), revised_periods=len(revised), unchanged_periods=unchanged,
         derived=tuple(derived), cross_checks=cross,
         window=window if window in ("10", "25") else "max",
@@ -455,8 +516,9 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
             for i in newest["inputs"])
     title = derived_title(lang, key)
     chart_points = tuple({"period": v["period"], "value_text": v["value_text"]} for v in values)
-    chart = chart_model.line_model(list(chart_points), frequency=frequency, title=title,
-                                   display_unit=unit_text(lang, d["unit"]))
+    prepared = prepare_line_chart(chart_points, frequency=frequency, title=title,
+                                  display_unit=unit_text(lang, d["unit"]),
+                                  badge=chart_ui(lang, "calculated"))
     return DerivedDetail(
         key=key, title=title, frequency=frequency,
         formula_text=describe_formula(lang, d["formula"], d["params"], base_title),
@@ -474,10 +536,9 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
                                status_text="", fetched_at="", fetched_text="")
                      for v in reversed(values)),
         chart_points=chart_points,
-        chart=chart,
-        chart_payload=interactive.build_payload(chart, badge=chart_ui(lang, "calculated"))
-        if chart is not None else None,
-        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"),
+        chart=prepared.chart,
+        chart_payload=prepared.chart_payload,
+        chart_range_label=prepared.chart_range_label, chart_hint=prepared.chart_hint,
         base_id=d["base_series_id"],
         base_title=series_title(lang, family_of(d["base_indicator_key"]),
                                 d["base_geography"]),
@@ -532,6 +593,56 @@ class HomePage:
     composed: bool  # True when the page has a published composition (cards may be zero)
 
 
+def _derived_fact_title(lang: str, key: str | None, d: dict | None) -> str | None:
+    """A derived companion must be nameable in this language: title and unit both resolve."""
+    if not key or d is None:
+        return None
+    try:
+        unit_text(lang, d["unit"])
+        return derived_title(lang, key)
+    except MissingText:
+        return None
+
+
+def slot_facts(db: Db, pairs: list[tuple[str, str | None]],
+               lang: str = "pt") -> tuple[list[SlotFacts | None], dict[str, dict]]:
+    """Resolve the facts the one eligibility rule needs for ordered (series, derived) slots.
+
+    Returns one fact object per requested slot (None for an unknown series) plus the raw
+    registry rows by series id. No SQL: `series_facts`/`derived_facts` are one indexed lookup
+    per id, which is what both the publish refusal and the render-time drop need.
+    """
+    del lang  # both catalogues are resolved because the rule is asked per render language
+    ids = list(dict.fromkeys(series_id for series_id, _ in pairs))
+    raw = db.series_facts(ids)
+    keys = list(dict.fromkeys(key for _, key in pairs if key))
+    derived = db.derived_facts(keys)
+    out: list[SlotFacts | None] = []
+    for series_id, key in pairs:
+        row = raw.get(series_id)
+        if row is None:
+            out.append(None)
+            continue
+        d = derived.get(key) if key else None
+        titles: dict[str, str | None] = {}
+        derived_titles: dict[str, str | None] = {}
+        for language in ("pt", "en"):
+            try:
+                titles[language] = series_title(language, family_of(row["indicator_key"]),
+                                                row["geography"])
+            except MissingText:
+                titles[language] = None
+            derived_titles[language] = _derived_fact_title(language, key, d)
+        out.append(SlotFacts(
+            series_id=series_id, active=bool(row["active"]), role=row["role"],
+            redistribution_ok=bool(row["redistribution_ok"]),
+            has_served=bool(row["has_served"]), titles=titles, derived_key=key,
+            derived_active=bool(d and d["active"]),
+            derived_base_series_id=d["base_series_id"] if d else None,
+            derived_titles=derived_titles))
+    return out, raw
+
+
 def page_composition(db: Db, slug: str, lang: str = "pt") -> tuple[tuple[dict, str | None], ...] | None:
     """The published composition of `slug` as (catalogue-shaped row, derived key) pairs.
 
@@ -548,38 +659,7 @@ def page_composition(db: Db, slug: str, lang: str = "pt") -> tuple[tuple[dict, s
     slots = db.editorial_slots(slug, "published")
     if not slots:
         return None  # no composition: the page renders the list in code
-    rows = db.series_facts([s["series_id"] for s in slots])
-    derived = db.derived_facts([s["derived_key"] for s in slots if s["derived_key"]])
-    facts: list[SlotFacts | None] = []
-    for slot in slots:
-        row = rows.get(slot["series_id"])
-        if row is None:
-            facts.append(None)
-            continue
-        key = slot["derived_key"]
-        d = derived.get(key) if key else None
-        titles: dict[str, str | None] = {}
-        derived_titles: dict[str, str | None] = {}
-        for language in ("pt", "en"):
-            try:
-                titles[language] = series_title(language, family_of(row["indicator_key"]),
-                                                row["geography"])
-            except MissingText:
-                titles[language] = None
-            derived_titles[language] = None
-            if key and d:
-                try:
-                    unit_text(language, d["unit"])
-                    derived_titles[language] = derived_title(language, key)
-                except MissingText:
-                    derived_titles[language] = None
-        facts.append(SlotFacts(
-            series_id=slot["series_id"], active=bool(row["active"]), role=row["role"],
-            redistribution_ok=bool(row["redistribution_ok"]),
-            has_served=bool(row["has_served"]), titles=titles, derived_key=key,
-            derived_active=bool(d and d["active"]),
-            derived_base_series_id=d["base_series_id"] if d else None,
-            derived_titles=derived_titles))
+    facts, rows = slot_facts(db, [(s["series_id"], s["derived_key"]) for s in slots], lang)
     problems = dict(page_problems(facts, lang=lang))
     out = []
     for position, slot in enumerate(slots):
@@ -620,6 +700,30 @@ def _card(db: Db, row: dict, value: dict, label: str, derived_key: str | None,
         if badge and badge["latest_period"] is not None else None,
         spark_points=tuple({"period": p["period"], "value_text": p["value_text"]}
                            for p in spark))
+
+
+def prepare_card(db: Db, series_id: str, derived_key: str | None = None, *,
+                 label: str | None = None, lang: str = "pt",
+                 titles_taken: set[str] | None = None) -> tuple[Card | None, str | None]:
+    """One eligible card, or (None, the machine reason it may not render).
+
+    The card markup itself still comes from `_card`, the one builder the home uses. This
+    wrapper re-applies the shared slot rule at READ time, so a revoked licence, a deactivated
+    series, a missing title or a derived companion whose base changed drops the card instead
+    of publishing a number the rule forbids. `titles_taken` carries the page-order duplicate
+    rule used by an authored page.
+    """
+    facts, raw = slot_facts(db, [(series_id, derived_key)], lang)
+    problem = slot_problem(facts[0], titles_taken=set(titles_taken or ()), lang=lang)
+    if problem is not None:
+        return None, problem
+    row = dict(raw[series_id])
+    row["family"] = family_of(row["indicator_key"])
+    latest = db.public_latest_values([series_id])
+    value = latest.get(series_id)
+    if value is None:
+        return None, "no_served_value"
+    return _card(db, row, value, label or _title(row, lang), derived_key, lang), None
 
 
 def cards_for(db: Db, wanted: list[tuple[str, str, str | None]],
@@ -938,8 +1042,8 @@ def _common(n: int) -> str:
     return "1 período comum" if n == 1 else f"{format_count(n)} períodos comuns"
 
 
-def _align(a_values: list[dict],
-           b_values: list[dict]) -> tuple[tuple[dict, ...], int, int, int]:
+def align_periods(a_values: list[dict],
+                  b_values: list[dict]) -> tuple[tuple[dict, ...], int, int, int]:
     """The periods both series publish with a numeric value on both sides, oldest first.
 
     No interpolation, no carry-forward, no resampling. Returns the points, the count of periods
@@ -969,7 +1073,7 @@ def _comparison_side(db: Db, row: dict, token: str, period: str, frequency: str,
         latest_display=format_value(token),
         latest_period_text=format_period(period, frequency),
         licence=source_text(row["licence"]),
-        provenance=_provenance_view(provenance, frequency, lang) if provenance else None)
+        provenance=provenance_view(provenance, frequency, lang) if provenance else None)
 
 
 def _published_pair(db: Db, pair: dict[str, str],
@@ -994,16 +1098,16 @@ def _published_pair(db: Db, pair: dict[str, str],
         log.error("comparison %s mixes frequencies %s and %s", slug,
                   a_row["frequency"], b_row["frequency"])
         return None
-    points, dropped_a, dropped_b, unparsed = _align(db.public_series_values(a_row["id"]),
-                                                   db.public_series_values(b_row["id"]))
+    points, dropped_a, dropped_b, unparsed = align_periods(db.public_series_values(a_row["id"]),
+                                                           db.public_series_values(b_row["id"]))
     if not points:
         log.warning("comparison %s hidden: no common period", slug)
         return None
     return a_row, b_row, points, dropped_a, dropped_b, unparsed
 
 
-def _alignment_text(points: tuple[dict, ...], dropped_a: int, dropped_b: int, unparsed: int,
-                    a_title: str, b_title: str, frequency: str) -> str:
+def alignment_text(points: tuple[dict, ...], dropped_a: int, dropped_b: int, unparsed: int,
+                   a_title: str, b_title: str, frequency: str) -> str:
     first = format_period(points[0]["period"], frequency)
     last = format_period(points[-1]["period"], frequency)
     parts = [f"{_common(len(points))}, de {first} a {last}."]
@@ -1041,19 +1145,18 @@ def comparison_page(db: Db, slug: str, *, lang: str = "pt") -> ComparisonPage | 
         {"period_text": format_period(p["period"], frequency),
          "a_display": format_value(p["a"]), "b_display": format_value(p["b"])}
         for p in reversed(points))
-    chart = chart_model.comparison_model(
-        list(points), frequency=frequency, title=pair["title"],
-        labels=(a.title, b.title), unit_a=a.unit_text, unit_b=b.unit_text,
-        dual=(pair["scale"] == "dual_axis"))
+    prepared = prepare_comparison_chart(
+        points, frequency=frequency, title=pair["title"], labels=(a.title, b.title),
+        unit_a=a.unit_text, unit_b=b.unit_text, dual=(pair["scale"] == "dual_axis"))
     return ComparisonPage(
         slug=slug, title=pair["title"], subtitle=pair["subtitle"], mechanism=pair["mechanism"],
         caption_note=pair["caption_note"], scale=pair["scale"], chart_title=pair["title"],
-        chart_points=points, chart=chart,
-        chart_payload=interactive.build_payload(chart) if chart is not None else None,
-        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"),
+        chart_points=points, chart=prepared.chart,
+        chart_payload=prepared.chart_payload,
+        chart_range_label=prepared.chart_range_label, chart_hint=prepared.chart_hint,
         table_rows=rows,
-        alignment_text=_alignment_text(points, dropped_a, dropped_b, unparsed,
-                                       a.title, b.title, frequency),
+        alignment_text=alignment_text(points, dropped_a, dropped_b, unparsed,
+                                      a.title, b.title, frequency),
         a=a, b=b)
 
 

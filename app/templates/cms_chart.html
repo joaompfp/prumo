@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% from "_chart.html" import chart_shell %}
+{% block title %}{{ page.title }} - Prumo{% endblock %}
+{% block content %}
+{% if preview %}
+<div class="preview-banner" role="status">
+  <p><strong>Pré-visualização.</strong> Este é o rascunho no backoffice; o gráfico público não foi alterado.</p>
+  <p><a class="button" href="{{ admin_base }}">Voltar ao editor</a></p>
+</div>
+{% endif %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.title }}
+</nav>
+
+<header class="page-head">
+  <h1>{{ page.title }}</h1>
+  {% if page.note %}<p class="lede">{{ page.note }}</p>{% endif %}
+  <p class="meta">
+  {{ page.frequency_text }}{% if page.day %} · dia UTC {{ format_date(page.day) }}{% else %} · {{ page.window_text }}{% endif %}
+  </p>
+</header>
+
+<section class="chart-section" aria-labelledby="grafico">
+  <div class="section-head">
+    <h2 id="grafico">{{ page.title }}</h2>
+  </div>
+  <figure class="chart-figure chart-figure-interactive">
+    {% if page.chart_payload %}{{ chart_shell(page, "cms-chart") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
+    <figcaption>
+      {% for line in page.provenance %}{{ line.title }}. Fonte: {{ line.source_title }}. {% endfor %}
+      Último valor em {{ page.provenance[0].period_text }}.
+    </figcaption>
+  </figure>
+  <p class="note">{{ page.table_note }}</p>
+  <details class="table-details">
+  <summary>Ver tabela de valores</summary>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th scope="col">Período</th>
+        {% if page.is_pair %}
+        <th scope="col" class="num">{{ page.provenance[0].title }} ({{ page.provenance[0].unit_text }})</th>
+        <th scope="col" class="num">{{ page.provenance[1].title }} ({{ page.provenance[1].unit_text }})</th>
+        {% else %}
+        <th scope="col" class="num">Valor ({{ page.unit_text }})</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in page.table %}
+      <tr><td>{{ row.period_text }}</td><td class="num">{{ row.a_display }}</td>{% if page.is_pair %}<td class="num">{{ row.b_display }}</td>{% endif %}</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </details>
+</section>
+
+{% if page.calculated %}
+<section class="figure-block" aria-labelledby="calculado">
+  <div class="section-head">
+    <h2 id="calculado">Valor calculado</h2>
+  </div>
+  <p><span class="badge">{{ page.calculated.badge }}</span> {{ page.calculated.formula_text }}</p>
+  <p class="figure-period"><span class="mini-label">Base</span>{{ page.calculated.base_title }}: {{ page.calculated.base_value_display }} {{ page.unit_text }} ({{ page.calculated.base_period_text }})</p>
+  {% for caveat in page.calculated.caveats %}<p class="caveat">{{ caveat }}</p>{% endfor %}
+  <p class="note">Calculado a {{ page.calculated.computed_text }}. {{ page.calculated.attribution }}</p>
+</section>
+{% endif %}
+
+<section class="provenance" aria-labelledby="proveniencia">
+  <div class="section-head">
+    <h2 id="proveniencia">Proveniência</h2>
+    <p class="section-note">Cada série mantém o seu próprio caminho, do editor até esta página. O valor indicado é o do último período que o gráfico desenha.</p>
+  </div>
+  <div class="compare-provenance">
+    {% for line in page.provenance %}
+    <dl class="provenance-list">
+      <dt>Série</dt><dd>{{ line.title }}</dd>
+      <dt>Publicado por</dt><dd>{{ line.source_title }}</dd>
+      <dt>Atribuição</dt><dd>{{ line.attribution }}</dd>
+      <dt>Último período desenhado</dt><dd>{{ line.period_text }}: {{ line.value_display }} {{ line.unit_text }}</dd>
+      {% if line.provenance %}
+      <dt>Recolhido</dt><dd>{{ line.provenance.fetched_text }}</dd>
+      <dt>Execução</dt><dd>#{{ line.provenance.run_id }}</dd>
+      <dt>Verificação</dt>
+      <dd>
+        {% if line.provenance.verification_created_text %}
+        {{ line.provenance.verification_created_text }}{% if line.provenance.sample_size_text %}, amostra de {{ line.provenance.sample_size_text }} valores do conjunto{% endif %}{% if line.provenance.verification_passed %}, 100% coincidentes{% endif %}.
+        {% if line.provenance.sampled %}Este valor foi um dos comparados.{% else %}Este valor não foi um dos amostrados; a verificação cobre o conjunto de onde ele vem.{% endif %}
+        {% else %}Sem registo de verificação para esta execução.{% endif %}
+      </dd>
+      {% elif line.is_derived %}
+      <dt>Cálculo</dt><dd>{% if page.calculated %}{{ page.calculated.formula_text }}{% endif %}</dd>
+      {% else %}
+      <dt>Recolha</dt><dd>Sem registo de recolha para este período.</dd>
+      {% endif %}
+      <dt>Licença</dt><dd>{{ line.licence }}{% if line.licence_url and line.licence_url.startswith('https://') %} · <a href="{{ line.licence_url }}" rel="noopener noreferrer">termos</a>{% endif %}</dd>
+    </dl>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}{% if page.chart_payload and not preview %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

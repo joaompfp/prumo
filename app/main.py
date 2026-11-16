@@ -17,7 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 
-from app import interactive, reads
+from app import cms_reads, cms_routes, interactive, reads
 from app.charts import chart_legend, chart_plot, chart_svg, line_chart, sparkline, two_series_chart
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
@@ -158,13 +158,15 @@ def create_app(db_path: str | None = None) -> FastAPI:
     def theme(request: Request, code: str, grupo: str = "", fonte: str = "",
               frequencia: str = "", pagina: int = Query(1, ge=1)):
         try:
-            data = _read(request, lambda db: reads.theme(
-                db, code, group=grupo, source=fonte, frequency=frequencia, page=pagina))
+            data, cms_pages = _read(request, lambda db: (
+                reads.theme(db, code, group=grupo, source=fonte, frequency=frequencia,
+                            page=pagina),
+                cms_reads.section_pages(db, code)))
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
-        return _render(templates, request, "theme.html", {"page": data})
+        return _render(templates, request, "theme.html", {"page": data, "cms_pages": cms_pages})
 
     @app.api_route("/series/{series_id}", methods=PAGE_METHODS, response_class=HTMLResponse)
     def series(request: Request, series_id: str, janela: str = "max", dia: str | None = None):
@@ -228,6 +230,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
             return _render(templates, request, "404.html", {}, status=404)
         return _render(templates, request, "compare.html", {"page": data},
                        script=data.chart_payload is not None)
+
+    cms_routes.add_routes(app, templates=templates, render=_render, unavailable=unavailable)
 
     @app.exception_handler(MissingText)
     def missing_reader_text(request: Request, exc: MissingText):

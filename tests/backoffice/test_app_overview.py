@@ -123,10 +123,17 @@ EDITORIAL_POSTS = {
     "/editorial/{slug}/discard", "/editorial/{slug}/publish", "/editorial/{slug}/reset",
 }
 
+CMS_POSTS = {
+    "/cms/new", "/cms/{kind}/{slug}/save", "/cms/{kind}/{slug}/publish",
+    "/cms/{kind}/{slug}/unpublish", "/cms/{kind}/{slug}/restore",
+    "/cms/{kind}/{slug}/duplicate",
+}
 
-def test_every_route_is_get_or_head_except_the_six_editorial_posts(env):
-    """The backoffice gained a write path (editorial composition). It is exactly six POST
-    routes on /editorial; any other non-GET route is a defect, and so is a seventh."""
+
+def test_every_route_is_get_or_head_except_the_editorial_and_cms_posts(env):
+    """The backoffice gained two write paths: exactly six POST routes for editorial
+    composition and exactly six for CMS authoring. Any other non-GET route is a defect,
+    and so is a seventh of either kind."""
     app = create_app(env.db_path, env.registry, now=lambda: NOW)
     routes = [r for r in app.routes if isinstance(r, (APIRoute, Route))]
     assert routes
@@ -134,11 +141,11 @@ def test_every_route_is_get_or_head_except_the_six_editorial_posts(env):
     for r in routes:
         extra = (r.methods or set()) - {"GET", "HEAD"}
         if extra:
-            assert extra == {"POST"} and r.path in EDITORIAL_POSTS, (r.path, r.methods)
+            assert extra == {"POST"} and r.path in EDITORIAL_POSTS | CMS_POSTS, (r.path, r.methods)
             posts.add(r.path)
         else:
             assert r.methods <= {"GET", "HEAD"}, (r.path, r.methods)
-    assert posts == EDITORIAL_POSTS
+    assert posts == EDITORIAL_POSTS | CMS_POSTS
 
 
 def test_html_in_event_detail_is_escaped(env):

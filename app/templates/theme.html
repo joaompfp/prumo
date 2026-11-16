@@ -10,6 +10,23 @@
   <p class="meta">{{ format_count(page.total) }} séries publicadas nesta secção.</p>
 </header>
 
+{% if cms_pages %}
+<section class="cms-links" aria-labelledby="analises">
+  <div class="section-head">
+    <h2 id="analises">Leituras nesta secção</h2>
+    <p class="section-note">Páginas editoriais sobre estes números.</p>
+  </div>
+  <ul class="cms-link-list">
+    {% for item in cms_pages %}
+    <li>
+      <a href="{{ base }}/paginas/{{ item.slug }}">{{ item.title }}</a>
+      {% if item.introduction %}<span class="row-meta">{{ item.introduction }}</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
 <form class="filters" action="{{ base }}/temas/{{ page.code }}" method="get">
   <label>Geografia
     <select name="grupo">
