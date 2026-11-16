@@ -25,6 +25,29 @@ class ReadOnlyOpenError(RuntimeError):
     """open_db_readonly refused: missing file, or a schema this code does not match."""
 
 
+class SchemaMismatchError(RuntimeError):
+    """A writable open refused a database whose schema is not exactly this code's.
+
+    The writer (scheduler) owns migrations. The backoffice may write only to a database the
+    worker has already migrated, and must fail closed rather than migrate it itself.
+    """
+
+    def __init__(self, path: Path, applied: set[str], expected: set[str], detail: str = ""):
+        self.path = path
+        self.applied = applied
+        self.expected = expected
+        if detail:
+            body = detail
+        else:
+            parts = []
+            if sorted(applied - expected):
+                parts.append(f"unknown migrations {sorted(applied - expected)}")
+            if sorted(expected - applied):
+                parts.append(f"missing migrations {sorted(expected - applied)}")
+            body = "; ".join(parts) or "schema does not match"
+        super().__init__(f"{path}: {body}; this opener never migrates")
+
+
 @dataclass(frozen=True)
 class RunContent:
     """What a run wrote, as sorted multisets (identity of vintage content, Decision 1).
@@ -1438,6 +1461,42 @@ def _expected_migrations() -> set[str]:
     return {f.stem for f in MIGRATIONS_DIR.glob("[0-9][0-9][0-9][0-9]_*.sql")}
 
 
+def _applied_migrations(conn: sqlite3.Connection) -> set[str]:
+    return {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
+
+
+def open_db_for_write(path: str | Path) -> Db:
+    """Open an EXISTING database for the backoffice's editorial writes.
+
+    Never migrates: the worker owns migrations. Refuses a schema that differs from this
+    code's in either direction (older: the worker has not migrated yet; newer: this code is
+    behind the database), so a write can never land on a table shape it does not know.
+    `foreign_keys=ON` is not optional here: the composition's integrity is the FKs.
+    The handle is not cached by callers; one write, one handle, one transaction.
+    """
+    p = Path(path)
+    if not p.is_file():
+        raise FileNotFoundError(
+            f"database not found: {p} (the writable opener never creates one)")
+    conn = sqlite3.connect(str(p), isolation_level=None, timeout=BUSY_TIMEOUT_S)
+    try:
+        try:
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute("PRAGMA foreign_keys=ON")
+            applied = _applied_migrations(conn)
+        except sqlite3.DatabaseError as e:
+            raise SchemaMismatchError(
+                p, set(), _expected_migrations(),
+                f"cannot read the database ({type(e).__name__}: {e})") from None
+        expected = _expected_migrations()
+        if applied != expected:
+            raise SchemaMismatchError(p, applied, expected)
+    except BaseException:
+        conn.close()  # never leak a writable handle on refusal
+        raise
+    return Db(conn)
+
+
 def _file_stamp(p: Path) -> tuple[int, int]:
     st = p.stat()
     return st.st_mtime_ns, st.st_size
@@ -1487,7 +1546,7 @@ def open_db_readonly(path: str | Path, *, immutable: bool | None = None) -> Db:
     try:
         try:
             conn.execute("PRAGMA query_only=ON")
-            applied = {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
+            applied = _applied_migrations(conn)
         except sqlite3.DatabaseError as e:
             if immutable:  # possibly a concurrent writer: one plain read-only retry
                 conn.close()
