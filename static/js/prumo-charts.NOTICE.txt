@@ -1,6 +1,6 @@
 Prumo chart bundle
-SHA-256: 23576bf42e5c69d78a8c1fdef81817fd72e886f8209bc213977d89c6d7a12d23
-Bytes: 505060 (gzip level 9, mtime=0: 172667)
+SHA-256: 60a692e5d43cca371e4e33e65214bcd49e0cc4b5de46afada3d552f1d46912af
+Bytes: 505056 (gzip level 9, mtime=0: 172663)
 ECharts 6.1.0 - Apache License 2.0 - https://echarts.apache.org/
 ZRender 6.1.0 - Apache License 2.0 - https://github.com/ecomfe/zrender
 tslib 2.3.0 - 0BSD - https://github.com/Microsoft/tslib

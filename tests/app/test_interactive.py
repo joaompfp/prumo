@@ -221,6 +221,7 @@ def test_comparison_colours_match_in_svg_canvas_and_legend():
     adapter = (ROOT / "tools" / "charts" / "src" / "adapter.js").read_text(encoding="utf-8")
     assert "color: index === 0 ? ink : red" in adapter
     assert "type: index === 0 ? 'solid' : 'dashed'" in adapter
+    assert "yAxisIndex: index" in adapter  # the right-hand series must not use the left scale
 
 
 def test_bundle_is_the_committed_fingerprinted_asset(client):
