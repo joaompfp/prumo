@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% from "cms_macros.html" import series_options, derived_options, chart_options %}
+{% block title %}CMS: {{ doc.title or slug }} - Prumo backoffice{% endblock %}
+{% block content %}
+<h1>{{ doc.title or "(sem título)" }} <span class="muted mono">{{ kind }}/{{ slug }}</span></h1>
+<p class="note">Versão {{ meta.version }}.
+{% if meta.published_revision_id %}Em direto: revisão {{ meta.published_revision_id }}{% if published_at %} desde {{ published_at }}{% endif %}.{% else %}Ainda não publicado.{% endif %}
+O editor altera apenas o rascunho; publicar substitui a versão em direto e fica na auditoria.</p>
+<p><a href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview">Pré-visualizar este rascunho</a>
+(vista pública exata, sem scripts) · <a href="{{ base }}/cms">Páginas e gráficos</a></p>
+{% if error %}<p class="bad" role="alert">{{ error }}</p>{% endif %}
+
+{% if usages %}
+<h2>Páginas que usam este gráfico</h2>
+<p class="note">Publicar este gráfico pode alterar o que estas páginas mostram. As páginas
+só são atualizadas quando o gráfico publicado muda.</p>
+<div class="scroll"><table>
+<tr><th>Página</th><th>Slug</th><th>Estado</th></tr>
+{% for u in usages %}
+<tr><td class="wrap">{{ u.title }}</td><td class="mono">{{ u.slug }}</td>
+<td>{% if u.published %}<span class="good">publicada</span>{% else %}<span class="muted">só rascunho</span>{% endif %}
+<a href="{{ base }}/cms/{{ u.kind }}/{{ u.slug }}">editar</a></td></tr>
+{% endfor %}
+</table></div>
+{% endif %}
+
+<h2>Rascunho</h2>
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/save">
+<input type="hidden" name="version" value="{{ meta.version }}">
+
+{% if kind == 'page' %}
+{% set blocks = doc.blocks if doc.blocks is defined else [] %}
+<input type="hidden" name="block_count" value="{{ blocks | length }}">
+<p><label>Título
+<input type="text" name="title" required maxlength="{{ max_title }}" size="60"
+ value="{{ doc.title or '' }}"></label></p>
+<p><label>Introdução (opcional)<br>
+<textarea name="introduction" maxlength="{{ max_text }}" rows="4" cols="70">{{ doc.introduction or '' }}</textarea></label></p>
+<p><label>Secção
+<select name="section">
+{% for s in sections %}<option value="{{ s }}"{% if doc.section == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
+</select></label></p>
+
+{% for b in blocks %}
+{% set i = loop.index0 %}
+<fieldset>
+<legend>Bloco {{ loop.index }}</legend>
+<p><label>Tipo
+<select name="block_type_{{ i }}">
+<option value="text"{% if b.type == 'text' %} selected{% endif %}>texto</option>
+<option value="card"{% if b.type == 'card' %} selected{% endif %}>cartão de série</option>
+<option value="chart"{% if b.type == 'chart' %} selected{% endif %}>gráfico</option>
+</select></label>
+<span class="muted">Só os campos do tipo escolhido contam.</span></p>
+<p><label>Texto<br>
+<textarea name="block_text_{{ i }}" maxlength="{{ max_text }}" rows="4" cols="70">{{ b.text if b.type == 'text' and b.text is defined else '' }}</textarea></label></p>
+<p><label>Série do cartão
+<select name="block_series_{{ i }}">
+{{ series_options(choices, b.series_id if b.type == 'card' and b.series_id is defined else None, "escolher série") }}
+</select></label></p>
+<p><label>Série calculada do cartão
+<select name="block_derived_{{ i }}">
+{{ derived_options(choices, b.derived_key if b.type == 'card' and b.derived_key is defined else None, "sem calculada") }}
+</select></label></p>
+<p><label>Gráfico
+<select name="block_chart_{{ i }}">
+{{ chart_options(charts, b.chart_slug if b.type == 'chart' and b.chart_slug is defined else None, "escolher gráfico publicado") }}
+</select></label></p>
+<p>
+<button type="submit" name="move_up_{{ i }}" value="1"{% if loop.first %} disabled{% endif %}>Subir</button>
+<button type="submit" name="move_down_{{ i }}" value="1"{% if loop.last %} disabled{% endif %}>Descer</button>
+<button type="submit" name="remove_{{ i }}" value="1">Remover</button>
+</p>
+</fieldset>
+{% endfor %}
+
+<fieldset>
+<legend>Adicionar bloco</legend>
+<p><label>Tipo
+<select name="add_type">
+<option value="text">texto</option>
+<option value="card">cartão de série</option>
+<option value="chart">gráfico</option>
+</select></label></p>
+<p><label>Texto do novo bloco<br>
+<textarea name="add_text" maxlength="{{ max_text }}" rows="3" cols="70"></textarea></label></p>
+<p><label>Série do novo cartão
+<select name="add_series">{{ series_options(choices, None, "escolher série") }}</select></label></p>
+<p><label>Série calculada do novo cartão
+<select name="add_derived">{{ derived_options(choices, None, "sem calculada") }}</select></label></p>
+<p><label>Gráfico do novo bloco
+<select name="add_chart">{{ chart_options(charts, None, "escolher gráfico publicado") }}</select></label></p>
+<button type="submit" name="op" value="add">Adicionar ao fim</button>
+</fieldset>
+
+{% else %}
+<p><label>Título
+<input type="text" name="title" required maxlength="{{ max_title }}" size="60"
+ value="{{ doc.title or '' }}"></label></p>
+<p><label>Nota editorial<br>
+<textarea name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ doc.note or '' }}</textarea></label></p>
+<p><label>Série A
+<select name="series_a" required>
+{{ series_options(choices, doc.series_a, "escolher série") }}
+</select></label></p>
+<p><label>Série B (opcional; tem de ser diferente da série A)
+<select name="series_b">
+{{ series_options(choices, doc.series_b, "sem segunda série") }}
+</select></label></p>
+<p><label>Série calculada (opcional; só em gráfico de série única)
+<select name="derived_key">
+{{ derived_options(choices, doc.derived_key, "sem série calculada") }}
+</select></label></p>
+<p><label>Janela
+<select name="window">
+{% for w in windows %}<option value="{{ w }}"{% if doc.window == w %} selected{% endif %}>{{ w }}</option>{% endfor %}
+</select></label>
+<label>Escala
+<select name="scale">
+{% for s in scales %}<option value="{{ s }}"{% if doc.scale == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
+</select></label>
+<label>Dia UTC (opcional, AAAA-MM-DD) <input type="date" name="day" value="{{ doc.day or '' }}"></label></p>
+<p class="note">Dois eixos são uma escolha explícita e independente; a comparação não
+estabelece causalidade. Séries diárias como a E-REDES usam um único dia UTC, sem agregação.</p>
+{% endif %}
+
+<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
+<button type="submit" name="op" value="save">Guardar rascunho</button>
+</form>
+
+<h2>Publicação</h2>
+<p class="note">A pré-visualização abre a vista pública exata deste rascunho. Publicar
+substitui a versão em direto por este rascunho; o motivo fica na auditoria.</p>
+{% if published %}
+<p>Alterações face à versão em direto:</p>
+{% if diff %}
+<div class="scroll"><table>
+<tr><th>Campo</th><th>Em direto</th><th>Rascunho</th></tr>
+{% for d in diff %}<tr><td>{{ d.field }}</td><td class="wrap">{{ d.live }}</td><td class="wrap">{{ d.draft }}</td></tr>{% endfor %}
+</table></div>
+{% else %}
+<p class="muted">Sem alterações de conteúdo face à versão em direto.</p>
+{% endif %}
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish">
+<input type="hidden" name="version" value="{{ meta.version }}">
+<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
+<button type="submit">Publicar este rascunho</button>
+</form>
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/unpublish">
+<input type="hidden" name="version" value="{{ meta.version }}">
+<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
+<button type="submit">Despublicar (mantém o histórico)</button>
+</form>
+{% else %}
+<p class="muted">Ainda não há versão em direto.</p>
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish">
+<input type="hidden" name="version" value="{{ meta.version }}">
+<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
+<button type="submit">Publicar este rascunho</button>
+</form>
+{% endif %}
+
+<h2>Histórico</h2>
+<p class="note">Restaurar copia uma revisão antiga para um novo rascunho; o histórico e a
+versão em direto não são alterados.</p>
+{% if history %}
+<div class="scroll"><table>
+<tr><th class="num">Revisão</th><th>Quando</th><th>Autor</th><th>Corpo</th><th>Restaurar</th></tr>
+{% for h in history %}
+<tr>
+<td class="num">{{ h.id }}</td>
+<td>{{ h.created_at }}</td>
+<td class="wrap">{{ h.actor }}</td>
+<td class="wrap"><details><summary>ver JSON canónico</summary><code>{{ h.body_json }}</code></details></td>
+<td>
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/restore">
+<input type="hidden" name="version" value="{{ meta.version }}">
+<input type="hidden" name="revision_id" value="{{ h.id }}">
+<label>Motivo <input type="text" name="note" required maxlength="{{ max_text }}" size="24"></label>
+<button type="submit">Restaurar</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</table></div>
+{% else %}
+<p class="muted">Sem revisões.</p>
+{% endif %}
+
+<h2>Duplicar</h2>
+<p class="note">Cria um documento independente a partir do rascunho atual, com um novo slug.
+O original não é alterado.</p>
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/duplicate">
+<input type="hidden" name="version" value="{{ meta.version }}">
+<p><label>Novo slug <input type="text" name="new_slug" required maxlength="{{ max_slug }}" size="30"></label></p>
+<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
+<button type="submit">Duplicar</button>
+</form>
+
+<h2>Auditoria</h2>
+{% if events %}
+<div class="scroll"><table>
+<tr><th>Quando</th><th>Ação</th><th class="num">Versão</th><th>Autor</th><th>Motivo</th></tr>
+{% for e in events %}
+<tr><td>{{ e.ts }}</td><td>{{ e.action }}</td><td class="num">{{ e.version }}</td>
+<td class="wrap">{{ e.actor }}</td><td class="wrap">{{ e.note }}</td></tr>
+{% endfor %}
+</table></div>
+{% else %}
+<p class="muted">Sem alterações registadas.</p>
+{% endif %}
+{% endblock %}

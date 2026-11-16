@@ -1,0 +1,37 @@
+{# Shared option lists. Every choice carries unit, frequency, geography and source, so the
+   operator sees the statistical identity, not just an opaque registry id. A selected value
+   that is no longer eligible stays visible and selected: saving a draft must not silently
+   replace a withheld reference. #}
+{% macro series_options(choices, selected=None, blank=None) %}
+{%- if blank %}<option value="">{{ blank }}</option>{% endif %}
+{%- set found = namespace(value=false) %}
+{%- for c in choices %}{% if c.id == selected %}{% set found.value = true %}{% endif %}{% endfor %}
+{%- if selected and not found.value %}<option value="{{ selected }}" selected>{{ selected }} (indisponível)</option>{% endif %}
+{%- for c in choices %}
+<option value="{{ c.id }}"{% if c.id == selected %} selected{% endif %}>{{ c.title }} | {{ c.unit_text or c.unit }} | {{ c.frequency_text or c.frequency }} | {{ c.geography_text or c.geography }} | {{ c.source_title or c.source }}</option>
+{%- endfor %}
+{% endmacro %}
+
+{% macro derived_options(choices, selected=None, blank=None) %}
+{%- if blank %}<option value="">{{ blank }}</option>{% endif %}
+{%- set found = namespace(value=false) %}
+{%- for c in choices %}{% for d in c.derived %}{% if d.key == selected %}{% set found.value = true %}{% endif %}{% endfor %}{% endfor %}
+{%- if selected and not found.value %}<option value="{{ selected }}" selected>{{ selected }} (indisponível)</option>{% endif %}
+{%- for c in choices %}{% if c.derived %}
+<optgroup label="{{ c.title }}">
+{%- for d in c.derived %}
+<option value="{{ d.key }}"{% if d.key == selected %} selected{% endif %}>{{ d.title }} (base: {{ c.title }})</option>
+{%- endfor %}
+</optgroup>
+{%- endif %}{% endfor %}
+{% endmacro %}
+
+{% macro chart_options(charts, selected=None, blank=None) %}
+{%- if blank %}<option value="">{{ blank }}</option>{% endif %}
+{%- set found = namespace(value=false) %}
+{%- for c in charts %}{% if c.slug == selected %}{% set found.value = true %}{% endif %}{% endfor %}
+{%- if selected and not found.value %}<option value="{{ selected }}" selected>{{ selected }} (indisponível)</option>{% endif %}
+{%- for c in charts %}
+<option value="{{ c.slug }}"{% if c.slug == selected %} selected{% endif %}>{{ c.title }} ({{ c.slug }})</option>
+{%- endfor %}
+{% endmacro %}

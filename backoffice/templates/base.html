@@ -98,8 +98,8 @@ details summary { cursor: pointer; }
 <body>
 <header>
   <strong>Prumo backoffice</strong>
-  <nav><a href="{{ base }}/">Overview</a><a href="{{ base }}/queue">Queue</a><a href="{{ base }}/series">Series</a><a href="{{ base }}/derived">Derivadas</a><a href="{{ base }}/editorial">Editorial</a></nav>
-  <span class="muted">read-only, except Editorial</span>
+  <nav><a href="{{ base }}/">Overview</a><a href="{{ base }}/queue">Queue</a><a href="{{ base }}/series">Series</a><a href="{{ base }}/derived">Derivadas</a><a href="{{ base }}/editorial">Editorial</a><span class="muted">CMS</span><a href="{{ base }}/cms#paginas">Páginas</a><a href="{{ base }}/cms#graficos">Gráficos</a></nav>
+  <span class="muted">read-only, except Editorial and CMS</span>
 </header>
 <main>
 {% block content %}{% endblock %}

@@ -17,6 +17,7 @@ from urllib.parse import parse_qs, urlencode
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi import Path as PathParam
 from fastapi.responses import PlainTextResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
@@ -26,6 +27,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 from app.charts import sparkline
 from backoffice import reads, replay
 from backoffice.access import ADMIN_PREFIX, AccessDenied, AccessPolicy
+from backoffice.cms_routes import register_cms
 from backoffice.deps import (
     DEFAULT_ALLOWED_HOSTS,
     LANG,
@@ -49,12 +51,15 @@ TEMPLATES = Path(__file__).resolve().parent / "templates"
 # The publish preview renders the public card partial, so the operator sees the card the home
 # will draw, not a paraphrase of it.
 APP_TEMPLATES = Path(__file__).resolve().parent.parent / "app" / "templates"
+STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 PAGE_METHODS = ["GET", "HEAD"]
 STATUS_TTL_S = 30.0  # the full status report is reused this long across pages
 SQLITE_MAX_INT = 2**63 - 1  # largest id SQLite can bind; above it -> 422, never a 500
 MAX_FORM_BYTES = 16_384
 # No JavaScript anywhere: nothing may run, load or frame the pages; inline styles only.
 # Forms may only post to this same origin, and the page has no <base> to rewrite URLs.
+# The CMS preview adds `style-src 'self'` for the exact public stylesheet; every other page
+# keeps this policy unchanged.
 SECURITY_HEADERS = {
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; "
                                "img-src 'self' data:; form-action 'self'; base-uri 'none'; "
@@ -167,6 +172,10 @@ def create_app(db_path: Path, registry_path: Path,
     access = access_policy or AccessPolicy.local()
     app = FastAPI(title="Prumo backoffice", docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(allowed_hosts))
+    # The CMS preview renders the real public templates, which link /static/css/prumo.css.
+    # The mount is behind the same admin middleware as everything else; CSP still forbids
+    # scripts, so the local chart bundle cannot execute in the backoffice.
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
     @app.middleware("http")
     async def admin_access(request: Request, call_next):
@@ -187,7 +196,10 @@ def create_app(db_path: Path, registry_path: Path,
     @app.middleware("http")  # added last, so outermost: 400/401 responses carry it too
     async def security_headers(request: Request, call_next):
         response = await call_next(request)
-        response.headers.update(SECURITY_HEADERS)
+        # A route may have set a narrower, explicit policy (the CMS preview adds the local
+        # stylesheet); setdefault keeps it while every other response gets the default.
+        for name, value in SECURITY_HEADERS.items():
+            response.headers.setdefault(name, value)
         vary = response.headers.get("Vary")
         if not vary:
             response.headers["Vary"] = "X-Forwarded-Prefix"
@@ -204,6 +216,9 @@ def create_app(db_path: Path, registry_path: Path,
                          local_origin=same_origin)
     app.state.admin = admin
     app.state.access_policy = access
+    # The CMS shares the admin boundary and the editorial writable mount; with no writable
+    # mount it serves read-only lists and previews and every write answers 503.
+    register_cms(app, admin, db_path, editorial_db_path)
 
     status_cache = TtlCache(status_ttl_s, monotonic)
     derived_cache = TtlCache(status_ttl_s, monotonic)  # /derived evaluates every derived key
