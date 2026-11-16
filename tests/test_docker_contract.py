@@ -190,7 +190,7 @@ def test_worker_has_bounded_resources_logs_and_no_public_surface(worker):
         "driver": "json-file", "options": {"max-size": "10m", "max-file": "3"},
     }
     assert set(worker) == {
-        "build", "image", "container_name", "command", "restart", "mem_limit",
+        "build", "image", "container_name", "command", "restart", "mem_limit", "user",
         "security_opt", "logging", "networks", "volumes", "environment", "healthcheck",
     }
 
@@ -353,12 +353,21 @@ def test_backoffice_has_its_own_plain_bridge_not_the_proxy_network(backoffice_do
 
 
 def test_backoffice_runs_as_non_root_and_raw_evidence_is_world_readable(backoffice, tmp_path):
-    """`user: "1000:1000"`: the replay page needs to read raw evidence written by the root
-    worker, so RawStore writes it 0644 (public-source bytes). Existing 0600 files on a
-    deployed host need a one-off `chmod -R a+rX` of the raw store."""
+    """uid 1000, and RawStore writes 0644: the replay page reads evidence the worker wrote,
+    whether that worker ran as root (older images) or as 1000 (the worker compose file now)."""
     from ingest.rawstore import RawStore
     _sha, path = RawStore(tmp_path).save("src", b"payload")
     assert path.stat().st_mode & 0o777 == 0o644
+    assert backoffice["user"] == "1000:1000"
+
+
+def test_the_worker_and_the_backoffice_write_the_data_as_one_uid(worker, backoffice):
+    """SQLite's two-writer rule, stated where a compose edit can break it: both processes hold
+    the same file open for writing, so both must be the same uid. A root worker leaves
+    root:root 0644 database, -wal and -shm, and `open_db_for_write` as uid 1000 fails its first
+    BEGIN IMMEDIATE with "attempt to write a readonly database": the editor 503s on every POST
+    while every GET keeps working, which a smoke test of GET /editorial would not catch."""
+    assert worker["user"] == "1000:1000"
     assert backoffice["user"] == "1000:1000"
 
 

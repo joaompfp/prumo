@@ -8,6 +8,12 @@ services:
     container_name: prumo-ingest
     command: ["python", "-u", "-m", "ingest.scheduler"]
     restart: unless-stopped
+    # Same uid as the backoffice, which writes the editorial composition into the same SQLite
+    # file. SQLite needs every writing process able to write the database, its -wal and its
+    # -shm; a root worker leaves 0644 root:root files that uid 1000 cannot write, so the
+    # editor would 503 on its first POST. The data directory is chowned to 1000 once at
+    # deploy (docs/data/operations.md); the image writes nothing outside /data.
+    user: "1000:1000"
     mem_limit: 512m
     security_opt:
       - no-new-privileges:true

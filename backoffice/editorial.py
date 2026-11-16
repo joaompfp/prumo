@@ -87,9 +87,15 @@ class PageView:
     titles: dict[str, str]  # series id -> rendered title, for the diff and the audit list
 
 
-def same_origin(request, allowed_hosts: list[str]) -> bool:
+def same_origin(request) -> bool:
     """CSRF without a session: the browser cannot forge `Origin`, and there is no cookie to
-    ride. A cross-site form is refused by `Sec-Fetch-Site` too, belt and braces."""
+    ride. A cross-site form is refused by `Sec-Fetch-Site` too, belt and braces.
+
+    The comparison is exact, against the request's own `Host`: same scheme, same host, same
+    port. Matching only the hostname would accept any port on an allowed host, and the
+    healthcheck's `localhost`/`127.0.0.1` are in the allowed list, so a page served from any
+    other local port could drive the editor. `Host` itself is allow-listed by
+    TrustedHostMiddleware before this runs (400 otherwise)."""
     site = (request.headers.get("sec-fetch-site") or "").strip().lower()
     if site and site not in ("same-origin", "none"):
         return False
@@ -97,16 +103,14 @@ def same_origin(request, allowed_hosts: list[str]) -> bool:
     if not origin:
         return False
     parts = urlsplit(origin)
-    if parts.scheme not in ("http", "https"):
+    if parts.scheme not in ("http", "https") or parts.username or parts.password:
         return False
-    host = parts.hostname or ""
-    for allowed in allowed_hosts:
-        if host == allowed:
-            return True
-        # PRUMO_BACKOFFICE_ALLOWED_HOSTS may carry a wildcard, as TrustedHostMiddleware does
-        if allowed.startswith("*.") and host.endswith(allowed[1:]):
-            return True
-    return False
+    if parts.path not in ("", "/") or parts.query or parts.fragment:
+        return False
+    host = (request.headers.get("host") or "").strip()
+    if not host:
+        return False
+    return parts.netloc.lower() == host.lower() and parts.scheme == request.url.scheme
 
 
 def _lcs(a: list[str], b: list[str]) -> list[str]:
@@ -185,8 +189,9 @@ class Editorial:
                                          row["geography"])
                 except MissingText:
                     continue
+                row["family"] = family_of(row["indicator_key"])
                 wanted.append((slot["series_id"], label, slot["derived_key"]))
-            return app_reads.cards_for(db, wanted, self.lang)
+            return app_reads.cards_for(db, wanted, self.lang, rows_by_id=rows)
 
         return self._read(build)
 

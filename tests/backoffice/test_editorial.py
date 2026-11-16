@@ -377,6 +377,43 @@ def test_a_cross_site_fetch_is_403_even_with_a_good_origin(env):
     assert r.status_code == 403
 
 
+@pytest.mark.parametrize("origin", [
+    "http://localhost:9999",     # another local port on an allowed host
+    "https://localhost",         # another scheme
+    "http://localhost/other",    # a path, not a bare origin
+    "http://user:pass@localhost",  # credentials
+    "http://localhost/?x=1",     # a query
+])
+def test_an_origin_that_is_not_this_request_s_own_origin_is_403(env, origin):
+    """Origin matching is exact: scheme, host and port must be the ones the request arrived
+    on. Matching the hostname alone accepted any port, and `localhost`/`127.0.0.1` are in the
+    allowed-host list for the healthcheck, so a page on any other local port could drive the
+    editor."""
+    r = env.client().post(f"/editorial/{SLUG}/add", headers={"Origin": origin},
+                          data={"version": "0", "series_id": "ine.hicp_yoy.PT"})
+    assert r.status_code == 403
+    assert env.slots() == []
+
+
+def test_the_preview_distinguishes_an_empty_draft_from_one_whose_cards_all_dropped(env):
+    """Two different states, two different sentences: an empty draft has nothing to preview,
+    while a non-empty draft whose slots all stopped qualifying would really draw no cards."""
+    c = env.client()
+    empty = c.get(f"/editorial/{SLUG}").text
+    assert "Nothing to preview: the draft is empty." in empty
+    assert "dropped at render" not in empty
+    assert c.post(f"/editorial/{SLUG}/add", headers=ORIGIN,
+                  data={"version": "0", "series_id": "ine.hicp_yoy.PT"}).status_code == 303
+    db = open_db(env.db_path)
+    try:
+        db.conn.execute("UPDATE source SET redistribution_ok = 0 WHERE name = 'ine'")
+    finally:
+        db.close()
+    dropped = c.get(f"/editorial/{SLUG}").text
+    assert "Every slot in this draft is dropped at render" in dropped
+    assert "Nothing to preview" not in dropped
+
+
 # --- availability ---------------------------------------------------------------------------
 
 

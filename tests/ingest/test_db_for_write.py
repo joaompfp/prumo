@@ -11,8 +11,13 @@ import sqlite3
 import pytest
 
 from ingest import db as db_module
-from ingest.db import (MIGRATIONS_DIR, SchemaMismatchError, _expected_migrations,
-                       open_db, open_db_for_write)
+from ingest.db import (
+    MIGRATIONS_DIR,
+    SchemaMismatchError,
+    _expected_migrations,
+    open_db,
+    open_db_for_write,
+)
 
 CURRENT = sorted(_expected_migrations())[-1]
 

@@ -536,9 +536,11 @@ Publishing shows the diff against what is live and the cards the home will draw,
 home's own card builder from the same reads; the reason is mandatory. The draft may hold a slot
 that would not render any more; publish refuses and names every failing slot with its reason.
 
-CSRF: there is no session, so every POST requires an `Origin` whose host is in the
-allowed-hosts list and refuses `Sec-Fetch-Site: cross-site`. Tailscale stays the perimeter;
-there is no login.
+CSRF: there is no session, so every POST requires an `Origin` that is exactly the scheme,
+host and port the request arrived on, and refuses `Sec-Fetch-Site: cross-site`. The `Host`
+itself is allow-listed (400 otherwise); matching the `Origin` hostname alone would accept any
+port on an allowed host, and `localhost`/`127.0.0.1` are in that list for the healthcheck.
+Tailscale stays the perimeter; there is no login.
 
 Rollback of a composition is the page itself: reset deletes both states and the page returns
 to the list in code. The release that added the editor changes nothing a reader sees while
@@ -546,13 +548,30 @@ the tables are empty.
 
 Installing the include (once, on f0nix) is what turns the editor on; before that the container
 has no `/data-w` mount and `PRUMO_EDITORIAL_DB` is unset, so `/editorial` renders read-only
-and every POST answers 503 while the rest of the backoffice works:
+and every POST answers 503 while the rest of the backoffice works.
+
+The order below matters twice. Migration 0018 must be applied before the backoffice starts,
+or the editor refuses the database (503 with a "missing migrations" message) while every read
+page keeps working. And both writers must be the same uid: SQLite writes require write access
+to the database, its `-wal` and its `-shm`, and the worker used to run as root, leaving
+`root:root` files uid 1000 cannot write. `dc-web-up prumo-ingest` now recreates it as
+`1000:1000`, so the data directory is chowned once, with the worker stopped so it cannot
+recreate a root-owned `-wal` underneath the new owner:
 
 ```bash
+sudo docker stop prumo-ingest
+sudo chown -R 1000:1000 /home/joao/docker/stacks/web/appdata/prumo
+bash -lic 'dc-web-up prumo-ingest'
+bash -lic 'dc-web-up prumo'
 sudo cp ~/docker/stacks/web/images/prumo/deploy/prumo-backoffice.yml \
         ~/docker/stacks/web/compose/prumo-backoffice.yml
 bash -lic 'dc-web-up prumo-backoffice'
 ```
+
+The worker applies 0018 itself on that first start; the home still renders the list in code
+because the tables are empty. Check it with `docker exec prumo-ingest ls -ln /data` (the
+database, `-wal` and `-shm` must be `1000:1000`) and with one real POST from the editor: the
+first publish is the only proof the write path is not a readonly 503.
 
 ### Review queue rules
 

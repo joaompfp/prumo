@@ -141,6 +141,12 @@ class Db:
         self.immutable_stamp: tuple[int, int] | None = None  # main file (mtime_ns, size)
         # when the immutable handle was opened (open_db_readonly)
 
+    def file_label(self) -> str:
+        """The main database file behind this handle: the read layer's cache key, and the
+        string that keeps two opens of two different copies apart in one process."""
+        row = self.conn.execute("PRAGMA database_list").fetchone()
+        return str(row[2] or row[1])
+
     @contextmanager
     def transaction(self):
         self.conn.execute("BEGIN IMMEDIATE")

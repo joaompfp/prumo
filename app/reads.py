@@ -60,8 +60,9 @@ def clear_cache() -> None:
 
 
 def _db_key(db: Db) -> str:
-    row = db.conn.execute("PRAGMA database_list").fetchone()
-    return str(row[2] or row[1])
+    """The database file this handle reads, as the cache key. The PRAGMA lives on the handle
+    (`Db.file_label`), so the read layer holds no SQL of its own (see test_boundaries)."""
+    return db.file_label()
 
 
 def catalogue(db: Db, *, fresh: bool = False) -> list[dict]:
@@ -578,10 +579,17 @@ def _card(db: Db, row: dict, value: dict, label: str, derived_key: str | None,
 
 
 def cards_for(db: Db, wanted: list[tuple[str, str, str | None]],
-              lang: str = "pt") -> tuple[Card, ...]:
+              lang: str = "pt", *,
+              rows_by_id: dict[str, dict] | None = None) -> tuple[Card, ...]:
     """The cards for an ordered (series id, label, derived key) list, skipping any series the
-    catalogue does not serve. Used by the home and by the backoffice's publish preview."""
-    by_id = {r["id"]: r for r in catalogue(db)}
+    catalogue does not serve. Used by the home and by the backoffice's publish preview.
+
+    `rows_by_id` lets a caller that already holds fresh registry rows (the composition read,
+    which goes through `series_facts`) hand them over instead of looking them up in the 30 s
+    catalogue cache. Without it a series that just became eligible would be dropped by
+    `cards_for` for up to 30 s after its publish: `page_composition` would keep the slot and
+    the card list would silently lose it."""
+    by_id = rows_by_id if rows_by_id is not None else {r["id"]: r for r in catalogue(db)}
     ids = [sid for sid, _, _ in wanted if sid in by_id]
     latest = db.public_latest_values(ids)
     out = []
@@ -598,17 +606,21 @@ def home(db: Db, lang: str = "pt") -> HomePage:
     counts = db.public_counts()
     composed = page_composition(db, "inicio", lang)
     if composed is not None:
+        by_id = {row["id"]: row for row, _ in composed}
         wanted = [(row["id"], _title(row, lang), key) for row, key in composed]
+        cards = cards_for(db, wanted, lang, rows_by_id=by_id)
     else:
+        by_id = {r["id"]: r for r in rows}
         wanted = [(c["series"], c["label"], c["derived"]) for c in pt.CURATED_HOME]
-    cards = cards_for(db, wanted, lang)
+        cards = cards_for(db, wanted, lang)
     themes = tuple(ThemeCard(code=code, title=theme_text(lang, code),
                              blurb=theme_blurb(lang, code),
                              count=sum(1 for r in rows if r["theme"] == code),
                              href=f"/temas/{code}") for code in THEME_ORDER)
     published = tuple(source_title(lang, s["name"]) for s in db.public_sources()
                       if s["redistribution_ok"] and s["series"])
-    by_id = {r["id"]: r for r in rows}
+    # Built from the same rows the cards were built from: a composed slot is not in the
+    # cached catalogue, and looking it up there raised KeyError inside the read.
     all_pt = all(by_id[c.series_id]["geography"] in PT_GEOS for c in cards)
     text = page_text(lang, "inicio")
     return HomePage(series_count=counts["series"], source_count=counts["sources"],

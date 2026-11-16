@@ -51,10 +51,10 @@ A series may occupy a slot only if all of these hold:
 1. it is in the registry, `active = 1` and `role = 'primary'`;
 2. its source has `redistribution_ok = 1`;
 3. it has at least one served row (`served_observation` where `kind = 'fetched'`);
-4. `series_title('pt', family, geography)` and `series_title('en', family, geography)` both resolve;
+4. `series_title(lang, family, geography)` resolves in the language the page renders - `en.py` is deliberately empty in v1, so "both catalogues" would make every series ineligible and the editor would refuse every add;
 5. no other slot on the same page renders the same title.
 
-An optional derived key must exist in `derived_series`, be `active = 1`, have the slot's series as `base_series_id`, and resolve title and unit in both catalogues.
+An optional derived key must exist in `derived_series`, be `active = 1`, have the slot's series as `base_series_id`, and resolve title and unit in the rendered language.
 
 The rule is enforced when publishing (refusal with a per-slot reason, nothing written) and again when rendering (a slot that stopped qualifying is dropped, the rest render, and one WARNING line names the slug, the series and the reason). A licence revoked after publication must not 503 the front page and must not leave a hole.
 
@@ -65,6 +65,8 @@ When every published slot fails, the page renders no cards. It does not fall bac
 The backoffice keeps `/data:ro` and its read-only root filesystem. A second mount of the same host directory at `/data-w:rw` (env `PRUMO_EDITORIAL_DB=/data-w/prumo.sqlite3`) is the only writable path in the container. Only `backoffice/editorial.py` opens it, through a new `open_db_for_write()` in `db.py` that never migrates and refuses a schema that does not match this code exactly (fail closed, clear message). All other reads still use `/data`.
 
 Why a second mount and not simply `/data:rw`: a read bug must stay unable to write, and the writable surface should be nameable in one line in the compose file.
+
+Both writers must also run as the same uid. SQLite lets a process write only if it can write the database file, its `-wal` and its `-shm`; a worker running as root leaves `root:root 0644` files that uid 1000 cannot write, so `open_db_for_write` fails on its first `BEGIN IMMEDIATE` and the editor answers 503 for every POST while every GET keeps working - a half-broken deploy that a smoke test of `GET /editorial` would not catch. `deploy/prumo-ingest.yml` therefore runs the worker as `1000:1000`, the deployed data directory is chowned once, and `tests/test_docker_contract.py` asserts both compose files carry the same uid.
 
 ### D8. One writer at a time, with a version stamp
 

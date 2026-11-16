@@ -77,9 +77,11 @@ builder and read in the same transaction as the values. This is what publishing 
 front page.</p>
 {% if cards %}
 <div class="cards">{% for card in cards %}{% include "_card.html" %}{% endfor %}</div>
+{% elif page.draft %}
+<p class="muted">Every slot in this draft is dropped at render: the home would draw no cards
+rather than fall back to the list in code.</p>
 {% else %}
-<p class="muted">The draft renders no cards: the home would show its highlights section
-empty rather than fall back to the list in code.</p>
+<p class="muted">Nothing to preview: the draft is empty.</p>
 {% endif %}
 
 <h2>Publish</h2>

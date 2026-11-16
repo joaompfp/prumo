@@ -1,5 +1,7 @@
 # Candidate include for the existing web stack; the controller installs it on f0nix.
-# Strictly read-only operator view: data mounted :ro, Tailscale address only, no Traefik route.
+# Operator view, Tailscale address only, no Traefik route. Read-only except one editor: the
+# editorial composition at /editorial (see the /data-w bullet below), which changes what a
+# public page shows and never touches data, licences or reader text.
 # Hardening (backoffice review Important 4):
 # - own plain bridge network, not t2_proxy: nothing on the Traefik network can reach :8080.
 #   Not `internal: true`, because Docker publishes no ports for a container attached only
@@ -9,9 +11,9 @@
 # - ONE write path, named here and nowhere else: /data-w (rw) is the same appdata directory as
 #   /data (ro), and only backoffice/editorial.py opens it, to write the editorial_* tables.
 #   The read path keeps its read-only mount; a read bug must stay unable to write.
-# - runs as uid 1000: RawStore writes raw evidence 0644 (public-source bytes) so the replay page
-#   can read it. Files written by a worker image older than that change are 0600 root and need
-#   a one-off `chmod -R a+rX` of the raw store (see docs/data/operations.md).
+# - runs as uid 1000, the same uid the worker writes the data as, so the database, its -wal and
+#   its -shm are writable by both. Before that the worker ran as root and left 0644 root files:
+#   the one-off `chown -R 1000:1000` of the data directory is in docs/data/operations.md.
 services:
   prumo-backoffice:
     build:

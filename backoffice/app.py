@@ -266,7 +266,7 @@ def create_app(db_path: Path, registry_path: Path,
                       max_slots=MAX_SLOTS, **extra)
 
     def guard(request: Request) -> None:
-        if not same_origin(request, allowed_hosts):
+        if not same_origin(request):
             raise HTTPException(status_code=403, detail="cross-origin form refused")
 
     def apply(slug: str, action: str, fields: dict[str, str]) -> tuple[int, str | None]:

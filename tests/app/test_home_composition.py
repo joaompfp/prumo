@@ -193,3 +193,36 @@ def test_after_a_reset_the_code_list_is_in_force_again(site_path):
     with TestClient(create_app(str(site_path))) as c:
         html = c.get("/").text
     assert "Inflação (IHPC)" in html
+
+
+def test_a_slot_published_after_the_catalogue_was_cached_renders_at_once(site_path):
+    """The catalogue is cached for 30 s and `cards_for` used to read it. The composition read
+    now hands over its own fresh rows: warm the home, make a new series eligible, publish it
+    without clearing the cache, and the card must be on the very next request rather than
+    disappearing for half a minute with no log line."""
+    reads.clear_cache()
+    with TestClient(create_app(str(site_path))) as c:
+        assert c.get("/").status_code == 200  # fills the catalogue cache
+        db = open_db(site_path)
+        try:
+            db.conn.execute(
+                "INSERT INTO series(id, source_id, indicator_key, role, theme, geography, "
+                "frequency, unit, active) SELECT ?, source_id, 'hicp_yoy.PT.Q', 'primary', "
+                "'economy', 'PT', 'Q', '%', 1 FROM series WHERE id = ?", (EXTRA, HICP))
+        finally:
+            db.close()
+        db = open_db(site_path)
+        try:
+            fetch(db, EXTRA, {"2026-Q1": "2.0"}, T2, sha="f" * 64)
+        finally:
+            db.close()
+        db = open_db(site_path)
+        try:
+            version = db.editorial_add(SLUG, EXTRA, None, 0, "add extra")
+            db.editorial_publish(SLUG, version, "publica")
+        finally:
+            db.close()
+        html = c.get("/").text  # same client, catalogue cache still warm
+    assert 'class="card"' in html
+    assert "Taxa de variação homóloga do IHPC — Portugal" in html
+    assert "2,0" in html

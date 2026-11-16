@@ -24,6 +24,17 @@ def test_derived_layer_modules_contain_no_sql():
     assert _offenders(DERIVED) == []
 
 
+def test_public_app_read_layer_contains_no_sql():
+    """The public app reads through `Db.public_*`; a query written in a route is a defect.
+    `import sqlite3` is allowed there (app/main.py catches OperationalError at the boundary),
+    statements and `.execute(` are not."""
+    files = sorted((ROOT / "app").rglob("*.py"))
+    assert files, "app package not found"
+    statements = re.compile(r"\b(SELECT\s|INSERT\s+INTO|UPDATE\s+\w+\s+SET|DELETE\s+FROM|"
+                            r"\.executescript\(|\.execute\()", re.IGNORECASE)
+    assert [f"{f.name}: {m.group(0)}" for f in files for m in statements.finditer(f.read_text())] == []
+
+
 def test_sql_pattern_catches_the_usual_forms(tmp_path):
     f = tmp_path / "x.py"
     for src in ("db.conn.execute('x')", "q = 'SELECT id FROM t'", "import sqlite3",
