@@ -605,6 +605,26 @@ pre-deploy capture: **the production site is serving the code list, not the tria
 composition.** Every link on the home (21), the series CSV, the calculated page and its CSV,
 `cae.joao.date`, `joao.date/dados` and the CSP header were re-checked after the deploy.
 
+A post-deploy defect was then found by reading the rendered page, not by a status code:
+`/editorial/inicio` carried "The writable mount is not configured" while the POSTs next to it
+were writing. `editorial_page.html` tests `available`, and `editor_page()` never passed it, so
+Jinja's default `Undefined` made the flag falsy on every request. Fixed in `1a34ccb`
+(`available=editorial.available()`), with one test for each direction: the banner is absent
+when the writable path is configured and present when it is not, and the first of the two
+fails without the fix. Only the backoffice image was rebuilt and only that container recreated
+(12:44:35); web and worker untouched. Suite `2220 passed, 7 deselected`, `ruff` clean.
+
+One operational note from the same window: `prumo-ingest` restarted once at 12:36:07, exactly
+15 minutes after its first start, with exit code **135 (SIGBUS)** and `OOMKilled=false`. The
+host has 83 GB free, no I/O errors, the container's memory peaked at 61.5 MB against a 512 MB
+limit, and the scheduler had nothing due in that pass (every group was verified earlier in the
+day; 112 KB read from disk). Three back-to-back ticks against a copy of the database ran to
+completion without a crash, so it is not reproducible on demand. `restart: unless-stopped`
+brought it back in 0.15 s and the scheduler state is unchanged. Treat it as unexplained and
+watch it: if it recurs, capture the tick that kills it before assuming a cause. It does not
+affect data (counts, integrity and FK checks unchanged after the restart), but it does break
+the continuity of the Task 18 24-hour worker observation, which has to restart its clock.
+
 ### Review queue rules
 
 Derived on every `/queue` request from the last 7 days; nothing is stored. Event kinds are
