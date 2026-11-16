@@ -1,5 +1,17 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## STATUS 2026-11-16 (editorial pages: spec and plan written, NOT built)
+
+Owner asked for a public page whose series are chosen from the backoffice. Two documents exist on `pipeline-rebuild` and nothing else: spec `docs/superpowers/specs/2026-11-16-editorial-pages-design.md` (`24fc3b8`) and plan `docs/superpowers/plans/2026-11-16-editorial-pages.md`. Both are English like every other spec and plan; the chat summary to the owner is in Portuguese.
+
+Shape decided: pages stay in code (title, subtitle, section note and route in `presentation/catalog/`), the composition is data (ordered series ids plus an optional derived key per slot). One page is wired, `inicio`, the home block. Migration 0018 adds `editorial_page`, `editorial_slot` (draft and published rows in one table, positions contiguous and capped at 12 by CHECK) and `editorial_event` (its own table because `event.kind` has a closed CHECK). Empty composition renders `pt.CURATED_HOME` exactly as today, which is the deploy's safety argument and the rollback path. Writes go through a second `:rw` mount of the same appdata directory, used by `backoffice/editorial.py` alone via a new `open_db_for_write()` that never migrates and refuses a schema that differs from this code. Publish is one transaction with the full slot list in the audit detail. CSRF is `Origin` plus `Sec-Fetch-Site`, no login, Tailscale stays the perimeter.
+
+Four parts, nine tasks: (1) migration 0018 and the writable opener; (2) the eligibility rule as one pure function plus the composition reads and mutations; (3) the backoffice editor, its six POST routes, templates and the compose mount; (4) the public read path with the byte-identical no-op proof, a production-copy dry run, the full suite and an independent review. Task 9 is the deploy and is owner-gated; the builder stops at a reviewed branch.
+
+Deliberately out of this release: operational write actions (`withdraw run`, `verify run`, queue acknowledgement), which write to served state and get their own spec and migration; creating pages from the UI; any reader text or number in the database; free two-series charting.
+
+Next step: execute the plan from Task 1. Confirm `ingest/migrations/` still ends at 0017 before naming the migration 0018.
+
 ## STATUS 2026-11-15 22:58 UTC (public site DEPLOYED; live on both URLs)
 
 **Project 4 (public UI) is deployed on f0nix and serving.** `main` is `4fd3de8`; the image was rebuilt and only the `prumo` container recreated (`bash -lic 'dc-web-up prumo'`), so `prumo-ingest` and `prumo-backoffice` were not restarted (both still on the 19:14 UTC start, restart count 0). The maintenance page is gone. No migration and no write path in this release: every page reads through `read_db_readonly`.
