@@ -2075,6 +2075,10 @@ def _migrate(conn: sqlite3.Connection) -> None:
 
 def open_db(path: str | Path) -> Db:
     conn = sqlite3.connect(str(path), isolation_level=None, timeout=BUSY_TIMEOUT_S)
+    # REPLACE deletes the conflicting row before inserting; SQLite fires DELETE triggers for
+    # that internal delete only when recursive_triggers is ON, so 0019's append-only guards
+    # depend on this being set before the first write (including the migration itself).
+    conn.execute("PRAGMA recursive_triggers=ON")
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
     try:
@@ -2104,9 +2108,18 @@ def _restricted_authorizer(action: int, arg1, arg2, dbname, trigger) -> int:
     The `:rw` mount makes a write possible; this makes it true that the write path can only
     touch authored composition/documents. `arg1` is the table name for
     INSERT/UPDATE/DELETE; DDL is refused outright because the worker owns the schema.
+    Assignments to `recursive_triggers` are refused too: the append-only triggers only fire
+    for REPLACE's internal DELETE while it is ON.
     """
     if action in (sqlite3.SQLITE_INSERT, sqlite3.SQLITE_UPDATE, sqlite3.SQLITE_DELETE):
         return sqlite3.SQLITE_OK if arg1 in RESTRICTED_WRITE_TABLES else sqlite3.SQLITE_DENY
+    if action == sqlite3.SQLITE_PRAGMA:
+        # 0019's append-only triggers fire for REPLACE's internal DELETE only while
+        # recursive_triggers is ON. Reads (arg2 is None) stay allowed; every assignment,
+        # including ON, is refused so the setting cannot be weakened through this handle.
+        if (arg1 or "").lower() == "recursive_triggers" and arg2 is not None:
+            return sqlite3.SQLITE_DENY
+        return sqlite3.SQLITE_OK
     if action in (sqlite3.SQLITE_CREATE_TABLE, sqlite3.SQLITE_DROP_TABLE,
                   sqlite3.SQLITE_ALTER_TABLE, sqlite3.SQLITE_CREATE_INDEX,
                   sqlite3.SQLITE_DROP_INDEX, sqlite3.SQLITE_CREATE_TRIGGER,
@@ -2140,6 +2153,10 @@ def open_db_for_write(path: str | Path) -> Db:
     conn = sqlite3.connect(str(p), isolation_level=None, timeout=BUSY_TIMEOUT_S)
     try:
         try:
+            # Set before any write on this handle. 0019's append-only triggers fire for
+            # REPLACE's internal DELETE only when recursive_triggers is ON; the authorizer
+            # installed below refuses turning it off.
+            conn.execute("PRAGMA recursive_triggers=ON")
             conn.execute("PRAGMA journal_mode=WAL")
             conn.execute("PRAGMA foreign_keys=ON")
             applied = _applied_migrations(conn)

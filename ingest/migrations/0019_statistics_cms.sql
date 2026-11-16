@@ -13,6 +13,14 @@
 -- `cms_event` is the append-only actor/reason trail. Every successful lifecycle action writes
 -- exactly one event and bumps the document version in the same transaction.
 --
+-- The append-only and no-delete triggers below depend on `PRAGMA recursive_triggers=ON`:
+-- REPLACE deletes the conflicting row before inserting, and SQLite fires DELETE triggers for
+-- that internal delete only when recursive triggers are enabled. Both writable openers
+-- (ingest.db.open_db and open_db_for_write) set the pragma before any write, and the
+-- restricted opener's authorizer refuses turning it off; otherwise `INSERT OR REPLACE` could
+-- rewrite a revision body, an audit event or the document head without firing these guards.
+-- The setting is connection-local, so it is enforced in code rather than in this migration.
+--
 -- Rollback requires restoring the pre-0019 database copy (see the plan's migration release
 -- contract); dropping these tables would discard authored history.
 
