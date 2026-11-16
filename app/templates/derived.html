@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_chart.html" import chart_shell %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Caminho">
@@ -24,8 +25,8 @@
 
 <section class="chart-section" aria-labelledby="grafico">
   <div class="section-head"><h2 id="grafico">Série calculada</h2></div>
-  <figure class="chart-figure">
-    {{ chart(page.chart_points, frequency=page.frequency, title=page.title) }}
+  <figure class="chart-figure chart-figure-interactive">
+    {% if page.chart_payload %}{{ chart_shell(page, "derived") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
     <figcaption>{{ page.title }}. Calculado pelo Prumo a partir de {{ page.base_title }}.</figcaption>
   </figure>
   <details class="table-details">
@@ -69,3 +70,4 @@
   </dl>
 </section>
 {% endblock %}
+{% block scripts %}{% if page.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

@@ -1,0 +1,8 @@
+Prumo chart bundle
+SHA-256: 23576bf42e5c69d78a8c1fdef81817fd72e886f8209bc213977d89c6d7a12d23
+Bytes: 505060 (gzip level 9, mtime=0: 172667)
+ECharts 6.1.0 - Apache License 2.0 - https://echarts.apache.org/
+ZRender 6.1.0 - Apache License 2.0 - https://github.com/ecomfe/zrender
+tslib 2.3.0 - 0BSD - https://github.com/Microsoft/tslib
+Built with esbuild 0.25.12. Licence texts: static/js/licenses/.
+Rebuild: npm ci --prefix tools/charts --ignore-scripts --no-audit --no-fund && node tools/charts/build.mjs

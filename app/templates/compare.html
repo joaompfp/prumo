@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_chart.html" import chart_shell %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Caminho">
@@ -21,8 +22,8 @@
   <div class="section-head">
     <h2 id="grafico">As duas séries</h2>
   </div>
-  <figure class="chart-figure">
-    {{ chart_two(page.chart_points, frequency=page.a.frequency, title=page.chart_title, labels=[page.a.title, page.b.title], unit_a=page.a.unit_text, unit_b=page.b.unit_text, dual=(page.scale == 'dual_axis')) }}
+  <figure class="chart-figure chart-figure-interactive">
+    {% if page.chart_payload %}{{ chart_shell(page, "comparison") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
     <figcaption>{{ page.caption_note }} Últimos valores no período comum de {{ page.a.latest_period_text }}.</figcaption>
   </figure>
   <p class="note">{{ page.alignment_text }}</p>
@@ -77,3 +78,4 @@
   </div>
 </section>
 {% endblock %}
+{% block scripts %}{% if page.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

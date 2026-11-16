@@ -9,6 +9,8 @@ import time
 import unicodedata
 from dataclasses import dataclass
 
+from app import chart_model, interactive
+from app.chart_model import ComparisonModel, LineChartModel
 from app.formatting import (
     decimal_or_none,
     format_count,
@@ -24,6 +26,7 @@ from presentation import (
     base_unit_text,
     calculated_attribution,
     caveat_text,
+    chart_ui,
     comparison_intro,
     comparison_pair,
     comparisons,
@@ -248,6 +251,10 @@ class SeriesDetail:
     series: SeriesView
     values: tuple[ValueView, ...]
     chart_points: tuple[dict, ...]
+    chart: LineChartModel | None
+    chart_payload: dict | None
+    chart_range_label: str
+    chart_hint: str
     provenance: ProvenanceView | None
     revisions: tuple[RevisionView, ...]
     revised_periods: int
@@ -299,7 +306,15 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
             return None
         days = tuple(d for d, _ in counts)
         # The newest day is usually partial; open on the newest day that can draw a line.
-        if day in days:
+        if day is not None:
+            if day not in days:
+                # An explicitly requested day that the cached metadata lacks gets ONE fresh
+                # metadata read on the same handle. If it still does not exist, the reader gets
+                # a 404 rather than a different day silently substituted under the same URL.
+                counts = db.public_day_counts(series_id)
+                days = tuple(d for d, _ in counts)
+                if not days or day not in days:
+                    return None
             chosen_day = day
         else:
             chosen_day = next((d for d, n in counts if n > 1), days[0])
@@ -352,6 +367,7 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
     latest = _value_view({"period": row["latest_period"], "value_text": row["latest_value_text"],
                           "status_flag": row["latest_status_flag"],
                           "fetched_at": row["latest_fetched_at"]}, frequency, lang)
+    chart_points = tuple({"period": v["period"], "value_text": v["value_text"]} for v in shown)
     series = SeriesView(
         id=row["id"], title=_title(row, lang), family_title=family_title(lang, row["family"]),
         geography=row["geography"], geography_text=geography_name(lang, row["geography"]),
@@ -364,10 +380,15 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
         source_title=source_title(lang, row["source"]), attribution=source_text(row["attribution"]),
         licence=source_text(row["licence"]), licence_url=row["licence_url"],
         native_code=row["native_code"], series_url=row["url"], latest=latest)
+    chart = chart_model.line_model(list(chart_points), frequency=frequency,
+                                   title=series.title, unit=series.unit_text)
     return SeriesDetail(
         series=series,
         values=tuple(_value_view(v, frequency, lang) for v in table_rows),
-        chart_points=tuple({"period": v["period"], "value_text": v["value_text"]} for v in shown),
+        chart_points=chart_points,
+        chart=chart,
+        chart_payload=interactive.build_payload(chart) if chart is not None else None,
+        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"),
         provenance=_provenance_view(provenance, frequency, lang) if provenance else None,
         revisions=tuple(revisions), revised_periods=len(revised), unchanged_periods=unchanged,
         derived=tuple(derived), cross_checks=cross,
@@ -396,6 +417,10 @@ class DerivedDetail:
     latest: ValueView
     values: tuple[ValueView, ...]
     chart_points: tuple[dict, ...]
+    chart: LineChartModel | None
+    chart_payload: dict | None
+    chart_range_label: str
+    chart_hint: str
     base_id: str
     base_title: str
     inputs: tuple[InputView, ...]
@@ -428,8 +453,12 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
             value_display=format_value(observed[i["observation_id"]]["value_text"])
             if i["observation_id"] in observed else "")
             for i in newest["inputs"])
+    title = derived_title(lang, key)
+    chart_points = tuple({"period": v["period"], "value_text": v["value_text"]} for v in values)
+    chart = chart_model.line_model(list(chart_points), frequency=frequency, title=title,
+                                   display_unit=unit_text(lang, d["unit"]))
     return DerivedDetail(
-        key=key, title=derived_title(lang, key), frequency=frequency,
+        key=key, title=title, frequency=frequency,
         formula_text=describe_formula(lang, d["formula"], d["params"], base_title),
         unit_text=unit_text(lang, d["unit"]),
         caveats=tuple(caveat_text(lang, c) for c in d["caveats"]),
@@ -444,8 +473,11 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
                                value_display=format_value(v["value_text"]), status=None,
                                status_text="", fetched_at="", fetched_text="")
                      for v in reversed(values)),
-        chart_points=tuple({"period": v["period"], "value_text": v["value_text"]}
-                           for v in values),
+        chart_points=chart_points,
+        chart=chart,
+        chart_payload=interactive.build_payload(chart, badge=chart_ui(lang, "calculated"))
+        if chart is not None else None,
+        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"),
         base_id=d["base_series_id"],
         base_title=series_title(lang, family_of(d["base_indicator_key"]),
                                 d["base_geography"]),
@@ -873,6 +905,10 @@ class ComparisonPage:
     scale: str
     chart_title: str
     chart_points: tuple[dict, ...]
+    chart: ComparisonModel | None
+    chart_payload: dict | None
+    chart_range_label: str
+    chart_hint: str
     table_rows: tuple[dict, ...]
     alignment_text: str
     a: ComparisonSeries
@@ -1005,10 +1041,17 @@ def comparison_page(db: Db, slug: str, *, lang: str = "pt") -> ComparisonPage | 
         {"period_text": format_period(p["period"], frequency),
          "a_display": format_value(p["a"]), "b_display": format_value(p["b"])}
         for p in reversed(points))
+    chart = chart_model.comparison_model(
+        list(points), frequency=frequency, title=pair["title"],
+        labels=(a.title, b.title), unit_a=a.unit_text, unit_b=b.unit_text,
+        dual=(pair["scale"] == "dual_axis"))
     return ComparisonPage(
         slug=slug, title=pair["title"], subtitle=pair["subtitle"], mechanism=pair["mechanism"],
         caption_note=pair["caption_note"], scale=pair["scale"], chart_title=pair["title"],
-        chart_points=points, table_rows=rows,
+        chart_points=points, chart=chart,
+        chart_payload=interactive.build_payload(chart) if chart is not None else None,
+        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"),
+        table_rows=rows,
         alignment_text=_alignment_text(points, dropped_a, dropped_b, unparsed,
                                        a.title, b.title, frequency),
         a=a, b=b)

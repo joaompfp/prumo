@@ -17,8 +17,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 
-from app import reads
-from app.charts import line_chart, sparkline, two_series_chart
+from app import interactive, reads
+from app.charts import chart_svg, line_chart, sparkline, two_series_chart
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
 from presentation import MissingText
@@ -38,6 +38,10 @@ SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "no-referrer",
 }
+# Only successful detail responses that actually carry a chart payload get this; summaries,
+# errors, exports and the backoffice keep the no-script policy above.
+CHART_CSP = (SECURITY_HEADERS["Content-Security-Policy"]
+             + "; script-src 'self'; script-src-attr 'none'")
 
 
 log = logging.getLogger("prumo.app")
@@ -45,7 +49,8 @@ log = logging.getLogger("prumo.app")
 
 def _templates() -> Jinja2Templates:
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
-    env.globals.update(chart=line_chart, chart_two=two_series_chart, spark=sparkline,
+    env.globals.update(chart=line_chart, chart_two=two_series_chart, chart_svg=chart_svg,
+                       chart_js=interactive.asset_path(), spark=sparkline,
                        format_value=format_value, format_period=format_period,
                        format_datetime=format_datetime, format_date=format_date,
                        format_count=format_count)
@@ -53,10 +58,14 @@ def _templates() -> Jinja2Templates:
 
 
 def _render(templates: Jinja2Templates, request: Request, name: str, context: dict,
-            status: int = 200) -> HTMLResponse:
-    return templates.TemplateResponse(request, name, {"base": _base(request), "nav": NAV,
-                                                      "path": request.url.path, **context},
-                                      status_code=status)
+            status: int = 200, script: bool = False) -> HTMLResponse:
+    response = templates.TemplateResponse(request, name, {"base": _base(request), "nav": NAV,
+                                                          "path": request.url.path, **context},
+                                          status_code=status)
+    if script:
+        # One effective policy: the middleware setdefault leaves this explicit header alone.
+        response.headers["Content-Security-Policy"] = CHART_CSP
+    return response
 
 
 def _read(request: Request, work):
@@ -165,7 +174,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
             return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
-        return _render(templates, request, "series.html", {"page": data})
+        return _render(templates, request, "series.html", {"page": data},
+                       script=data.chart_payload is not None)
 
     @app.api_route("/calculadas/{key:path}", methods=PAGE_METHODS, response_class=HTMLResponse)
     def derived(request: Request, key: str):
@@ -175,7 +185,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
             return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
-        return _render(templates, request, "derived.html", {"page": data})
+        return _render(templates, request, "derived.html", {"page": data},
+                       script=data.chart_payload is not None)
 
     @app.api_route("/pesquisa", methods=PAGE_METHODS, response_class=HTMLResponse)
     def search(request: Request, q: str = ""):
@@ -214,7 +225,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
             return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
-        return _render(templates, request, "compare.html", {"page": data})
+        return _render(templates, request, "compare.html", {"page": data},
+                       script=data.chart_payload is not None)
 
     @app.exception_handler(MissingText)
     def missing_reader_text(request: Request, exc: MissingText):

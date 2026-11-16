@@ -95,7 +95,9 @@ def test_each_pair_draws_two_distinct_lines(pairs_client):
         assert len(paths) == 2, slug
         assert paths[0] != paths[1], slug
         assert "legend-swatch" in html
-        assert "<script" not in html and "style=" not in html
+        assert "style=" not in html
+        # The approved enhancement adds one inert JSON block and one local deferred bundle.
+        assert len(re.findall(r"<script[^>]*>", html)) == 2, slug
 
 
 def test_each_pair_names_both_publishers(pairs_client):
@@ -223,12 +225,17 @@ def test_links_carry_the_mount_prefix(pairs_client):
 
 
 def test_headers_and_no_javascript_on_index_and_pair(pairs_client):
-    for path in ("/comparar", "/comparar/credito-e-taxa"):
-        response = pairs_client.get(path)
-        assert "default-src 'none'" in response.headers["content-security-policy"], path
-        assert "x-forwarded-prefix" in response.headers["vary"].lower(), path
-        assert "<script" not in response.text, path
-        assert "style=" not in response.text, path
+    index = pairs_client.get("/comparar")
+    assert "default-src 'none'" in index.headers["content-security-policy"]
+    assert "script-src" not in index.headers["content-security-policy"]
+    assert "<script" not in index.text
+    pair = pairs_client.get("/comparar/credito-e-taxa")
+    assert "script-src 'self'" in pair.headers["content-security-policy"]
+    assert "script-src-attr 'none'" in pair.headers["content-security-policy"]
+    assert "default-src 'none'" in pair.headers["content-security-policy"]
+    for response in (index, pair):
+        assert "x-forwarded-prefix" in response.headers["vary"].lower()
+        assert "style=" not in response.text
 
 
 def test_unusable_database_is_503(tmp_path):

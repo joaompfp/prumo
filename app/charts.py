@@ -25,10 +25,15 @@ def line_chart(points: list[dict], *, frequency: str, title: str, unit: str = ""
                width: int = WIDTH, height: int = HEIGHT) -> Markup:
     """One series as an SVG line. `points` are dicts with `period` and `value_text`, oldest
     first. Returns an empty-state paragraph when there is nothing numeric to draw."""
-    model = line_model(points, frequency=frequency, title=title, unit=unit,
-                       width=width, height=height)
+    return line_svg(line_model(points, frequency=frequency, title=title, unit=unit,
+                               width=width, height=height))
+
+
+def line_svg(model) -> Markup:
+    """The SVG for an already prepared line model (the page renders it once)."""
     if model is None:
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
+    width, height = model.width, model.height
 
     parts: list[str] = [
         f'<svg class="chart" viewBox="0 0 {width} {height}" role="img" '
@@ -51,7 +56,7 @@ def line_chart(points: list[dict], *, frequency: str, title: str, unit: str = ""
         cx, cy = round(point.x, 1), round(point.y, 1)
         parts.append(f'<circle class="chart-point" cx="{cx}" cy="{cy}" r="7">'
                      f'<title>{escape(point.period_text)}: '
-                     f'{escape(point.value_display)} {escape(unit)}</title></circle>')
+                     f'{escape(point.value_display)} {escape(model.display_unit)}</title></circle>')
     lx, ly = round(model.last_x, 1), round(model.last_y, 1)
     parts.append(f'<circle class="chart-last" cx="{lx}" cy="{ly}" r="3.5" />')
     parts.append(f'<text class="chart-last-label" x="{round(model.last_x + model.last_dx, 1)}" '
@@ -77,12 +82,16 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
     a rate can share the `%` token and still be two different things. Nothing is interpolated: a
     missing token drops that period for both lines, and a gap breaks the line instead of crossing it.
     """
-    model = comparison_model(points, frequency=frequency, title=title, labels=labels,
-                             unit_a=unit_a, unit_b=unit_b, dual=dual, width=width,
-                             height=height)
+    return comparison_svg(comparison_model(points, frequency=frequency, title=title,
+                                           labels=labels, unit_a=unit_a, unit_b=unit_b,
+                                           dual=dual, width=width, height=height))
+
+
+def comparison_svg(model) -> Markup:
+    """The SVG and legend for an already prepared comparison model."""
     if model is None:
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
-
+    width, height = model.width, model.height
     right = model.right
     parts = [f'<svg class="chart chart-compare" viewBox="0 0 {width} {height}" role="img" '
              f'aria-label="{escape(model.name)}" preserveAspectRatio="xMidYMid meet">',
@@ -121,9 +130,9 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
 
     for point in model.points:
         cx = round(point.x, 1)
-        for cy, token, label, unit in ((point.a.y, point.a.value_display, labels[0], unit_a),
-                                       (point.b.y, point.b.value_display, labels[1],
-                                        model.unit_b)):
+        for cy, token, label, unit in (
+                (point.a.y, point.a.value_display, model.labels[0], model.unit_a),
+                (point.b.y, point.b.value_display, model.labels[1], model.unit_b)):
             parts.append(f'<circle class="chart-point" cx="{cx}" cy="{round(cy, 1)}" r="7">'
                          f'<title>{escape(label)} - {escape(point.period_text)}: '
                          f'{escape(token)} {escape(unit)}</title></circle>')
@@ -149,14 +158,21 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
     last = model.points[-1]
     legend = (
         '<ul class="legend">'
-        f'<li><span class="legend-swatch swatch-a" aria-hidden="true"></span>{escape(labels[0])}'
+        f'<li><span class="legend-swatch swatch-a" aria-hidden="true"></span>{escape(model.labels[0])}'
         f'<span class="legend-value">{escape(last.a.value_display)} {escape(model.unit_a)}</span>'
         '</li>'
-        f'<li><span class="legend-swatch swatch-b" aria-hidden="true"></span>{escape(labels[1])}'
+        f'<li><span class="legend-swatch swatch-b" aria-hidden="true"></span>{escape(model.labels[1])}'
         f'<span class="legend-value">{escape(last.b.value_display)} '
         f'{escape(model.unit_b)}</span></li>'
         '</ul>')
     return Markup("".join(parts) + legend)
+
+
+def chart_svg(model) -> Markup:
+    """Render a prepared model of either kind; used by the detail templates."""
+    if model is None:
+        return Markup('<p class="chart-empty">Sem valores para representar.</p>')
+    return line_svg(model) if model.kind == "line" else comparison_svg(model)
 
 
 def sparkline(points: list[dict], *, width: int = 132, height: int = 40) -> Markup:

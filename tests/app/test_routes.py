@@ -9,11 +9,12 @@ import re
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import SECURITY_HEADERS, create_app
+from app.main import CHART_CSP, SECURITY_HEADERS, create_app
 from tests.app.conftest import DERIVED, HICP, INACTIVE, UNEMP, WITHHELD, XCHECK
 
-PAGES = ("/", "/temas/economy", f"/series/{HICP}", f"/calculadas/{DERIVED}", "/fontes",
-         "/metodologia", "/pesquisa?q=desemprego")
+# Detail pages carry the approved interactive chart; everything else stays script-free.
+DETAIL_PAGES = (f"/series/{HICP}", f"/calculadas/{DERIVED}")
+PAGES = ("/", "/temas/economy", "/fontes", "/metodologia", "/pesquisa?q=desemprego")
 
 
 def visible(html: str) -> str:
@@ -54,21 +55,39 @@ def test_security_headers_are_exact_on_every_page(client):
         assert headers["content-security-policy"] == SECURITY_HEADERS["Content-Security-Policy"]
         assert headers["x-content-type-options"] == "nosniff"
         assert headers["referrer-policy"] == "no-referrer"
+    for path in DETAIL_PAGES:
+        headers = client.get(path).headers
+        assert headers["content-security-policy"] == CHART_CSP
+        assert headers["content-security-policy"].count("default-src") == 1
+        assert "unsafe-inline" not in headers["content-security-policy"]
+        assert "unsafe-eval" not in headers["content-security-policy"]
+        assert headers["x-content-type-options"] == "nosniff"
+        assert headers["referrer-policy"] == "no-referrer"
 
 
 def test_only_get_and_head_are_routed(client):
-    for path in PAGES:
+    for path in PAGES + DETAIL_PAGES:
         assert client.post(path).status_code == 405
         assert client.delete(path).status_code == 405
 
 
-def test_no_page_ships_javascript_or_remote_asset(client):
+def test_summaries_ship_no_javascript_and_detail_pages_only_the_approved_assets(client):
     for path in PAGES:
         html = client.get(path).text
-        assert "<script" not in html.lower()
-        assert not re.search(r"<[a-zA-Z][^>]*\son[a-z]+=", html)  # no inline event handlers
-        assert 'href="http://' not in html and 'src="http://' not in html
-        assert "cdn." not in html and "googleapis" not in html
+        assert "<script" not in html.lower(), path
+        assert not re.search(r"<[a-zA-Z][^>]*\son[a-z]+=", html), path
+    for path in DETAIL_PAGES:
+        html = client.get(path).text
+        tags = re.findall(r"<script[^>]*>", html)
+        assert len(tags) == 2, path  # inert JSON data block plus the local deferred bundle
+        assert '<script type="application/json"' in tags[0], path
+        assert '<script src="/static/js/prumo-charts.min.js?v=' in tags[1], path
+        assert " defer>" in tags[1], path
+        assert not re.search(r"<[a-zA-Z][^>]*\son[a-z]+=", html), path
+    for path in PAGES + DETAIL_PAGES:
+        html = client.get(path).text
+        assert 'href="http://' not in html and 'src="http://' not in html, path
+        assert "cdn." not in html and "googleapis" not in html, path
 
 
 def test_forwarded_prefix_prefixes_every_internal_link(client):
@@ -372,7 +391,7 @@ def test_methodology_has_no_raw_codes_in_visible_text(client):
     assert "verificação" in text.lower()
 
 
-@pytest.mark.parametrize("path", PAGES)
+@pytest.mark.parametrize("path", PAGES + DETAIL_PAGES)
 def test_every_page_declares_the_language_and_a_title(client, path):
     html = client.get(path).text
     assert '<html lang="pt-PT">' in html

@@ -371,6 +371,14 @@ COMPARISONS_INTRO = (
     "sem significado."
 )
 
+# Text around the interactive chart controls. The chart itself carries data, never operator
+# instructions; these are the only words the enhancement adds to the page.
+CHART_UI: dict[str, str] = {
+    "range": "Período no gráfico",
+    "hint": "Use as setas, Início e Fim para percorrer os períodos. Os valores são os publicados.",
+    "calculated": "Calculado pelo Prumo",
+}
+
 COMPARISONS: dict[str, dict[str, str]] = {
     "inflacao-e-desemprego": {
         "series_a": "ine.hicp_yoy.PT",

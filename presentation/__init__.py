@@ -96,6 +96,11 @@ def source_title(lang: str, name: str) -> str:
     return _lookup(_catalog(lang).SOURCE_TITLES, "source", lang, name)
 
 
+def chart_ui(lang: str, key: str) -> str:
+    """Words the interactive chart adds around a prepared chart (label, hint, calculated)."""
+    return _lookup(_catalog(lang).CHART_UI, "chart ui", lang, key)
+
+
 def withheld_note(lang: str, name: str) -> str:
     """Why a withheld institution publishes nothing here, in reader words."""
     return _lookup(_catalog(lang).WITHHELD_NOTES, "withheld source", lang, name)

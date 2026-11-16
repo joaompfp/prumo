@@ -1,0 +1,13 @@
+{
+  "asset": "js/prumo-charts.min.js",
+  "sha256": "23576bf42e5c69d78a8c1fdef81817fd72e886f8209bc213977d89c6d7a12d23",
+  "bytes": 505060,
+  "gzip_bytes": 172667,
+  "gzip_method": "zlib level 9, mtime=0 (local measurement, not a transfer claim)",
+  "echarts": "6.1.0",
+  "zrender": "6.1.0",
+  "tslib": "2.3.0",
+  "esbuild": "0.25.12",
+  "entry": "tools/charts/src/adapter.js",
+  "build": "npm ci --prefix tools/charts --ignore-scripts --no-audit --no-fund && node tools/charts/build.mjs"
+}

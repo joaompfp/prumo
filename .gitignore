@@ -28,6 +28,9 @@ Thumbs.db
 # Local server workflow (never committed)
 server-env/
 
+# Chart build dependencies (tooling lockfile and source are committed)
+tools/charts/node_modules/
+
 # Appdata symlink (points to ../../appdata/prumo/, runtime data)
 appdata
 

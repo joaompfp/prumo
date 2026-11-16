@@ -257,6 +257,26 @@ section { margin: 54px 0; }
 .chart-last-label { fill: var(--red); font-family: var(--sans); font-size: 12px; font-weight: 600; }
 .chart-empty { color: var(--muted); font-style: italic; }
 .chart-figure figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+
+/* Interactive enhancement. The SVG stays in flow and in the accessibility tree; the canvas is
+   overlayed only after the adapter has successfully set its option. */
+.chart-shell { display: block; }
+.chart-wrap { position: relative; }
+.chart-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; pointer-events: none; touch-action: pan-y;
+}
+.chart-enhanced .chart { opacity: 0; pointer-events: none; }
+.chart-enhanced .chart-canvas { opacity: 1; pointer-events: auto; }
+.chart-controls {
+  display: flex; align-items: center; gap: 12px; min-height: 44px; margin-top: 4px;
+}
+.chart-range { flex: 0 1 320px; min-width: 0; accent-color: var(--red); }
+.chart-readout {
+  font-size: 0.9rem; font-variant-numeric: tabular-nums; color: var(--ink);
+}
+.chart-hint { font-size: 0.8rem; color: var(--muted); margin: 0; }
+.chart-empty + .chart-controls { min-height: 0; }
 .windows { display: flex; gap: 14px; font-size: 0.85rem; }
 .windows a { color: var(--muted); text-decoration: none; }
 .windows a[aria-current="true"] { color: var(--ink); border-bottom: 2px solid var(--red); }
@@ -353,10 +373,11 @@ section { margin: 54px 0; }
 }
 .compare-link:hover, .compare-link:focus { border-bottom-color: var(--ink); }
 .compare-mechanism { margin: 8px 0 4px; max-width: 62ch; color: var(--muted); }
-.chart-line-a { stroke: var(--red); }
-.chart-line-b { stroke: var(--ink); }
-.chart-last-a { fill: var(--red); }
-.chart-last-b { fill: var(--ink); }
+/* A is solid ink and B is dashed red in the SVG, the canvas adapter and the legend. */
+.chart-line-a { stroke: var(--ink); }
+.chart-line-b { stroke: var(--red); stroke-dasharray: 6 3; }
+.chart-last-a { fill: var(--ink); }
+.chart-last-b { fill: var(--red); }
 .chart-axis-label { fill: var(--muted); font-family: var(--sans); font-size: 11px; }
 .legend {
   list-style: none; display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 10px 0 0;
@@ -364,8 +385,8 @@ section { margin: 54px 0; }
 }
 .legend li { display: flex; align-items: baseline; gap: 8px; }
 .legend-swatch { display: inline-block; width: 18px; height: 3px; }
-.swatch-a { background: var(--red); }
-.swatch-b { background: var(--ink); }
+.swatch-a { background: var(--ink); }
+.swatch-b { background: repeating-linear-gradient(90deg, var(--red) 0 6px, transparent 6px 10px); }
 .legend-value { font-variant-numeric: tabular-nums; color: var(--ink); }
 .compare-provenance { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
 
@@ -377,4 +398,7 @@ section { margin: 54px 0; }
   .site-header, .site-footer, .search, .filters, .windows, .pager, .download { display: none; }
   body { background: #fff; }
   .card, .figure-block, .provenance, .formula { border-color: #999; }
+  /* Print selects the server SVG: the canvas and its controls never reach paper. */
+  .chart-enhanced .chart { opacity: 1 !important; }
+  .chart-canvas, .chart-controls, .chart-hint { display: none !important; }
 }

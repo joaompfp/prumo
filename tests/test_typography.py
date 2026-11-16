@@ -32,6 +32,11 @@ ORIGINAL_RECEIPT = (
     "docs/superpowers/handoff/evidence/task-16-discovery/01-eredes-catalog.body"
 )
 ORIGINAL_RECEIPT_SHA256 = "551b749b9d8f35c87248ec3445b6f4ec852e76dfd08502d26c7223c197580bd8"
+# The generated ECharts bundle carries upstream localisation strings verbatim, including one
+# em dash inside library code. It is vendored evidence, not authored copy: exempt only while the
+# exact rebuilt bytes match this hash, so any rebuild is an explicit reviewed change.
+VENDORED_BUNDLE = "static/js/prumo-charts.min.js"
+VENDORED_BUNDLE_SHA256 = "23576bf42e5c69d78a8c1fdef81817fd72e886f8209bc213977d89c6d7a12d23"
 
 
 @pytest.mark.parametrize("text", [
@@ -77,6 +82,10 @@ def test_repository_text_has_no_em_dashes():
         if name == ORIGINAL_RECEIPT:
             # Keep the archived HTTP response byte-identical to its original capture.
             assert hashlib.sha256(body).hexdigest() == ORIGINAL_RECEIPT_SHA256
+            continue
+        if name == VENDORED_BUNDLE:
+            # Upstream ECharts localisation text is preserved, not rewritten.
+            assert hashlib.sha256(body).hexdigest() == VENDORED_BUNDLE_SHA256
             continue
         if b"\0" in body:
             continue

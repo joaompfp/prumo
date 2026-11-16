@@ -1,0 +1,10 @@
+{
+  "name": "prumo-charts",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pinned local ECharts bundle for Prumo analytical charts",
+  "dependencies": {
+    "echarts": "6.1.0",
+    "esbuild": "0.25.12"
+  }
+}

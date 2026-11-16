@@ -82,4 +82,5 @@ CURATED_HOME: list[dict] = []
 SEARCH_ALIASES: dict[str, str] = {}
 PAGES: dict[str, dict[str, str]] = {}  # v1 is PT-only; a missing slug raises MissingText
 COMPARISONS_INTRO = ""
+CHART_UI: dict[str, str] = {}
 COMPARISONS: dict[str, dict[str, str]] = {}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_chart.html" import chart_shell %}
 {% block title %}{{ page.series.title }} - Prumo{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Caminho">
@@ -47,8 +48,8 @@
   </form>
   <p class="note">Intervalos de 15 minutos, no dia UTC escolhido. O Prumo não agrega esta série: cada ponto é o valor publicado.</p>
   {% endif %}
-  <figure class="chart-figure">
-    {{ chart(page.chart_points, frequency=page.series.frequency, title=page.series.title, unit=page.series.unit_text) }}
+  <figure class="chart-figure chart-figure-interactive">
+    {% if page.chart_payload %}{{ chart_shell(page, "series") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
     <figcaption>{{ page.series.title }}. Fonte: {{ page.series.source_title }}. Último valor em {{ page.series.latest.period_text }}.</figcaption>
   </figure>
   <details class="table-details">
@@ -154,3 +155,4 @@
 </section>
 {% endif %}
 {% endblock %}
+{% block scripts %}{% if page.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

@@ -119,7 +119,8 @@ def x_labels(periods: list[str], frequency: str) -> list[tuple[int, str]]:
             year, semester = period.split("-S")
             label = f"S{semester} {year}"
         elif "T" in period and len(period) >= 16:
-            label = format_period(period, frequency)[:5]
+            # The period is canonical UTC; the hour label must not follow the browser timezone.
+            label = period[11:16]
         else:
             label = format_period(period, frequency)
         out.append((i, label))
@@ -179,6 +180,7 @@ class LinePoint:
     value_text: str
     value_display: str
     number: Decimal
+    ordinal: float
     x: float
     y: float
 
@@ -194,6 +196,7 @@ class YTick:
 @dataclass(frozen=True)
 class XTick:
     index: int
+    ordinal: float
     x: float
     text: str
 
@@ -203,6 +206,7 @@ class LineChartModel:
     kind: str
     title: str
     unit: str
+    display_unit: str
     name: str
     frequency: str
     width: int
@@ -226,6 +230,7 @@ class LineChartModel:
 
 
 def line_model(points: list[dict], *, frequency: str, title: str, unit: str = "",
+               display_unit: str | None = None,
                width: int = WIDTH, height: int = HEIGHT) -> LineChartModel | None:
     """Prepare one series; None when there is nothing numeric to draw."""
     values = [(p["period"], decimal_or_none(p["value_text"]), p["value_text"]) for p in points]
@@ -243,22 +248,25 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
     def y(number: Decimal) -> float:
         return TOP + float((hi - number) / span * plot_h)
 
-    xs = positions(ordinals_for(periods, frequency), LEFT, plot_w)
+    ordinals = ordinals_for(periods, frequency)
+    xs = positions(ordinals, LEFT, plot_w)
     prepared = tuple(
         LinePoint(period=period, period_text=format_period(period, frequency),
                   value_text=token, value_display=format_value(token), number=number,
-                  x=x, y=y(number))
-        for (period, number, token), x in zip(values, xs))
+                  ordinal=ordinal, x=x, y=y(number))
+        for (period, number, token), ordinal, x in zip(values, ordinals, xs))
     name = title + (f" ({unit})" if unit else "")
     last_x, last_y = prepared[-1].x, prepared[-1].y
     lx, ly = round(last_x, 1), round(last_y, 1)
     anchor = "end" if lx > width - 40 else "middle"
     return LineChartModel(
-        kind="line", title=title, unit=unit, name=name, frequency=frequency,
+        kind="line", title=title, unit=unit,
+        display_unit=unit if display_unit is None else display_unit,
+        name=name, frequency=frequency,
         width=width, height=height, left=LEFT, right=RIGHT, top=TOP, bottom=BOTTOM,
         points=prepared,
         y_ticks=tuple(YTick(value=t, text=format_axis(t), y=y(t), zero=t == 0) for t in nice),
-        x_ticks=tuple(XTick(index=i, x=xs[i], text=text)
+        x_ticks=tuple(XTick(index=i, ordinal=ordinals[i], x=xs[i], text=text)
                       for i, text in x_labels(periods, frequency)),
         lo=lo, hi=hi, interval=axis_interval(nice, lo, hi),
         last_x=last_x, last_y=last_y, last_label=format_value(values[-1][2]),
@@ -278,6 +286,7 @@ class ComparisonValue:
 class ComparisonPoint:
     period: str
     period_text: str
+    ordinal: float
     x: float
     a: ComparisonValue
     b: ComparisonValue
@@ -364,12 +373,12 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
     xs = positions(ordinals, LEFT, plot_w)
     prepared = tuple(
         ComparisonPoint(
-            period=period, period_text=format_period(period, frequency), x=x,
+            period=period, period_text=format_period(period, frequency), ordinal=ordinal, x=x,
             a=ComparisonValue(number=a, value_text=token_a, value_display=format_value(token_a),
                               y=y_of(a, lo_a, hi_a)),
             b=ComparisonValue(number=b, value_text=token_b, value_display=format_value(token_b),
                               y=y_of(b, lo_b, hi_b)))
-        for (period, a, b, token_a, token_b), x in zip(rows, xs))
+        for (period, a, b, token_a, token_b), ordinal, x in zip(rows, ordinals, xs))
 
     name = f"{title}: {labels[0]} ({unit_a}) e {labels[1]} ({unit_b or unit_a})"
     last = prepared[-1]
@@ -394,7 +403,7 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
         lo_a=lo_a, hi_a=hi_a, lo_b=lo_b, hi_b=hi_b,
         interval_a=axis_interval(ticks_a, lo_a, hi_a),
         interval_b=axis_interval(ticks_b, lo_b, hi_b),
-        x_ticks=tuple(XTick(index=i, x=xs[i], text=text)
+        x_ticks=tuple(XTick(index=i, ordinal=ordinals[i], x=xs[i], text=text)
                       for i, text in x_labels(periods, frequency)),
         breaks=break_indices(ordinals),
         last_x=last.x, last_anchor=anchor, last_dx=-6 if anchor == "end" else 0,
