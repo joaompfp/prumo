@@ -10,7 +10,7 @@ Acceptance: a registry-free catalogue test asserts every pair names two series, 
 
 ## Part 2 — read layer
 
-`app/reads.py`: `ComparisonSummary`, `ComparisonSeries`, `ComparisonPage`; `comparisons_index(db, lang)` and `comparison_page(db, slug, lang)`. Composition only from `public_series`, `public_series_values`, `public_provenance`; alignment computed in Python; `None` for an unknown slug or an unpublished series.
+`app/reads.py`: `ComparisonSummary`, `ComparisonSeries`, `ComparisonPage`; `comparisons_index(db, lang)` and `comparison_page(db, slug, lang)`. Composition only from `public_series`, `public_series_values` and `public_provenance_at` (the period shown, not the series' newest); alignment computed in Python; `None` for an unknown slug or an unpublished series.
 
 Acceptance: alignment counts on a fixture where A has one period B lacks and B has one A lacks; `None` when either series is withheld or has no served value; no new SQL in `app/`.
 

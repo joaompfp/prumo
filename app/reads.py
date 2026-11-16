@@ -1025,5 +1025,5 @@ def comparisons_index(db: Db, *, lang: str = "pt") -> ComparisonIndex:
             slug=slug, title=pair["title"], mechanism=pair["mechanism"],
             span_text=(f"{format_period(points[0]['period'], frequency)} a "
                        f"{format_period(points[-1]['period'], frequency)}"),
-            common_text=_periods(len(points))))
+            common_text=_common(len(points))))
     return ComparisonIndex(intro=comparison_intro(lang), rows=tuple(rows))

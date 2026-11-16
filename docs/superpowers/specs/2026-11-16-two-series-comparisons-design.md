@@ -39,7 +39,7 @@ Not included, and why: the E-REDES production components (`eredes.production_mar
 
 `scale` is `one_axis` or `dual_axis`, written in the catalogue:
 
-- `one_axis` requires both series to share the same unit token, and requires that both are rates of the same kind (a rate of change against a rate, or two levels). A level and a year-on-year rate may share the `%` token and still never share an axis. The unit half is asserted against the served data by a test; the "same kind" half is a curation rule checked at review, because the data layer stores a unit code and nothing that says what kind of thing the number is, and inventing that metadata for three pairs would be a field nobody else reads.
+- `one_axis` requires both series to share the same unit token, and requires that the shared token means something comparable on both sides: two rates (a year-on-year rate against an unemployment rate), or two levels. It is refused when the token hides a difference in kind - the level of a quantity against its own year-on-year rate, where the two numbers measure different things and one axis would present them as one scale. The unit half is asserted against the served data by a test; the kind half is a curation rule checked at review, because the data layer stores a unit code and nothing that says what kind of thing the number is, and inventing that metadata for three pairs would be a field nobody else reads.
 - `dual_axis` is allowed only for a curated pair, is labelled on both sides, and its caption states that the two magnitudes are not comparable and that the chart shows direction, not size. The pair's `scale` decides the chart mode; the unit comparison is only the chart's fallback when no mode is given.
 
 Pairs 1 and 2 are `one_axis`; pair 3 is `dual_axis`.
@@ -56,7 +56,7 @@ Values reach the page as the stored `value_text` through `format_value`; the axi
 
 ### D5. No schema change, no new SQL in `app/`
 
-The read path is composed from methods that already exist: `public_series`, `public_series_values`, `public_provenance`. `reads.py` aligns the two lists in Python; `app/` keeps zero SQL. No migration, no new view, no write path.
+The read path is composed from methods that already exist: `public_series`, `public_series_values`, and `public_provenance_at` (added by this release: `public_provenance` returns the series' newest period, which is not the period a comparison shows). `reads.py` aligns the two lists in Python; `app/` keeps zero SQL. No migration, no new view, no write path.
 
 Consequence: the release is code-only in the existing `prumo` container - `bash -lic 'dc-web-up prumo'` - and rollback is the previous commit plus the same command. The worker and the backoffice are not restarted.
 
@@ -64,7 +64,7 @@ Consequence: the release is code-only in the existing `prumo` container - `bash 
 
 `NAV` gains `("/comparar", "Comparações")` after Energia. That changes `base.html`, so **every page's HTML changes**, including the home rendered from the code list. `tests/app/golden/home_before_editorial.html` is a byte-identical capture from the deployed commit `7e563b2` and its docstring says it is never refreshed.
 
-It is refreshed here, once, and the reason is auditable: the new capture `tests/app/golden/home_code_list.html` is rendered from a detached worktree of the *implementation* commit with no composition published, and the commit shows the two golden files differing in exactly the navigation line. The test keeps doing its job afterwards - any unintended change to the home with no composition still fails the byte comparison. A reviewer must check that the diff between the two golden files is only the nav item.
+It is refreshed here, once, and the reason is auditable: the new capture `tests/app/golden/home_code_list.html` is rendered from a detached worktree of the *implementation* commit with no composition published, and the commit shows the two golden files differing in exactly one navigation anchor (plus the whitespace line the nav loop emits around it). The test keeps doing its job afterwards - any unintended change to the home with no composition still fails the byte comparison. A reviewer must check that the diff between the two golden files is only the nav item.
 
 ### D7. Fifteen-minute series and derived keys are out of scope
 
@@ -136,8 +136,8 @@ Route and read tests (synthetic DB from `tests/app/conftest.py`, extended with a
 5. Unusable database → 503 page, and `MissingText` → 503 with a log line.
 6. No `<script>`, no `style=`, CSP header present, `Vary: X-Forwarded-Prefix` present.
 7. Alignment: common count and dropped counts match a hand-built fixture where A has two extra periods and B one.
-8. One-axis vs dual-axis: a catalogue test asserts `scale == 'one_axis'` implies equal unit tokens and both rate-or-level of the same kind; `dual_axis` implies different units and a caption note.
-9. Catalogue completeness: every pair's two series resolve `series_title`, `source_title`, `unit_text`, `frequency_text` and `geography_text`; no pair names a withheld source; no slug repeats a title.
+8. One-axis vs dual-axis: a catalogue test asserts `scale == 'one_axis'` implies equal unit tokens, and `dual_axis` implies a non-empty caption note; a test against the served data asserts every pair's two series are publishable, `role = 'primary'`, and that units are equal exactly when the scale is `one_axis`.
+9. Catalogue completeness: every pair's two series resolve `series_title`, `source_title`, `unit_text` and `frequency_text`, are `role = 'primary'` and come from a redistributable source; no slug repeats a title.
 10. Chart unit tests: two paths rendered; one tick set in one-axis mode; two labelled axes in dual mode; empty state when one series has no numeric point; accessible name contains both series titles.
 11. Header/nav: every page carries the Comparações link exactly once.
 

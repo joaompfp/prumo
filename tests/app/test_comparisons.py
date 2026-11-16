@@ -103,7 +103,10 @@ def test_each_pair_names_both_publishers(pairs_client):
         "/comparar/inflacao-e-desemprego").text
     credit = pairs_client.get("/comparar/credito-e-taxa").text
     assert "Banco de Portugal" in credit
-    # Both sides of the pair carry their own provenance block.
+    # The mixed pair: one series from each institution, both named on the same page.
+    mixed = pairs_client.get("/comparar/euribor-e-inflacao").text
+    assert "Banco de Portugal" in mixed and "INE — Instituto Nacional de Estatística" in mixed
+    # Both sides of a pair carry their own provenance block.
     assert credit.count('class="provenance-list"') == 2
 
 
@@ -112,6 +115,9 @@ def test_pair_one_pins_the_exact_stored_tokens_in_the_table(pairs_client):
     # Last common period 2026-10: HICP 1.8 (the revised token), unemployment 6.2.
     assert f'<td class="num">{format_value("1.8")}</td>' in html
     assert f'<td class="num">{format_value("6.2")}</td>' in html
+    # The chart's own point titles carry the same tokens, not a rounded copy.
+    assert "— outubro de 2026: 1,8 %" in html
+    assert "— outubro de 2026: 6,2 %" in html
 
 
 def test_table_renders_every_period_the_chart_draws(pairs_path):
@@ -182,10 +188,14 @@ def test_a_non_numeric_token_leaves_the_chart_and_is_declared(tmp_path):
         db.close()
     with TestClient(create_app(str(path))) as client:
         html = client.get("/comparar/inflacao-e-desemprego").text
+        index = client.get("/comparar").text
     # 2026-10 is common but undrawable, so the page must not call it the last period shown.
     assert "1 período comum, de setembro de 2026 a setembro de 2026." in html
     assert "Últimos valores no período comum de setembro de 2026" in html
     assert "1 período comum sem valor numérico na fonte fica fora do gráfico e da tabela." in html
+    # The index counts the same drawable periods and agrees in number.
+    assert "1 período comum</p>" in index
+    assert "período comuns" not in index
 
 
 def test_withheld_source_hides_the_pair_whole(tmp_path):
@@ -334,6 +344,28 @@ def test_chart_breaks_the_line_across_a_missing_period():
     paths = re.findall(r'class="chart-line chart-line-a" d="([^"]+)"', svg)
     assert len(paths) == 1
     assert paths[0].count("M") == 2      # the line restarts after the gap instead of crossing it
+
+
+def test_chart_survives_an_annual_gap_at_a_boundary_year():
+    # 2005 is missing, so the decade tick cannot be placed by list index; the chart must still draw.
+    svg = str(two_series_chart(_points([("2000", "1.0", "2.0"), ("2006", "1.5", "2.5"),
+                                        ("2010", "1.2", "2.2")]),
+                               frequency="A", title="Par", labels=("A", "B"), unit_a="%",
+                               unit_b="%"))
+    assert "<svg" in svg
+    assert len(re.findall(r'class="chart-line chart-line-a"', svg)) == 1
+
+
+def test_chart_emphasises_zero_on_one_axis_only():
+    single = str(two_series_chart(
+        _points([("2026-01", "-1.0", "2.0"), ("2026-02", "1.5", "2.5")]),
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%"))
+    assert "chart-zero" in single
+    dual = str(two_series_chart(
+        _points([("2026-01", "-1.0", "200000"), ("2026-02", "1.5", "250000")]),
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%",
+        unit_b="milhões de euros", dual=True))
+    assert "chart-zero" not in dual
 
 
 def test_chart_empty_state():

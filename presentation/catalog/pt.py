@@ -362,8 +362,9 @@ PAGES: dict[str, dict[str, str]] = {
 # Curated pairs only: the route takes a slug, never two series ids, because most of the base is
 # one indicator across many countries and two-of-anything turns coincidences into pages with the
 # site's authority behind them. `scale` is a property of the pair: `one_axis` needs the same unit
-# token for both series and two measures of the same kind; `dual_axis` needs different units, two
-# labelled axes and a note saying the magnitudes are not comparable.
+# token on both sides and two comparable percentages (a year-on-year rate against a rate is fine,
+# a level against its own year-on-year rate is not); `dual_axis` needs two labelled axes and a note
+# saying the magnitudes are not comparable.
 COMPARISONS_INTRO = (
     "Dois indicadores no mesmo gráfico, apenas nos pares que a redação escolheu e consegue "
     "explicar. Não há escolha livre: dois valores quaisquer produzem coincidências vistosas "
