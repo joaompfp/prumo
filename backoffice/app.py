@@ -263,7 +263,7 @@ def create_app(db_path: Path, registry_path: Path,
                       candidates=rows[:CANDIDATES_PER_PAGE],
                       more=len(rows) > CANDIDATES_PER_PAGE, pagina=page_no,
                       events=read(lambda db: db.editorial_events(slug)),
-                      max_slots=MAX_SLOTS, **extra)
+                      max_slots=MAX_SLOTS, available=editorial.available(), **extra)
 
     def guard(request: Request) -> None:
         if not same_origin(request):

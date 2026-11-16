@@ -150,6 +150,24 @@ def test_the_editor_lists_only_eligible_candidates(env):
     assert "MIBEL" not in html and "ren.mibel.PT" not in html
 
 
+def test_the_editor_does_not_claim_the_mount_is_missing_when_it_is_writable(env):
+    """The banner is driven by `available`; the route must pass it. It did not, so every
+    /editorial/{slug} page told the operator the write path was unconfigured while the POSTs
+    next to it wrote successfully - a warning that reads as a broken deploy.
+
+    Caught on production after the 0018 install, with the page answering 200 and the banner
+    visible. A GET-only smoke test cannot tell this apart from a correct page."""
+    html = env.client().get(f"/editorial/{SLUG}").text
+    assert "The writable mount is not configured" not in html
+
+
+def test_the_editor_says_the_mount_is_missing_when_it_is(env):
+    """The same banner must still appear when there is no writable path: the other direction
+    of the same flag."""
+    html = env.client(editorial=False).get(f"/editorial/{SLUG}").text
+    assert "The writable mount is not configured" in html
+
+
 def test_the_editor_filters_candidates_by_source(env):
     c = env.client()
     assert "Taxa de variação homóloga do IHPC" in c.get(
