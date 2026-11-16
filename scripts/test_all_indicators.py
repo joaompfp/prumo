@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test_all_indicators.py — Test every indicator via /api/series endpoint.
+test_all_indicators.py - Test every indicator via /api/series endpoint.
 Reports: indicators with 0 data points, missing from API, or errors.
 Run inside container or from host with port forwarding.
 """
@@ -31,7 +31,7 @@ def get_series(source, indicator, from_period="2020-01", to_period="2026-12"):
 
 def main():
     print("=" * 70)
-    print("Prumo — Indicator Health Check (API-based)")
+    print("Prumo - Indicator Health Check (API-based)")
     print("=" * 70)
 
     # 1. Get catalog
@@ -89,7 +89,7 @@ def main():
                 results["ok"].append({**ind, "points": n_points})
                 status = f"OK({n_points})"
         else:
-            # Unknown response format — check if it has data
+            # Unknown response format - check if it has data
             data_str = json.dumps(data)
             if '"value"' in data_str or '"data"' in data_str:
                 results["ok"].append({**ind, "points": "?"})
@@ -100,7 +100,7 @@ def main():
 
         progress = f"[{i+1}/{len(all_indicators)}]"
         if status.startswith("EMPTY") or status.startswith("ERR") or status.startswith("FEW"):
-            print(f"  {progress} ❌ {src}/{name}: {status} — {label}")
+            print(f"  {progress} ❌ {src}/{name}: {status} - {label}")
         elif (i + 1) % 50 == 0:
             print(f"  {progress} ... ({len(results['ok'])} OK so far)")
 
@@ -125,7 +125,7 @@ def main():
     if results["few_points"]:
         print(f"\n--- FEW POINTS (<3 in 2020-2026) ---")
         for ind in results["few_points"]:
-            print(f"  {ind['source']}/{ind['indicator']}: {ind['points']} pts — {ind['label']}")
+            print(f"  {ind['source']}/{ind['indicator']}: {ind['points']} pts - {ind['label']}")
 
     if results["error"]:
         print(f"\n--- ERRORS ---")

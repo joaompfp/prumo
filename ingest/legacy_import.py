@@ -24,7 +24,7 @@ NOT_IN_REGISTRY = "not_in_registry"
 MISSING_UNIT = "missing_unit"
 
 # Legacy-only reason (Task 10 review, finding I3): the legacy store's INE exports/imports rows for
-# 2005-01..2024-12 are in MILLION euros filed under unit 'EUR' — live INE publishes EUR, and the
+# 2005-01..2024-12 are in MILLION euros filed under unit 'EUR' - live INE publishes EUR, and the
 # registry unit 'EUR' is correct for the live data. Multiplying legacy cells by 10^6 would be
 # fabricating data, so those rows are quarantined instead (and never served, like every legacy
 # row). Generic table: series id -> (first period, last period, quarantine reason), endpoints

@@ -1,4 +1,4 @@
-# Task 16 quality review — E-REDES source/verifier + PT15M migration
+# Task 16 quality review - E-REDES source/verifier + PT15M migration
 
 Verdict: **APPROVED** (code, read-only review of `5feb13f`, diff `03639ee..5feb13f`; three minor
 findings, none reachable as a bad served output in the real run flow; live E-REDES gate stays
@@ -51,16 +51,16 @@ offline from the genuine fixtures (no network), under scratch `t16-qr-lz9x`, `.v
 
 ## Findings (all minor; no REQUEST_CHANGES)
 
-1. **Verifier metadata parse is asymmetrically lax** — `ingest/verifiers/eredes.py:138` uses
+1. **Verifier metadata parse is asymmetrically lax** - `ingest/verifiers/eredes.py:138` uses
    plain `json.loads(meta_body)`: duplicate JSON keys are accepted last-wins, while the collector
    rejects any duplicate key via `object_pairs_hook` (`sources/eredes.py:86-101`). Probe P2:
    metadata with a duplicated `"publisher"` key is **accepted** by `EredesVerifier.check` (then
-   passes the `publisher`-unasserted verifier path — it only checks `dataset_id` + labels) but
+   passes the `publisher`-unasserted verifier path - it only checks `dataset_id` + labels) but
    **rejected** by the collector parse of the same bytes. Reachability is low (the verifier
    fetches the bytes live itself), but the fix is a local 6-line hook duplicated per the
    deliberate-duplication doctrine; a markup precheck like the collector's would also improve the
    error (currently fail-closed via JSONDecodeError only).
-2. **Parse has no cross-window coverage notion** — `sources/eredes.py:272-368` asserts
+2. **Parse has no cross-window coverage notion** - `sources/eredes.py:272-368` asserts
    completeness per (dataset, `where`) day group only. Probes: metadata-only input returns
    zero rows with **no error** (P3; the run-level all-empty rule still classifies
    failed-validation in `pipeline.py:139`), and a 3-day explicit window parsed from a response
@@ -68,9 +68,9 @@ offline from the genuine fixtures (no network), under scratch `t16-qr-lz9x`, `.v
    `run_dataset` (fetch raises or the non-2xx is classified before parse), but offline raw-store
    replay with a dropped page file would produce a silently holed series. Hardening, not
    regression: reconstruct the expected day set from `self.days` when present and fail on gaps.
-3. **Default window uses the host-local date, not UTC** — `sources/eredes.py:204`
+3. **Default window uses the host-local date, not UTC** - `sources/eredes.py:204`
    (`today or date.today()`). Probe P5: with `TZ=Pacific/Kiritimati`, `date.today()` shifts one
-   day and the "today partial/never requested" invariant breaks — a still-running UTC day enters
+   day and the "today partial/never requested" invariant breaks - a still-running UTC day enters
    the request; since that day's `total_count` matches its partial results, parse would accept it
    (self-heals via the 3-day overlap; verified previous-good untouched). On the PT production host
    this is reachable nightly during WEST (23:00-24:00 local). One-line fix:

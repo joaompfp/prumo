@@ -17,13 +17,13 @@ whole day (or history) is the false alternative.
 One condition changed in the source, one sentinel added in the verifier. `validate()` stays
 the only authority on duplicate periods; no dedup/aggregation/special-case invented anywhere.
 
-- `ingest/sources/eredes.py` — the equal-timestamp RAISE (`t_raw <= prev`) is removed; only
+- `ingest/sources/eredes.py` - the equal-timestamp RAISE (`t_raw <= prev`) is removed; only
   strict backward ordering (`<`) still fails closed. Canonical duplicate rows are handed
   **unchanged** to `validate()`, whose existing `duplicate_period` rule quarantines EVERY
-  occurrence — zero duplicates served, no copy chosen. Every native guard (canonical stamp,
+  occurrence - zero duplicates served, no copy chosen. Every native guard (canonical stamp,
   Gregorian, unit/type/label metadata, window identity, page completeness, number-token
   grammar, wall-time echo shape) is untouched.
-- `ingest/verifiers/eredes.py` — a stamp repeated in one CSV day file is marked **ambiguous**
+- `ingest/verifiers/eredes.py` - a stamp repeated in one CSV day file is marked **ambiguous**
   for that day: neither copy is served (no last-row overwrite, the first copy is retracted),
   items at the stamp answer `observed_text=None` (mismatch, like not-found), and unaffected
   stamps of the same day still verify. No import from the collector; static
@@ -31,14 +31,14 @@ the only authority on duplicate periods; no dedup/aggregation/special-case inven
 
 ## Fixtures (genuine, no fabrication)
 
-- `tests/ingest/fixtures/eredes/nov1_window_json.body` — UNMODIFIED raw-store bytes of
+- `tests/ingest/fixtures/eredes/nov1_window_json.body` - UNMODIFIED raw-store bytes of
   raw_fetch id 216; URL/params/fetched_at/status/sha/bytes copied verbatim from the run DB
   (no invented timestamp).
-- `tests/ingest/fixtures/eredes/nov1_window_csv.body` — ONE fresh capture of the same day on
+- `tests/ingest/fixtures/eredes/nov1_window_csv.body` - ONE fresh capture of the same day on
   the verifier channel (exports/csv, lang=pt & timezone=UTC & where=Nov 1): HTTP 200, 8143 B
   of the 200 KB cap, 0.411 s of the 20 s deadline, timeout 10 s, 0 retries;
   sha b5c7e77d…, fetched 2026-11-12T21:47:14Z.
-- `MANIFEST.json` — addendum only (`addendum_2026-11-12_nov1_duplicates` + two new sets);
+- `MANIFEST.json` - addendum only (`addendum_2026-11-12_nov1_duplicates` + two new sets);
   no previous set was rewritten.
 - Ground truth (asserted in tests): 97 rows per channel, identical stamp sets, byte-identical
   value tokens; 89 unique stamps + 4 doubled stamps (consecutive copies, conflicting values).

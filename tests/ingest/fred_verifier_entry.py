@@ -7,7 +7,7 @@ from ingest.verifiers.fred import FredVerifier
 from tests.ingest.fred_fixtures import active_specs, table_values
 from tests.ingest.fred_verifier_fixtures import TableFixtureHttp
 
-# (registry id, period) — every run() assertion re-derives the expected token from the
+# (registry id, period) - every run() assertion re-derives the expected token from the
 # archived table bytes via the test-only extractor; nothing is hardcoded from the collector.
 CASES = [
     ("fred.aluminum.WORLD", "1992-01"),          # first published month

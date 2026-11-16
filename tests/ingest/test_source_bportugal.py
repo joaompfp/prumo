@@ -1,4 +1,4 @@
-"""Banco de Portugal (BPstat) source adapter tests — real recorded JSON-stat fixtures
+"""Banco de Portugal (BPstat) source adapter tests - real recorded JSON-stat fixtures
 (tests/ingest/fixtures/bportugal/, 2026-11-11). Named expectations were cross-checked against
 the portal's own /api/observations/ channel (see fixtures/bportugal/verify/MANIFEST.json).
 """
@@ -22,7 +22,7 @@ from tests.ingest.bportugal_fixtures import (
     specs_of,
 )
 
-# Named cells: (series id, period, publisher token) — every row cross-checked against the
+# Named cells: (series id, period, publisher token) - every row cross-checked against the
 # portal channel /api/observations/ recorded reply (fixtures/bportugal/verify/).
 EXPECTED = {
     ("bportugal.euribor_1m.EA", "1994-01"): ("7.1200", "normal"),
@@ -253,7 +253,7 @@ def test_fetch_asks_each_dataset_once_with_decimal_and_sorted_ids():
 
 def test_fetch_without_configured_timeout_keeps_legacy_signature():
     """bportugal registry has no timeout_s: get() must be called WITHOUT the timeout kwarg,
-    so older Http doubles (3-parameter get) keep working — the INE pattern."""
+    so older Http doubles (3-parameter get) keep working - the INE pattern."""
     from ingest.http import HttpResult
 
     class ThreeParamDouble:
@@ -317,7 +317,7 @@ def _alias_payload(alias: str) -> bytes:
 def test_sparse_noncanonical_alias_keys_raise(alias):
     """'00' and '0' address the SAME cell: accepting both silently overwrites data (review
     finding, 2026-11-11: _cells_column({'0': '1.10', '00': '2.20'}, ...) kept only '2.20').
-    Only the canonical ASCII decimal spelling of a flat index is legal — no leading zeros,
+    Only the canonical ASCII decimal spelling of a flat index is legal - no leading zeros,
     signs, whitespace, Unicode digit aliases or other int() foldings."""
     with pytest.raises(ValueError, match="sparse value key"):
         _parse_payload(_alias_payload(alias))

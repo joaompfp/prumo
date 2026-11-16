@@ -74,7 +74,7 @@ def test_detail_shows_exact_value_text_and_calculated_badge(make_env):
     assert r.status_code == 200
     html = r.text
     assert "Variação homóloga (%), calculada pelo Prumo a partir de s1" in html
-    assert "Fake publisher — Calculado pelo Prumo" in html
+    assert "Fake publisher - Calculado pelo Prumo" in html
     served = re.findall(r'<tr class="served-row">(.*?)</tr>', html, re.S)
     assert len(served) == 1
     assert f"3.5000 {BADGE}" in served[0]

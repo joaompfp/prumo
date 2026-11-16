@@ -1,4 +1,4 @@
-# Historical Energy Prices — Research Summary
+# Historical Energy Prices - Research Summary
 
 > Mário J. S. Brito | 2022-10-18
 > Source PDF: HistoricalEnergyPricesfortheEuropeanUnionandUnitedStatesofAmerica.pdf

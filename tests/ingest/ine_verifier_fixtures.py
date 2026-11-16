@@ -40,7 +40,7 @@ def _tuplify(x):
 class VerifyFixtureHttp:
     """Serves the recorded verifier-channel bodies. A page GET routes by indicator code; a
     selection GET routes by the exact cut it asks for (period label + pinned codes parsed from
-    xmlDocHidden) — an unrecorded cut fails the test. The Referer header is mandatory, like on
+    xmlDocHidden) - an unrecorded cut fails the test. The Referer header is mandatory, like on
     the real server. `override` maps a case name to replacement bytes (tampering tests)."""
 
     def __init__(self, override: dict[str, bytes] | None = None,

@@ -2,7 +2,7 @@
 
     collector: keyless API v2 JSON
         api.worldbank.org/v2/country/<geos>/indicator/<CODE>?format=json&per_page=20000
-    verifier:  the publisher's genuine BULK CSV ZIP EXPORT — a different endpoint family AND a
+    verifier:  the publisher's genuine BULK CSV ZIP EXPORT - a different endpoint family AND a
         different (CSV table inside a ZIP archive) serialization, not a JSON re-serialization:
         GET https://api.worldbank.org/v2/<lang>/indicator/<CODE>?downloadformat=csv
         (HTTP 200 application/zip; the 'en' archives were recorded 2026-11-11 in
@@ -19,7 +19,7 @@ the chosen locale and the served archive (crossed locale, foreign member names, 
 fails closed, and a language outside the allowlist fails at construction before any request.
 Task 17A adds one reviewed extension: an optional per-indicator locale map
 (`WorldBankVerifier(indicator_locales={<CODE>: <lang>})`), same allowlisted endpoints/parsers,
-validated and copied at construction, with no automatic fallback between locales — an indicator
+validated and copied at construction, with no automatic fallback between locales - an indicator
 absent from the map simply uses the instance's csv_language.
 
 Channel mechanics (from the archived bytes):
@@ -53,7 +53,7 @@ Channel mechanics (from the archived bytes):
 
 EVIDENCE (Ruling R/AC/G7): the ONE deciding ZIP response per (item, indicator) is archived in
 a versioned JSON envelope ('worldbank-csv-evidence' v1: {"responses": [{"url", "status",
-"body_base64"}]}) — exact bytes, FINAL url and ACTUAL http status, byte-for-byte recoverable
+"body_base64"}]}) - exact bytes, FINAL url and ACTUAL http status, byte-for-byte recoverable
 from the raw store without HTTP. The envelope format is module-local (no shared code with the
 collector); one ZIP is fetched per indicator per check() call (in-memory cache only, never
 persisted).
@@ -76,7 +76,7 @@ from ingest.verifiers import BlindItem, ItemResult, VerifierUnavailable
 
 # The ONLY admitted export locales of the SAME publisher per-indicator CSV exporter:
 # language -> (exact URL template, expected localized Data Source title of the archive).
-# Extending this is an explicit, reviewed change — never a runtime parameter.
+# Extending this is an explicit, reviewed change - never a runtime parameter.
 CSV_LANGUAGES: dict[str, tuple[str, str]] = {
     "en": ("https://api.worldbank.org/v2/en/indicator/{code}?downloadformat=csv",
            "World Development Indicators"),
@@ -134,7 +134,7 @@ def _indicator_of(code: str | None) -> tuple[str, str]:
 
 def _envelope(url: str, status: int, body: bytes) -> bytes:
     """The evidence bytes of one item: the ONE deciding CSV ZIP response in a versioned JSON
-    envelope — final URL, ACTUAL http status (recorded from the received HttpResult, never
+    envelope - final URL, ACTUAL http status (recorded from the received HttpResult, never
     implied) and the raw archive byte-for-byte (base64)."""
     doc = {"schema": EVIDENCE_SCHEMA, "version": EVIDENCE_VERSION,
            "responses": [{"url": url, "status": status,
@@ -162,7 +162,7 @@ def _member_patterns(code: str, language: str) -> tuple:
     """Exact full-name patterns of the THREE members of one locale's export: the main data CSV
     and the two metadata companions, each `..._DS2_<language>_csv_v2_<rev>.csv` with the
     revision number captured; the three revisions must be ONE (checked by _read_export). A
-    member outside this exact identity — another locale, another exporter layout — is drift."""
+    member outside this exact identity - another locale, another exporter layout - is drift."""
     c, lang = re.escape(code), re.escape(language)
     return (re.compile(rf"API_{c}_DS2_{lang}_csv_v2_(\d+)\.csv"),
             re.compile(rf"Metadata_Indicator_API_{c}_DS2_{lang}_csv_v2_(\d+)\.csv"),
@@ -287,7 +287,7 @@ class WorldBankVerifier:
     CSV_LANGUAGES allowlist; the default 'en' is the original behavior. An unknown language is
     rejected HERE, at construction, before any request; a served archive that does not carry
     that locale's identity (URL/title/DS2_<lang> member names with one shared revision) fails
-    closed — no fallback, no retry, no request rewriting.
+    closed - no fallback, no retry, no request rewriting.
 
     indicator_locales: optional EXPLICIT per-indicator overrides {WDI indicator code: locale}
     (Task 17A; the reviewed recovery mapping lives in ingest.operations). Both keys and values

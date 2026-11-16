@@ -1,4 +1,4 @@
-# PROVISIONAL — owner review pending
+# PROVISIONAL - owner review pending
 
 # Overlapping indicators
 

@@ -16,7 +16,7 @@ Registry contract (`SeriesSpec.native_code`):
     ElectricityMarketPricesMonthly:PT.Preço Médio    (the price series)
 
 `SeriesSpec.url` is the series' public portal page. One request per (endpoint, month); the
-default period range is the last 13 COMPLETED months (the running month is never requested —
+default period range is the last 13 COMPLETED months (the running month is never requested -
 it is partial and unpublished months answer 404). REN's terms are restrictive (registry: the
 source stays redistribution_ok=false): this adapter collects for internal verification only and
 the 0005 serving licence gate keeps verified data withheld.
@@ -33,11 +33,11 @@ Response shapes (fail-closed):
     leave this module only as plain str. The selected types must each appear exactly once;
     UNSELECTED type rows (e.g. retired CARVAO in 2010) are skipped, never rejected for not
     being in our map.
-  prices: a JSON object with exactly one key — the lowercase Portuguese month name ("setembro")
-    cross-checked against the requested month — whose block holds per-country dicts
+  prices: a JSON object with exactly one key - the lowercase Portuguese month name ("setembro")
+    cross-checked against the requested month - whose block holds per-country dicts
     {"PT": {"Fora Vazio": ..., "Preço Médio": ..., "Vazio": ...}, "ES": {...}} plus the observed
     sibling surfaces 'Separação de mercados [%]' and 'Capacidade [MW]' (Importação/Exportação).
-  unpublished month: HTTP 404 {"message":"No data available"} — fail closed like every non-2xx.
+  unpublished month: HTTP 404 {"message":"No data available"} - fail closed like every non-2xx.
 
 Raises on: markup/invalid JSON, duplicate JSON keys, wrong top-level structure, missing/unknown
 entry fields, quoted (JSON string) or non-numeric value tokens, numeric or duplicate type
@@ -111,7 +111,7 @@ def completed_months(today: date, count: int = DEFAULT_MONTHS) -> list[str]:
 
 def _period_of(params: dict | None, url: str) -> str:
     """The month a response answers for, from the request that produced it (the balance/price
-    payloads carry NO period surface of their own — REN pins the month only in the request, so
+    payloads carry NO period surface of their own - REN pins the month only in the request, so
     the period is the validated request, never a guess from the payload)."""
     if not isinstance(params, dict):
         raise ValueError(f"REN response for {url!r} carries no request params: the period is "
@@ -231,7 +231,7 @@ def parse_prices_body(body: bytes, period: str) -> str:
 
 class RenSource:
     """REN servicebus JSON source. `periods` (constructor) makes the requested month range
-    explicit and reproducible; the default is the last 13 COMPLETED months at construction —
+    explicit and reproducible; the default is the last 13 COMPLETED months at construction -
     the running month is never requested (partial/unpublished data answers 404)."""
 
     name = "ren"

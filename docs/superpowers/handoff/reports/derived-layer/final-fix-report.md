@@ -1,4 +1,4 @@
-# Final-review fix round — derived layer v1
+# Final-review fix round - derived layer v1
 
 Branch `pipeline-rebuild`, from fcf2490. One round, no subagents. Commits, in order:
 
@@ -13,7 +13,7 @@ The coordinator's correction to HANDOFF item (d) arrived before any doc was writ
 
 ## Per finding
 
-### I1 — redefined derived key must not stop the worker
+### I1 - redefined derived key must not stop the worker
 - `ingest/scheduler.py:289` new `_sync_derived_or_log`, called at `:307` in place of the bare `sync_derived`. On `ValueError` it logs ONE record through the existing `_derive_record` (`:135`, `group` now `str | None`): `{"event": "derive", "group": null, "state": "error", "detail": "ValueError: ..."}`. Then base refresh continues. `upsert_derived_series` runs in one transaction, so nothing is written and derive keeps using the definitions stored in the DB. Scheduler state and exit code are untouched.
 - `ingest/cli.py:574`: the `ValueError` from `sync_derived` prints `derive refused: <message>` (one line, `_one_line` at `:542`) and exits 2. The catch covers only `sync_derived`, so a `ValueError` from `run_derive` keeps its existing behaviour.
 - Tests:
@@ -22,7 +22,7 @@ The coordinator's correction to HANDOFF item (d) arrived before any doc was writ
   - Both failed before the fix with the reviewer's `ValueError`.
 - Docs: `docs/data/operations.md` "Known limitations" gets one bullet. It also notes that a NEW key added in the same edit is not synced until the edit is reverted, because the whole sync rolls back.
 
-### I2 — deploy order includes `prumo`
+### I2 - deploy order includes `prumo`
 - `docs/data/operations.md` (Derived layer → Known limitations → Deploy order): `bash -lic "dc-web-up prumo-ingest"` (migrates 0014), then `bash -lic "dc-web-up prumo"`, then `bash -lic "dc-web-up prumo-backoffice"`, with the reason (one image; old code refuses a 0014 DB).
 - "After deploy" names a container for each check:
   - `status` in `prumo`;
@@ -32,7 +32,7 @@ The coordinator's correction to HANDOFF item (d) arrived before any doc was writ
 - `docs/superpowers/handoff/HANDOFF.md`: same order and checks in the derived paragraph.
 - No raw `docker compose` or `docker run` was added. `tests/test_docker_contract.py` and `tests/test_manual_runbook.py` pass.
 
-### I3 — derived read cost must not grow with base history
+### I3 - derived read cost must not grow with base history
 1. **View** `ingest/migrations/0014_derived_layer.sql:202` (the header comment, section 3, is rewritten too).
    - The new view is a plain join `derived_series ds ⋈ derived_observation d ⋈ series ⋈ source`, filtered by `ds.active = 1` and:
      `CASE WHEN d.id = (SELECT c.id FROM derived_observation c JOIN derived_run r ON r.id = c.run_id AND r.state='verified' WHERE c.derived_series_id = d.derived_series_id AND c.period = d.period AND c.state='match' ORDER BY c.id DESC LIMIT 1) THEN NOT EXISTS(<input not served as fetched of the base>) ELSE 0 END`.
@@ -66,10 +66,10 @@ The coordinator's correction to HANDOFF item (d) arrived before any doc was writ
    - `methodology.md` "Derived values → Serving" is rewritten.
    - M2: "Then run `derive`" with the exact command after the withdraw block and after the manual-import resume block.
 
-### M1 — `derive` and `sqlite3.OperationalError`
+### M1 - `derive` and `sqlite3.OperationalError`
 `ingest/cli.py:579`: `derive refused: <message>` on one line, exit 2. Test: `test_derive_run.py:503` `test_cli_database_locked_exits_2_with_one_line`; it monkeypatches `run_derive` to raise `database is locked`.
 
-### M5 — verifier parser
+### M5 - verifier parser
 - `ingest/derive_verify.py:19,23` has its own regex: optional sign; then either 1–3 digits followed by groups of exactly 3 with one separator throughout (`,`, space, NBSP, NNBSP), or plain digits; then an optional `.digits`. Only those three spaces are trimmed at the ends, as `parse_decimal` does.
 - It still imports no `decimal`, `ingest.derive` or `ingest.models`; the existing AST test still passes.
 - Tests:
@@ -77,7 +77,7 @@ The coordinator's correction to HANDOFF item (d) arrived before any doc was writ
   - `test_derive_verify.py:110` is a seeded fuzz over about 60k tokens from `0-9 , . + - spaces` plus grouped tokens. It requires the verifier to accept exactly the tokens `parse_decimal` accepts, with equal values; more than 1,000 tokens are accepted.
 
 ### M9 and HANDOFF owner decisions
-- `HANDOFF.md`: backoffice v1.1 → "migration 0015 — 0014 is the derived layer".
+- `HANDOFF.md`: backoffice v1.1 → "migration 0015 - 0014 is the derived layer".
 - Open owner decisions now list (d) first, with the corrected 2026-11-15 production numbers, and then (a), (b) and (c) as briefed.
 
 ## Timings (same machine, best of 2)
@@ -89,7 +89,7 @@ Scenario: the reviewer's production copy (`final-review/prod.sqlite3`, 1–2 vin
 | `SELECT COUNT(*) FROM served_derived` | 0.099 s | 0.080 s | 8.851 s | 1.352 s |
 | `derived_status_rows` | 0.127 s | 0.092 s | 15.924 s | 1.745 s |
 | `build_status` | 2.179 s | 2.126 s | 18.800 s | 4.582 s |
-| `build_status`, base only (reference) | — | 1.943 s | — | 2.784 s |
+| `build_status`, base only (reference) | - | 1.943 s | - | 2.784 s |
 | one key `served_derived_rows(…, 500)` | 0.208 s | 0.012 s | 17.884 s | 0.092 s |
 | `derived_rows_of_series(…, 200)` | 0.113 s | 0.005 s | 9.043 s | 0.046 s |
 

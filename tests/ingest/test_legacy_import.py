@@ -132,7 +132,7 @@ def test_legacy_suspect_unit_scale_quarantined_not_rescaled(db, tmp_path):
     """Task 10 review I3: the legacy store's INE exports/imports rows for 2005-01..2024-12 are
     MILLION euros filed under unit 'EUR' (live INE publishes EUR; the registry unit 'EUR' is
     correct for live data). Those rows are quarantined with the legacy-only reason
-    suspect_unit_scale — never rescaled (a 10^6 factor on legacy cells would be fabricated data)
+    suspect_unit_scale - never rescaled (a 10^6 factor on legacy cells would be fabricated data)
     and never served."""
     exports = ine_spec("exports_monthly", unit="EUR")
     imports = ine_spec("imports_monthly", unit="EUR")

@@ -8,7 +8,7 @@ or shared-doc edits. Targeted offline tests and adversarial probes only (scratch
 `~/.cache/../.hermes/cache/scratch/t16-spec-review-m0xk9/`, i.e. uniquely named under
 `/home/joao/.hermes/cache/scratch`). Controller is running the fresh whole suite; the claimed
 "1231 passed" was not re-verified here and the live E-REDES gate remains controller-owned and
-unrun — this verdict addresses **code acceptance only**, not live acceptance.
+unrun - this verdict addresses **code acceptance only**, not live acceptance.
 
 ## What was verified as compliant
 
@@ -53,7 +53,7 @@ unrun — this verdict addresses **code acceptance only**, not live acceptance.
 
 ## Spec gaps requiring changes
 
-### R1 — Common migrator's integrity check is not atomic and silently disables itself afterwards
+### R1 - Common migrator's integrity check is not atomic and silently disables itself afterwards
 
 Contract (controller review spec): the common migrator must **fail atomically on constraints,
 not leave a corrupt applied migration if the integrity check detects failure**.
@@ -66,18 +66,18 @@ Evidence in code (`ingest/db.py`):
   corrupt migration is recorded.
 
 Adversarial probe (scratch `t16-spec-review-m0xk9/probe3.db`, synthetic `0007_bad.sql` inserting
-a `series` row with `source_id=999` — invisible to triggers, allowed under FK-OFF):
+a `series` row with `source_id=999` - invisible to triggers, allowed under FK-OFF):
 first `open_db` raised `RuntimeError: foreign key violations after migration`, but the corrupt
 row **and** the `0007_bad` record in `schema_migration` were already committed; the **second**
 `open_db` then succeeded with the corruption intact, because `pending` was empty and no check
 ran. The safety mechanism therefore detects failure exactly once, leaves the corrupt migration
-applied and recorded, and never re-checks — precisely the non-atomic outcome the spec forbids.
+applied and recorded, and never re-checks - precisely the non-atomic outcome the spec forbids.
 (Failure requires a buggy future migration, but 0006's FK-OFF rebuild makes that reachable; the
 check exists to catch exactly this.) Fix direction (not applied): run the integrity check inside
 each migration's transaction before COMMIT, or wrap the pending set + check in one outer
 transaction so failure rolls back the `schema_migration` record too.
 
-### R2 — `normalize_period` PT15M arm silently accepts non-ASCII / non-canonical spellings via `_fold`
+### R2 - `normalize_period` PT15M arm silently accepts non-ASCII / non-canonical spellings via `_fold`
 
 Contract (brief §"Frequency"): single canonical UTC spelling, **ASCII digits required**,
 non-canonical spellings rejected rather than guessed; the module comment claims
@@ -87,7 +87,7 @@ Evidence (`ingest/models.py`): the PT15M pattern (lines 37-38) is matched agains
 `text = _fold(raw)` (line 46), where `_fold` applies NFKD + lower + strip. Consequences,
 probe-verified:
 - `'２０２６-１１-１０Ｔ２３：４５：００＋００：００'` (fullwidth digits/colon/plus) is
-  **accepted** and canonicalized to `2026-11-10T23:45:00+00:00` — non-ASCII digits normalized
+  **accepted** and canonicalized to `2026-11-10T23:45:00+00:00` - non-ASCII digits normalized
   instead of rejected, contradicting both the brief and the inline comment.
 - Lowercase `'…t23:45:00+00:00'` and surrounding whitespace (`'…+00:00 '`) are also accepted
   (the case fold is documented in the implementation report; the digit/whitespace folds are not
@@ -102,7 +102,7 @@ match the PT15M pattern against the raw string (skip `_fold`) or assert `raw == 
 
 ## Process notes (not code findings)
 
-- TDD "failing tests before implementation" cannot be evidenced from history — tests and
+- TDD "failing tests before implementation" cannot be evidenced from history - tests and
   implementation share each slice commit. Unverifiable, not asserted as a violation.
 - The "1231 passed" full-suite claim was not re-run here by instruction; targeted offline suites
   (173 tests) pass. Live acceptance (fresh E-REDES portal fetch/verify) is controller-owned,

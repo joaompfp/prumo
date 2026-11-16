@@ -295,7 +295,7 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
                                        (y_of(b, lo_b, hi_b), token_b, labels[1],
                                         unit_b or unit_a)):
             parts.append(f'<circle class="chart-point" cx="{cx}" cy="{round(cy, 1)}" r="7">'
-                         f'<title>{escape(label)} — {escape(format_period(period, frequency))}: '
+                         f'<title>{escape(label)} - {escape(format_period(period, frequency))}: '
                          f'{escape(format_value(token))} {escape(unit)}</title></circle>')
 
     # One label per line; when the two ends sit close, the second is dropped and the legend

@@ -1,4 +1,4 @@
-# Painel — Auditoria de Indicadores (ótica cidadão)
+# Painel - Auditoria de Indicadores (ótica cidadão)
 
 **Data:** 2026-02-28  
 **Objectivo:** Identificar indicadores relevantes para o quotidiano do cidadão, hoje ausentes do Painel (dashboard `/api/resumo`).
@@ -30,10 +30,10 @@
 
 | Source/Indicator | Label | Unit | Recomendação |
 |---|---|---|---|
-| `DGEG/price_diesel` | Preço Gasóleo | €/l | **Alta** — custo transporte e famílias |
-| `DGEG/price_gasoline_95_pvp` | Preço Gasolina 95 | €/l | **Alta** — custo mobilidade quotidiana |
-| `ERSE/btn_simple` | Tarifa BTN Simples | €/kWh | **Alta** — custo electricidade doméstica (vs MIBEL industrial) |
-| `DGEG/industrial_band_ic_incl_taxes` | Electricidade Industrial (IC) | €/kWh | Média — comparação indústria/doméstico |
+| `DGEG/price_diesel` | Preço Gasóleo | €/l | **Alta** - custo transporte e famílias |
+| `DGEG/price_gasoline_95_pvp` | Preço Gasolina 95 | €/l | **Alta** - custo mobilidade quotidiana |
+| `ERSE/btn_simple` | Tarifa BTN Simples | €/kWh | **Alta** - custo electricidade doméstica (vs MIBEL industrial) |
+| `DGEG/industrial_band_ic_incl_taxes` | Electricidade Industrial (IC) | €/kWh | Média - comparação indústria/doméstico |
 
 **Justificação:**  
 Os preços dos combustíveis e a tarifa doméstica de electricidade afectam directamente o orçamento familiar. O Painel actual mostra o preço MIBEL (mercado grossista), irrelevante para o consumidor final.
@@ -44,11 +44,11 @@ Os preços dos combustíveis e a tarifa doméstica de electricidade afectam dire
 
 | Source/Indicator | Label | Unit | Recomendação |
 |---|---|---|---|
-| `BPORTUGAL/euribor_12m` | Euribor 12 meses | % | **Muito Alta** — indexante de crédito habitação |
-| `BPORTUGAL/euribor_3m` | Euribor 3 meses | % | Alta — indexante alternativo |
-| `BPORTUGAL/credit_housing` | Crédito à Habitação (stock) | M€ | Média — endividamento total |
-| `BPORTUGAL/credit_consumer` | Crédito ao Consumo (stock) | M€ | Média — endividamento famílias |
-| `BPORTUGAL/spread_pt_de` | Spread Portugal-Alemanha | p.b. | Baixa — indicador macro, pouco intuitivo para cidadão |
+| `BPORTUGAL/euribor_12m` | Euribor 12 meses | % | **Muito Alta** - indexante de crédito habitação |
+| `BPORTUGAL/euribor_3m` | Euribor 3 meses | % | Alta - indexante alternativo |
+| `BPORTUGAL/credit_housing` | Crédito à Habitação (stock) | M€ | Média - endividamento total |
+| `BPORTUGAL/credit_consumer` | Crédito ao Consumo (stock) | M€ | Média - endividamento famílias |
+| `BPORTUGAL/spread_pt_de` | Spread Portugal-Alemanha | p.b. | Baixa - indicador macro, pouco intuitivo para cidadão |
 
 **Justificação:**  
 A Euribor 12m é o **indexante dominante** do crédito habitação em Portugal. Com ~2,5M de portugueses com empréstimo para casa, a Euribor afecta directamente a prestação mensal. É **o indicador financeiro mais relevante para o cidadão** após a inflação.
@@ -59,7 +59,7 @@ A Euribor 12m é o **indexante dominante** do crédito habitação em Portugal. 
 
 | Source/Indicator | Label | Unit | Recomendação |
 |---|---|---|---|
-| `INE/wages_industry_cae` | Salários na Indústria | Índice 2021=100 | Média — limitado ao sector industrial, formato índice |
+| `INE/wages_industry_cae` | Salários na Indústria | Índice 2021=100 | Média - limitado ao sector industrial, formato índice |
 
 **Justificação:**  
 O indicador existe mas é **insuficiente**:
@@ -75,10 +75,10 @@ O indicador existe mas é **insuficiente**:
 
 | Source/Indicator | Label | Unit | Recomendação |
 |---|---|---|---|
-| `FRED/wheat` | Trigo | USD/bushel | Baixa — preço internacional, pouco directo |
+| `FRED/wheat` | Trigo | USD/bushel | Baixa - preço internacional, pouco directo |
 | `FRED/corn` | Milho | USD/bushel | Baixa |
 | `FRED/coffee` | Café | USD/lb | Baixa |
-| `FRED/brent_oil` | Petróleo Brent | USD/bbl | Média — afecta combustíveis, mas indirecto |
+| `FRED/brent_oil` | Petróleo Brent | USD/bbl | Média - afecta combustíveis, mas indirecto |
 
 **Justificação:**  
 Os preços internacionais de commodities **afectam a inflação alimentar**, mas são indicadores **indirectos**. O cidadão sente o impacto via **cesta de compras** (IHPC), já presente no Painel. Incluir commodities seria **duplicação** sem valor acrescentado para o cidadão.
@@ -89,10 +89,10 @@ Os preços internacionais de commodities **afectam a inflação alimentar**, mas
 
 | Source/Indicator | Label | Unit | Recomendação |
 |---|---|---|---|
-| *(nenhum)* | — | — | **Gap crítico** — falta Índice de Preços da Habitação |
+| *(nenhum)* | - | - | **Gap crítico** - falta Índice de Preços da Habitação |
 
 **Justificação:**  
-O stock de crédito habitação existe na DB, mas **falta o preço das casas**. O INE publica o **Índice de Preços da Habitação (IPHab)** trimestralmente — indicador essencial para avaliar acessibilidade habitacional.
+O stock de crédito habitação existe na DB, mas **falta o preço das casas**. O INE publica o **Índice de Preços da Habitação (IPHab)** trimestralmente - indicador essencial para avaliar acessibilidade habitacional.
 
 ---
 
@@ -100,16 +100,16 @@ O stock de crédito habitação existe na DB, mas **falta o preço das casas**. 
 
 | Indicador | Fonte | URL | Frequência | Prioridade |
 |---|---|---|---|---|
-| **Taxa média crédito habitação** | Banco de Portugal — Estatísticas de crédito | [BPstat — Taxas de juro](https://bpstat.bportugal.pt/serie/12688208) | Mensal | **Muito Alta** |
-| **Índice de Preços da Habitação (IPHab)** | INE — Índice de Preços da Habitação | [INE — IPHab](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0011208) | Trimestral | **Muito Alta** |
-| **Salário médio mensal (bruto)** | INE — Inquérito aos Ganhos e Duração do Trabalho | [INE — Ganhos](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0001069) | Anual | **Alta** |
-| **Inflação core (excl. energia e alimentação)** | INE — IHPC subjacente | [INE — IHPC core](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0008601) | Mensal | Alta |
-| **Taxa de poupança das famílias** | INE — Contas Nacionais Trimestrais | [INE — CNT](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cnacionais) | Trimestral | Média |
-| **Confiança do consumidor** | INE — Inquérito de Conjuntura aos Consumidores | [INE — ICC](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0008495) | Mensal | Média |
-| **Salário real (poder de compra)** | Calculado: `wages_nominal / IHPC` | — | Mensal (após recolher wage nominal) | **Alta** |
+| **Taxa média crédito habitação** | Banco de Portugal - Estatísticas de crédito | [BPstat - Taxas de juro](https://bpstat.bportugal.pt/serie/12688208) | Mensal | **Muito Alta** |
+| **Índice de Preços da Habitação (IPHab)** | INE - Índice de Preços da Habitação | [INE - IPHab](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0011208) | Trimestral | **Muito Alta** |
+| **Salário médio mensal (bruto)** | INE - Inquérito aos Ganhos e Duração do Trabalho | [INE - Ganhos](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0001069) | Anual | **Alta** |
+| **Inflação core (excl. energia e alimentação)** | INE - IHPC subjacente | [INE - IHPC core](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0008601) | Mensal | Alta |
+| **Taxa de poupança das famílias** | INE - Contas Nacionais Trimestrais | [INE - CNT](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_cnacionais) | Trimestral | Média |
+| **Confiança do consumidor** | INE - Inquérito de Conjuntura aos Consumidores | [INE - ICC](https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0008495) | Mensal | Média |
+| **Salário real (poder de compra)** | Calculado: `wages_nominal / IHPC` | - | Mensal (após recolher wage nominal) | **Alta** |
 
 **Notas técnicas:**
-- **Taxa crédito habitação:** série `12688208` no BPstat — taxa média ponderada novos contratos, habitação própria permanente
+- **Taxa crédito habitação:** série `12688208` no BPstat - taxa média ponderada novos contratos, habitação própria permanente
 - **IPHab:** série trimestral, índice 2015=100, cobre preços de transacção (não avaliação bancária)
 - **Salário médio:** INE só publica anualmente via inquérito aos ganhos; dado **não está disponível em frequência mensal**
 - **Inflação core:** IHPC excluindo produtos energéticos e alimentares não transformados (volatilidade alta)
@@ -121,7 +121,7 @@ O stock de crédito habitação existe na DB, mas **falta o preço das casas**. 
 ### 1. **Euribor 12 meses** (já na DB: `BPORTUGAL/euribor_12m`)
 - **Porquê:** Afecta directamente a prestação mensal de ~2,5M de portugueses com crédito habitação
 - **Formato:** `X.XX%` + variação anual em pp
-- **Contexto:** "Subiu 0.3 pp face ao ano anterior — prestação de €800/mês sobe ~€24"
+- **Contexto:** "Subiu 0.3 pp face ao ano anterior - prestação de €800/mês sobe ~€24"
 
 ### 2. **Taxa média crédito habitação** (a recolher: BdP série 12688208)
 - **Porquê:** Taxa efectiva paga nos novos contratos (Euribor + spread bancário)
@@ -129,7 +129,7 @@ O stock de crédito habitação existe na DB, mas **falta o preço das casas**. 
 - **Contexto:** "Taxa média novos contratos: 4.2% (Euribor 3.1% + spread 1.1%)"
 
 ### 3. **Preço combustíveis** (já na DB: `DGEG/price_diesel` ou `price_gasoline_95_pvp`)
-- **Porquê:** Mobilidade quotidiana — afecta orçamento familiar e transportes
+- **Porquê:** Mobilidade quotidiana - afecta orçamento familiar e transportes
 - **Formato:** `€X.XXX/litro` + variação mensal
 - **Contexto:** "Gasóleo: €1.652/l (↑ €0.05 vs mês anterior)"
 - **Decisão:** Mostrar **gasóleo** (mais representativo: comerciais + parte das famílias)
@@ -140,15 +140,15 @@ O stock de crédito habitação existe na DB, mas **falta o preço das casas**. 
 - **Contexto:** "Tarifa BTN: €0.1842/kWh (família média 200 kWh/mês = €36.84)"
 
 ### 5. **Índice de Preços da Habitação** (a recolher: INE IPHab)
-- **Porquê:** Acessibilidade habitacional — problema estrutural em Portugal
+- **Porquê:** Acessibilidade habitacional - problema estrutural em Portugal
 - **Formato:** `Índice 2015=100` + variação anual
 - **Contexto:** "Preços habitação: 145.2 (↑ 8.3% vs ano anterior)"
 - **Limitação:** Trimestral (não mensal)
 
 ### 6. **Salário real / Poder de compra** (a recolher: wage nominal + calcular)
-- **Porquê:** Indicador-síntese do nível de vida — salário ajustado pela inflação
+- **Porquê:** Indicador-síntese do nível de vida - salário ajustado pela inflação
 - **Formato:** `Índice 2021=100` + variação anual
-- **Contexto:** "Poder de compra: 98.5 (↓ 1.5% vs ano anterior — salários não acompanham inflação)"
+- **Contexto:** "Poder de compra: 98.5 (↓ 1.5% vs ano anterior - salários não acompanham inflação)"
 - **Limitação:** INE só publica salários **anualmente** (inquérito aos ganhos)
 - **Alternativa curto prazo:** Mostrar `INE/wages_industry_cae` ajustado pela inflação (apenas indústria)
 
@@ -159,12 +159,12 @@ O stock de crédito habitação existe na DB, mas **falta o preço das casas**. 
 ### Bloco A: Macro Cidadão (6)
 1. **Desemprego** (mantém actual)
 2. **Inflação** (mantém actual)
-3. **Euribor 12m** (novo — crédito habitação)
-4. **Preço Gasóleo** (novo — mobilidade)
-5. **Tarifa Electricidade BTN** (novo — energia doméstica)
-6. **Índice Preços Habitação** (novo — acessibilidade)
+3. **Euribor 12m** (novo - crédito habitação)
+4. **Preço Gasóleo** (novo - mobilidade)
+5. **Tarifa Electricidade BTN** (novo - energia doméstica)
+6. **Índice Preços Habitação** (novo - acessibilidade)
 
-### Bloco B: Indústria (2 — mantém foco CAE)
+### Bloco B: Indústria (2 - mantém foco CAE)
 7. **Produção Industrial** (mantém)
 8. **Confiança Industrial** (mantém)
 
@@ -183,10 +183,10 @@ Se João preferir **manter 6 KPIs** mas reorientar para cidadão:
 
 1. **Desemprego** (mantém)
 2. **Inflação** (mantém)
-3. **Euribor 12m** (novo — substitui `spread_pt_de`)
-4. **Preço Gasóleo** (novo — substitui `energy_cost MIBEL`)
-5. **Produção Industrial** (mantém — relevância CAE)
-6. **Confiança Industrial** (mantém — expectativas económicas)
+3. **Euribor 12m** (novo - substitui `spread_pt_de`)
+4. **Preço Gasóleo** (novo - substitui `energy_cost MIBEL`)
+5. **Produção Industrial** (mantém - relevância CAE)
+6. **Confiança Industrial** (mantém - expectativas económicas)
 
 **Racional:**  
 - Mantém estrutura 6 KPIs actual
@@ -199,9 +199,9 @@ Se João preferir **manter 6 KPIs** mas reorientar para cidadão:
 
 1. **Decisão João:** Painel 8 KPIs (6 cidadão + 2 indústria) ou 6 KPIs híbrido?
 2. **Recolha dados em falta:**
-   - Taxa crédito habitação (BdP série 12688208) — script `collectors/bportugal_mortgage_rate.py`
-   - Índice Preços Habitação (INE IPHab) — script `collectors/ine_housing_prices.py`
-   - Inflação core (INE IHPC subjacente) — extensão `collectors/ine.py`
+   - Taxa crédito habitação (BdP série 12688208) - script `collectors/bportugal_mortgage_rate.py`
+   - Índice Preços Habitação (INE IPHab) - script `collectors/ine_housing_prices.py`
+   - Inflação core (INE IHPC subjacente) - extensão `collectors/ine.py`
 3. **Actualizar `resumo.py`:**
    - Adicionar novos KPIs seleccionados
    - Ajustar lógica de contexto para indicadores financeiros (Euribor, taxas)

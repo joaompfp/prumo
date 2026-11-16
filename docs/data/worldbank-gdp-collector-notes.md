@@ -1,4 +1,4 @@
-# WorldBank GDP per capita PPP — Collector Notes
+# WorldBank GDP per capita PPP - Collector Notes
 
 **Date:** 2026-02-28  
 **Purpose:** Document WorldBank collector for implementing `gdp_per_capita_ppp` indicator  
@@ -213,7 +213,7 @@ PPP is the correct metric for cross-country wealth comparison on the CAE Dashboa
 
 **Task checklist:**
 
-1. ✅ Verify API access (done by Scout — all 5 countries have 2020-2024 data)
+1. ✅ Verify API access (done by Scout - all 5 countries have 2020-2024 data)
 2. ⬜ Edit `collectors/worldbank.py` → add `"gdp_per_capita_ppp": "NY.GDP.PCAP.PP.CD"` to INDICATORS dict
 3. ⬜ Run collector for PT, ES, DE, EU, FR (years 2000-2024)
 4. ⬜ Insert data into `indicators` table in DuckDB
@@ -226,7 +226,7 @@ PPP is the correct metric for cross-country wealth comparison on the CAE Dashboa
 - API authentication (WorldBank API is public, no key needed)
 
 **Critical notes:**
-- Do NOT replace existing `gdp_per_capita` (NY.GDP.PCAP.CD) — keep both
+- Do NOT replace existing `gdp_per_capita` (NY.GDP.PCAP.CD) - keep both
 - Use PPP version for dashboard charts (cross-country comparison)
 - Unit: "2017 intl $" or "USD PPC 2017" (be consistent with existing WB indicators)
 

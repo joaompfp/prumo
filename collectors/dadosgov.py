@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Dados.gov.pt collector — Portugal's open data portal (CKAN API).
+Dados.gov.pt collector - Portugal's open data portal (CKAN API).
 
 Collects structured datasets from dados.gov.pt, the Portuguese government's
 open data portal. Uses the CKAN API (v3) for metadata and resource access.
@@ -34,7 +34,7 @@ BASE_URL = "https://dados.gov.pt/api/3"
 KNOWN_DATASETS = {
     "execucao-orcamental": {
         "id": "execucao-orcamental-da-administracao-central",
-        "description": "Execução orçamental — despesa e receita do Estado",
+        "description": "Execução orçamental - despesa e receita do Estado",
         "indicators": {
             "budget_revenue": {"label": "Receita do Estado", "unit": "€ milhões"},
             "budget_expenditure": {"label": "Despesa do Estado", "unit": "€ milhões"},
@@ -43,7 +43,7 @@ KNOWN_DATASETS = {
     },
     "prr-execucao": {
         "id": "plano-de-recuperacao-e-resiliencia",
-        "description": "PRR — execução por componente",
+        "description": "PRR - execução por componente",
         "indicators": {
             "prr_approved": {"label": "PRR aprovado", "unit": "€ milhões"},
             "prr_executed": {"label": "PRR executado", "unit": "€ milhões"},

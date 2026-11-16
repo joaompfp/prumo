@@ -1,4 +1,4 @@
-# World Bank — unmapped / inactivated series (Task 13, 2026-11-11)
+# World Bank - unmapped / inactivated series (Task 13, 2026-11-11)
 
 Truthful dispositions for `source: worldbank`. `registry/core.yaml` stays authoritative; this file
 is the documented list the registry changes refer to. Nothing here rewrites ids, units, roles,
@@ -6,7 +6,7 @@ keys or geographies.
 
 ## Native identity format (all 982 World Bank series)
 
-`native_code: <WDI indicator code>:<publisher ISO3 country code>` — e.g.
+`native_code: <WDI indicator code>:<publisher ISO3 country code>` - e.g.
 `NY.GDP.MKTP.CD:PRT`. The indicator code is the publisher's native indicator identifier; the ISO3
 country/aggregate code is the publisher's native geography identifier. The pair is the full
 publisher series identity and is unique per active series (tested).
@@ -26,7 +26,7 @@ publisher series identity and is unique per active series (tested).
   TL TLS · TR TUR · US USA · ZA ZAF
 - Indicator codes are the ones already recorded on the 960 entries that carried a `native_code`;
   the 22 entries that lacked one (listed below) were filled from the reviewed concept↔indicator
-  map (1:1 and consistent across all 960 pre-existing entries — no interpretation):
+  map (1:1 and consistent across all 960 pre-existing entries - no interpretation):
 
   | concept (id segment) | indicator |
   |---|---|
@@ -53,7 +53,7 @@ publisher series identity and is unique per active series (tested).
 - `url` per series is the canonical institution series endpoint
   `https://api.worldbank.org/v2/country/<ISO3>/indicator/<CODE>` (the publisher's own series
   address; also the identity the CSV export exposes as `Country Code` + `Indicator Code`).
-- The 22 previously code-less entries (researcher claim "all EU/GR" was wrong — the set INCLUDES
+- The 22 previously code-less entries (researcher claim "all EU/GR" was wrong - the set INCLUDES
   `worldbank.unemployment_wb.AT`, an AT entry, plus 21 EU/GR entries):
   worldbank.unemployment_wb.AT, worldbank.unemployment_wb.EU, worldbank.unemployment_wb.GR,
   worldbank.birth_rate.EU, worldbank.birth_rate.GR, worldbank.death_rate.EU,
@@ -64,7 +64,7 @@ publisher series identity and is unique per active series (tested).
   worldbank.population.EU, worldbank.population.GR, worldbank.urbanization.EU,
   worldbank.urbanization.GR.
 
-## Unit-definition conflict — gdp_per_capita_ppp inactivated (52 series)
+## Unit-definition conflict - gdp_per_capita_ppp inactivated (52 series)
 
 Publisher metadata for `NY.GDP.PCAP.PP.CD`
 (`GET https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.PP.CD?format=json`, HTTP 200, 2 659
@@ -82,7 +82,7 @@ silently), ALL 52 series are `active: false` with this entry as their documented
 owner may re-add a freshly defined series under a correct unit (or re-establish these ids under a
 correct definition) in a separate reviewed change; no such change was made here. Note the
 publisher also publishes `NY.GDP.PCAP.PP.KD` ("GDP per capita, PPP (constant 2021 international
-$)") — a *different* indicator with a 2021 base, which is NOT a substitute for "USD (2017)"; it
+$)") - a *different* indicator with a 2021 base, which is NOT a substitute for "USD (2017)"; it
 was deliberately not substituted.
 
 The 52 inactivated series (ids preserved, units/roles/keys untouched):
@@ -143,7 +143,7 @@ The 52 inactivated series (ids preserved, units/roles/keys untouched):
 No further unit/definition conflicts were found among the other 18 indicators (audit of all 19
 indicator metadata endpoints, 2026-11-11, archived under `tests/ingest/fixtures/worldbank/meta-*.json`):
 units are registry declarations checked against `sourceNote` prose; the unit cross-label table
-(English/Portuguese spellings of the same publisher unit — e.g. `%`/`% PIB`, `hab.`/`persons`,
+(English/Portuguese spellings of the same publisher unit - e.g. `%`/`% PIB`, `hab.`/`persons`,
 `/1000`/`per_1000`, `anos`/`years`, Gini `0-100`) is codified and justified in
 `tests/ingest/test_registry_worldbank_units.py`. Registry unit labels are NOT normalized.
 
@@ -151,5 +151,5 @@ units are registry declarations checked against `sourceNote` prose; the unit cro
 
 CC BY 4.0 as recorded (`redistribution_ok: true`), re-confirmed 2026-11-11: the WDI public.license
 is CC BY 4.0 (licence_url); reviewed indicator metadata (`sourceOrganization`) cites originators
-(national statistical offices, OECD, UNESCO/UIS, IMF, UN) as data provenance only — no per-series
+(national statistical offices, OECD, UNESCO/UIS, IMF, UN) as data provenance only - no per-series
 licence exception found. Attribution string kept: `Source: World Bank`.

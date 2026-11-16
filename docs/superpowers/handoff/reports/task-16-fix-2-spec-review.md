@@ -1,4 +1,4 @@
-# Task 16 fix 2 — independent specification review (60e2469)
+# Task 16 fix 2 - independent specification review (60e2469)
 
 Reviewer: independent spec-review subagent. Scope: ONLY diff `5feb13f..60e2469` on
 `pipeline-rebuild` (C1 summer Lisbon wall-time aux echo, M3 UTC default clock) and its
@@ -14,13 +14,13 @@ Every stated acceptance criterion verified against real evidence at `/home/joao/
    genuine-string checks, canonical `YYYY-MM-DD` real-Gregorian date and `HH:MM` real time, and
    internal consistency (`date == ano-mes-dia/dia/mes/ano`). The UTC `datahora` is never equated
    with the local echo and no offset/DST is recomputed. Metadata now also fail-closes on the
-   publisher-declared echo field types (text/text/text/date/text) — appropriate drift guard.
+   publisher-declared echo field types (text/text/text/date/text) - appropriate drift guard.
    Purposeful source/verifier rule duplication matches the verifier's independence contract.
 
 2. **Exact original 288 tokens, 0 conversions.** Re-verified against
    `tests/ingest/fixtures/eredes/summer_window_json.body` and `summer_window_csv.body`:
    96 records × 3 fields, token sets byte-identical across both channels, every token matching
-   the native grammar verbatim (`945304.0`, `410629.514`, `1369057.51` — trailing `.0` and float
+   the native grammar verbatim (`945304.0`, `410629.514`, `1369057.51` - trailing `.0` and float
    tails preserved as plain str via `parse_float=str`). sha256 and byte counts of both new
    fixture files match MANIFEST.json entries exactly. No value transformation, no zoneinfo,
    no aggregation in the diff.
@@ -59,6 +59,6 @@ Every stated acceptance criterion verified against real evidence at `/home/joao/
 
 - None blocking. Minor note only: the new summer CSV set required one live fetch at archiving
   time (honestly declared in the addendum); the fix itself and this review remain offline.
-- M1/M2 remain documented minors, untouched — consistent with scope.
+- M1/M2 remain documented minors, untouched - consistent with scope.
 
 Controller owns closure.

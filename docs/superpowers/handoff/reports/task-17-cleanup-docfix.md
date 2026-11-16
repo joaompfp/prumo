@@ -11,7 +11,7 @@ No code, no test logic, no configuration values, no preserved collector bytes ch
 - **F1/N1 (style):** em dashes (U+2014) in new authored cleanup text, replaced with
   plain hyphens at `collectors/README.md` (4x: lines 1, 14, 17, 19), `.coveragerc:4`
   (comment), and `task-17-cleanup-implementation.md` (9x: lines 1, 10, 12, 31,
-  50 (2x), 57, 86, 107). Verified zero remaining via `grep -n $'\u2014'` (exit 1).
+  50 (2x), 57, 86, 107). Verified zero remaining via `grep -n "$(python3 -c 'print(chr(0x2014))')"` (exit 1).
   Reviewer reports checked: spec/quality/brief contain **no** U+2014 - style-clean,
   left untouched. Publisher-original bytes and old reports not modified.
 - **F2/N2 (doc precision):** `collectors/README.md` claimed `dadosgov.py` and

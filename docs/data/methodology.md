@@ -367,7 +367,7 @@ reader-facing sentence is rendered by the `presentation` package per language
 (`presentation/catalog/pt.py`, `en.py`): `derived_title(lang, key)`,
 `describe_formula(lang, formula, params, base_series_id)` (pt for example "Variação homóloga
 (%), calculada pelo Prumo a partir de ine.ipi_seasonal_cae_TOT.PT"), `unit_text(lang, code)`
-and `calculated_attribution(lang, attribution)` (pt: `<attribution> — Calculado pelo
+and `calculated_attribution(lang, attribution)` (pt: `<attribution> - Calculado pelo
 Prumo`). A missing text raises; a test checks every catalog covers every formula, unit code
 and registry key.
 

@@ -1,4 +1,4 @@
-# Task 11 report — Banco de Portugal (BPstat) adapter + independent verifier
+# Task 11 report - Banco de Portugal (BPstat) adapter + independent verifier
 
 Status: **implementation complete; every acceptance item verified with real evidence.** Baseline
 e382ecd → commits `0737a44` (registry), `f6ea108` (source), `b1660e1` (verifier), plus this
@@ -9,7 +9,7 @@ No push / merge / deploy / shared-file edits.
 
 ## Publisher interfaces (all discovered live 2026-11-11, f3nix; RequestsHttp <=1 req/s, 50 s timeout)
 
-### Collector channel — public documented API (JSON-stat 2.0)
+### Collector channel - public documented API (JSON-stat 2.0)
 `GET https://bpstat.bportugal.pt/data/v1/domains/<domain>/datasets/<dataset>/?lang=EN&series_ids=<ids>&decimal=true`
 - OpenAPI at /data/docs (`?format=openapi`): endpoints series/domains/datasets/dimensions only.
 - **`decimal=true`** (documented) returns values as the publisher's fixed-point **strings**
@@ -19,11 +19,11 @@ No push / merge / deploy / shared-file edits.
   hit at <=1 req/s (f3nix recording+live run, f0nix probe).
 - `format=csv` probed and **rejected as verifier channel**: it is a single-row flattened dump of
   the SAME JSON-stat object (columns `value.0..2`, `status.0..2`, `dimension.70.category.label…`)
-  — a cosmetic parameter on the same view (brief's forbidden pattern).
+  - a cosmetic parameter on the same view (brief's forbidden pattern).
 
-### Independent verifier channel — portal internal API (drives the SPA)
+### Independent verifier channel - portal internal API (drives the SPA)
 Discovered from the live SPA network trace (headless Chromium on f3nix), reproduced by plain
-curl AND a 40 s live pipeline run — no JS/auth/cookies/Referer needed:
+curl AND a 40 s live pipeline run - no JS/auth/cookies/Referer needed:
 - `GET /api/observations/?series_ids=<id>&start_date=<m-01>&end_date=<m-eom>` → flat rows
   `{id, version_id, series_id, privacy_code, value(str), reference_date, pub_date, description}`.
   One reference_date can carry **publication vintages**: live revision evidence
@@ -34,18 +34,18 @@ curl AND a 40 s live pipeline run — no JS/auth/cookies/Referer needed:
   series' own Unit of measure ('Percentage'/'Millions of euros'/'Currency'), Reference territory
   (Portugal/Germany/Euro Area - Changing composition; the EUR/USD series has none and is pinned by
   its currency pair reference EUR + counterparty USD), Periodicity Monthly + recurrence 'M'
-  (both surfaces must agree). observed_flag=None: the portal exposes no observation status —
+  (both surfaces must agree). observed_flag=None: the portal exposes no observation status -
   honestly None, never echoed from the spec, and ingest.verify therefore skips the flag
   comparison (asserted: observed_flag IS NULL for every stored item).
 - **Evidence envelope (fix round 1, commit 4d7107e):** an item's decision reads BOTH responses,
   so ItemResult.evidence is a versioned JSON envelope (schema 'bportugal-portal-evidence', v1)
-  carrying metadata + observations wire records — final URL, HTTP status, raw body
+  carrying metadata + observations wire records - final URL, HTTP status, raw body
   base64-encoded, byte-for-byte recoverable from the raw store with no HTTP (Ruling R/G7).
   evidence_url stays the observations URL; request counts unchanged (metadata once per series).
 
 ### Identity proof of the two channels
 Flattening order of the JSON-stat arrays (last dimension fastest) was adjudicated BY the portal:
-Euribor 3m@1994-01 = value[394] = '6.9100' per strides — the portal window answers exactly
+Euribor 3m@1994-01 = value[394] = '6.9100' per strides - the portal window answers exactly
 '6.9100' (value[1] = '6.9900' belongs to 1m@1994-02). The naive same-block read would have
 mis-attributed every multi-series cell.
 
@@ -55,7 +55,7 @@ mis-attributed every multi-series cell.
   bportugal.credit_consumer.PT, bportugal.deposits_households.PT. native_code
   `<series id>:<domain>/<32-hex dataset>`; url = the series' portal page.
 - Units from BPstat metadata only: '%' (Percentage), 'USD/EUR' (unit 'Currency' + pair), 'MEUR'
-  ('Millions of euros'); multiplier null (never rescale publisher values — M€ stays publisher M€).
+  ('Millions of euros'); multiplier null (never rescale publisher values - M€ stays publisher M€).
 - **Geography corrections vs the legacy PT default** (publisher metadata): Euribor = EA
   ('Euro Area - Changing composition'), eur_usd = EA (no territory dim; euro external reference
   rate convention), de_10y = DE. Legacy BPORTUGAL rows stay quarantined (Ruling V, blank units)
@@ -84,7 +84,7 @@ round 1 below RED first as well)
   html/JSON/error-body rejection, truncated/duplicate-period/double-mapped/wrong-series/
   wrong-unit/wrong-frequency/wrong-territory payloads, native-code parser, fetch grouping/params,
   legacy 3-param Http doubles, recorded pipeline run (4,318 written + 78 quarantined
-  non_numeric). **Sparse cell columns (real coverage — the earlier draft listed "sparse" here
+  non_numeric). **Sparse cell columns (real coverage - the earlier draft listed "sparse" here
   with no actual test):** dense↔canonical-sparse fixture equivalence parses IDENTICALLY (values
   AND statuses, the 78 DE value-None cells included), non-canonical alias keys
   ('00', '01', '+1', ' 1', '٣', '1_0') raise fail-closed before any row is written
@@ -110,15 +110,15 @@ Per series: euribor×4 394 (1994-01..2026-10), eur_usd 334 (1999-01..2026-10), p
 (1993-07..2026-10), de_10y 322 (2000-01..2026-10), credit×2 + deposits 562 (1979-12..2026-09).
 No empty/failed series; no 429; quarantines exactly the 78 DE pre-start empty cells.
 f0nix probe (ssh f0nix, no deploy, no infra changes): both channels HTTP 200,
-x-throttle: 1000 — public access confirmed from the edge host.
+x-throttle: 1000 - public access confirmed from the edge host.
 
 ## Notes for the controller / T17-18
 - Scheduler: register BPortugalVerifier; bportugal carries no timeout_s (sub-second API);
   RequestsHttp default 30 s is ample; keep <=1 rps pacing.
 - Evidence tooling (replay/audit): since commit 4d7107e the archived verify-bportugal evidence is
-  the 'bportugal-portal-evidence' v1 JSON envelope, not the bare observations body — decode
+  the 'bportugal-portal-evidence' v1 JSON envelope, not the bare observations body - decode
   {metadata, observations}[].body_b64 to recover the exact publisher bytes.
-- Portal rows expose `pub_date` per vintage — a future revision-history task can mine
+- Portal rows expose `pub_date` per vintage - a future revision-history task can mine
   /api/observations/ wide windows (61 months = 61 rows + vintages seen).
 - 'Currency' unit + EA geography for eur_usd are reviewed conventions (documented in both code
   and test tables); a different currency pair fails closed, forcing review.
@@ -128,14 +128,14 @@ x-throttle: 1000 — public access confirmed from the edge host.
 
 Two tightly scoped findings, both implemented TDD (regression tests RED first, then GREEN):
 
-- **I1 — audit evidence gap (verifier).** The metadata cache kept only the parsed unit string and
+- **I1 - audit evidence gap (verifier).** The metadata cache kept only the parsed unit string and
   ItemResult.evidence held only the /api/observations/ body, so the unit verification was not
   auditable from the archived bytes. Now: cache keeps (unit, exact HttpResult); evidence is the
-  versioned envelope described above (stdlib json+base64 only — base64 was already in
+  versioned envelope described above (stdlib json+base64 only - base64 was already in
   VERIFIER_STDLIB_IMPORTS, no allowlist/schema change; ItemResult.evidence stays arbitrary
   bytes). No expected values echoed, no parser helpers shared; compare/tamper semantics
   unchanged (tamper batteries green). Request counts unchanged.
-- **I2 — actual data corruption (source).** _cells_column accepted sparse aliases: '0' and '00'
+- **I2 - actual data corruption (source).** _cells_column accepted sparse aliases: '0' and '00'
   int()-fold onto the same cell and the later key silently overwrote the earlier
   (repro: {'0':'1.10','00':'2.20'} → ['2.20', None, None]). Now every sparse key must be the
   canonical ASCII decimal str(int(k))==k; '00', '01', '+1', ' 1', Unicode digit aliases

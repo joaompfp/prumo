@@ -5,7 +5,7 @@ series keep their original fields untouched, and every disposition listed in
 registry/unmapped-fred.md matches the registry.
 
 Unlike World Bank, FRED metadata exposes a machine-readable unit (`units` label), so the
-registry unit is asserted to be the EXACT publisher label — not a member of an allowed-label
+registry unit is asserted to be the EXACT publisher label - not a member of an allowed-label
 table. The unit correction applies to fresh publisher data only: legacy rows keep going through
 the unchanged importer and bare-'USD' rows are rejected unit_mismatch (tested in
 tests/ingest/test_source_fred.py).

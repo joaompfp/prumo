@@ -21,7 +21,7 @@ ids; the registry carries no timeout_s (the API answers sub-second to a few seco
 omits the timeout kwarg and older Http doubles keep working.
 
 Parsing (JSON-stat 2.0): flat `value`/`status` arrays iterate `id` dimensions row-major with the
-LAST dimension (`reference_date`, the time axis) fastest — empirically cross-checked against the
+LAST dimension (`reference_date`, the time axis) fastest - empirically cross-checked against the
 portal channel on 2026-11-11 (value[394] is Euribor 3m@1994-01, '6.9100', not value[1]). Each
 requested series is located through `extension.series[].dimension_category` pins (never by list
 position: the Euribor payload's category order did not follow the request order), with strict
@@ -81,7 +81,7 @@ def parse_native_code(code: str | None) -> Key:
 
 
 def _groups(specs: list[SeriesSpec]) -> list[tuple[int, str, list[SeriesSpec]]]:
-    """(domain, dataset, specs) per request, sorted ascending — the deterministic fetch order."""
+    """(domain, dataset, specs) per request, sorted ascending - the deterministic fetch order."""
     by: dict[tuple[int, str], list[SeriesSpec]] = {}
     for s in specs:
         _, domain, dataset = parse_native_code(s.native_code)
@@ -175,7 +175,7 @@ def _index_of(dim: dict) -> list[str]:
     idx = cat.get("index")
     if not isinstance(idx, list):
         raise ValueError(f"dimension {cat.get('label', dim.get('label'))!r}: category.index is "
-                         f"not a list ({type(idx).__name__}) — unsliced dict form not reviewed")
+                         f"not a list ({type(idx).__name__}) - unsliced dict form not reviewed")
     out = [str(_plain(v)) for v in idx]
     if len(set(out)) != len(out):
         raise ValueError(f"duplicate category ids/period labels in "
@@ -225,7 +225,7 @@ def _labels_of(doc: dict, pins: dict[str, str], dims: dict[str, list[str]],
 
 
 def _check_identity(spec: SeriesSpec, labels: dict[str, str]) -> None:
-    """The payload's own metadata must agree with the registry spec — wrong series/unit/
+    """The payload's own metadata must agree with the registry spec - wrong series/unit/
     frequency/territory payloads raise here (never silently served)."""
     unit = labels.get("Unit of measure")
     if unit == "Currency":

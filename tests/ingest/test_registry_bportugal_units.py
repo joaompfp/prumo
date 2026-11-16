@@ -1,7 +1,7 @@
 """Registry unit label <-> BPstat metadata pairing (same pattern as test_registry_ine_units.py).
 
-BPstat states the unit once per series in its metadata — the "Unit of measure" dimension (70)
-category of the dataset payload and of /api/series/?view_full membercombination — never per cell,
+BPstat states the unit once per series in its metadata - the "Unit of measure" dimension (70)
+category of the dataset payload and of /api/series/?view_full membercombination - never per cell,
 so the adapter derives and CHECKS it from the payload and this reviewed table records, per native
 series, the metadata read live on 2026-11-11 (recorded in tests/ingest/fixtures/bportugal/).
 

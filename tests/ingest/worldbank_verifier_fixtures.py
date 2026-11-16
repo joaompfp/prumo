@@ -46,7 +46,7 @@ def zip_bytes(code: str, language: str = "en") -> bytes:
 
 def decode_evidence(blob: bytes) -> list[dict]:
     """Offline (no HTTP) read of an item's versioned 'worldbank-csv-evidence' v1 envelope: one
-    exact wire record per deciding response — final URL, ACTUAL HTTP status (from the archive,
+    exact wire record per deciding response - final URL, ACTUAL HTTP status (from the archive,
     not implied) and the body recovered byte-for-byte. Callers unpack `(rec,)` to pin the
     single deciding ZIP."""
     doc = json.loads(blob)
@@ -61,7 +61,7 @@ class VerifyFixtureHttp:
     the default, matching the original recorded fixtures; `language='es'` serves the Spanish
     recovery probes). `override` maps an indicator code to replacement bytes (tampering tests);
     `status` maps a code to a non-2xx probe. The served HttpResult carries the FINAL url and the
-    ACTUAL status recorded for that fixture in MANIFEST.json — never a composed URL."""
+    ACTUAL status recorded for that fixture in MANIFEST.json - never a composed URL."""
 
     def __init__(self, override: dict[str, bytes] | None = None,
                  status: dict[str, int] | None = None, language: str = "en"):

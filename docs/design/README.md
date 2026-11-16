@@ -1,4 +1,4 @@
-# Design Resources — SWD-Inspired References
+# Design Resources - SWD-Inspired References
 
 This folder contains resources inspired by **Storytelling with Data** (SWD) principles, plus open-source implementations that support Prumo's visual design and charting patterns.
 
@@ -18,7 +18,7 @@ This folder contains resources inspired by **Storytelling with Data** (SWD) prin
 
 Prumo draws inspiration from these reference implementations:
 
-**`swd-python-matplotlib/`** — Python + Matplotlib examples
+**`swd-python-matplotlib/`** - Python + Matplotlib examples
 - Horizontal bar charts (figures 3-14, 4-9)
 - Line charts (figure 5-10)
 - Scatterplots (figure 5-6)
@@ -26,14 +26,14 @@ Prumo draws inspiration from these reference implementations:
 - Slopegraphs (figure 9-32, academic papers)
 - Talks & winter school materials
 
-**`swd-r-ggplot/`** — R + ggplot2 implementations
+**`swd-r-ggplot/`** - R + ggplot2 implementations
 - Complete R scripts for all SWD figures (FIG0203-FIG0932)
 - CSV datasets for each figure
-- Theme: `theme/theme_swd.R` — SWD-style ggplot theme
+- Theme: `theme/theme_swd.R` - SWD-style ggplot theme
 - Helper functions for consistent styling
 - Comparison examples and original data sources
 
-**`swd-highcharts-nextjs/`** — React/Next.js + Highcharts
+**`swd-highcharts-nextjs/`** - React/Next.js + Highcharts
 - Modern JavaScript/TypeScript implementation
 - Reusable chart components:
   - `components/Scatterplot/`
@@ -105,7 +105,7 @@ Prumo draws inspiration from these reference implementations:
 
 ## References
 
-- **Book:** Cole Nussbaumer Knaflic — *Storytelling with Data: A Data Visualization Guide for Business Professionals*
+- **Book:** Cole Nussbaumer Knaflic - *Storytelling with Data: A Data Visualization Guide for Business Professionals*
 - **Author Website:** [storytellingwithdata.com](https://www.storytellingwithdata.com/)
 - **GitHub Repos:** 
   - Python: [swd-python-matplotlib](https://github.com/Cole-Nussbaumer-Knaflic/Storytelling-with-data)

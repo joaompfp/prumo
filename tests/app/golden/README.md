@@ -4,6 +4,11 @@
 site, before the editorial composition existed), against a database built by
 `tests/app/conftest.py::build` with its fixed timestamps.
 
+Both committed captures use ASCII hyphens after the owner's repository-wide
+punctuation correction. Only U+2014 was replaced with `-`; neither capture was
+rendered again, and its layout, values and navigation are unchanged. Reproducing
+the original capture below applies that same explicit text replacement.
+
 It exists for one assertion: with migration 0018 applied and the three `editorial_*` tables
 empty, the home must be **byte-identical** to what the site served before this feature. That is
 the deploy's entire safety argument and the documented rollback (delete the rows), so it is a
@@ -20,7 +25,7 @@ from tests.app.conftest import build
 from app.main import create_app
 from fastapi.testclient import TestClient
 build(Path('/tmp/golden.db'))
-Path('/tmp/home.html').write_text(TestClient(create_app('/tmp/golden.db')).get('/').text)
+Path('/tmp/home.html').write_text(TestClient(create_app('/tmp/golden.db')).get('/').text.replace(chr(0x2014), '-'))
 "
 ```
 

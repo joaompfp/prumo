@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ingest.py — Parquet → DuckDB ingestion pipeline.
+ingest.py - Parquet → DuckDB ingestion pipeline.
 
 Reads all .parquet files from data/staging/, UPSERTs into the production
 DuckDB, logs results to collection_log table, and archives processed files.

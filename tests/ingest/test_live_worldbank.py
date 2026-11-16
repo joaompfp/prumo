@@ -1,4 +1,4 @@
-"""Live end-to-end check against the World Bank API v2 — network. Deselected by default
+"""Live end-to-end check against the World Bank API v2 - network. Deselected by default
 (pytest.ini adds -m "not live"); run with:
 
     .venv-ci/bin/python -m pytest tests/ingest/test_live_worldbank.py -m live -s

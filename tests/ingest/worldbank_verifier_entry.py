@@ -12,7 +12,7 @@ from tests.ingest.worldbank_verifier_fixtures import (
     zip_bytes,
 )
 
-# (series, period, observed_text) — every token read from the archived full-ZIP bytes at
+# (series, period, observed_text) - every token read from the archived full-ZIP bytes at
 # recording time (2026-11-11) and cross-checked against the API v2 JSON channel where both
 # exist (PT GDP 2021..2025 5/5; DE/ES GDP pins; EU/GR aggregates on the population channel).
 CASES = [
@@ -47,7 +47,7 @@ def run():
 
 
 # Spanish-locale pins: every token read from the genuine /v2/es/ archive bytes recovered from
-# f0nix on 2026-11-12 (the same publisher exporter, Spanish locale — title 'Indicadores del
+# f0nix on 2026-11-12 (the same publisher exporter, Spanish locale - title 'Indicadores del
 # desarrollo mundial', English column labels, DS2_es_csv_v2 members sharing one revision) and
 # validated live by the controller against the API v2 JSON channel: 54 of 54 registry series
 # per indicator matched exactly.

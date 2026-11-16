@@ -1,6 +1,6 @@
-# Europa Section — Data Coverage
+# Europa Section - Data Coverage
 
-> Auditoria M3 — gerada por Analyst (2026-02-28)
+> Auditoria M3 - gerada por Analyst (2026-02-28)
 > Ficheiro: `static/js/sections/europa.js`
 
 ## Resumo
@@ -43,9 +43,9 @@ def api_europa(...):
     return _deprecated(query_compare(...))  # X-CAE-Deprecated: true
 ```
 
-O endpoint devolve `X-CAE-Deprecated: true` no header HTTP, mas **continua a funcionar** — delega para `query_compare()`, exactamente o mesmo serviço usado pelo `/api/compare`.
+O endpoint devolve `X-CAE-Deprecated: true` no header HTTP, mas **continua a funcionar** - delega para `query_compare()`, exactamente o mesmo serviço usado pelo `/api/compare`.
 
-**Observação importante:** O comentário em `europa.js` diz que o modo legacy usa "Eurostat client" (live Eurostat API), mas na realidade o `/api/europa` apenas chama `query_compare()` que consulta a DB DuckDB local. Não há chamada live ao Eurostat — os dados são servidos da DB tal como nos indicadores `mode: 'db'`.
+**Observação importante:** O comentário em `europa.js` diz que o modo legacy usa "Eurostat client" (live Eurostat API), mas na realidade o `/api/europa` apenas chama `query_compare()` que consulta a DB DuckDB local. Não há chamada live ao Eurostat - os dados são servidos da DB tal como nos indicadores `mode: 'db'`.
 
 #### Anomalias de ID encontradas
 
@@ -53,31 +53,31 @@ Dois indicadores legacy têm IDs que **não correspondem** ao catalog da DB:
 
 | ID em europa.js | ID real na DB | Diferença |
 |---|---|---|
-| `chemicals` | `chemicals_pharma` | Mismatch — o `query_compare` pode não encontrar o indicador |
-| `transport` | `transport_eq` | Mismatch — o `query_compare` pode não encontrar o indicador |
+| `chemicals` | `chemicals_pharma` | Mismatch - o `query_compare` pode não encontrar o indicador |
+| `transport` | `transport_eq` | Mismatch - o `query_compare` pode não encontrar o indicador |
 
-Recomendação: verificar como `query_compare` resolve o `dataset` param — se usa alias ou lookup directo.
+Recomendação: verificar como `query_compare` resolve o `dataset` param - se usa alias ou lookup directo.
 
 ---
 
 ### Indicadores `mode: 'db'` (7 indicadores)
 
-Estes indicadores chamam `/api/compare?indicator=X&source=Y&countries=...&since=N` — endpoint **activo no V7**.
+Estes indicadores chamam `/api/compare?indicator=X&source=Y&countries=...&since=N` - endpoint **activo no V7**.
 
 #### Verificação de cobertura na DB
 
 Todos os 7 indicadores confirmados com dados multi-país via `/api/compare`:
 
 **EUROSTAT (4 indicadores):**
-- `unemployment` — mensal, PT + ES + DE + FR + IT + PL + EU27 confirmados. Since: 2000-01, until: 2025-12.
-- `gdp_per_capita_eur` — anual, PT + ES + DE + FR + EU27 confirmados. Since: 2000, until: 2025.
-- `gov_debt_pct_gdp` — anual, multi-país (inferido do catalog). Since: 2000, until: 2024.
-- `employment_rate` — anual, multi-país (inferido do catalog). Since: 2000, until: 2024.
+- `unemployment` - mensal, PT + ES + DE + FR + IT + PL + EU27 confirmados. Since: 2000-01, until: 2025-12.
+- `gdp_per_capita_eur` - anual, PT + ES + DE + FR + EU27 confirmados. Since: 2000, until: 2025.
+- `gov_debt_pct_gdp` - anual, multi-país (inferido do catalog). Since: 2000, until: 2024.
+- `employment_rate` - anual, multi-país (inferido do catalog). Since: 2000, until: 2024.
 
-**WORLDBANK (3 indicadores) — não registados no `catalog.py`:**
-- `birth_rate` — anual, PT + ES + DE + FR confirmados. Since: 2000, until: ~2022.
-- `rnd_pct_gdp` — anual, multi-país. Since: 2000, until: ~2022.
-- `fdi_inflows_pct_gdp` — anual, multi-país. Since: 2000, until: ~2022.
+**WORLDBANK (3 indicadores) - não registados no `catalog.py`:**
+- `birth_rate` - anual, PT + ES + DE + FR confirmados. Since: 2000, until: ~2022.
+- `rnd_pct_gdp` - anual, multi-país. Since: 2000, until: ~2022.
+- `fdi_inflows_pct_gdp` - anual, multi-país. Since: 2000, until: ~2022.
 
 ⚠️ **Atenção:** Os 3 indicadores WORLDBANK **não constam do `catalog.py`** (que lista INE, EUROSTAT, FRED, BPORTUGAL, REN, OECD, DGEG, ERSE). Estão na DB mas sem metadados no catalog. Consequência: não aparecem na Ficha Técnica nem no Explorador por catálogo. Acção recomendada: adicionar bloco `WORLDBANK` ao `catalog.py`.
 
@@ -87,7 +87,7 @@ Todos os 7 indicadores confirmados com dados multi-país via `/api/compare`:
 
 ### 1. Migrar indicadores legacy para `mode: 'db'` (PRIORIDADE ALTA)
 
-A migração é simples — apenas muda o URL em europa.js de `/api/europa?dataset=X` para `/api/compare?dataset=X` ou `mode: 'db'`:
+A migração é simples - apenas muda o URL em europa.js de `/api/europa?dataset=X` para `/api/compare?dataset=X` ou `mode: 'db'`:
 
 | Indicador | Mudança necessária em europa.js |
 |---|---|
@@ -97,7 +97,7 @@ A migração é simples — apenas muda o URL em europa.js de `/api/europa?datas
 | chemicals | `mode: 'legacy'` → `mode: 'db', source: 'EUROSTAT', indicator: 'chemicals_pharma'` (**corrigir ID**) |
 | transport | `mode: 'legacy'` → `mode: 'db', source: 'EUROSTAT', indicator: 'transport_eq'` (**corrigir ID**) |
 
-**Os dados existem na DB** (confirmado via catalog.py: since 2000-01, until 2023-12). Limitação: dados IPI na DB são só Portugal (region_count: 1). A comparação europeia para IPI requer dados multi-país — verificar se a DB tem outros países para estes indicadores, ou se ficam limitados a série PT.
+**Os dados existem na DB** (confirmado via catalog.py: since 2000-01, until 2023-12). Limitação: dados IPI na DB são só Portugal (region_count: 1). A comparação europeia para IPI requer dados multi-país - verificar se a DB tem outros países para estes indicadores, ou se ficam limitados a série PT.
 
 ### 2. Adicionar WORLDBANK ao `catalog.py`
 

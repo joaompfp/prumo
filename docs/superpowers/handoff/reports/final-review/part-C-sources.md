@@ -1,4 +1,4 @@
-# Final whole-branch review — Part C: sources + registry
+# Final whole-branch review - Part C: sources + registry
 
 Branch `pipeline-rebuild` @ 6b938fd (base `legacy-ui-final` = a18a58a). Read-only review of
 `ingest/sources/*.py`, `ingest/http.py` (the contract the adapters share), `ingest/cadence.py`,
@@ -163,7 +163,7 @@ indicator group (22 groups, 930 series). Seven Eurostat datasets were confirmed 
   silently give two specs identical rows. *Fix:* add a uniqueness check in `_validate` scoped to
   `active` series.
 - **M7. The registry file is still marked provisional and duplicated.** `registry/core.yaml:1`
-  still says `# PROVISIONAL — owner review pending`. `core.proposed.yaml` is byte-identical to the
+  still says `# PROVISIONAL - owner review pending`. `core.proposed.yaml` is byte-identical to the
   curated `core.yaml` (two copies of the authoritative knowledge). *Fix:* after sign-off, drop the
   header and delete or regenerate the proposed copy. `propose_registry.py:317-320` correctly refuses
   to overwrite without `force`.

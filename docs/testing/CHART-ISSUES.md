@@ -1,15 +1,15 @@
-# Chart Validation Issues — 2026-03-16
+# Chart Validation Issues - 2026-03-16
 
 ## Summary
 - **352/372 OK** (94.6%), 4 WARN, 16 FAIL
 - Screenshots: `docs/testing/screenshots/`
 - Report: `docs/testing/chart-validation-report.json`
 
-## A) Indicadores sem dados (0 pts) — REMOVER do catálogo
-- `EUROSTAT/construction_index` — 0 pts, série nunca populada
-- `FRED/gold_price` — 0 pts, série nunca populada
+## A) Indicadores sem dados (0 pts) - REMOVER do catálogo
+- `EUROSTAT/construction_index` - 0 pts, série nunca populada
+- `FRED/gold_price` - 0 pts, série nunca populada
 
-## B) Dados fora do período de 5 anos — séries históricas paradas
+## B) Dados fora do período de 5 anos - séries históricas paradas
 Precisam de período alargado ou substituição futura.
 
 | Indicador | Último ponto | Total pts | Acção |
@@ -25,7 +25,7 @@ Precisam de período alargado ou substituição futura.
 | WORLDBANK/gov_debt_pct_gdp_wb | 1994 | 2 | Praticamente sem dados |
 | WORLDBANK/literacy_rate | 2011 | 3 | idem |
 
-## C) Poucos pontos no período de 5 anos (1-4 pts) — rendering esparso
+## C) Poucos pontos no período de 5 anos (1-4 pts) - rendering esparso
 Séries anuais/semianuais com cobertura recente limitada.
 
 | Indicador | Pts (5yr) | Total pts | Frequência |

@@ -35,7 +35,7 @@ def test_proposal_has_one_primary_per_indicator_key(tmp_path):
     propose(write_csv(tmp_path / "l.csv", overlap_rows()), out)
     for name in ("core.proposed.yaml", "core.yaml"):
         text = (out / name).read_text()
-        assert text.startswith("# PROVISIONAL — owner review pending")
+        assert text.startswith("# PROVISIONAL - owner review pending")
     assert (out / "core.yaml").read_text() == (out / "core.proposed.yaml").read_text()
     specs = load_registry(out / "core.proposed.yaml")  # enforces exactly one primary per key
     keys = {s.indicator_key for s in specs}

@@ -4,7 +4,7 @@ and how per-group/source failures surface without stopping the rest.
 
 Boundaries: no SQL here (ingest.db owns every statement) and no printing (ingest.cli owns it);
 this module is the small public operations contract the CLI drives. Grouping is the single
-authoritative policy — ingest.status derives per-series dataset identity from `group_specs`.
+authoritative policy - ingest.status derives per-series dataset identity from `group_specs`.
 """
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -56,14 +56,14 @@ def polite_http(specs: list[SeriesSpec], source_name: str | None = None, *,
 
 # Reviewed 2026-11-12 recovery mapping (f0nix probe): the publisher's per-indicator CSV export
 # times out on /v2/en/ for these two indicators; the SAME exporter answers under /v2/es/.
-# Exact, explicit, per-indicator — everything else keeps the default 'en', no fallback.
+# Exact, explicit, per-indicator - everything else keeps the default 'en', no fallback.
 WB_INDICATOR_LOCALES = {"NY.GDP.MKTP.KD.ZG": "es", "SL.UEM.TOTL.ZS": "es"}
 
 
 @dataclass(frozen=True)
 class RunRequest:
     """Operational knobs of one run/replay. `window`: optional EXPLICIT E-REDES day window
-    (from_ts .. to_ts as canonical UTC day starts) used by replay/catch-up — and by the planned
+    (from_ts .. to_ts as canonical UTC day starts) used by replay/catch-up - and by the planned
     17B manual tiny-window procedures; None = every source's native default window."""
     window: tuple[str, str] | None = None
     # 'live' (default) or 'recorded' (validated original-file bundle replay, 17B): labels
@@ -126,7 +126,7 @@ def ensure_verifier(ops: VerifierOps) -> Verifier:
     if not ops.compatible(existing):
         raise ValueError(
             f"a verifier for source {name!r} is already registered with an incompatible "
-            f"configuration ({type(existing).__name__}); refusing to reuse or replace it — "
+            f"configuration ({type(existing).__name__}); refusing to reuse or replace it - "
             f"run differently configured datasets in separate processes")
     return existing
 

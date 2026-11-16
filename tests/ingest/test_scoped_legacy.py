@@ -2,8 +2,8 @@
 
 `legacy_served` stays the explicit GLOBAL switch (default 0, backward compatible). 0007 seeds
 exactly ONE source-scoped permission, `legacy_served_source:worldbank` = '1': legacy World Bank
-rows of ACTIVE, redistribution-cleared series become servable — with their honest original
-fetched_at dates, legacy kind and NULL raw_fetch untouched — while every other source's legacy
+rows of ACTIVE, redistribution-cleared series become servable - with their honest original
+fetched_at dates, legacy kind and NULL raw_fetch untouched - while every other source's legacy
 rows stay unserved and the inactive PPP unit-conflict series are never exposed by the scoped
 switch. A verified fetched row always beats legacy at the same period, and a FAILED fresh run
 neither hides nor replaces old good data (its own rows never become eligible).

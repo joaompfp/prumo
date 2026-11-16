@@ -24,7 +24,7 @@ def test_core_registry_loads_and_syncs(tmp_path):
     from pathlib import Path
     root = Path(__file__).parents[2] / "registry"
     assert (root / "core.yaml").read_text() == (root / "core.proposed.yaml").read_text()
-    assert (root / "core.yaml").read_text().startswith("# PROVISIONAL — owner review pending")
+    assert (root / "core.yaml").read_text().startswith("# PROVISIONAL - owner review pending")
     specs = load_registry(root / "core.yaml")
     assert specs
     db = open_db(tmp_path / "fresh.db")

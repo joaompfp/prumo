@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CAE Dashboard — Collector for new housing and salary indicators
+CAE Dashboard - Collector for new housing and salary indicators
 
 Collects:
 1. Housing loan rate (BdP série 12533735 - TAA housing loans)
@@ -246,7 +246,7 @@ def collect_median_earnings() -> List[Dict]:
 def main():
     """Main collector - fetch all indicators and output JSON"""
     print("=" * 60, file=sys.stderr)
-    print("CAE Dashboard — New Indicators Collector", file=sys.stderr)
+    print("CAE Dashboard - New Indicators Collector", file=sys.stderr)
     print("=" * 60, file=sys.stderr)
     
     all_data = []

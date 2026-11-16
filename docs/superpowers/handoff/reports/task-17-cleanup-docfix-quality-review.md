@@ -26,7 +26,7 @@ Verdict: **APPROVED**.
 
 ## F1 (em-dash style) - CLOSED
 
-- `grep -rn $'\u2014'` over all five edited files plus the new docfix report (at
+- `grep -rn "$(python3 -c 'print(chr(0x2014))')"` over all five edited files plus the new docfix report (at
   working-tree state, i.e. including the tag fix) returns exit 1: zero U+2014.
   Replacements are plain hyphens throughout.
 

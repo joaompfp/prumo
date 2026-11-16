@@ -1,4 +1,4 @@
-# CAE v10 Sprint Plan — Data Quality + Novos Dados
+# CAE v10 Sprint Plan - Data Quality + Novos Dados
 > Baseado em: /api/quality (95 errors, 269 warnings, 403 total) + Einstein editorial review
 > Data: 2026-03-01
 
@@ -8,8 +8,8 @@
 
 O endpoint `/api/quality` revela 3 classes de problemas:
 
-### 1. Séries Congeladas (freshness errors — CRÍTICO)
-Collectors pararam ou têm bug — dados antigos a ser apresentados:
+### 1. Séries Congeladas (freshness errors - CRÍTICO)
+Collectors pararam ou têm bug - dados antigos a ser apresentados:
 | Source | Indicador | Último dado | Atraso |
 |--------|-----------|-------------|--------|
 | EUROSTAT | ipi, manufacturing, total_industry, etc. | 2023-12 | **22 meses** |
@@ -20,20 +20,20 @@ Collectors pararam ou têm bug — dados antigos a ser apresentados:
 | ERSE | tariff_mt_* | 2021-10 | **37 meses** |
 | WORLDBANK | literacy_rate | 2011 | **155 meses** |
 
-### 2. Catalog Drift (row counts errados — catálogo desatualizado)
+### 2. Catalog Drift (row counts errados - catálogo desatualizado)
 O catálogo declara X países mas a DB só tem PT. Exemplos:
 - EUROSTAT gdp_quarterly: espera 2907 rows, tem 103 (só PT)
 - EUROSTAT labour_productivity: espera 881, tem 30 (só PT)
 - WORLDBANK gdp_usd: espera 65 países, tem 25
 
-### 3. Orphan Indicators (na DB sem catalog — aparecem com código bruto na Ficha)
+### 3. Orphan Indicators (na DB sem catalog - aparecem com código bruto na Ficha)
 - ~100 indicadores DGEG sem entrada no catalog.py
 - 15 commodities FRED (cotton, nickel, soybean, steel, zinc, sugar) sem catalog
 - 20+ tarifas ERSE de acesso (access_mt_*, access_at_*, etc.) sem catalog
 
 ---
 
-## Sprint v10 — Work Packages
+## Sprint v10 - Work Packages
 
 ### 🔴 Prioridade Alta (Scouts + Coder)
 
@@ -57,7 +57,7 @@ O catálogo declara X países mas a DB só tem PT. Exemplos:
 **Agente:** Coder
 **Problema:** A DB tem só 25 linhas (PT only) quando devia ter 65 (multi-country)
 **Tarefas:**
-- Verificar script `collect_worldbank_global.py` — porque não está a correr?
+- Verificar script `collect_worldbank_global.py` - porque não está a correr?
 - Executar colecta para todos os países nos indicadores principais: gdp_usd, gdp_growth, unemployment_wb, employment_rate, population, internet_users_pct
 - Isto é pré-requisito para Comparativos funcionarem bem no PT vs Mundo
 
@@ -66,7 +66,7 @@ O catálogo declara X países mas a DB só tem PT. Exemplos:
 ### 🟡 Prioridade Média
 
 #### WP-D4: Adicionar commodities FRED ao catálogo
-**Agente:** Coder (simples — só catalog.py)
+**Agente:** Coder (simples - só catalog.py)
 **Indicadores na DB sem catalog:** cotton, nickel, soybean, steel, zinc, sugar, gold_price, iron_ore, commodity_*
 **Tarefas:** Adicionar entradas ao `catalog.py` com labels PT-PT e descrições
 **Valor editorial:** Permite visualizar no Explorador e embeddar em artigos sobre matérias-primas
@@ -74,32 +74,32 @@ O catálogo declara X países mas a DB só tem PT. Exemplos:
 #### WP-D5: Atualizar metadados catalog.py (catalog drift INFO)
 **Agente:** Coder
 **Tarefas:** Corrigir `rows`/`since`/`until` para indicadores com +/- pequenos desvios:
-- BPORTUGAL euribor_*: +11 rows — update catalog
-- REN indicators: -35 rows — update catalog  
-- FRED natural_gas: -36 rows — update catalog
-- INE hicp_yoy: -35 rows — update catalog
+- BPORTUGAL euribor_*: +11 rows - update catalog
+- REN indicators: -35 rows - update catalog
+- FRED natural_gas: -36 rows - update catalog
+- INE hicp_yoy: -35 rows - update catalog
 
 #### WP-D6: Adicionar tarifas ERSE de acesso ao catálogo
 **Agente:** Coder
 **Indicadores orphan de interesse:** `access_mt_peak`, `access_at_peak`, `access_mat_peak`, `access_bte_*`, `access_btn_*`
-**Estes existem na DB com dados 2013-2026 mas sem descrição** — estão acessíveis na Ficha como "código bruto"
-**Tarefas:** Adicionar entradas ao catalog.py com labels PT-PT (ex: "Tarifa de Acesso MT — Ponta")
+**Estes existem na DB com dados 2013-2026 mas sem descrição** - estão acessíveis na Ficha como "código bruto"
+**Tarefas:** Adicionar entradas ao catalog.py com labels PT-PT (ex: "Tarifa de Acesso MT - Ponta")
 
 ---
 
 ### 🟢 Prioridade Nova Cobertura (Einstein editorial)
 
-#### WP-N1: Habitação — novo domínio
+#### WP-N1: Habitação - novo domínio
 **Agente:** Scout + Coder
 **Gap identificado pelo Einstein como CRÍTICO (15% do PIB PT)**
 **Dados a colectar:**
-- INE: IPH (Índice de Preços da Habitação) — `https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0009264`
+- INE: IPH (Índice de Preços da Habitação) - `https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_indicadores&indOcorrCod=0009264`
 - INE: Licenças de construção
 - INE: Número de transações imobiliárias
 **Scout:** verifica disponibilidade e formato das séries
 **Coder:** script collector + inserção DB + catalog.py
 
-#### WP-N2: Turismo — novo domínio
+#### WP-N2: Turismo - novo domínio
 **Agente:** Scout + Coder
 **Turismo = 15% do PIB PT, completamente ausente**
 **Dados:**
@@ -110,20 +110,20 @@ O catálogo declara X países mas a DB só tem PT. Exemplos:
 **Coder:** collector + DB + catalog
 
 #### WP-N3: Exposição de indicadores já na DB mas não no Painel
-**Agente:** Coder (rápido — só painel.py)
+**Agente:** Coder (rápido - só painel.py)
 **O Einstein identificou dados ricos já presentes, só não expostos:**
-- Dívida pública % PIB (EUROSTAT/gov_debt_pct_gdp) — faltou no Painel de Finanças Públicas
+- Dívida pública % PIB (EUROSTAT/gov_debt_pct_gdp) - faltou no Painel de Finanças Públicas
 - Défice % PIB (EUROSTAT/gov_deficit_pct_gdp)
 - Balança corrente % PIB (EUROSTAT/current_account_pct_gdp)
 - Exportações % PIB (WORLDBANK/exports_pct_gdp)
-- Gini (WORLDBANK/gini) — só 21 rows PT atualmente, pouco útil
+- Gini (WORLDBANK/gini) - só 21 rows PT atualmente, pouco útil
 **Acção:** Adicionar nova secção "Finanças Públicas" ou "Externo" ao Painel com estes KPIs
 
 ---
 
 ## Plano de Execução Recomendado
 
-### Fase 1 (urgente — 1 sprint, ~4h):
+### Fase 1 (urgente - 1 sprint, ~4h):
 ```
 Scout:  Verificar endpoints INE habitação + turismo
 Coder A: WP-D1 (EUROSTAT freshness) + WP-D2 (INE exports)
@@ -146,7 +146,7 @@ Coder: ajustes de UX com novos dados
 
 ## Notas para o Sprint Briefing
 
-1. **`cae-collect` vs scripts individuais:** verificar se há um script central de orquestração — todos os collectors devem passar por ele
+1. **`cae-collect` vs scripts individuais:** verificar se há um script central de orquestração - todos os collectors devem passar por ele
 2. **SQLite vs DuckDB:** inserções devem ir para AMBAS as DBs (já foi problema antes)
 3. **Após cada batch de inserções:** rebuild com `ssh f3nix dc-jarbas-up cae-dashboard` e verificar `/api/quality` novamente
-4. **Catalog.py é fonte de verdade** para labels PT-PT e descrições — qualquer novo indicador precisa entrada aqui primeiro
+4. **Catalog.py é fonte de verdade** para labels PT-PT e descrições - qualquer novo indicador precisa entrada aqui primeiro

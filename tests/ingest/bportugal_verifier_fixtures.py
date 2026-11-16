@@ -28,7 +28,7 @@ def _route(url: str, params: dict | None) -> tuple[str, frozenset]:
 
 class VerifyFixtureHttp:
     """Serves the recorded verifier-channel bodies. A series-metadata GET routes by its
-    series_ids/view_full params; an observations GET routes by its exact month window —
+    series_ids/view_full params; an observations GET routes by its exact month window -
     an unrecorded request fails the test. `override` maps a case key to replacement bytes
     (tampering tests)."""
 

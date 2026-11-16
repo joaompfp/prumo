@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Habitação collector — Housing market indicators for Portugal.
+Habitação collector - Housing market indicators for Portugal.
 
 Sources:
   - INE: Índice de Preços da Habitação (quarterly), Rendas medianas
@@ -102,7 +102,7 @@ class HabitacaoCollector:
     def _collect_median_rent(self) -> List[Dict]:
         """INE: Renda mediana dos novos contratos de arrendamento (€/m2, quarterly).
 
-        Dataset 0011606 — Mediana das rendas de novos contratos.
+        Dataset 0011606 - Mediana das rendas de novos contratos.
         """
         import requests
 

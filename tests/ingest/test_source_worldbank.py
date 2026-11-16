@@ -1,4 +1,4 @@
-"""World Bank API v2 source adapter tests — real recorded fixtures
+"""World Bank API v2 source adapter tests - real recorded fixtures
 (tests/ingest/fixtures/worldbank/, 2026-11-11, sha256-pinned by MANIFEST.json):
 multi-geography one-page payloads (r5 GDP PT;ES;DE, population EU;GR;AT), paginated probes
 (r1 page 1/14, r6 page 1/66) and pinned tokens cross-checked live against the publisher's
@@ -255,7 +255,7 @@ def test_unrequested_indicator_response_raises():
 
 def test_url_indicator_must_match_payload_indicator():
     """Rows self-identify (indicator/countryiso3code); the response URL's indicator must agree
-    with the payload rows — a channel that answers a different indicator than it claims to is
+    with the payload rows - a channel that answers a different indicator than it claims to is
     identity drift, fail closed."""
     body5 = body("r5-multicountry-json.json")
     with pytest.raises(ValueError, match="URL"):
@@ -328,7 +328,7 @@ def test_parse_duplicate_page_rejected():
 
 def test_parse_page1_of2_without_page2_still_parses_what_arrived():
     """parse() maps what it is given; completeness of the pagination is fetch()'s job (it
-    declares pages and any missing page means a mid-stream failure already) — but the meta of
+    declares pages and any missing page means a mid-stream failure already) - but the meta of
     EACH response must still be internally consistent."""
     p1, _ = _two_pages()
     parsed = WorldBankSource().parse(specs_of(GDP_PTDES), [_r5(body_=p1)])
@@ -347,7 +347,7 @@ def test_null_value_cells_become_none_not_zero_and_not_dropped():
 
 def test_scientific_notation_token_is_preserved_then_quarantined_by_validation():
     """A genuine JSON number 1.234e8 is preserved verbatim as '1.234e8' (never reformatted);
-    the existing validator (no exponent grammar) quarantines it non_numeric — reported, not
+    the existing validator (no exponent grammar) quarantines it non_numeric - reported, not
     silently normalized to fixed point."""
     tampered = body("r5-multicountry-json.json").replace(b'"value":346639825141.821',
                                                          b'"value":3.46639825141821e11', 1)

@@ -33,11 +33,11 @@ WB_UNIT_LABELS = {
     # 'GDP (current US$)': "This indicator is expressed in United States dollars."
     "NY.GDP.MKTP.CD": ("current US$", {"USD"}),
     # 'GDP growth (annual %)': "percentage change ... of the constant price (base year 2015)
-    # series" — the PUBLISHED statistic is the annual % change (no 'constant USD' unit)
+    # series" - the PUBLISHED statistic is the annual % change (no 'constant USD' unit)
     "NY.GDP.MKTP.KD.ZG": ("annual %", {"%"}),
     # 'GDP per capita (current US$)'
     "NY.GDP.PCAP.CD": ("current US$", {"USD"}),
-    # 'GDP per capita, PPP (current international $)' — "expressed in current prices".
+    # 'GDP per capita, PPP (current international $)' - "expressed in current prices".
     # REGISTRY CONFLICT: labels 'USD (2017 PPC)'/'USD (2017)' declare constant-2017 dollars.
     # No allowed label: all 52 series are active:false (registry/unmapped-worldbank.md).
     "NY.GDP.PCAP.PP.CD": ("current international $ (NOT constant 2017)", set()),
@@ -110,7 +110,7 @@ def test_unmapped_doc_lists_each_inactivated_series_individually():
 
 def test_ppp_conflict_proven_by_archived_metadata():
     """The pinned metadata body really does publish 'current international $' and explicitly
-    'current prices' (no 2017 constant-dollar claim) — the reason for inactivation."""
+    'current prices' (no 2017 constant-dollar claim) - the reason for inactivation."""
     body = (FIX / "meta-NY.GDP.PCAP.PP.CD.json").read_text()
     doc = json.loads(body)
     assert doc[0]["total"] == 1 and doc[1][0]["id"] == "NY.GDP.PCAP.PP.CD"

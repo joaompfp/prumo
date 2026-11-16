@@ -1,4 +1,4 @@
-# Prumo — Public UI (project 4) — Design
+# Prumo - Public UI (project 4) - Design
 
 Date: 2026-11-15 · Status: written by the planner from the owner's instruction "Avança então para o UI" (owner opted out of the question round; every choice is the planner's call unless marked **[owner]**).
 
@@ -50,7 +50,7 @@ Every series page has a "Proveniência" section with:
 - publisher name and attribution text (as stored in `source`), licence name and link;
 - the publisher's own code/URL for the series (`series.native_code`, `series.url`) linked when `https://`;
 - the exact receipt behind the served value: retrieval timestamp (UTC), HTTP status, archived payload SHA-256, byte count, dataset run id;
-- the verification that covered that run: date, sample size, 100% match statement, sampling procedure, verifier channel, and whether **this particular value** was in the sample (from `verification_item`) — if it was not, the page says so;
+- the verification that covered that run: date, sample size, 100% match statement, sampling procedure, verifier channel, and whether **this particular value** was in the sample (from `verification_item`) - if it was not, the page says so;
 - the number of stored vintages for the series and a link/anchor to the revisions section.
 
 Compact figures (home cards, catalogue rows) carry a one-line provenance: source name · "recolhido a DD/MM/AAAA" plus a link to the series page. No figure is shown without a nameable source.
@@ -75,7 +75,7 @@ Add to `presentation/catalog/pt.py` (and keep `en.py` structurally ready, not po
 - `SOURCE_TITLES`: source name → institution name;
 - `CURATED_HOME`: ordered series ids for the home page, with the short label to use there.
 
-A series' visible title is composed as `FAMILIES[family] — GEOGRAPHIES[geography]` (geography omitted when the title already names it, via an explicit set of self-locating families). A missing text entry raises `MissingText` at render time; a test walks `registry/core.yaml` and asserts every active, redistributable series resolves family, geography, unit, flag, frequency and theme. No raw code may reach the HTML.
+A series' visible title is composed as `FAMILIES[family] - GEOGRAPHIES[geography]` (geography omitted when the title already names it, via an explicit set of self-locating families). A missing text entry raises `MissingText` at render time; a test walks `registry/core.yaml` and asserts every active, redistributable series resolves family, geography, unit, flag, frequency and theme. No raw code may reach the HTML.
 
 ### D7. Language, dates and numbers
 

@@ -6,10 +6,10 @@
 Recorded evidence in tests/ingest/fixtures/worldbank/ (2026-11-11, sha256-pinned by
 MANIFEST.json). Keyless, `active` coverage = 930 series over 19 indicators x 54 geographies
 (registry/unmapped-worldbank.md: the 52 gdp_per_capita_ppp series are INACTIVE over a proven
-unit-definition conflict — the publisher serves current international $, not the registry's
+unit-definition conflict - the publisher serves current international $, not the registry's
 constant 2017 dollars).
 
-Registry contract (`SeriesSpec.native_code`): '<WDI indicator code>:<publisher ISO3>' — e.g.
+Registry contract (`SeriesSpec.native_code`): '<WDI indicator code>:<publisher ISO3>' - e.g.
 'NY.GDP.MKTP.CD:PRT'. ISO3 codes derive from the publisher's own country metadata (archived
 country-metadata.json), never a hand-built ISO2 table. `SeriesSpec.url` is the canonical
 institution series address https://api.worldbank.org/v2/country/<ISO3>/indicator/<CODE>.
@@ -19,7 +19,7 @@ Fetch strategy: ONE request per indicator carrying the indicator's full registry
 per_page=20000 covers the full annual history single-page at current scope (54 geos x ~66
 years = ~3.5K rows); pagination is followed when meta declares pages>1 (page, pages, per_page,
 total cross-checked per response and across a series' pages; a duplicated page or a drifting
-count fails closed). Requests are grouped by indicator ONLY — never one request per
+count fails closed). Requests are grouped by indicator ONLY - never one request per
 observation/country.
 
 Response shape (fail-closed): [meta, rows]; meta keys exactly {page, pages, per_page, total,
@@ -27,10 +27,10 @@ sourceid ("2" = WDI), lastupdated}; non-2xx, HTML, the publisher error shape
 ([{"message": ...}]), truncated row counts or page-count drift all raise. Each row must have
 exactly {indicator{id,value}, country{id,value}, countryiso3code, date, value, unit,
 obs_status, decimal}: number tokens via json.loads(parse_int/parse_float TAGGING JSON numbers
-as _Num, a str subclass internal to this module — a JSON string is NEVER a number token, so a
+as _Num, a str subclass internal to this module - a JSON string is NEVER a number token, so a
 quoted "04442" cannot silently become the stored value while still Decimal-matching the CSV
 channel); identity labels must be genuine JSON strings (type is str, not _Num); `value` is a
-JSON number token (verbatim str, exponents PRESERVED — the existing validator quarantines
+JSON number token (verbatim str, exponents PRESERVED - the existing validator quarantines
 scientific notation as non_numeric; this adapter never reformats) or null (missing ->
 value_raw=None, quarantined non_numeric downstream; never zero-filled); per-observation `unit`
 and `obs_status` are empty strings in all archived evidence -> unit_raw=None (absent,
@@ -38,7 +38,7 @@ declared honestly) and flag_raw='normal' by explicit declaration of the reviewed
 non-empty unit/obs_status is an unreviewed vocabulary and raises. Row identity is asserted in
 the payload: indicator.id equals the response URL's indicator, countryiso3code matches the
 series' native ISO3 AND country.id matches the registry geography (publisher ISO2); duplicates
-of (series, date) raise. parse() does NOT require the complete page set — replay of archived
+of (series, date) raise. parse() does NOT require the complete page set - replay of archived
 partial sets (e.g. the r1 page-1-of-14 probe) must work; completeness is fetch()'s contract.
 """
 import json

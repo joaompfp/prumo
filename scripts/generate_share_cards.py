@@ -82,7 +82,7 @@ def generate_kpi_card(page, base_url: str, kpi_id: str, period: str, output_dir:
     # The element screenshot will be the card's natural size.
     # Resize to 1200x630 for OG compliance using Playwright's page screenshot
     # with a clip, or post-process with Pillow if needed.
-    # For now, the element screenshot is good enough — the share route
+    # For now, the element screenshot is good enough - the share route
     # also has a Pillow fallback for exact 1200x630 sizing.
 
     print(f"    [OK] {out_path}")

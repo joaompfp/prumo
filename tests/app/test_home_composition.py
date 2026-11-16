@@ -1,7 +1,9 @@
 """The home page with an editorial composition, and the proof that an empty one changes nothing.
 
 `golden/home_before_editorial.html` was rendered by the deployed commit before this feature and
-stays in the tree as the historical reference. `golden/home_code_list.html` is the capture this
+stays in the tree as the historical reference. Both captures subsequently received only the
+owner-requested U+2014-to-ASCII-hyphen replacement, not a new render (see golden/README.md).
+`golden/home_code_list.html` is the capture this
 test uses: it was re-taken once, in the comparisons release (2026-11-16), because that release
 added one item to the site navigation and the nav is part of every page, the home included. The
 two files differ by exactly that one `<a>` plus the whitespace line the nav loop emits around it
@@ -76,8 +78,8 @@ def test_publishing_the_code_list_reproduces_the_cards(site_path):
     with TestClient(create_app(str(site_path))) as c:
         html = c.get("/").text
     # labels now come from the catalogue title, not from the short hand-written label
-    assert "Taxa de variação homóloga do IHPC — Portugal" in html
-    assert "Taxa de desemprego — Portugal" in html
+    assert "Taxa de variação homóloga do IHPC - Portugal" in html
+    assert "Taxa de desemprego - Portugal" in html
     # values are the stored tokens, formatted for the reader, in the same order
     assert html.index("1,8") < html.index("6,2")
     assert "0,3" in html  # the calculated change line survived the composition
@@ -95,7 +97,7 @@ def test_a_slot_that_stops_qualifying_is_dropped_with_a_warning(site_path, caplo
         with TestClient(create_app(str(site_path))) as c:
             r = c.get("/")
     assert r.status_code == 200
-    assert "Taxa de variação homóloga do IHPC — Portugal" in r.text
+    assert "Taxa de variação homóloga do IHPC - Portugal" in r.text
     assert "Crescimento do PIB" not in r.text
     assert any("editorial slot dropped" in m and WORLD in m and "inactive" in m
                for m in caplog.messages)
@@ -107,7 +109,7 @@ def test_duplicate_title_keeps_the_first_slot(site_path, caplog):
     with caplog.at_level("WARNING", logger="prumo.app"):
         with TestClient(create_app(str(site_path))) as c:
             html = c.get("/").text
-    assert html.count("Taxa de variação homóloga do IHPC — Portugal") == 1
+    assert html.count("Taxa de variação homóloga do IHPC - Portugal") == 1
     assert any("duplicate_title" in m for m in caplog.messages)
 
 
@@ -115,7 +117,7 @@ def test_note_switches_when_a_card_is_not_portuguese(site_path):
     _publish(site_path, [(WORLD, None)])
     with TestClient(create_app(str(site_path))) as c:
         html = c.get("/").text
-    assert "Crescimento do PIB — Estados Unidos" in html
+    assert "Crescimento do PIB - Estados Unidos" in html
     assert "Cada número indica a instituição e a data da recolha." in html
     assert "Portugal. Valores publicados" not in html
 
@@ -152,8 +154,8 @@ def test_a_published_composition_is_not_used_by_another_slug(site_path):
     with TestClient(create_app(str(site_path))) as c:
         html = c.get("/").text
     # /inicio still has its own composition
-    assert "Crescimento do PIB — Estados Unidos" in html
-    assert "Taxa de variação homóloga do IHPC — Portugal" not in html
+    assert "Crescimento do PIB - Estados Unidos" in html
+    assert "Taxa de variação homóloga do IHPC - Portugal" not in html
 
 
 def test_a_composition_with_no_surviving_card_does_not_fall_back(site_path, caplog):
@@ -229,5 +231,5 @@ def test_a_slot_published_after_the_catalogue_was_cached_renders_at_once(site_pa
             db.close()
         html = c.get("/").text  # same client, catalogue cache still warm
     assert 'class="card"' in html
-    assert "Taxa de variação homóloga do IHPC — Portugal" in html
+    assert "Taxa de variação homóloga do IHPC - Portugal" in html
     assert "2,0" in html

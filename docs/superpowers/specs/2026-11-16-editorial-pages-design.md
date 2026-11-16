@@ -1,4 +1,4 @@
-# Prumo — Editorial pages (backoffice v1.1, part 1) — Design
+# Prumo - Editorial pages (backoffice v1.1, part 1) - Design
 
 Date: 2026-11-16 · Status: written by the planner from the owner's instruction "quero é poder configurar séries a mostrar numa página pública, a partir do backoffice" (owner opted out of the question round; every choice below is the planner's call unless marked **[owner]**).
 

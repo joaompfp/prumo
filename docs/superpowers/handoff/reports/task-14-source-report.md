@@ -1,11 +1,11 @@
-# Task 14 Part A — FRED source adapter, registry disposition, fixtures (implementer report)
+# Task 14 Part A - FRED source adapter, registry disposition, fixtures (implementer report)
 
-2026-11-12, implementer Part A only (no verifier — Part B is a fresh agent). Base
+2026-11-12, implementer Part A only (no verifier - Part B is a fresh agent). Base
 `pipeline-rebuild` @ 38aad8c. Controller baseline: 929 passed / 5 live deselected / 162.96 s.
 
 ## What was built
 
-- `ingest/sources/fred.py` — `FredSource` (`name='fred'`, `expected_format='json'`):
+- `ingest/sources/fred.py` - `FredSource` (`name='fred'`, `expected_format='json'`):
   - Credential: explicit `api_key=` or env `FRED_API_KEY`; clear `ValueError` when missing/blank;
     the legacy `.fred_api_key` file is never read (tested, incl. empty-cwd construction).
   - Wire: `GET api.stlouisfed.org/fred/series` then `/fred/series/observations` per unique
@@ -16,13 +16,13 @@
   - Secret hygiene: the key is on the wire request only; the yielded RawResponse carries the
     key-stripped final URL and api_key-OMITTED params (documented in the fixture manifest);
     a response body echoing the key is refused BEFORE yield (bytes never archived/mutated);
-    network errors are re-raised as `FredRequestError` (exception type + series id only — no
+    network errors are re-raised as `FredRequestError` (exception type + series id only - no
     request URL, no response excerpt). Core HTTP contract unchanged.
   - Parse: identity from archived url/params (an archived `api_key` fails closed as a leak).
     Metadata (mandatory per series) asserts id/frequency=M/NSA and the runtime unit
     (metadata `units` == registry's exact publisher label, fail closed otherwise). Observation
     values are JSON STRINGS (verbatim token; '.' -> `value_raw=None` for the 144 pre-1992 missing
-    cells — kept, never truncated; a JSON-number value is an unknown primitive and raises).
+    cells - kept, never truncated; a JSON-number value is an unknown primitive and raises).
     `flag_raw='normal'` declared for the reviewed no-status-surface shape; unknown
     per-observation keys raise. Duplicated dates, non month-first dates, count/offset/limit
     truncation, realtime identity drift, unknown shapes all raise. `last_updated` is
@@ -58,7 +58,7 @@
 - Source block: `redistribution_ok: false`, explicit `verifiable: true`, terms-read comment.
   `registry/licences-todo.md` fred row updated with the read terms, the verbatim deferral quote
   ("making the data series available through the FRED API does not constitute such permission"
-  — verified against the archived bytes), and IMF permission UNCONFIRMED.
+  - verified against the archived bytes), and IMF permission UNCONFIRMED.
 - New-unit discipline: the correction names the units FRESH data will publish. A legacy test
   (`test_legacy_usd_rows_are_rejected_unit_mismatch_not_relabelled`) proves the UNCHANGED
   importer quarantines old bare-'USD' FRED rows as `unit_mismatch` (no relabel) and still
@@ -66,12 +66,12 @@
 
 ## Fixtures / evidence
 
-- `tests/ingest/fixtures/fred/` — 48 publisher originals + MANIFEST.json (sha256/bytes/status/
+- `tests/ingest/fixtures/fred/` - 48 publisher originals + MANIFEST.json (sha256/bytes/status/
   fetched_at/key-free url+params per file; each <= 200 KB): `meta-<CODE>.json` (12),
   `obs-<CODE>.json` (12; 561 cells each = 417 values + 144 '.'), `table-<CODE>.html` (12;
   the server-rendered `/data/<CODE>` table, Part B's independent channel),
   `fredgraph-<CODE>.csv` (12; rejection evidence only).
-- `docs/superpowers/handoff/evidence/task-14-fred/` — rights/conflict originals:
+- `docs/superpowers/handoff/evidence/task-14-fred/` - rights/conflict originals:
   `fred-api-terms.html`, `meta-WPU101.json`, `meta-MHHNGSP.json`, their series pages,
   `csv-decimal-mismatches.json` (controller computation, labeled NOT publisher bytes),
   `f0nix-probes.json` (production-egress 200s), MANIFEST.json.

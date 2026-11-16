@@ -18,7 +18,7 @@ BOTH surfaces an item's decision needs, so one fetch per series per check() call
     Fund' and Release the IMF Primary Commodity Prices release (the reviewed WORLD-concept
     series: Title starts 'Global price of '), Frequency 'Monthly' == spec M, Seasonal Adjustment
     'Not Seasonally Adjusted' == spec NSA, and the Units label (observed_unit) byte-matches the
-    registry — asserted, never copied FROM the registry.
+    registry - asserted, never copied FROM the registry.
 2.  the observations table (`<table id="data-table-observations" aria-labelledby=
     "data-table-title">`): header exactly DATE/VALUE (a third column would be unreviewed
     status drift), body rows `<th scope="row">YYYY-MM-01</th><td>token</td>`. Month-first real
@@ -28,7 +28,7 @@ BOTH surfaces an item's decision needs, so one fetch per series per check() call
 
 Value equality is exact-Decimal in ingest.verify (Ruling AB), which absorbs the table's
 trailing-zero padding against the API's trimmed tokens (preflight: all 417 x 12 cells match).
-A requested period absent from the table (or a proved '.' cell) returns observed_text=None —
+A requested period absent from the table (or a proved '.' cell) returns observed_text=None -
 an honest 'not found', never an invented value. observed_flag is honestly None: this channel
 has no per-observation status surface. Parsing is structural (html.parser); no regex scrapes
 numbers out of the page. html.parser is subclassed WITHOUT defining __init__ or calling
@@ -37,7 +37,7 @@ and HTMLParser's own constructor (convert_charrefs=True by default) runs normall
 
 EVIDENCE (Ruling R/G7): metadata and values come from the SAME response, so ItemResult.evidence
 is one versioned JSON envelope (schema 'fred-table-evidence', version 1) bundling the exact
-wire record: final URL, actual HTTP status and the full body base64-encoded — byte-for-byte
+wire record: final URL, actual HTTP status and the full body base64-encoded - byte-for-byte
 recoverable from the raw store with no HTTP, and readable again by `read_table_page`.
 evidence_url is the page's final URL.
 
@@ -47,7 +47,7 @@ shape rule is DUPLICATED ON PURPOSE: if the two copies ever disagree, verificati
 loudly. Requests are paced by the injected Http client; the verifier adds no sleeping of its
 own so recorded-fixture tests stay fast. The CSV export (fredgraph.csv) was REJECTED as a
 channel (binary numeric tails differ on 10/12 series) and the JSON API is the collector's own
-channel — neither is read here.
+channel - neither is read here.
 
 Registration: the Task 17 CLI calls register_verifier(FredVerifier()).
 """
@@ -99,8 +99,8 @@ def _month_first(text: str) -> str:
 
 
 def _numeric(token: str) -> str:
-    """A plain ASCII decimal token, returned VERBATIM. Anything else — blank, unicode digits,
-    separators, exponents, a new status marker — raises: the only reviewed missing marker on
+    """A plain ASCII decimal token, returned VERBATIM. Anything else - blank, unicode digits,
+    separators, exponents, a new status marker - raises: the only reviewed missing marker on
     this channel is exactly '.', handled by the caller before this."""
     if not token or not token.isascii():
         raise ValueError(f"unreviewed VALUE cell {token!r} (not a plain ASCII decimal token)")
@@ -115,7 +115,7 @@ def _numeric(token: str) -> str:
 @dataclass
 class _Scan:
     """Mutable scanner state (attached to the parser by read_table_page right after
-    construction — the class itself defines no __init__, see module docstring)."""
+    construction - the class itself defines no __init__, see module docstring)."""
     cur: str | None = None       # 'meta' | 'obs' while inside a reviewed table
     foreign_tables: int = 0      # open non-reviewed (layout/chrome) tables; content ignored
     meta_tables: int = 0
@@ -136,7 +136,7 @@ class _PageParser(HTMLParser):
     """Structural scanner of the fixed /data/<CODE> template. Markup inside reviewed-table
     cells is rejected (never concatenated), nested tables inside reviewed tables are rejected,
     and a table left open at EOF is a truncation. Non-reviewed tables elsewhere on the page
-    are ignored entirely — values come ONLY from the identified cells."""
+    are ignored entirely - values come ONLY from the identified cells."""
 
     def handle_starttag(self, tag, attrs):
         st = self.st
@@ -337,7 +337,7 @@ def read_table_page(body: bytes, code: str, spec: SeriesSpec) -> tuple[str, dict
 
 def _envelope(r: HttpResult) -> bytes:
     """The item's evidence: one versioned JSON envelope (schema 'fred-table-evidence', v1)
-    bundling the exact wire record of the /data/<code> page — final URL, actual HTTP status
+    bundling the exact wire record of the /data/<code> page - final URL, actual HTTP status
     and the full body base64-encoded (byte-for-byte recoverable from the raw store with no
     HTTP; metadata AND values come from this one response, so one record carries both)."""
     doc = {"schema": EVIDENCE_SCHEMA, "version": EVIDENCE_VERSION,

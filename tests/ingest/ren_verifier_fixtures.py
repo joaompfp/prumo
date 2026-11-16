@@ -19,7 +19,7 @@ def vbody(file: str) -> bytes:
 
 def decode_evidence(blob: bytes) -> list[dict]:
     """Offline (no HTTP) read of an item's versioned 'ren-portal-evidence' v1 envelope: one
-    exact wire record per deciding response — final URL, ACTUAL HTTP status (from the archive,
+    exact wire record per deciding response - final URL, ACTUAL HTTP status (from the archive,
     not implied) and the body recovered byte-for-byte. Callers unpack `(rec,)` to pin the
     single deciding response."""
     doc = json.loads(blob)

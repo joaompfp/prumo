@@ -1,18 +1,18 @@
-# Task 17A implementation report — operational CLI/status/replay, per-indicator World Bank isolation & scoped dated legacy serving
+# Task 17A implementation report - operational CLI/status/replay, per-indicator World Bank isolation & scoped dated legacy serving
 
-Branch `pipeline-rebuild` at `bd773f6`; all work in four commits on top. Task 17A only — this is
+Branch `pipeline-rebuild` at `bd773f6`; all work in four commits on top. Task 17A only - this is
 NOT "Task 17 complete" (17B adds the original-file bundle/capture, manual-update instructions
 and safe legacy cleanup). Task remains open for controller review after 17B.
 
 ## Commits
 
 - `f9c85ed` feat(ingest): per-indicator export locale map on WorldBankVerifier
-- `d96b3de` feat(ingest): migration 0007 — WB-scoped serving of dated legacy rows
+- `d96b3de` feat(ingest): migration 0007 - WB-scoped serving of dated legacy rows
 - `a83b2a3` feat(ingest): operational CLI, status projection and run orchestration
 - `427bb98` test(ingest): ensure_verifier reuse contract
 
 Touched paths only; `task-17-design.md` stays untracked (unapproved research proposal, NOT
-followed — the subprocess-per-locale idea is replaced by the accepted per-indicator locale
+followed - the subprocess-per-locale idea is replaced by the accepted per-indicator locale
 configuration on one registered instance). No handoff/ledger/plan/roadmap staging, no push,
 no deploy, no main.
 
@@ -26,7 +26,7 @@ no deploy, no main.
   the 0007-seeded `legacy_served_source:worldbank=1`; nothing else changed there).
 - `.venv-ci/bin/python -m pytest tests/ingest/test_cli.py tests/ingest/test_status.py tests/ingest/test_scoped_legacy.py tests/ingest/test_verifier_worldbank.py -q` → **80 passed**.
 - Neighbouring suites (db/pipeline/verify/independence/registry/locale/CLI/status/legacy):
-  **289 passed** — no live marker, no 4-min full suite (controller runs it).
+  **289 passed** - no live marker, no 4-min full suite (controller runs it).
 - `.venv-ci/bin/ruff check` on all touched paths → clean (a pre-existing import-order nit in
   `ingest/verifiers/independence.py` exists on a path I didn't author; left for the controller's
   scope, untouched on purpose).
@@ -52,14 +52,14 @@ global `--db` (`$PRUMO_DB` or `/data/prumo.sqlite3`), `--raw-dir` (`$PRUMO_RAW_D
 
 ## Public contracts (no plugin framework, no event bus)
 
-- `ingest/cli.py` — argparse/printing ONLY. `main(argv=None, *, http_for=None) -> int`; the
+- `ingest/cli.py` - argparse/printing ONLY. `main(argv=None, *, http_for=None) -> int`; the
   `http_for(name)` seam is the test injection point (default: per-source `RequestsHttp` with
   min registry throttle (default 1 rps), registry `timeout_s` (INE 300) and **0 client
   retries**). Dry-run opens only a throwaway DB/raw store under TMPDIR (`--db`/`--raw-dir`
   never opened; test asserts the real paths never come into existence). Bad args (unknown
   source, non-ASCII/future/out-of-range month, non-positive run id, non-CSV legacy path →
   clear DuckDB explanation) exit 2 before any DB open or mutation.
-- `ingest/operations.py` — domain operations: `RunRequest(window=None|explicit E-REDES day
+- `ingest/operations.py` - domain operations: `RunRequest(window=None|explicit E-REDES day
   bounds)` (the public contract 17B's manual tiny-window procedures can use), `group_specs`
   (THE authoritative grouping; status derives dataset identity from it),
   `SOURCE_FACTORIES`/`VERIFIER_OPS` (lazy: FRED key absence raises in the factory and blocks
@@ -69,7 +69,7 @@ global `--db` (`$PRUMO_DB` or `/data/prumo.sqlite3`), `--raw-dir` (`$PRUMO_RAW_D
   `GroupOutcome` and `exit_code()` (1 iff an ACTIVE, verifiable source did not verify;
   DGEG-style blocked is reported but never fails the aggregate). Normal runs and replay go
   through `run_with_refetch` ONLY (max_attempts default 3).
-- `ingest/status.py` — `build_status(db, specs, *, now=None) -> StatusReport` (typed,
+- `ingest/status.py` - `build_status(db, specs, *, now=None) -> StatusReport` (typed,
   `to_dict()`/`to_json()` with `schema="prumo-status" version=1`) + `render_text`. Read-only;
   the CLI status command accepts no timestamp input.
 - SQL: only `ingest/db.py` (new read methods: `source_list`, `series_list`, `runs_overview`,
@@ -111,7 +111,7 @@ global `--db` (`$PRUMO_DB` or `/data/prumo.sqlite3`), `--raw-dir` (`$PRUMO_RAW_D
    verification evidence (`availability: legacy-unverified`, `last_verified: null`, legacy row
    counts + original date kept so the data's AGE is visible); latest attempt excludes legacy
    runs entirely; per-DATASET latest state (a healthy final WB indicator cannot conceal an
-   earlier failed one — tested both directions); pending-verification runs listed with the >24h
+   earlier failed one - tested both directions); pending-verification runs listed with the >24h
    staleness flag; events are total counts per kind; staleness = OUR refresh policy
    (`schedule` else A/S=30d, Q=7d, M/D/PT15M=1d) documented in the JSON `staleness_policy`
    block; never_fetched/never_verified are explicit null reasons; the Ruling-D idempotent
@@ -138,7 +138,7 @@ global `--db` (`$PRUMO_DB` or `/data/prumo.sqlite3`), `--raw-dir` (`$PRUMO_RAW_D
   return annotation. CI gate (pytest + ruff) is green.
 - `status` needs no network or credentials; `run fred` without `FRED_API_KEY` is BLOCKED with
   a clear detail and never prints any key.
-- No scheduler/deploy/main changes, no legacy-collector deletion, no cleanup — 17B scope.
+- No scheduler/deploy/main changes, no legacy-collector deletion, no cleanup - 17B scope.
 
 ## Remaining for 17B (not started)
 

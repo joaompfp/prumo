@@ -1,8 +1,8 @@
-# Task 17 fix re-review (R1-R5 + migration 0009 populated-safety) — independent
+# Task 17 fix re-review (R1-R5 + migration 0009 populated-safety) - independent
 
 Reviewer: independent subagent (second pass). Scope: commit eddb91c on `pipeline-rebuild`,
 diff e48e2ba..eddb91c, fix report task-17-fix-1.md, original review task-17-spec-review.md.
-Read-only: no code edits, no commits. Offline only (no network, no full suite — controller
+Read-only: no code edits, no commits. Offline only (no network, no full suite - controller
 running): 6 targeted test files + a populated-DB migration probe in
 /home/joao/.hermes/cache/scratch/t17-rereview-0009v6.
 
@@ -11,7 +11,7 @@ running): 6 targeted test files + a populated-DB migration probe in
 All five review findings are genuinely fixed, the new migration 0009 is populated-safe, and
 no touched contract regressed. Two cosmetic residuals below are NOT blocking.
 (Probe note: its single flagged 'schema_migration changed' line is the migration bookkeeping
-table recording 0009's own application — expected and correct; every DATA table compared
+table recording 0009's own application - expected and correct; every DATA table compared
 byte-identical.)
 
 ## Evidence re-run on this tree
@@ -32,10 +32,10 @@ ERRORS: ['table schema_migration changed across 0009']
 
 ## Per-finding verification
 
-### R1 — per-group stale-bundle continuity: FIXED
+### R1 - per-group stale-bundle continuity: FIXED
 - `cli._stale_bundle_groups` compares, per ACTUAL DatasetGroup, the OLDEST receipt backing
   an OBSERVATION (real adapter re-driven over a fresh PinnedHttp; rows mapped through
-  `response_index`, so dataset-metadata/verifier responses — which carry no rows — can
+  `response_index`, so dataset-metadata/verifier responses - which carry no rows - can
   neither boost nor doom freshness) against that group's held verified MAX. MIN-vs-MAX is
   conservative on both sides, matching the required semantics (oldest collector receipt, not
   fresh CSV/meta).
@@ -58,7 +58,7 @@ ERRORS: ['table schema_migration changed across 0009']
   migration file edited (git diff of 0001/0005/0006/0007/0008: empty). Auto-discovered via
   `_migrate`'s glob; db.py correctly untouched.
 
-### R2 — historical pending keys visible exactly once: FIXED
+### R2 - historical pending keys visible exactly once: FIXED
 `PendingRun` carries the run's OWN `source` column (additive JSON field); attribution is
 `p.source == name` and the source list is unioned with `{p.source for p in pending}`, so a
 source known only through old pending runs gets a row and each pending run appears under
@@ -66,14 +66,14 @@ exactly one source. Stale (>24h) flag and input_origin preserved. Locked by
 test_pending_runs_stay_visible_under_their_own_source (old source-wide key + registry-absent
 source, zero pending ids discarded).
 
-### R3 — per-source setup failures contained: FIXED
-`run_source` wraps `group_specs` (ValueError — grep-verified the ONLY raise type in
+### R3 - per-source setup failures contained: FIXED
+`run_source` wraps `group_specs` (ValueError - grep-verified the ONLY raise type in
 operations' grouping paths) and `http_for()` (Exception) into single 'blocked' GroupOutcomes;
 `run_all` continues with the remaining sources. Locked by
 test_run_all_continues_when_http_client_construction_fails and
 test_run_all_continues_when_one_sources_grouping_is_broken.
 
-### R4 — real wall-clock capture deadline: FIXED
+### R4 - real wall-clock capture deadline: FIXED
 Per physical request the timeout is CLAMPED to the remaining phase budget, a response
 finishing past the deadline is DISCARDED (BundleError, never returned), and the default
 transport runs each request in a killable worker subprocess joined at most its clamped share
@@ -81,10 +81,10 @@ transport runs each request in a killable worker subprocess joined at most its c
 (iter_content, drop at cap+1). `--deadline` help text now states exactly this. Honest-capture
 bonus: `seal()` creates the root dir so an all-failed capture still seals its failure
 manifest. Locked by the 4 new capture tests (clamped [12.0, 7.0], late discard, real 1.5s
-kill of a stalled loopback server, streaming cap) — these are REAL mechanisms, not post-hoc
+kill of a stalled loopback server, streaming cap) - these are REAL mechanisms, not post-hoc
 checks.
 
-### R5 — manual-refresh guide runnable: FIXED
+### R5 - manual-refresh guide runnable: FIXED
 Real clone URL `https://github.com/joaompfp/prumo.git` (matches `git remote get-url origin`)
 + `git checkout pipeline-rebuild`; TODAY state honest (no container/crond; import from the
 existing checkout with `.venv-ci`, isolated operator dir `/home/joao/pacotes/manual/`);
@@ -93,7 +93,7 @@ stale refusal. Fix report shows the §4 import command was exercised for real vi
 fixture path (rc 0, 198 obs, idempotent re-import no-op). No invented deployment claims.
 
 ## Untouched-contract checks (no regression)
-- Diff scope: cli/operations/pipeline/status/bundle/0009/tests/docs ONLY — verify.py,
+- Diff scope: cli/operations/pipeline/status/bundle/0009/tests/docs ONLY - verify.py,
   db.py, verifiers/, registration code, 0001-0008 SQL all untouched. Value precision and
   verifier registration semantics unchanged.
 - No collector deletion in the diff (owner-approval tool gate; known pending item, not a new
@@ -101,7 +101,7 @@ fixture path (rc 0, 198 obs, idempotent re-import no-op). No invented deployment
 
 ## Minor residuals (non-blocking, cosmetic)
 - M1: on the BUNDLE replay path, `cli._stale_bundle_groups` calls `operations.group_specs`
-  unguarded — a malformed registry there crashes the CLI with a traceback. This is pre-write
+  unguarded - a malformed registry there crashes the CLI with a traceback. This is pre-write
   (sync_registry not yet run, no data loss) and the live path is clean via the run_source
   guard. Failures fail loud, not silent.
 - M2: `_group_oldest_receipt` calls the source factory outside its try; only reachable for

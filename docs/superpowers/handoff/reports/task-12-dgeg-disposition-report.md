@@ -1,4 +1,4 @@
-# Task 12B — DGEG safe disposition report (implementer)
+# Task 12B - DGEG safe disposition report (implementer)
 
 Date: 2026-11-11 · Branch pipeline-rebuild @ 869ba6d base · Implementer-owned; controller owns
 HANDOFF/ledger/briefs/reviews.
@@ -17,7 +17,7 @@ untouched (zero core series, as required).
 
 - RED: `.venv-ci/bin/python -m pytest tests/ingest/test_registry_dgeg_disposition.py -q`
   → **4 failed, 2 passed** in 10.81 s (failures: 17-series inactive/identity, source flags,
-  refuse-before-network, evidence bundle — the two policy-pin tests passed pre-change because the
+  refuse-before-network, evidence bundle - the two policy-pin tests passed pre-change because the
   licence gate already withholds `redistribution_ok: false` sources).
 - GREEN: same command → **6 passed** in 10.58 s.
 - Lint: `.venv-ci/bin/ruff check tests/ingest/test_registry_dgeg_disposition.py tests/ingest/test_registry.py` → All checks passed.
@@ -34,27 +34,27 @@ untouched (zero core series, as required).
 - `sources.dgeg`: + `verifiable: false` with an in-file comment declaring it a SCOPED
   current-core-definitions eligibility flag (blocks a normal run before any fetch), explicitly not
   a no-channel-ever claim; licence wording/URL/attribution/`redistribution_ok: false` untouched.
-- 17 DGEG series: + `active: false` appended after `native_code` — the only per-series change.
+- 17 DGEG series: + `active: false` appended after `native_code` - the only per-series change.
   Series identities byte-preserved (diff: +25 lines per file, zero deletions, zero edits).
 - No other source or series modified. One-primary-per-indicator_key invariant intact (load test
   green).
 
 ## Docs
 
-- `registry/unmapped-dgeg.md` (new): exact 17-id matrix — workbook sheet/row coordinate, native
+- `registry/unmapped-dgeg.md` (new): exact 17-id matrix - workbook sheet/row coordinate, native
   unit, reason category (unit/concept conflict incl. final_energy_consumption Mtep-vs-ktep with
   its genuine APN 10/10 ktep channel and electricity_consumption TWh-vs-ktep; primary_energy_
   consumption legacy domestic-production-%-misassignment; energy_intensity duplicate; precision/
   coverage, base-year mismatch, vintage/coverage, representation policy, weak-independence),
   evidence URLs, per-row resumption criteria. States plainly: partial channels exist; APN is a
-  genuine channel for consumption_primary_total (8/10, 2021/22 vintage drift) — "blocked", not
+  genuine channel for consumption_primary_total (8/10, 2021/22 vintage drift) - "blocked", not
   "no channel", and the fraction-vs-percent relabelling recommendation was REJECTED as unresolved
   scale policy.
-- `registry/unverifiable.md`: rewritten — DGEG has no adapter, no verifier, no collected data;
+- `registry/unverifiable.md`: rewritten - DGEG has no adapter, no verifier, no collected data;
   SourceNotVerifiable/NoVerifierRegistered refuse before any network; inactive series excluded
   from T17/T18 scheduling. Stale universal "adapter exists / data is still collected" wording
   corrected. REN reclassified: verifiable but licence-withheld (≠ unverifiable); INE verified.
-- `registry/licences-todo.md`: DGEG row replaced — terms shell ("about us" only), site footer
+- `registry/licences-todo.md`: DGEG row replaced - terms shell ("about us" only), site footer
   "All Rights Reserved", AEN "Todos os direitos reservados", LADA statute citation ≠ grant,
   dados.gov.pt CC BY = geology datasets only (NOT the energy workbook). Unresolved unconfirmed
   grant; no invented permission, no categorical illegality claim.
@@ -65,7 +65,7 @@ Raw (byte-identical to the research archive): the original 119,336-byte workbook
 (sha256 5f31904a…837be), terms page HTML, LADA page HTML, indicadores collector page HTML,
 dados.gov.pt DGEG-org datasets JSON (each ≤200 KB). Derived, first line labelled DERIVED and never
 presented as raw response evidence: APN full text layer and AEN ficha-técnica rights excerpt, both
-naming source PDF URL/sha256/bytes (APN d4490a8e…07a7 2.4 MB, AEN 9486137e…c4db1 13 MB — PDFs
+naming source PDF URL/sha256/bytes (APN d4490a8e…07a7 2.4 MB, AEN 9486137e…c4db1 13 MB - PDFs
 deliberately NOT committed). Manifest records raw-vs-derived, final URL/status/hash/bytes per
 file; the disposition docs stand without the expiring scratch paths.
 
@@ -83,7 +83,7 @@ carry DERIVED header + pinned source-PDF sha256).
 ## Precisely blocked / excluded
 
 DGEG adapter + verifier implementation; any live DGEG fetch or verification claim; unit
-corrections (Mtep/TWh — owner decisions); fraction-percent representation policy; duplicate and
+corrections (Mtep/TWh - owner decisions); fraction-percent representation policy; duplicate and
 misassignment reconciliation; AEN/APN display-precision policies; licence resolution
 (`redistribution_ok` stays false; served=0 for any DGEG row regardless of adapter work). Sources
 not covered by same-publisher bar (Eurostat/INE/ApC) were not proposed. Completion of Task 12

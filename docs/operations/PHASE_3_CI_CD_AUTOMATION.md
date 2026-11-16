@@ -31,7 +31,7 @@ Phase 3 focuses on **continuous integration and continuous deployment**:
 
 ---
 
-## 3.1.1 test.yml — Run on Every Push
+## 3.1.1 test.yml - Run on Every Push
 
 ```yaml
 name: Run Tests
@@ -96,7 +96,7 @@ jobs:
 
 ---
 
-## 3.1.2 nightly-report.yml — Daily Report
+## 3.1.2 nightly-report.yml - Daily Report
 
 ```yaml
 name: Nightly Test Report
@@ -151,7 +151,7 @@ jobs:
           server_port: 465
           username: apikey
           password: ${{ secrets.SENDGRID_API_KEY }}
-          subject: 'CAE Dashboard — Nightly Test Report'
+          subject: 'CAE Dashboard - Nightly Test Report'
           to: joao@example.com
           html_body: file://test-report.html
 
@@ -166,7 +166,7 @@ jobs:
 
 ---
 
-## 3.1.3 data-freshness.yml — Daily Data Check
+## 3.1.3 data-freshness.yml - Daily Data Check
 
 ```yaml
 name: Data Freshness Check
@@ -201,7 +201,7 @@ jobs:
           server_port: 465
           username: apikey
           password: ${{ secrets.SENDGRID_API_KEY }}
-          subject: '⚠️ CAE Dashboard — Stale Data Alert'
+          subject: '⚠️ CAE Dashboard - Stale Data Alert'
           to: joao@example.com
           html_body: |
             <h2>Data Freshness Alert</h2>
@@ -249,7 +249,7 @@ def generate_html_report():
       </head>
       <body>
         <div class="header">
-          <h1>CAE Dashboard — Nightly Test Report</h1>
+          <h1>CAE Dashboard - Nightly Test Report</h1>
           <p>{datetime.now().strftime('%Y-%m-%d %H:%M UTC')}</p>
         </div>
 
@@ -379,9 +379,9 @@ if __name__ == '__main__':
 Before deploying Phase 3, set these secrets in GitHub:
 
 ```
-SENDGRID_API_KEY      — SendGrid email API key
-CAE_DB_PATH           — Path to indicators database (optional)
-CODECOV_TOKEN         — Codecov.io token (optional)
+SENDGRID_API_KEY      - SendGrid email API key
+CAE_DB_PATH           - Path to indicators database (optional)
+CODECOV_TOKEN         - Codecov.io token (optional)
 ```
 
 ### Setting Secrets
@@ -403,7 +403,7 @@ noreply@cae-dashboard.joao.date
 ### Subject
 
 ```
-CAE Dashboard — Nightly Test Report
+CAE Dashboard - Nightly Test Report
 ```
 
 ### Body (HTML)

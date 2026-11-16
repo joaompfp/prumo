@@ -14,7 +14,7 @@ verification of every unsampled observation. Unknown channels stay undocumented.
 
 ## bportugal
 
-Licence: BPstat legal notices — free use with attribution &#40;exact reproduction, modifications must be marked&#41;
+Licence: BPstat legal notices - free use with attribution &#40;exact reproduction, modifications must be marked&#41;
 Licence URL: https://bpstat.bportugal.pt/avisos-legais
 Attribution: Fonte: Banco de Portugal
 Licence eligibility: allowed by registry (redistribution_ok=true).
@@ -40,7 +40,7 @@ Exact primary-series identifiers and indicator keys, with cross-checks labelled 
 
 ## dgeg
 
-Licence: UNVERIFIED — builder must confirm before serving
+Licence: UNVERIFIED - builder must confirm before serving
 Licence URL: https://www.dgeg.gov.pt/
 Attribution: Source: DGEG
 Licence eligibility: withheld by registry (redistribution_ok=false).
@@ -75,7 +75,7 @@ Exact primary-series identifiers and indicator keys, with cross-checks labelled 
 
 Licence: CC BY 4.0
 Licence URL: https://creativecommons.org/licenses/by/4.0/
-Attribution: Source: E-REDES — Distribuição de Eletricidade, "E-REDES Open Data Portal"
+Attribution: Source: E-REDES - Distribuição de Eletricidade, "E-REDES Open Data Portal"
 Licence eligibility: allowed by registry (redistribution_ok=true).
 Independent verification policy: verifiable=true.
 Registry entries: 3 (3 active, 0 inactive).
@@ -805,7 +805,7 @@ Exact primary-series identifiers and indicator keys, with cross-checks labelled 
 
 ## fred
 
-Licence: UNVERIFIED — builder must confirm before serving
+Licence: UNVERIFIED - builder must confirm before serving
 Licence URL: https://fred.stlouisfed.org/docs/api/terms&#95;of&#95;use.html
 Attribution: Source: IMF Primary Commodity Prices, via FRED &#40;Federal Reserve Bank of St. Louis&#41;
 Licence eligibility: withheld by registry (redistribution_ok=false).
@@ -921,9 +921,9 @@ Exact primary-series identifiers and indicator keys, with cross-checks labelled 
 
 ## ren
 
-Licence: REN DataHub Termos Legais — no open reuse grant &#40;clauses 2/3.2 reserve reproduction, distribution and substantial extraction to express REN consent&#41;
+Licence: REN DataHub Termos Legais - no open reuse grant &#40;clauses 2/3.2 reserve reproduction, distribution and substantial extraction to express REN consent&#41;
 Licence URL: https://datahub.ren.pt/pt/termos-legais-e-condicoes-gerais/
-Attribution: Source: REN — Redes Energéticas Nacionais
+Attribution: Source: REN - Redes Energéticas Nacionais
 Licence eligibility: withheld by registry (redistribution_ok=false).
 Independent verification policy: verifiable=true.
 Registry entries: 14 (14 active, 0 inactive).

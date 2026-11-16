@@ -315,9 +315,9 @@ def test_pipeline_run_on_fixtures_is_pending_verification(tmp_path):
 
 
 def test_ine_has_an_independent_channel_and_a_verifier():
-    """Task 10 fix round 1 (review finding C1): INE DOES have an independent channel — the
+    """Task 10 fix round 1 (review finding C1): INE DOES have an independent channel - the
     bddXplorer server-rendered table (Referer header) is a different endpoint+format from the
-    collector's JSON API — and ingest/verifiers/ine.py implements it."""
+    collector's JSON API - and ingest/verifiers/ine.py implements it."""
     from ingest.verifiers.ine import PAGE_URL as VERIFIER_URL
     from ingest.verifiers.ine import INEVerifier
     root = REGISTRY.parent

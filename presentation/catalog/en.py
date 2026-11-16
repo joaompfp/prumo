@@ -29,39 +29,39 @@ ATTRIBUTION_SUFFIX = "Calculated by Prumo"
 _IPI = "Industrial production index"
 _YOY = "year-on-year change (%)"
 TITLES = {
-    "derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct": f"{_IPI}, total — {_YOY}",
+    "derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct": f"{_IPI}, total - {_YOY}",
     "derived.ipi_seasonal_cae_TOT.PT.period_change_pct":
-        f"{_IPI}, total — change from the previous period (%)",
-    "derived.ipi_seasonal_cae_B.PT.yoy_change_pct": f"{_IPI}, mining and quarrying — {_YOY}",
-    "derived.ipi_seasonal_cae_C.PT.yoy_change_pct": f"{_IPI}, manufacturing — {_YOY}",
+        f"{_IPI}, total - change from the previous period (%)",
+    "derived.ipi_seasonal_cae_B.PT.yoy_change_pct": f"{_IPI}, mining and quarrying - {_YOY}",
+    "derived.ipi_seasonal_cae_C.PT.yoy_change_pct": f"{_IPI}, manufacturing - {_YOY}",
     "derived.ipi_seasonal_cae_D.PT.yoy_change_pct":
-        f"{_IPI}, electricity, gas and steam — {_YOY}",
+        f"{_IPI}, electricity, gas and steam - {_YOY}",
     "derived.ipi_seasonal_cae_E.PT.yoy_change_pct":
-        f"{_IPI}, water supply, sewerage and waste — {_YOY}",
-    "derived.exports_monthly.PT.yoy_change_pct": f"Exports of goods — {_YOY}",
-    "derived.imports_monthly.PT.yoy_change_pct": f"Imports of goods — {_YOY}",
-    "derived.credit_housing.PT.yoy_change_pct": f"Housing loans — {_YOY}",
-    "derived.credit_consumer.PT.yoy_change_pct": f"Consumer credit — {_YOY}",
-    "derived.deposits_households.PT.yoy_change_pct": f"Household deposits — {_YOY}",
+        f"{_IPI}, water supply, sewerage and waste - {_YOY}",
+    "derived.exports_monthly.PT.yoy_change_pct": f"Exports of goods - {_YOY}",
+    "derived.imports_monthly.PT.yoy_change_pct": f"Imports of goods - {_YOY}",
+    "derived.credit_housing.PT.yoy_change_pct": f"Housing loans - {_YOY}",
+    "derived.credit_consumer.PT.yoy_change_pct": f"Consumer credit - {_YOY}",
+    "derived.deposits_households.PT.yoy_change_pct": f"Household deposits - {_YOY}",
     "derived.metals.PT.yoy_change_pct":
-        f"Industrial production, metals and metal products — {_YOY}",
+        f"Industrial production, metals and metal products - {_YOY}",
     "derived.chemicals_pharma.PT.yoy_change_pct":
-        f"Industrial production, chemicals and pharmaceuticals — {_YOY}",
-    "derived.population.PT.yoy_change_pct": f"Resident population — {_YOY}",
-    "derived.live_births.PT.yoy_change_pct": f"Live births — {_YOY}",
-    "derived.deaths.PT.yoy_change_pct": f"Deaths — {_YOY}",
-    "derived.gdp_per_capita_eur.PT.yoy_change_pct": f"GDP per capita — {_YOY}",
+        f"Industrial production, chemicals and pharmaceuticals - {_YOY}",
+    "derived.population.PT.yoy_change_pct": f"Resident population - {_YOY}",
+    "derived.live_births.PT.yoy_change_pct": f"Live births - {_YOY}",
+    "derived.deaths.PT.yoy_change_pct": f"Deaths - {_YOY}",
+    "derived.gdp_per_capita_eur.PT.yoy_change_pct": f"GDP per capita - {_YOY}",
     "derived.unemployment_monthly.PT.period_change":
-        "Unemployment rate — change from the previous period (p.p.)",
+        "Unemployment rate - change from the previous period (p.p.)",
     "derived.unemployment_monthly.PT.yoy_change":
-        "Unemployment rate — year-on-year change (p.p.)",
+        "Unemployment rate - year-on-year change (p.p.)",
     "derived.pt_10y.PT.period_change":
-        "10-year government bond yield — change from the previous period (p.p.)",
-    "derived.pt_10y.PT.yoy_change": "10-year government bond yield — year-on-year change (p.p.)",
+        "10-year government bond yield - change from the previous period (p.p.)",
+    "derived.pt_10y.PT.yoy_change": "10-year government bond yield - year-on-year change (p.p.)",
     "derived.cci.PT.period_change":
-        "Consumer confidence indicator — change from the previous period (balance)",
+        "Consumer confidence indicator - change from the previous period (balance)",
     "derived.unit_labour_cost_hour.PT.rebase_100":
-        "Unit labour cost per hour — rebased index (2015 = 100)",
+        "Unit labour cost per hour - rebased index (2015 = 100)",
 }
 
 # --- base-series catalogue (project 4) -------------------------------------------------------

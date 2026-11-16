@@ -4,7 +4,7 @@ import pytest
 
 from ingest.editorial_rules import REASONS, SlotFacts, page_problems, slot_problem
 
-TITLE = "Taxa de variação homóloga do IHPC — Portugal"
+TITLE = "Taxa de variação homóloga do IHPC - Portugal"
 
 
 def facts(**overrides):

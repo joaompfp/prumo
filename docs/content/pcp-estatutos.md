@@ -10,7 +10,7 @@ Capa: DEP/PCP
 Revisão tipográfica: Edições «Avante!»
 © Editorial «Avante!», SA – Lisboa, 2013
 Tiragem: 4000 exemplares
-Impressão e acabamento: Papelmunde — SMG, Lda.
+Impressão e acabamento: Papelmunde - SMG, Lda.
 Data de impressão: Janeiro 2013
 Depósito legal n.o 978-972-550-407-9
 ISBN

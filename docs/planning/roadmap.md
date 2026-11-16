@@ -1,4 +1,4 @@
-# Prumo — Actionable Roadmap
+# Prumo - Actionable Roadmap
 
 ## 1) Scope and intent
 
@@ -21,7 +21,7 @@ Keep backward compatibility where needed, then phase in feature expansion from b
 
 ## 3) Phased execution plan
 
-### Phase A — Foundation and scope lock
+### Phase A - Foundation and scope lock
 
 Goal: one approved source of truth and clear boundaries.
 
@@ -35,7 +35,7 @@ Exit gate:
 
 ---
 
-### Phase B — Platform baseline
+### Phase B - Platform baseline
 
 Goal: deployable 4-tab shell and stable API baseline.
 
@@ -65,7 +65,7 @@ Exit gate:
 
 ---
 
-### Phase C — Data migration hardening
+### Phase C - Data migration hardening
 
 Goal: data location ownership, idempotent bootstrap, fast rollback.
 
@@ -86,7 +86,7 @@ Exit gate:
 
 ---
 
-### Phase D — Section completion
+### Phase D - Section completion
 
 Goal: production baseline for each of the 4 core sections.
 
@@ -115,7 +115,7 @@ Exit gate:
 
 ---
 
-### Phase E — Embed and external publishing
+### Phase E - Embed and external publishing
 
 Goal: embeddable charts beyond dashboard shell.
 
@@ -133,7 +133,7 @@ Exit gate:
 
 ---
 
-### Phase E2 — SEO, resilience, and accessibility fallback
+### Phase E2 - SEO, resilience, and accessibility fallback
 
 Goal: degraded mode UX and preview resilience without JS.
 
@@ -147,7 +147,7 @@ Exit gate:
 
 ---
 
-### Phase F — Quality and CI gates
+### Phase F - Quality and CI gates
 
 Goal: measurable quality and regression control.
 
@@ -171,7 +171,7 @@ Exit gate:
 
 ---
 
-### Phase G — Monitoring and operations insight
+### Phase G - Monitoring and operations insight
 
 Goal: actionable observability and admin visibility.
 
@@ -189,7 +189,7 @@ Exit gate:
 
 ## 4) Backlog integration from feature brainstorm
 
-### Tier 1 — Next after stabilization
+### Tier 1 - Next after stabilization
 
 1. PT vs Europa and PT vs Mundo AI analysis overlays
 2. Missing collector retries:
@@ -198,7 +198,7 @@ Exit gate:
    - optional CO2, electricity access, infant mortality
 3. Snapshot ranking with PT highlight and EU median marker
 
-### Tier 2 — High-value UX and analyst workflows
+### Tier 2 - High-value UX and analyst workflows
 
 1. PNG export button for ECharts
 2. Persistent AI cache extension beyond Painel
@@ -206,7 +206,7 @@ Exit gate:
 4. PT plus reference differential in Mundo view
 5. Income distribution indicators Gini and S80/S20
 
-### Tier 3 — Experimental and strategic
+### Tier 3 - Experimental and strategic
 
 1. Publication alerts for key indicators
 2. Political events timeline overlays
@@ -265,7 +265,7 @@ Long-term vision:
 - support both multilingual interface and multilingual generated analysis
 - expand data coverage from Portugal/EU to global scope with transparent provenance
 
-### Evolution track A — Multilingual product foundation
+### Evolution track A - Multilingual product foundation
 
 1. Internationalization architecture
 - Extract all UI strings into locale dictionaries and translation keys.
@@ -283,7 +283,7 @@ Long-term vision:
 - Same analysis request is reproducible in multiple languages with explicit provenance.
 - No UI strings hardcoded outside localization layer.
 
-### Evolution track B — Global data expansion
+### Evolution track B - Global data expansion
 
 1. Source onboarding framework
 - Define source certification checklist: license, cadence, API stability, metadata quality.
@@ -301,7 +301,7 @@ Long-term vision:
 - New region onboarding is configuration-driven with minimal code churn.
 - Cross-country comparisons remain explainable and auditable.
 
-### Evolution track C — Governance, credibility, and openness
+### Evolution track C - Governance, credibility, and openness
 
 1. Editorial transparency
 - Publish methodology pages and known limitations by dataset.
@@ -322,7 +322,7 @@ Long-term vision:
 4. Acceptance gate
 - Public trust artifacts available: provenance, methods, revisions, and contribution audit trail.
 
-### Evolution track D — Scale architecture
+### Evolution track D - Scale architecture
 
 1. API productization
 - Introduce versioned API contracts for external consumers.
@@ -341,17 +341,17 @@ Long-term vision:
 
 ## 9) Expansion backlog tiers beyond current Tier 1 to Tier 3
 
-### Tier 4 — Multilingual rollout
+### Tier 4 - Multilingual rollout
 - Core UI locales and locale QA pipeline
 - Multilingual generated analysis provenance pipeline
 - Language-specific glossary for economic and political terms
 
-### Tier 5 — Global source network
+### Tier 5 - Global source network
 - Regional source packs for Americas, Africa, Asia, and Middle East
 - Source reliability scoring dashboard
 - Cross-source harmonization playbooks
 
-### Tier 6 — Open political intelligence platform
+### Tier 6 - Open political intelligence platform
 - Public methodology registry and revision ledger
 - Contributor governance and review board process
 - Open API ecosystem documentation and external integration examples

@@ -27,5 +27,6 @@ uvicorn app.main:app --port 8080 --reload
 ```
 
 ## Restrições
+- Texto: nunca usar em dashes (U+2014); usar hífen (-). A regra aplica-se a código, interface, documentação e testes; preservar os originais das fontes.
 - Lint: `ruff check` antes de push; CI falha em erros
 - Testes: correr antes de abrir PRs

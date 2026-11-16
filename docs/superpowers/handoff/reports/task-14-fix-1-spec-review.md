@@ -1,4 +1,4 @@
-# Task 14 fix round 1 — independent scoped SPEC re-review (I1/I2/M2 only)
+# Task 14 fix round 1 - independent scoped SPEC re-review (I1/I2/M2 only)
 
 Reviewer: independent spec-review subagent. Scope bound honored: read only the diff
 `7b93ab8..8bc06d4` (`ingest/sources/fred.py`, `tests/ingest/test_source_fred.py`,
@@ -7,11 +7,11 @@ sets, key-hygiene ordering). Did NOT re-read the plan, the original corpus, or t
 fixtures; no code changes, network, commits, or handoff writes. Controller owns the quality
 scoped pass and the full-suite run (already running); this is the spec gate only.
 
-**Verdict: PASS** — every required I1/I2/M2 item is present in the actual diff with the
+**Verdict: PASS** - every required I1/I2/M2 item is present in the actual diff with the
 required semantics (file/line checks below). Minors noted, none blocking. Task 14 itself is
 NOT declared complete by this review.
 
-## I1 — complete/stable FRED archives: verified in `ingest/sources/fred.py`
+## I1 - complete/stable FRED archives: verified in `ingest/sources/fred.py`
 
 - **One authoritative `_PageLedger`** (new class, after line 255): first page pins
   `(count, (limit, realtime, extent))`; later pages must match count and identity exactly
@@ -20,9 +20,9 @@ NOT declared complete by this review.
   archived or `accumulated != declared count` (missing tail / partial / truncated). Consumed by
   BOTH `fetch()` (mid-stream, raises at the drifting page) and `parse()` (per-code ledger +
   `assert_complete` per archive).
-- **Strict ascending dates** across the whole archive in `parse()` (`d <= last_date` raises) —
+- **Strict ascending dates** across the whole archive in `parse()` (`d <= last_date` raises) -
   subsumes cross-page duplicates; per-spec duplicate-period check retained.
-- **Strict url/query identity** in `_identify`: probed — `_META_PARAMS = {series_id, file_type}`,
+- **Strict url/query identity** in `_identify`: probed - `_META_PARAMS = {series_id, file_type}`,
   `_OBS_PARAMS = {+ limit, offset}` (lines 89-90; no restriction keys admissible). URL query
   keys must be a subset and must exist in AND match params exactly; duplicated query keys
   rejected via `parse_qsl` pair-count (dict view would hide them); params `file_type` must be
@@ -49,11 +49,11 @@ non-canonical limit/offset + `file_type=JSON` literals, mid-pagination realtime/
 drift via a re-slicing HTTP double that also asserts the wire request DOES carry the api_key,
 and an end-to-end pipeline refusal (failed state, zero rows written, evidence kept).
 
-## I2 — canonical ASCII Gregorian dates: verified
+## I2 - canonical ASCII Gregorian dates: verified
 
 - `_DATE`/`_LAST_UPDATED` digit classes switched `\d` → `[0-9]` (Unicode aliases rejected).
 - `_date()` now additionally validates real Gregorian existence via `datetime.date(...)`
-  (year 0000, Feb 30, month 13 raise) and returns the original text verbatim — no
+  (year 0000, Feb 30, month 13 raise) and returns the original text verbatim - no
   normalization, no alias repair. Applied to row dates (month-first), envelope extent +
   realtime bounds, and metadata dates (unchanged caller). Tests pin appended + in-place
   Arabic-Indic aliases, year-0000 row, `9999-02-30`/`0000-01-01` envelope bounds, unicode
@@ -61,7 +61,7 @@ and an end-to-end pipeline refusal (failed state, zero rows written, evidence ke
 - No value-layer conversion added: `1e5`-style tokens still pass the source as strings for
   downstream quarantine (per the report's P5 re-verification); no rounding, no new units.
 
-## M2 — live test unpinned and bounded: verified in `tests/ingest/test_live_fred.py`
+## M2 - live test unpinned and bounded: verified in `tests/ingest/test_live_fred.py`
 
 - Frozen `n == 417`, `("1992-01", "2026-09")`, `12*144` all REMOVED. Per-series count/range,
   metadata `observation_start/end`[:7] range, and the `non_numeric` quarantine total are now
@@ -73,7 +73,7 @@ and an end-to-end pipeline refusal (failed state, zero rows written, evidence ke
   offline value+unit HTML evidence replay tightened to `replayed == len(rows) == 120`.
 - `RequestsHttp(throttle_rps=1.0, timeout=120.0, retries=0)` explicit; module docstring states
   the 120 s bound is PER-REQUEST and that NO whole-phase deadline is implemented (f0nix
-  acceptance cap is the phase bound) — matches the "no fake deadline" requirement.
+  acceptance cap is the phase bound) - matches the "no fake deadline" requirement.
 - No raw key anywhere in test source: key comes from `FRED_API_KEY` env only (skip without it);
   `FredSource(api_key=key)` keeps wire-only hygiene; offline re-parse reuses it without
   leaking (key never rendered; `_identify` rejects archived credentials).
@@ -82,7 +82,7 @@ and an end-to-end pipeline refusal (failed state, zero rows written, evidence ke
 
 - Independent re-run of the touched unit file: `pytest tests/ingest/test_source_fred.py -q`
   → **49 passed in 8.12 s** (matches the fix report's 49/49 claim; controller's full-suite
-  run is separate). Live test not run here (no key/network — by design; controller owns the
+  run is separate). Live test not run here (no key/network - by design; controller owns the
   f0nix live re-run). Diff stat confirmed only `ingest/sources/fred.py` + the two test files +
   the fix report changed; registry/verifier/core/rawstore/fixtures untouched.
 
@@ -90,7 +90,7 @@ and an end-to-end pipeline refusal (failed state, zero rows written, evidence ke
 
 1. `_PageLedger.add` returns `expected_offset >= count`; exactness is enforced indirectly
    (per-page `offset + rows > count` bound + count pinning make overrun unreachable), so
-   semantics are correct — `==` would merely be more literal.
+   semantics are correct - `==` would merely be more literal.
 2. Parse would accept a zero-row mid-archive page (contiguity preserved); harmless because
    count reconciliation in `assert_complete` still governs completeness, and fetch retains the
    no-progress guard.

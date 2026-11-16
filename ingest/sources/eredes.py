@@ -6,7 +6,7 @@
         &order_by=datahora&limit=100[&offset=...]
         -> one UTC day of native 15-minute records per page set
 
-Native scope (Task 16): dataset energia-produzida-total-nacional, fields dgm/pre/total — the
+Native scope (Task 16): dataset energia-produzida-total-nacional, fields dgm/pre/total - the
 metadata labels ('Market (kWh)', 'Special Regime (kWh)', 'Total (kWh)') say the values are
 energy per 15-minute interval in kWh; they are stored verbatim, never rescaled, clamped (a
 negative dgm is native and valid) or summed locally. dgm/pre/total are distribution-side
@@ -44,7 +44,7 @@ offset is recomputed here. No status/quality surface exists on this dataset, so 
 Recorded evidence: tests/ingest/fixtures/eredes/ (winter 2026-11-10 window and WEST-summer
 2026-04-01 window, 2026-11-12, MANIFEST.json). Cadence and units
 are publisher facts from the metadata; the independent verification channel is the same
-portal's /exports/csv (different endpoint AND format) — see ingest/verifiers/eredes.py.
+portal's /exports/csv (different endpoint AND format) - see ingest/verifiers/eredes.py.
 """
 import json
 import re

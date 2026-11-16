@@ -157,7 +157,7 @@ Intro mentioning nothing.
 
 ## Unit conflicts
 
-- **s2, s9** — registry unit contradicts the publisher <script>x</script>.
+- **s2, s9** - registry unit contradicts the publisher <script>x</script>.
 
 ## Not active
 

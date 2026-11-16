@@ -1,4 +1,4 @@
-"""E-REDES source adapter tests — recorded genuine fixtures (tests/ingest/fixtures/eredes/,
+"""E-REDES source adapter tests - recorded genuine fixtures (tests/ingest/fixtures/eredes/,
 2026-11-12, MANIFEST.json). Synthetic doubles/mutations are labelled synthetic in-line.
 """
 import json

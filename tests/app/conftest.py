@@ -21,12 +21,12 @@ T3 = "2026-11-03T09:00:00+00:00"
 T4 = "2026-11-04T09:00:00+00:00"
 
 INE = SourceSpec(name="ine", licence="CC BY 4.0", licence_url="https://www.ine.pt/x/terms",
-                 attribution="INE — Instituto Nacional de Estatística", redistribution_ok=True)
+                 attribution="INE - Instituto Nacional de Estatística", redistribution_ok=True)
 EUROSTAT = SourceSpec(name="eurostat", licence="CC BY 4.0",
                       licence_url="https://ec.europa.eu/eurostat/terms",
                       attribution="Eurostat", redistribution_ok=True)
 REN = SourceSpec(name="ren", licence="Uso restrito", licence_url="https://www.ren.pt/terms",
-                 attribution="REN — Redes Energéticas Nacionais", redistribution_ok=False)
+                 attribution="REN - Redes Energéticas Nacionais", redistribution_ok=False)
 WORLDBANK = SourceSpec(name="worldbank", licence="CC BY 4.0",
                        licence_url="https://datacatalog.worldbank.org/public-licenses",
                        attribution="World Bank", redistribution_ok=True)

@@ -1,15 +1,15 @@
-# Final-review fix brief — derived layer v1
+# Final-review fix brief - derived layer v1
 
 Worktree: /home/joao/projects/prumo-pipeline (branch `pipeline-rebuild`, HEAD fcf2490). The final whole-branch
 review found no wrong number but three Important issues and some minors. The full report (with the reviewer's
-experiments and numbers) is `.superpowers/sdd/2026-11-14-derived-layer-v1/final-review-report.md` — read sections
+experiments and numbers) is `.superpowers/sdd/2026-11-14-derived-layer-v1/final-review-report.md` - read sections
 "Issues" and "Recommendations" first. The reviewer's experiment scripts and scratch DBs may still be under
-`/tmp/claude-1000/-home-joao/0cf85576-cadd-4c92-a5b2-4aac697971e6/scratchpad/final-review/` — reuse them for the
+`/tmp/claude-1000/-home-joao/0cf85576-cadd-4c92-a5b2-4aac697971e6/scratchpad/final-review/` - reuse them for the
 I3 measurements if present (never copy them into the repo).
 
 Fix exactly the items below. Test-first for every behaviour change. Rulings are the controller's and are binding.
 
-## I1 — a redefined derived key must not stop the worker
+## I1 - a redefined derived key must not stop the worker
 - `ingest/scheduler.py` (the `sync_derived(db, derived)` call in `_locked_main`, ~line 297): a `ValueError` from
   `sync_derived` (existing key whose formula/base/params changed) must be caught: write ONE `derive` error log
   record (same logging mechanism the derive hook already uses), keep going with base refresh; derive continues to
@@ -21,19 +21,19 @@ Fix exactly the items below. Test-first for every behaviour change. Rulings are 
   record logged; (2) CLI `derive` exits 2 with a one-line message.
 - `docs/data/operations.md` "Known limitations": one sentence.
 
-## I2 — deploy order must include the `prumo` web container
+## I2 - deploy order must include the `prumo` web container
 One image builds all three containers; the runbook runs `ingest status` in `prumo`. Old code against a 0014 DB
 refuses ("schema is newer than this code", exit 2). In `docs/data/operations.md` (Derived layer → deploy order,
 ~lines 657-664) and `docs/superpowers/handoff/HANDOFF.md` (derived paragraph): the order is
 `bash -lic "dc-web-up prumo-ingest"` (migrates 0014) → `bash -lic "dc-web-up prumo"` → `bash -lic "dc-web-up prumo-backoffice"`;
 say which container each post-deploy check runs in. Never raw `docker compose`/`docker run` in docs.
 
-## I3 — derived read cost must not grow with base history (ruling: edit 0014 in place; it is NOT deployed)
+## I3 - derived read cost must not grow with base history (ruling: edit 0014 in place; it is NOT deployed)
 Measured on production: INE and Eurostat base series gain a full new vintage nearly every day (3 in 3 days), so the
 reviewer's 49-vintage scenario is ~7 weeks away. Fix on the derived side:
-1. `served_derived` view (`ingest/migrations/0014_derived_layer.sql`): choose the candidate row FIRST — the newest
+1. `served_derived` view (`ingest/migrations/0014_derived_layer.sql`): choose the candidate row FIRST - the newest
    (`MAX(id)`) row per (derived_series_id, period) among rows with `state='match'` of a `verified` run of an active
-   derived series — and only THEN require every input id of that one row to be a currently served
+   derived series - and only THEN require every input id of that one row to be a currently served
    `kind='fetched'` observation of the base series. (Today it checks the inputs of every historical row, then
    takes rn=1.) This is strictly fail-closed: it can only serve a subset of what the current view serves.
    Write it so SQLite can use index `derived_observation_key (derived_series_id, period, id)` and so a predicate
@@ -58,7 +58,7 @@ reviewer's 49-vintage scenario is ~7 weeks away. Fix on the derived side:
    `derived_status_rows`, `build_status`, one-key `served_derived_rows`, `derived_rows_of_series` (reuse the
    reviewer's scenario or rebuild it in the scratchpad). Target: per-key reads well under 1 s and
    `derived_status_rows` within ~1 s of the base-only status cost at 49 vintages. If a target is not reachable
-   because the cost sits in the pre-existing base view `served_observation` (migration 0011, deployed — do NOT
+   because the cost sits in the pre-existing base view `served_observation` (migration 0011, deployed - do NOT
    change it or any migration ≤ 0013), say so with numbers; do not paper over it.
 7. A regression test that bounds cost structurally rather than by a tight wall clock: e.g. `EXPLAIN QUERY PLAN`
    of the per-key query shows no full scan of `derived_observation`/`observation`, plus a scenario with ~30
@@ -77,9 +77,9 @@ reviewer's 49-vintage scenario is ~7 weeks away. Fix on the derived side:
 - HANDOFF open owner decisions: add (a) YoY on seasonally adjusted IPI and on credit stocks differs from the
   INE/BdP headline rates and the label does not say so; (b) reader-facing text embeds technical series ids and
   mixes languages (`balance`, `index 2015=100`); (c) unit/label of an existing derived key are editable with git
-  as the only record; (d) base vintage growth (CORRECTED 2026-11-15 10:45 UTC — use these numbers, not any earlier ones): INE's
+  as the only record; (d) base vintage growth (CORRECTED 2026-11-15 10:45 UTC - use these numbers, not any earlier ones): INE's
   payload bytes change on every fetch, so INE stores a full new vintage per day even when every value is
-  identical — measured on production: 3 INE vintages in 3 days, 12,034 rows each, 0 values and 0 flags changed
+  identical - measured on production: 3 INE vintages in 3 days, 12,034 rows each, 0 values and 0 flags changed
   between them. Eurostat is NOT affected (its 2026-11-15 re-fetch was byte-identical and stored nothing; its
   earlier vintages carried 150 real revisions). bportugal stored one value-identical second vintage on
   2026-11-14 and none on 2026-11-15. 12 of the 20 derived bases are INE series. Totals: 336,075 fetched rows,

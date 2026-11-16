@@ -1,4 +1,4 @@
-# Task 14 FRED — Fix round 1 report (quality-review I1, I2, M2)
+# Task 14 FRED - Fix round 1 report (quality-review I1, I2, M2)
 
 Implementer: scoped fix subagent, on `pipeline-rebuild` base `7b93ab8`. Read-only review
 `task-14-quality-review.md` (REQUEST_CHANGES) reproduced independently before editing:
@@ -8,26 +8,26 @@ only `ingest/sources/fred.py`, `tests/ingest/test_source_fred.py`,
 no verifier/core/HTTP/importer/registry/fixture changes, no key read (sentinel fixtures only),
 no network, no full suite, no push. Verdict on Task 14 completion stays with the controller.
 
-## I1 — complete, stable FRED archives (parse + fetch + identity)
+## I1 - complete, stable FRED archives (parse + fetch + identity)
 
-Root cause: the per-series pagination identity was scattered across one-sided checks — per-page
+Root cause: the per-series pagination identity was scattered across one-sided checks - per-page
 `offset + rows > count` (catches overruns only), page contiguity in `parse()` (catches order
-only), envelope `observation_start/end` values never asserted — so a truncated/restricted
+only), envelope `observation_start/end` values never asserted - so a truncated/restricted
 archive parsed silently as a full history, and `_identify` compared only the intersection of
 URL query and params.
 
-Fix (AGENTS hard rule — refactor to the principle first, then validate):
+Fix (AGENTS hard rule - refactor to the principle first, then validate):
 
 - The page contract `_observations()` is the ONE authoritative representation: it now returns
   `count/offset/limit/realtime/extent/rows`, with the envelope dates validated as Gregorian
   (`realtime_*` were `_str`-only before) and **every row date asserted within the declared
   observation extent** (`obs_start <= d <= obs_end`). The genuine unrestricted envelope is the
-  broad `1600-01-01..9999-12-31` echo (recorded fixtures), so containment — never endpoint
-  equality with first/last rows — is the assertion.
+  broad `1600-01-01..9999-12-31` echo (recorded fixtures), so containment - never endpoint
+  equality with first/last rows - is the assertion.
 - New internal `_PageLedger` (fetch AND parse consume the same pin): the first page pins
   `(count, limit, realtime, extent)`; every later page must declare the same identity; offsets
   must be contiguous from 0; the archive is complete iff accumulated rows reach the declared
-  count exactly (`assert_complete` — a missing tail / shrunk total fails closed).
+  count exactly (`assert_complete` - a missing tail / shrunk total fails closed).
   `parse()` additionally requires strictly ascending dates across the whole archive
   (subsumes cross-page duplicates; the per-spec duplicate-period check stays for multi-spec
   codes) and a series with metadata but no observations page now fails (was: 0 silent rows).
@@ -43,18 +43,18 @@ Fix (AGENTS hard rule — refactor to the principle first, then validate):
 - `_strip_key` unchanged: removes only the wire credential; all archived params stay key-free
   (the api_key-in-params/URL guard runs before any message that could print `params!r`).
 
-## I2 — canonical ASCII Gregorian dates
+## I2 - canonical ASCII Gregorian dates
 
 - `_DATE`/​`_LAST_UPDATED` digit classes are `[0-9]` (the old `\d` is Unicode-aware on `str`).
 - `_date()` additionally validates real Gregorian existence via `datetime.date` (year 0000,
-  Feb 30, month 13 all rejected) and returns the original text verbatim — no normalization,
+  Feb 30, month 13 all rejected) and returns the original text verbatim - no normalization,
   no alias repair. Applies to row dates (month-first), metadata and envelope dates, realtime
   bounds.
 - Value-token layer split is preserved verbatim (review-verified-good probe P5): a numeric-
   shape-odd token like `1e5` still passes the source as a string and is quarantined
   `non_numeric` by `validate()`; no conversions were added.
 
-## M2 — live test unpinned and explicitly bounded
+## M2 - live test unpinned and explicitly bounded
 
 `tests/ingest/test_live_fred.py` no longer freezes `n == 417`, `("1992-01", "2026-09")` or
 `12*144` (guaranteed stale at the next FRED monthly release). Expectations are derived from
@@ -65,11 +65,11 @@ count and range; DB range also asserted equal to the publisher-declared metadata
 the archived `.` count. Kept: all-12 active series, `verified`, `served == 0`,
 `size=120` + `verifs == [(120, 1)]`, and the offline value/unit evidence replay (now
 `replayed == len(rows) == 120`). HTTP is explicitly bounded per request:
-`RequestsHttp(throttle_rps=1.0, timeout=120.0, retries=0)` — documented in the module
+`RequestsHttp(throttle_rps=1.0, timeout=120.0, retries=0)` - documented in the module
 docstring as a PER-REQUEST bound, not a whole-phase deadline (none is implemented; the f0nix
 acceptance cap stays the phase bound). Not runnable here (no key/network); the derivation
 block was validated offline against the recorded fixtures by
-`~/.hermes/cache/scratch/t14_livetest_dryrun.py` — healthy run passed (12 metas, 12 series,
+`~/.hermes/cache/scratch/t14_livetest_dryrun.py` - healthy run passed (12 metas, 12 series,
 derived 417 / 1992-01..2026-09), negative control (one fabricated DB hole) raised
 `AssertionError`. Controller owns the f0nix live re-run.
 
@@ -89,10 +89,10 @@ stash/patch isolation:
   (count drift was already terminal pre-fix via per-page/no-progress guards; the ledger now
   fails AT the drift instead of later),
   `..._unicode_digit_date_aliases` (P2: appended + in-place), `..._dates_that_are_ascii_but_not_gregorian`
-  (year-0000 row; `9999-02-30`/`0000-01-01` envelope bounds — Feb-30 on a row was already
+  (year-0000 row; `9999-02-30`/`0000-01-01` envelope bounds - Feb-30 on a row was already
   unreachable behind the month-first day==01 gate), `..._unicode_digit_realtime_and_last_updated`,
   `test_pipeline_refuses_a_truncated_or_unicode_aliased_archive_and_writes_nothing`
-  (the unicode-aliased half reached `pending-verification` pre-fix — a full-pipeline promotion;
+  (the unicode-aliased half reached `pending-verification` pre-fix - a full-pipeline promotion;
   the truncated half already failed pre-fix via offset-contiguity/params drift, pinned).
 - GREEN pins pre-fix (2, kept to lock the behavior): `..._non_canonical_or_wrong_archived_param_literals`
   (already rejected via params/payload + query mismatch; the new `_identify` canonical-literal
@@ -101,7 +101,7 @@ stash/patch isolation:
 - Post-fix: `tests/ingest/test_source_fred.py` 49/49; FRED battery
   (source + verifier + registry units + independence) 106/106; wider targeted battery
   (+ validate, pipeline, licence-gate, verify) 358/358 in 96 s. `ruff check` clean on all
-  three touched files (ruff format is not this repo's convention — base files fail
+  three touched files (ruff format is not this repo's convention - base files fail
   `format --check` too; untouched). Live test: collects, deselected by default, skips cleanly
   without `FRED_API_KEY` (no key read here).
 
@@ -121,9 +121,9 @@ stash/patch isolation:
 ## Remaining risks / minors (honest)
 
 - M1 (verifier interior-row absence-only tamper) accepted as documented residual risk per the
-  review and this task's scope — verifier semantics untouched.
+  review and this task's scope - verifier semantics untouched.
 - Fetch-time shape failures surface to the pipeline as `failed-fetch` (a run-level guard),
-  parse-time as `failed-validation`; both are terminal with zero writes — the pipeline test
+  parse-time as `failed-validation`; both are terminal with zero writes - the pipeline test
   asserts refusal + evidence kept, not a specific phase label.
 - The extent contract is containment-only by design (broad genuine envelope), so a
   tampered-but-plausible envelope inside the true extent is not detectable by the source;

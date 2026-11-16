@@ -1,4 +1,4 @@
-# Prumo — Derived layer (project 3) — Design
+# Prumo - Derived layer (project 3) - Design
 
 Date: 2026-11-14 · Status: written by the planner from the owner's instruction "Avança" (owner opted out of the question round; every choice is the planner's call unless marked **[owner]**).
 
@@ -18,7 +18,7 @@ The base pipeline serves only numbers a publisher published, each independently 
 ## 3. Non-goals and anti-goals
 
 Non-goals (v1): AI commentary; composite "scores"/rankings (judgement, weights); cross-series arithmetic (spreads, ratios between two series); smoothing/seasonal adjustment/forecasts; the UI (project 4).
-Anti-goals — failure even if it works: a derived value served from an unverified, withheld, or inactive input; a derived value that silently changes when an input is revised without a trace; interpolated or imputed inputs; a calculated number that is indistinguishable from a published one; float arithmetic.
+Anti-goals - failure even if it works: a derived value served from an unverified, withheld, or inactive input; a derived value that silently changes when an input is revised without a trace; interpolated or imputed inputs; a calculated number that is indistinguishable from a published one; float arithmetic.
 
 ## 4. Planner's calls
 
@@ -30,7 +30,7 @@ Anti-goals — failure even if it works: a derived value served from an unverifi
 6. **Licence/attribution:** a derived row inherits the strictest input terms; served only when every input is redistributable. Attribution text: input attribution + "Calculado pelo Prumo".
 7. **Visual cue contract for project 4:** the view exposes `is_calculated`, `formula_label_pt`, `inputs` (series keys + periods). The UI must badge any `is_calculated` value; this plan ships the data contract and the backoffice badge only.
 8. **Registry scope for v1:** a starter set only, chosen by the builder from active, redistributable, monthly/quarterly/annual series with a clear citizen reading (e.g. HICP index → YoY %, industrial production index → YoY %, Euribor/prices where meaningful, unemployment as pp change). Aim for a few dozen derived series, not all 1,344; the machinery must scale to all.
-9. **Deployment:** same method as backoffice: tests + adversarial review first; **ask the owner before deploy**; the 24 h worker observation (until 2026-11-15 10:25 UTC) means no worker restart before then — migration 0014 ships with the next planned worker deploy.
+9. **Deployment:** same method as backoffice: tests + adversarial review first; **ask the owner before deploy**; the 24 h worker observation (until 2026-11-15 10:25 UTC) means no worker restart before then - migration 0014 ships with the next planned worker deploy.
 
 ## 5. Parts (build order)
 
@@ -47,7 +47,7 @@ All standing rulings hold: numbers as text/Decimal never float, SQL only in db.p
 
 ## 7. Left to the builder
 
-Exact period arithmetic helpers, quantization table, the starter series list, label wording (Portuguese), pagination, performance of recompute (incremental by changed periods is allowed if it stays exactly equal to a full recompute — a test must prove that).
+Exact period arithmetic helpers, quantization table, the starter series list, label wording (Portuguese), pagination, performance of recompute (incremental by changed periods is allowed if it stays exactly equal to a full recompute - a test must prove that).
 
 ## 8. Open questions for the owner (non-blocking)
 

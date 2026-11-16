@@ -1,4 +1,4 @@
-# Prumo — Backoffice (project 2) — Design
+# Prumo - Backoffice (project 2) - Design
 
 Date: 2026-11-14 · Status: written by the planner from the owner's instruction "avança com backoffice" (owner opted out of the question round; every choice below is the planner's call unless marked **[owner]**).
 
@@ -18,7 +18,7 @@ The base pipeline (project 1) is deployed and verifying 1,344 series, but everyt
 ## 3. Non-goals and anti-goals
 
 Non-goals (v1): editing the registry in the browser; triggering fetches; any public access; the derived layer; the public UI (project 4); users/roles beyond the owner; push alerts (owner decision: none).
-Anti-goals — failure even if it works: the backoffice becoming a second path that can change served data without an audit event; a view that disagrees with `ingest status`; anything that can corrupt or lock the production DB; being reachable from the public internet.
+Anti-goals - failure even if it works: the backoffice becoming a second path that can change served data without an audit event; a view that disagrees with `ingest status`; anything that can corrupt or lock the production DB; being reachable from the public internet.
 
 ## 4. Planner's calls
 
@@ -33,7 +33,7 @@ Anti-goals — failure even if it works: the backoffice becoming a second path t
 1. Read layer: db.py read functions + tests for: overview, series list/filter, series detail + vintages, quarantine, events, verification items + replay result.
 2. App skeleton + health + overview page + series list + series detail (provenance) + events/queue pages.
 3. Compose file `compose/prumo-backoffice.yml` (own file per convention), Tailscale-only bind, `:ro` data mount, healthcheck; docs in docs/data/operations.md.
-4. v1.1 audited actions (needs migration 0014 and the write path decision) — separate plan after v1 is in use.
+4. v1.1 audited actions (needs migration 0014 and the write path decision) - separate plan after v1 is in use.
 
 ## 6. Constraints
 

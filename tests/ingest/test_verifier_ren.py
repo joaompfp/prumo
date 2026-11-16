@@ -1,4 +1,4 @@
-"""REN DataHub verifier tests — recorded portal CSV-export fixtures
+"""REN DataHub verifier tests - recorded portal CSV-export fixtures
 (tests/ingest/fixtures/ren/verify/, 2026-11-11)."""
 from datetime import datetime, timedelta, timezone
 
@@ -53,7 +53,7 @@ def test_verifier_reads_every_recorded_case():
                for r, (sid, period, _, _) in zip(results, _CASES))
 
 
-_CASES = [  # (series, period, token, unit) — from the archived CSV bytes
+_CASES = [  # (series, period, token, unit) - from the archived CSV bytes
     ("ren.electricity_consumption.PT", "2026-09", "4442", "GWh"),
     ("ren.electricity_price_mibel.PT", "2026-09", "143.9", None),
     ("ren.electricity_consumption.PT", "2020-06", "3604", "GWh"),
@@ -156,7 +156,7 @@ def test_verifier_empty_csv_raises():
 def test_verifier_interior_empty_line_raises():
     """A bare CRLF inside the table (a ZERO-CELL row) is an interior blank: an unreviewed table
     break, fail closed. A row filter that drops zero-cell lines BEFORE the blank-row analysis
-    would hide this break — the guard runs on the unfiltered CSV rows."""
+    would hide this break - the guard runs on the unfiltered CSV rows."""
     tampered = vbody(VMANIFEST["balance_2026-09"]["file"]).replace(
         b"\r\nH\xc3\xaddrica 1,", b"\r\n\r\nH\xc3\xaddrica 1,", 1)
     with pytest.raises(ValueError, match="interior blank"):

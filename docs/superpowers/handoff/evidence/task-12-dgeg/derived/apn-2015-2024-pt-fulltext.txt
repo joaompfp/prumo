@@ -1,8 +1,8 @@
-DERIVED EVIDENCE — NOT the raw HTTP response and NOT usable as verifier response evidence.
+DERIVED EVIDENCE - NOT the raw HTTP response and NOT usable as verifier response evidence.
 Derivation: `pdftotext -layout` text layer of the source PDF (extraction by Task 12 follow-up research, 2026-11-11).
 Source PDF: https://www.dgeg.gov.pt/media/5riiwycf/dgeg-apn-2015-2024-pt.pdf (HTTP 200, 2369104 bytes,
 sha256 d4490a8e3d296ed1895fc5d716db10c30191ef169a09489f7564ede07d0007a7, edition "13 fevereiro de 2026";
-the PDF itself is NOT committed — 2.3 MB is above the evidence size cap; hash pins it in the research archive).
+the PDF itself is NOT committed - 2.3 MB is above the evidence size cap; hash pins it in the research archive).
 This is the FULL text layer (small because the document is mostly charts); thousands separator in numbers is a space.
 ---
     ENERGIA

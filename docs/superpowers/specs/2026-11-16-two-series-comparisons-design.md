@@ -1,4 +1,4 @@
-# Prumo — Two-series comparisons (project 4, extension) — Design
+# Prumo - Two-series comparisons (project 4, extension) - Design
 
 Date: 2026-11-16 · Status: written after the owner asked, on 2026-11-16, for "uma secção em que se plotam dois indicadores no mesmo gráfico, para analisar efeitos relacionados", with "indicadores apropriados" chosen by the planner. The owner then asked for the editorial composition first; that shipped the same day. This spec is the comparison half of that request.
 
@@ -72,11 +72,11 @@ No aggregation and no calculated series on a comparison page in v1. Both are sep
 
 ## 4. Pages
 
-### `/comparar` — index
+### `/comparar` - index
 
 One `<h1>`, one introductory sentence from the catalogue, then one block per pair: title, the mechanism sentence, the span and the number of common periods, and a link. No values on the index: it is a table of contents, not a dashboard.
 
-### `/comparar/{slug}` — a pair
+### `/comparar/{slug}` - a pair
 
 1. Breadcrumb: Início / Comparações / title.
 2. `<h1>` and subtitle; a meta line naming both series, their units, their frequency and their geographies (`Área do euro` against `Portugal` must be visible, not implied).
@@ -165,7 +165,7 @@ D2's `dual_axis` for the credit pair. The alternative is dropping that pair and 
 Three defects were found in visual QA against the production copy, after the code passed its own tests. All three are fixed in the same commit; each one is a thing a test would not have caught.
 
 1. **The dual axis clipped its own labels.** With the single-axis right margin of 20 px the tick "150" rendered as "15" and the unit "milhões de euros" as "mi", which left the right axis reading 15 / 10 / 50 / 0 - non-monotonic and meaningless. A dual-axis chart now uses `RIGHT_DUAL = 104` and the unit label is anchored to the viewBox edge (text-anchor end at `width - 4`) so a long unit grows leftwards instead of past the border.
-2. **The meta line repeated the geography.** `series_title` already ends with the region ("Taxa Euribor a 12 meses — Área do euro"), so appending `geography_text` printed "— Área do euro — Área do euro". The meta line is now title · frequency · unit, and the geography reaches the reader once, through the title. `ComparisonSeries` therefore carries no `geography_text`.
+2. **The meta line repeated the geography.** `series_title` already ends with the region ("Taxa Euribor a 12 meses - Área do euro"), so appending `geography_text` printed "- Área do euro - Área do euro". The meta line is now title · frequency · unit, and the geography reaches the reader once, through the title. `ComparisonSeries` therefore carries no `geography_text`.
 3. **Pair 3's title did not match its axis order.** It was "Crédito à habitação e taxa" while the rate is series A and the left axis; a reader meeting the legend sees the rate first. The title is now "Taxa e crédito à habitação".
 
 One deliberate re-capture: `tests/app/golden/home_code_list.html` (see D6). The previous file, `home_before_editorial.html`, stays in the tree; `diff` between them is exactly one navigation anchor (plus the whitespace line the nav loop emits around it).

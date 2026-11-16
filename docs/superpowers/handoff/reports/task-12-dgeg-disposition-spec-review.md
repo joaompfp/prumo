@@ -1,7 +1,7 @@
-# Task 12B DGEG disposition — independent SPEC review (PASS)
+# Task 12B DGEG disposition - independent SPEC review (PASS)
 
 Date: 2026-11-11 · Reviewer: fresh independent spec reviewer · Scope: `869ba6d..fd54d98`, DGEG
-safe disposition ONLY (not adapter/ingestion — still blocked) · Method: read-only diff/doc/test
+safe disposition ONLY (not adapter/ingestion - still blocked) · Method: read-only diff/doc/test
 inspection + independent re-derivation of workbook claims from committed bytes. No edits, no
 commits, no network.
 
@@ -22,7 +22,7 @@ inaccuracy noted at the end.
   licence wording all preserved. No ERSE added; one-primary invariant enforced by `load_registry`
   (green load in tests).
 - The `verifiable: false` comment is explicitly SCOPED ("current core definitions… NOT a claim
-  that DGEG data can never be verified") — matches the brief's ban on an absolute no-channel claim.
+  that DGEG data can never be verified") - matches the brief's ban on an absolute no-channel claim.
 
 **Tests (`test_registry_dgeg_disposition.py`, 6 tests + `test_registry.py`, 23 tests)**
 - Ran: `.venv-ci/bin/python -m pytest tests/ingest/test_registry_dgeg_disposition.py
@@ -39,9 +39,9 @@ inaccuracy noted at the end.
   `{dgeg}` and still requires every other source verifiable.
 
 **Evidence bundle (re-derived from bytes, not report claims)**
-- Workbook sha256 `5f31904a…837be`, 119,336 bytes — recomputed, matches. All 7 manifest files
+- Workbook sha256 `5f31904a…837be`, 119,336 bytes - recomputed, matches. All 7 manifest files
   exist, ≤200 KB (max 130,573 B = dadosgov JSON; no 2–13 MB PDFs). Raw vs derived kinds recorded;
-  both derived files open with a `DERIVED EVIDENCE — NOT the raw HTTP response…` header naming
+  both derived files open with a `DERIVED EVIDENCE - NOT the raw HTTP response…` header naming
   source-PDF URL/sha256/bytes and pdftotext method (APN d4490a8e…07a7 / 2.4 MB, AEN 9486137e…c4db1
   / 13 MB). No fake raw evidence.
 - Workbook raw-XML spot re-derivation (this review read `xl/worksheets/sheetN.xml` cells
@@ -56,7 +56,7 @@ inaccuracy noted at the end.
   - s3 r13 FER-T 2004 token `4.0000000000000001E-3` (scientific notation) ✓; FER-E/FER-Global/FER-T
     row coordinates r12/r11/r13 ✓.
 - APN derived-text re-comparison against workbook 2015–2024 columns (Y..AH), independent of the
-  report: CEP — workbook vs APN `…20 814 | 20 822 vs 20 812 | 21 315 vs 21 313 | 20 646 | 20 346`
+  report: CEP - workbook vs APN `…20 814 | 20 822 vs 20 812 | 21 315 vs 21 313 | 20 646 | 20 346`
   → exactly **8/10 with drift only at 2021/2022** ✓; electricity ktep **10/10 token-exact** ✓;
   final energy ktep **10/10 token-exact** ✓; dependence display-exact **10/10** at 0.1 % ✓. The
   matrix's central claims (blocked-but-real-partial-channels) hold byte-exactly.
@@ -75,15 +75,15 @@ inaccuracy noted at the end.
   (terms shell, All-Rights-Reserved footer, AEN "Todos os direitos reservados", LADA statute ≠
   grant, dadosgov CC BY = 19 geology datasets only). Stays at "unconfirmed grant", explicitly NOT
   a categorical illegality determination. `redistribution_ok: false` and old
-  "UNVERIFIED — builder must confirm before serving" pin are grounded.
+  "UNVERIFIED - builder must confirm before serving" pin are grounded.
 - Scope discipline: changed-file list = registry (3) + tests (2) + docs (2) + evidence (8) +
   implementer report only. **Migrations 001–005 untouched; no ingest/adapter/verifier/model code
   changed; no HANDOFF/ledger/controller files in the diff.**
 
 ## Minor non-blocking note (no action required for this gate)
 
-`registry/unmapped-dgeg.md` row #11's aside — "registry unit string `tep/M€2021` lacks the
-apostrophe the publisher prints" — has the asymmetry backwards: the publisher workbook cell
+`registry/unmapped-dgeg.md` row #11's aside - "registry unit string `tep/M€2021` lacks the
+apostrophe the publisher prints" - has the asymmetry backwards: the publisher workbook cell
 s1 C28 itself prints `tep/M€2021` (apostrophes appear only on C29/C38/C39 as `tep/M€'2021`), so the
 registry is byte-faithful to the publisher's own inconsistency on that row. Harmless annotation
 drift in a parenthetical; the disposition (preserve string exactly) is correct. Controller may

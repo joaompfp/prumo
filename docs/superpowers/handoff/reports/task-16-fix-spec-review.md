@@ -1,4 +1,4 @@
-# Task 16 R1/R2 fix — independent spec re-review
+# Task 16 R1/R2 fix - independent spec re-review
 
 Verdict: **PASS** (code acceptance of the two scoped findings at `5feb13f`; live E-REDES gate
 remains controller-owned and unrun)
@@ -10,18 +10,18 @@ diff touches exactly 4 files (`ingest/db.py`, `ingest/models.py`,
 `tests/ingest/test_migration_pt15m.py`, `tests/ingest/test_models.py`); controller-dirty
 HANDOFF/ledger/plan and untracked reports are not part of the commit and were untouched by me.
 
-## R1 — migrator FK atomicity: FIXED, independently reproduced
+## R1 - migrator FK atomicity: FIXED, independently reproduced
 
 Diff confirms the claimed mechanism: each pending file runs as `BEGIN; <sql>; INSERT
 schema_migration` with **no COMMIT in the script**; `PRAGMA foreign_key_check` executes inside
 that open transaction; any violation raises before `COMMIT` and the `except` path rolls the
 migration *and* its version record back together. The `if not pending: return` early-exit is
-gone — a whole-database `foreign_key_check` now runs on every open (message changed to
+gone - a whole-database `foreign_key_check` now runs on every open (message changed to
 "foreign key violations in database"). `open_db` closes the connection on `_migrate` failure.
 Old migration SQL files are untouched (not in the diff), FK OFF/ON toggling preserved.
 
 Fresh probe (own scratch `t16-fix-rereview-tsf4r8z7`, synthetic `0009_evil.sql` inserting a
-ghost `series` row under FK-OFF, invisible to triggers — the exact scenario the check exists
+ghost `series` row under FK-OFF, invisible to triggers - the exact scenario the check exists
 to catch):
 
 ```
@@ -33,14 +33,14 @@ R1 pre-existing corruption rejected on every open (x2)
 ```
 
 Side-channel inspection (raw sqlite3, migrator bypassed) shows `schema_migration` contains
-exactly 0001-0006 and zero `series` rows after the failed open — the original R1 outcome
+exactly 0001-0006 and zero `series` rows after the failed open - the original R1 outcome
 (corrupt row + recorded version + silent second open) is no longer reachable.
 
 Test-suite evidence (named tests, fresh run):
 `test_bad_migration_rolls_back_atomically_no_corrupt_applied_version` PASSED,
 `test_open_rejects_preexisting_corruption_with_no_pending_migrations` PASSED.
 
-## R2 — PT15M matches raw string: FIXED, independently reproduced
+## R2 - PT15M matches raw string: FIXED, independently reproduced
 
 Diff confirms: PT15M pattern now matches `text = raw` (fold skipped for PT15M only) with
 uppercase `T` in the pattern; A/S/Q/M/D arms still match `_fold(raw)` and their patterns are
@@ -50,7 +50,7 @@ byte-identical to the parent commit. Inline comment now correctly documents raw 
 Fresh probe output:
 
 ```
-rejected '２０２６-１１-１０Ｔ２３：４５：００＋００：００'   (fullwidth: digits/colon/plus/T — NFKD would have folded these)
+rejected '２０２６-１１-１０Ｔ２３：４５：００＋００：００'   (fullwidth: digits/colon/plus/T - NFKD would have folded these)
 rejected '2026-11-10t23:45:00+00:00'                       (lowercase t)
 rejected ' 2026-11-10T23:45:00+00:00'                      (leading whitespace)
 rejected '2026-11-10T23:45:00+00:00 '                      (trailing whitespace)
@@ -77,7 +77,7 @@ accepted, whitespace accepted) now raise `ValueError`.
 
 ## Gaps
 
-None within scope. Code acceptance for R1 and R2: **PASS**. Not marking Task 16 closed —
+None within scope. Code acceptance for R1 and R2: **PASS**. Not marking Task 16 closed -
 acceptance and the live gate remain controller-owned.
 
 Re-reviewed by: independent spec re-reviewer (subagent), 2026-11-12.

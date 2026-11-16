@@ -61,10 +61,10 @@ while is_running(PID):
     now = time.time()
     if now - last_update >= UPDATE_INTERVAL:
         progress = get_progress()
-        send_telegram(f"📊 *Prumo Audit* — em curso\n`{progress}`")
+        send_telegram(f"📊 *Prumo Audit* - em curso\n`{progress}`")
         last_update = now
 
-# Process finished — send results
+# Process finished - send results
 time.sleep(2)  # Let file writes flush
 
 try:
@@ -77,7 +77,7 @@ try:
     failures = summary.get("failures", [])
 
     msg = (
-        "✅ *Prumo Audit — CONCLUÍDO*\n\n"
+        "✅ *Prumo Audit - CONCLUÍDO*\n\n"
         f"*Indicadores individuais:*\n"
         f"  Total: {ind.get('total', '?')}\n"
         f"  ✅ OK: {ind.get('ok', '?')}\n"
@@ -103,5 +103,5 @@ try:
     print("Final notification sent!")
 
 except Exception as e:
-    send_telegram(f"⚠️ *Prumo Audit* — processo terminou mas erro ao ler resultados: `{e}`")
+    send_telegram(f"⚠️ *Prumo Audit* - processo terminou mas erro ao ler resultados: `{e}`")
     print(f"Error reading results: {e}")

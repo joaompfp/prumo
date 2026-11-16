@@ -43,6 +43,11 @@ If quality is partial (for example, unstable endpoints), document trade-offs in 
 
 ## Code Style and Testing Basics
 
+Em dashes (U+2014) are prohibited in project-owned text, including UI copy, code,
+comments, documentation and tests. Use an ASCII hyphen (-). Encoded spellings are
+also prohibited. Original publisher receipts remain byte-identical; never edit
+source evidence to satisfy a writing rule.
+
 - Follow existing Python style in this repo (small functions, clear naming, explicit error handling)
 - Reuse shared helpers/constants where possible instead of duplicating logic
 - Avoid silent data coercion; log or comment non-obvious transformations

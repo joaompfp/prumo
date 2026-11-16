@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ page.title }} — Prumo{% endblock %}
+{% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/comparar">Comparações</a> <span aria-hidden="true">/</span> {{ page.title }}
@@ -60,7 +60,7 @@
       {% if side.provenance %}
       <dt>Recolhido</dt><dd>{{ side.provenance.fetched_text }}</dd>
       <dt>Execução</dt><dd>#{{ side.provenance.run_id }}</dd>
-      <dt>Ficheiro arquivado</dt><dd>{% if side.provenance.sha256 %}<code title="{{ side.provenance.sha256 }}">{{ side.provenance.sha256[:12] }}…{{ side.provenance.sha256[-6:] }}</code>{% else %}—{% endif %}</dd>
+      <dt>Ficheiro arquivado</dt><dd>{% if side.provenance.sha256 %}<code title="{{ side.provenance.sha256 }}">{{ side.provenance.sha256[:12] }}…{{ side.provenance.sha256[-6:] }}</code>{% else %}-{% endif %}</dd>
       <dt>Verificação</dt>
       <dd>
         {% if side.provenance.verification_created_text %}

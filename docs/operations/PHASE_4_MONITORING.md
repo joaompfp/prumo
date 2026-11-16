@@ -373,7 +373,7 @@ def send_slack_alert(message):
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CAE Dashboard — Admin Usage</title>
+  <title>CAE Dashboard - Admin Usage</title>
   <style>
     body { font-family: Arial; margin: 20px; }
     .card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; }
@@ -384,7 +384,7 @@ def send_slack_alert(message):
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <h1>CAE Dashboard — Usage Dashboard</h1>
+  <h1>CAE Dashboard - Usage Dashboard</h1>
 
   <div class="card">
     <div class="metric" id="total-calls">-</div>

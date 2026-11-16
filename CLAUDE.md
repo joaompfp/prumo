@@ -33,5 +33,5 @@ pytest tests/ -v
 
 ## Reference
 
-- **`AGENTS.md`** — Local dev setup, coding constraints
-- **`docs/superpowers/`** — Specs and plans
+- **`AGENTS.md`** - Local dev setup, coding constraints
+- **`docs/superpowers/`** - Specs and plans

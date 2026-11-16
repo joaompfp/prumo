@@ -38,6 +38,7 @@ from presentation import (
     search_aliases,
     seasonal_text,
     series_title,
+    source_text,
     source_title,
     theme_blurb,
     theme_text,
@@ -277,7 +278,8 @@ def _provenance_view(p: dict, frequency: str, lang: str) -> ProvenanceView:
         verifier_channel=p["verifier_channel"] or "",
         sampled=bool(p["sampled"]),
         native_code=p["native_code"], series_url=p["series_url"],
-        licence=p["licence"], licence_url=p["licence_url"], attribution=p["attribution"])
+        licence=source_text(p["licence"]), licence_url=p["licence_url"],
+        attribution=source_text(p["attribution"]))
 
 
 def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None = None,
@@ -339,7 +341,7 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
             if d["latest_period"] is not None else None,
             caveats=tuple(caveat_text(lang, c) for c in d["caveats"])))
     cross = tuple(CrossCheck(id=c["id"], source_title=source_title(lang, c["source"]),
-                             attribution=c["attribution"],
+                             attribution=source_text(c["attribution"]),
                              value_display=format_value(c["latest_value_text"]),
                              period_text=format_period(c["latest_period"], frequency),
                              fetched_text=format_datetime(c["latest_fetched_at"]),
@@ -359,8 +361,8 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
         seasonal_text=seasonal_text(lang, row["seasonal_adjustment"])
         if row["seasonal_adjustment"] else "",
         base_year=row["base_year"], source=row["source"],
-        source_title=source_title(lang, row["source"]), attribution=row["attribution"],
-        licence=row["licence"], licence_url=row["licence_url"],
+        source_title=source_title(lang, row["source"]), attribution=source_text(row["attribution"]),
+        licence=source_text(row["licence"]), licence_url=row["licence_url"],
         native_code=row["native_code"], series_url=row["url"], latest=latest)
     return SeriesDetail(
         series=series,
@@ -449,7 +451,7 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
                                 d["base_geography"]),
         inputs=inputs,
         computed_text=format_datetime(newest["computed_at"]) if newest else "",
-        licence=newest["licence"] if newest else "",
+        licence=source_text(newest["licence"]) if newest else "",
         licence_url=newest["licence_url"] if newest else "",
         attribution=calculated_attribution(lang, newest["attribution"]) if newest else "",
         served_count=d["served_count"])
@@ -771,8 +773,8 @@ def sources_page(db: Db, lang: str = "pt") -> SourcesPage:
     published, withheld = [], []
     for s in db.public_sources():
         view = SourceView(name=s["name"], title=source_title(lang, s["name"]),
-                          licence=s["licence"], licence_url=s["licence_url"],
-                          attribution=s["attribution"], series=s["series"],
+                          licence=source_text(s["licence"]), licence_url=s["licence_url"],
+                          attribution=source_text(s["attribution"]), series=s["series"],
                           last_fetched_text=format_datetime(s["last_fetched_at"]),
                           published=s["redistribution_ok"],
                           note=withheld_note(lang, s["name"]) if not s["redistribution_ok"] else "")
@@ -810,8 +812,8 @@ def series_csv(db: Db, series_id: str) -> CsvExport | None:
                    for v in values),
         footer=(f"Série: {series_title('pt', family_of(row['indicator_key']), row['geography'])}",
                 f"Unidade: {base_unit_text('pt', row['unit'])}",
-                f"{row['attribution']}",
-                f"Licença: {row['licence']} — {row['licence_url']}",
+                source_text(row["attribution"]),
+                f"Licença: {source_text(row['licence'])} - {row['licence_url']}",
                 f"Exportado a {_export_stamp()}"))
 
 
@@ -831,7 +833,7 @@ def derived_csv(db: Db, key: str) -> CsvExport | None:
         f"Base: {base_title}",
         describe_formula("pt", d["formula"], d["params"], base_title),
         f"{calculated_attribution('pt', newest['attribution'])}" if newest else "",
-        f"Licença: {newest['licence']} — {newest['licence_url']}" if newest else "",
+        f"Licença: {source_text(newest['licence'])} - {newest['licence_url']}" if newest else "",
         f"Exportado a {_export_stamp()}") if line)
     return CsvExport(
         filename=f"{key}.csv",
@@ -926,11 +928,11 @@ def _comparison_side(db: Db, row: dict, token: str, period: str, frequency: str,
     provenance = db.public_provenance_at(row["id"], period)
     return ComparisonSeries(
         id=row["id"], title=_title(row, lang), source_title=source_title(lang, row["source"]),
-        attribution=row["attribution"], unit_text=base_unit_text(lang, row["unit"]),
+        attribution=source_text(row["attribution"]), unit_text=base_unit_text(lang, row["unit"]),
         frequency=frequency, frequency_text=frequency_text(lang, frequency),
         latest_display=format_value(token),
         latest_period_text=format_period(period, frequency),
-        licence=row["licence"],
+        licence=source_text(row["licence"]),
         provenance=_provenance_view(provenance, frequency, lang) if provenance else None)
 
 

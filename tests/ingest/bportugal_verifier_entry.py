@@ -6,7 +6,7 @@ from ingest.verifiers.bportugal import BPortugalVerifier
 from tests.ingest.bportugal_fixtures import registry_specs
 from tests.ingest.bportugal_verifier_fixtures import VerifyFixtureHttp
 
-# (series, period, observed_text, observed_unit) — the portal's own published rendering,
+# (series, period, observed_text, observed_unit) - the portal's own published rendering,
 # every case recorded live 2026-11-11 and cross-checked against the collector's JSON-stat token
 # (fixtures/bportugal/verify/MANIFEST.json).
 CASES = [

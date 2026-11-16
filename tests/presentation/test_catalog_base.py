@@ -66,8 +66,8 @@ def test_catalogue_has_no_orphan_family_titles():
 
 
 def test_series_title_composes_with_geography():
-    assert series_title("pt", "ine_population", "PT") == "População residente — Portugal"
-    assert series_title("pt", "unemployment_rate", "DE") == "Taxa de desemprego — Alemanha"
+    assert series_title("pt", "ine_population", "PT") == "População residente - Portugal"
+    assert series_title("pt", "unemployment_rate", "DE") == "Taxa de desemprego - Alemanha"
     assert series_title("pt", "eur_usd", "EA") == "Taxa de câmbio euro-dólar"
 
 

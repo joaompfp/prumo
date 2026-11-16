@@ -138,7 +138,7 @@ def test_series_page_shows_the_stored_token_and_period(client):
     html = client.get(f"/series/{HICP}").text
     assert "1,8" in html and "outubro de 2026" in html
     assert "Taxa de variação homóloga do IHPC" in html
-    assert "INE — Instituto Nacional de Estatística" in html
+    assert "INE - Instituto Nacional de Estatística" in html
 
 
 def test_series_page_hides_unknown_inactive_cross_check_and_withheld(client):
@@ -294,7 +294,7 @@ def test_home_counts_cards_and_published_sources(client):
     text = visible(client.get("/").text)
     assert "3 séries de 2 instituições" in text
     assert "Inflação (IHPC)" in text and "Desemprego" in text
-    assert "INE — Instituto Nacional de Estatística" in text
+    assert "INE - Instituto Nacional de Estatística" in text
     assert "Banco Mundial" in text
     assert "Última recolha verificada" in text
 
@@ -349,7 +349,7 @@ def test_search_escapes_the_query_in_input_and_heading(client):
 def test_sources_page_separates_published_and_withheld(client):
     text = visible(client.get("/fontes").text)
     assert "Fontes e licenças" in text
-    assert "INE — Instituto Nacional de Estatística" in text
+    assert "INE - Instituto Nacional de Estatística" in text
     assert "Redes Energéticas Nacionais" in text
     assert "Fontes em avaliação" in text
     # the stored licence string is an operator note; readers get the catalogue's sentence

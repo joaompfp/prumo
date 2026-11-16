@@ -1,4 +1,4 @@
-# Task 17 whole-task code QUALITY review (17A + 17B + fix pass 1) — independent
+# Task 17 whole-task code QUALITY review (17A + 17B + fix pass 1) - independent
 
 Reviewer: independent quality subagent (third pass). Scope: `pipeline-rebuild` @ eddb91c,
 full diff bd773f6..eddb91c (both slices + R1-R5 fixes). Inputs read: task-17a-brief.md,
@@ -7,7 +7,7 @@ the actual code/diff was then inspected directly, not the self-reports. Read-onl
 only under /home/joao/.hermes/cache/scratch/t17q-*, no production/HTTP, no edits, no
 deletion re-attempt (legacy-collector deletion stays owner-gated as already agreed).
 
-## Verdict: REQUEST_CHANGES — ONE material provenance hole (F1), everything else holds
+## Verdict: REQUEST_CHANGES - ONE material provenance hole (F1), everything else holds
 
 The acceptance items are genuinely implemented and verified by 362 passing focused tests;
 one explicit acceptance criterion (receipt validation of future fetch times) is absent
@@ -70,10 +70,10 @@ and provably exploitable through the manual path this task exists for.
   and >24h stale flag (`status.py:140-242`).
 - **polite cadence**: `_http_for` uses min active-spec throttle (default 1 rps), registry
   `timeout_s` (INE 300), retries=0 (`cli.py:200-209`).
-- Controller-owned legacy-collector deletion: remains gated on owner approval — NOT a new
+- Controller-owned legacy-collector deletion: remains gated on owner approval - NOT a new
   quality bug; not re-attempted here.
 
-## Finding F1 — MAJOR: bundle receipts and pipeline accept FUTURE fetch times
+## Finding F1 - MAJOR: bundle receipts and pipeline accept FUTURE fetch times
 
 **What**: neither `BundleEntry` validation (`ingest/bundle.py:_entry_ts`, lines 110-120)
 nor `RawResponse` receipt validation (`ingest/pipeline.py:_receipt_ts`, lines 54-66)
@@ -82,12 +82,12 @@ verify format/tz only, and `_stale_bundle_groups` (cli.py) + `_guard_recorded_no
 (pipeline.py) compare receipts against held data but never against the import-time clock.
 
 **Why it matters**: the capture tooling runs on an arbitrary operator machine by design
-(the task's whole premise — the server egress cannot reach the publisher). A capture
+(the task's whole premise - the server egress cannot reach the publisher). A capture
 laptop with a wrong clock stamps receipts ahead of real time. Such a bundle:
 1. passes `load_bundle` and `verify`-independent validation;
 2. beats BOTH stale guards (held real-now data compares older than the future receipt), so
    future-stamped observations are written and become the served view's newest per
-   (series, period) — provable false freshness: `status` then reports the data as fresh
+   (series, period) - provable false freshness: `status` then reports the data as fresh
    with a fabricated retrieval date;
 3. LOCKOUT: afterwards every genuine bundle (receipts at real time) compares OLDER than
    the fake-future held data and is refused as stale (`held > oldest`), so the manual
@@ -114,7 +114,7 @@ A3 guard decision for future bundle: held 2026-11-12T21:16:54.579428+00:00 > old
 A4 naive correctly rejected
 ```
 
-**Suggested fix**: reject `fetched_at > now + skew` (documented, small — e.g. 10 min) in
+**Suggested fix**: reject `fetched_at > now + skew` (documented, small - e.g. 10 min) in
 `_entry_ts` at load AND independently in `_receipt_ts` at write time (the pipeline must not
 trust the loader for its own invariant), with tests: future receipt refused by load_bundle
 and by a direct run_dataset recorded replay; equal-to-now accepted. Note `_utc_now()` in
@@ -131,7 +131,7 @@ bundle.py is already the honest clock to compare against.
   `("301", ..., {"location": "https://.../y"})` -> `cap.get()` returned the 301 unfollowed,
   1 request total.
 - **M2** (carried from fix-spec review, confirmed present): on the bundle replay path
-  `cli._stale_bundle_groups` calls `operations.group_specs` unguarded (cli.py:300) — a
+  `cli._stale_bundle_groups` calls `operations.group_specs` unguarded (cli.py:300) - a
   malformed registry WB native_code raises ValueError as a traceback instead of the clean
   `blocked` outcome the live path produces (run_source catches it, operations.py:258-262).
   Pre-write, loud-not-silent; cosmetic robustness gap.

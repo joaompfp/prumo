@@ -1,4 +1,4 @@
-# PROVISIONAL — owner review pending
+# PROVISIONAL - owner review pending
 
 # INE series: mapping notes and series not active (active: false)
 
@@ -9,7 +9,7 @@ code (`collectors/ine.py`, `scripts/collectors/cae-v4-backfill.py`, `scripts/col
 `scripts/backfill_missing.py`) or the legacy rows' own metadata (`source_id`, `detail`) and (b) agreement
 with the legacy values fetched live on 2026-11-11 (≥ 95% for every active series; the rest are INE
 revisions since the legacy fetch or the rebasing rounding noted below). Units, ids and roles not changed.
-Discontinued check (last value before 2024): none — every active series has values in 2025-2026.
+Discontinued check (last value before 2024): none - every active series has values in 2025-2026.
 
 | | count |
 |---|---|

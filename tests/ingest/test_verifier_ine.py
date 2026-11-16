@@ -136,7 +136,7 @@ def test_verifier_error_page_raises():
 
 def test_verifier_home_redirect_without_referer_raises():
     """What INE answers when the Referer is missing (302 followed to the home page): no
-    xmlDocHidden, no dados table — a loud failure, never a pass."""
+    xmlDocHidden, no dados table - a loud failure, never a pass."""
     http = FakeHttp(ok(vbody("home_no_referer.html")))
     with pytest.raises(ValueError):
         INEVerifier().check([blind("ine.live_births.PT", "2024")], http)
@@ -149,7 +149,7 @@ def test_verifier_http_error_status_raises():
 
 
 def test_verifier_no_value_cell_is_not_found():
-    """'x' instead of the value: observed None + no flag (a mismatch if sampled — the JSON
+    """'x' instead of the value: observed None + no flag (a mismatch if sampled - the JSON
     channel quarantines such cells, so clean runs never sample them)."""
     raw = vbody("sel_0011889_Junho_de_2026_10_PT.html").replace(b">114,57<", b">x<")
     assert raw != vbody("sel_0011889_Junho_de_2026_10_PT.html")

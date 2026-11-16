@@ -1,4 +1,4 @@
-# Task 17 quality fix 2 — F1: future-dated receipts refused at both boundaries
+# Task 17 quality fix 2 - F1: future-dated receipts refused at both boundaries
 
 Scope: ONLY finding F1 of task-17-quality-review.md (`pipeline-rebuild` @ eddb91c).
 M1/M2/M3, the legacy-collector deletion and Task 17 closure are all untouched.
@@ -11,21 +11,21 @@ with a wrong clock produced bundles that passed validation, beat both stale guar
 freshness in the served view) and then locked every genuine later bundle out as "stale"
 until real time caught up with the fake date.
 
-## Fix — one clock-skew policy, enforced twice
+## Fix - one clock-skew policy, enforced twice
 
 - **New `ingest/receipts.py`**: the single authoritative rule. `MAX_CLOCK_SKEW =
-  timedelta(minutes=5)` and pure `receipt_fetched_at(raw, *, now, what)` — tz-aware ISO,
+  timedelta(minutes=5)` and pure `receipt_fetched_at(raw, *, now, what)` - tz-aware ISO,
   normalized to UTC as before, refused only when `> now + MAX_CLOCK_SKEW`. The `now`
   argument is the caller's actual import-time clock (injected in tests; never a fake
   production clock). No parser/verifier coupling; the duplicated parse/tz/normalize
   knowledge that existed in both boundaries now lives in exactly one place.
 - **`ingest/bundle.py`**: `_entry_ts` delegates to the shared helper (re-raising as
   `BundleError`, same message shape). `load_bundle(..., now=None)` defaults to the real
-  `_utc_now()` and still raises BEFORE any DB open — a future bundle creates no DB.
+  `_utc_now()` and still raises BEFORE any DB open - a future bundle creates no DB.
   Capture-side stamping (`_utc_now()` original-attempt clock) unmodified.
 - **`ingest/pipeline.py`**: `_receipt_ts` delegates to the same helper and is checked
   against the run's own injected clock (`now()`) at the write boundary, BEFORE `_record`
-  writes any raw_fetch provenance — a future `RawResponse` writes no observations and no
+  writes any raw_fetch provenance - a future `RawResponse` writes no observations and no
   raw provenance, loader bypassed or not. Failed outcome stays the existing
   `failed-validation` + `format_change` event; no statuses/bytes/value-precision changes.
 

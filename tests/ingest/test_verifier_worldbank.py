@@ -1,4 +1,4 @@
-"""World Bank verifier tests — recorded genuine publisher CSV ZIP exports
+"""World Bank verifier tests - recorded genuine publisher CSV ZIP exports
 (tests/ingest/fixtures/worldbank/*.zip, full archives <= 200 KB, sha256-pinned by
 MANIFEST.json). The verifier is BLIND: it reads values from the CSV channel only; mismatch
 detection is verified through verify_run, never by echoing expected values."""
@@ -216,7 +216,7 @@ def test_verifier_zip_member_size_cap_raises(monkeypatch):
 
 def test_verifier_wrong_indicator_zip_raises():
     """Serving the population ZIP for a GDP item: member names and Indicator Code rows disagree
-    with the request — identity drift, fail closed."""
+    with the request - identity drift, fail closed."""
     with pytest.raises(ValueError, match="member|Indicator Code|identity"):
         WorldBankVerifier().check([_item("worldbank.gdp_usd.PT", "2025")],
                                   VerifyFixtureHttp({"NY.GDP.MKTP.CD": zip_bytes("SP.POP.TOTL")}))

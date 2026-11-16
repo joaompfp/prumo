@@ -1,4 +1,4 @@
-"""REN DataHub source adapter tests — real recorded servicebus JSON fixtures
+"""REN DataHub source adapter tests - real recorded servicebus JSON fixtures
 (tests/ingest/fixtures/ren/, 2026-11-11; bytes sha256-verified copies of the Task 12 discovery
 archive). Pinned tokens were cross-checked live against the independent portal CSV export
 (verify/ set and fixtures/ren/MANIFEST.json)."""
@@ -212,7 +212,7 @@ def _tampered_balance(tampered: bytes) -> RawResponse:
 
 def test_quoted_number_token_raises_even_when_numeric_shaped():
     """A JSON string is NOT a publisher number, even with valid token grammar: with the
-    primitive type erased by the number loader, '"04442"' would parse as the token '04442' — stored
+    primitive type erased by the number loader, '"04442"' would parse as the token '04442' - stored
     verbatim as the publisher's number AND still Decimal-verifying against the CSV channel
     (04442 == 4442), a silent type flip neither layer detects. The payload must fail closed."""
     tampered = body("balance_2026-09.json").replace(
@@ -375,7 +375,7 @@ def test_pipeline_quoted_number_fails_validation_and_writes_nothing(tmp_path):
 def test_pipeline_run_on_fixtures_writes_but_licence_gate_withholds(tmp_path):
     """End to end on recorded bytes: 14 rows written (provenance to each of the 2 payloads);
     even with the run technically flipped to verified, REN's redistribution_ok=false (real
-    registry) keeps served=0 — internally verified yet legally withheld."""
+    registry) keeps served=0 - internally verified yet legally withheld."""
     specs = all_specs()
     db = open_db(tmp_path / "t.db")
     try:

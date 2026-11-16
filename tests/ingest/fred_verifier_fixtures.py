@@ -2,7 +2,7 @@
 /data/<CODE> table pages (tests/ingest/fixtures/fred/table-<CODE>.html, 2026-11-12,
 sha256-pinned byte copies of the Task-14 preflight originals, via MANIFEST.json).
 
-This channel is KEYLESS (public publication UI): any query param on a request fails the test —
+This channel is KEYLESS (public publication UI): any query param on a request fails the test -
 in particular the collector's api_key must never touch it. `override[file]` replaces a body
 and `status[code]` forces an HTTP status (tamper/error tests, always built in-test).
 """

@@ -3,8 +3,8 @@
 `served_observation` serves a row only when the SERIES' publisher has source.redistribution_ok=1.
 Verification is technical and does not authorize serving: a run can be `verified` while every one
 of its rows is legally withheld (verified != served). Revoking or reapproving a source's
-redistribution_ok through the normal registry sync takes effect IMMEDIATELY for existing rows —
-fetched and legacy alike, legacy_served='1' included — without deleting any observation, run or
+redistribution_ok through the normal registry sync takes effect IMMEDIATELY for existing rows -
+fetched and legacy alike, legacy_served='1' included - without deleting any observation, run or
 history row, and with every other serving rule (verified runs only, latest vintage wins, legacy
 never hides fetched) unchanged.
 """

@@ -20,7 +20,7 @@ import yaml
 from ingest.legacy_import import fetched_at_utc, legacy_geography, legacy_series_id
 from ingest.models import normalize_period, parse_decimal
 
-PROVISIONAL = "# PROVISIONAL — owner review pending"
+PROVISIONAL = "# PROVISIONAL - owner review pending"
 LARGE_GAP = Decimal("0.02")  # relative primary-vs-cross-check gap flagged in overlaps.md
 
 # --- geography and primary-source rule (spec §5) ------------------------------------------------
@@ -135,7 +135,7 @@ def _concept(source: str, indicator: str) -> str:
 
 # --- licences (spec §11.4): only what was confirmed; everything else is UNVERIFIED ------------------
 
-UNVERIFIED = "UNVERIFIED — builder must confirm before serving"
+UNVERIFIED = "UNVERIFIED - builder must confirm before serving"
 LICENCES = {
     "eurostat": dict(licence="CC BY 4.0",
                      licence_url="https://ec.europa.eu/eurostat/web/main/help/copyright-notice",
@@ -146,11 +146,11 @@ LICENCES = {
 # source -> (url to check, attribution, why unconfirmed)
 LICENCE_TODO = {
     "ine": ("https://www.ine.pt/xportal/xmain?xpid=INE&xpgid=ine_condicoes_utilizacao",
-            "Source: INE — Statistics Portugal",
+            "Source: INE - Statistics Portugal",
             "Believed free reuse with attribution; page was 'em manutenção' when checked (2026-11-11)."),
     "bportugal": ("https://bpstat.bportugal.pt/", "Source: Banco de Portugal (BPstat)",
                   "BPstat terms of use not read."),
-    "ren": ("https://www.ren.pt/", "Source: REN — Redes Energéticas Nacionais",
+    "ren": ("https://www.ren.pt/", "Source: REN - Redes Energéticas Nacionais",
             "REN data-hub terms not read."),
     "dgeg": ("https://www.dgeg.gov.pt/", "Source: DGEG",
              "Published via dados.gov.pt; licence is stated per dataset, not checked."),
@@ -405,7 +405,7 @@ def _overlaps_md(overlaps: list) -> str:
                          f"{primary.n_explicit} / {primary.last_period}", s.id,
                          f"{s.n_explicit} / {s.last_period}",
                          f"{next(iter(primary.units))} vs {next(iter(s.units))}", n, equal,
-                         "—" if worst is None else f"{(worst * 100).quantize(Decimal('0.01'))}%",
+                         "-" if worst is None else f"{(worst * 100).quantize(Decimal('0.01'))}%",
                          "LARGE" if large else ""])
     return (f"{PROVISIONAL}\n\n# Overlapping indicators\n\n"
             + _table(["indicators", "cross-checks", "large gaps"],
@@ -458,7 +458,7 @@ def _unclassified_md(items: list, core: list) -> str:
               "are not core. Nothing here is imported.\n\n"
             + _table(["series", "status", "registry unit", "rows with unit", "rows without unit",
                       "periods without unit"],
-                     [[s.id, status, next(iter(s.units)) if len(s.units) == 1 else "—",
+                     [[s.id, status, next(iter(s.units)) if len(s.units) == 1 else "-",
                        s.n_explicit, s.n_no_unit,
                        f"{min(s.unitless_periods)} .. {max(s.unitless_periods)}"]
                       for s, status in sorted(unitless, key=lambda t: t[0].id)]))

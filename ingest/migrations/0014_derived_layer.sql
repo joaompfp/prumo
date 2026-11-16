@@ -53,7 +53,7 @@
 --    `inputs` element order is NOT guaranteed by SQLite before 3.44 (no aggregate ORDER BY);
 --    `input_ids` is the stored array in formula order, and Db.served_derived_rows returns
 --    `inputs` in that order. Every row carries is_calculated = 1 and the base source's
---    licence, with attribution '<source attribution> — Calculado pelo Prumo'.
+--    licence, with attribution '<source attribution> - Calculado pelo Prumo'.
 --
 -- A later migration that rebuilds series/source/observation/dataset_run (create-new / copy /
 -- drop / rename) must DROP and recreate served_derived as well as served_observation.
@@ -207,7 +207,7 @@ SELECT ds.key AS derived_key, d.period, d.value_text, d.scale, ds.unit,
    FROM (SELECT o.series_id, o.period, o.id FROM json_each(d.input_obs_ids_json) j
          JOIN observation o ON o.id = j.value ORDER BY j.key) x) AS inputs,
   d.input_obs_ids_json AS input_ids,
-  p.licence, p.licence_url, p.attribution || ' — Calculado pelo Prumo' AS attribution,
+  p.licence, p.licence_url, p.attribution || ' - Calculado pelo Prumo' AS attribution,
   d.computed_at, d.run_id AS derived_run_id, d.id AS derived_observation_id
 FROM derived_series ds
 JOIN derived_observation d ON d.derived_series_id = ds.id

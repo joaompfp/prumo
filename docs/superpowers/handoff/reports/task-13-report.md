@@ -1,4 +1,4 @@
-# Task 13 — World Bank source + independent verifier (implementer report)
+# Task 13 - World Bank source + independent verifier (implementer report)
 
 Date: 2026-11-11. Implementer: fresh Task13 agent. Branch `pipeline-rebuild`, worktree
 `/home/joao/projects/prumo-pipeline`, base dcec55d. Commits: `0a4458f` (registry
@@ -6,7 +6,7 @@ dispositions), `173638c` (source + verifier + tests + fixtures), report commit f
 
 ## What was built
 
-- `ingest/sources/worldbank.py` — `WorldBankSource` for the keyless API v2 JSON channel:
+- `ingest/sources/worldbank.py` - `WorldBankSource` for the keyless API v2 JSON channel:
   one request per indicator carrying that indicator's full registry geography set
   (`/v2/country/<geo;…>/indicator/<CODE>?format=json&per_page=20000`, geos sorted), pagination
   followed with cross-checked page/pages/per_page/total; 18 responses for the 930 active
@@ -16,7 +16,7 @@ dispositions), `173638c` (source + verifier + tests + fixtures), report commit f
   per row, non-empty unit/obs_status fail closed (both surfaces empty in all evidence →
   unit_raw=None, flag_raw='normal'), nulls → value_raw=None (never zero-filled), duplicates/
   truncation/shape/HTML/error-JSON/non-2xx fail closed, per-row response_index provenance.
-- `ingest/verifiers/worldbank.py` — `WorldBankVerifier` on the genuinely different publisher
+- `ingest/verifiers/worldbank.py` - `WorldBankVerifier` on the genuinely different publisher
   bulk CSV ZIP channel (`/v2/en/indicator/<CODE>?downloadformat=csv`), one ZIP per indicator
   cached inside check() only; in-memory bounded reads (≤3 members, per-member 64 MiB and
   128 MiB total caps, realized-length == declared-size integrity, path/name/member guards);
@@ -52,13 +52,13 @@ dispositions), `173638c` (source + verifier + tests + fixtures), report commit f
 - Licence: CC BY 4.0 re-confirmed (sourceOrganization is provenance, not a licence exception);
   `redistribution_ok: true`, attribution 'Source: World Bank', `verifiable: true` recorded.
 - `unemployment_wb` keeps its `unemployment_rate.<geo>.A` indicator_keys (shared namespace
-  intentional; keys are not unique series identity — native_code/series_id are).
+  intentional; keys are not unique series identity - native_code/series_id are).
 
 ## Evidence
 
 29 real publisher fixtures ≤200 KB each under `tests/ingest/fixtures/worldbank/`
 (sha256-pinned MANIFEST.json; the 6 intake files are byte-identical to the
-controller-reverified bundle — hashes recomputed here; PPP/country metadata byte-identical to
+controller-reverified bundle - hashes recomputed here; PPP/country metadata byte-identical to
 the controller pins; the 5 PT-GDP-2021..2025 cross-channel pins re-derived: 5/5 exact token
 matches). The GDP CSV ZIP is the full 142 909-byte archive (main CSV 297 580 bytes
 uncompressed inside the ZIP), never a truncated substitute. Additional implementer probes
@@ -81,14 +81,14 @@ uncompressed inside the ZIP), never a truncated substitute. Additional implement
 
 ## Live runs (real network, ≤1 req/s, UA prumo-ingest/1.0, scratch DBs)
 
-### A. Full all-active scope (930 series) — fetch+parse OK, verification FAILED CLOSED on a
+### A. Full all-active scope (930 series) - fetch+parse OK, verification FAILED CLOSED on a
 publisher-side outage of the CSV export endpoint
 - run_dataset: `pending-verification`, **18 raw JSON responses (one per active indicator,
   single page each)**, **45 915 observations written**, **15 465 quarantined** (all
   `non_numeric` = publisher null cells preserved, never zero-filled), **0 empty series**
   (all 930 populated). Latest period distribution: 2025×624, 2024×194, 2023×64, 2022×9,
   2021×6, 2020×3, 2018×2, 2015×2, 1994×11 (gov_debt), 1960×3 (gini ST/CV/…), plus single
-  1990/1992/1993/2000/2007/2009/2014/2017 stragglers — slow official releases, NOT
+  1990/1992/1993/2000/2007/2009/2014/2017 stragglers - slow official releases, NOT
   discontinued/rebased; left active as ruled.
 - verify_run: drew a **930-item sample** (latest per populated series → larger than 50, as
   designed) and failed closed: the CSV export endpoint `…/en/indicator/NE.EXP.GNFS.ZS
@@ -98,15 +98,15 @@ publisher-side outage of the CSV export endpoint
 - Outage map (probed 2026-11-11 ~20:30–21:30 UTC, throttled singles, archived terminal logs in
   scratch): the bulk CSV export currently works for 10 of 18 active indicators
   (NY.GDP.MKTP.CD, NY.GDP.PCAP.CD, SP.POP.TOTL, SL.UEM.TOTL.ZS, GC.DOD.TOTL.GD.ZS,
-  SI.POV.GINI, SL.EMP.TOTL.SP.ZS, SP.DYN.CBRT.IN, SP.DYN.CDRT.IN, SP.URB.TOTL.IN.ZS — all
+  SI.POV.GINI, SL.EMP.TOTL.SP.ZS, SP.DYN.CBRT.IN, SP.DYN.CDRT.IN, SP.URB.TOTL.IN.ZS - all
   200 application/zip in ≤0.3 s, several re-downloaded byte-identical) and is **broken
   server-side** for 8 (NE.EXP/NE.IMP/NE.RSB.GNFS.ZS, BX.KLT.DINV.WD.GD.ZS, GB.XPD.RSDV.GD.ZS,
-  NY.GDP.MKTP.KD.ZG, SL.TLF.CACT.FE.ZS, SP.DYN.LE00.IN — read timeouts at 75 s, NE.EXP also
+  NY.GDP.MKTP.KD.ZG, SL.TLF.CACT.FE.ZS, SP.DYN.LE00.IN - read timeouts at 75 s, NE.EXP also
   twice HTTP 400 after ~151 s; a country-scoped variant answered once after 62.5 s then timed
   out: flaky generation backend, not request shape). Re-probed after ~50 min: still broken.
   The JSON channel remained healthy for all 18 indicators throughout.
 
-### B. Healthy-channel subset (516 series, the 10 working indicators) — fully VERIFIED
+### B. Healthy-channel subset (516 series, the 10 working indicators) - fully VERIFIED
   via `run_with_refetch` (real registered verifier):
 - `state=verified`, written=25 853, quarantined=8 203 (all nulls), raw=10 responses,
   **served=25 853** (CC BY 4.0 redistribution_ok=1), sample=516 (latest per populated series),
@@ -138,7 +138,7 @@ first failing verification items:
   ('worldbank.birth_rate.AO', '2024', 'verifier raised: ReadTimeout(ReadTimeoutError("HTTPSConnectionPool(host='api.worldbank.org', port=443): Read timed out. (read timeout=60.0)"))')
   ... (the whole 930-item sample marked failed by the verifier raise; the CSV export for
        SP.DYN.CBRT.IN, which answered 200 in 0.2 s an hour earlier, now read-timed out after
-       the client's bounded retries — the publisher export backend degraded further mid-run)
+       the client's bounded retries - the publisher export backend degraded further mid-run)
 ======================== 1 failed in 818.02s (0:13:38) =========================
 ```
 

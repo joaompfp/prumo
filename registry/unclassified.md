@@ -1,4 +1,4 @@
-# PROVISIONAL — owner review pending
+# PROVISIONAL - owner review pending
 
 # Unclassified (left out of core)
 
@@ -304,19 +304,19 @@ Legacy rows with a blank unit are never given the registry unit (Ruling V): for 
 
 | series | status | registry unit | rows with unit | rows without unit | periods without unit |
 |---|---|---|---|---|---|
-| bportugal.credit_consumer.PT | not core: no row has a unit | — | 0 | 315 | 1999-12 .. 2026-02 |
-| bportugal.credit_housing.PT | not core: no row has a unit | — | 0 | 315 | 1999-12 .. 2026-02 |
-| bportugal.de_10y.PT | not core: no row has a unit | — | 0 | 315 | 2000-01 .. 2026-03 |
-| bportugal.deposits.PT | not core: no row has a unit | — | 0 | 315 | 1999-12 .. 2026-02 |
-| bportugal.eur_usd.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
-| bportugal.euribor_12m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
-| bportugal.euribor_1m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
-| bportugal.euribor_3m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
-| bportugal.euribor_6m.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
-| bportugal.pt_10y.PT | not core: no row has a unit | — | 0 | 316 | 1999-12 .. 2026-03 |
-| bportugal.spread_pt_de.PT | not core: no row has a unit | — | 0 | 315 | 2000-01 .. 2026-03 |
+| bportugal.credit_consumer.PT | not core: no row has a unit | - | 0 | 315 | 1999-12 .. 2026-02 |
+| bportugal.credit_housing.PT | not core: no row has a unit | - | 0 | 315 | 1999-12 .. 2026-02 |
+| bportugal.de_10y.PT | not core: no row has a unit | - | 0 | 315 | 2000-01 .. 2026-03 |
+| bportugal.deposits.PT | not core: no row has a unit | - | 0 | 315 | 1999-12 .. 2026-02 |
+| bportugal.eur_usd.PT | not core: no row has a unit | - | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_12m.PT | not core: no row has a unit | - | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_1m.PT | not core: no row has a unit | - | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_3m.PT | not core: no row has a unit | - | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.euribor_6m.PT | not core: no row has a unit | - | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.pt_10y.PT | not core: no row has a unit | - | 0 | 316 | 1999-12 .. 2026-03 |
+| bportugal.spread_pt_de.PT | not core: no row has a unit | - | 0 | 315 | 2000-01 .. 2026-03 |
 | eurostat.chemicals_pharma.PT | core: these rows quarantined as missing_unit | I21 | 84 | 229 | 2000-01 .. 2023-12 |
-| eurostat.inflation.PT | not core: no row has a unit | — | 0 | 312 | 2000-01 .. 2025-12 |
+| eurostat.inflation.PT | not core: no row has a unit | - | 0 | 312 | 2000-01 .. 2025-12 |
 | eurostat.ipi.PT | core: these rows quarantined as missing_unit | I21 | 97 | 216 | 2000-01 .. 2017-12 |
 | eurostat.machinery.PT | core: these rows quarantined as missing_unit | I21 | 83 | 229 | 2000-01 .. 2023-11 |
 | eurostat.manufacturing.PT | core: these rows quarantined as missing_unit | I21 | 84 | 229 | 2000-01 .. 2023-12 |
@@ -341,25 +341,25 @@ Legacy rows with a blank unit are never given the registry unit (Ruling V): for 
 | ine.conf_manufacturing.PT | core: these rows quarantined as missing_unit | % | 13 | 312 | 2000-01 .. 2025-12 |
 | ine.hicp_yoy.PT | core: these rows quarantined as missing_unit | % | 13 | 312 | 2000-01 .. 2025-12 |
 | ine.ipi_yoy_cae.PT | core: these rows quarantined as missing_unit | % | 241 | 240 | 2006-01 .. 2025-12 |
-| ine.wages_industry_cae.PT | not core: no row has a unit | — | 0 | 252 | 2005-01 .. 2025-12 |
-| worldbank.electricity.PT | not core: no row has a unit | — | 0 | 14 | 2010 .. 2023 |
-| worldbank.energy_use.PT | not core: no row has a unit | — | 0 | 14 | 2010 .. 2023 |
-| worldbank.exports.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
-| worldbank.exports_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
-| worldbank.fdi_inflows_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
-| worldbank.female_labor_participation.EL | not core: no row has a unit | — | 0 | 26 | 2000 .. 2025 |
-| worldbank.gdp.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
+| ine.wages_industry_cae.PT | not core: no row has a unit | - | 0 | 252 | 2005-01 .. 2025-12 |
+| worldbank.electricity.PT | not core: no row has a unit | - | 0 | 14 | 2010 .. 2023 |
+| worldbank.energy_use.PT | not core: no row has a unit | - | 0 | 14 | 2010 .. 2023 |
+| worldbank.exports.PT | not core: no row has a unit | - | 0 | 15 | 2010 .. 2024 |
+| worldbank.exports_pct_gdp.EL | not core: no row has a unit | - | 0 | 25 | 2000 .. 2024 |
+| worldbank.fdi_inflows_pct_gdp.EL | not core: no row has a unit | - | 0 | 25 | 2000 .. 2024 |
+| worldbank.female_labor_participation.EL | not core: no row has a unit | - | 0 | 26 | 2000 .. 2025 |
+| worldbank.gdp.PT | not core: no row has a unit | - | 0 | 15 | 2010 .. 2024 |
 | worldbank.gdp_growth.PT | core: these rows quarantined as missing_unit | % | 49 | 15 | 2010 .. 2024 |
 | worldbank.gdp_per_capita.PT | core: these rows quarantined as missing_unit | USD | 50 | 15 | 2010 .. 2024 |
 | worldbank.gdp_per_capita_ppp.PT | core: these rows quarantined as missing_unit | USD (2017 PPC) | 20 | 15 | 2010 .. 2024 |
-| worldbank.gini.EL | not core: no row has a unit | — | 0 | 23 | 2000 .. 2023 |
-| worldbank.gini.GR | not core: no row has a unit | — | 0 | 23 | 2000 .. 2023 |
-| worldbank.imports.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
-| worldbank.imports_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
-| worldbank.inflation.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
-| worldbank.labor_force.PT | not core: no row has a unit | — | 0 | 16 | 2010 .. 2025 |
+| worldbank.gini.EL | not core: no row has a unit | - | 0 | 23 | 2000 .. 2023 |
+| worldbank.gini.GR | not core: no row has a unit | - | 0 | 23 | 2000 .. 2023 |
+| worldbank.imports.PT | not core: no row has a unit | - | 0 | 15 | 2010 .. 2024 |
+| worldbank.imports_pct_gdp.EL | not core: no row has a unit | - | 0 | 25 | 2000 .. 2024 |
+| worldbank.inflation.PT | not core: no row has a unit | - | 0 | 15 | 2010 .. 2024 |
+| worldbank.labor_force.PT | not core: no row has a unit | - | 0 | 16 | 2010 .. 2025 |
 | worldbank.population.PT | core: these rows quarantined as missing_unit | hab. | 50 | 15 | 2010 .. 2024 |
-| worldbank.rnd_pct_gdp.EL | not core: no row has a unit | — | 0 | 21 | 2001 .. 2022 |
-| worldbank.trade_balance.PT | not core: no row has a unit | — | 0 | 15 | 2010 .. 2024 |
-| worldbank.trade_balance_pct_gdp.EL | not core: no row has a unit | — | 0 | 25 | 2000 .. 2024 |
-| worldbank.unemployment.PT | not core: no row has a unit | — | 0 | 16 | 2010 .. 2025 |
+| worldbank.rnd_pct_gdp.EL | not core: no row has a unit | - | 0 | 21 | 2001 .. 2022 |
+| worldbank.trade_balance.PT | not core: no row has a unit | - | 0 | 15 | 2010 .. 2024 |
+| worldbank.trade_balance_pct_gdp.EL | not core: no row has a unit | - | 0 | 25 | 2000 .. 2024 |
+| worldbank.unemployment.PT | not core: no row has a unit | - | 0 | 16 | 2010 .. 2025 |

@@ -29,73 +29,73 @@ ATTRIBUTION_SUFFIX = "Calculado pelo Prumo"
 
 TITLES = {
     "derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct": (
-        'Índice de produção industrial, total — variação homóloga (%)'
+        'Índice de produção industrial, total - variação homóloga (%)'
     ),
     "derived.ipi_seasonal_cae_TOT.PT.period_change_pct": (
-        'Índice de produção industrial, total — variação face ao período anterior (%)'
+        'Índice de produção industrial, total - variação face ao período anterior (%)'
     ),
     "derived.ipi_seasonal_cae_B.PT.yoy_change_pct": (
-        'Índice de produção industrial, indústrias extrativas — variação homóloga (%)'
+        'Índice de produção industrial, indústrias extrativas - variação homóloga (%)'
     ),
     "derived.ipi_seasonal_cae_C.PT.yoy_change_pct": (
-        'Índice de produção industrial, indústrias transformadoras — variação homóloga (%)'
+        'Índice de produção industrial, indústrias transformadoras - variação homóloga (%)'
     ),
     "derived.ipi_seasonal_cae_D.PT.yoy_change_pct": (
-        'Índice de produção industrial, eletricidade, gás e vapor — variação homóloga (%)'
+        'Índice de produção industrial, eletricidade, gás e vapor - variação homóloga (%)'
     ),
     "derived.ipi_seasonal_cae_E.PT.yoy_change_pct": (
-        'Índice de produção industrial, água, saneamento e resíduos — variação homóloga (%)'
+        'Índice de produção industrial, água, saneamento e resíduos - variação homóloga (%)'
     ),
     "derived.exports_monthly.PT.yoy_change_pct": (
-        'Exportações de bens — variação homóloga (%)'
+        'Exportações de bens - variação homóloga (%)'
     ),
     "derived.imports_monthly.PT.yoy_change_pct": (
-        'Importações de bens — variação homóloga (%)'
+        'Importações de bens - variação homóloga (%)'
     ),
     "derived.credit_housing.PT.yoy_change_pct": (
-        'Crédito à habitação — variação homóloga (%)'
+        'Crédito à habitação - variação homóloga (%)'
     ),
     "derived.credit_consumer.PT.yoy_change_pct": (
-        'Crédito ao consumo — variação homóloga (%)'
+        'Crédito ao consumo - variação homóloga (%)'
     ),
     "derived.deposits_households.PT.yoy_change_pct": (
-        'Depósitos das famílias — variação homóloga (%)'
+        'Depósitos das famílias - variação homóloga (%)'
     ),
     "derived.metals.PT.yoy_change_pct": (
-        'Produção industrial, metalurgia e produtos metálicos — variação homóloga (%)'
+        'Produção industrial, metalurgia e produtos metálicos - variação homóloga (%)'
     ),
     "derived.chemicals_pharma.PT.yoy_change_pct": (
-        'Produção industrial, química e farmacêutica — variação homóloga (%)'
+        'Produção industrial, química e farmacêutica - variação homóloga (%)'
     ),
     "derived.population.PT.yoy_change_pct": (
-        'População residente — variação homóloga (%)'
+        'População residente - variação homóloga (%)'
     ),
     "derived.live_births.PT.yoy_change_pct": (
-        'Nados-vivos — variação homóloga (%)'
+        'Nados-vivos - variação homóloga (%)'
     ),
     "derived.deaths.PT.yoy_change_pct": (
-        'Óbitos — variação homóloga (%)'
+        'Óbitos - variação homóloga (%)'
     ),
     "derived.gdp_per_capita_eur.PT.yoy_change_pct": (
-        'PIB per capita — variação homóloga (%)'
+        'PIB per capita - variação homóloga (%)'
     ),
     "derived.unemployment_monthly.PT.period_change": (
-        'Taxa de desemprego — variação face ao período anterior (p.p.)'
+        'Taxa de desemprego - variação face ao período anterior (p.p.)'
     ),
     "derived.unemployment_monthly.PT.yoy_change": (
-        'Taxa de desemprego — variação homóloga (p.p.)'
+        'Taxa de desemprego - variação homóloga (p.p.)'
     ),
     "derived.pt_10y.PT.period_change": (
-        'Taxa de juro das obrigações do Tesouro a 10 anos — variação face ao período anterior (p.p.)'
+        'Taxa de juro das obrigações do Tesouro a 10 anos - variação face ao período anterior (p.p.)'
     ),
     "derived.pt_10y.PT.yoy_change": (
-        'Taxa de juro das obrigações do Tesouro a 10 anos — variação homóloga (p.p.)'
+        'Taxa de juro das obrigações do Tesouro a 10 anos - variação homóloga (p.p.)'
     ),
     "derived.cci.PT.period_change": (
-        'Indicador de confiança dos consumidores — variação face ao período anterior (saldo)'
+        'Indicador de confiança dos consumidores - variação face ao período anterior (saldo)'
     ),
     "derived.unit_labour_cost_hour.PT.rebase_100": (
-        'Custo unitário do trabalho por hora — índice rebaseado (2015 = 100)'
+        'Custo unitário do trabalho por hora - índice rebaseado (2015 = 100)'
     ),
 }
 
@@ -280,15 +280,15 @@ SEASONAL = {
 }
 
 SOURCE_TITLES = {
-    "ine": "INE — Instituto Nacional de Estatística",
+    "ine": "INE - Instituto Nacional de Estatística",
     "bportugal": "Banco de Portugal",
     "eurostat": "Eurostat",
     "worldbank": "Banco Mundial",
-    "eredes": "E-REDES — Distribuição de Eletricidade",
-    "ren": "REN — Redes Energéticas Nacionais",
-    "fred": "FRED — Federal Reserve Bank of St. Louis",
+    "eredes": "E-REDES - Distribuição de Eletricidade",
+    "ren": "REN - Redes Energéticas Nacionais",
+    "fred": "FRED - Federal Reserve Bank of St. Louis",
     "oecd": "OCDE",
-    "dgeg": "DGEG — Direção-Geral de Energia e Geologia",
+    "dgeg": "DGEG - Direção-Geral de Energia e Geologia",
 }
 
 # What a withheld institution would contribute and why no value is shown. The stored licence

@@ -5,13 +5,13 @@
         &limit=100000[&offset=<N>]&api_key=<KEY>
 
 (units=lin / output_type=1 / order_by=observation_date / sort_order=asc are the FRED defaults and
-are ASSERTED in the payload — no aggregation or transformation is ever requested.)
+are ASSERTED in the payload - no aggregation or transformation is ever requested.)
 
 Recorded evidence in tests/ingest/fixtures/fred/ (2026-11-12, sha256-pinned by MANIFEST.json;
 byte copies of the Task-14 preflight originals): 12 active IMF Primary Commodity Prices globals,
 monthly, NSA, decimal '.', geography WORLD (registry bindings and the 8 inactivated series are
 documented in registry/unmapped-fred.md). The fredgraph.csv export channel is REJECTED as the
-independent verifier (binary-float tails on 10/12 series, e.g. 70.51 vs 70.51000000000001 —
+independent verifier (binary-float tails on 10/12 series, e.g. 70.51 vs 70.51000000000001 -
 docs/superpowers/handoff/evidence/task-14-fred/csv-decimal-mismatches.json); Part B verifies
 against the server-rendered https://fred.stlouisfed.org/data/<CODE> data table instead.
 
@@ -22,19 +22,19 @@ request. The YIELDED RawResponse is the archived identity that lands in the raw 
 and events, so it is deliberately key-free: `api_key` is stripped from the final URL and
 OMITTED from the archived params (documented in the fixture MANIFEST). A response whose body
 contains the credential is refused BEFORE yield (raw bytes never archived, never mutated), and
-http.get exceptions — which typically embed the full request URL including the key — are
+http.get exceptions - which typically embed the full request URL including the key - are
 re-raised as FredRequestError carrying only the exception type, the endpoint family and the
 series id.
 
 Metadata (GET /fred/series) is fetched and archived per series: the runtime unit comes from the
 metadata's actual `units` label and is asserted against the registry unit (exact publisher
 labels, e.g. 'U.S. Dollars per Metric Ton'); frequency must be Monthly/M and seasonal adjustment
-NSA. `last_updated` stays metadata (shape-checked only) — it is NOT a per-observation release
+NSA. `last_updated` stays metadata (shape-checked only) - it is NOT a per-observation release
 date and is never copied onto rows. Observation values are JSON STRINGS here (unlike the
 WorldBank/REN JSON-number payloads): the token is preserved verbatim as a plain str, FRED's '.'
 missing marker becomes value_raw=None (quarantined non_numeric downstream; the 144 pre-1992
 cells are kept, never truncated), and a JSON-number value would be an unknown primitive and
-fails closed. FRED exposes NO per-observation status surface — flag_raw='normal' by explicit
+fails closed. FRED exposes NO per-observation status surface - flag_raw='normal' by explicit
 declaration of the reviewed shape; any new per-observation field raises.
 
 Fail-closed on: markup/invalid JSON, duplicate JSON keys, the API error shape, unknown

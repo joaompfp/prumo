@@ -14,7 +14,7 @@ Endpoints:
 
 Known limitations:
 - PMD (average prices) endpoint returns empty ("Nenhum preço encontrado")
-- PesquisarPostos fuel type filter (IdTipoComb) is BROKEN — always returns GPL Auto
+- PesquisarPostos fuel type filter (IdTipoComb) is BROKEN - always returns GPL Auto
   regardless of the fuel ID passed. This is a backend bug in the DGEG API.
 - Workaround: use the station search without fuel type filtering and aggregate
   by Combustivel field client-side, or use the weekly Excel data from DGEG
@@ -199,4 +199,4 @@ if __name__ == "__main__":
     for s in data["data"][:5]:
         print(f"  {s['Nome'][:40]:42s} {s['Preco']:>10s} ({s['Combustivel']}) - {s['Marca']}")
 
-    print(f"\nNOTE: Fuel type filter is broken — API always returns GPL Auto.")
+    print(f"\nNOTE: Fuel type filter is broken - API always returns GPL Auto.")

@@ -1,4 +1,4 @@
-"""Live end-to-end check against BPstat (Banco de Portugal) — network. Deselected by default
+"""Live end-to-end check against BPstat (Banco de Portugal) - network. Deselected by default
 (pytest.ini adds -m "not live"); run with:
 
     .venv-ci/bin/python -m pytest tests/ingest/test_live_bportugal.py -m live -s

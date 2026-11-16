@@ -1,4 +1,4 @@
-# Task 9 report — Eurostat adapter + independent verifier
+# Task 9 report - Eurostat adapter + independent verifier
 
 Status: DONE. Commits on `pipeline-rebuild`: 38848e6 (flags), f467b5d (registry mapping),
 bb778dc (adapter + fixtures), 3ad6e49 (verifier + guard fix), b72315c (live test), plus this report.
@@ -11,22 +11,22 @@ Tests: `pytest tests/ingest -q` → 481 passed, 1 deselected (the live test).
   - `PRECEDENCE = ('break','provisional','estimated','revised','normal')`
   - `EUROSTAT_VALUE_FLAGS: dict[str,str]`, `EUROSTAT_NO_VALUE_MARKERS = {':','c','z'}`
   - `map_eurostat_flag(code: str | None, *, value_present: bool = True) -> str | None`
-    — returns a FLAGS member when a value is present ('normal' for None/blank), None when
+    - returns a FLAGS member when a value is present ('normal' for None/blank), None when
     `value_present=False` (after checking every code is known); unknown code → ValueError;
     a no-value marker on a value → ValueError.
 - `ingest/sources/eurostat.py`
   - `BASE_URL = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/"`
   - `parse_native_code(code: str | None) -> tuple[str, tuple[tuple[str, str], ...]]`
   - `class EurostatSource: name = 'eurostat'; expected_format = 'json'`
-    - `fetch(specs, http) -> Iterator[RawResponse]` — one GET per (dataset, non-geo key) group,
+    - `fetch(specs, http) -> Iterator[RawResponse]` - one GET per (dataset, non-geo key) group,
       params = pinned dims + `geo=[...]` (repeated), no time filter (full history).
-    - `parse(specs, responses) -> dict[str, list[RawRow]]` — `response_index` = group index.
+    - `parse(specs, responses) -> dict[str, list[RawRow]]` - `response_index` = group index.
 - `ingest/verifiers/eurostat.py`
   - `SDMX_URL = "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/"`
   - `class EurostatVerifier: source_name = 'eurostat'; check(items: list[BlindItem], http) -> list[ItemResult]`
   - Imports only `csv`, `io`, `ingest.http.{Http, HttpResult}`, `ingest.verifiers.{BlindItem, ItemResult}`.
   - Registration is the caller's job (`register_verifier` is not in the verifier allowlist) → Task 17 CLI must call `register_verifier(EurostatVerifier())`.
-- `ingest/verifiers/independence.py`: one-line fix — the verifier module itself is no longer
+- `ingest/verifiers/independence.py`: one-line fix - the verifier module itself is no longer
   reported as a "non-shared ingest module" (every real verifier lives in `ingest/verifiers/`, so
   the guard failed the first real adapter). RED test `test_verifier_inside_the_ingest_package_passes`
   + a control test that a second ingest module is still rejected.
@@ -42,7 +42,7 @@ Tests: `pytest tests/ingest -q` → 481 passed, 1 deselected (the live test).
 
 ## native_code format (registry contract for Eurostat)
 
-`<dataset>:<dim>=<code>,<dim>=<code>,...` — every dimension except `time` pinned to exactly one
+`<dataset>:<dim>=<code>,<dim>=<code>,...` - every dimension except `time` pinned to exactly one
 code, in the dataset's own order (JSON-stat `id` order = SDMX key order), `geo` included, e.g.
 `une_rt_m:freq=M,s_adj=SA,age=TOTAL,unit=PC_ACT,sex=T,geo=PT`. One native_code = one Eurostat
 series; the source turns it into query params, the verifier into the SDMX key `M.SA.TOTAL.PC_ACT.T.PT`.
@@ -61,10 +61,10 @@ Legacy geographies `EU27`/`GR` map to Eurostat `EU27_2020`/`EL` (geography field
   `gdp_quarterly.EU27_2020` (CLV10_MEUR chain-linked volumes, annual; registry 'EUR million').
 - 64 not established: `current_account_pct_gdp` ×27 (no collector code for the quarterly rows;
   best candidate agrees 47%), `employment_rate` ×28 (legacy collector left `indic_em` unpinned: the
-  data is the ACTIVITY rate, 433/458 exact — owner decision whether to map to EMP_LFS),
+  data is the ACTIVITY rate, 433/458 exact - owner decision whether to map to EMP_LFS),
   per-series failures: cci/consumer_confidence HR, PL, MT (×6; HR/PL legacy values unrelated to
   today's series), `STS_INPR_M_C.SK` (57%), `electricity_price_household.EL/.EU27_2020` (their
-  legacy rows are band TOT_KWH, not DC — see the electricity note in unmapped-eurostat.md).
+  legacy rows are band TOT_KWH, not DC - see the electricity note in unmapped-eurostat.md).
 Unit pairings of the active set (label ↔ code): I15/I21/index_2021/'Index (2015=100)'/index_2015 ↔
 I15/I21; balance, 'balance %' ↔ BAL; EUR/kWh ↔ KWH + currency=EUR; 'EUR per capita' ↔ CP_EUR_HAB;
 '% GDP' ↔ PC_GDP; '%' ↔ PC_ACT; M_EUR_2010 ↔ CLV10_MEUR; I10_2010/index_2010=100 ↔ I10;
@@ -75,7 +75,7 @@ Note: native_codes are hand-curated now; re-running `ingest/propose_registry.py`
 
 | code | meaning | flag |
 |---|---|---|
-| (none) | — | normal |
+| (none) | - | normal |
 | b | break in time series | break |
 | d | definition differs | break |
 | p | provisional | provisional |
@@ -87,7 +87,7 @@ Note: native_codes are hand-curated now; re-running `ingest/propose_registry.py`
 | i | value imputed by Eurostat (label from the payload's `extension.status.label`) | estimated |
 | r | revised (pre-2023) | revised |
 | `:` c z | not available / confidential / not applicable | only on missing values → row value None (quarantined non_numeric); on a value → ValueError |
-| anything else | — | ValueError (dataset fails validation) |
+| anything else | - | ValueError (dataset fails validation) |
 
 Combined codes → strongest by PRECEDENCE (break > provisional > estimated > revised > normal).
 
@@ -133,12 +133,12 @@ Verified on the first attempt (no refetch), sample 50, 0 mismatches.
    "low reliability"/"forecast" kept separately later.
 3. `unit_raw` is None and `observed_unit` is None for Eurostat: the unit is a code pinned in the key;
    the label↔code pairing was checked once at mapping time. Reviewers asked for units "read from
-   evidence" (Ruling O note) — here the evidence only proves the cell is in the pinned unit code.
+   evidence" (Ruling O note) - here the evidence only proves the cell is in the pinned unit code.
 4. Requests split per (dataset, non-geo key) rather than one per dataset: a whole dataset query
    hits Eurostat's HTTP 413 "ASYNCHRONOUS_RESPONSE" (observed live).
 5. Cells with a status but no value become value-None rows → quarantined `non_numeric`; this records
    withheld values but adds quarantine noise (e.g. confidential cells).
-6. Guard fix in `independence.py` (verifier module exempt from the non-shared check) — small change
+6. Guard fix in `independence.py` (verifier module exempt from the non-shared check) - small change
    to Task 7 code, test-covered.
 7. Verifier fetches full history per group (no period bounds) so evidence is one stable document;
    larger evidence files for long monthly series (~25 KB for 4 geos).
@@ -149,14 +149,14 @@ Verified on the first attempt (no refetch), sample 50, 0 mismatches.
 
 Commits: b06aee6 (C1), c5f5e39 (I1+I2), 9f277bf (I3), 3e201ca (M1/M3/M5/M6), plus this report.
 
-### C1 — confidentiality status (Ruling X)
+### C1 - confidentiality status (Ruling X)
 Real payloads carry `'|C'` (confidential) and `'|N'` (not for publication). `ingest/flags.py` now has
 `EUROSTAT_CONFIDENTIALITY = {'C': 'confidential', 'N': 'not for publication'}` and
 `split_eurostat_status(status) -> (flags, confidentiality | None)`: the status is split on `|`; a reviewed
 confidentiality code makes the cell value None (quarantined `non_numeric`, one per cell) and its flag part is
 ignored (still checked to be known); an unknown confidentiality code raises. The verifier mirrors it
 (duplicated on purpose): the TSV renders the cell as `': @C'` → `observed_text=None`. Such a cell is never
-sampled (sampling draws only from written observations) — `test_confidential_cells_are_never_sampled` runs
+sampled (sampling draws only from written observations) - `test_confidential_cells_are_never_sampled` runs
 the real pipeline on the fixture (62 quarantined, every written observation verified).
 New real fixtures: `confidential_c_sts_inpr_m` (STS_INPR_M_C.IE, 60 `|C` cells) and
 `confidential_n_sts_inpr_m` (metals.PT C24_C25 I21, 2 `|N` cells).
@@ -168,7 +168,7 @@ Probe (`probe_full.py` logic without the monkeypatch, live, all 598 then-active 
 - after round 1 (329 active, 20 requests, live): `empty series: 0`, `non_numeric 62`, `flags: normal 42142,
   estimated 1778, provisional 1461, break 110`, latest year 2025: 203 series, 2026: 126; none before 2025.
 
-### I1 — discontinued (Ruling W)
+### I1 - discontinued (Ruling W)
 Rule (mechanical, from the live fetch): an active series whose last period with a value is before 2024 is
 discontinued. All 195 are base-2015 (I15) indices of sts_inpr_m (168) / sts_copr_m (27), superseded by
 Eurostat's 2021=100 rebase. For each, the same key with `unit=I21` was fetched live: 180 have I21 values to
@@ -178,7 +178,7 @@ rebased (last value year)' in registry/unmapped-eurostat.md. Nothing else deacti
 (The reviewer's sibling condition "an active sibling with a newer base" holds for only 16 of the 195 because
 the registry has few I21 series; I used Eurostat's own I21 key as the sibling and report the registry one.)
 
-### I2 — duplicates: exactly one active series per native_code
+### I2 - duplicates: exactly one active series per native_code
 Re-derived from the legacy code:
 - `labour_productivity_hour` ×28 → inactive, not established: scripts/backfill_full.py defines it as NOMINAL
   (NLPR, EUR_HW, 'EUR/hour'), contradicting the registry unit I10_2010 and its own values (= real RLPR_HW I10).
@@ -197,8 +197,8 @@ Re-derived from the legacy code:
 | ipi | STS_INPR_M_BD, total_industry | 1 | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=B-D,s_adj=SCA,unit=I21` |
 | labour_productivity_hour_real | labour_productivity_per_hour | 6 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW` |
 | manufacturing | STS_INPR_M_C | 1 | `sts_inpr_m:freq=M,indic_bt=PRD,nace_r2=C,s_adj=SCA,unit=I21` |
-| — | labour_productivity_hour | 28 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW` |
-| — | unit_labour_cost | 28 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW` |
+| - | labour_productivity_hour | 28 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=RLPR_HW` |
+| - | unit_labour_cost | 28 | `nama_10_lp_ulc:freq=A,unit=I10,na_item=NULC_HW` |
 
 `test_active_native_codes_are_unique` (RED on the pre-fix registry: 74 duplicate codes). No active
 cross_check is the same Eurostat series as its primary (the remaining Eurostat cross_checks are cross-checks
@@ -210,12 +210,12 @@ active 329; inactive 368 = discontinued 195 + duplicate 18 + unit conflict 35 + 
 Discontinued and duplicate series keep their native_code/url in the registry (for the record);
 the others have none.
 
-### I3 — unit label ↔ code
+### I3 - unit label ↔ code
 `tests/ingest/test_registry_eurostat_units.py`: reviewed table of 10 (unit code[, currency]) → allowed
 labels; asserts every active series' code is paired with an allowed label, every label in use is in the
 table and no code in the table is stale. A mislabel in a registry copy is caught
 (`gdp_per_capita_eur.AT CP_EUR_HAB '% GDP'`). Finding for the owner (registry not edited): one code, several
-labels — I21: 'I21' / 'index_2021'; I15: 'I15' / 'Index (2015=100)' / 'index_2015'; BAL: 'balance' /
+labels - I21: 'I21' / 'index_2021'; I15: 'I15' / 'Index (2015=100)' / 'index_2015'; BAL: 'balance' /
 'balance %'; I10: 'I10_2010' / 'index_2010=100'.
 
 ### Hardening
@@ -236,7 +236,7 @@ verification of run 1: sample 50, passed=True, mismatches=0
   eurostat.gov_debt_pct_gdp.EU27_2020: 26 observations 2000..2025
   eurostat.manufacturing.PT: 321 observations 2000-01..2026-09
 ```
-(live series switched from STS_INPR_M_C.PT, now a duplicate of manufacturing.PT — same Eurostat key.)
+(live series switched from STS_INPR_M_C.PT, now a duplicate of manufacturing.PT - same Eurostat key.)
 
 ### Test run
 ```

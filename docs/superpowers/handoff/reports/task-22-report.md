@@ -147,7 +147,7 @@ verifier-bound and untouched.
 - None of these sources' adapters or verifiers read the field. Replay uses stored specs.
 
 ### C-M7 / C-M8 / C-M9: reported, not changed
-- **M7.** The `# PROVISIONAL — owner review pending` header stays. HANDOFF's owner decisions say
+- **M7.** The `# PROVISIONAL - owner review pending` header stays. HANDOFF's owner decisions say
   "Registry is provisional", and no sign-off is recorded. `core.proposed.yaml` is byte-identical
   but still referenced: `test_registry.py:26` and `test_registry_dgeg_disposition.py:109` pin
   equality, and `propose_registry.py` writes it. It is kept, mirrored, and not deleted.

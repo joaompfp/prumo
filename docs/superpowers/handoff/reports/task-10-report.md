@@ -1,19 +1,19 @@
-# Task 10 report — INE adapter + independent verifier (bddXplorer table channel)
+# Task 10 report - INE adapter + independent verifier (bddXplorer table channel)
 
-Status: fix round 1 complete — adapter, verifier, registry, fixtures, legacy-scale quarantine and
+Status: fix round 1 complete - adapter, verifier, registry, fixtures, legacy-scale quarantine and
 tests all done; INE runs now verify and serve. The first pass's central claim ("INE has no
 independent channel") was FALSE (the review found the channel); this report replaces it.
 
 Commits on `pipeline-rebuild` (fix round 1, on top of 02205b5..2b8198a):
 - `5c2c78c` M2: full INE conventional-sign mapping from the official legend (`sinais.jsp`,
-  recorded fixture) — `//`→provisional, `*`→revised, `┴`→break, `“`→estimated, `§`→normal
+  recorded fixture) - `//`→provisional, `*`→revised, `┴`→break, `“`→estimated, `§`→normal
   (quality caveat lost by decision), `…`→no-value (confidential); `o`, `∞`, `»`, `i`, `“E`
   reviewed but deliberately unmapped → raise.
 - `456d36d` timeouts: `SourceSpec.timeout_s` (YAML under `sources:`, validated positive finite,
   default None), per-call `timeout=` on `Http.get`/`RequestsHttp` (None = client default; invalid
   values rejected), `INESource.fetch` forwards it and omits the kwarg when unset (older Http
   doubles with a 3-parameter `get` keep working); registry `ine: timeout_s: 300`.
-- `a2ce708` I2: `NoVerifierRegistered(ValueError)` — `run_with_refetch` raises BEFORE any fetch
+- `a2ce708` I2: `NoVerifierRegistered(ValueError)` - `run_with_refetch` raises BEFORE any fetch
   when no verifier is registered (previously `verifier=None` slipped the identity check and
   crashed with AttributeError after a ~10 min fetch); `SourceSpec.verifiable: bool = True`
   machine marker; `SourceNotVerifiable` refuses a `verifiable: false` source even when a verifier
@@ -24,20 +24,20 @@ Commits on `pipeline-rebuild` (fix round 1, on top of 02205b5..2b8198a):
   `EUR` for live data; rows never rescaled, never served).
 - `14f0aee` M1: INE attribution = authoritative Portuguese wording (terms page kept in
   `licence_url`; English variant retained as a YAML comment).
-- `5efd6e3` C1: `ingest/verifiers/ine.py` — the independent verifier (below).
+- `5efd6e3` C1: `ingest/verifiers/ine.py` - the independent verifier (below).
 - `246325c` live smoke rewritten to run verified end-to-end; false "unverifiable" test assertions
   flipped.
 
 Tests: `.venv-ci/bin/python -m pytest tests/ingest -q` → **660 passed, 2 deselected** (the two
 live tests). Ruff (0.17.4, repo `ruff.toml`) clean on every touched file (pre-existing
-F401/I001 in untouched files — `tests/conftest.py`, `test_verifier_eurostat.py`,
-`ingest/verifiers/independence.py` — left alone).
+F401/I001 in untouched files - `tests/conftest.py`, `test_verifier_eurostat.py`,
+`ingest/verifiers/independence.py` - left alone).
 
-## C1 — the independent channel and the verifier
+## C1 - the independent channel and the verifier
 
 `GET https://www.ine.pt/bddXplorer/htdocs/bddXplorer04.jsp?indOcorrCod=<varcd>&contexto=bd&lang=PT`
 with header `Referer: https://www.ine.pt/` returns the full statistical table page in ~0.2 s
-(a plain client without the header gets 302 + empty body — that 302 is what the first pass had
+(a plain client without the header gets 302 + empty body - that 302 is what the first pass had
 misread as "browser-only"). This is a different endpoint family AND a different format (a
 server-rendered HTML table) from the collector's `pindica.jsp` JSON, showing INE's published
 rendering: `,` decimal, space thousands separators, trailing zeros kept (`2,0` where the JSON
@@ -45,11 +45,11 @@ rendering: `,` decimal, space thousands separators, trailing zeros kept (`2,0` w
 the table header.
 
 Selection protocol (derived live 2026-11-11, this fix round): the page form's hidden input
-`xmlDocHidden` is a `Classificacoes` XML document — the indicator's dimensions and their category
+`xmlDocHidden` is a `Classificacoes` XML document - the indicator's dimensions and their category
 trees with `selected` flags. To read a cell, set `selected='true'` only on the wanted period
 category (matched by its PT label AND the `order` end-date, both must agree) and on the pinned
-category of every other dimension — Dim2 = the `type='geo'` class, Dim3.. = the `type='dim'`
-classes in ascending `order` — and send the whole form back as the GET query (12-185 kB URLs work;
+category of every other dimension - Dim2 = the `type='geo'` class, Dim3.. = the `type='dim'`
+classes in ascending `order` - and send the whole form back as the GET query (12-185 kB URLs work;
 Tomcat accepts them). The response is the table of exactly that cut.
 
 - **Deep categories**: the shipped tree lacks CAE *divisions* for 0011889 (only sections B-E ship,
@@ -57,7 +57,7 @@ Tomcat accepts them). The response is the table of exactly that cut.
   as a direct child of the class's root category (`nivel` 2, `order` 999). Validated live against
   the JSON channel on divisions 08/10/35/38 (e.g. 10@2026-06: table `114,57` = JSON `114.57`;
   08@2026-06: `124,88` = JSON `124.88` fetched during recording). Injecting under a wrong deeper
-  parent renders `x` dummy rows (found live; avoided) — the cut assertions make this fail-closed.
+  parent renders `x` dummy rows (found live; avoided) - the cut assertions make this fail-closed.
 - **Assertions on the response** (anything odd raises → run fails, never a false pass): echoed
   selection equals the pinned cut per class; exactly one period offered/visible and it normalizes
   to the item's period via `spec.frequency`; exactly one matching table cell
@@ -67,17 +67,17 @@ Tomcat accepts them). The response is the table of exactly that cut.
   `-`→`index_<base>=100` with the base year from the table title's `Base - 2021`); sign tokens
   are the reviewed set only (`&`,`//`,`*`,`┴`,`“`,`§`; a cell that is only `…`,`x` or `-` is a
   no-value cell → `observed_text=None`, i.e. "not found", a mismatch if sampled); thousands
-  spaces kept verbatim in `observed_text` (`,` decimal — `ingest.verify` compares exact
+  spaces kept verbatim in `observed_text` (`,` decimal - `ingest.verify` compares exact
   Decimals, Ruling AB, so `2` ≡ `2,0`).
 - **evidence**: `ItemResult.evidence` = the raw selection-response HTML (kept in the raw store
   under `verify-ine/`), `evidence_url` = the full selection URL. The table's own period label (not
   the request) fills `ItemResult.period`.
 - html.parser is NOT subclassed (the independence allowlist bans `super().__init__`/dunder
-  attrs): the table substring is sanitized (footnote anchors and `Nota(s)` rows removed — the
+  attrs): the table substring is sanitized (footnote anchors and `Nota(s)` rows removed - the
   only constructs that break well-formedness there) and parsed with `xml.etree`; hidden inputs
   by template regex. Empirically, recorded pages contain only XML-native `&amp;` inside the
   table.
-- Pacing: delegated to the injected `Http` — `RequestsHttp` throttles every request (≤1 req/s
+- Pacing: delegated to the injected `Http` - `RequestsHttp` throttles every request (≤1 req/s
   default); the verifier itself never sleeps so fixture tests stay fast. Requests: 1 indicator
   page per varcd + 1 selection per sampled item.
 
@@ -88,12 +88,12 @@ Tomcat accepts them). The response is the table of exactly that cut.
 plus `sinais_PT.html` (official sign legend), `error_page_ora.html` (real INE 'Ocorreu um erro'
 page for a malformed selection) and `home_no_referer.html` (the 302 destination without Referer).
 
-Every recorded case was cross-checked: **20/20 agree** —
+Every recorded case was cross-checked: **20/20 agree** -
 - 18 cases vs the collector's own recorded JSON fixtures (exact Decimal value + sign-mapped flag),
   including trailing-zero pairs (`140.3`/`140,30`, `2`/`2,0`), thousands-spaced EUR
   (`7 609 586 380`), a negative balance (`-31,0`), and a provisional cell (`5,6` + `&`);
 - 2 vs live JSON fetches taken at recording time (CPI Continente 2025-10 = `2,32`; IPI division 08
-  2026-06 = `124,88` — the deep-injection path);
+  2026-06 = `124,88` - the deep-injection path);
 - 4 additionally vs Eurostat SDMX 2.1 TSV (a third channel, this run): births 2024 = 84 642
   (Eurostat 84642), deaths 2024 = 118 396 (118 396), population 2024 = 11 387 222 (11 387 222),
   HICP 2025-10 = `2,0` (2.0).
@@ -110,7 +110,7 @@ stored fields returns True for sampled items.
 ## What the fix round changed vs the first pass
 
 - INE series are collected, verified and SERVED (the 41 active series; 1 quarantined `x` cell in
-  the smoke scope). `registry/unverifiable.md` corrected — it now lists no source and explains
+  the smoke scope). `registry/unverifiable.md` corrected - it now lists no source and explains
   the mechanism (`run_with_refetch` raises `NoVerifierRegistered` before fetching; a
   `verifiable: false` marker refuses outright). Owner decision #1 is moot.
 - Legacy trade rows 2005-01..2024-12 are quarantined (I3), not imported as EUR: verified re-run of
@@ -127,7 +127,7 @@ stored fields returns True for sampled items.
   additionally compares the unit symbol and the sign; `ind_string` stays in the raw payload and
   as the adapter's consistency check.
 - 169/2,472 valued cells: `valor` drops trailing zeros vs the published string (`4`/`4,0`,
-  `140.3`/`140,30`) — the numeric comparison absorbs it. Owner decision #4 unchanged.
+  `140.3`/`140,30`) - the numeric comparison absorbs it. Owner decision #4 unchanged.
 - IPI `_35`≡`_D`, `_38`≡`_E` pairs untouched (owner flag). Registry units/ids/roles untouched.
 
 ## Decisions / notes for adapters 11-16 and T17-18
@@ -137,15 +137,15 @@ stored fields returns True for sampled items.
    (`register_verifier(EurostatVerifier())`, `register_verifier(INEVerifier())`).
 2. Sources must pass their registry `timeout_s` per call (pattern in `INESource.fetch`); the
    scheduler (T17/18) should construct/configure clients from it.
-3. bddXplorer tables paginate nothing we use but every structural deviation raises — the verifier
+3. bddXplorer tables paginate nothing we use but every structural deviation raises - the verifier
    is deliberately strict; when INE changes a template the run fails loudly for review.
 4. `sinais.jsp` descriptions are used verbatim in `ingest/flags.py`; the JSON channel's
-   `sinal_conv_desc` for the newly mapped signs has never been observed live — a wording mismatch
+   `sinal_conv_desc` for the newly mapped signs has never been observed live - a wording mismatch
    raises at parse, forcing review (observed vocabulary so far: `&`, `x`, `-`).
 5. `§` maps to `normal` (quality caveat lost by design); `“E` (Eurostat estimate), `»` (foreseen),
    `o`, `∞`, `i` raise everywhere until first observation triggers a mapping review.
 
-## TDD evidence — fix round 1
+## TDD evidence - fix round 1
 
 Each commit was written tests-first: failing tests were added and run before the implementation
 (M2 sign tests RED 7 failed → GREEN; timeouts RED 11 failed → GREEN; I2 RED (import error on

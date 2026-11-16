@@ -72,7 +72,7 @@ Status: **DONE_WITH_CONCERNS**. Commits: `4d0b4b6` (legacy_import + tests), `3be
   - `LICENCES`/`LICENCE_TODO` hold the licence data.
   - `indicator_key` is `<concept>.<geography>.<frequency>`. Frequency is inferred per row with `normalize_period`, trying A, S, Q, M, D in that order.
   - Gaps are computed with `Decimal` on the latest legacy vintage. No float arithmetic is done on values.
-- Generated files in `registry/`. Both YAML files start with `# PROVISIONAL — owner review pending`.
+- Generated files in `registry/`. Both YAML files start with `# PROVISIONAL - owner review pending`.
 
 ## Registry decisions
 
@@ -89,7 +89,7 @@ Status: **DONE_WITH_CONCERNS**. Commits: `4d0b4b6` (legacy_import + tests), `3be
 | FRED `commodity_X` vs `X` kept as cross_check pairs (identical values) | legacy duplicates; the owner can drop them |
 | Eurostat geographies kept as they appear (`EL` and `GR`, `EU27` and `EU27_2020`); WB keeps all 54 countries as "world basics" | Ruling T |
 | ERSE entirely out: annual and monthly tariff periods are mixed in every series | no single frequency |
-| Licences confirmed: Eurostat CC BY 4.0 (https://ec.europa.eu/eurostat/web/main/help/copyright-notice; the URL in the ruling returns 404), World Bank CC BY 4.0 (datacatalog page checked). All others: `UNVERIFIED — builder must confirm before serving`, `redistribution_ok: false`, listed in `licences-todo.md` (INE page under maintenance; OECD page returned 403; BdP, REN, DGEG, FRED/IMF not read) | no invented licences |
+| Licences confirmed: Eurostat CC BY 4.0 (https://ec.europa.eu/eurostat/web/main/help/copyright-notice; the URL in the ruling returns 404), World Bank CC BY 4.0 (datacatalog page checked). All others: `UNVERIFIED - builder must confirm before serving`, `redistribution_ok: false`, listed in `licences-todo.md` (INE page under maintenance; OECD page returned 403; BdP, REN, DGEG, FRED/IMF not read) | no invented licences |
 
 ## RED / GREEN evidence
 

@@ -40,7 +40,7 @@
       "params": {"culture": "pt-PT", "year": "2026", "month": "11"},
       "status": 404,
       "sha256": "81213bc25294ff4ff65f51a45b2e6b97b20a0bdc314e3321a41222dd27060ead",
-      "note": "{\"message\":\"No data available\"} — an unpublished month is HTTP 404, fail-closed"
+      "note": "{\"message\":\"No data available\"} - an unpublished month is HTTP 404, fail-closed"
     },
     "error_400_invalid_culture": {
       "file": "error_400_invalid_culture.json",
@@ -67,7 +67,7 @@
       "status": 200,
       "sha256": "43e3416346f356545ee949a561d147aed65ecbbeb7e9edac4bce317379dd03bf",
       "period": "2020-06",
-      "note": "header 'jun 20 [GWh]' — a different year/month than the 2026-09 sample"
+      "note": "header 'jun 20 [GWh]' - a different year/month than the 2026-09 sample"
     },
     "market_2026-09": {
       "file": "verify/market_2026-09.csv",
@@ -85,7 +85,7 @@
       "url": "https://datahub.ren.pt/pt/eletricidade/mercado/",
       "status": 200,
       "sha256": "a27cc396ff5bfc06b46feb71892077a3a170d010933900ede4ea6265b3270da2",
-      "note": "market page narrative ('€/MWh' x8) — the EUR/MWh unit evidence; the market CSV export exposes no unit annotation. Byte-identical copy of the controller-reviewed discovery archive portal/mercado.body (fetched 2026-11-11, GET, no auth)"
+      "note": "market page narrative ('€/MWh' x8) - the EUR/MWh unit evidence; the market CSV export exposes no unit annotation. Byte-identical copy of the controller-reviewed discovery archive portal/mercado.body (fetched 2026-11-11, GET, no auth)"
     }
   }
 }

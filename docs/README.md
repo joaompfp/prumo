@@ -7,41 +7,41 @@ Central reference for all Prumo project documentation, organized by topic and us
 ## 🗂️ Quick Navigation
 
 ### Getting Started
-- **[Prumo README](../README.md)** — Project overview, architecture, features
-- **[design-guide.md](design-guide.md)** — Visual standards, KPI anatomy, design principles
-- **[API Endpoints Guide](../routes/api.py)** — Backend API reference
+- **[Prumo README](../README.md)** - Project overview, architecture, features
+- **[design-guide.md](design-guide.md)** - Visual standards, KPI anatomy, design principles
+- **[API Endpoints Guide](../routes/api.py)** - Backend API reference
 
 ### Operations & Deployment
-- **[operations/MIGRATION_RUNBOOK.md](operations/MIGRATION_RUNBOOK.md)** — Safe cutover procedure with go/no-go gates and rollback
-- **[operations/PHASE_1_SUMMARY.md](operations/PHASE_1_SUMMARY.md)** — Initial deployment checkpoints
-- **[operations/PHASE_2_FRONTEND_TESTING.md](operations/PHASE_2_FRONTEND_TESTING.md)** — Validation & testing procedures
-- **[operations/PHASE_3_CI_CD_AUTOMATION.md](operations/PHASE_3_CI_CD_AUTOMATION.md)** — Continuous deployment setup
-- **[operations/PHASE_4_MONITORING.md](operations/PHASE_4_MONITORING.md)** — Health checks & observability
+- **[operations/MIGRATION_RUNBOOK.md](operations/MIGRATION_RUNBOOK.md)** - Safe cutover procedure with go/no-go gates and rollback
+- **[operations/PHASE_1_SUMMARY.md](operations/PHASE_1_SUMMARY.md)** - Initial deployment checkpoints
+- **[operations/PHASE_2_FRONTEND_TESTING.md](operations/PHASE_2_FRONTEND_TESTING.md)** - Validation & testing procedures
+- **[operations/PHASE_3_CI_CD_AUTOMATION.md](operations/PHASE_3_CI_CD_AUTOMATION.md)** - Continuous deployment setup
+- **[operations/PHASE_4_MONITORING.md](operations/PHASE_4_MONITORING.md)** - Health checks & observability
 
 ### Developer Guides
-- **[planning/PLAN-V7.md](planning/PLAN-V7.md)** — Architecture & feature planning (V7 era)
-- **[planning/PRUMO-ROADMAP.md](planning/PRUMO-ROADMAP.md)** — Feature roadmap & future direction
-- **[data/NORMALIZATION.md](data/NORMALIZATION.md)** — Data normalization standards & procedures
+- **[planning/PLAN-V7.md](planning/PLAN-V7.md)** - Architecture & feature planning (V7 era)
+- **[planning/PRUMO-ROADMAP.md](planning/PRUMO-ROADMAP.md)** - Feature roadmap & future direction
+- **[data/NORMALIZATION.md](data/NORMALIZATION.md)** - Data normalization standards & procedures
 
 ### Data & Sources
-- **[data/painel-indicators-audit.md](data/painel-indicators-audit.md)** — Indicator coverage & validation
-- **[data/worldbank-gdp-collector-notes.md](data/worldbank-gdp-collector-notes.md)** — GDP collector specifics
-- **[data/europa-coverage.md](data/europa-coverage.md)** — EU country comparison data
-- **[../SOURCES.md](../SOURCES.md)** — Official source registry (in root)
+- **[data/painel-indicators-audit.md](data/painel-indicators-audit.md)** - Indicator coverage & validation
+- **[data/worldbank-gdp-collector-notes.md](data/worldbank-gdp-collector-notes.md)** - GDP collector specifics
+- **[data/europa-coverage.md](data/europa-coverage.md)** - EU country comparison data
+- **[../SOURCES.md](../SOURCES.md)** - Official source registry (in root)
 
 ### Design & UX
-- **[design/](design/)** — Design inspired by *Storytelling with Data* (Cole Nussbaumer Knaflic, Wiley, 2015), with open-source implementations and project notes
-- **[wp7-design-strings.md](wp7-design-strings.md)** — UI string references & localization
-- **[content/narratives.md](content/narratives.md)** — How AI-generated narratives work
+- **[design/](design/)** - Design inspired by *Storytelling with Data* (Cole Nussbaumer Knaflic, Wiley, 2015), with open-source implementations and project notes
+- **[wp7-design-strings.md](wp7-design-strings.md)** - UI string references & localization
+- **[content/narratives.md](content/narratives.md)** - How AI-generated narratives work
 
 ### Context & Reference
-- **[content/pcp-estatutos.md](content/pcp-estatutos.md)** — PCP party platform reference
-- **[content/pcp-programa.md](content/pcp-programa.md)** — PCP political program (for ideology lenses)
-- **[research/hugo-integration-research.md](research/hugo-integration-research.md)** — Hugo CMS exploration
-- **[research/historical-energy-prices-eu-us-portugal.md](research/historical-energy-prices-eu-us-portugal.md)** — Historical energy prices reference for EU/US/Portugal
+- **[content/pcp-estatutos.md](content/pcp-estatutos.md)** - PCP party platform reference
+- **[content/pcp-programa.md](content/pcp-programa.md)** - PCP political program (for ideology lenses)
+- **[research/hugo-integration-research.md](research/hugo-integration-research.md)** - Hugo CMS exploration
+- **[research/historical-energy-prices-eu-us-portugal.md](research/historical-energy-prices-eu-us-portugal.md)** - Historical energy prices reference for EU/US/Portugal
 
 ### Testing
-- **[testing/](testing/)** — Test fixtures, data, and test documentation
+- **[testing/](testing/)** - Test fixtures, data, and test documentation
 
 ---
 
@@ -150,11 +150,11 @@ Central reference for all Prumo project documentation, organized by topic and us
 ## 🔗 Related Documentation
 
 **Outside this folder:**
-- [**../README.md**](../README.md) — Main project README
-- [**../.github/copilot-instructions.md**](../.github/copilot-instructions.md) — AI agent guidelines
-- [**../SOURCES.md**](../SOURCES.md) — Data source registry
-- [**../CONTRIBUTING.md**](../CONTRIBUTING.md) — Contribution guidelines
-- [**~/docker/md/browser-automation.md**](/docker/md/browser-automation.md) — Playwright testing guide
+- [**../README.md**](../README.md) - Main project README
+- [**../.github/copilot-instructions.md**](../.github/copilot-instructions.md) - AI agent guidelines
+- [**../SOURCES.md**](../SOURCES.md) - Data source registry
+- [**../CONTRIBUTING.md**](../CONTRIBUTING.md) - Contribution guidelines
+- [**~/docker/md/browser-automation.md**](/docker/md/browser-automation.md) - Playwright testing guide
 
 ---
 

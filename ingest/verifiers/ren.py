@@ -4,7 +4,7 @@
         servicebus.ren.pt/datahubapi/electricity/<ElectricityConsumptionSupplyMonthly |
         ElectricityMarketPricesMonthly>?culture=pt-PT&year=...&month=...
     verifier:  the DataHub portal's chart CSV EXPORT service, a different endpoint family AND a
-        different (CSV table) serialization of the same published data — comparable to the
+        different (CSV table) serialization of the same published data - comparable to the
         accepted BPstat portal-API / INE bddXplorer precedents:
         GET https://datahub.ren.pt/service/exports/csv
             ?startDateString=<YYYY-MM-DD>&endDateString=<YYYY-MM-DD>&culture=pt-PT&country=PT
@@ -16,7 +16,7 @@ Channel mechanics (recorded live 2026-11-11 in tests/ingest/fixtures/ren/verify/
   ",Ponta [MW],<mon> <yy> [GWh],Acumulado [GWh],<mon> <yy-1> [GWh],Acumulado [GWh],
    Mês [Variação %],Acumulado [Variação %]" then one row per balance line, monthly value at
   column 2. The requested month is read FROM THE HEADER ('set 26' -> 2026-09) and must equal the
-  item's period — never echoed from the request. A single day inside the month pins the month
+  item's period - never echoed from the request. A single day inside the month pins the month
   (archived requests use start=end=month last day). Unmapped rows duplicate labels (Cogeração
   x3, Outros x2, footnote digits inside labels); every MAPPED label must be unique. observed_unit
   is read from the monthly column's bracket ('GWh' in evidence); the CSV carries no status
@@ -24,7 +24,7 @@ Channel mechanics (recorded live 2026-11-11 in tests/ingest/fixtures/ren/verify/
 - Market (modelId 2649): 8-row CSV ",setembro,,2026," / ",PT,ES,PT,ES", then 'Preço Médio'
   (unique), Vazio, Fora Vazio, 'Separação de mercados [%]', Importação, Exportação; columns 1/2
   are the requested month's PT/ES values, columns 3/4 belong to the CURRENT-YEAR block under
-  the 4-digit-year header cell (validated to be the requested year, never read — archived
+  the 4-digit-year header cell (validated to be the requested year, never read - archived
   2026-09: month PT 143.9 vs year-block PT 74.08). The period is read from the header (full
   month name + 4-digit year), geographies from the 'PT,ES,PT,ES' row; observed row:
   current-period PT value (column 1). The market CSV exposes NO unit annotation ->
@@ -37,7 +37,7 @@ ItemResult.evidence is that response archived in a SMALL VERSIONED JSON ENVELOPE
 'ren-portal-evidence', version 1: {"responses": [{"url", "status", "body_base64"}]}) so the
 deciding response's exact bytes, FINAL url and ACTUAL http status are all preserved and
 byte-for-byte recoverable from the raw store without HTTP; evidence_url stays the final URL.
-The envelope format is REN-local to this module — no shared collector/helper code (the BPstat
+The envelope format is REN-local to this module - no shared collector/helper code (the BPstat
 precedent lives in its own module too). Requests are one GET per (endpoint, month), cached
 inside a single check() call; the verifier adds no sleeping (the injected Http throttles).
 
@@ -97,7 +97,7 @@ EVIDENCE_VERSION = 1
 
 def _envelope(url: str, status: int, body: bytes) -> bytes:
     """The evidence bytes of one item: the ONE deciding CSV-export response in a small
-    versioned JSON envelope — final URL, ACTUAL http status (recorded from the received
+    versioned JSON envelope - final URL, ACTUAL http status (recorded from the received
     HttpResult, never implied) and the raw body base64-encoded (byte-for-byte recoverable
     from the raw store without HTTP)."""
     doc = {"schema": EVIDENCE_SCHEMA, "version": EVIDENCE_VERSION,

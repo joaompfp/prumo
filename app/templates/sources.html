@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Fontes e licenças — Prumo{% endblock %}
+{% block title %}Fontes e licenças - Prumo{% endblock %}
 {% block content %}
 <header class="page-head">
   <h1>Fontes e licenças</h1>
@@ -17,7 +17,7 @@
       <tr>
         <td>{{ source.title }}</td>
         <td class="num">{{ format_count(source.series) }}</td>
-        <td>{{ source.last_fetched_text or "—" }}</td>
+        <td>{{ source.last_fetched_text or "-" }}</td>
         <td>{{ source.licence }}{% if source.licence_url and source.licence_url.startswith('https://') %} · <a href="{{ source.licence_url }}" rel="noopener noreferrer">termos</a>{% endif %}</td>
         <td class="attribution">{{ source.attribution }}</td>
       </tr>

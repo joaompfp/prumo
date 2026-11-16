@@ -1,4 +1,4 @@
-# Final whole-branch review — derived layer v1 (project 3)
+# Final whole-branch review - derived layer v1 (project 3)
 
 Range `64e25ea..fcf2490` on `pipeline-rebuild`. Read-only review; no production access, no network.
 The full suite was not re-run (taken as given: 1927 passed, ruff clean on this HEAD).
@@ -38,21 +38,21 @@ None found.
 
 #### Important (Should Fix)
 
-**I1. A redefined derived key stops the whole worker — `ingest/scheduler.py:297` (also `ingest/cli.py:567`)**
+**I1. A redefined derived key stops the whole worker - `ingest/scheduler.py:297` (also `ingest/cli.py:567`)**
 
 - What: `sync_derived(db, derived)` in `_locked_main` is not guarded. `Db.upsert_derived_series` (`ingest/db.py:780-783`) raises `ValueError` when an existing key's formula, base or params change. The registry loader accepts such an edit, so CI passes.
 - CONFIRMED (E3): I changed `base_period: '2015'` to `'2020'` on `derived.unit_labour_cost_hour.PT.rebase_100`. `scheduler.main(["--once", ...])` raised `ValueError: ... formula/base/params of an existing derived key cannot change; declare a new key` with 0 runner calls. `python -m ingest derive` printed a raw traceback from `db.py:782`.
 - Why it matters: the worker runs with `restart: unless-stopped`, so one registry slip puts it in a restart loop and base ingestion stops for all 1,344 series. This breaks the plan's own rule that the derived layer must never affect base refresh.
 - Fix: catch the `ValueError` at `scheduler.py:297`, log one `derive` error record, keep refreshing base data (derive keeps the stored definitions). In `_cmd_derive` catch it and exit 2 with the message. Add a test (see Recommendations). Add one sentence to `operations.md` "Known limitations".
 
-**I2. Deploy order omits the `prumo` web container; the documented status check will refuse — `docs/data/operations.md:657-664`, `docs/superpowers/handoff/HANDOFF.md:5`**
+**I2. Deploy order omits the `prumo` web container; the documented status check will refuse - `docs/data/operations.md:657-664`, `docs/superpowers/handoff/HANDOFF.md:5`**
 
 - What: one Dockerfile builds all three containers. The deploy order names only `prumo-ingest` and `prumo-backoffice`. The documented status command is `docker exec prumo python -m ingest ... status` (`operations.md:255-256`, also 216, 365, 431), and "After deploy: `ingest status` shows the derived line" does not say which container.
 - CONFIRMED (E6): base-commit code against a 0014 database gives `status refused: ... schema is newer than this code (unknown migrations ['0014_derived_layer'])`, exit 2.
 - Why it matters: the first post-deploy check in the runbook fails, on the day of a production deploy, and looks like a broken migration.
 - Fix: add `bash -lic "dc-web-up prumo"` to the deploy order (after the worker), or change the post-deploy check to `docker exec prumo-ingest`. Same edit in `HANDOFF.md`.
 
-**I3. Read cost of everything derived grows faster than linearly with the number of base vintages — `ingest/migrations/0014_derived_layer.sql:196-222`, `ingest/db.py:917-970`**
+**I3. Read cost of everything derived grows faster than linearly with the number of base vintages - `ingest/migrations/0014_derived_layer.sql:196-222`, `ingest/db.py:917-970`**
 
 - What: the view tests every historical `derived_observation` row, and for each input id asks `served_observation` (0011) whether it is current; that view rescans all vintages of the (series, period). No query pushes the key inside: `served_derived_rows` evaluates the whole view twice (COUNT + page), `derived_status_rows` evaluates it for every status call, `/derived` does so live on every request.
 - CONFIRMED mechanism and cost (E1 vs E7/E9, same machine, 20 bases, 23 keys):
@@ -78,17 +78,17 @@ None found.
 
 #### Minor (Nice to Have)
 
-- **M1. `ingest/cli.py:541-581`** — `_cmd_derive` does not catch `sqlite3.OperationalError`. A database locked for more than 30 s gives a traceback and exit 1, the same code as a failed run. SUSPECTED (by reading; lock not exercised). Fix: catch, print one line, exit 2.
-- **M2. `ingest/cli.py` (`run`, `verify`, `withdraw`)** — manual base operations do not trigger a derive. Status shows `DERIVED STALE` until the next verified scheduler attempt of that group or a manual `derive`. CONFIRMED by reading; the docs do say "scheduler, or manual". Fix: one line in the withdraw and manual-run runbooks: "then run `derive`".
-- **M3. `ingest/status.py:260-270`** — after a base withdrawal back to an older vintage, the state reads `current` (older `fetched_at` < last run) even when no derived rows exist for that older vintage, so 0 values are served. Fail closed, but the label misleads. SUSPECTED (not run). Fix: treat `served_values = 0` with base data present as `stale`.
-- **M4. `ingest/db.py:770-790`** — `unit` and `label` of an existing key can change through the registry with no history row; a unit edit (`p.p.` → `%`) relabels every stored value. CONFIRMED by reading. Git is the only record. Fix: make `unit` immutable like formula/base/params, or record a `derived_event`.
-- **M5. `ingest/derive_verify.py:20-28`** — the verifier's parser is more lenient than `parse_decimal`: it reads `'1,23'` as 123. CONFIRMED (E4). Harmless today because compute rejects the token first and the run fails; it weakens the "independent check" claim only on paper. Fix: reject a comma that is not a thousands group.
-- **M6. `ingest/scheduler.py:147-154`** — a derive runs after every verified attempt, including identical-payload short-circuits, so each group adds one "0 new values" `derived_run` row per day. CONFIRMED (E7: runs 50 and 51 wrote 0 rows and a run row each). The backoffice runs table fills with noise. Fix: skip the run row when nothing is written and nothing is skipped, or filter the table.
-- **M7. `registry/core.yaml:20702-20842`** — YoY on seasonally adjusted IPI and on credit stocks will differ from the INE and BdP headline rates, and the label does not say so. CONFIRMED by inspection. A reader comparing with the publisher will think Prumo is wrong. Owner decision before any public UI.
-- **M8. `ingest/derive.py:24-33`, `registry/core.yaml`** — reader-facing text embeds a technical id ("a partir de ine.ipi_seasonal_cae_TOT.PT") and mixes languages (`balance`, `index 2015=100` among Portuguese labels). CONFIRMED by inspection. Fix before public UI: use the base series label; pick one language.
-- **M9. `docs/superpowers/handoff/HANDOFF.md:9`** — still says backoffice v1.1 will use "migration 0014". That number is now taken. CONFIRMED by reading. Fix: say 0015.
+- **M1. `ingest/cli.py:541-581`** - `_cmd_derive` does not catch `sqlite3.OperationalError`. A database locked for more than 30 s gives a traceback and exit 1, the same code as a failed run. SUSPECTED (by reading; lock not exercised). Fix: catch, print one line, exit 2.
+- **M2. `ingest/cli.py` (`run`, `verify`, `withdraw`)** - manual base operations do not trigger a derive. Status shows `DERIVED STALE` until the next verified scheduler attempt of that group or a manual `derive`. CONFIRMED by reading; the docs do say "scheduler, or manual". Fix: one line in the withdraw and manual-run runbooks: "then run `derive`".
+- **M3. `ingest/status.py:260-270`** - after a base withdrawal back to an older vintage, the state reads `current` (older `fetched_at` < last run) even when no derived rows exist for that older vintage, so 0 values are served. Fail closed, but the label misleads. SUSPECTED (not run). Fix: treat `served_values = 0` with base data present as `stale`.
+- **M4. `ingest/db.py:770-790`** - `unit` and `label` of an existing key can change through the registry with no history row; a unit edit (`p.p.` → `%`) relabels every stored value. CONFIRMED by reading. Git is the only record. Fix: make `unit` immutable like formula/base/params, or record a `derived_event`.
+- **M5. `ingest/derive_verify.py:20-28`** - the verifier's parser is more lenient than `parse_decimal`: it reads `'1,23'` as 123. CONFIRMED (E4). Harmless today because compute rejects the token first and the run fails; it weakens the "independent check" claim only on paper. Fix: reject a comma that is not a thousands group.
+- **M6. `ingest/scheduler.py:147-154`** - a derive runs after every verified attempt, including identical-payload short-circuits, so each group adds one "0 new values" `derived_run` row per day. CONFIRMED (E7: runs 50 and 51 wrote 0 rows and a run row each). The backoffice runs table fills with noise. Fix: skip the run row when nothing is written and nothing is skipped, or filter the table.
+- **M7. `registry/core.yaml:20702-20842`** - YoY on seasonally adjusted IPI and on credit stocks will differ from the INE and BdP headline rates, and the label does not say so. CONFIRMED by inspection. A reader comparing with the publisher will think Prumo is wrong. Owner decision before any public UI.
+- **M8. `ingest/derive.py:24-33`, `registry/core.yaml`** - reader-facing text embeds a technical id ("a partir de ine.ipi_seasonal_cae_TOT.PT") and mixes languages (`balance`, `index 2015=100` among Portuguese labels). CONFIRMED by inspection. Fix before public UI: use the base series label; pick one language.
+- **M9. `docs/superpowers/handoff/HANDOFF.md:9`** - still says backoffice v1.1 will use "migration 0014". That number is now taken. CONFIRMED by reading. Fix: say 0015.
 
-### Deferred minors — verdict per ledger line (ship / fix before merge / upgrade to Important)
+### Deferred minors - verdict per ledger line (ship / fix before merge / upgrade to Important)
 
 | Ledger line | Item | Verdict |
 |---|---|---|
@@ -121,14 +121,14 @@ None found.
 | T9 | no-pct guard keyed on three unit strings | ship |
 | T9 | `balance` vs `(saldo)` language mix | ship; owner call before public UI (M8) |
 
-### Rulings — any you disagree with
+### Rulings - any you disagree with
 
 - L3 (deploy deferred, owner authorization, after 2026-11-15 10:25 UTC): agree.
 - L13 (Task 3 carries Task 2 contracts): agree.
 - L16 (rebase at base period stores one id `[t]`): agree. The DB contract is the right authority; both implementations apply it.
 - L19 (`input_count` reason; one transaction; compute error = failed run): agree. The code matches.
 - L24 (0014 edited in place before deploy; never after): agree. Consequence worth stating: any view change for I3 is cheapest before deploy.
-- L29 (worker first, then backoffice, short 503 window): **disagree in part — incomplete.** The 503 window and health behaviour are as ruled (E6). But the `prumo` web container carries old `ingest` code and is where the runbook runs `status`; it must be rebuilt in the same deploy (I2).
+- L29 (worker first, then backoffice, short 503 window): **disagree in part - incomplete.** The 503 window and health behaviour are as ruled (E6). But the `prumo` web container carries old `ingest` code and is where the runbook runs `status`; it must be rebuilt in the same deploy (I2).
 
 ### Declined to judge
 
@@ -150,8 +150,8 @@ None found.
 ### Recommendations
 
 1. Fix I1 and I2 before merge; both are small.
-2. Most valuable missing test: `scheduler.main(["--once", ...])` against a database that already holds a derived key whose registry definition changed — base refresh must still run and one `derive` error record must be logged. Today it raises.
-3. Second most valuable: one end-to-end test with real data — a verified `run_dataset`, then a scheduler tick, then `served_derived` has rows; a changed payload adds versions and keeps the old ones. The current real-derive scheduler test has no served inputs and writes nothing.
+2. Most valuable missing test: `scheduler.main(["--once", ...])` against a database that already holds a derived key whose registry definition changed - base refresh must still run and one `derive` error record must be logged. Today it raises.
+3. Second most valuable: one end-to-end test with real data - a verified `run_dataset`, then a scheduler tick, then `served_derived` has rows; a changed payload adds versions and keeps the old ones. The current real-derive scheduler test has no served inputs and writes nothing.
 4. For I3, measure the vintage rate on production before deploy, and add a test that bounds view cost with about 30 vintages.
 5. Tests otherwise exercise real behaviour: real SQLite, real code, `monkeypatch` only to inject faults.
 6. Plan/spec issue, not an implementation one: the spec asks for full history and whole-view serving but sets no bound on read cost as history grows.

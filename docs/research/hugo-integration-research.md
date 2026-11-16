@@ -1,4 +1,4 @@
-# Hugo Integration — Research Report
+# Hugo Integration - Research Report
 
 > Scout M7 | 2026-02-28 22:26 GMT
 
@@ -8,13 +8,13 @@
 
 - **Hugo config:** `hugo.toml` (baseURL: `https://joao.date`, languageCode: `pt`)
 - **Shortcodes existentes:** `/layouts/shortcodes/`
-  - `mermaid.html` — simples wrapper `<div class="mermaid">{{ .Inner }}</div>`
-  - `video.html` — tag `<video>` com parâmetros `src`, `width`, `title`
-  - `center.html` — wrapper de alinhamento
+  - `mermaid.html` - simples wrapper `<div class="mermaid">{{ .Inner }}</div>`
+  - `video.html` - tag `<video>` com parâmetros `src`, `width`, `title`
+  - `center.html` - wrapper de alinhamento
 
 - **Layout hierarchy:**
-  - `layouts/_default/baseof.html` — layout base com `{{ block "scripts" . }}{{ end }}` antes de `</body>`
-  - `layouts/textos/single.html` — **já implementa carregamento condicional de scripts!**
+  - `layouts/_default/baseof.html` - layout base com `{{ block "scripts" . }}{{ end }}` antes de `</body>`
+  - `layouts/textos/single.html` - **já implementa carregamento condicional de scripts!**
     ```html
     {{ define "scripts" }}
     {{ if findRE "class=\"mermaid\"" .Content }}
@@ -26,12 +26,12 @@
   - Este é **exatamente o padrão que precisamos replicar** para charts CAE
 
 - **CSS:**
-  - `assets/css/custom.css` — CSS customizado (variáveis `:root`, `.mermaid`, `.video-container`, etc.)
-  - `assets/css/styles.css` — estilos gerais
+  - `assets/css/custom.css` - CSS customizado (variáveis `:root`, `.mermaid`, `.video-container`, etc.)
+  - `assets/css/styles.css` - estilos gerais
   - Pattern: classes específicas por shortcode (`.mermaid`, `.video-container`)
 
 - **Configuração de segurança:**
-  - `[markup.goldmark.renderer]` tem `unsafe = true` — permite HTML raw
+  - `[markup.goldmark.renderer]` tem `unsafe = true` - permite HTML raw
   - Não vi `[security.html] allowInlineScripts` explícito, mas o site já aceita `<script>` via shortcodes
 
 - **Hugo version:** Não disponível no PATH, mas site funciona (tem `public/` gerado)
@@ -73,9 +73,9 @@ Os dados mostram recuperação...
 ```
 
 **Parâmetros:**
-- `id` (obrigatório) — ID do chart no dashboard CAE
-- `title` (opcional) — legenda acima do chart
-- `data-dashboard-url` — URL do dashboard (configurable via `hugo.toml`)
+- `id` (obrigatório) - ID do chart no dashboard CAE
+- `title` (opcional) - legenda acima do chart
+- `data-dashboard-url` - URL do dashboard (configurable via `hugo.toml`)
 
 **Alternativa: Front matter approach** (para múltiplos charts):
 
@@ -291,7 +291,7 @@ Reutilizamos para consistência visual.
 
 ```markdown
 ---
-title: "Teste de integração — CAE Dashboard Charts"
+title: "Teste de integração - CAE Dashboard Charts"
 description: "Post de teste para validar embedding de charts do CAE Dashboard"
 date: 2026-02-28
 author: "João Peixoto"
@@ -342,7 +342,7 @@ Como se pode observar, o sector químico apresenta contração significativa.
 
 ```markdown
 ---
-title: "Relatório CAE — Janeiro 2026"
+title: "Relatório CAE - Janeiro 2026"
 date: 2026-02-28
 custom_charts:
   - id: "pib-evolution"
@@ -426,11 +426,11 @@ location /api/charts/ {
 **Best practices implementadas:**
 
 1. **Conditional loading:**
-   - `{{ if findRE "class=\"cae-embed\"" .Content }}` — script só carrega em páginas com charts
+   - `{{ if findRE "class=\"cae-embed\"" .Content }}` - script só carrega em páginas com charts
    - Páginas sem charts: zero overhead
 
 2. **Defer attribute:**
-   - `<script src="..." defer>` — não bloqueia HTML parsing
+   - `<script src="..." defer>` - não bloqueia HTML parsing
    - Script executa após DOMContentLoaded
 
 3. **CSS inline vs external:**
@@ -495,7 +495,7 @@ add_header Content-Security-Policy "
 **Notas:**
 - `script-src` permite `embed.js` do dashboard
 - `connect-src` permite fetch API calls para chart data
-- `'unsafe-inline'` para styles — Hugo `custom.css` já é trusted
+- `'unsafe-inline'` para styles - Hugo `custom.css` já é trusted
 
 ### 7.6 Fallback para JavaScript desabilitado
 
@@ -523,20 +523,20 @@ add_header Content-Security-Policy "
 
 **Pesquisa web (2026-02-28):**
 
-1. **javaspring.net** — [How to Include Simple JavaScript in Hugo Articles Without Editing the Theme](https://www.javaspring.net/blog/how-to-include-simple-javascript-within-hugo/)
+1. **javaspring.net** - [How to Include Simple JavaScript in Hugo Articles Without Editing the Theme](https://www.javaspring.net/blog/how-to-include-simple-javascript-within-hugo/)
    - Métodos: inline JS, shortcodes reusáveis, page resources, front matter params
    - Security config: `allowInlineScripts = true`
    - Best practices: defer/async, avoid global scope
 
-2. **GitHub hugo-chart** — [Shen-Yu/hugo-chart](https://github.com/Shen-Yu/hugo-chart)
+2. **GitHub hugo-chart** - [Shen-Yu/hugo-chart](https://github.com/Shen-Yu/hugo-chart)
    - Shortcode component para Chart.js
    - Pattern: `{{< chart 90 200 >}} {...} {{< /chart >}}`
 
-3. **Hugo Discourse** — [Responsive lazy loaded images](https://discourse.gohugo.io/t/responsive-lazy-loaded-images/26041)
+3. **Hugo Discourse** - [Responsive lazy loaded images](https://discourse.gohugo.io/t/responsive-lazy-loaded-images/26041)
    - Conditional loading: `{{ if or (.Resources.Match "**.jpg") ... }}`
    - Performance pattern: load library only when needed
 
-4. **barnz.dev** — [Embed an iframe in Hugo content](https://barnz.dev/blog/embed-iframe-in-hugo-content/)
+4. **barnz.dev** - [Embed an iframe in Hugo content](https://barnz.dev/blog/embed-iframe-in-hugo-content/)
    - X-Frame-Options: `SAMEORIGIN` restricts iframes
    - CSP `frame-ancestors` policy for external origins
    - **Key insight:** JS embed bypasses iframe restrictions

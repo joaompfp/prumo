@@ -1,5 +1,5 @@
 """Recorded real World Bank API v2 payloads (tests/ingest/fixtures/worldbank/, fetched
-2026-11-11; every file <= 200 KB, sha256-pinned by MANIFEST.json — the six intake pins
+2026-11-11; every file <= 200 KB, sha256-pinned by MANIFEST.json - the six intake pins
 re-verified by the controller, the 19-indicator metadata sweep, the country metadata used to
 derive publisher ISO3 codes, and three genuine publisher bulk CSV ZIP exports for the
 independent verifier channel), plus an Http double that serves the JSON channel by

@@ -1,4 +1,4 @@
-# Task 13 — independent specification review (offline, bounded)
+# Task 13 - independent specification review (offline, bounded)
 
 Reviewer: independent spec-review subagent. Date: 2026-11-11. Worktree
 `/home/joao/projects/prumo-pipeline`, branch `pipeline-rebuild`, reviewed diff
@@ -8,7 +8,7 @@ in full; both adapter modules read line-by-line; registry probed programmaticall
 `dcec55d` base; 24 hand-built adversarial probes run against the real source/verifier
 functions; the 73-test targeted slice executed locally (no live tests).
 
-## Verdict: PASS_CODE / LIVE BLOCKED — Task 13 CANNOT close
+## Verdict: PASS_CODE / LIVE BLOCKED - Task 13 CANNOT close
 
 Implementation compliance with every offline-checkable brief requirement: **PASS**. The
 mandatory live full-scope gate (`test_live_worldbank.py` contract: 930 series, `verified`)
@@ -43,7 +43,7 @@ thread; closing/retrying awaits that.
    pins (`c9acf393…44bce`, `a95c4834…a1a8d`); `r4-indicator-csv.zip` (142,909 B) is the
    genuine full 3-member archive with the 297,580-byte main CSV (no truncation); all fixtures
    ≤ 200 KB (largest 142.9 KB).
-4. **Source adapter adversarial probes** (all behaved as specced — verbatim tokens as plain
+4. **Source adapter adversarial probes** (all behaved as specced - verbatim tokens as plain
    `str`; exponent `1e+22` preserved; `null`→`None` never zero; quoted-numeric, duplicate JSON
    key, non-empty unit, iso3/native mismatch, truncated page count, total=0-with-rows, HTML,
    API error shape, numeric identity label, non-2xx, unrequested-URL-indicator, duplicate page
@@ -55,7 +55,7 @@ thread; closing/retrying awaits that.
    bytes + final URL + actual status; extra 4th member, path-traversal `../`, subdir member,
    duplicate year header, wrong indicator code, indicator-name disagreement, HTML-200,
    HTTP 400, garbage body all **raise**). Module imports only stdlib + `ingest.http` +
-   `ingest.verifiers` — no collector/collector-parser/flag imports.
+   `ingest.verifiers` - no collector/collector-parser/flag imports.
 6. **Required test matrix present and passing**: targeted run
    `69/…/test_source_worldbank.py test_verifier_worldbank.py test_registry_worldbank_units.py`
    → **73 passed in 17.32s** (matches child's 39+25+9 and controller's 909-total delta +
@@ -63,9 +63,9 @@ thread; closing/retrying awaits that.
    same-process registration test, subprocess guard
    (`worldbank_verifier_entry.py`), ≥5 cross-channel pins incl. 5 PT-GDP intake pins, tamper
    through `verify_run` (value + geography), clean-run-through-`verify_run`,
-   `run_with_refetch` registration, offline evidence recovery + `replay_item` — all present.
+   `run_with_refetch` registration, offline evidence recovery + `replay_item` - all present.
 7. **Politeness/transport**: `ingest/http.py` defaults `throttle_rps=1.0` with min-interval
-   sleep, bounded timeout 30 s, UA `prumo-ingest/1.0 (+https://cae.joao.date)` — matches the
+   sleep, bounded timeout 30 s, UA `prumo-ingest/1.0 (+https://cae.joao.date)` - matches the
    ≤1 req/s documented-UA bounded-timeout requirement; verifier correctly delegates throttling
    to the injected Http.
 
@@ -90,6 +90,6 @@ thread; closing/retrying awaits that.
   implementer report). Fail-closed behavior is exactly per the channel lesson; no series
   inactivated for an outage; no channel switch attempted unreviewed. Healthy-subset run
   (516 series): `verified`, served 25,853 under CC BY 4.0, 516/516 evidence envelopes
-  recovered offline — evidence of correctness, **not** task completion.
+  recovered offline - evidence of correctness, **not** task completion.
 - Task 13 status stays **BLOCKED on the live gate** pending controller's network-thread
   outcome (retry when the publisher export recovers, or a reviewed alternate decision).

@@ -29,7 +29,7 @@ I checked every base against core.yaml myself: all 20 are active, `role: primary
 | eurostat.cci.PT | M | balance | period_change | balance |
 | eurostat.unit_labour_cost_hour.PT | A | I10_2010 | rebase_100, base_period "2015" | index 2015=100 |
 
-Labels are Portuguese, written as "<name> — <reading>", e.g. "Taxa de desemprego — variação homóloga (p.p.)".
+Labels are Portuguese, written as "<name> - <reading>", e.g. "Taxa de desemprego - variação homóloga (p.p.)".
 
 ## Local smoke (synthetic DB only; no live DB, no ssh, no containers)
 Script: `/tmp/claude-1000/-home-joao/0cf85576-cadd-4c92-a5b2-4aac697971e6/scratchpad/seed_smoke.py`. It runs `open_db(<scratch>/smoke.sqlite3)` and `sync_registry` with the real core.yaml specs, then uses the repo helper `tests.ingest.derived_helpers.verified_values` to write a verified vintage for three bases:

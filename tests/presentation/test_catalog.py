@@ -37,7 +37,7 @@ def test_rebase_needs_base_period():
 
 
 def test_pt_attribution_suffix():
-    assert calculated_attribution("pt", "INE") == "INE — Calculado pelo Prumo"
+    assert calculated_attribution("pt", "INE") == "INE - Calculado pelo Prumo"
 
 
 def test_en_second_language():
@@ -47,7 +47,7 @@ def test_en_second_language():
         "Rebased index (2015 = 100), calculated by Prumo from ine.x"
     for f in FORMULAS:
         assert "Prumo" in describe_formula("en", f, {"base_period": "2015"}, "ine.x")
-    assert calculated_attribution("en", "INE") == "INE — Calculated by Prumo"
+    assert calculated_attribution("en", "INE") == "INE - Calculated by Prumo"
     assert unit_text("en", "balance") == "balance"
 
 

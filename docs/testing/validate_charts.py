@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Prumo — Visual chart validation for all 372 indicators.
+Prumo - Visual chart validation for all 372 indicators.
 
 Takes a screenshot of each indicator's chart in the Análise tab.
 Detects rendering issues: empty canvas, missing lines, scale problems.
@@ -219,7 +219,7 @@ def main():
     SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
 
     log("=" * 60)
-    log("PRUMO CHART VALIDATION — STARTING")
+    log("PRUMO CHART VALIDATION - STARTING")
     log(f"Period: {DEFAULT_FROM} → {DEFAULT_TO}")
     log(f"Screenshots: {SCREENSHOTS_DIR}")
     log("=" * 60)
@@ -260,7 +260,7 @@ def main():
                 ok += 1
                 continue
 
-            log(f"[{i+1}/{total}] Validating: {key} — {ind['label']}")
+            log(f"[{i+1}/{total}] Validating: {key} - {ind['label']}")
 
             r = validate_chart(context, ind["source"], ind["id"], ind["label"])
             report["results"][key] = r
@@ -319,7 +319,7 @@ def main():
         if report["failures"]:
             log(f"Issues ({len(report['failures'])}):")
             for f in report["failures"]:
-                log(f"  {f['key']}: {f['status']} — {f['issues']}")
+                log(f"  {f['key']}: {f['status']} - {f['issues']}")
         log("=" * 60)
 
         browser.close()

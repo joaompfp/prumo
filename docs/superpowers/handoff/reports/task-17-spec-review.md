@@ -1,4 +1,4 @@
-# Task 17 independent SPEC review (17A + 17B) — whole task
+# Task 17 independent SPEC review (17A + 17B) - whole task
 
 Reviewer: independent subagent. Scope: commit e48e2ba on pipeline-rebuild (diff bd773f6..e48e2ba),
 briefs task-17a/b-brief.md and implementation reports task-17a/b-implementation.md only. Read-only:
@@ -14,7 +14,7 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
 
 ## Blocking technical gaps (reproduced offline)
 
-### 1. Stale-bundle guard is source-wide MAX vs MAX — a stale group slips through and can replace newer verified data (silent serving regression)
+### 1. Stale-bundle guard is source-wide MAX vs MAX - a stale group slips through and can replace newer verified data (silent serving regression)
 
 - ingest/cli.py:256-268: `existing = db.max_verified_fetched_at(ids)` over ALL selected active
   source series, compared to `bundle.max_fetched_at()` = MAX over ALL bundle receipts
@@ -28,12 +28,12 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
 - Consequence (code-derived): with a genuine complete bundle the replay verifies and inserts
   fetched rows with NEWER observation ids but OLDER fetched_at; migration 0007's served view
   tie-breaks same-kind rows by `n.id > e.id` (ingest/migrations/0007_scoped_legacy_serving.sql,
-  last lines) — i.e. the LAST INSERTED verified run wins per (series, period). A stale
+  last lines) - i.e. the LAST INSERTED verified run wins per (series, period). A stale
   receipt therefore silently replaces newer verified data in serving, exactly the
   old-collector-JSON-plus-fresh-CSV scenario the controller flagged. Violates the brief's
   "refuse outdated source/group bundle before insertion" and old-data continuity.
-- Fix direction: compare per dataset group — newest receipt pinned to that group's own requests
-  vs that group's held verified max — and refuse/skip the stale groups individually.
+- Fix direction: compare per dataset group - newest receipt pinned to that group's own requests
+  vs that group's held verified max - and refuse/skip the stale groups individually.
 
 ### 2. Pending-verification runs with historical (unmapped) dataset keys vanish from status
 
@@ -41,7 +41,7 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
   carries NO source field; attribution at status.py:237-239 filters by membership in the
   CURRENT grouping's label set. A key not derivable from today's grouping policy (any pre-17A
   source-wide WB key, or any registry id change) matches nothing and is dropped from every
-  source — invisible pending state, violating "pending run ids/start dates listed" and
+  source - invisible pending state, violating "pending run ids/start dates listed" and
   "pending state visible even if others healthy".
 - Probe S2b: inserted pending run (dataset_key `worldbank:0ldgr0up`, 25h old) alongside two
   mapped pending runs; `build_status` JSON shows runs [2, 3] under worldbank; historical run 4
@@ -53,7 +53,7 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
 
 - ingest/operations.py:254 `http = http_for()` sits OUTSIDE the per-source try/except; run_all
   (269-283) does not guard run_source either. Group fetch errors (256-266) and source/verifier
-  factory failures (244-253) are contained, but client construction is not — a registry
+  factory failures (244-253) are contained, but client construction is not - a registry
   misconfiguration raising in RequestsHttp, or any injected factory failure, kills every
   remaining source.
 - Probe S5: http_for raising RuntimeError -> `run_all RAISED boom:bportugal -> loop aborted;
@@ -78,7 +78,7 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
 
 ### 5. Doc blocker: manual-refresh guide not runnable as written
 
-- docs/data/manual-refresh.md:19 `git clone <url do repositório> prumo-pipeline` — unresolved
+- docs/data/manual-refresh.md:19 `git clone <url do repositório> prumo-pipeline` - unresolved
   placeholder; the brief requires the exact tested commands a user can run on another machine
   without reading source. Everything else in the guide (commands, paths, exit states,
   capture-then-bundle flow, current vs future container paths, pyyaml/requests present in
@@ -86,7 +86,7 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
 
 ## Verified as meeting the brief (probes + reading)
 
-- Invalid bundle never opens the DB: probe S6 — corrupted-bytes bundle, rc=2, target DB file
+- Invalid bundle never opens the DB: probe S6 - corrupted-bytes bundle, rc=2, target DB file
   never created; manifest validation (schema/version/source/keys, url/params shape, status int
   100-599, tz-aware timestamps normalized to UTC, sha256 hex, byte caps, traversal/absolute/
   symlink rejection, identical-duplicate dedupe pinning FIRST receipt, changed-duplicate hard
@@ -94,10 +94,10 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
   (Bundle.body) present. PinnedHttp refuses partial (failure-carrying) bundles and answers only
   exact pinned requests; no network fallback.
 - Recorded origin honesty: RawResponse.fetched_at validated by ingest/pipeline.py:45-58
-  (_receipt_ts) — bad receipt -> failed-validation, never a silent 'now'; run started_at stays
+  (_receipt_ts) - bad receipt -> failed-validation, never a silent 'now'; run started_at stays
   the actual attempt time; run_with_refetch labels EVERY attempt via input_origin
   (verify.py:264-290); migration 0008 stamps legacy runs 'legacy', additive only.
-- Status honesty: probe S3 — legacy-only series shows availability 'legacy-unverified',
+- Status honesty: probe S3 - legacy-only series shows availability 'legacy-unverified',
   last_verified null, original 2026-02-27 fetched date, legacy row count; source last_verified
   null; legacy synthetic 'verified' run excluded from attempts and from verification evidence
   (legacy_keys filter, status.py:177-187). Pending staleness threshold is CORRECT (probe S2a:
@@ -132,7 +132,7 @@ loss, pending-state visibility, run-all resilience, bounded capture), plus one d
 - Cleanup state: entrypoint.sh dead cron block REMOVED (retained old collectors cannot activate
   a schedule); requirements split isolates duckdb/pyarrow to requirements-legacy.txt with CI
   installing both. The superseded-collector DELETION is a known pending item blocked on owner
-  approval (tool gate) — NOT counted here as a code defect; its pre-checks (no surviving
+  approval (tool gate) - NOT counted here as a code defect; its pre-checks (no surviving
   imports) are documented in the 17B report.
 
 ## Minor notes (not blocking)

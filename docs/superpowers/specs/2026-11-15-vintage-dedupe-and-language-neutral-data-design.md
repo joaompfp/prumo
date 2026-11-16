@@ -1,4 +1,4 @@
-# Vintage dedupe, calculated-rate caveats and a language-independent data layer — design
+# Vintage dedupe, calculated-rate caveats and a language-independent data layer - design
 
 Date: 2026-11-15. Status: planner's calls, no question round (owner opted out: "Avança"). Follows the
 derived-layer v1 deploy (main 80c4c10).
@@ -25,7 +25,7 @@ Non-goals (anti-goals): no edit of migrations 0001–0014; no deletion of existi
 INE into per-indicator datasets (deferred option, decide from measured vintages per month); no new event
 kind; no public UI (project 4); no change to how verification samples or how withdrawals work.
 
-## Decision 1 — identical-content short-circuit
+## Decision 1 - identical-content short-circuit
 
 **Measured (production copy 2026-11-15, 70 non-legacy runs):** identical content repeats for bportugal,
 fred, oecd (one duplicate run each) and INE (runs 68 and 77 fully identical to run 14, including
@@ -69,7 +69,7 @@ New `Db` functions (SQL stays in `ingest/db.py`): `content_base_run(key, before_
 `run_content(run_id) -> RunContent` (sorted observation tuples including `released_at`, sorted
 quarantine tuples).
 
-## Decision 2 — calculated-vs-headline caveat
+## Decision 2 - calculated-vs-headline caveat
 
 A derived series can carry **caveat codes**, a closed whitelist: `sa_base` (calculated on a seasonally
 adjusted series) and `stock_base` (calculated on outstanding amounts / stocks). Declared per derived series
@@ -82,7 +82,7 @@ seasonally adjusted series / on outstanding amounts and is not the publisher's o
 asserts nothing about the publisher's own methodology. The backoffice shows it next to the visual
 "calculated" cue.
 
-## Decision 3 — reader text in a presentation layer
+## Decision 3 - reader text in a presentation layer
 
 *Data layer* (ingest/, SQLite, registry): codes only.
 - `derived_series`: drop `formula_label_pt` and `label` (reader text); `unit` holds a unit **code**
@@ -104,7 +104,7 @@ code and active derived key of the registry has an entry in every catalog. The P
 23 derived titles are moved verbatim from today's `_LABELS` and registry labels. The backoffice calls
 this module (language fixed to `pt` for now, one constant).
 
-Calculated values keep only the visual cue (`is_calculated`); "— Calculado pelo Prumo" is produced by the
+Calculated values keep only the visual cue (`is_calculated`); "- Calculado pelo Prumo" is produced by the
 presentation layer.
 
 ## Constraints in force

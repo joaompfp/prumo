@@ -6,7 +6,7 @@ from ingest.verifiers.ine import INEVerifier
 from tests.ingest.ine_fixtures import registry_specs
 from tests.ingest.ine_verifier_fixtures import VerifyFixtureHttp
 
-# (series, period, observed_text, observed_flag) — INE's published rendering (',' decimal);
+# (series, period, observed_text, observed_flag) - INE's published rendering (',' decimal);
 # every tuple is a recorded fixture cross-checked against the JSON channel or Eurostat.
 CASES = [
     ("ine.live_births.PT", "2024", "84 642", "normal"),

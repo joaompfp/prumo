@@ -1,4 +1,4 @@
-"""Banco de Portugal verifier tests — recorded portal-API fixtures
+"""Banco de Portugal verifier tests - recorded portal-API fixtures
 (tests/ingest/fixtures/bportugal/verify/, 2026-11-11)."""
 import base64
 import json
@@ -115,7 +115,7 @@ def test_verifier_tampered_observation_value_raises():
     tampered = vbody("obs_12099464_2026-10.json").replace(b'"value":"3.92"',
                                                           b'"value":"3.99"', 1)
     # the raw edit leaves a valid payload that simply answers a DIFFERENT number; the verifier
-    # itself returns it verbatim — detection happens in verify_run (test below); here _current
+    # itself returns it verbatim - detection happens in verify_run (test below); here _current
     # gives the tampered token back unchanged
     (r,) = BPortugalVerifier().check([_item("bportugal.pt_10y.PT", "2026-10")],
                                      VerifyFixtureHttp({"12099464@2026-10": tampered}))
@@ -169,7 +169,7 @@ def _decode_evidence(evidence: bytes) -> dict:
 
 def test_verifier_evidence_bundles_metadata_and_observation_responses():
     """The unit decision used the /api/series/ response; the value decision used the
-    /api/observations/ response. The archived evidence must carry BOTH exact wire records —
+    /api/observations/ response. The archived evidence must carry BOTH exact wire records -
     observations body alone is not auditable for the unit verification."""
     (r,) = BPortugalVerifier().check([_item("bportugal.pt_10y.PT", "2026-10")],
                                      VerifyFixtureHttp())

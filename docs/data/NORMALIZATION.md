@@ -1,4 +1,4 @@
-# CAE Dashboard — Data Normalization Architecture
+# CAE Dashboard - Data Normalization Architecture
 
 > **Status:** WP-E3 script ready; WP-E4 architecture proposed (pending Analyst unit audit before implementation).
 > Last updated: 2026-03-02
@@ -27,7 +27,7 @@ Schema version: `1` (stored in `meta` table)
 | source_id   | VARCHAR | Source file or API reference               |
 
 **Row count:** ~184,784 rows  
-**No explicit indexes** — DuckDB uses columnar scan (efficient for OLAP workloads)
+**No explicit indexes** - DuckDB uses columnar scan (efficient for OLAP workloads)
 
 #### Row distribution by source
 
@@ -56,7 +56,7 @@ The `normalisePeriod()` JS function handles quarterly for future compatibility.
 
 ---
 
-## 2. Period Normalisation (WP-E5 — Frontend)
+## 2. Period Normalisation (WP-E5 - Frontend)
 
 **Problem:** When comparing an annual series (`"2024"`) with a monthly series (`"2024-03"`),
 the periods are treated as distinct strings on the X-axis. `"2024"` never aligns with any
@@ -72,7 +72,7 @@ function normalisePeriod(p) {
   if (qm) return `${qm[1]}-${String(parseInt(qm[2]) * 3).padStart(2, '0')}`;  // Quarterly
   const sm = p.match(/^(\d{4})[- ][SH](\d)$/);
   if (sm) return `${sm[1]}-${sm[2] === '1' ? '06' : '12'}`;  // Semi-annual
-  return p;  // Monthly — as-is
+  return p;  // Monthly - as-is
 }
 ```
 
@@ -84,14 +84,14 @@ function normalisePeriod(p) {
 | `"2025-Q3"` | `"2025-09"` | End of Q3 = September                  |
 | `"2016 S1"` | `"2016-06"` | End of H1 = June                       |
 | `"2016 S2"` | `"2016-12"` | End of H2 = December                   |
-| `"2024-03"` | `"2024-03"` | Monthly — unchanged                    |
+| `"2024-03"` | `"2024-03"` | Monthly - unchanged                    |
 
 **Display:** `fmt.period(p, { annualCollapsed: true })` in `static/js/api.js` renders
 `"2024-12"` as `"2024"` (not `"Dez 24"`) when it originated from an annual period.
 
 ---
 
-## 3. Value Normalisation (WP-E3 — Script)
+## 3. Value Normalisation (WP-E3 - Script)
 
 **Script:** `scripts/normalize_db.py`
 
@@ -106,7 +106,7 @@ Applies unit-conversion rules from the `RULES` list to the `indicators` table.
 ### Usage
 
 ```bash
-# Dry-run (safe — no DB changes):
+# Dry-run (safe - no DB changes):
 python3 scripts/normalize_db.py
 
 # Apply to DB:
@@ -130,14 +130,14 @@ python3 scripts/normalize_db.py --db /data/cae-data.duckdb --apply
 
 ### Problem with current single-table design
 
-- Running `normalize_db.py --apply` mutates values in-place — **not idempotent** if
+- Running `normalize_db.py --apply` mutates values in-place - **not idempotent** if
   compound-run accidentally.
 - No way to distinguish "raw from API" from "normalised by pipeline" without auditing code.
 
 ### Proposed schema
 
 ```sql
--- Raw values — never mutated after fetch
+-- Raw values - never mutated after fetch
 CREATE TABLE indicators_raw AS SELECT * FROM indicators;
 -- Implicit PK: (source, indicator, region, period)
 -- Suggested indexes:
@@ -164,7 +164,7 @@ CREATE VIEW indicators_v AS
 
 1. `RENAME TABLE indicators TO indicators_raw`
 2. `CREATE TABLE indicators AS SELECT *, FALSE AS norm_applied, NULL::INTEGER AS norm_version FROM indicators_raw`
-3. `python3 scripts/normalize_db.py --apply` — applies RULES from raw
+3. `python3 scripts/normalize_db.py --apply` - applies RULES from raw
 
 ### Benefits
 

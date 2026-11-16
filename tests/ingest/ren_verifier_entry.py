@@ -6,7 +6,7 @@ from ingest.verifiers.ren import RenVerifier
 from tests.ingest.ren_fixtures import registry_specs
 from tests.ingest.ren_verifier_fixtures import VMANIFEST, VerifyFixtureHttp, decode_evidence, vbody
 
-# (series, period, observed_text, observed_unit) — every token read from the archived CSV bytes
+# (series, period, observed_text, observed_unit) - every token read from the archived CSV bytes
 # fixtures/ren/verify/ and cross-checked against the servicebus JSON payload at recording time
 # (2026-11-11): CONSUMO 4442 == API 4442; PT Preço Médio 143.9 == API 143.9.
 CASES = [
@@ -47,5 +47,5 @@ def run():
         assert rec == {"url": VMANIFEST[key]["url"], "status": VMANIFEST[key]["status"],
                        "body": vbody(VMANIFEST[key]["file"])}
         assert r.evidence_url == VMANIFEST[key]["url"]
-    # cache: one fetch per (chart, month) — 13 2026-09 balance items share one response
+    # cache: one fetch per (chart, month) - 13 2026-09 balance items share one response
     assert http.calls == ["balance_2026-09", "balance_2020-06", "market_2026-09"]

@@ -1,4 +1,4 @@
-"""FRED API source adapter tests — real recorded fixtures (tests/ingest/fixtures/fred/,
+"""FRED API source adapter tests - real recorded fixtures (tests/ingest/fixtures/fred/,
 2026-11-12, sha256-pinned by MANIFEST.json; byte copies of the Task-14 preflight originals with
 api_key redacted from every recorded url/params). Pinned (series, period) tokens are
 hand-checked against the independent server-rendered data-table HTML (tests-only extraction in

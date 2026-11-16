@@ -1,7 +1,7 @@
 # Phase 1 Testing Implementation Summary
 
 **Date**: 2026-03-03
-**Sprint**: CAE Dashboard v7.2 Testing Roadmap — Phase 1 (Backend Core)
+**Sprint**: CAE Dashboard v7.2 Testing Roadmap - Phase 1 (Backend Core)
 **Effort**: ~10 hours (estimated)
 
 ---
@@ -30,8 +30,8 @@ tests/
 ```
 
 ✅ **Configuration files**:
-- `pytest.ini` — Test runner configuration, coverage settings
-- `requirements.txt` — Updated with test dependencies (pytest, pytest-cov, httpx, pytest-asyncio)
+- `pytest.ini` - Test runner configuration, coverage settings
+- `requirements.txt` - Updated with test dependencies (pytest, pytest-cov, httpx, pytest-asyncio)
 
 ### 2. Fixtures (Reusable Test Data)
 
@@ -123,7 +123,7 @@ All available in `conftest.py`:
 - Nightly email reports planned for Phase 3
 
 ### ✅ Documentation
-- `tests/README.md` — Quick start for developers
+- `tests/README.md` - Quick start for developers
 - Docstrings in all test classes
 - Pytest markers for test categorization
 
@@ -153,13 +153,13 @@ pytest
 ## Next Steps (Phase 1 Continued)
 
 ### Immediate (this week):
-1. ✅ Create test structure — **DONE**
+1. ✅ Create test structure - **DONE**
 2. ⏳ Complete Phase 1.1 with more service tests:
-   - `test_interpret.py` — Ideology loading, prompt injection
-   - `test_painel_analysis.py` — Composite indicators, sentiment
+   - `test_interpret.py` - Ideology loading, prompt injection
+   - `test_painel_analysis.py` - Composite indicators, sentiment
 3. ⏳ Complete Phase 1.2 with more route tests:
-   - `test_api_painel_headline.py` — Language + lens routing
-   - `test_api_painel_analysis.py` — Analysis responses
+   - `test_api_painel_headline.py` - Language + lens routing
+   - `test_api_painel_analysis.py` - Analysis responses
 4. ⏳ Verify all tests run in CI/CD
 
 ### Phase 2 (Week 2):
@@ -194,19 +194,19 @@ pytest
 ```
 tests/
 ├── __init__.py (0 bytes)
-├── conftest.py (4.2 KB) — 6 fixtures, 150 lines
-├── README.md (2.1 KB) — Quick start + structure
+├── conftest.py (4.2 KB) - 6 fixtures, 150 lines
+├── README.md (2.1 KB) - Quick start + structure
 ├── services/
 │   ├── __init__.py (0 bytes)
-│   ├── test_helpers.py (4.5 KB) — 25 tests for YoY/trend/sparkline
-│   ├── test_painel.py (3.2 KB) — 15 tests for KPI structure
-│   └── test_painel_headline.py (3.8 KB) — 14 tests for multilingual
+│   ├── test_helpers.py (4.5 KB) - 25 tests for YoY/trend/sparkline
+│   ├── test_painel.py (3.2 KB) - 15 tests for KPI structure
+│   └── test_painel_headline.py (3.8 KB) - 14 tests for multilingual
 ├── routes/
 │   ├── __init__.py (0 bytes)
-│   └── test_api_painel.py (3.1 KB) — 12 tests for /api/painel
+│   └── test_api_painel.py (3.1 KB) - 12 tests for /api/painel
 └── db/
     ├── __init__.py (0 bytes)
-    └── test_duckdb_basic.py (5.6 KB) — 15 tests for DB integrity
+    └── test_duckdb_basic.py (5.6 KB) - 15 tests for DB integrity
 
 Total: ~20 KB of test code, 81 tests, 0 external API dependencies
 ```
@@ -228,8 +228,8 @@ Total: ~20 KB of test code, 81 tests, 0 external API dependencies
 
 ## Notes for João
 
-- Tests are **intended to prevent silent data corruption** — YoY calculations, null handling, period detection
-- Phase 1 covers **backend only** (Python/FastAPI) — frontend testing in Phase 2
+- Tests are **intended to prevent silent data corruption** - YoY calculations, null handling, period detection
+- Phase 1 covers **backend only** (Python/FastAPI) - frontend testing in Phase 2
 - **No IA involvement** in test code itself (all assertions are rule-based)
 - Ready to run in container: `dc-jarbas exec cae-dashboard pytest -v`
 - Next sprint: Create GitHub Actions workflows + nightly email reports

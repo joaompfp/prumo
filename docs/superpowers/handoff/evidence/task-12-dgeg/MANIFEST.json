@@ -1,11 +1,11 @@
 {
   "created_utc": "2026-11-11",
-  "task": "Prumo Task 12B — DGEG safe disposition evidence bundle (durable copies of hashes/bytes verified by the controller against the 35-entry research manifests)",
+  "task": "Prumo Task 12B - DGEG safe disposition evidence bundle (durable copies of hashes/bytes verified by the controller against the 35-entry research manifests)",
   "research_scratch_origins": [
     "/home/joao/.hermes/cache/scratch/prumo-task12-dgeg-discovery (MANIFEST.json, 35 entries superset)",
     "/home/joao/.hermes/cache/scratch/prumo-task12-dgeg-followup (MANIFEST.json + FOLLOWUP-REPORT.md)"
   ],
-  "note": "Raw files are byte-identical copies of the archived HTTP responses. Derived files are labelled DERIVED, are NOT raw response evidence (there is no implemented DGEG verifier), and name their source PDF by URL/sha256/bytes; the 2.4 MB APN and 13 MB AEN PDFs and the multi-MB dumps stay out of the repo by policy.",
+  "note": "Raw files are byte-identical copies of the archived HTTP responses. Derived files are labelled DERIVED, are NOT raw response evidence (there is no implemented DGEG verifier), and name their source PDF by URL/sha256/bytes; only their project-authored preambles normalize punctuation to ASCII hyphens, while the extracted publisher text is unchanged; the 2.4 MB APN and 13 MB AEN PDFs and the multi-MB dumps stay out of the repo by policy.",
   "files": [
     {
       "path": "dgeg-iie-1995-2024.xlsx",
@@ -50,17 +50,17 @@
       "http_status": "not recorded in the prior discovery manifest (hash-pinned bytes)",
       "sha256": "90284c7a773dd60f6c6b1d03cb13ade2afed8d44e96f273e522e95b92e029572",
       "bytes": 130573,
-      "note": "DGEG org on dados.gov.pt: 19 datasets, all geology/licensing, all cc-by — none is an energy statistics workbook, so that CC BY is not a licence for the energy series."
+      "note": "DGEG org on dados.gov.pt: 19 datasets, all geology/licensing, all cc-by - none is an energy statistics workbook, so that CC BY is not a licence for the energy series."
     },
     {
       "path": "derived/apn-2015-2024-pt-fulltext.txt",
       "kind": "derived",
       "source_url": "https://www.dgeg.gov.pt/media/5riiwycf/dgeg-apn-2015-2024-pt.pdf",
       "http_status": "200 OK (research archive)",
-      "sha256": "a29ab0b3f8daf89c6257f5d50968cf751e29e985fa2a3c92f1ebeb0d092ff6a6",
-      "bytes": 9717,
+      "sha256": "019d34b233e04244b23c5ec6e4163ca100e3877990ec0debc8ad58b187977a35",
+      "bytes": 9713,
       "derived_from": {
-        "path": "(research archive) evidence/dgeg-apn-2015-2024-pt.pdf — NOT committed (2369104 bytes exceeds the evidence size cap)",
+        "path": "(research archive) evidence/dgeg-apn-2015-2024-pt.pdf - NOT committed (2369104 bytes exceeds the evidence size cap)",
         "url": "https://www.dgeg.gov.pt/media/5riiwycf/dgeg-apn-2015-2024-pt.pdf",
         "sha256": "d4490a8e3d296ed1895fc5d716db10c30191ef169a09489f7564ede07d0007a7",
         "bytes": 2369104,
@@ -73,10 +73,10 @@
       "kind": "derived",
       "source_url": "https://www.dgeg.gov.pt/media/b4fhd0lv/dgeg-aen-2025e.pdf",
       "http_status": "200 OK (research archive)",
-      "sha256": "5d73d3c607f33c10a518de856c6b47b08f62579be7d1122db4d5d2ee72027939",
-      "bytes": 1347,
+      "sha256": "e23638d59b0ee6d7d05084a06f3e8b67b36d546a234c159928dc40bd37d00e06",
+      "bytes": 1343,
       "derived_from": {
-        "path": "(research archive) evidence/dgeg-aen-2025e.pdf — NOT committed (13114538 bytes exceeds the evidence size cap)",
+        "path": "(research archive) evidence/dgeg-aen-2025e.pdf - NOT committed (13114538 bytes exceeds the evidence size cap)",
         "url": "https://www.dgeg.gov.pt/media/b4fhd0lv/dgeg-aen-2025e.pdf",
         "sha256": "9486137ed36e25c1a7dbfe5da683ee6d20548c7d405304d1199a11a8378c4db1",
         "bytes": 13114538,

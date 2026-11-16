@@ -49,8 +49,13 @@ def search_aliases(lang: str, family: str) -> str:
     return _catalog(lang).SEARCH_ALIASES.get(family, "")
 
 
+def source_text(text: str) -> str:
+    """Apply display typography to stored source copy, never to values or evidence."""
+    return text.replace(chr(0x2014), "-")
+
+
 def calculated_attribution(lang: str, attribution: str) -> str:
-    return f"{attribution} — {_catalog(lang).ATTRIBUTION_SUFFIX}"
+    return f"{source_text(attribution)} - {_catalog(lang).ATTRIBUTION_SUFFIX}"
 
 
 # --- base-series catalogue (project 4) -------------------------------------------------------
@@ -97,12 +102,12 @@ def withheld_note(lang: str, name: str) -> str:
 
 
 def series_title(lang: str, family: str, geography: str) -> str:
-    """`family — geography`, except for families whose title already names the place."""
+    """`family - geography`, except for families whose title already names the place."""
     catalog = _catalog(lang)
     title = _lookup(catalog.FAMILIES, "family", lang, family)
     if family in catalog.SELF_LOCATING_FAMILIES:
         return title
-    return f"{title} — {_lookup(catalog.GEOGRAPHIES, 'geography', lang, geography)}"
+    return f"{title} - {_lookup(catalog.GEOGRAPHIES, 'geography', lang, geography)}"
 
 
 def family_of(indicator_key: str) -> str:

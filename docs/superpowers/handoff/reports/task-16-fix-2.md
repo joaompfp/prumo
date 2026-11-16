@@ -23,11 +23,11 @@ Genuine evidence (controller live run 2026-11-12): first record `datahora
 
 ## Evidence archived (fixtures, unmodified bytes)
 
-- `tests/ingest/fixtures/eredes/summer_window_json.body` — exact original bytes of the f0nix
+- `tests/ingest/fixtures/eredes/summer_window_json.body` - exact original bytes of the f0nix
   controller live-gate run (raw_fetch id 2), COPIED from its raw store, not re-fetched:
   status 200, fetched_at 2026-11-12T19:03:10.859621+00:00, sha256
   ef0a13d7ae66e8966adc1f19127b7975d16b3a7138a117365a5381bb30c4b9ad, 17543 B.
-- `tests/ingest/fixtures/eredes/summer_window_csv.body` — ONE additional network request from
+- `tests/ingest/fixtures/eredes/summer_window_csv.body` - ONE additional network request from
   f0nix egress (urllib, in-memory, no installs/files; 10 s timeout, 0 retries, 0.912 s elapsed,
   well inside the 20 s deadline): the same UTC window via /exports/csv. Status 200,
   fetched_at 2026-11-12T19:11:27.382428+00:00, sha256
@@ -48,7 +48,7 @@ Genuine evidence (controller live run 2026-11-12): first record `datahora
   shapes (`YYYY-MM-DD` real Gregorian date, `HH:MM` real time) and internal consistency
   (`date == ano-mes-dia`), on both source and (duplicated on purpose) verifier. They are NEVER
   equated with the UTC datahora and no DST/offset is inferred. Metadata now also asserts the
-  publisher-declared types for the echo fields (text/text/text/date/text) — fail closed on
+  publisher-declared types for the echo fields (text/text/text/date/text) - fail closed on
   drift.
 - M3: default window clock `date.today()` -> `datetime.now(timezone.utc).date()` in
   EredesSource (contract is UTC; no other window change).

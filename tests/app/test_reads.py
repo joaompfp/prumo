@@ -83,10 +83,10 @@ def page_db(db):
 
 def test_series_page_composes_title_provenance_revision_and_derived(page_db):
     page = reads.series_page(page_db, "s1")
-    assert page.series.title == "População residente — Portugal"
+    assert page.series.title == "População residente - Portugal"
     assert page.series.frequency_text == "Mensal" and page.series.unit_text == "%"
     assert page.series.latest.value_display == "5,7"
-    assert page.series.source_title == "INE — Instituto Nacional de Estatística"
+    assert page.series.source_title == "INE - Instituto Nacional de Estatística"
     assert page.provenance.value_display == "5,7" and page.provenance.sampled is True
     assert page.provenance.sha256 == "sha-k3"
     assert page.provenance.verification_created_text == "02/11/2026, 00:00 UTC"
@@ -117,7 +117,7 @@ def test_derived_page_shows_formula_inputs_and_attribution(page_db):
     assert page.unit_text == "%"
     assert [i.value_display for i in page.inputs] == ["5,7", "5,9"]
     assert page.base_id == "s1" and "População residente" in page.base_title
-    assert page.attribution == "Fonte: INE — Calculado pelo Prumo"
+    assert page.attribution == "Fonte: INE - Calculado pelo Prumo"
     assert page.computed_text == "03/11/2026, 00:00 UTC"
     assert reads.derived_page(page_db, "nope") is None
 
@@ -149,11 +149,11 @@ def test_home_uses_the_curated_list_and_real_text(page_db, monkeypatch):
     card = page.cards[0]
     assert card.label == "População" and card.value_display == "5,7"
     assert card.unit_text == "%" and card.period_text == "fevereiro de 2026"
-    assert card.source_title == "INE — Instituto Nacional de Estatística"
+    assert card.source_title == "INE - Instituto Nacional de Estatística"
     assert card.fetched_text == "03/11/2026"
     assert card.derived_value_display == "0,3" and card.derived_unit_text == "%"
     assert [t.code for t in page.themes] == ["economy", "demography", "energy"]
-    assert page.sources == ("INE — Instituto Nacional de Estatística",)
+    assert page.sources == ("INE - Instituto Nacional de Estatística",)
 
 
 def test_home_skips_a_curated_series_that_is_not_served(page_db, monkeypatch):

@@ -99,13 +99,13 @@ def test_each_pair_draws_two_distinct_lines(pairs_client):
 
 
 def test_each_pair_names_both_publishers(pairs_client):
-    assert "INE — Instituto Nacional de Estatística" in pairs_client.get(
+    assert "INE - Instituto Nacional de Estatística" in pairs_client.get(
         "/comparar/inflacao-e-desemprego").text
     credit = pairs_client.get("/comparar/credito-e-taxa").text
     assert "Banco de Portugal" in credit
     # The mixed pair: one series from each institution, both named on the same page.
     mixed = pairs_client.get("/comparar/euribor-e-inflacao").text
-    assert "Banco de Portugal" in mixed and "INE — Instituto Nacional de Estatística" in mixed
+    assert "Banco de Portugal" in mixed and "INE - Instituto Nacional de Estatística" in mixed
     # Both sides of a pair carry their own provenance block.
     assert credit.count('class="provenance-list"') == 2
 
@@ -116,8 +116,8 @@ def test_pair_one_pins_the_exact_stored_tokens_in_the_table(pairs_client):
     assert f'<td class="num">{format_value("1.8")}</td>' in html
     assert f'<td class="num">{format_value("6.2")}</td>' in html
     # The chart's own point titles carry the same tokens, not a rounded copy.
-    assert "— outubro de 2026: 1,8 %" in html
-    assert "— outubro de 2026: 6,2 %" in html
+    assert "- outubro de 2026: 1,8 %" in html
+    assert "- outubro de 2026: 6,2 %" in html
 
 
 def test_table_renders_every_period_the_chart_draws(pairs_path):
@@ -137,8 +137,8 @@ def test_alignment_counts_the_periods_lost_by_the_second_series(pairs_client):
     # EUR12 has 2026-10 that the credit stock lacks; the stock has 2026-07 that EUR12 lacks.
     html = pairs_client.get("/comparar/credito-e-taxa").text
     assert "2 períodos comuns, de agosto de 2026 a setembro de 2026." in html
-    assert ("Ficam de fora 1 período de Taxa Euribor a 12 meses — Área do euro e "
-            "1 período de Crédito à habitação — Portugal") in html
+    assert ("Ficam de fora 1 período de Taxa Euribor a 12 meses - Área do euro e "
+            "1 período de Crédito à habitação - Portugal") in html
 
 
 def test_dual_axis_pair_labels_both_sides(pairs_client):
@@ -327,7 +327,7 @@ def test_chart_drops_a_period_whose_token_is_not_numeric():
                                unit_b="%"))
     # Two series at the one drawable period, and the undrawable period named in neither line.
     assert svg.count('class="chart-point"') == 2
-    assert 'title="A — janeiro de 2026' not in svg
+    assert 'title="A - janeiro de 2026' not in svg
 
 
 def test_chart_single_period_leaves_a_visible_mark():

@@ -1,4 +1,4 @@
-"""FRED independent verifier tests — recorded server-rendered /data/<CODE> table pages
+"""FRED independent verifier tests - recorded server-rendered /data/<CODE> table pages
 (tests/ingest/fixtures/fred/table-<CODE>.html, fetched 2026-11-12, sha256-pinned byte copies
 of the Task-14 preflight originals in MANIFEST.json). Mutations are built IN-TEST only, never
 stored as genuine evidence. The verifier reads no other channel: API/CSV/landing page unused.
@@ -35,7 +35,7 @@ from tests.ingest.replay_helpers import assert_replays_from_evidence
 _ALUM = "fred.aluminum.WORLD"
 
 # (series id, period) named pins; expectations are re-derived from the ARCHIVED table bytes
-# via the test-only extractor — the exact publisher cell token, trailing-zero padding kept.
+# via the test-only extractor - the exact publisher cell token, trailing-zero padding kept.
 PINS = [
     ("fred.aluminum.WORLD", "1992-01"),
     ("fred.aluminum.WORLD", "2026-09"),
@@ -361,7 +361,7 @@ def test_clean_full_run_all_12_verifies_and_stays_unserved(env):
 
 def test_tampered_value_fails_verification_and_serves_nothing(env):
     """The collector's latest aluminum token is tampered ON THE API BYTES; the independent
-    table page still answers the publisher's token — a genuine failed verification."""
+    table page still answers the publisher's token - a genuine failed verification."""
     db, specs, store, clock = env
     raw = body("obs-PALUMUSDM.json")
     assert raw.count(b'"value":"3283.054285714286"') == 1
@@ -379,7 +379,7 @@ def test_tampered_value_fails_verification_and_serves_nothing(env):
 
 
 class _BothChannels:
-    """run_with_refetch shares one Http between collector and verifier: dispatch by host —
+    """run_with_refetch shares one Http between collector and verifier: dispatch by host -
     api.stlouisfed.org carries the api_key (FixtureHttp enforces it), the table page is
     keyless (no api_key on the verifier channel ever)."""
 

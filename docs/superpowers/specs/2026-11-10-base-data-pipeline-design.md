@@ -1,4 +1,4 @@
-# Prumo — Base Data Pipeline (ingestion + sanitization) — Design
+# Prumo - Base Data Pipeline (ingestion + sanitization) - Design
 
 Date: 2026-11-10 · Status: draft for approval · Project 1 of 4 (see "Sequence")
 
@@ -19,10 +19,10 @@ This project replaces ingestion and the system of record. It is the foundation f
 
 ## 2. Sequence (four projects, brainstormed one at a time)
 
-1. **Base data pipeline** — this document.
-2. Backoffice (review of flags, source health, indicator registry) — *owner's guess: needed, not yet designed*.
-3. Derived layer (YoY, comparisons, scores, AI commentary) — separate dataset built on top of base data.
-4. UI revamp — must later expose a per-figure provenance view ("where does this come from").
+1. **Base data pipeline** - this document.
+2. Backoffice (review of flags, source health, indicator registry) - *owner's guess: needed, not yet designed*.
+3. Derived layer (YoY, comparisons, scores, AI commentary) - separate dataset built on top of base data.
+4. UI revamp - must later expose a per-figure provenance view ("where does this come from").
 
 ## 3. Goals
 
@@ -61,7 +61,7 @@ data for the owner to review once.
 Each indicator has exactly one **primary source**: the most reputable, closest to the origin.
 Portuguese data prefers a Portuguese institution (INE, Banco de Portugal, REN, DGEG, ERSE); EU-wide
 data prefers Eurostat; world data World Bank / OECD / FRED as appropriate. Other sources publishing
-the same indicator are **cross-checks only** — never displayed in place of the primary. A large
+the same indicator are **cross-checks only** - never displayed in place of the primary. A large
 primary-vs-cross-check gap raises a flag for human review; it is never auto-corrected.
 
 **Deliberately undecided:** behaviour when the primary is down or publishes a doubtful revision
@@ -73,11 +73,11 @@ counts measured during the replay (G9).
 
 Three stages, strictly separated (separation of concerns):
 
-1. **Raw** — each fetch saves the payload unmodified, content-hashed, on disk beside the DB, with a
+1. **Raw** - each fetch saves the payload unmodified, content-hashed, on disk beside the DB, with a
    manifest row (source, URL/params, time, hash, HTTP status).
-2. **Validated** — per-source parser turns a raw payload into standard observations; validators
+2. **Validated** - per-source parser turns a raw payload into standard observations; validators
    (schema, unit, period, range, duplicate, flag) accept or reject. Rejections are recorded with reason.
-3. **Served** — only validated observations, as the current vintage plus full history. The app reads
+3. **Served** - only validated observations, as the current vintage plus full history. The app reads
    only this stage.
 
 **System of record:** SQLite (strict tables, WAL, real constraints, one inspectable file). DuckDB may
@@ -109,7 +109,7 @@ superseded.
 
 Non-goals (this project): push alerts, preserving the current UI/API, derived numbers, AI commentary, UI redesign, backoffice UI, backups
 (owner: "forget about backups, we're revamping anyway"), the fallback policy (§5).
-Anti-goals — failure even if it technically works: a wrong number on screen; a number correct but
+Anti-goals - failure even if it technically works: a wrong number on screen; a number correct but
 late; any number that cannot be traced and defended to an auditor.
 
 ## 8. Existing system facts (for the builder)

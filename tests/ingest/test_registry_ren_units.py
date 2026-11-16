@@ -82,7 +82,7 @@ def test_market_unit_evidence_is_committed_and_hash_pinned():
     """The EUR/MWh unit evidence is the committed market page body (the market CSV export
     exposes no unit, so the verifier's observed_unit=None stays honest): sha256-pinned by
     MANIFEST.json 'unit_evidence' with the recorded final URL and status, and the '€/MWh'
-    narrative really present — durable beyond the expiring scratch discovery archive."""
+    narrative really present - durable beyond the expiring scratch discovery archive."""
     fix = Path(__file__).parent / "fixtures" / "ren"
     ev = json.loads((fix / "MANIFEST.json").read_text())["unit_evidence"]["market_page"]
     body = (fix / ev["file"]).read_bytes()

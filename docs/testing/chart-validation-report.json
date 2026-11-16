@@ -15,7 +15,7 @@
     "INE/ipi_yoy_cae": {
       "source": "INE",
       "indicator": "ipi_yoy_cae",
-      "label": "IPI Indústria — Variação Anual",
+      "label": "IPI Indústria - Variação Anual",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -63,7 +63,7 @@
     "INE/hicp_yoy": {
       "source": "INE",
       "indicator": "hicp_yoy",
-      "label": "Inflação (IHPC) — Variação Anual",
+      "label": "Inflação (IHPC) - Variação Anual",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -75,7 +75,7 @@
     "INE/gdp_yoy": {
       "source": "INE",
       "indicator": "gdp_yoy",
-      "label": "PIB — Variação Anual (%)",
+      "label": "PIB - Variação Anual (%)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -87,7 +87,7 @@
     "INE/exports_monthly": {
       "source": "INE",
       "indicator": "exports_monthly",
-      "label": "Exportações — Total Mensal",
+      "label": "Exportações - Total Mensal",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -99,7 +99,7 @@
     "INE/imports_monthly": {
       "source": "INE",
       "indicator": "imports_monthly",
-      "label": "Importações — Total Mensal",
+      "label": "Importações - Total Mensal",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -675,7 +675,7 @@
     "EUROSTAT/labour_productivity_hour_real": {
       "source": "EUROSTAT",
       "indicator": "labour_productivity_hour_real",
-      "label": "Produtividade por Hora — Real (UE)",
+      "label": "Produtividade por Hora - Real (UE)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -687,7 +687,7 @@
     "EUROSTAT/labour_productivity_per_hour": {
       "source": "EUROSTAT",
       "indicator": "labour_productivity_per_hour",
-      "label": "Produtividade por Hora (UE — nível)",
+      "label": "Produtividade por Hora (UE - nível)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -699,7 +699,7 @@
     "EUROSTAT/labour_productivity_person_real": {
       "source": "EUROSTAT",
       "indicator": "labour_productivity_person_real",
-      "label": "Produtividade por Trabalhador — Real (UE)",
+      "label": "Produtividade por Trabalhador - Real (UE)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -759,7 +759,7 @@
     "EUROSTAT/gdp_per_capita_eur": {
       "source": "EUROSTAT",
       "indicator": "gdp_per_capita_eur",
-      "label": "PIB per capita — EUR correntes (Eurostat)",
+      "label": "PIB per capita - EUR correntes (Eurostat)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -771,7 +771,7 @@
     "EUROSTAT/gdp_per_capita_pps": {
       "source": "EUROSTAT",
       "indicator": "gdp_per_capita_pps",
-      "label": "PIB per capita — PPC (Eurostat)",
+      "label": "PIB per capita - PPC (Eurostat)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -831,7 +831,7 @@
     "EUROSTAT/hicp": {
       "source": "EUROSTAT",
       "indicator": "hicp",
-      "label": "IHPC — Índice (Eurostat, multi-país)",
+      "label": "IHPC - Índice (Eurostat, multi-país)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -951,7 +951,7 @@
     "EUROSTAT/earn_ses_pub2s": {
       "source": "EUROSTAT",
       "indicator": "earn_ses_pub2s",
-      "label": "Salários Horários Médios — Sector Público (EUR)",
+      "label": "Salários Horários Médios - Sector Público (EUR)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1455,7 +1455,7 @@
     "OECD/cli": {
       "source": "OECD",
       "indicator": "cli",
-      "label": "CLI — Indicador Composto Avançado",
+      "label": "CLI - Indicador Composto Avançado",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1623,7 +1623,7 @@
     "DGEG/pct_renewable_real": {
       "source": "DGEG",
       "indicator": "pct_renewable_real",
-      "label": "Quota Renovável Electricidade — Mensal (%)",
+      "label": "Quota Renovável Electricidade - Mensal (%)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1635,7 +1635,7 @@
     "DGEG/pct_renewable_directive": {
       "source": "DGEG",
       "indicator": "pct_renewable_directive",
-      "label": "Meta Renovável Directiva (%) — anual",
+      "label": "Meta Renovável Directiva (%) - anual",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1647,7 +1647,7 @@
     "DGEG/renewable_share_electricity": {
       "source": "DGEG",
       "indicator": "renewable_share_electricity",
-      "label": "Quota Renovável Electricidade — Anual (%)",
+      "label": "Quota Renovável Electricidade - Anual (%)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1767,7 +1767,7 @@
     "DGEG/brent_usd": {
       "source": "DGEG",
       "indicator": "brent_usd",
-      "label": "Petróleo Brent (USD/barril) — DGEG",
+      "label": "Petróleo Brent (USD/barril) - DGEG",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1779,7 +1779,7 @@
     "DGEG/agricultural_diesel": {
       "source": "DGEG",
       "indicator": "agricultural_diesel",
-      "label": "Gasóleo Agrícola — Consumo (ktep)",
+      "label": "Gasóleo Agrícola - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1791,7 +1791,7 @@
     "DGEG/aviation_gasoline": {
       "source": "DGEG",
       "indicator": "aviation_gasoline",
-      "label": "Gasolina de Aviação — Preço (EUR/l)",
+      "label": "Gasolina de Aviação - Preço (EUR/l)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1803,7 +1803,7 @@
     "DGEG/aviation_jet_fuel": {
       "source": "DGEG",
       "indicator": "aviation_jet_fuel",
-      "label": "Combustível Aviação Jet — Preço (EUR/l)",
+      "label": "Combustível Aviação Jet - Preço (EUR/l)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1827,7 +1827,7 @@
     "DGEG/cogeneration": {
       "source": "DGEG",
       "indicator": "cogeneration",
-      "label": "Cogeração — Consumo (ktep)",
+      "label": "Cogeração - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1839,7 +1839,7 @@
     "DGEG/coloured_fuel_oil": {
       "source": "DGEG",
       "indicator": "coloured_fuel_oil",
-      "label": "Fuelóleo Colorido — Consumo (ktep)",
+      "label": "Fuelóleo Colorido - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1851,7 +1851,7 @@
     "DGEG/coloured_total": {
       "source": "DGEG",
       "indicator": "coloured_total",
-      "label": "Combustíveis Coloridos — Total (ktep)",
+      "label": "Combustíveis Coloridos - Total (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1947,7 +1947,7 @@
     "DGEG/dedicated_plants": {
       "source": "DGEG",
       "indicator": "dedicated_plants",
-      "label": "Centrais Dedicadas — Consumo (ktep)",
+      "label": "Centrais Dedicadas - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1959,7 +1959,7 @@
     "DGEG/diesel_pretax": {
       "source": "DGEG",
       "indicator": "diesel_pretax",
-      "label": "Gasóleo — Preço Pré-Imposto (EUR/l)",
+      "label": "Gasóleo - Preço Pré-Imposto (EUR/l)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -1971,7 +1971,7 @@
     "DGEG/electricity_consumption": {
       "source": "DGEG",
       "indicator": "electricity_consumption",
-      "label": "Consumo Electricidade — Anual (GWh)",
+      "label": "Consumo Electricidade - Anual (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2043,7 +2043,7 @@
     "DGEG/exports": {
       "source": "DGEG",
       "indicator": "exports",
-      "label": "Exportações Electricidade — DGEG (GWh)",
+      "label": "Exportações Electricidade - DGEG (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2067,7 +2067,7 @@
     "DGEG/fuel_coal": {
       "source": "DGEG",
       "indicator": "fuel_coal",
-      "label": "Carvão — Consumo Eléctrico (GWh)",
+      "label": "Carvão - Consumo Eléctrico (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2091,7 +2091,7 @@
     "DGEG/fuel_natural_gas": {
       "source": "DGEG",
       "indicator": "fuel_natural_gas",
-      "label": "Gás Natural — Consumo Eléctrico (GWh)",
+      "label": "Gás Natural - Consumo Eléctrico (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2103,7 +2103,7 @@
     "DGEG/fuel_other": {
       "source": "DGEG",
       "indicator": "fuel_other",
-      "label": "Outros Combustíveis — Consumo Eléctrico (GWh)",
+      "label": "Outros Combustíveis - Consumo Eléctrico (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2115,7 +2115,7 @@
     "DGEG/fuel_petroleum": {
       "source": "DGEG",
       "indicator": "fuel_petroleum",
-      "label": "Petróleo — Consumo Eléctrico (GWh)",
+      "label": "Petróleo - Consumo Eléctrico (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2127,7 +2127,7 @@
     "DGEG/gasoline_pretax": {
       "source": "DGEG",
       "indicator": "gasoline_pretax",
-      "label": "Gasolina 95 — Preço Pré-Imposto (EUR/l)",
+      "label": "Gasolina 95 - Preço Pré-Imposto (EUR/l)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2163,7 +2163,7 @@
     "DGEG/heating_diesel": {
       "source": "DGEG",
       "indicator": "heating_diesel",
-      "label": "Gasóleo de Aquecimento — Consumo (ktep)",
+      "label": "Gasóleo de Aquecimento - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2175,7 +2175,7 @@
     "DGEG/imports": {
       "source": "DGEG",
       "indicator": "imports",
-      "label": "Importações Electricidade — DGEG (GWh)",
+      "label": "Importações Electricidade - DGEG (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2187,7 +2187,7 @@
     "DGEG/lpg_auto": {
       "source": "DGEG",
       "indicator": "lpg_auto",
-      "label": "GPL Auto — Consumo (ktep)",
+      "label": "GPL Auto - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2199,7 +2199,7 @@
     "DGEG/lpg_butane": {
       "source": "DGEG",
       "indicator": "lpg_butane",
-      "label": "GPL Butano — Consumo (ktep)",
+      "label": "GPL Butano - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2211,7 +2211,7 @@
     "DGEG/lpg_propane": {
       "source": "DGEG",
       "indicator": "lpg_propane",
-      "label": "GPL Propano — Consumo (ktep)",
+      "label": "GPL Propano - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2223,7 +2223,7 @@
     "DGEG/lpg_total": {
       "source": "DGEG",
       "indicator": "lpg_total",
-      "label": "GPL Total — Consumo (ktep)",
+      "label": "GPL Total - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2235,7 +2235,7 @@
     "DGEG/maritime_diesel": {
       "source": "DGEG",
       "indicator": "maritime_diesel",
-      "label": "Gasóleo Marítimo — Consumo (ktep)",
+      "label": "Gasóleo Marítimo - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2247,7 +2247,7 @@
     "DGEG/maritime_fuel_oil": {
       "source": "DGEG",
       "indicator": "maritime_fuel_oil",
-      "label": "Fuelóleo Marítimo — Consumo (ktep)",
+      "label": "Fuelóleo Marítimo - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2259,7 +2259,7 @@
     "DGEG/maritime_total": {
       "source": "DGEG",
       "indicator": "maritime_total",
-      "label": "Combustíveis Marítimos — Total (ktep)",
+      "label": "Combustíveis Marítimos - Total (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2271,7 +2271,7 @@
     "DGEG/natgas_avg_price": {
       "source": "DGEG",
       "indicator": "natgas_avg_price",
-      "label": "Gás Natural — Preço Médio (EUR/MWh)",
+      "label": "Gás Natural - Preço Médio (EUR/MWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2283,7 +2283,7 @@
     "DGEG/natgas_cogeneration": {
       "source": "DGEG",
       "indicator": "natgas_cogeneration",
-      "label": "Gás Natural Cogeração — Volume (m3)",
+      "label": "Gás Natural Cogeração - Volume (m3)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2295,7 +2295,7 @@
     "DGEG/natgas_dedicated_plants": {
       "source": "DGEG",
       "indicator": "natgas_dedicated_plants",
-      "label": "Gás Natural Centrais Dedicadas — Volume (m3)",
+      "label": "Gás Natural Centrais Dedicadas - Volume (m3)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2307,7 +2307,7 @@
     "DGEG/natgas_imports_pipeline": {
       "source": "DGEG",
       "indicator": "natgas_imports_pipeline",
-      "label": "Gás Natural — Importações Gasoduto (m3)",
+      "label": "Gás Natural - Importações Gasoduto (m3)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2319,7 +2319,7 @@
     "DGEG/natgas_imports_ship": {
       "source": "DGEG",
       "indicator": "natgas_imports_ship",
-      "label": "Gás Natural — Importações GNL (m3)",
+      "label": "Gás Natural - Importações GNL (m3)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2331,7 +2331,7 @@
     "DGEG/natgas_imports_total": {
       "source": "DGEG",
       "indicator": "natgas_imports_total",
-      "label": "Gás Natural — Importações Total (Gm³)",
+      "label": "Gás Natural - Importações Total (Gm³)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2343,7 +2343,7 @@
     "DGEG/natgas_other_sectors": {
       "source": "DGEG",
       "indicator": "natgas_other_sectors",
-      "label": "Gás Natural Outros Sectores — Volume (m3)",
+      "label": "Gás Natural Outros Sectores - Volume (m3)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2355,7 +2355,7 @@
     "DGEG/natgas_total": {
       "source": "DGEG",
       "indicator": "natgas_total",
-      "label": "Gás Natural Total — Volume (m3)",
+      "label": "Gás Natural Total - Volume (m3)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2367,7 +2367,7 @@
     "DGEG/petroleum_coke": {
       "source": "DGEG",
       "indicator": "petroleum_coke",
-      "label": "Coque de Petróleo — Consumo (ktep)",
+      "label": "Coque de Petróleo - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2379,7 +2379,7 @@
     "DGEG/petroleum_diesel": {
       "source": "DGEG",
       "indicator": "petroleum_diesel",
-      "label": "Gasóleo — Consumo (ktep)",
+      "label": "Gasóleo - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2391,7 +2391,7 @@
     "DGEG/petroleum_fuel_oil": {
       "source": "DGEG",
       "indicator": "petroleum_fuel_oil",
-      "label": "Fuelóleo — Consumo (ktep)",
+      "label": "Fuelóleo - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2403,7 +2403,7 @@
     "DGEG/petroleum_gasoline": {
       "source": "DGEG",
       "indicator": "petroleum_gasoline",
-      "label": "Gasolina — Consumo (ktep)",
+      "label": "Gasolina - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2415,7 +2415,7 @@
     "DGEG/petroleum_lpg": {
       "source": "DGEG",
       "indicator": "petroleum_lpg",
-      "label": "GPL Petrolífero — Consumo (ktep)",
+      "label": "GPL Petrolífero - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2427,7 +2427,7 @@
     "DGEG/petroleum_total": {
       "source": "DGEG",
       "indicator": "petroleum_total",
-      "label": "Produtos Petrolíferos — Total (ktep)",
+      "label": "Produtos Petrolíferos - Total (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2451,7 +2451,7 @@
     "DGEG/price_diesel": {
       "source": "DGEG",
       "indicator": "price_diesel",
-      "label": "Preço Gasóleo (EUR/l) — recente",
+      "label": "Preço Gasóleo (EUR/l) - recente",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2511,7 +2511,7 @@
     "DGEG/price_gasoline_io95": {
       "source": "DGEG",
       "indicator": "price_gasoline_io95",
-      "label": "Preço Gasolina IO95 PVP (EUR/l) — recente",
+      "label": "Preço Gasolina IO95 PVP (EUR/l) - recente",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2523,7 +2523,7 @@
     "DGEG/price_gasoline_io98": {
       "source": "DGEG",
       "indicator": "price_gasoline_io98",
-      "label": "Preço Gasolina IO98 PVP (EUR/l) — recente",
+      "label": "Preço Gasolina IO98 PVP (EUR/l) - recente",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2571,7 +2571,7 @@
     "DGEG/road_fuels_diesel": {
       "source": "DGEG",
       "indicator": "road_fuels_diesel",
-      "label": "Gasóleo Rodoviário — Consumo (ktep)",
+      "label": "Gasóleo Rodoviário - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2583,7 +2583,7 @@
     "DGEG/road_fuels_gasoline_io95": {
       "source": "DGEG",
       "indicator": "road_fuels_gasoline_io95",
-      "label": "Gasolina IO95 Rodoviária — Consumo (ktep)",
+      "label": "Gasolina IO95 Rodoviária - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2595,7 +2595,7 @@
     "DGEG/road_fuels_gasoline_io98": {
       "source": "DGEG",
       "indicator": "road_fuels_gasoline_io98",
-      "label": "Gasolina IO98 Rodoviária — Consumo (ktep)",
+      "label": "Gasolina IO98 Rodoviária - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2607,7 +2607,7 @@
     "DGEG/road_fuels_lpg_auto": {
       "source": "DGEG",
       "indicator": "road_fuels_lpg_auto",
-      "label": "GPL Auto Rodoviário — Consumo (ktep)",
+      "label": "GPL Auto Rodoviário - Consumo (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2619,7 +2619,7 @@
     "DGEG/road_fuels_total": {
       "source": "DGEG",
       "indicator": "road_fuels_total",
-      "label": "Combustíveis Rodoviários — Total (ktep)",
+      "label": "Combustíveis Rodoviários - Total (ktep)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2859,7 +2859,7 @@
     "DGEG/production_non_renewable": {
       "source": "DGEG",
       "indicator": "production_non_renewable",
-      "label": "Produção Não Renovável — DGEG (GWh)",
+      "label": "Produção Não Renovável - DGEG (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -2871,7 +2871,7 @@
     "DGEG/production_solar_pv": {
       "source": "DGEG",
       "indicator": "production_solar_pv",
-      "label": "Produção Solar FV — mista (GWh)",
+      "label": "Produção Solar FV - mista (GWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3507,7 +3507,7 @@
     "DGEG/natgas_price_domestic_€_per_GJ": {
       "source": "DGEG",
       "indicator": "natgas_price_domestic_€_per_GJ",
-      "label": "Gas Natural Doméstico — Preço (EUR/GJ)",
+      "label": "Gas Natural Doméstico - Preço (EUR/GJ)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3519,7 +3519,7 @@
     "DGEG/natgas_price_domestic_€_per_MWh": {
       "source": "DGEG",
       "indicator": "natgas_price_domestic_€_per_MWh",
-      "label": "Gas Natural Doméstico — Preço (EUR/MWh)",
+      "label": "Gas Natural Doméstico - Preço (EUR/MWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3651,7 +3651,7 @@
     "DGEG/natgas_price_industry_€_per_GJ": {
       "source": "DGEG",
       "indicator": "natgas_price_industry_€_per_GJ",
-      "label": "Gas Natural Indústria — Preço (EUR/GJ)",
+      "label": "Gas Natural Indústria - Preço (EUR/GJ)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3663,7 +3663,7 @@
     "ERSE/tariff_mt_peak": {
       "source": "ERSE",
       "indicator": "tariff_mt_peak",
-      "label": "Tarifa MT — Ponta (€/kWh)",
+      "label": "Tarifa MT - Ponta (€/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3675,7 +3675,7 @@
     "ERSE/tariff_mt_off_peak": {
       "source": "ERSE",
       "indicator": "tariff_mt_off_peak",
-      "label": "Tarifa MT — Vazio (€/kWh)",
+      "label": "Tarifa MT - Vazio (€/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3687,7 +3687,7 @@
     "ERSE/tariff_at_peak": {
       "source": "ERSE",
       "indicator": "tariff_at_peak",
-      "label": "Tarifa AT — Ponta (€/kWh)",
+      "label": "Tarifa AT - Ponta (€/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3699,7 +3699,7 @@
     "ERSE/tariff_mat_peak": {
       "source": "ERSE",
       "indicator": "tariff_mat_peak",
-      "label": "Tarifa MAT — Ponta (€/kWh)",
+      "label": "Tarifa MAT - Ponta (€/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3723,7 +3723,7 @@
     "ERSE/access_mt_peak": {
       "source": "ERSE",
       "indicator": "access_mt_peak",
-      "label": "Tarifa Acesso MT — Ponta (EUR/kWh)",
+      "label": "Tarifa Acesso MT - Ponta (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3735,7 +3735,7 @@
     "ERSE/access_mt_off_peak": {
       "source": "ERSE",
       "indicator": "access_mt_off_peak",
-      "label": "Tarifa Acesso MT — Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso MT - Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3747,7 +3747,7 @@
     "ERSE/access_mt_super_off_peak": {
       "source": "ERSE",
       "indicator": "access_mt_super_off_peak",
-      "label": "Tarifa Acesso MT — Super Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso MT - Super Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3759,7 +3759,7 @@
     "ERSE/access_mt_shoulder": {
       "source": "ERSE",
       "indicator": "access_mt_shoulder",
-      "label": "Tarifa Acesso MT — Cheio (EUR/kWh)",
+      "label": "Tarifa Acesso MT - Cheio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3771,7 +3771,7 @@
     "ERSE/access_mt_power_peak": {
       "source": "ERSE",
       "indicator": "access_mt_power_peak",
-      "label": "Tarifa Acesso MT — Potência Ponta (EUR/kW/mês)",
+      "label": "Tarifa Acesso MT - Potência Ponta (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3783,7 +3783,7 @@
     "ERSE/access_mt_power_contracted": {
       "source": "ERSE",
       "indicator": "access_mt_power_contracted",
-      "label": "Tarifa Acesso MT — Potência Contratada (EUR/kW/mês)",
+      "label": "Tarifa Acesso MT - Potência Contratada (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3795,7 +3795,7 @@
     "ERSE/access_at_peak": {
       "source": "ERSE",
       "indicator": "access_at_peak",
-      "label": "Tarifa Acesso AT — Ponta (EUR/kWh)",
+      "label": "Tarifa Acesso AT - Ponta (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3807,7 +3807,7 @@
     "ERSE/access_at_off_peak": {
       "source": "ERSE",
       "indicator": "access_at_off_peak",
-      "label": "Tarifa Acesso AT — Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso AT - Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3819,7 +3819,7 @@
     "ERSE/access_at_super_off_peak": {
       "source": "ERSE",
       "indicator": "access_at_super_off_peak",
-      "label": "Tarifa Acesso AT — Super Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso AT - Super Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3831,7 +3831,7 @@
     "ERSE/access_at_shoulder": {
       "source": "ERSE",
       "indicator": "access_at_shoulder",
-      "label": "Tarifa Acesso AT — Cheio (EUR/kWh)",
+      "label": "Tarifa Acesso AT - Cheio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3843,7 +3843,7 @@
     "ERSE/access_at_power_peak": {
       "source": "ERSE",
       "indicator": "access_at_power_peak",
-      "label": "Tarifa Acesso AT — Potência Ponta (EUR/kW/mês)",
+      "label": "Tarifa Acesso AT - Potência Ponta (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3855,7 +3855,7 @@
     "ERSE/access_at_power_contracted": {
       "source": "ERSE",
       "indicator": "access_at_power_contracted",
-      "label": "Tarifa Acesso AT — Potência Contratada (EUR/kW/mês)",
+      "label": "Tarifa Acesso AT - Potência Contratada (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3867,7 +3867,7 @@
     "ERSE/access_mat_peak": {
       "source": "ERSE",
       "indicator": "access_mat_peak",
-      "label": "Tarifa Acesso MAT — Ponta (EUR/kWh)",
+      "label": "Tarifa Acesso MAT - Ponta (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3879,7 +3879,7 @@
     "ERSE/access_mat_off_peak": {
       "source": "ERSE",
       "indicator": "access_mat_off_peak",
-      "label": "Tarifa Acesso MAT — Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso MAT - Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3891,7 +3891,7 @@
     "ERSE/access_mat_super_off_peak": {
       "source": "ERSE",
       "indicator": "access_mat_super_off_peak",
-      "label": "Tarifa Acesso MAT — Super Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso MAT - Super Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3903,7 +3903,7 @@
     "ERSE/access_mat_shoulder": {
       "source": "ERSE",
       "indicator": "access_mat_shoulder",
-      "label": "Tarifa Acesso MAT — Cheio (EUR/kWh)",
+      "label": "Tarifa Acesso MAT - Cheio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3915,7 +3915,7 @@
     "ERSE/access_mat_power_peak": {
       "source": "ERSE",
       "indicator": "access_mat_power_peak",
-      "label": "Tarifa Acesso MAT — Potência Ponta (EUR/kW/mês)",
+      "label": "Tarifa Acesso MAT - Potência Ponta (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3927,7 +3927,7 @@
     "ERSE/access_mat_power_contracted": {
       "source": "ERSE",
       "indicator": "access_mat_power_contracted",
-      "label": "Tarifa Acesso MAT — Potência Contratada (EUR/kW/mês)",
+      "label": "Tarifa Acesso MAT - Potência Contratada (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3939,7 +3939,7 @@
     "ERSE/access_bte_peak": {
       "source": "ERSE",
       "indicator": "access_bte_peak",
-      "label": "Tarifa Acesso BTE — Ponta (EUR/kWh)",
+      "label": "Tarifa Acesso BTE - Ponta (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3951,7 +3951,7 @@
     "ERSE/access_bte_off_peak": {
       "source": "ERSE",
       "indicator": "access_bte_off_peak",
-      "label": "Tarifa Acesso BTE — Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso BTE - Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3963,7 +3963,7 @@
     "ERSE/access_bte_super_off_peak": {
       "source": "ERSE",
       "indicator": "access_bte_super_off_peak",
-      "label": "Tarifa Acesso BTE — Super Vazio (EUR/kWh)",
+      "label": "Tarifa Acesso BTE - Super Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3975,7 +3975,7 @@
     "ERSE/access_bte_shoulder": {
       "source": "ERSE",
       "indicator": "access_bte_shoulder",
-      "label": "Tarifa Acesso BTE — Cheio (EUR/kWh)",
+      "label": "Tarifa Acesso BTE - Cheio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3987,7 +3987,7 @@
     "ERSE/access_bte_power_peak": {
       "source": "ERSE",
       "indicator": "access_bte_power_peak",
-      "label": "Tarifa Acesso BTE — Potência Ponta (EUR/kW/mês)",
+      "label": "Tarifa Acesso BTE - Potência Ponta (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -3999,7 +3999,7 @@
     "ERSE/access_bte_power_contracted": {
       "source": "ERSE",
       "indicator": "access_bte_power_contracted",
-      "label": "Tarifa Acesso BTE — Potência Contratada (EUR/kW/mês)",
+      "label": "Tarifa Acesso BTE - Potência Contratada (EUR/kW/mês)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4011,7 +4011,7 @@
     "ERSE/access_btn_peak": {
       "source": "ERSE",
       "indicator": "access_btn_peak",
-      "label": "Tarifa Acesso BTN — Ponta (EUR/kWh)",
+      "label": "Tarifa Acesso BTN - Ponta (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4023,7 +4023,7 @@
     "ERSE/access_btn_shoulder": {
       "source": "ERSE",
       "indicator": "access_btn_shoulder",
-      "label": "Tarifa Acesso BTN — Cheio (EUR/kWh)",
+      "label": "Tarifa Acesso BTN - Cheio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4059,7 +4059,7 @@
     "ERSE/tariff_at_off_peak": {
       "source": "ERSE",
       "indicator": "tariff_at_off_peak",
-      "label": "Tarifa AT — Vazio (EUR/kWh) [hist]",
+      "label": "Tarifa AT - Vazio (EUR/kWh) [hist]",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4071,7 +4071,7 @@
     "ERSE/tariff_at_shoulder": {
       "source": "ERSE",
       "indicator": "tariff_at_shoulder",
-      "label": "Tarifa AT — Cheio (EUR/kWh) [hist]",
+      "label": "Tarifa AT - Cheio (EUR/kWh) [hist]",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4083,7 +4083,7 @@
     "ERSE/tariff_at_super_off_peak": {
       "source": "ERSE",
       "indicator": "tariff_at_super_off_peak",
-      "label": "Tarifa AT — Super Vazio (EUR/kWh) [hist]",
+      "label": "Tarifa AT - Super Vazio (EUR/kWh) [hist]",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4095,7 +4095,7 @@
     "ERSE/tariff_mat_off_peak": {
       "source": "ERSE",
       "indicator": "tariff_mat_off_peak",
-      "label": "Tarifa MAT — Vazio (EUR/kWh)",
+      "label": "Tarifa MAT - Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4107,7 +4107,7 @@
     "ERSE/tariff_mat_shoulder": {
       "source": "ERSE",
       "indicator": "tariff_mat_shoulder",
-      "label": "Tarifa MAT — Cheio (EUR/kWh)",
+      "label": "Tarifa MAT - Cheio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4119,7 +4119,7 @@
     "ERSE/tariff_mat_super_off_peak": {
       "source": "ERSE",
       "indicator": "tariff_mat_super_off_peak",
-      "label": "Tarifa MAT — Super Vazio (EUR/kWh)",
+      "label": "Tarifa MAT - Super Vazio (EUR/kWh)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4131,7 +4131,7 @@
     "ERSE/tariff_mt_shoulder": {
       "source": "ERSE",
       "indicator": "tariff_mt_shoulder",
-      "label": "Tarifa MT — Cheio (EUR/kWh) [hist]",
+      "label": "Tarifa MT - Cheio (EUR/kWh) [hist]",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4143,7 +4143,7 @@
     "ERSE/tariff_mt_super_off_peak": {
       "source": "ERSE",
       "indicator": "tariff_mt_super_off_peak",
-      "label": "Tarifa MT — Super Vazio (EUR/kWh) [hist]",
+      "label": "Tarifa MT - Super Vazio (EUR/kWh) [hist]",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4179,7 +4179,7 @@
     "WORLDBANK/fdi_inflows_pct_gdp": {
       "source": "WORLDBANK",
       "indicator": "fdi_inflows_pct_gdp",
-      "label": "Investimento Directo Estrangeiro — Entradas",
+      "label": "Investimento Directo Estrangeiro - Entradas",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,
@@ -4227,7 +4227,7 @@
     "WORLDBANK/gdp_usd": {
       "source": "WORLDBANK",
       "indicator": "gdp_usd",
-      "label": "PIB — Total (USD correntes)",
+      "label": "PIB - Total (USD correntes)",
       "status": "OK",
       "has_canvas": true,
       "canvas_has_content": true,

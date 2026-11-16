@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ page.series.title }} — Prumo{% endblock %}
+{% block title %}{{ page.series.title }} - Prumo{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/temas/{{ page.series.theme }}">{{ page.series.theme_text }}</a> <span aria-hidden="true">/</span> {{ page.series.family_title }}
@@ -57,7 +57,7 @@
       <thead><tr><th scope="col">Período</th><th scope="col" class="num">Valor</th><th scope="col">Estado</th><th scope="col">Recolhido</th></tr></thead>
       <tbody>
         {% for v in page.values %}
-        <tr><td>{{ v.period_text }}</td><td class="num">{{ v.value_display }}</td><td>{{ v.status_text or "—" }}</td><td>{{ v.fetched_text }}</td></tr>
+        <tr><td>{{ v.period_text }}</td><td class="num">{{ v.value_display }}</td><td>{{ v.status_text or "-" }}</td><td>{{ v.fetched_text }}</td></tr>
         {% endfor %}
       </tbody>
     </table>
@@ -74,11 +74,11 @@
   <dl class="provenance-list">
     <dt>Publicado por</dt><dd>{{ page.series.source_title }}</dd>
     <dt>Atribuição</dt><dd>{{ page.series.attribution }}</dd>
-    <dt>Série original</dt><dd>{% if page.series.native_code %}<code>{{ page.series.native_code }}</code>{% else %}—{% endif %}{% if page.series.series_url and page.series.series_url.startswith('https://') %} · <a href="{{ page.series.series_url }}" rel="noopener noreferrer">página do editor</a>{% endif %}</dd>
+    <dt>Série original</dt><dd>{% if page.series.native_code %}<code>{{ page.series.native_code }}</code>{% else %}-{% endif %}{% if page.series.series_url and page.series.series_url.startswith('https://') %} · <a href="{{ page.series.series_url }}" rel="noopener noreferrer">página do editor</a>{% endif %}</dd>
     {% if page.provenance %}
     <dt>Recolhido</dt><dd>{{ page.provenance.fetched_text }}</dd>
     <dt>Execução</dt><dd>#{{ page.provenance.run_id }}</dd>
-    <dt>Ficheiro arquivado</dt><dd>{% if page.provenance.sha256 %}<code title="{{ page.provenance.sha256 }}">{{ page.provenance.sha256[:12] }}…{{ page.provenance.sha256[-6:] }}</code>{% else %}—{% endif %}{% if page.provenance.bytes_text %} · {{ page.provenance.bytes_text }} bytes{% endif %}{% if page.provenance.http_status %} · HTTP {{ page.provenance.http_status }}{% endif %}</dd>
+    <dt>Ficheiro arquivado</dt><dd>{% if page.provenance.sha256 %}<code title="{{ page.provenance.sha256 }}">{{ page.provenance.sha256[:12] }}…{{ page.provenance.sha256[-6:] }}</code>{% else %}-{% endif %}{% if page.provenance.bytes_text %} · {{ page.provenance.bytes_text }} bytes{% endif %}{% if page.provenance.http_status %} · HTTP {{ page.provenance.http_status }}{% endif %}</dd>
     <dt>Verificação</dt>
     <dd>
       {% if page.provenance.verification_created_text %}

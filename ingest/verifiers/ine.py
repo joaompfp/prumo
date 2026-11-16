@@ -7,7 +7,7 @@
 A different endpoint and a different format, owned by INE's publication UI. The table is INE's
 *published rendering*: ',' decimal, space thousands separators, the conventional sign appended
 to the figure ('5,6 &'), and the unit symbol shown in the table header. The collector's JSON
-`valor` token drops trailing zeros ('2' where the table shows '2,0') — verification compares
+`valor` token drops trailing zeros ('2' where the table shows '2,0') - verification compares
 NUMERICALLY (ingest.verify compares exact Decimals), which is Ruling AB.
 
 Mechanics (reverse-engineered and cross-checked live 2026-11-11; see the Task 10 report):
@@ -24,7 +24,7 @@ Mechanics (reverse-engineered and cross-checked live 2026-11-11; see the Task 10
     of exactly that cut. The collector's dimension numbering maps onto the page's classes as:
     Dim1 = the type='time' class (period), Dim2 = the type='geo' class, Dim3.. = the type='dim'
     classes in ascending `order` attribute. The shipped tree may lack deep categories (e.g. the
-    CAE *divisions* of indicator 0011889 — only the sections B-E ship); a missing `cod_categ` is
+    CAE *divisions* of indicator 0011889 - only the sections B-E ship); a missing `cod_categ` is
     then selected by inserting one Categoria node for it as a direct child of that class's root
     category. That recipe was validated live against 0011889 divisions 08/10/35/38 (the rendered
     rows carry the requested code and the values match the JSON channel exactly); injecting
@@ -54,7 +54,7 @@ native_code parsing, the conventional-sign table and the unit-symbol table are D
 PURPOSE: if the two copies ever disagree, verification fails loudly.
 
 Requests are paced by the injected Http client (RequestsHttp throttles every request to ≤1/s by
-default) — the verifier adds no sleeping of its own so tests on recorded fixtures stay fast.
+default) - the verifier adds no sleeping of its own so tests on recorded fixtures stay fast.
 
 Registration: the Task 17 CLI calls register_verifier(INEVerifier()).
 """
@@ -271,7 +271,7 @@ def _select(page: _Page, period: str, frequency: str, pins: list[tuple[str, str]
     """The form fields with xmlDocHidden rewritten to select exactly the wanted cut: one period
     category and one category per other dimension. A pinned category missing from the shipped
     tree (deep tree levels, e.g. CAE divisions) is injected as a direct child of that class's
-    root category — validated live on 0011889 against the JSON channel; the response table
+    root category - validated live on 0011889 against the JSON channel; the response table
     carries the category's own code, so the evidence identifies what was read."""
     if frequency not in ("A", "M"):
         raise ValueError(f"this channel was probed for frequencies A and M; got {frequency!r}")
@@ -526,7 +526,7 @@ class INEVerifier:
                 if not 200 <= r.status < 300:
                     raise VerifierUnavailable(f"INE page for {varcd} answered HTTP {r.status}")
                 if len(r.body) < MIN_PAGE_BYTES:
-                    raise ValueError(f"INE page for {varcd} is only {len(r.body)} B — error "
+                    raise ValueError(f"INE page for {varcd} is only {len(r.body)} B - error "
                                      f"page or a missing Referer header (302+empty without it)")
                 pages[varcd] = _page_from(r.body, varcd)
             page = pages[varcd]

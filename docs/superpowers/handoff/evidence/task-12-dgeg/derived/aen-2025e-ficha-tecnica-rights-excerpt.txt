@@ -1,7 +1,7 @@
-DERIVED EVIDENCE — NOT the raw HTTP response and NOT usable as verifier response evidence.
+DERIVED EVIDENCE - NOT the raw HTTP response and NOT usable as verifier response evidence.
 Derivation: `pdftotext -layout` text layer of the source PDF, ficha técnica (rights) section only, excerpted by Task 12 follow-up research (2026-11-11).
 Source PDF: https://www.dgeg.gov.pt/media/b4fhd0lv/dgeg-aen-2025e.pdf (HTTP 200, 13114538 bytes,
-sha256 9486137ed36e25c1a7dbfe5da683ee6d20548c7d405304d1199a11a8378c4db1; the PDF is NOT committed — 13 MB is above the evidence size cap; the full derived text layer additionally survives only in the volatile research scratch archive).
+sha256 9486137ed36e25c1a7dbfe5da683ee6d20548c7d405304d1199a11a8378c4db1; the PDF is NOT committed - 13 MB is above the evidence size cap; the full derived text layer additionally survives only in the volatile research scratch archive).
 Purpose: verbatim rights wording for the licence disposition in registry/licences-todo.md.
 ---
 EDIÇÃO 2025

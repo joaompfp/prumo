@@ -1,4 +1,4 @@
-"""Live end-to-end check against FRED — network. Deselected by default (pytest.ini adds
+"""Live end-to-end check against FRED - network. Deselected by default (pytest.ini adds
 -m "not live"); run with the owner's key in the environment ONLY:
 
     FRED_API_KEY=... .venv-ci/bin/python -m pytest tests/ingest/test_live_fred.py -m live -s

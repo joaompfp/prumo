@@ -1,4 +1,4 @@
-# Prumo Indicator Audit — Status Report
+# Prumo Indicator Audit - Status Report
 
 **Date:** 2026-03-16
 **Session:** Análise tab full indicator audit + bug fixes
@@ -32,16 +32,16 @@ Tested all 372 indicators via internal API (`http://172.20.0.6:8080/api/series`)
 - Tests 372 individual indicators + 21 common combos
 - Saves results to `/tmp/prumo-audit-results.json`
 
-### Previous run results (INVALID — test had bugs)
+### Previous run results (INVALID - test had bugs)
 First run: 91/372 OK (timing bugs). Second run: similar. Results in `docs/testing/prumo-audit-results.json` are from the buggy run.
 
 ### Bugs found and fixed in test script
 
-1. **SPA hashchange listener stacking** — The test's `page.goto()` caused the SPA to re-initialize, registering duplicate `hashchange` listeners with stale closures over empty catalog objects → random 404 errors. **Fix:** each test now uses a fresh `context.new_page()` (full page reload per indicator). Slower but reliable.
+1. **SPA hashchange listener stacking** - The test's `page.goto()` caused the SPA to re-initialize, registering duplicate `hashchange` listeners with stale closures over empty catalog objects → random 404 errors. **Fix:** each test now uses a fresh `context.new_page()` (full page reload per indicator). Slower but reliable.
 
-2. **DOM scope leak** — `_wait_for_chart_or_error` found `.loading-state` from `#painel` section instead of `#explorador` → false timeouts. **Fix:** all queries scoped to `document.getElementById('explorador')`.
+2. **DOM scope leak** - `_wait_for_chart_or_error` found `.loading-state` from `#painel` section instead of `#explorador` → false timeouts. **Fix:** all queries scoped to `document.getElementById('explorador')`.
 
-3. **Canvas detection** — Chart renders inside `#exp-chart-wrap > #exp-chart > canvas`, not generic `canvas`. **Fix:** specific selectors added.
+3. **Canvas detection** - Chart renders inside `#exp-chart-wrap > #exp-chart > canvas`, not generic `canvas`. **Fix:** specific selectors added.
 
 ### Smoke test results (after fixes)
 ```
@@ -50,10 +50,10 @@ OK   INE/hicp_yoy
 OK   FRED/copper
 OK   BPORTUGAL/euribor_12m
 OK   REN/electricity_wind
-FAIL WORLDBANK/gdp_per_capita_ppp  (timeout 31s — annual data, slow)
+FAIL WORLDBANK/gdp_per_capita_ppp  (timeout 31s - annual data, slow)
 OK   OECD/cli
 OK   DGEG/price_diesel_pvp
-FAIL ERSE/btn_simple              (timeout 31s — annual data, slow)
+FAIL ERSE/btn_simple              (timeout 31s - annual data, slow)
 OK   EUROSTAT/unemployment
 ```
 8/10 OK. The 2 timeouts are likely due to `MAX_CHART_WAIT=15s` being too short for annual indicators. **Increase to 45s** for the full run.
@@ -63,7 +63,7 @@ OK   EUROSTAT/unemployment
 2. Delete old results: `rm /tmp/prumo-audit-results.json`
 3. Run: `cd stacks/web/images/prumo && source venv/bin/activate && python test_all_indicators.py --headless`
 4. Monitor: `tail -f /tmp/prumo-audit.log`
-5. Set up Telegram watcher (see `/tmp/prumo-audit-watcher.py` — update PID)
+5. Set up Telegram watcher (see `/tmp/prumo-audit-watcher.py` - update PID)
 6. Expected duration: ~3-4 hours (372 indicators × ~15-30s each)
 
 ---
@@ -111,8 +111,8 @@ OK   EUROSTAT/unemployment
 ## 5. Known Issues / Next Steps
 
 - **Full browser audit not yet run** with the corrected test script
-- **Painel lens selector** still has its own per-section selector — consider removing it now that global exists (or keep for backward compat)
-- **Metodologia lens bar** (`mf-lens-bar`) also has its own — should sync with global
-- **Custom lens textarea** only accessible in Metodologia — may need a modal from the global dropdown
-- **WORLDBANK/literacy_rate** and **WORLDBANK/gov_debt_pct_gdp_wb** have no data at all — may need data source investigation
-- **FRED/gold_price** has no data — check if FRED series ID changed
+- **Painel lens selector** still has its own per-section selector - consider removing it now that global exists (or keep for backward compat)
+- **Metodologia lens bar** (`mf-lens-bar`) also has its own - should sync with global
+- **Custom lens textarea** only accessible in Metodologia - may need a modal from the global dropdown
+- **WORLDBANK/literacy_rate** and **WORLDBANK/gov_debt_pct_gdp_wb** have no data at all - may need data source investigation
+- **FRED/gold_price** has no data - check if FRED series ID changed

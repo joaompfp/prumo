@@ -8,7 +8,7 @@ core.yaml == core.proposed.yaml and the one-primary-per-indicator_key invariant 
 run_with_refetch refuses dgeg BEFORE any fetch even when handed explicit standalone test doubles
 (here, not the real network); and the normal registry sync + 0005 licence gate withholds even
 synthetic verified/fetched and legacy DGEG rows, legacy_served='1' included (synthetic policy
-test — this is NOT a live DGEG ingestion and must never be read as one). Evidence pins make the
+test - this is NOT a live DGEG ingestion and must never be read as one). Evidence pins make the
 disposition auditable without the expiring scratch paths: the original workbook bytes/hash and a
 small raw+derived bundle under docs/superpowers/handoff/evidence/task-12-dgeg/.
 """
@@ -34,7 +34,7 @@ EVIDENCE = REPO / "docs" / "superpowers" / "handoff" / "evidence" / "task-12-dge
 # registry/unmapped-dgeg.md): sha256/bytes verified byte-identical against the research archive.
 WORKBOOK_SHA256 = "5f31904ad33757ba2b52d02fd5107be4054ad94db7e97d1bc17edfda177837be"
 WORKBOOK_BYTES = 119336
-# Source PDFs of the DERIVED excerpts (the PDFs themselves are NOT committed — too large).
+# Source PDFs of the DERIVED excerpts (the PDFs themselves are NOT committed - too large).
 APN_PDF_SHA256 = "d4490a8e3d296ed1895fc5d716db10c30191ef169a09489f7564ede07d0007a7"  # 2369104 B
 AEN_PDF_SHA256 = "9486137ed36e25c1a7dbfe5da683ee6d20548c7d405304d1199a11a8378c4db1"  # 13114538 B
 
@@ -73,7 +73,7 @@ def _dgeg_specs():
 
 
 class _StandaloneDgegSourceDouble:
-    """CLEARLY LABELLED TEST DOUBLE — not a DGEG adapter (none exists). Any use explodes: the
+    """CLEARLY LABELLED TEST DOUBLE - not a DGEG adapter (none exists). Any use explodes: the
     disposition must block before fetch/parse are ever reached."""
     name = "dgeg"
     expected_format = "xlsx"
@@ -86,7 +86,7 @@ class _StandaloneDgegSourceDouble:
 
 
 class _StandaloneDgegVerifierDouble:
-    """CLEARLY LABELLED TEST DOUBLE — not a DGEG verifier (none exists or is registered)."""
+    """CLEARLY LABELLED TEST DOUBLE - not a DGEG verifier (none exists or is registered)."""
     source_name = "dgeg"
 
     def check(self, items, http):
@@ -117,7 +117,7 @@ def test_dgeg_source_scoped_flags_and_unchanged_licence_fields():
     assert dgeg.verifiable is False, "scoped marker: not verifiable AS CURRENTLY CONFIGURED"
     assert dgeg.redistribution_ok is False
     # base licence wording/URL/attribution preserved (evidence detail lives in licences-todo.md)
-    assert dgeg.licence == "UNVERIFIED — builder must confirm before serving"
+    assert dgeg.licence == "UNVERIFIED - builder must confirm before serving"
     assert dgeg.licence_url == "https://www.dgeg.gov.pt/"
     assert dgeg.attribution == "Source: DGEG"
     with pytest.raises(KeyError):

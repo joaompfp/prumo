@@ -1,4 +1,4 @@
-# PROVISIONAL — owner review pending
+# PROVISIONAL - owner review pending
 
 # Deferred tail (left out of core)
 

@@ -30,10 +30,10 @@ Channel mechanics (recorded live in tests/ingest/fixtures/bportugal/verify/):
     EUR/USD series carries no territory and is pinned by its currency pair, geography EA by
     reviewed convention). Some members have no EN title; the needed surfaces all do.
     observed_flag: this channel exposes NO observation status (rows carry privacy_code 'P' and
-    an empty description only), so observed_flag is None and the flag is not compared —
+    an empty description only), so observed_flag is None and the flag is not compared -
     documented, never echoed from the spec.
 
-EVIDENCE (Ruling R/G7): one item's decision reads TWO publisher responses — the series-metadata
+EVIDENCE (Ruling R/G7): one item's decision reads TWO publisher responses - the series-metadata
 record (observed_unit) and the month-window observations (observed_text). ItemResult.evidence
 therefore bundles both exact wire records in a versioned JSON envelope (schema
 'bportugal-portal-evidence', v1: per response the final URL, HTTP status and the raw body
@@ -189,7 +189,7 @@ def _current(doc: dict, sid: int, period: str) -> str | None:
                              f"(only public 'P' reviewed)")
         if row.get("description"):
             raise ValueError(f"observation row carries a free-text description "
-                             f"{row.get('description')!r} — an unreviewed annotation surface")
+                             f"{row.get('description')!r} - an unreviewed annotation surface")
         if not isinstance(row.get("value"), str) or not isinstance(row.get("pub_date"), str):
             raise ValueError(f"observation row without a string value/pub_date: {row!r}")
         dates.add(ref)
@@ -232,7 +232,7 @@ class BPortugalVerifier:
     plus one month-window /api/observations/ fetch per sampled item. An item's decision uses
     BOTH portal responses (metadata -> observed_unit, observations -> observed_text), so
     ItemResult.evidence is a small VERSIONED JSON envelope (schema 'bportugal-portal-evidence',
-    version 1) bundling both wire records — exact final URL, HTTP status and the raw body
+    version 1) bundling both wire records - exact final URL, HTTP status and the raw body
     base64-encoded (byte-for-byte recoverable from the raw store, no HTTP needed; Ruling R/G7).
     evidence_url stays the observations URL; observed_flag is honestly None (this channel
     exposes no observation status, so ingest.verify skips the flag comparison)."""
