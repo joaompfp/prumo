@@ -1,0 +1,68 @@
+# Prumo Admin edge template - NOT installed by this repository.
+#
+# Copy to the live file provider only during the release sequence in README-admin.md:
+#   /home/joao/docker/stacks/core/appdata/traefik2/rules/f3nix/router-prumo-admin.yml
+#
+# Traefik's file provider applies Go templating to dedicated dynamic files before YAML
+# parsing. `{{ env "PRUMO_ADMIN_PROXY_SECRET" }}` is therefore read from the Traefik
+# container's own environment, not from this repository. The value must come from the
+# SOPS-decrypted `secrets/core.enc.env` and must never be written into git or a label.
+#
+# The rule is the exact boundary, not `PathPrefix(`/dados/admin`)`: the latter would also
+# capture `/dados/administration`. Priority 60 beats the public `/dados` router (50) and
+# the static router (55), and the router intentionally has no VPN-bypass alternative.
+http:
+  routers:
+    prumo-admin:
+      rule: "Host(`joao.date`) && (Path(`/dados/admin`) || PathPrefix(`/dados/admin/`))"
+      entryPoints: [websecure]
+      middlewares:
+        - prumo-admin-sanitize
+        - prumo-admin-authelia
+        - prumo-admin-inject-secret
+        - prumo-admin-strip
+      service: prumo-admin-svc
+      tls:
+        certResolver: dns-cloudflare
+      priority: 60
+
+  middlewares:
+    # First: a client may send these headers itself. Remove them before Authelia and before
+    # StripPrefix, so only the proxy can set the credential and the mount prefix.
+    prumo-admin-sanitize:
+      headers:
+        customRequestHeaders:
+          X-Prumo-Proxy-Secret: ""
+          Remote-User: ""
+          Remote-Groups: ""
+          X-Forwarded-Prefix: ""
+
+    # Authelia runs before StripPrefix: access control sees the public `/dados/admin` path,
+    # and the app receives `/` plus X-Forwarded-Prefix: /dados/admin from the strip below.
+    prumo-admin-authelia:
+      forwardAuth:
+        address: "http://172.10.0.4:9091/api/authz/forward-auth"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - Remote-User
+          - Remote-Groups
+
+    # After a successful forwardAuth (middleware order above), inject the shared secret.
+    # An empty Traefik environment value produces an empty header, which the app refuses.
+    prumo-admin-inject-secret:
+      headers:
+        customRequestHeaders:
+          X-Prumo-Proxy-Secret: '{{ env "PRUMO_ADMIN_PROXY_SECRET" }}'
+
+    prumo-admin-strip:
+      stripPrefix:
+        prefixes:
+          - /dados/admin
+
+  services:
+    # The backoffice stays on its own bridge and its Tailscale-bound port: Traefik reaches
+    # it as a client and cannot bypass the app's proxy-mode check by source address.
+    prumo-admin-svc:
+      loadBalancer:
+        servers:
+          - url: "http://100.118.19.6:8089"

@@ -15,7 +15,7 @@ read works, editing does not.</p>
 <th class="num">Draft cards</th><th>Last publish</th></tr>
 {% for p in pages %}
 <tr>
-<td><a href="/editorial/{{ p.slug }}">{{ p.title }}</a></td>
+<td><a href="{{ base }}/editorial/{{ p.slug }}">{{ p.title }}</a></td>
 <td class="mono">{{ p.slug }}</td>
 <td>{% if p.composed %}<span class="calc">composition</span>{% else %}code list{% endif %}</td>
 <td class="num">{{ p.published_count }}</td>

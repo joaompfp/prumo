@@ -1,0 +1,23 @@
+# Prumo Admin Authelia rules - a fragment, NOT a complete configuration and NOT applied
+# by this repository.
+#
+# Insert these two rules as the FIRST entries under `access_control.rules` in
+# /home/joao/docker/stacks/core/appdata/authelia/configuration.yml, before the external
+# wall, the `group:bots` rules and the generic `two_factor` catch-alls. Authelia evaluates
+# rules top to bottom and takes the first match.
+#
+# Order matters: the owner allow rule must match first. The unconditional deny rule then
+# covers every other identity, including a bot that would otherwise match a later
+# `joao.date` rule. Keep the regex an exact path boundary so `/dados/administration` is
+# not swallowed.
+access_control:
+  rules:
+    - domain: "joao.date"
+      resources:
+        - '^/dados/admin(/.*)?$'
+      subject: "user:joao"
+      policy: two_factor
+    - domain: "joao.date"
+      resources:
+        - '^/dados/admin(/.*)?$'
+      policy: deny

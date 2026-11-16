@@ -27,8 +27,8 @@ def test_healthz_stays_200_when_the_db_is_not_ready(env, tmp_path):
     r = TestClient(create_app(missing, env.registry), base_url="http://localhost").get("/healthz")
     assert r.status_code == 200
     body = r.json()
-    assert body["status"] == "ok" and body["db"] == "unavailable"
-    assert "database not found" in body["db_detail"]
+    assert body == {"status": "ok", "db": "unavailable"}
+    assert "missing.sqlite3" not in r.text and "database not found" not in r.text
     assert not missing.exists()
     db = env.db()
     db.conn.execute("INSERT INTO schema_migration(version) VALUES ('9999_future')")

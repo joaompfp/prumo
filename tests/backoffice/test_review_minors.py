@@ -14,7 +14,8 @@ from tests.ingest.test_task20_serving import _direct_verified
 
 NOV01 = "2026-11-01T00:00:00+00:00"
 NOV13 = "2026-11-13T00:00:00+00:00"
-CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'"
+CSP = ("default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; "
+       "form-action 'self'; base-uri 'none'; frame-ancestors 'none'")
 
 
 # --- Minor 1 ---------------------------------------------------------------------------------

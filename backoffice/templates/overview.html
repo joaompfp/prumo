@@ -19,7 +19,7 @@ refresh policy ({{ report.staleness_policy.meaning }}), judged on
 </tr></table></div>
 
 {% set dv = report.derived %}
-<p id="derived-line"><a href="/derived">Derived layer</a>: {{ dv.active_series }} active derived series,
+<p id="derived-line"><a href="{{ base }}/derived">Derived layer</a>: {{ dv.active_series }} active derived series,
 {{ dv.served_values }} served values {% include "_calc_badge.html" %};
 <span{% if dv.stale %} class="bad"{% endif %}>stale {{ dv.stale }}</span>, never computed {{ dv.never_computed }};
 last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }} (<span{% if dv.last_run_state == "failed" %} class="bad"{% endif %}>{{ dv.last_run_state }}</span>, {{ dv.last_run_at }}){% else %}none{% endif %};
@@ -33,7 +33,7 @@ last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }} (<span{% if dv.
 <th>Data fetched</th><th>Scheduler</th><th>Events 24 h</th><th>Events 7 d</th></tr>
 {% for s in report.sources %}
 <tr id="src-{{ s.name }}">
-<td><a href="/series?source={{ s.name | urlencode }}">{{ s.name }}</a></td>
+<td><a href="{{ base }}/series?source={{ s.name | urlencode }}">{{ s.name }}</a></td>
 <td class="num">{{ s.active_series }}</td>
 <td class="num">{{ s.inactive_series }}</td>
 <td>{% if s.blockers %}<span class="sev-info">{{ s.blockers | join(", ") }}</span>{% else %}-{% endif %}</td>
@@ -84,7 +84,7 @@ last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }} (<span{% if dv.
 {% endif %}
 {% if s.stale_series %}
 <p>Stale:
-{% for sid in s.stale_series %}<a href="/series/{{ sid | urlencode }}">{{ sid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+{% for sid in s.stale_series %}<a href="{{ base }}/series/{{ sid | urlencode }}">{{ sid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
 {% endif %}
 </details>
 {% endfor %}

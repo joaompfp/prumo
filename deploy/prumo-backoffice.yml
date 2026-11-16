@@ -46,6 +46,15 @@ services:
       PRUMO_EDITORIAL_DB: /data-w/prumo.sqlite3
       PRUMO_RAW_DIR: /data/raw
       PYTHONUNBUFFERED: "1"
+      # Staged public Admin entry. All four are blank by default, so the shipped private
+      # service keeps its Tailscale-only, local-mode behaviour. At release time the SOPS
+      # environment supplies the same secret to this service and to Traefik; the app then
+      # requires the secret and the allow-listed Remote-User on every non-health route.
+      # See deploy/README-admin.md.
+      PRUMO_ADMIN_PROXY_SECRET: "${PRUMO_ADMIN_PROXY_SECRET:-}"
+      PRUMO_ADMIN_USER: "${PRUMO_ADMIN_USER:-}"
+      PRUMO_ADMIN_ORIGIN: "${PRUMO_ADMIN_ORIGIN:-}"
+      PRUMO_BACKOFFICE_ALLOWED_HOSTS: "${PRUMO_BACKOFFICE_ALLOWED_HOSTS:-100.118.19.6,localhost,127.0.0.1}"
     volumes:
       - ${DOCKER_DIR}/stacks/web/appdata/prumo:/data:ro
       - ${DOCKER_DIR}/stacks/web/appdata/prumo:/data-w:rw

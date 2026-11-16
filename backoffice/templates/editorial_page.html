@@ -44,13 +44,13 @@ will refuse. Reads still work.</p>{% endif %}
 <td>{{ s.source }}</td>
 <td>{% if s.problem %}<span class="bad">{{ s.problem }}</span>{% else %}<span class="good">ok</span>{% endif %}</td>
 <td>
-<form method="post" action="/editorial/{{ page.slug }}/move">
+<form method="post" action="{{ base }}/editorial/{{ page.slug }}/move">
 <input type="hidden" name="version" value="{{ page.version }}">
 <input type="hidden" name="series_id" value="{{ s.series_id }}">
 <input type="hidden" name="to_position" value="{{ loop.index0 - 1 }}">
 <button type="submit"{% if loop.first %} disabled{% endif %}>up</button>
 </form>
-<form method="post" action="/editorial/{{ page.slug }}/move">
+<form method="post" action="{{ base }}/editorial/{{ page.slug }}/move">
 <input type="hidden" name="version" value="{{ page.version }}">
 <input type="hidden" name="series_id" value="{{ s.series_id }}">
 <input type="hidden" name="to_position" value="{{ loop.index0 + 1 }}">
@@ -58,7 +58,7 @@ will refuse. Reads still work.</p>{% endif %}
 </form>
 </td>
 <td>
-<form method="post" action="/editorial/{{ page.slug }}/remove">
+<form method="post" action="{{ base }}/editorial/{{ page.slug }}/remove">
 <input type="hidden" name="version" value="{{ page.version }}">
 <input type="hidden" name="series_id" value="{{ s.series_id }}">
 <button type="submit">remove</button>
@@ -93,19 +93,19 @@ rather than fall back to the list in code.</p>
 {% if not page.diff.added and not page.diff.removed and not page.diff.moved %}no change.{% endif %}</p>
 {% endif %}
 {% if page.draft %}
-<form method="post" action="/editorial/{{ page.slug }}/publish">
+<form method="post" action="{{ base }}/editorial/{{ page.slug }}/publish">
 <input type="hidden" name="version" value="{{ page.version }}">
 <label>Reason (required) <input type="text" name="note" required maxlength="300" size="50"></label>
 <button type="submit">Publish the draft</button>
 </form>
-<form method="post" action="/editorial/{{ page.slug }}/discard">
+<form method="post" action="{{ base }}/editorial/{{ page.slug }}/discard">
 <input type="hidden" name="version" value="{{ page.version }}">
 <button type="submit">Discard the draft, back to the published list</button>
 </form>
 {% else %}
 <p class="muted">Nothing to publish: add a card below first.</p>
 {% endif %}
-<form method="post" action="/editorial/{{ page.slug }}/reset">
+<form method="post" action="{{ base }}/editorial/{{ page.slug }}/reset">
 <input type="hidden" name="version" value="{{ page.version }}">
 <label>Reason (required) <input type="text" name="note" required maxlength="300" size="50"></label>
 <button type="submit" class="bad">Reset to the code list</button>
@@ -117,7 +117,7 @@ the list in code. It is the documented rollback and it is logged with what it de
 <p class="note">Only series that could actually render are listed: primary, active, licence
 allows redistribution, at least one served value, a title in the language this page renders,
 and no title already on the draft.</p>
-<form class="filters" method="get" action="/editorial/{{ page.slug }}">
+<form class="filters" method="get" action="{{ base }}/editorial/{{ page.slug }}">
 <label>Search <input type="search" name="q" value="{{ request.query_params.get('q', '') }}"></label>
 <label>Source <input type="text" name="fonte" value="{{ request.query_params.get('fonte', '') }}" size="12"></label>
 <label>Theme <input type="text" name="tema" value="{{ request.query_params.get('tema', '') }}" size="12"></label>
@@ -133,7 +133,7 @@ and no title already on the draft.</p>
 <td>{{ c.theme }}</td>
 <td>{{ c.frequency }}</td>
 <td>
-<form method="post" action="/editorial/{{ page.slug }}/add">
+<form method="post" action="{{ base }}/editorial/{{ page.slug }}/add">
 <input type="hidden" name="version" value="{{ page.version }}">
 <input type="hidden" name="series_id" value="{{ c.series_id }}">
 <select name="derived_key">
@@ -151,9 +151,9 @@ and no title already on the draft.</p>
 {% endif %}
 {% if pagina > 1 or more %}
 <p class="pager">
-{% if pagina > 1 %}<a href="?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina - 1 }}">previous</a>{% endif %}
+{% if pagina > 1 %}<a href="{{ base }}/editorial/{{ page.slug }}?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina - 1 }}">previous</a>{% endif %}
 <span class="muted">page {{ pagina }}</span>
-{% if more %}<a href="?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina + 1 }}">next</a>{% endif %}
+{% if more %}<a href="{{ base }}/editorial/{{ page.slug }}?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina + 1 }}">next</a>{% endif %}
 </p>
 {% endif %}
 

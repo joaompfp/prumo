@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ s.key }} - Prumo backoffice{% endblock %}
 {% macro input_links(inputs) -%}
-{% for i in inputs %}{% if i.series_id is not none %}<a href="/series/{{ i.series_id | urlencode }}?period={{ i.period | urlencode }}">{{ i.series_id }} {{ i.period }}</a>{% else %}<span class="bad">unknown</span>{% endif %} <span class="muted">obs {{ i.observation_id }}</span>{% if not loop.last %}; {% endif %}{% endfor %}
+{% for i in inputs %}{% if i.series_id is not none %}<a href="{{ base }}/series/{{ i.series_id | urlencode }}?period={{ i.period | urlencode }}">{{ i.series_id }} {{ i.period }}</a>{% else %}<span class="bad">unknown</span>{% endif %} <span class="muted">obs {{ i.observation_id }}</span>{% if not loop.last %}; {% endif %}{% endfor %}
 {%- endmacro %}
 {% block content %}
 <h1>{{ s.key }} {% include "_calc_badge.html" %}</h1>
@@ -14,8 +14,8 @@
 <dt>formula</dt><dd>{{ s.formula_text }} (<code>{{ s.formula }}</code>)</dd>
 <dt>params</dt><dd>{% if s.params %}{% for k, v in s.params | dictsort %}<code>{{ k }} = {{ v }}</code>{% if not loop.last %}, {% endif %}{% endfor %}{% else %}none{% endif %}</dd>
 <dt>unit</dt><dd>{{ s.unit_text }} (<code>{{ s.unit }}</code>)</dd>
-<dt>base series</dt><dd><a href="/series/{{ s.base_series_id | urlencode }}">{{ s.base_series_id }}</a> ({{ s.frequency }})</dd>
-<dt>attribution</dt><dd>{% if d.served %}{{ d.served[0].attribution }}{% elif base %}{{ base.source.attribution }} <span class="muted">(base source; no value served now)</span>{% else %}<span class="muted">base series not in the registry</span>{% endif %}</dd>
+<dt>base series</dt><dd><a href="{{ base }}/series/{{ s.base_series_id | urlencode }}">{{ s.base_series_id }}</a> ({{ s.frequency }})</dd>
+<dt>attribution</dt><dd>{% if d.served %}{{ d.served[0].attribution }}{% elif base_series %}{{ base_series.source.attribution }} <span class="muted">(base source; no value served now)</span>{% else %}<span class="muted">base series not in the registry</span>{% endif %}</dd>
 {% if d.served %}<dt>licence</dt><dd>{{ d.served[0].licence }} &middot; {{ d.served[0].licence_url | link }}</dd>{% endif %}
 </dl>
 

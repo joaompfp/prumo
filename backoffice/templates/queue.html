@@ -17,7 +17,7 @@ its cause does. Stale, stuck-pending and scheduler items come from the
 <tr>
 <td class="sev-{{ i.severity }}">{{ i.severity }}</td>
 <td>{{ i.kind }}</td>
-<td>{% if i.kind in ("lagging_series", "new_period_gap") %}<a href="/series/{{ i.ref | urlencode }}">{{ i.ref }}</a>{% elif i.kind in ("stale_series", "blocked_source", "quarantine") %}<a href="/series?source={{ i.ref | urlencode }}">{{ i.ref }}</a>{% else %}{{ i.ref }}{% endif %}</td>
+<td>{% if i.kind in ("lagging_series", "new_period_gap") %}<a href="{{ base }}/series/{{ i.ref | urlencode }}">{{ i.ref }}</a>{% elif i.kind in ("stale_series", "blocked_source", "quarantine") %}<a href="{{ base }}/series?source={{ i.ref | urlencode }}">{{ i.ref }}</a>{% else %}{{ i.ref }}{% endif %}</td>
 <td class="wrap">{{ i.summary }}</td>
 <td class="wrap"><details><summary>detail</summary><code>{{ i.detail | as_json }}</code></details></td>
 </tr>

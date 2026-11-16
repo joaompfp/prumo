@@ -2,7 +2,7 @@
 {% block title %}Verification item {{ r.item_id }} - Prumo backoffice{% endblock %}
 {% block content %}
 <h1>Verification item {{ r.item_id }}</h1>
-<p>Series {% if known %}<a href="/series/{{ i.series_id | urlencode }}">{{ i.series_id }}</a>{% else %}{{ i.series_id }}{% endif %}
+<p>Series {% if known %}<a href="{{ base }}/series/{{ i.series_id | urlencode }}">{{ i.series_id }}</a>{% else %}{{ i.series_id }}{% endif %}
 &middot; period {{ i.period }} &middot; source {{ r.source }}
 &middot; stored decision <span class="{{ 'good' if i.match else 'bad' }}">{{ "match" if i.match else "MISMATCH" }}</span></p>
 

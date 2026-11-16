@@ -307,6 +307,12 @@ def test_backoffice_is_tailscale_only_and_has_exactly_one_writable_mount(backoff
         "PRUMO_EDITORIAL_DB": "/data-w/prumo.sqlite3",
         "PRUMO_RAW_DIR": "/data/raw",
         "PYTHONUNBUFFERED": "1",
+        # Staged Admin entry: blank defaults keep the shipped private service in local mode.
+        "PRUMO_ADMIN_PROXY_SECRET": "${PRUMO_ADMIN_PROXY_SECRET:-}",
+        "PRUMO_ADMIN_USER": "${PRUMO_ADMIN_USER:-}",
+        "PRUMO_ADMIN_ORIGIN": "${PRUMO_ADMIN_ORIGIN:-}",
+        "PRUMO_BACKOFFICE_ALLOWED_HOSTS":
+            "${PRUMO_BACKOFFICE_ALLOWED_HOSTS:-100.118.19.6,localhost,127.0.0.1}",
     }
 
 

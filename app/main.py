@@ -8,7 +8,6 @@ import csv
 import io
 import logging
 import os
-import re
 import sqlite3
 from pathlib import Path
 
@@ -23,6 +22,7 @@ from app.charts import line_chart, sparkline, two_series_chart
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
 from presentation import MissingText
+from presentation.web import mount_prefix as _base
 
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATES_DIR = BASE_DIR / "templates"
@@ -40,27 +40,7 @@ SECURITY_HEADERS = {
 }
 
 
-_PREFIX = re.compile(r"/(?:[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*)?")
 log = logging.getLogger("prumo.app")
-
-
-def _base(request: Request) -> str:
-    """The mount prefix Traefik strips (`/dados`), normalised to '' or '/dados'.
-
-    Anything that is not a plain path is ignored rather than echoed: `//evil.example` would
-    turn every `href` into a protocol-relative link to another host, and a query, fragment,
-    backslash or `.`/`..` segment has no business in a prefix."""
-    prefix = request.headers.get("x-forwarded-prefix", "").strip()
-    if not prefix or "\\" in prefix or "//" in prefix:
-        return ""
-    if not prefix.startswith("/"):
-        prefix = "/" + prefix
-    prefix = prefix.rstrip("/")
-    if not _PREFIX.fullmatch(prefix):
-        return ""
-    if any(part in (".", "..") for part in prefix.split("/")):
-        return ""
-    return prefix
 
 
 def _templates() -> Jinja2Templates:

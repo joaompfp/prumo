@@ -8,6 +8,7 @@ import json
 import logging
 import time
 from collections.abc import Callable
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal, TypeVar
@@ -15,7 +16,7 @@ from urllib.parse import parse_qs, urlencode
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi import Path as PathParam
-from fastapi.responses import RedirectResponse
+from fastapi.responses import PlainTextResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
@@ -24,6 +25,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.charts import sparkline
 from backoffice import reads, replay
+from backoffice.access import ADMIN_PREFIX, AccessDenied, AccessPolicy
 from backoffice.deps import (
     DEFAULT_ALLOWED_HOSTS,
     LANG,
@@ -38,6 +40,7 @@ from ingest.db import Db, EditorialConflict, EditorialRefused, ReadOnlyOpenError
 from ingest.editorial_rules import MAX_SLOTS
 from ingest.registry import load_registry
 from presentation import MissingText
+from presentation.web import mount_prefix, prefixed
 
 log = logging.getLogger("backoffice")
 
@@ -49,11 +52,15 @@ APP_TEMPLATES = Path(__file__).resolve().parent.parent / "app" / "templates"
 PAGE_METHODS = ["GET", "HEAD"]
 STATUS_TTL_S = 30.0  # the full status report is reused this long across pages
 SQLITE_MAX_INT = 2**63 - 1  # largest id SQLite can bind; above it -> 422, never a 500
+MAX_FORM_BYTES = 16_384
 # No JavaScript anywhere: nothing may run, load or frame the pages; inline styles only.
+# Forms may only post to this same origin, and the page has no <base> to rewrite URLs.
 SECURITY_HEADERS = {
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; "
-                               "img-src 'self' data:; frame-ancestors 'none'",
+                               "img-src 'self' data:; form-action 'self'; base-uri 'none'; "
+                               "frame-ancestors 'none'",
     "X-Content-Type-Options": "nosniff",
+    "Cache-Control": "no-store",
 }
 
 
@@ -80,33 +87,123 @@ def _templates() -> Jinja2Templates:
     return Jinja2Templates(env=env)
 
 
+@dataclass
+class AdminContext:
+    """The narrow registration surface later CMS routes reuse.
+
+    It owns the four things every admin route must not reimplement: the validated mount
+    prefix and URL builder, the render call that supplies `base`, the bounded form reader,
+    and the origin guard. `actor` is the identity the access middleware verified; a future
+    CMS event writes it as the audit actor (the 0018 editorial tables have no actor column).
+    """
+
+    templates: Jinja2Templates
+    access: AccessPolicy
+    read_db: Callable[[Callable], object]
+    local_origin: Callable[[Request], bool]
+    max_form_bytes: int = MAX_FORM_BYTES
+
+    def base(self, request: Request) -> str:
+        """The one prefix this app serves under, or '' for direct development.
+
+        A valid but unrelated prefix is ignored rather than reflected: only the deployed
+        Admin mount is ours.
+        """
+        prefix = mount_prefix(request)
+        return prefix if prefix in ("", ADMIN_PREFIX) else ""
+
+    def url(self, request: Request, path: str) -> str:
+        return prefixed(self.base(request), path)
+
+    def render(self, request: Request, name: str, status_code: int = 200, **context):
+        context.setdefault("base", self.base(request))
+        return self.templates.TemplateResponse(request, name, context, status_code=status_code)
+
+    def actor(self, request: Request) -> str:
+        return request.state.actor
+
+    def read(self, fn: Callable):
+        return self.read_db(fn)
+
+    async def form(self, request: Request) -> dict[str, str]:
+        length = request.headers.get("content-length", "")
+        if length.isdigit() and int(length) > self.max_form_bytes:
+            raise HTTPException(status_code=413, detail="form too large")
+        body = (await request.body())[:self.max_form_bytes]
+        return {k: v[0] for k, v in
+                parse_qs(body.decode("utf-8", "replace"), keep_blank_values=True).items()}
+
+    def guard(self, request: Request) -> None:
+        """Refuse a cross-origin form. Local mode keeps the historic exact same-origin rule;
+        proxy mode compares against the configured canonical HTTPS origin and Host."""
+        if self.access.proxy is not None:
+            allowed = self.access.proxy.origin_allowed(request)
+        else:
+            allowed = self.local_origin(request)
+        if not allowed:
+            raise HTTPException(status_code=403, detail="cross-origin form refused")
+
+
 def create_app(db_path: Path, registry_path: Path,
                now: Callable[[], datetime] | None = None, *,
                raw_dir: Path | None = None, status_ttl_s: float = STATUS_TTL_S,
                monotonic: Callable[[], float] = time.monotonic,
                allowed_hosts: list[str] = DEFAULT_ALLOWED_HOSTS,
-               editorial_db_path: Path | None = None) -> FastAPI:
+               editorial_db_path: Path | None = None,
+               access_policy: AccessPolicy | None = None) -> FastAPI:
     """`raw_dir` is the raw evidence store verification items are replayed from (None: the
     replay page says it cannot replay). The full status report is computed at most once per
     `status_ttl_s` (on the `monotonic` clock), and so is the /derived list; pages show
     their generated_at and age. Requests
-    whose Host header is not in `allowed_hosts` get 400 (DNS-rebinding guard)."""
+    whose Host header is not in `allowed_hosts` get 400 (DNS-rebinding guard).
+
+    `access_policy` is explicit: tests and local development get `AccessPolicy.local()`;
+    the deployment entry point passes `AccessPolicy.from_env()`, which fails closed on an
+    incomplete proxy configuration. This keeps a developer's environment from silently
+    changing what `create_app` means."""
     specs = load_registry(registry_path)  # fail fast at startup on a bad registry
     clock = now or (lambda: datetime.now(timezone.utc))
     templates = _templates()
+    access = access_policy or AccessPolicy.local()
     app = FastAPI(title="Prumo backoffice", docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(allowed_hosts))
 
-    @app.middleware("http")  # added last, so outermost: the 400 host refusal carries it too
+    @app.middleware("http")
+    async def admin_access(request: Request, call_next):
+        """Authenticate every route except non-sensitive liveness before it runs.
+
+        A direct request to the tailnet port is not trusted in proxy mode, even when its
+        source address is the tailnet or it carries `Remote-User`: only the Traefik-injected
+        shared secret proves the Authelia boundary. Failures are generic and never echo the
+        offered identity or credential.
+        """
+        if request.url.path != "/healthz":
+            try:
+                request.state.actor = access.authenticate(request)
+            except AccessDenied:
+                return PlainTextResponse("admin access denied", status_code=401)
+        return await call_next(request)
+
+    @app.middleware("http")  # added last, so outermost: 400/401 responses carry it too
     async def security_headers(request: Request, call_next):
         response = await call_next(request)
         response.headers.update(SECURITY_HEADERS)
+        vary = response.headers.get("Vary")
+        if not vary:
+            response.headers["Vary"] = "X-Forwarded-Prefix"
+        elif "x-forwarded-prefix" not in vary.lower():
+            response.headers["Vary"] = f"{vary}, X-Forwarded-Prefix"
         return response
 
     def read(fn: Callable[[Db], T]) -> T:
         return read_db_readonly(db_path, fn)
 
     editorial = Editorial(db_path, editorial_db_path, lang=LANG)
+
+    admin = AdminContext(templates=templates, access=access, read_db=read,
+                         local_origin=same_origin)
+    app.state.admin = admin
+    app.state.access_policy = access
 
     status_cache = TtlCache(status_ttl_s, monotonic)
     derived_cache = TtlCache(status_ttl_s, monotonic)  # /derived evaluates every derived key
@@ -116,7 +213,7 @@ def create_app(db_path: Path, registry_path: Path,
         return status_cache.get(lambda: read(lambda db: reads.status_report(db, specs, clock())))
 
     def render(request: Request, name: str, status_code: int = 200, **context):
-        return templates.TemplateResponse(request, name, context, status_code=status_code)
+        return admin.render(request, name, status_code=status_code, **context)
 
     def with_status(report) -> dict:
         """The cached report plus how old it is now (pages say when it was generated)."""
@@ -131,11 +228,12 @@ def create_app(db_path: Path, registry_path: Path,
     @app.api_route("/healthz", methods=PAGE_METHODS)
     def healthz():
         """Liveness (always 200 while the app runs) plus a DB-readiness flag: a cheap
-        read-only open + schema check. A DB hiccup must not make the container flap."""
+        read-only open + schema check. A DB hiccup must not make the container flap. The
+        body is non-sensitive: no path, schema version or exception text leaves the app."""
         try:
             read(lambda db: None)
-        except Exception as e:  # any refusal or sqlite error only lowers the flag
-            return {"status": "ok", "db": "unavailable", "db_detail": str(e)}
+        except Exception:  # any refusal or sqlite error only lowers the flag
+            return {"status": "ok", "db": "unavailable"}
         return {"status": "ok", "db": "ready"}
 
     @app.api_route("/", methods=PAGE_METHODS)
@@ -170,7 +268,7 @@ def create_app(db_path: Path, registry_path: Path,
         query = {k: v for k, v in filters.items() if v}
 
         def page_url(n: int) -> str:
-            return "/series?" + urlencode({**query, "page": n})
+            return admin.url(request, "/series?" + urlencode({**query, "page": n}))
 
         pages = max(1, -(-len(chosen) // reads.PAGE_SIZE))
         return render(request, "series_list.html", rows=rows, total=len(chosen),
@@ -206,7 +304,7 @@ def create_app(db_path: Path, registry_path: Path,
             return render(request, "error.html", 404, title="Unknown derived series",
                           message=f"unknown derived series: {key} (not in the database)")
         return render(request, "derived_detail.html", d=d, s=d.series,
-                      base=by_id.get(d.series["base_series_id"]),
+                      base_series=by_id.get(d.series["base_series_id"]),
                       cap=reads.OBSERVATION_CAP, list_cap=reads.DETAIL_LIST_CAP)
 
     @app.api_route("/verification/item/{item_id}", methods=PAGE_METHODS)
@@ -228,7 +326,6 @@ def create_app(db_path: Path, registry_path: Path,
     # so a lock wait cannot stall /healthz or the rest of the backoffice.
 
     CANDIDATES_PER_PAGE = 40
-    MAX_FORM_BYTES = 16_384
 
     @app.exception_handler(EditorialUnavailable)
     def editorial_unavailable(request: Request, exc: EditorialUnavailable):
@@ -238,12 +335,7 @@ def create_app(db_path: Path, registry_path: Path,
                               "unaffected. See docs/data/operations.md, editorial section.")
 
     async def form(request: Request) -> dict[str, str]:
-        length = request.headers.get("content-length", "")
-        if length.isdigit() and int(length) > MAX_FORM_BYTES:
-            raise HTTPException(status_code=413, detail="form too large")
-        body = (await request.body())[:MAX_FORM_BYTES]
-        return {k: v[0] for k, v in
-                parse_qs(body.decode("utf-8", "replace"), keep_blank_values=True).items()}
+        return await admin.form(request)
 
     def editor_page(request: Request, slug: str, *, status_code: int = 200, **extra):
         try:
@@ -259,15 +351,14 @@ def create_app(db_path: Path, registry_path: Path,
             theme=query.get("tema", ""), limit=CANDIDATES_PER_PAGE + 1,
             offset=(page_no - 1) * CANDIDATES_PER_PAGE)
         return render(request, "editorial_page.html", status_code=status_code, page=page,
-                      cards=editorial.draft_cards(slug), base="",
+                      cards=editorial.draft_cards(slug),
                       candidates=rows[:CANDIDATES_PER_PAGE],
                       more=len(rows) > CANDIDATES_PER_PAGE, pagina=page_no,
                       events=read(lambda db: db.editorial_events(slug)),
                       max_slots=MAX_SLOTS, available=editorial.available(), **extra)
 
     def guard(request: Request) -> None:
-        if not same_origin(request):
-            raise HTTPException(status_code=403, detail="cross-origin form refused")
+        admin.guard(request)
 
     def apply(slug: str, action: str, fields: dict[str, str]) -> tuple[int, str | None]:
         """Run one mutation. Returns (status, message): 303 means it landed."""
@@ -317,7 +408,7 @@ def create_app(db_path: Path, registry_path: Path,
         fields = await form(request)
         status, message = await run_in_threadpool(apply, slug, action, fields)
         if status == 303:
-            return RedirectResponse(f"/editorial/{slug}", status_code=303)
+            return RedirectResponse(admin.url(request, f"/editorial/{slug}"), status_code=303)
         if status == 404:
             return render(request, "error.html", 404, title="Unknown page", message=message)
         return await run_in_threadpool(editor_page, request, slug, status_code=status,
@@ -351,8 +442,14 @@ def create_app(db_path: Path, registry_path: Path,
 
 
 def app_from_env() -> FastAPI:
-    """uvicorn entry point (`uvicorn backoffice.app:app_from_env --factory`)."""
+    """uvicorn entry point (`uvicorn backoffice.app:app_from_env --factory`).
+
+    The access policy is read first: a deployment that set a proxy variable but not the
+    shared secret must fail at startup, before it can serve a single page in local mode.
+    """
+    access = AccessPolicy.from_env()
     db_path, registry_path, raw_dir = paths_from_env()
     return create_app(db_path, registry_path, raw_dir=raw_dir,
                       allowed_hosts=allowed_hosts_from_env(),
-                      editorial_db_path=editorial_path_from_env())
+                      editorial_db_path=editorial_path_from_env(),
+                      access_policy=access)
