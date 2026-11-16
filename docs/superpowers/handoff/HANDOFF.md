@@ -1,5 +1,40 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## STATUS 2026-11-16 ~15:40 UTC (two-series comparisons built, reviewed twice, proofed; NOT deployed)
+
+The owner asked on 2026-11-16 for "uma secção em que se plotam dois indicadores no mesmo gráfico, para analisar efeitos relacionados", with the pairs chosen by the planner. The editorial composition shipped first the same day; this is the comparison half.
+
+Spec `docs/superpowers/specs/2026-11-16-two-series-comparisons-design.md`, plan `docs/superpowers/plans/2026-11-16-two-series-comparisons.md`. Code on `pipeline-rebuild`: `24713d0` (feature), `3f4a627` (first review round), `22ae4c8` (second). **`main` is still `46d8d2e` and production serves it**: no merge, no deploy, no migration, no write path.
+
+Shape: a `/comparar` index and one page per pair, with the navigation gaining "Comparações". Pairs are curated in `presentation/catalog/pt.py` (`COMPARISONS`: slug, two series ids, title, subtitle, one-sentence mechanism, `scale`, caption note); the route takes a slug and never two series ids. Three pairs, all monthly, both sides redistributable and served:
+
+| slug | series | common | span | scale |
+|---|---|---|---|---|
+| `inflacao-e-desemprego` | INE HICP yoy + unemployment rate | 344 | 1998-02..2026-09 | one axis (%) |
+| `euribor-e-inflacao` | Euribor 3M (EA) + INE HICP yoy | 359 | 1996-12..2026-10 | one axis (%) |
+| `credito-e-taxa` | Euribor 12M (EA) + housing-credit stock (MEUR) | 393 | 1994-01..2026-09 | dual axis, both sides labelled |
+
+Only periods with a finite number on both sides are plotted; what each side loses is counted and printed ("Ficam de fora 1 período de ... e 169 períodos de ..."), never interpolated, never carried forward. Values reach the page as stored tokens; axis ticks are the only rounded numbers. Each side carries its own provenance block (publisher, attribution, receipt, run id, archived file hash, verification date, sample size, and whether that value was one of the sampled items) and links to its series page.
+
+The fourth candidate pair - E-REDES production market against special regime - is deliberately not built: 21,781 common 15-minute intervals, and the two are an exact decomposition (`total = market + special` in every one of 21,781 rows, no negatives). Weekly aggregation is a method the site does not have, and a comparison page would be the first place where a plotted number is not one the publisher printed. It needs its own decision.
+
+Proof on a read-only copy of production (217 MB, taken 13:10 UTC):
+
+- three pages 200 with 344 / 359 / 393 chart points and the same number of table rows; the index 200 in 3.7 KB;
+- latency n=30 after warm-up: `/comparar` median 52.9 / p95 55.7 ms; pair pages 68.5-99.1 median, 74.2-107.5 p95;
+- no dotted series id outside the two `href`s to series pages, no `must confirm|pending|UNVERIFIED`, no `<script>`, no `style=`;
+- visual QA at 1440 and 390 px with a headless Chromium (the browser MCP wanted a build that is not installed; the cached chromium-1248 binary was used directly). Three defects found and fixed before the suite: the dual axis clipped "150" to "15" and "milhões de euros" to "mi" at the 20 px margin, the meta line printed the geography twice ("— Área do euro — Área do euro"), and pair 3's title contradicted its axis order.
+
+Tests: `2250 passed, 7 deselected, 3 warnings in 962.80 s`, `ruff check app/ ingest/ presentation/ tests/ backoffice/` clean. 30 of those tests are `tests/app/test_comparisons.py`.
+
+Two independent reviews (specification and quality) both returned CHANGES_REQUIRED on `24713d0`; the first fix round (`3f4a627`) closed the table cap, the provenance period, the non-numeric period, the 500-on-missing-key, the dead `scale` and the weak assertions. A scoped re-review then required four more (index plural, D2 rule wording, doc drift, four missing tests), closed in `22ae4c8`. **A third review round was not run**: the remaining items were documentation and two small tests, all covered by the suite.
+
+One deliberate re-capture: `tests/app/golden/home_code_list.html`, because the nav item changes every page's HTML. `home_before_editorial.html` stays in the tree and the two differ by that one anchor plus the whitespace line the loop emits around it.
+
+**OPEN [owner]:** whether pair 3 keeps a dual axis. The alternative is dropping that pair and shipping two same-unit pairs; the planner's default was to ship it, labelled on both sides, because "what a household pays against how much is owed" is the mechanism the owner named. Also open: the deploy itself - code only, `bash -lic 'dc-web-up prumo'`, no worker or backoffice restart, rollback the previous commit and the same command.
+
+Unchanged by this work: the Task 18 24 h observation clock (restarted by the worker's SIGBUS restart at 12:36), the identical-content short-circuit proof in production, the licence gates for FRED/OECD/REN/DGEG, and the operational write actions (migration 0019).
+
 ## STATUS 2026-11-16 12:21 UTC (editorial pages DEPLOYED on f0nix; one real publish proved the write path)
 
 Owner asked for a public page whose series are chosen from the backoffice. Spec `docs/superpowers/specs/2026-11-16-editorial-pages-design.md` (`24fc3b8`, amended by `d8d25bb`) and plan `docs/superpowers/plans/2026-11-16-editorial-pages.md` (`b73045b`); both English like every other spec and plan, the chat summary to the owner is in Portuguese.
