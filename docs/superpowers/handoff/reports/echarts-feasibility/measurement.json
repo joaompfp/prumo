@@ -1,0 +1,51 @@
+{
+  "scope": "Synthetic isolated proof; not an installed Prumo feature",
+  "csp": "default-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self'; img-src 'self' data:; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+  "engine": {
+    "bytes": 501845,
+    "gzip_bytes": 170575,
+    "sha256": "59c0adfc6391c33092c3ed5171050a0e51ce3c2c870cc2a36d385ed73f233844"
+  },
+  "full": {
+    "bytes": 1121883,
+    "gzip_bytes": 368202,
+    "sha256": "b66b25aeb4df84e33199dc21694014d336d222cbd9deb0e5a7c14bd6aa0d0fd0"
+  },
+  "views": [
+    {
+      "width": 1440,
+      "touch": false,
+      "tooltip": "janeiro de 2026\nTaxa, valores de teste: 3,90 %\nStock, valores de teste: 1 234 567,80 milhões de euros",
+      "console_errors_warnings": [],
+      "csp_violations": [],
+      "external_requests": [],
+      "horizontal_overflow": false,
+      "screenshot": "proof-1440.png"
+    },
+    {
+      "width": 390,
+      "touch": true,
+      "tooltip": "fevereiro de 2026\nTaxa, valores de teste: 4,10 %\nStock, valores de teste: 1 256 789,00 milhões de euros",
+      "console_errors_warnings": [],
+      "csp_violations": [],
+      "external_requests": [],
+      "horizontal_overflow": false,
+      "screenshot": "proof-390.png"
+    }
+  ],
+  "passed": true,
+  "versions": {
+    "echarts": "6.1.0",
+    "zrender": "6.1.0",
+    "tslib": "2.3.0",
+    "esbuild": "0.25.12",
+    "node": "22.23.2",
+    "npm": "12.0.2"
+  },
+  "limits": [
+    "Synthetic values only; not an integrated Prumo test",
+    "Touch passes at interior point; exact first-boundary tap failed and remains a release gate",
+    "Gzip is locally computed, not measured wire transfer",
+    "Keyboard, no-JS/print, real-data payload budgets and integrated accessibility not exercised"
+  ]
+}

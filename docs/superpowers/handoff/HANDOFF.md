@@ -1,5 +1,16 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## STATUS 2026-11-16 (interactive chart design and feasibility only; no application change)
+
+The owner's current direction is ECharts on comparison and individual-series detail pages for exact point inspection, while SVG remains on cards, lists and small summaries. The design includes base and calculated detail and the existing single-UTC-day E-REDES chart; no new pairs, free pairing, aggregation, data editing or backoffice work.
+
+Deliverable: `docs/superpowers/specs/2026-11-16-interactive-charts-design.md`, draft ready for owner review after an independent review and scoped re-review. It explicitly amends the old no-JavaScript rule on successful analytical/detail HTML only, keeps SVG as the accessible/no-JavaScript/print fallback, uses one same-snapshot payload and a single local pinned build, and specifies pointer/touch plus keyboard point inspection with exact display strings. The approved credit pair retains its two axes. No application implementation or implementation plan has started; owner design review is the next gate, followed by the plan and refactor-first implementation. Merge/deploy remain separately owner-gated.
+
+Feasibility is real but isolated: official ECharts 6.1.0 line/grid/tooltip/canvas build = 501,845 raw bytes / 170,575 local gzip bytes, versus 1,121,883 / 368,202 for the full distribution. Chromium mouse at 1440 px and interior touch at 390 px displayed the exact supplied strings on two axes; no console warnings/errors, CSP violations, off-origin requests or overflow. The complete copied reproduction command was exercised again from the versioned proof sources with identical engine hash. Initial boundary-touch failure remains a release test, not a closed defect. No real-data adapter, complete keyboard/assistive-technology, no-JavaScript/print, largest-page or production transfer-size acceptance is claimed.
+
+Reproducible source, lockfile, recorded measurement and labelled synthetic screenshots: `docs/superpowers/handoff/reports/echarts-feasibility/README.md`; review dispositions: `docs/superpowers/handoff/reports/echarts-feasibility/review.md`. No runtime dependency, app code, schema, container or production data was changed. The application suite was not rerun for this documentation/probe-only scope. The pre-work baseline is `3cb9d51` on both branches; the running comparisons were built from code `f0233bf` and the later baseline commit records that installation. A read-only live `/comparar` check still returned 200 with zero scripts and the existing CSP.
+
+
 ## STATUS 2026-11-16 15:33 UTC (two-series comparisons DEPLOYED; dual axis kept by the owner)
 
 The owner asked on 2026-11-16 for "uma secção em que se plotam dois indicadores no mesmo gráfico, para analisar efeitos relacionados", with the pairs chosen by the planner. The editorial composition shipped first the same day; this is the comparison half.
