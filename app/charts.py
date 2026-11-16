@@ -87,8 +87,8 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
                                            dual=dual, width=width, height=height))
 
 
-def comparison_svg(model) -> Markup:
-    """The SVG and legend for an already prepared comparison model."""
+def _comparison_plot(model) -> Markup:
+    """The comparison SVG alone; the shell renders the key outside the canvas overlay."""
     if model is None:
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
     width, height = model.width, model.height
@@ -154,7 +154,12 @@ def comparison_svg(model) -> Markup:
         parts.append(f'<text class="chart-tick" x="{round(tick.x, 1)}" '
                      f'y="{height - 14}" text-anchor="middle">{escape(tick.text)}</text>')
     parts.append("</svg>")
+    return Markup("".join(parts))
 
+
+def _comparison_legend(model) -> Markup:
+    if model is None:
+        return Markup("")
     last = model.points[-1]
     legend = (
         '<ul class="legend">'
@@ -165,11 +170,30 @@ def comparison_svg(model) -> Markup:
         f'<span class="legend-value">{escape(last.b.value_display)} '
         f'{escape(model.unit_b)}</span></li>'
         '</ul>')
-    return Markup("".join(parts) + legend)
+    return Markup(legend)
+
+
+def comparison_svg(model) -> Markup:
+    """The SVG and legend for an already prepared comparison model."""
+    return Markup(str(_comparison_plot(model)) + str(_comparison_legend(model)))
+
+
+def chart_plot(model) -> Markup:
+    """The drawing alone: SVG for a prepared model, empty state for no model."""
+    if model is None:
+        return Markup('<p class="chart-empty">Sem valores para representar.</p>')
+    return line_svg(model) if model.kind == "line" else _comparison_plot(model)
+
+
+def chart_legend(model) -> Markup:
+    """The comparison key, rendered outside the canvas overlay; empty for a line."""
+    if model is None or model.kind == "line":
+        return Markup("")
+    return _comparison_legend(model)
 
 
 def chart_svg(model) -> Markup:
-    """Render a prepared model of either kind; used by the detail templates."""
+    """Render a prepared model of either kind; used by the fallback templates."""
     if model is None:
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
     return line_svg(model) if model.kind == "line" else comparison_svg(model)

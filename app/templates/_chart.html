@@ -1,9 +1,9 @@
 {% macro chart_shell(page, chart_id) %}
 <div class="chart-shell" data-chart>
   <div class="chart-wrap">
-    {{ chart_svg(page.chart) }}
+    {{ chart_plot(page.chart) }}
     <div class="chart-canvas" aria-hidden="true"></div>
-  </div>
+  </div>{{ chart_legend(page.chart) }}
   <div class="chart-controls">
     <label class="sr-only" for="chart-range-{{ chart_id }}">{{ page.chart_range_label }}</label>
     <input class="chart-range" id="chart-range-{{ chart_id }}" type="range" min="0" max="{{ page.chart_payload.x|length - 1 }}" step="1" value="{{ page.chart_payload.x|length - 1 }}" aria-valuetext="{{ page.chart_payload.periods[-1] }}" hidden>

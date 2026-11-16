@@ -5,9 +5,14 @@ stays in the tree as the historical reference. Both captures subsequently receiv
 owner-requested U+2014-to-ASCII-hyphen replacement, not a new render (see golden/README.md).
 `golden/home_code_list.html` is the capture this
 test uses: it was re-taken once, in the comparisons release (2026-11-16), because that release
-added one item to the site navigation and the nav is part of every page, the home included. The
-two files differ by exactly that one `<a>` plus the whitespace line the nav loop emits around it
-(see the commit diff); the deterministic fixture (`tests/app/conftest.py`) is unchanged. From here
+added one item to the site navigation and the nav is part of every page, the home included. At
+that re-capture the two files differed by exactly that one `<a>` plus the whitespace line the
+nav loop emits around it (see the commit diff); the deterministic fixture
+(`tests/app/conftest.py`) is unchanged. The second deliberate edit, in the Admin-entry slice,
+adds exactly one footer anchor on the same `footer-links` line:
+`<a href="https://joao.date/dados/admin/">Admin</a>` and its ` · ` separator. It is absolute on
+both public hosts (`cae.joao.date` and `joao.date/dados`) and does not depend on
+`X-Forwarded-Prefix`. No other byte changed. From here
 on the byte comparison is again frozen: any unintended change to the home with no composition
 fails, and a future re-capture needs the same kind of auditable reason.
 """
@@ -71,6 +76,14 @@ def test_empty_composition_renders_the_code_list(site_path):
         html = c.get("/").text
     assert "Inflação (IHPC)" in html and "Desemprego" in html
     assert "Portugal. Valores publicados tal como a fonte os publica." in html
+
+
+def test_footer_admin_link_is_absolute_on_both_public_hosts(client):
+    for headers in ({}, {"X-Forwarded-Prefix": "/dados"}):
+        html = client.get("/", headers=headers).text
+        assert html.count('href="https://joao.date/dados/admin/"') == 1, headers
+        assert '>Admin</a>' in html, headers
+        assert 'href="/dados/admin/"' not in html, headers
 
 
 def test_publishing_the_code_list_reproduces_the_cards(site_path):

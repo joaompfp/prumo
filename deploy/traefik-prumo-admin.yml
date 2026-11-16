@@ -48,7 +48,9 @@ http:
           - Remote-Groups
 
     # After a successful forwardAuth (middleware order above), inject the shared secret.
-    # An empty Traefik environment value produces an empty header, which the app refuses.
+    # The app accepts only [A-Za-z0-9_-] and at least 32 characters: the value sits inside a
+    # single-quoted YAML scalar, which cannot carry a quote. An empty Traefik environment
+    # value produces an empty header, which the app refuses once its proxy mode is active.
     prumo-admin-inject-secret:
       headers:
         customRequestHeaders:

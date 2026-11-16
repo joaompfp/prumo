@@ -258,8 +258,10 @@ section { margin: 54px 0; }
 .chart-empty { color: var(--muted); font-style: italic; }
 .chart-figure figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
 
-/* Interactive enhancement. The SVG stays in flow and in the accessibility tree; the canvas is
-   overlayed only after the adapter has successfully set its option. */
+/* Interactive enhancement. `.chart-wrap` contains only the server SVG and the canvas overlay
+   sized to it; the comparison legend is a sibling so the overlay can never cover it. The SVG
+   stays in flow and in the accessibility tree; the canvas is overlayed only after the adapter
+   has successfully set its option. */
 .chart-shell { display: block; }
 .chart-wrap { position: relative; }
 .chart-canvas {

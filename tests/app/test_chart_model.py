@@ -8,7 +8,7 @@ import math
 from pathlib import Path
 
 from app import chart_model
-from app.charts import line_chart, two_series_chart
+from app.charts import chart_legend, chart_plot, comparison_svg, line_chart, two_series_chart
 
 GOLDEN = Path(__file__).parent / "golden" / "charts"
 
@@ -58,6 +58,17 @@ def test_svg_output_is_byte_identical_to_the_pre_refactor_capture():
     for name, render in CASES.items():
         expected = (GOLDEN / f"{name}.svg").read_text(encoding="utf-8")
         assert str(render()) == expected, name
+
+
+def test_chart_plot_and_legend_reassemble_the_public_comparison_output():
+    model = chart_model.comparison_model(
+        compare([("2026-01", "1.0", "2.0"), ("2026-02", "1.5", "2.5")]),
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%")
+    assert model is not None
+    # The wrapper splits the old public output without changing either byte stream.
+    assert str(chart_plot(model)) + str(chart_legend(model)) == str(comparison_svg(model))
+    line = chart_model.line_model(monthly(["1.0"]), frequency="M", title="T")
+    assert line is not None and str(chart_legend(line)) == ""
 
 
 def test_line_model_filters_nonfinite_tokens_and_keeps_exact_strings():
@@ -118,11 +129,63 @@ def test_comparison_intersects_finite_pairs_and_records_breaks():
         compare([("2026-01", "1.0", "2.0"), ("2026-02", "1.5", "n.d."),
                  ("2026-03", "1.2", "2.2"), ("2026-07", "1.3", "2.3")]),
         frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%")
+    assert model is not None
     assert [p.period for p in model.points] == ["2026-01", "2026-03", "2026-07"]
-    assert model.breaks == (2,)
+    # February and April-June are both missing: monthly cadence breaks at each surviving point.
+    assert model.breaks == (1, 2)
     for point in model.points:
         assert point.period_text.startswith(("janeiro", "março", "julho"))
         assert math.isfinite(point.a.y) and math.isfinite(point.b.y)
+
+
+def test_expected_step_comes_from_the_frequency_and_token_shape():
+    assert chart_model.expected_step(["2020", "2022"], "A") == 1.0
+    assert chart_model.expected_step(["2026-01", "2026-06"], "M") == 1.0
+    assert chart_model.expected_step(["2026-Q1", "2026-Q3"], "Q") == 1.0
+    assert chart_model.expected_step(["2026-S1", "2026-S2"], "S") == 1.0
+    assert chart_model.expected_step(["2026-01", "bad"], "M") is None
+    assert chart_model.expected_step(["2026-01T00:00:00+00:00",
+                                      "2026-01T00:15:00+00:00"], "PT15M") == 900.0
+    # A month is one ordinal unit, never a fixed 30-day duration.
+    assert chart_model.expected_step(["2026-01", "2026-02"], "P1M") is None
+    assert chart_model.expected_step(["2026-01", "2026-02"], "custom") is None
+
+
+def test_two_annual_points_still_break_across_a_missing_year():
+    model = chart_model.comparison_model(
+        compare([("2020", "1.0", "2.0"), ("2022", "1.5", "2.5")]),
+        frequency="A", title="Par", labels=("A", "B"), unit_a="%", unit_b="%")
+    assert model is not None
+    assert model.breaks == (1,)
+    assert len(model.points) == 2  # the break indexes existing points; it adds no point
+
+
+def test_two_monthly_points_break_across_the_missing_month():
+    model = chart_model.comparison_model(
+        compare([("2026-01", "1.0", "2.0"), ("2026-03", "1.5", "2.5")]),
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%")
+    assert model is not None
+    # A single observed step is the gap itself; the old median called it typical.
+    assert model.breaks == (1,)
+
+
+def test_missing_monthly_period_breaks_even_when_the_gap_is_first():
+    model = chart_model.comparison_model(
+        compare([("2026-01", "1.0", "2.0"), ("2026-03", "1.5", "2.5"),
+                 ("2026-04", "1.2", "2.2")]),
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%")
+    assert model is not None
+    assert model.breaks == (1,)
+
+
+def test_monthly_and_annual_consecutive_periods_never_break():
+    for frequency, periods in (("M", ["2026-01", "2026-02", "2026-03"]),
+                               ("A", ["2020", "2021", "2022"])):
+        model = chart_model.comparison_model(
+            compare([(period, "1.0", "2.0") for period in periods]),
+            frequency=frequency, title="Par", labels=("A", "B"), unit_a="%", unit_b="%")
+        assert model is not None
+        assert model.breaks == (), frequency
 
 
 def test_comparison_single_axis_shares_domain_and_dual_does_not():

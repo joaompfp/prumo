@@ -30,6 +30,7 @@ MIN_SECRET_CHARS = 32
 
 _USER = re.compile(r"[A-Za-z0-9._@-]{1,64}\Z")
 _HOST = re.compile(r"[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\Z")
+_SECRET = re.compile(r"[A-Za-z0-9_-]{32,}\Z")
 
 
 class AccessConfigError(RuntimeError):
@@ -76,7 +77,12 @@ def _users(value: str) -> tuple[str, ...]:
 
 @dataclass(frozen=True)
 class ProxyAccess:
-    """The verified proxy boundary: shared secret, allow-listed users, canonical origin."""
+    """The verified proxy boundary: shared secret, allow-listed users, canonical origin.
+
+    The secret alphabet is `[A-Za-z0-9_-]` with at least 32 characters. The Traefik template
+    places the value in a single-quoted YAML scalar, which cannot represent a quote; rejecting
+    the unsupported characters here keeps an invalid value from ever reaching the edge.
+    """
 
     secret: str
     users: tuple[str, ...]
@@ -86,12 +92,11 @@ class ProxyAccess:
     @classmethod
     def create(cls, secret: str, user: str = DEFAULT_USER,
                origin: str = DEFAULT_ORIGIN) -> ProxyAccess:
-        if len(secret) < MIN_SECRET_CHARS:
+        if not _SECRET.fullmatch(secret):
             raise AccessConfigError(
-                f"PRUMO_ADMIN_PROXY_SECRET must be at least {MIN_SECRET_CHARS} characters")
-        if not secret.isascii() or not all(33 <= ord(c) <= 126 for c in secret):
-            raise AccessConfigError(
-                "PRUMO_ADMIN_PROXY_SECRET must be printable ASCII without whitespace")
+                f"PRUMO_ADMIN_PROXY_SECRET must be at least {MIN_SECRET_CHARS} characters "
+                "using only A-Z, a-z, 0-9, '_' or '-' (for example `openssl rand -hex 32`); "
+                "the Traefik template quotes it in YAML and cannot carry a quote")
         canonical, netloc = _canonical_https_origin(origin)
         return cls(secret=secret, users=_users(user), origin=canonical, netloc=netloc)
 

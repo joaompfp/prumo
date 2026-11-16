@@ -286,12 +286,23 @@ def test_proxy_configuration_is_optional_and_fails_closed_when_incomplete():
     {"PRUMO_ADMIN_USER": "joao, bad user"},
     {"PRUMO_ADMIN_PROXY_SECRET": "short"},
     {"PRUMO_ADMIN_PROXY_SECRET": " " + SECRET},
+    {"PRUMO_ADMIN_PROXY_SECRET": SECRET[:-1] + "'"},
+    {"PRUMO_ADMIN_PROXY_SECRET": SECRET[:-1] + '"'},
+    {"PRUMO_ADMIN_PROXY_SECRET": SECRET[:-1] + "$"},
+    {"PRUMO_ADMIN_PROXY_SECRET": SECRET[:-1] + "!"},
+    {"PRUMO_ADMIN_PROXY_SECRET": SECRET[:-1] + "\\"},
+    {"PRUMO_ADMIN_PROXY_SECRET": SECRET[:-1] + "ç"},
 ])
 def test_proxy_configuration_rejects_incomplete_or_weak_values(extra):
     env = {"PRUMO_ADMIN_PROXY_SECRET": SECRET, **extra}
     with pytest.raises(AccessConfigError) as exc:
         AccessPolicy.from_env(env)
     assert SECRET not in str(exc.value)
+
+
+def test_proxy_secret_accepts_the_documented_template_alphabet():
+    for secret in ("a" * 32, "A1_-" * 8, "0123456789abcdef" * 4, "x" * 64):
+        assert ProxyAccess.create(secret).secret == secret
 
 
 def test_app_from_env_does_not_fall_back_when_proxy_is_partial(monkeypatch):
@@ -331,6 +342,16 @@ def test_traefik_template_has_the_exact_boundary_and_middleware_order():
     assert "test-secret" not in text
 
 
+def test_traefik_template_survives_the_allowed_secret_alphabet():
+    text = (ROOT / "deploy/traefik-prumo-admin.yml").read_text(encoding="utf-8")
+    expression = '{{ env "PRUMO_ADMIN_PROXY_SECRET" }}'
+    secret = "A1_-" * 8
+    ProxyAccess.create(secret)          # the app accepts exactly what the template can quote
+    doc = yaml.safe_load(text.replace(expression, secret))
+    assert doc["http"]["middlewares"]["prumo-admin-inject-secret"]["headers"][
+        "customRequestHeaders"]["X-Prumo-Proxy-Secret"] == secret
+
+
 def test_authelia_template_allows_the_owner_then_denies_before_generic_rules():
     doc = yaml.safe_load(
         (ROOT / "deploy/authelia-prumo-admin.yml").read_text(encoding="utf-8"))
@@ -364,5 +385,9 @@ def test_deployment_runbook_names_the_boundary_secret_and_rollback():
         "rollback",
         "https://joao.date",
         "X-Prumo-Proxy-Secret",
+        "[A-Za-z0-9_-]",
+        "single-quoted YAML scalar",
+        "only after the backoffice itself is in proxy mode",
+        "local mode",
     ):
         assert needed in text

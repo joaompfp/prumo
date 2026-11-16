@@ -18,7 +18,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 
 from app import interactive, reads
-from app.charts import chart_svg, line_chart, sparkline, two_series_chart
+from app.charts import chart_legend, chart_plot, chart_svg, line_chart, sparkline, two_series_chart
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
 from presentation import MissingText
@@ -50,6 +50,7 @@ log = logging.getLogger("prumo.app")
 def _templates() -> Jinja2Templates:
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
     env.globals.update(chart=line_chart, chart_two=two_series_chart, chart_svg=chart_svg,
+                       chart_plot=chart_plot, chart_legend=chart_legend,
                        chart_js=interactive.asset_path(), spark=sparkline,
                        format_value=format_value, format_period=format_period,
                        format_datetime=format_datetime, format_date=format_date,

@@ -9,6 +9,7 @@ The module is pure: no HTML, no database, no request state. A CMS reader can cal
 `line_model`/`comparison_model` and `app.interactive.build_payload` exactly as the built-in
 pages do.
 """
+import re
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal
@@ -151,11 +152,48 @@ def axis_interval(axis_ticks: list[Decimal], lo: Decimal, hi: Decimal) -> Decima
     return hi - lo or Decimal(1)
 
 
-def break_indices(ordinals: list[float]) -> tuple[int, ...]:
-    """Point indices where a missing period must break the line, judged on calendar distance."""
+_PERIOD_SHAPES = {
+    "A": re.compile(r"\d{4}\Z"),
+    "M": re.compile(r"\d{4}-\d{2}\Z"),
+    "Q": re.compile(r"\d{4}-Q[1-4]\Z"),
+    "S": re.compile(r"\d{4}-S[1-2]\Z"),
+}
+_ISO_STEP = re.compile(r"P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?\Z")
+
+
+def expected_step(periods: list[str], frequency: str) -> float | None:
+    """The x distance one period occupies, when its frequency and tokens are parseable.
+
+    Annual, monthly, quarterly and semester tokens are exactly one ordinal apart; no month is
+    ever converted to a fixed 30-day span. An ISO 8601 duration (`PT15M`, `PT1H`, `P1D`) fixes
+    a timestamp step in seconds. An unknown shape returns None and lets the caller fall back.
+    """
+    shape = _PERIOD_SHAPES.get(frequency)
+    if shape is not None:
+        return 1.0 if periods and all(shape.fullmatch(p) for p in periods) else None
+    duration = _ISO_STEP.fullmatch(frequency or "")
+    if duration:
+        days, hours, minutes = (int(part or 0) for part in duration.groups())
+        seconds = days * 86400 + hours * 3600 + minutes * 60
+        return float(seconds) if seconds else None
+    return None
+
+
+def break_indices(ordinals: list[float], step: float | None = None) -> tuple[int, ...]:
+    """Point indices where a missing period must break the line.
+
+    `step` is the expected distance between consecutive periods. It comes from the period
+    tokens and frequency, so a two-point series can still show its gap: the median of the
+    observed steps would call that one step typical. The fallback median is only for an
+    unrecognised frequency. Indices address the existing points; a break never adds a point
+    to the slider or the x axis.
+    """
     steps = [ordinals[i] - ordinals[i - 1] for i in range(1, len(ordinals))]
-    typical = sorted(steps)[(len(steps) - 1) // 2] if steps else 0.0
-    return tuple(i for i, step in enumerate(steps, start=1) if typical and step > typical * 1.5)
+    typical = step
+    if typical is None:
+        typical = sorted(steps)[(len(steps) - 1) // 2] if steps else 0.0
+    return tuple(i for i, distance in enumerate(steps, start=1)
+                 if typical and distance > typical * 1.5)
 
 
 def positions(ordinals: list[float], left: float, plot_w: float) -> list[float]:
@@ -405,6 +443,6 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
         interval_b=axis_interval(ticks_b, lo_b, hi_b),
         x_ticks=tuple(XTick(index=i, ordinal=ordinals[i], x=xs[i], text=text)
                       for i, text in x_labels(periods, frequency)),
-        breaks=break_indices(ordinals),
+        breaks=break_indices(ordinals, expected_step(periods, frequency)),
         last_x=last.x, last_anchor=anchor, last_dx=-6 if anchor == "end" else 0,
         marks=marks)

@@ -15,6 +15,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app import reads
+from app.chart_model import comparison_model
+from app.interactive import build_payload
 from app.main import SECURITY_HEADERS, create_app
 from ingest.db import open_db
 from presentation.catalog import pt
@@ -87,6 +89,21 @@ def test_payload_axes_match_the_prepared_domain_and_ticks(client):
     xs = payload["x"]
     assert xs == sorted(xs)
     assert all(isinstance(x, (int, float)) for x in xs)
+
+
+def test_comparison_payload_breaks_do_not_become_slider_steps():
+    model = comparison_model(
+        [{"period": "2026-01", "a": "1.0", "b": "2.0"},
+         {"period": "2026-06", "a": "1.5", "b": "2.5"}],
+        frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%")
+    assert model is not None
+    payload = build_payload(model)
+    assert payload is not None
+    assert model.breaks == (1,)
+    assert payload["breaks"] == [1]
+    # The break marks the second existing point; it must not insert a synthetic x/period row.
+    assert len(payload["x"]) == len(payload["periods"]) == len(payload["display"]) == 2
+    assert payload["periods"] == ["janeiro de 2026", "junho de 2026"]
 
 
 def test_comparison_payload_carries_both_series_and_dual_axes(pairs_client):

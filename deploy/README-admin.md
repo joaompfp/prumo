@@ -48,6 +48,12 @@ sops secrets/web.enc.env
 sops secrets/core.enc.env
 ```
 
+The accepted alphabet is exactly `[A-Za-z0-9_-]`, at least 32 characters. `openssl rand -hex 32`
+produces 64 hexadecimal characters and is the recommended form. The backoffice rejects any
+other character at startup, before a value can reach the edge: the Traefik template places the
+secret inside a single-quoted YAML scalar, where a quote cannot be represented safely. Do not
+substitute a passphrase containing spaces, quotes, `$`, `!` or a backslash.
+
 In each editor add one line, for example:
 
 ```
@@ -86,8 +92,13 @@ X-Prumo-Proxy-Secret: '{{ env "PRUMO_ADMIN_PROXY_SECRET" }}'
 
 Traefik applies Go templating only to dedicated dynamic files, not to its static
 configuration. The expression is validated by the repository test after substituting a test
-value; the real environment value is never in git. If the variable is empty at the edge, the
-injected header is empty and the app refuses every request, which is the intended failure.
+value; the real environment value is never in git. An empty value at the edge produces an empty
+injected header, but that is fail-closed **only after the backoffice itself is in proxy mode**
+(its own `PRUMO_ADMIN_PROXY_SECRET` is set). While every Admin variable is blank, the shipped
+private service intentionally stays in local mode. This is why the release sequence sets the
+app's proxy secret and recreates the backoffice (step 3) before the Authelia rules (step 5) and
+the Traefik environment/router (steps 6-7): never expose the router while the app is still
+local. Do not rely on the empty-edge failure to protect a local-mode backoffice.
 
 ## Deployment sequence
 
