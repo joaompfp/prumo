@@ -12,6 +12,7 @@ from app.formatting import MONTHS_SHORT, decimal_or_none, format_axis, format_pe
 
 WIDTH, HEIGHT = 880, 340
 LEFT, RIGHT, TOP, BOTTOM = 68, 20, 18, 44
+RIGHT_DUAL = 104
 
 
 def _ordinal(period: str, frequency: str) -> float:
@@ -188,6 +189,141 @@ def line_chart(points: list[dict], *, frequency: str, title: str, unit: str = ""
                      f'y="{height - 14}" text-anchor="middle">{escape(label)}</text>')
     parts.append("</svg>")
     return Markup("".join(parts))
+
+
+def _range(nums: list[Decimal]) -> tuple[Decimal, Decimal, list[Decimal]]:
+    """Padded bounds and nice ticks for one set of numbers, zero included when it is crossed."""
+    lo, hi = min(nums), max(nums)
+    if lo == hi:
+        pad = abs(lo) * Decimal("0.1") or Decimal(1)
+        lo, hi = lo - pad, hi + pad
+    else:
+        pad = (hi - lo) * Decimal("0.08")
+        lo, hi = lo - pad, hi + pad
+    if min(nums) < 0:
+        lo, hi = min(lo, Decimal(0)), max(hi, Decimal(0))
+    ticks = _ticks(lo, hi)
+    if ticks:
+        lo, hi = min(lo, ticks[0]), max(hi, ticks[-1])
+    return lo, hi, ticks
+
+
+def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: tuple[str, str],
+                     unit_a: str, unit_b: str | None = None,
+                     width: int = WIDTH, height: int = HEIGHT) -> Markup:
+    """Two series as two SVG lines over the periods the caller aligned.
+
+    `points` are dicts with `period`, `a` and `b` (the stored tokens), oldest first. Equal units
+    (or no `unit_b`) share one axis; different units get two independent axes, gridlines from the
+    left one and both sides labelled, because two scales on one gridline set would let any two
+    series look related. Nothing is interpolated: a missing token drops that period for both lines.
+    """
+    rows = []
+    for p in points:
+        a, b = decimal_or_none(p["a"]), decimal_or_none(p["b"])
+        if a is None or b is None:
+            continue
+        rows.append((p["period"], a, b, p["a"], p["b"]))
+    if not rows:
+        return Markup('<p class="chart-empty">Sem valores para representar.</p>')
+
+    periods = [r[0] for r in rows]
+    dual = unit_b is not None and unit_b != unit_a
+    if dual:
+        lo_a, hi_a, ticks_a = _range([r[1] for r in rows])
+        lo_b, hi_b, ticks_b = _range([r[2] for r in rows])
+    else:
+        lo_a, hi_a, ticks_a = _range([r[1] for r in rows] + [r[2] for r in rows])
+        lo_b, hi_b, ticks_b = lo_a, hi_a, ticks_a
+
+    # A dual axis needs room for two-digit tick labels and a unit as long as "milhões de euros";
+    # with the single-axis margin both are clipped at the viewBox edge and the axis reads 15/10
+    # instead of 150/100.
+    right = RIGHT_DUAL if dual else RIGHT
+    plot_w, plot_h = width - LEFT - right, height - TOP - BOTTOM
+
+    def y_of(number: Decimal, lo: Decimal, hi: Decimal) -> float:
+        span = hi - lo or Decimal(1)
+        return float(TOP + (hi - number) / span * plot_h)
+
+    ordinals = [_ordinal(p, frequency) for p in periods]
+    if any(o != o for o in ordinals):  # NaN: fall back to even spacing
+        ordinals = [float(i) for i in range(len(periods))]
+    first, last = ordinals[0], ordinals[-1]
+    xs = ([LEFT + plot_w / 2 for _ in ordinals] if first == last
+          else [LEFT + (o - first) / (last - first) * plot_w for o in ordinals])
+
+    name = f"{title}: {labels[0]} ({unit_a}) e {labels[1]} ({unit_b or unit_a})"
+    parts = [f'<svg class="chart chart-compare" viewBox="0 0 {width} {height}" role="img" '
+             f'aria-label="{escape(name)}" preserveAspectRatio="xMidYMid meet">',
+             f"<title>{escape(name)}</title>"]
+
+    for tick in ticks_a:
+        ty = round(y_of(tick, lo_a, hi_a), 1)
+        cls = "chart-grid chart-zero" if tick == 0 else "chart-grid"
+        parts.append(f'<line class="{cls}" x1="{LEFT}" y1="{ty}" x2="{width - right}" '
+                     f'y2="{ty}" />')
+        parts.append(f'<text class="chart-tick" x="{LEFT - 8}" y="{ty + 4}" '
+                     f'text-anchor="end">{escape(format_axis(tick))}</text>')
+    if dual:
+        for tick in ticks_b:
+            ty = round(y_of(tick, lo_b, hi_b), 1)
+            parts.append(f'<text class="chart-tick" x="{width - right + 8}" y="{ty + 4}" '
+                         f'text-anchor="start">{escape(format_axis(tick))}</text>')
+
+    parts.append(f'<text class="chart-axis-label" x="{LEFT - 8}" y="{TOP - 6}" '
+                 f'text-anchor="end">{escape(unit_a)}</text>')
+    if dual:
+        # Anchored to the viewBox edge: a long unit ("milhões de euros") grows leftwards instead
+        # of past the right border, where it would be clipped.
+        parts.append(f'<text class="chart-axis-label" x="{width - 4}" y="{TOP - 6}" '
+                     f'text-anchor="end">{escape(unit_b)}</text>')
+
+    for index, lo, hi, cls in ((1, lo_a, hi_a, "chart-line-a"), (2, lo_b, hi_b, "chart-line-b")):
+        d = " ".join(f"{'M' if i == 0 else 'L'}{round(xs[i], 1)},"
+                     f"{round(y_of(row[index], lo, hi), 1)}" for i, row in enumerate(rows))
+        parts.append(f'<path class="chart-line {cls}" d="{d}" />')
+
+    for i, (period, a, b, token_a, token_b) in enumerate(rows):
+        cx = round(xs[i], 1)
+        for cy, token, label, unit in ((y_of(a, lo_a, hi_a), token_a, labels[0], unit_a),
+                                       (y_of(b, lo_b, hi_b), token_b, labels[1],
+                                        unit_b or unit_a)):
+            parts.append(f'<circle class="chart-point" cx="{cx}" cy="{round(cy, 1)}" r="7">'
+                         f'<title>{escape(label)} — {escape(format_period(period, frequency))}: '
+                         f'{escape(format_value(token))} {escape(unit)}</title></circle>')
+
+    # One label per line; when the two ends sit close, the second is dropped and the legend
+    # carries both values, rather than stacking two labels on the same spot.
+    last_y_a = y_of(rows[-1][1], lo_a, hi_a)
+    last_y_b = y_of(rows[-1][2], lo_b, hi_b)
+    lx = round(xs[-1], 1)
+    anchor = "end" if lx > width - 40 else "middle"
+    dx = -6 if anchor == "end" else 0
+    marks = [(last_y_a, format_value(rows[-1][3]), "a")]
+    if abs(last_y_a - last_y_b) >= 22:
+        marks.append((last_y_b, format_value(rows[-1][4]), "b"))
+    for ly, text, suffix in marks:
+        label_y = ly - 12 if ly - 12 >= TOP + 10 else ly + 20
+        parts.append(f'<text class="chart-last-label chart-last-{suffix}" '
+                     f'x="{round(lx + dx, 1)}" y="{round(label_y, 1)}" '
+                     f'text-anchor="{anchor}">{escape(text)}</text>')
+
+    for index, label in _x_labels(periods, frequency):
+        parts.append(f'<text class="chart-tick" x="{round(xs[index], 1)}" '
+                     f'y="{height - 14}" text-anchor="middle">{escape(label)}</text>')
+    parts.append("</svg>")
+
+    legend = (
+        '<ul class="legend">'
+        f'<li><span class="legend-swatch swatch-a" aria-hidden="true"></span>{escape(labels[0])}'
+        f'<span class="legend-value">{escape(format_value(rows[-1][3]))} {escape(unit_a)}</span>'
+        '</li>'
+        f'<li><span class="legend-swatch swatch-b" aria-hidden="true"></span>{escape(labels[1])}'
+        f'<span class="legend-value">{escape(format_value(rows[-1][4]))} '
+        f'{escape(unit_b or unit_a)}</span></li>'
+        '</ul>')
+    return Markup("".join(parts) + legend)
 
 
 def sparkline(points: list[dict], *, width: int = 132, height: int = 40) -> Markup:

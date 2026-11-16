@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Comparações — Prumo{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> Comparações
+</nav>
+
+<header class="page-head">
+  <h1>Comparações</h1>
+  <p class="lede">{{ page.intro }}</p>
+</header>
+
+<ul class="compare-list">
+  {% for row in page.rows %}
+  <li class="compare-item">
+    <a class="compare-link" href="{{ base }}/comparar/{{ row.slug }}">{{ row.title }}</a>
+    <p class="compare-mechanism">{{ row.mechanism }}</p>
+    <p class="meta">{{ row.span_text }} · {{ row.common_text }} comuns</p>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

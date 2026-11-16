@@ -19,7 +19,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 
 from app import reads
-from app.charts import line_chart, sparkline
+from app.charts import line_chart, sparkline, two_series_chart
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
 from presentation import MissingText
@@ -30,7 +30,8 @@ STATIC_DIR = BASE_DIR.parent / "static"
 DEFAULT_DB = "/data/prumo.sqlite3"
 PAGE_METHODS = ["GET", "HEAD"]
 NAV = (("/", "Início"), ("/temas/economy", "Economia"), ("/temas/demography", "Demografia"),
-       ("/temas/energy", "Energia"), ("/fontes", "Fontes"), ("/metodologia", "Metodologia"))
+       ("/temas/energy", "Energia"), ("/comparar", "Comparações"), ("/fontes", "Fontes"),
+       ("/metodologia", "Metodologia"))
 SECURITY_HEADERS = {
     "Content-Security-Policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; "
                                "form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
@@ -64,7 +65,7 @@ def _base(request: Request) -> str:
 
 def _templates() -> Jinja2Templates:
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
-    env.globals.update(chart=line_chart, spark=sparkline,
+    env.globals.update(chart=line_chart, chart_two=two_series_chart, spark=sparkline,
                        format_value=format_value, format_period=format_period,
                        format_datetime=format_datetime, format_date=format_date,
                        format_count=format_count)
@@ -215,6 +216,25 @@ def create_app(db_path: str | None = None) -> FastAPI:
     @app.api_route("/metodologia", methods=PAGE_METHODS, response_class=HTMLResponse)
     def methodology(request: Request):
         return _render(templates, request, "methodology.html", {})
+
+    @app.api_route("/comparar", methods=PAGE_METHODS, response_class=HTMLResponse)
+    def comparisons_index(request: Request):
+        try:
+            data = _read(request, lambda db: reads.comparisons_index(db))
+        except ReadOnlyOpenError as exc:
+            return unavailable(request, exc)
+        return _render(templates, request, "compare_index.html", {"page": data})
+
+    @app.api_route("/comparar/{slug}", methods=PAGE_METHODS, response_class=HTMLResponse)
+    def comparison(request: Request, slug: str):
+        """A curated pair by slug: the route never accepts two series ids."""
+        try:
+            data = _read(request, lambda db: reads.comparison_page(db, slug))
+        except ReadOnlyOpenError as exc:
+            return unavailable(request, exc)
+        if data is None:
+            return _render(templates, request, "404.html", {}, status=404)
+        return _render(templates, request, "compare.html", {"page": data})
 
     @app.exception_handler(MissingText)
     def missing_reader_text(request: Request, exc: MissingText):

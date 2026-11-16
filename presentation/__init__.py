@@ -125,3 +125,26 @@ def page_text(lang: str, slug: str) -> dict[str, str]:
         return catalog.PAGES[slug]
     except KeyError:
         raise MissingText(f"no {lang} page text for {slug!r}") from None
+
+
+# --- two-series comparisons (project 4, extension) -------------------------------------------
+
+def comparison_intro(lang: str) -> str:
+    return _catalog(lang).COMPARISONS_INTRO
+
+
+def comparisons(lang: str) -> dict[str, dict[str, str]]:
+    """The curated pairs, in reading order, keyed by slug.
+
+    A pair is code, not data: its two series, its title, its one-sentence mechanism and its scale
+    mode are all reviewed in git. There is no route that accepts two series ids.
+    """
+    return _catalog(lang).COMPARISONS
+
+
+def comparison_pair(lang: str, slug: str) -> dict[str, str]:
+    catalog = _catalog(lang)
+    try:
+        return catalog.COMPARISONS[slug]
+    except KeyError:
+        raise MissingText(f"no {lang} comparison for {slug!r}") from None

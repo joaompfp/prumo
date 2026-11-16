@@ -17,6 +17,9 @@ from presentation import (
     base_unit_text,
     calculated_attribution,
     caveat_text,
+    comparison_intro,
+    comparison_pair,
+    comparisons,
     derived_title,
     describe_formula,
     family_of,
@@ -828,3 +831,176 @@ def derived_csv(db: Db, key: str) -> CsvExport | None:
         header=("periodo", "valor", "unidade"),
         rows=tuple((v["period"], v["value_text"], unit_text("pt", d["unit"])) for v in values),
         footer=footer)
+
+
+# --- two-series comparisons (project 4, extension) -------------------------------------------
+# A comparison is a curated pair in `presentation.catalog`, never two ids from a query string.
+# The page plots the periods both series publish; what each side loses is counted, never filled in.
+
+@dataclass(frozen=True)
+class ComparisonSeries:
+    """One side of a pair: who publishes it, in what unit, and its value on the last period the
+    two series share (not on that series' own newest period, which the chart may not reach)."""
+    id: str
+    title: str
+    source_title: str
+    attribution: str
+    unit_text: str
+    frequency: str
+    frequency_text: str
+    latest_display: str
+    latest_period_text: str
+    licence: str
+    provenance: ProvenanceView | None
+
+
+@dataclass(frozen=True)
+class ComparisonPage:
+    slug: str
+    title: str
+    subtitle: str
+    mechanism: str
+    caption_note: str
+    scale: str
+    chart_title: str
+    chart_points: tuple[dict, ...]
+    table_rows: tuple[dict, ...]
+    table_note: str
+    alignment_text: str
+    a: ComparisonSeries
+    b: ComparisonSeries
+
+
+@dataclass(frozen=True)
+class ComparisonSummary:
+    slug: str
+    title: str
+    mechanism: str
+    span_text: str
+    common_text: str
+
+
+@dataclass(frozen=True)
+class ComparisonIndex:
+    intro: str
+    rows: tuple[ComparisonSummary, ...]
+
+
+def _periods(n: int) -> str:
+    return "1 período" if n == 1 else f"{format_count(n)} períodos"
+
+
+def _align(a_values: list[dict], b_values: list[dict]) -> tuple[tuple[dict, ...], int, int]:
+    """The periods both series publish, oldest first, plus the count each side loses.
+
+    No interpolation, no carry-forward, no resampling: a period only one series has is stated in
+    the alignment line, not drawn as if the other side had a value.
+    """
+    a_map = {v["period"]: v["value_text"] for v in a_values}
+    b_map = {v["period"]: v["value_text"] for v in b_values}
+    common = sorted(set(a_map) & set(b_map))
+    return (tuple({"period": p, "a": a_map[p], "b": b_map[p]} for p in common),
+            len(a_map) - len(common), len(b_map) - len(common))
+
+
+def _comparison_side(db: Db, row: dict, token: str, period: str, frequency: str,
+                     lang: str) -> ComparisonSeries:
+    provenance = db.public_provenance(row["id"])
+    return ComparisonSeries(
+        id=row["id"], title=_title(row, lang), source_title=source_title(lang, row["source"]),
+        attribution=row["attribution"], unit_text=base_unit_text(lang, row["unit"]),
+        frequency=frequency, frequency_text=frequency_text(lang, frequency),
+        latest_display=format_value(token),
+        latest_period_text=format_period(period, frequency),
+        licence=row["licence"],
+        provenance=_provenance_view(provenance, frequency, lang) if provenance else None)
+
+
+def _published_pair(db: Db, pair: dict[str, str],
+                    slug: str = "") -> tuple[dict, dict, tuple[dict, ...], int, int] | None:
+    """Both series of a pair, or None when the pair cannot be drawn as it was curated.
+
+    A pair whose series lost its licence or its served values disappears whole: half a
+    comparison is a claim the reader cannot check.
+    """
+    a_row = db.public_series(pair["series_a"])
+    b_row = db.public_series(pair["series_b"])
+    if a_row is None or b_row is None:
+        log.warning("comparison %s hidden: a series is not published", slug or pair["series_a"])
+        return None
+    if a_row["role"] != "primary" or b_row["role"] != "primary":
+        return None
+    if a_row["latest_period"] is None or b_row["latest_period"] is None:
+        log.warning("comparison %s hidden: a series has no served value", slug)
+        return None
+    if a_row["frequency"] != b_row["frequency"]:
+        # Curated pairs are same-frequency. A mismatch is a catalogue fault, not a reader's.
+        log.error("comparison %s mixes frequencies %s and %s", slug,
+                  a_row["frequency"], b_row["frequency"])
+        return None
+    points, dropped_a, dropped_b = _align(db.public_series_values(a_row["id"]),
+                                          db.public_series_values(b_row["id"]))
+    if not points:
+        log.warning("comparison %s hidden: no common period", slug)
+        return None
+    return a_row, b_row, points, dropped_a, dropped_b
+
+
+def _alignment_text(points: tuple[dict, ...], dropped_a: int, dropped_b: int,
+                    a_title: str, b_title: str, frequency: str) -> str:
+    first = format_period(points[0]["period"], frequency)
+    last = format_period(points[-1]["period"], frequency)
+    parts = [f"{_periods(len(points))} comuns, de {first} a {last}."]
+    missing = []
+    if dropped_a:
+        missing.append(f"{_periods(dropped_a)} de {a_title}")
+    if dropped_b:
+        missing.append(f"{_periods(dropped_b)} de {b_title}")
+    if missing:
+        parts.append("Ficam de fora " + " e ".join(missing) + ", sem par na outra série.")
+    else:
+        parts.append("As duas séries cobrem exactamente os mesmos períodos.")
+    return " ".join(parts)
+
+
+def comparison_page(db: Db, slug: str, *, lang: str = "pt") -> ComparisonPage | None:
+    try:
+        pair = comparison_pair(lang, slug)
+    except MissingText:
+        return None
+    published = _published_pair(db, pair, slug)
+    if published is None:
+        return None
+    a_row, b_row, points, dropped_a, dropped_b = published
+    frequency = a_row["frequency"]
+    last = points[-1]
+    a = _comparison_side(db, a_row, last["a"], last["period"], frequency, lang)
+    b = _comparison_side(db, b_row, last["b"], last["period"], frequency, lang)
+    rows = tuple(
+        {"period_text": format_period(p["period"], frequency),
+         "a_display": format_value(p["a"]), "b_display": format_value(p["b"])}
+        for p in reversed(points))[:TABLE_CAP]
+    note = (f"A mostrar os {len(rows)} períodos mais recentes de {_periods(len(points))}."
+            if len(rows) < len(points) else f"{_periods(len(points))}.")
+    return ComparisonPage(
+        slug=slug, title=pair["title"], subtitle=pair["subtitle"], mechanism=pair["mechanism"],
+        caption_note=pair["caption_note"], scale=pair["scale"], chart_title=pair["title"],
+        chart_points=points, table_rows=rows, table_note=note,
+        alignment_text=_alignment_text(points, dropped_a, dropped_b, a.title, b.title, frequency),
+        a=a, b=b)
+
+
+def comparisons_index(db: Db, *, lang: str = "pt") -> ComparisonIndex:
+    rows = []
+    for slug, pair in comparisons(lang).items():
+        published = _published_pair(db, pair, slug)
+        if published is None:
+            continue
+        a_row, _b_row, points, _da, _db = published
+        frequency = a_row["frequency"]
+        rows.append(ComparisonSummary(
+            slug=slug, title=pair["title"], mechanism=pair["mechanism"],
+            span_text=(f"{format_period(points[0]['period'], frequency)} a "
+                       f"{format_period(points[-1]['period'], frequency)}"),
+            common_text=_periods(len(points))))
+    return ComparisonIndex(intro=comparison_intro(lang), rows=tuple(rows))

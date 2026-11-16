@@ -356,3 +356,54 @@ PAGES: dict[str, dict[str, str]] = {
         "note_mixed": "Cada número indica a instituição e a data da recolha.",
     },
 }
+
+
+# --- two-series comparisons (project 4, extension) --------------------------------------------
+# Curated pairs only: the route takes a slug, never two series ids, because most of the base is
+# one indicator across many countries and two-of-anything turns coincidences into pages with the
+# site's authority behind them. `scale` is a property of the pair: `one_axis` needs the same unit
+# token for both series and two measures of the same kind; `dual_axis` needs different units, two
+# labelled axes and a note saying the magnitudes are not comparable.
+COMPARISONS_INTRO = (
+    "Dois indicadores no mesmo gráfico, apenas nos pares que a redação escolheu e consegue "
+    "explicar. Não há escolha livre: dois valores quaisquer produzem coincidências vistosas "
+    "sem significado."
+)
+
+COMPARISONS: dict[str, dict[str, str]] = {
+    "inflacao-e-desemprego": {
+        "series_a": "ine.hicp_yoy.PT",
+        "series_b": "ine.unemployment_monthly.PT",
+        "title": "Inflação e desemprego",
+        "subtitle": "Os dois lados do ciclo, mês a mês, desde 1998.",
+        "mechanism": "Quando o desemprego desce, a inflação tende a subir. O gráfico mostra o "
+                     "movimento conjunto ao longo de quase três décadas; não estabelece uma "
+                     "relação de causa.",
+        "scale": "one_axis",
+        "caption_note": "As duas séries são mensais e em percentagem, publicadas pelo INE.",
+    },
+    "euribor-e-inflacao": {
+        "series_a": "bportugal.euribor_3m.EA",
+        "series_b": "ine.hicp_yoy.PT",
+        "title": "Euribor e inflação",
+        "subtitle": "O preço do dinheiro na área do euro e a inflação portuguesa.",
+        "mechanism": "A Euribor a 3 meses é a taxa a que os bancos se financiam entre si na área "
+                     "do euro; a inflação é portuguesa. A transmissão de uma para a outra não é "
+                     "imediata, e é essa distância que o gráfico deixa ver.",
+        "scale": "one_axis",
+        "caption_note": "A Euribor diz respeito à área do euro e o IHPC a Portugal. Ambas "
+                        "mensais e em percentagem.",
+    },
+    "credito-e-taxa": {
+        "series_a": "bportugal.euribor_12m.EA",
+        "series_b": "bportugal.credit_housing.PT",
+        "title": "Taxa e crédito à habitação",
+        "subtitle": "O que uma família paga e quanto está emprestado em crédito à habitação.",
+        "mechanism": "A Euribor a 12 meses é um dos indexantes usados no crédito à habitação; o "
+                     "stock diz quanto está emprestado. Uma é preço e o outro é quantidade, e "
+                     "por isso sobem e descem em alturas diferentes.",
+        "scale": "dual_axis",
+        "caption_note": "Percentagem à esquerda, milhões de euros à direita. As escalas são "
+                        "independentes: o gráfico compara direções, não grandezas.",
+    },
+}

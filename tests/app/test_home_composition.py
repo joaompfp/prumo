@@ -1,8 +1,13 @@
 """The home page with an editorial composition, and the proof that an empty one changes nothing.
 
-`golden/home_before_editorial.html` was rendered by the deployed commit before this feature;
-the byte comparison is the deploy's safety argument, so it uses the same deterministic fixture
-(`tests/app/conftest.py`), never a refreshed capture.
+`golden/home_before_editorial.html` was rendered by the deployed commit before this feature and
+stays in the tree as the historical reference. `golden/home_code_list.html` is the capture this
+test uses: it was re-taken once, in the comparisons release (2026-11-16), because that release
+added one item to the site navigation and the nav is part of every page, the home included. The
+two files differ by exactly that one `<a>` (see the commit diff); the deterministic fixture
+(`tests/app/conftest.py`) is unchanged. From here on the byte comparison is again frozen: any
+unintended change to the home with no composition fails, and a future re-capture needs the same
+kind of auditable, single-line reason.
 """
 
 from pathlib import Path
@@ -15,7 +20,7 @@ from ingest.db import open_db
 from presentation.catalog import pt
 from tests.app.conftest import DERIVED, HICP, T2, UNEMP, WORLD, fetch
 
-GOLDEN = Path(__file__).parent / "golden" / "home_before_editorial.html"
+GOLDEN = Path(__file__).parent / "golden" / "home_code_list.html"
 SLUG = "inicio"
 EXTRA = "ine.hicp_yoy_extra.PT"
 

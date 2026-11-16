@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} — Prumo{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/comparar">Comparações</a> <span aria-hidden="true">/</span> {{ page.title }}
+</nav>
+
+<header class="page-head">
+  <h1>{{ page.title }}</h1>
+  <p class="lede">{{ page.subtitle }}</p>
+  <p class="meta">
+    {{ page.a.title }} · {{ page.a.frequency_text }} · {{ page.a.unit_text }}
+    <br>
+    {{ page.b.title }} · {{ page.b.frequency_text }} · {{ page.b.unit_text }}
+  </p>
+</header>
+
+<p class="compare-claim">{{ page.mechanism }}</p>
+
+<section class="chart-section" aria-labelledby="grafico">
+  <div class="section-head">
+    <h2 id="grafico">As duas séries</h2>
+  </div>
+  <figure class="chart-figure">
+    {{ chart_two(page.chart_points, frequency=page.a.frequency, title=page.chart_title, labels=[page.a.title, page.b.title], unit_a=page.a.unit_text, unit_b=page.b.unit_text) }}
+    <figcaption>{{ page.caption_note }} Últimos valores no período comum de {{ page.a.latest_period_text }}.</figcaption>
+  </figure>
+  <p class="note">{{ page.alignment_text }}</p>
+  <details class="table-details">
+    <summary>Ver tabela de valores</summary>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">Período</th>
+          <th scope="col" class="num">{{ page.a.title }} ({{ page.a.unit_text }})</th>
+          <th scope="col" class="num">{{ page.b.title }} ({{ page.b.unit_text }})</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in page.table_rows %}
+        <tr><td>{{ row.period_text }}</td><td class="num">{{ row.a_display }}</td><td class="num">{{ row.b_display }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="note">{{ page.table_note }}</p>
+  </details>
+</section>
+
+<section class="provenance" aria-labelledby="proveniencia">
+  <div class="section-head">
+    <h2 id="proveniencia">Proveniência</h2>
+    <p class="section-note">Cada série mantém o seu próprio caminho, do editor até esta página.</p>
+  </div>
+  <div class="compare-provenance">
+    {% for side in [page.a, page.b] %}
+    <dl class="provenance-list">
+      <dt>Série</dt><dd><a href="{{ base }}/series/{{ side.id }}">{{ side.title }}</a></dd>
+      <dt>Publicado por</dt><dd>{{ side.source_title }}</dd>
+      <dt>Atribuição</dt><dd>{{ side.attribution }}</dd>
+      <dt>Último período comum</dt><dd>{{ side.latest_period_text }}: {{ side.latest_display }} {{ side.unit_text }}</dd>
+      {% if side.provenance %}
+      <dt>Recolhido</dt><dd>{{ side.provenance.fetched_text }}</dd>
+      <dt>Execução</dt><dd>#{{ side.provenance.run_id }}</dd>
+      {% if side.provenance.verification_created_text %}
+      <dt>Verificação</dt><dd>{{ side.provenance.verification_created_text }}{% if side.provenance.sample_size_text %}, amostra de {{ side.provenance.sample_size_text }} valores{% endif %}{% if side.provenance.verification_passed %}, 100% coincidentes{% endif %}</dd>
+      {% endif %}
+      {% endif %}
+      <dt>Licença</dt><dd>{{ side.licence }}</dd>
+    </dl>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
