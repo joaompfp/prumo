@@ -4,13 +4,16 @@ No SQL here (every query is a Db method) and no reader text outside `presentatio
 their stored token; dates, periods and flags get Portuguese text. Dataclasses are frozen so a
 template cannot mutate what the page was assembled from.
 """
+import logging
 import time
 import unicodedata
 from dataclasses import dataclass
 
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import Db
+from ingest.editorial_rules import SlotFacts, page_problems
 from presentation import (
+    MissingText,
     base_unit_text,
     calculated_attribution,
     caveat_text,
@@ -20,6 +23,7 @@ from presentation import (
     flag_text,
     frequency_text,
     geography_name,
+    page_text,
     search_aliases,
     seasonal_text,
     series_title,
@@ -30,6 +34,8 @@ from presentation import (
     withheld_note,
 )
 from presentation.catalog import pt
+
+log = logging.getLogger("prumo.app")
 
 PAGE_SIZE = 50
 SEARCH_CAP = 100
@@ -480,14 +486,76 @@ class HomePage:
     cards: tuple[Card, ...]
     themes: tuple[ThemeCard, ...]
     sources: tuple[str, ...]
+    note: str
+    composed: bool  # True when the cards come from a published composition
+
+
+def page_composition(db: Db, slug: str, lang: str = "pt") -> tuple[tuple[dict, str | None], ...]:
+    """The published composition of `slug` as (catalogue-shaped row, derived key) pairs.
+
+    Applies the SAME rule the backoffice enforces at publish time (`ingest.editorial_rules`),
+    so a series that stopped qualifying costs one card, never the page: it is dropped here with
+    one WARNING naming the slug, the series and the reason, and the rest render. An empty or
+    wholly-dropped composition returns `()`, which the caller treats as "use the code list".
+    """
+    slots = db.editorial_slots(slug, "published")
+    if not slots:
+        return ()
+    rows = db.series_facts([s["series_id"] for s in slots])
+    derived = db.derived_facts([s["derived_key"] for s in slots if s["derived_key"]])
+    facts: list[SlotFacts | None] = []
+    for slot in slots:
+        row = rows.get(slot["series_id"])
+        if row is None:
+            facts.append(None)
+            continue
+        key = slot["derived_key"]
+        d = derived.get(key) if key else None
+        titles: dict[str, str | None] = {}
+        derived_titles: dict[str, str | None] = {}
+        for language in ("pt", "en"):
+            try:
+                titles[language] = series_title(language, _family_of(row["indicator_key"]),
+                                                row["geography"])
+            except MissingText:
+                titles[language] = None
+            derived_titles[language] = None
+            if key and d:
+                try:
+                    unit_text(language, d["unit"])
+                    derived_titles[language] = derived_title(language, key)
+                except MissingText:
+                    derived_titles[language] = None
+        facts.append(SlotFacts(
+            series_id=slot["series_id"], active=bool(row["active"]), role=row["role"],
+            redistribution_ok=bool(row["redistribution_ok"]),
+            has_served=bool(row["has_served"]), titles=titles, derived_key=key,
+            derived_active=bool(d and d["active"]),
+            derived_base_series_id=d["base_series_id"] if d else None,
+            derived_titles=derived_titles))
+    problems = dict(page_problems(facts, lang=lang))
+    out = []
+    for position, slot in enumerate(slots):
+        if position in problems:
+            log.warning("editorial slot dropped slug=%s series=%s reason=%s",
+                        slug, slot["series_id"], problems[position])
+            continue
+        row = dict(rows[slot["series_id"]])
+        row["family"] = _family_of(row["indicator_key"])
+        out.append((row, slot["derived_key"]))
+    return tuple(out)
 
 
 def home(db: Db, lang: str = "pt") -> HomePage:
     rows = catalogue(db)
     by_id = {r["id"]: r for r in rows}
     counts = db.public_counts()
+    composed = page_composition(db, "inicio", lang)
+    if composed:
+        wanted = [(row["id"], _title(row, lang), key) for row, key in composed]
+    else:
+        wanted = [(c["series"], c["label"], c["derived"]) for c in pt.CURATED_HOME]
     cards = []
-    wanted = [(c["series"], c["label"], c["derived"]) for c in pt.CURATED_HOME]
     ids = [sid for sid, _, _ in wanted if sid in by_id]
     latest = db.public_latest_values(ids)
     for sid, label, derived_key in wanted:
@@ -524,10 +592,14 @@ def home(db: Db, lang: str = "pt") -> HomePage:
                              href=f"/temas/{code}") for code in THEME_ORDER)
     published = tuple(source_title(lang, s["name"]) for s in db.public_sources()
                       if s["redistribution_ok"] and s["series"])
+    all_pt = all(by_id[c.series_id]["geography"] in PT_GEOS for c in cards)
+    text = page_text(lang, "inicio")
     return HomePage(series_count=counts["series"], source_count=counts["sources"],
                     last_update_text=format_datetime(counts["last_fetched_at"]),
                     last_update_iso=counts["last_fetched_at"] or "",
-                    cards=tuple(cards), themes=themes, sources=published)
+                    cards=tuple(cards), themes=themes, sources=published,
+                    note=text["note_all_pt"] if all_pt else text["note_mixed"],
+                    composed=bool(composed))
 
 
 @dataclass(frozen=True)
