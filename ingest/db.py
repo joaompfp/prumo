@@ -1653,8 +1653,13 @@ class Db:
             return new_version
 
     def editorial_reset(self, slug: str, expected_version: int, note: str) -> int:
-        """Delete the composition and return the page to the code list. The event carries the
-        deleted slots, so the reset itself stays reconstructible after the page row is gone."""
+        """Delete the composition and return the page to the code list.
+
+        The page row STAYS, at a bumped version with no published state, instead of being
+        deleted: deleting it would restart the version at zero, and a form rendered before the
+        reset could then match a later composition's version and overwrite it. The event carries
+        the deleted slots, so the reset stays reconstructible.
+        """
         self._require_note(note)
         with self.transaction() as c:
             row = c.execute("SELECT version FROM editorial_page WHERE slug = ?",
@@ -1665,11 +1670,13 @@ class Db:
                 raise EditorialConflict(slug, expected_version, row[0])
             deleted = {"draft": self.editorial_slots(slug, "draft"),
                        "published": self.editorial_slots(slug, "published")}
+            new_version = row[0] + 1
             c.execute("DELETE FROM editorial_slot WHERE slug = ?", (slug,))
-            c.execute("DELETE FROM editorial_page WHERE slug = ?", (slug,))
-            # The page row is gone, so this version has no successor: the event is the record.
-            self._editorial_event(c, slug, "reset_to_code", row[0] + 1, note, deleted)
-            return row[0] + 1
+            c.execute("UPDATE editorial_page SET version = ?, draft_saved_at = NULL, "
+                      "published_version = NULL, published_at = NULL WHERE slug = ?",
+                      (new_version, slug))
+            self._editorial_event(c, slug, "reset_to_code", new_version, note, deleted)
+            return new_version
 
 
 def _migrate(conn: sqlite3.Connection) -> None:
@@ -1734,6 +1741,27 @@ def _applied_migrations(conn: sqlite3.Connection) -> set[str]:
     return {r[0] for r in conn.execute("SELECT version FROM schema_migration")}
 
 
+EDITORIAL_TABLES = frozenset({"editorial_page", "editorial_slot", "editorial_event"})
+
+
+def _editorial_authorizer(action: int, arg1, arg2, dbname, trigger) -> int:
+    """Allow reads and writes to the editorial tables and nothing else.
+
+    The `:rw` mount makes a write possible; this makes it true that the write path can only
+    touch the composition. `arg1` is the table name for INSERT/UPDATE/DELETE; DDL is refused
+    outright because the worker owns the schema.
+    """
+    if action in (sqlite3.SQLITE_INSERT, sqlite3.SQLITE_UPDATE, sqlite3.SQLITE_DELETE):
+        return sqlite3.SQLITE_OK if arg1 in EDITORIAL_TABLES else sqlite3.SQLITE_DENY
+    if action in (sqlite3.SQLITE_CREATE_TABLE, sqlite3.SQLITE_DROP_TABLE,
+                  sqlite3.SQLITE_ALTER_TABLE, sqlite3.SQLITE_CREATE_INDEX,
+                  sqlite3.SQLITE_DROP_INDEX, sqlite3.SQLITE_CREATE_TRIGGER,
+                  sqlite3.SQLITE_DROP_TRIGGER, sqlite3.SQLITE_CREATE_VIEW,
+                  sqlite3.SQLITE_DROP_VIEW):
+        return sqlite3.SQLITE_DENY
+    return sqlite3.SQLITE_OK
+
+
 def open_db_for_write(path: str | Path) -> Db:
     """Open an EXISTING database for the backoffice's editorial writes.
 
@@ -1741,6 +1769,8 @@ def open_db_for_write(path: str | Path) -> Db:
     code's in either direction (older: the worker has not migrated yet; newer: this code is
     behind the database), so a write can never land on a table shape it does not know.
     `foreign_keys=ON` is not optional here: the composition's integrity is the FKs.
+    The handle carries an authorizer that refuses any write outside the three editorial
+    tables, so "the backoffice only edits the composition" is enforced, not documented.
     The handle is not cached by callers; one write, one handle, one transaction.
     """
     p = Path(path)
@@ -1753,6 +1783,8 @@ def open_db_for_write(path: str | Path) -> Db:
             conn.execute("PRAGMA journal_mode=WAL")
             conn.execute("PRAGMA foreign_keys=ON")
             applied = _applied_migrations(conn)
+        except sqlite3.OperationalError:
+            raise  # busy/locked: the caller reports "try again", not "wrong schema"
         except sqlite3.DatabaseError as e:
             raise SchemaMismatchError(
                 p, set(), _expected_migrations(),
@@ -1760,6 +1792,7 @@ def open_db_for_write(path: str | Path) -> Db:
         expected = _expected_migrations()
         if applied != expected:
             raise SchemaMismatchError(p, applied, expected)
+        conn.set_authorizer(_editorial_authorizer)
     except BaseException:
         conn.close()  # never leak a writable handle on refusal
         raise

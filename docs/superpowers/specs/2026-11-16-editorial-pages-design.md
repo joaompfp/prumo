@@ -58,6 +58,8 @@ An optional derived key must exist in `derived_series`, be `active = 1`, have th
 
 The rule is enforced when publishing (refusal with a per-slot reason, nothing written) and again when rendering (a slot that stopped qualifying is dropped, the rest render, and one WARNING line names the slug, the series and the reason). A licence revoked after publication must not 503 the front page and must not leave a hole.
 
+When every published slot fails, the page renders no cards. It does not fall back to the code list: the fallback means "this page has no composition", and a page whose composition lost all its cards must not silently publish twelve series nobody chose. The distinction is carried by `page_composition` returning `None` (no rows) versus an empty tuple (rows that all failed), and it is tested.
+
 ### D7. Writes go through one narrow rw mount and one module
 
 The backoffice keeps `/data:ro` and its read-only root filesystem. A second mount of the same host directory at `/data-w:rw` (env `PRUMO_EDITORIAL_DB=/data-w/prumo.sqlite3`) is the only writable path in the container. Only `backoffice/editorial.py` opens it, through a new `open_db_for_write()` in `db.py` that never migrates and refuses a schema that does not match this code exactly (fail closed, clear message). All other reads still use `/data`.

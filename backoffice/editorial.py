@@ -12,9 +12,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from app import reads as app_reads
 from ingest.db import (
     Db,
     EditorialRefused,
+    OperationalError,
     SchemaMismatchError,
     open_db_for_write,
     read_db_readonly,
@@ -36,6 +38,10 @@ LANGS = LANGUAGES
 
 class EditorialUnavailable(RuntimeError):
     """The writable mount is not configured, missing, or at a schema this code does not know."""
+
+
+class EditorialBusy(RuntimeError):
+    """The writer (the scheduler) holds the lock; nothing was written, try again."""
 
 
 @dataclass(frozen=True)
@@ -93,7 +99,35 @@ def same_origin(request, allowed_hosts: list[str]) -> bool:
     parts = urlsplit(origin)
     if parts.scheme not in ("http", "https"):
         return False
-    return (parts.hostname or "") in allowed_hosts
+    host = parts.hostname or ""
+    for allowed in allowed_hosts:
+        if host == allowed:
+            return True
+        # PRUMO_BACKOFFICE_ALLOWED_HOSTS may carry a wildcard, as TrustedHostMiddleware does
+        if allowed.startswith("*.") and host.endswith(allowed[1:]):
+            return True
+    return False
+
+
+def _lcs(a: list[str], b: list[str]) -> list[str]:
+    """Longest common subsequence (these lists hold at most twelve ids)."""
+    table = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]
+    for i, x in enumerate(a, 1):
+        for j, y in enumerate(b, 1):
+            table[i][j] = table[i - 1][j - 1] + 1 if x == y else max(table[i - 1][j],
+                                                                    table[i][j - 1])
+    out: list[str] = []
+    i, j = len(a), len(b)
+    while i and j:
+        if a[i - 1] == b[j - 1]:
+            out.append(a[i - 1])
+            i -= 1
+            j -= 1
+        elif table[i - 1][j] >= table[i][j - 1]:
+            i -= 1
+        else:
+            j -= 1
+    return list(reversed(out))
 
 
 class Editorial:
@@ -131,9 +165,30 @@ class Editorial:
         text = page_text(self.lang, slug)  # unknown slug -> MissingText -> 404 at the route
         return self._read(lambda db: self._page(db, slug, text))
 
-    def candidates(self, *, query: str = "", source: str = "", theme: str = "",
-                   limit: int = 40) -> list[Candidate]:
-        return self._read(lambda db: self._candidates(db, query, source, theme, limit))
+    def candidates(self, slug: str, *, query: str = "", source: str = "", theme: str = "",
+                   limit: int = 40, offset: int = 0) -> list[Candidate]:
+        return self._read(
+            lambda db: self._candidates(db, slug, query, source, theme, limit, offset))
+
+    def draft_cards(self, slug: str):
+        """The cards the home would draw for the draft, built by the home's own card builder."""
+        def build(db: Db):
+            slots = db.editorial_slots(slug, "draft")
+            rows = db.series_facts([s["series_id"] for s in slots])
+            wanted = []
+            for slot in slots:
+                row = rows.get(slot["series_id"])
+                if row is None:
+                    continue
+                try:
+                    label = series_title(self.lang, family_of(row["indicator_key"]),
+                                         row["geography"])
+                except MissingText:
+                    continue
+                wanted.append((slot["series_id"], label, slot["derived_key"]))
+            return app_reads.cards_for(db, wanted, self.lang)
+
+        return self._read(build)
 
     # --- writes -----------------------------------------------------------------------------
 
@@ -206,10 +261,24 @@ class Editorial:
             db = open_db_for_write(self.editorial_db_path)
         except (FileNotFoundError, SchemaMismatchError) as e:
             raise EditorialUnavailable(str(e)) from e
+        except OperationalError as e:
+            raise self._classify(e) from e
         try:
             return fn(db)
+        except OperationalError as e:
+            raise self._classify(e) from e
         finally:
             db.close()
+
+    @staticmethod
+    def _classify(e: OperationalError) -> RuntimeError:
+        """A busy database is a conflict the operator retries, not a broken deployment."""
+        text = str(e).lower()
+        if "locked" in text or "busy" in text:
+            return EditorialBusy(
+                "the worker is writing to the database; nothing was changed, try again in a "
+                "few seconds")
+        return EditorialUnavailable(f"database error: {e}")
 
     def _require_page(self, slug: str) -> None:
         page_text(self.lang, slug)
@@ -311,8 +380,8 @@ class Editorial:
         except MissingText:
             return None
 
-    def _candidates(self, db: Db, query: str, source: str, theme: str,
-                    limit: int) -> list[Candidate]:
+    def _candidates(self, db: Db, slug: str, query: str, source: str, theme: str,
+                    limit: int, offset: int) -> list[Candidate]:
         ids = db.all_series_ids()
         raw = db.series_facts(ids)
         companions: dict[str, list[tuple[str, str]]] = {}
@@ -325,7 +394,17 @@ class Editorial:
             except MissingText:
                 continue
         needle = query.strip().lower()
+        draft = db.editorial_slots(slug, "draft")
+        taken_ids = {s["series_id"] for s in draft}
+        taken_titles: set[str] = set()
+        for series_id in taken_ids:
+            row = raw.get(series_id)
+            if row is not None:
+                title, _ = self._titles(row)
+                if title:
+                    taken_titles.add(title)
         out: list[Candidate] = []
+        skipped = 0
         for series_id in ids:
             row = raw.get(series_id)
             if row is None:
@@ -336,13 +415,18 @@ class Editorial:
                 redistribution_ok=bool(row["redistribution_ok"]),
                 has_served=bool(row["has_served"]),
                 titles={"pt": title_pt, "en": title_en})
-            if slot_problem(facts, titles_taken=set()) is not None:
+            if series_id in taken_ids:
+                continue
+            if slot_problem(facts, titles_taken=taken_titles) is not None:
                 continue
             if source and row["source"] != source:
                 continue
             if theme and row["theme"] != theme:
                 continue
             if needle and needle not in (title_pt or "").lower() and needle not in series_id.lower():
+                continue
+            if skipped < offset:
+                skipped += 1
                 continue
             out.append(Candidate(
                 series_id=series_id, title=title_pt or series_id, source=row["source"],
@@ -354,13 +438,21 @@ class Editorial:
 
     @staticmethod
     def _diff(draft: tuple[Slot, ...], published: tuple[Slot, ...]) -> Diff:
+        """What the publish changes: added, removed, and the cards whose ORDER changed.
+
+        `moved` is the complement of the longest common subsequence of the two common orders,
+        so moving the last card to the front reports one card moved, not eleven. Comparing raw
+        indices reported every shifted slot, which is noise on the one screen that asks the
+        operator to confirm.
+        """
         draft_ids = [s.series_id for s in draft]
         published_ids = [s.series_id for s in published]
         added = tuple(sid for sid in draft_ids if sid not in published_ids)
         removed = tuple(sid for sid in published_ids if sid not in draft_ids)
-        moved = tuple(sid for sid in draft_ids
-                      if sid in published_ids
-                      and draft_ids.index(sid) != published_ids.index(sid))
+        common_draft = [sid for sid in draft_ids if sid in published_ids]
+        common_pub = [sid for sid in published_ids if sid in draft_ids]
+        keep = set(_lcs(common_draft, common_pub))
+        moved = tuple(sid for sid in common_draft if sid not in keep)
         return Diff(added=added, removed=removed, moved=moved)
 
     def _explain(self, problems: list[tuple[int, str]], facts: list[SlotFacts | None]) -> str:

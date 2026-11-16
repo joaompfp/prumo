@@ -524,10 +524,17 @@ series and the reason; the other cards render.
 Writes go through `ingest.db.open_db_for_write` on `/data-w` (the same host directory as the
 read-only `/data`), never through the read handle. That opener never migrates and refuses a
 schema that differs from the image's code in either direction, so the editor answers 503
-rather than writing into an unknown table shape. Every mutation bumps `editorial_page.version`,
-so a form rendered in another tab gets 409 and writes nothing, and writes exactly one
-`editorial_event` row inside the same transaction (publish stores the whole list in
-`detail_json`).
+rather than writing into an unknown table shape. The handle also carries an SQLite authorizer
+that refuses any write outside `editorial_page`, `editorial_slot` and `editorial_event`, so
+"the backoffice edits the composition and nothing else" is enforced by the database, not by
+review. Every mutation bumps `editorial_page.version`, so a form rendered in another tab gets
+409 and writes nothing, and writes exactly one `editorial_event` row inside the same
+transaction (publish stores the whole list in `detail_json`). A database the worker is writing
+(the lock is held) answers 409 with "try again" after a short wait, never a 500.
+
+Publishing shows the diff against what is live and the cards the home will draw, built by the
+home's own card builder from the same reads; the reason is mandatory. The draft may hold a slot
+that would not render any more; publish refuses and names every failing slot with its reason.
 
 CSRF: there is no session, so every POST requires an `Origin` whose host is in the
 allowed-hosts list and refuses `Sec-Fetch-Site: cross-site`. Tailscale stays the perimeter;

@@ -19,8 +19,10 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
+from starlette.concurrency import run_in_threadpool
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+from app.charts import sparkline
 from backoffice import reads, replay
 from backoffice.deps import (
     DEFAULT_ALLOWED_HOSTS,
@@ -29,7 +31,7 @@ from backoffice.deps import (
     editorial_path_from_env,
     paths_from_env,
 )
-from backoffice.editorial import Editorial, EditorialUnavailable, same_origin
+from backoffice.editorial import Editorial, EditorialBusy, EditorialUnavailable, same_origin
 from backoffice.registry_notes import inactive_notes
 from backoffice.ttl_cache import TtlCache
 from ingest.db import Db, EditorialConflict, EditorialRefused, ReadOnlyOpenError, read_db_readonly
@@ -41,6 +43,9 @@ log = logging.getLogger("backoffice")
 
 T = TypeVar("T")
 TEMPLATES = Path(__file__).resolve().parent / "templates"
+# The publish preview renders the public card partial, so the operator sees the card the home
+# will draw, not a paraphrase of it.
+APP_TEMPLATES = Path(__file__).resolve().parent.parent / "app" / "templates"
 PAGE_METHODS = ["GET", "HEAD"]
 STATUS_TTL_S = 30.0  # the full status report is reused this long across pages
 SQLITE_MAX_INT = 2**63 - 1  # largest id SQLite can bind; above it -> 422, never a 500
@@ -68,9 +73,10 @@ def as_json(value) -> str:
 
 
 def _templates() -> Jinja2Templates:
-    env = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=True)
+    env = Environment(loader=FileSystemLoader([TEMPLATES, APP_TEMPLATES]), autoescape=True)
     env.filters["link"] = link
     env.filters["as_json"] = as_json
+    env.globals.update(spark=sparkline)
     return Jinja2Templates(env=env)
 
 
@@ -218,6 +224,11 @@ def create_app(db_path: Path, registry_path: Path,
     # Every POST is a plain form (no JavaScript), checked against `Origin` because there is no
     # session to ride, and answered with a 303 back to the page so a reload cannot re-submit.
     # Nothing here touches served data: the mutations write `editorial_*` and nothing else.
+    # The handlers are async only to read the body; every database call runs in the threadpool,
+    # so a lock wait cannot stall /healthz or the rest of the backoffice.
+
+    CANDIDATES_PER_PAGE = 40
+    MAX_FORM_BYTES = 16_384
 
     @app.exception_handler(EditorialUnavailable)
     def editorial_unavailable(request: Request, exc: EditorialUnavailable):
@@ -227,8 +238,12 @@ def create_app(db_path: Path, registry_path: Path,
                               "unaffected. See docs/data/operations.md, editorial section.")
 
     async def form(request: Request) -> dict[str, str]:
-        body = (await request.body()).decode("utf-8", "replace")
-        return {k: v[0] for k, v in parse_qs(body, keep_blank_values=True).items()}
+        length = request.headers.get("content-length", "")
+        if length.isdigit() and int(length) > MAX_FORM_BYTES:
+            raise HTTPException(status_code=413, detail="form too large")
+        body = (await request.body())[:MAX_FORM_BYTES]
+        return {k: v[0] for k, v in
+                parse_qs(body.decode("utf-8", "replace"), keep_blank_values=True).items()}
 
     def editor_page(request: Request, slug: str, *, status_code: int = 200, **extra):
         try:
@@ -237,16 +252,56 @@ def create_app(db_path: Path, registry_path: Path,
             return render(request, "error.html", 404, title="Unknown page",
                           message=f"unknown page: {slug}")
         query = request.query_params
+        page_no = int(query.get("pagina", "1")) if query.get("pagina", "1").isdigit() else 1
+        page_no = max(1, page_no)
+        rows = editorial.candidates(
+            slug, query=query.get("q", ""), source=query.get("fonte", ""),
+            theme=query.get("tema", ""), limit=CANDIDATES_PER_PAGE + 1,
+            offset=(page_no - 1) * CANDIDATES_PER_PAGE)
         return render(request, "editorial_page.html", status_code=status_code, page=page,
-                      candidates=editorial.candidates(query=query.get("q", ""),
-                                                      source=query.get("fonte", ""),
-                                                      theme=query.get("tema", "")),
+                      cards=editorial.draft_cards(slug), base="",
+                      candidates=rows[:CANDIDATES_PER_PAGE],
+                      more=len(rows) > CANDIDATES_PER_PAGE, pagina=page_no,
                       events=read(lambda db: db.editorial_events(slug)),
                       max_slots=MAX_SLOTS, **extra)
 
     def guard(request: Request) -> None:
         if not same_origin(request, allowed_hosts):
             raise HTTPException(status_code=403, detail="cross-origin form refused")
+
+    def apply(slug: str, action: str, fields: dict[str, str]) -> tuple[int, str | None]:
+        """Run one mutation. Returns (status, message): 303 means it landed."""
+        try:
+            version = int(fields.get("version", "0"))
+            to_position = int(fields.get("to_position", "0"))
+        except ValueError:
+            return 422, "invalid numeric field"
+        note = fields.get("note", "").strip()
+        auto_note = note or f"{action} via backoffice"
+        try:
+            if action == "add":
+                editorial.add(slug, fields.get("series_id", ""),
+                              fields.get("derived_key") or None, version, auto_note)
+            elif action == "move":
+                editorial.move(slug, fields.get("series_id", ""), to_position, version,
+                               auto_note)
+            elif action == "remove":
+                editorial.remove(slug, fields.get("series_id", ""), version, auto_note)
+            elif action == "discard":
+                editorial.discard(slug, version, auto_note)
+            elif action == "publish":
+                editorial.publish(slug, version, note)
+            elif action == "reset":
+                editorial.reset(slug, version, note)
+            else:  # pragma: no cover - the routes below name every action
+                return 404, f"unknown action: {action}"
+        except (EditorialBusy, EditorialConflict) as e:
+            return 409, str(e)
+        except (EditorialRefused, ValueError) as e:
+            return 422, str(e)
+        except MissingText:
+            return 404, f"unknown page: {slug}"
+        return 303, None
 
     @app.api_route("/editorial", methods=PAGE_METHODS)
     def editorial_list(request: Request):
@@ -260,37 +315,13 @@ def create_app(db_path: Path, registry_path: Path,
     async def mutate(request: Request, slug: str, action: str):
         guard(request)
         fields = await form(request)
-        try:
-            version = int(fields.get("version", "0"))
-        except ValueError:
-            return editor_page(request, slug, status_code=400, error="invalid version field")
-        note = fields.get("note", "").strip()
-        auto_note = note or f"{action} via backoffice"
-        try:
-            if action == "add":
-                editorial.add(slug, fields.get("series_id", ""), fields.get("derived_key") or None,
-                              version, auto_note)
-            elif action == "move":
-                editorial.move(slug, fields.get("series_id", ""),
-                               int(fields.get("to_position", "0")), version, auto_note)
-            elif action == "remove":
-                editorial.remove(slug, fields.get("series_id", ""), version, auto_note)
-            elif action == "discard":
-                editorial.discard(slug, version, auto_note)
-            elif action == "publish":
-                editorial.publish(slug, version, note)
-            elif action == "reset":
-                editorial.reset(slug, version, note)
-            else:  # pragma: no cover - the routes below name every action
-                raise HTTPException(status_code=404)
-        except (EditorialRefused, ValueError) as e:
-            return editor_page(request, slug, status_code=422, error=str(e))
-        except EditorialConflict as e:
-            return editor_page(request, slug, status_code=409, error=str(e))
-        except MissingText:
-            return render(request, "error.html", 404, title="Unknown page",
-                          message=f"unknown page: {slug}")
-        return RedirectResponse(f"/editorial/{slug}", status_code=303)
+        status, message = await run_in_threadpool(apply, slug, action, fields)
+        if status == 303:
+            return RedirectResponse(f"/editorial/{slug}", status_code=303)
+        if status == 404:
+            return render(request, "error.html", 404, title="Unknown page", message=message)
+        return await run_in_threadpool(editor_page, request, slug, status_code=status,
+                                       error=message)
 
     @app.post("/editorial/{slug}/add")
     async def editorial_add(request: Request, slug: str):

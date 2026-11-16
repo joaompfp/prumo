@@ -298,6 +298,62 @@ def test_reset_returns_the_page_to_the_code_list(env):
 # --- CSRF -----------------------------------------------------------------------------------
 
 
+def test_publish_is_refused_when_a_draft_slot_stopped_qualifying(env):
+    """D6's case: the draft was fine when it was built, the series changed underneath it."""
+    env.add("ine.hicp_yoy.PT")
+    db = open_db(env.db_path)
+    try:
+        db.conn.execute("UPDATE series SET active = 0 WHERE id = ?", ("ine.hicp_yoy.PT",))
+    finally:
+        db.close()
+    r = env.client().post(f"/editorial/{SLUG}/publish", headers=ORIGIN,
+                          data={"version": "1", "note": "publica"})
+    assert r.status_code == 422
+    assert "inactive" in r.text
+    assert env.slots("published") == []
+    assert [e["action"] for e in env.events()] == ["slot_added"]
+
+
+def test_the_publish_preview_draws_the_real_card(env):
+    """The operator sees the card the home will draw: value token, unit and provenance."""
+    env.add("ine.hicp_yoy.PT")
+    html = env.client().get(f"/editorial/{SLUG}").text
+    assert 'class="card"' in html
+    assert "1,5" in html
+    assert "Série e proveniência" in html
+
+
+def test_the_diff_reports_one_moved_card_not_eleven():
+    from types import SimpleNamespace
+
+    from backoffice.editorial import Editorial
+
+    slots = tuple(SimpleNamespace(series_id=f"s{i:02d}") for i in range(12))
+    after = (slots[-1],) + slots[:-1]
+    diff = Editorial._diff(after, slots)
+    assert diff.added == () and diff.removed == ()
+    assert diff.moved == ("s11",)
+
+
+def test_a_locked_database_is_409_and_writes_nothing(env, monkeypatch):
+    """D8: a write that cannot get the lock says so and changes nothing, instead of a 500
+    after a 30-second wait."""
+    from ingest import db as db_module
+
+    monkeypatch.setattr(db_module, "BUSY_TIMEOUT_S", 0.05)
+    holder = sqlite3.connect(str(env.db_path), isolation_level=None)
+    holder.execute("BEGIN IMMEDIATE")
+    try:
+        r = env.client().post(f"/editorial/{SLUG}/add", headers=ORIGIN,
+                              data={"version": "0", "series_id": "ine.hicp_yoy.PT"})
+    finally:
+        holder.execute("ROLLBACK")
+        holder.close()
+    assert r.status_code == 409
+    assert "worker is writing" in r.text
+    assert env.slots() == []
+
+
 def test_a_post_without_origin_is_403(env):
     r = env.client().post(f"/editorial/{SLUG}/add",
                           data={"version": "0", "series_id": "ine.hicp_yoy.PT"})

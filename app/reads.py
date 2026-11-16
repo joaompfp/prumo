@@ -19,6 +19,7 @@ from presentation import (
     caveat_text,
     derived_title,
     describe_formula,
+    family_of,
     family_title,
     flag_text,
     frequency_text,
@@ -86,11 +87,6 @@ def _day_counts(db: Db, series_id: str) -> tuple[tuple[str, int], ...]:
     rows = db.public_day_counts(series_id)
     _day_cache[key] = (now + DAY_COUNTS_TTL_S, rows)
     return rows
-
-
-def _family_of(indicator_key: str) -> str:
-    parts = indicator_key.split(".")
-    return ".".join(parts[:-2]) if len(parts) >= 3 else indicator_key
 
 
 def _title(row: dict, lang: str) -> str:
@@ -408,7 +404,7 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
     _, rows = db.served_derived_rows(key, 1)
     newest = rows[0] if rows else None
     values = db.public_derived_values(key)
-    base_title = series_title(lang, _family_of(d["base_indicator_key"]), d["base_geography"])
+    base_title = series_title(lang, family_of(d["base_indicator_key"]), d["base_geography"])
     inputs = ()
     if newest is not None:
         observed = db.observations_by_ids([i["observation_id"] for i in newest["inputs"]])
@@ -438,7 +434,7 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
         chart_points=tuple({"period": v["period"], "value_text": v["value_text"]}
                            for v in values),
         base_id=d["base_series_id"],
-        base_title=series_title(lang, _family_of(d["base_indicator_key"]),
+        base_title=series_title(lang, family_of(d["base_indicator_key"]),
                                 d["base_geography"]),
         inputs=inputs,
         computed_text=format_datetime(newest["computed_at"]) if newest else "",
@@ -486,21 +482,27 @@ class HomePage:
     cards: tuple[Card, ...]
     themes: tuple[ThemeCard, ...]
     sources: tuple[str, ...]
+    section_title: str
     note: str
-    composed: bool  # True when the cards come from a published composition
+    composed: bool  # True when the page has a published composition (cards may be zero)
 
 
-def page_composition(db: Db, slug: str, lang: str = "pt") -> tuple[tuple[dict, str | None], ...]:
+def page_composition(db: Db, slug: str, lang: str = "pt") -> tuple[tuple[dict, str | None], ...] | None:
     """The published composition of `slug` as (catalogue-shaped row, derived key) pairs.
 
     Applies the SAME rule the backoffice enforces at publish time (`ingest.editorial_rules`),
     so a series that stopped qualifying costs one card, never the page: it is dropped here with
-    one WARNING naming the slug, the series and the reason, and the rest render. An empty or
-    wholly-dropped composition returns `()`, which the caller treats as "use the code list".
+    one WARNING naming the slug, the series and the reason, and the rest render.
+
+    Returns None when the page has no published composition (the caller renders the list in
+    code) and a tuple - possibly EMPTY - when it has one. The distinction matters: a composition
+    whose every slot stopped qualifying must render no cards, never twelve series nobody
+    published. That is the case a revoked licence produces, and it is why this is not `if not
+    slots: return ()`.
     """
     slots = db.editorial_slots(slug, "published")
     if not slots:
-        return ()
+        return None  # no composition: the page renders the list in code
     rows = db.series_facts([s["series_id"] for s in slots])
     derived = db.derived_facts([s["derived_key"] for s in slots if s["derived_key"]])
     facts: list[SlotFacts | None] = []
@@ -515,7 +517,7 @@ def page_composition(db: Db, slug: str, lang: str = "pt") -> tuple[tuple[dict, s
         derived_titles: dict[str, str | None] = {}
         for language in ("pt", "en"):
             try:
-                titles[language] = series_title(language, _family_of(row["indicator_key"]),
+                titles[language] = series_title(language, family_of(row["indicator_key"]),
                                                 row["geography"])
             except MissingText:
                 titles[language] = None
@@ -541,65 +543,81 @@ def page_composition(db: Db, slug: str, lang: str = "pt") -> tuple[tuple[dict, s
                         slug, slot["series_id"], problems[position])
             continue
         row = dict(rows[slot["series_id"]])
-        row["family"] = _family_of(row["indicator_key"])
+        row["family"] = family_of(row["indicator_key"])
         out.append((row, slot["derived_key"]))
+    return tuple(out)
+
+
+def _card(db: Db, row: dict, value: dict, label: str, derived_key: str | None,
+          lang: str) -> Card:
+    """One home card. The only place a card is built, so the backoffice preview and the public
+    page cannot render different values for the same slot."""
+    badge = db.public_derived(derived_key) if derived_key else None
+    spark = db.public_recent_values(row["id"], 24)
+    return Card(
+        series_id=row["id"], href=f"/series/{row['id']}", label=label, title=_title(row, lang),
+        value_display=format_value(value["value_text"]),
+        unit_text=base_unit_text(lang, row["unit"]),
+        period_text=format_period(value["period"], row["frequency"]),
+        source_title=source_title(lang, row["source"]),
+        fetched_text=format_date(value["fetched_at"]),
+        status_text=flag_text(lang, value["status_flag"]) if value["status_flag"] else "",
+        derived_title=derived_title(lang, derived_key)
+        if badge and badge["latest_value_text"] is not None else None,
+        derived_label=("Variação homóloga" if badge["formula"].startswith("yoy")
+                       else "Face ao período anterior")
+        if badge and badge["latest_value_text"] is not None else None,
+        derived_value_display=format_value(badge["latest_value_text"])
+        if badge and badge["latest_value_text"] is not None else None,
+        derived_unit_text=unit_text(lang, badge["unit"])
+        if badge and badge["latest_value_text"] is not None else None,
+        derived_period_text=format_period(badge["latest_period"], row["frequency"])
+        if badge and badge["latest_period"] is not None else None,
+        spark_points=tuple({"period": p["period"], "value_text": p["value_text"]}
+                           for p in spark))
+
+
+def cards_for(db: Db, wanted: list[tuple[str, str, str | None]],
+              lang: str = "pt") -> tuple[Card, ...]:
+    """The cards for an ordered (series id, label, derived key) list, skipping any series the
+    catalogue does not serve. Used by the home and by the backoffice's publish preview."""
+    by_id = {r["id"]: r for r in catalogue(db)}
+    ids = [sid for sid, _, _ in wanted if sid in by_id]
+    latest = db.public_latest_values(ids)
+    out = []
+    for sid, label, derived_key in wanted:
+        row = by_id.get(sid)
+        if row is None or sid not in latest:
+            continue
+        out.append(_card(db, row, latest[sid], label, derived_key, lang))
     return tuple(out)
 
 
 def home(db: Db, lang: str = "pt") -> HomePage:
     rows = catalogue(db)
-    by_id = {r["id"]: r for r in rows}
     counts = db.public_counts()
     composed = page_composition(db, "inicio", lang)
-    if composed:
+    if composed is not None:
         wanted = [(row["id"], _title(row, lang), key) for row, key in composed]
     else:
         wanted = [(c["series"], c["label"], c["derived"]) for c in pt.CURATED_HOME]
-    cards = []
-    ids = [sid for sid, _, _ in wanted if sid in by_id]
-    latest = db.public_latest_values(ids)
-    for sid, label, derived_key in wanted:
-        row = by_id.get(sid)
-        if row is None or sid not in latest:
-            continue
-        value = latest[sid]
-        badge = db.public_derived(derived_key) if derived_key else None
-        spark = db.public_recent_values(sid, 24)
-        cards.append(Card(
-            series_id=sid, href=f"/series/{sid}", label=label, title=_title(row, lang),
-            value_display=format_value(value["value_text"]),
-            unit_text=base_unit_text(lang, row["unit"]),
-            period_text=format_period(value["period"], row["frequency"]),
-            source_title=source_title(lang, row["source"]),
-            fetched_text=format_date(value["fetched_at"]),
-            status_text=flag_text(lang, value["status_flag"]) if value["status_flag"] else "",
-            derived_title=derived_title(lang, derived_key)
-            if badge and badge["latest_value_text"] is not None else None,
-            derived_label=("Variação homóloga" if badge["formula"].startswith("yoy")
-                           else "Face ao período anterior")
-            if badge and badge["latest_value_text"] is not None else None,
-            derived_value_display=format_value(badge["latest_value_text"])
-            if badge and badge["latest_value_text"] is not None else None,
-            derived_unit_text=unit_text(lang, badge["unit"])
-            if badge and badge["latest_value_text"] is not None else None,
-            derived_period_text=format_period(badge["latest_period"], row["frequency"])
-            if badge and badge["latest_period"] is not None else None,
-            spark_points=tuple({"period": p["period"], "value_text": p["value_text"]}
-                               for p in spark)))
+    cards = cards_for(db, wanted, lang)
     themes = tuple(ThemeCard(code=code, title=theme_text(lang, code),
                              blurb=theme_blurb(lang, code),
                              count=sum(1 for r in rows if r["theme"] == code),
                              href=f"/temas/{code}") for code in THEME_ORDER)
     published = tuple(source_title(lang, s["name"]) for s in db.public_sources()
                       if s["redistribution_ok"] and s["series"])
+    by_id = {r["id"]: r for r in rows}
     all_pt = all(by_id[c.series_id]["geography"] in PT_GEOS for c in cards)
     text = page_text(lang, "inicio")
     return HomePage(series_count=counts["series"], source_count=counts["sources"],
                     last_update_text=format_datetime(counts["last_fetched_at"]),
                     last_update_iso=counts["last_fetched_at"] or "",
-                    cards=tuple(cards), themes=themes, sources=published,
+                    cards=cards, themes=themes, sources=published,
+                    section_title=text["section_title"],
                     note=text["note_all_pt"] if all_pt else text["note_mixed"],
-                    composed=bool(composed))
+                    composed=composed is not None)
 
 
 @dataclass(frozen=True)
@@ -768,7 +786,7 @@ def series_csv(db: Db, series_id: str) -> CsvExport | None:
                     flag_text("pt", v["status_flag"]) if v["status_flag"] else "",
                     v["fetched_at"])
                    for v in values),
-        footer=(f"Série: {series_title('pt', _family_of(row['indicator_key']), row['geography'])}",
+        footer=(f"Série: {series_title('pt', family_of(row['indicator_key']), row['geography'])}",
                 f"Unidade: {base_unit_text('pt', row['unit'])}",
                 f"{row['attribution']}",
                 f"Licença: {row['licence']} — {row['licence_url']}",
@@ -785,7 +803,7 @@ def derived_csv(db: Db, key: str) -> CsvExport | None:
         return None
     _, rows = db.served_derived_rows(key, 1)
     newest = rows[0] if rows else None
-    base_title = series_title("pt", _family_of(d["base_indicator_key"]), d["base_geography"])
+    base_title = series_title("pt", family_of(d["base_indicator_key"]), d["base_geography"])
     footer = tuple(line for line in (
         f"Série calculada: {derived_title('pt', key)}",
         f"Base: {base_title}",

@@ -151,6 +151,36 @@ def test_a_published_composition_is_not_used_by_another_slug(site_path):
     assert "Taxa de variação homóloga do IHPC — Portugal" not in html
 
 
+def test_a_composition_with_no_surviving_card_does_not_fall_back(site_path, caplog):
+    """The doomsday case: every published slot lost eligibility. The page renders no cards.
+    Falling back to the list in code would publish twelve series nobody chose."""
+    _publish(site_path, [(WORLD, None)])
+    db = open_db(site_path)
+    try:
+        db.conn.execute("UPDATE source SET redistribution_ok = 0 WHERE name = 'worldbank'")
+    finally:
+        db.close()
+    reads.clear_cache()
+    with caplog.at_level("WARNING", logger="prumo.app"):
+        with TestClient(create_app(str(site_path))) as c:
+            r = c.get("/")
+    assert r.status_code == 200
+    assert 'class="card"' not in r.text
+    assert "Desemprego" not in r.text  # the code list did not take over
+    assert any("withheld" in m for m in caplog.messages)
+
+
+def test_the_fallback_reports_itself_and_its_section_copy(site_path):
+    reads.clear_cache()
+    db = open_db(site_path)
+    try:
+        page = reads.home(db)
+    finally:
+        db.close()
+    assert page.composed is False
+    assert page.section_title == "Números em destaque"
+
+
 def test_after_a_reset_the_code_list_is_in_force_again(site_path):
     """Reset deletes both states, so the next request falls back to the list in code."""
     _publish(site_path, [(HICP, None)])

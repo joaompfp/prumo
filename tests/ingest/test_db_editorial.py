@@ -189,12 +189,19 @@ def test_discard_with_nothing_published_empties_the_draft(db):
     assert _draft(db) == []
 
 
-def test_reset_deletes_the_composition_and_keeps_the_audit(db):
+def test_reset_clears_the_composition_and_keeps_the_version_moving(db):
     ids = _series(db, 2)
     version = db.editorial_add(SLUG, ids[0], None, 0, "add")
     version = db.editorial_publish(SLUG, version, "publica")
-    version = db.editorial_reset(SLUG, version, "volta à lista do código")
-    assert db.editorial_page(SLUG) is None
+    new_version = db.editorial_reset(SLUG, version, "volta à lista do código")
+    assert new_version == version + 1
+    page = db.editorial_page(SLUG)
+    # The row stays: deleting it would restart the counter and let a stale form match a later
+    # composition. Zero slots and no published state is what "back to the code list" means.
+    assert page["version"] == new_version
+    assert page["published_version"] is None
+    assert page["published_at"] is None
+    assert page["draft_count"] == 0 and page["published_count"] == 0
     assert db.editorial_slots(SLUG, "draft") == []
     assert db.editorial_slots(SLUG, "published") == []
     reset = _events(db)[0]

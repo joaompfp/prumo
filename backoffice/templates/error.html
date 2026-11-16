@@ -3,6 +3,6 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <p class="bad">{{ message }}</p>
-<p class="note">Nothing was changed: the backoffice only ever opens the database read-only and
-never migrates or creates it.</p>
+<p class="note">This page only reads. The one write path in the backoffice is the editorial
+editor, it never migrates or creates the database, and a refused write changes nothing.</p>
 {% endblock %}

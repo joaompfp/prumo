@@ -71,6 +71,17 @@ will refuse. Reads still work.</p>{% endif %}
 <p class="muted">The draft is empty.</p>
 {% endif %}
 
+<h2>Preview</h2>
+<p class="note">The cards the home would draw from this draft, built by the home's own card
+builder and read in the same transaction as the values. This is what publishing puts on the
+front page.</p>
+{% if cards %}
+<div class="cards">{% for card in cards %}{% include "_card.html" %}{% endfor %}</div>
+{% else %}
+<p class="muted">The draft renders no cards: the home would show its highlights section
+empty rather than fall back to the list in code.</p>
+{% endif %}
+
 <h2>Publish</h2>
 {% if page.published %}
 <p class="note">Change against what is live now:
@@ -102,7 +113,8 @@ the list in code. It is the documented rollback and it is logged with what it de
 
 <h2>Candidates</h2>
 <p class="note">Only series that could actually render are listed: primary, active, licence
-allows redistribution, at least one served value, and a title in both catalogues.</p>
+allows redistribution, at least one served value, a title in the language this page renders,
+and no title already on the draft.</p>
 <form class="filters" method="get" action="/editorial/{{ page.slug }}">
 <label>Search <input type="search" name="q" value="{{ request.query_params.get('q', '') }}"></label>
 <label>Source <input type="text" name="fonte" value="{{ request.query_params.get('fonte', '') }}" size="12"></label>
@@ -134,6 +146,13 @@ allows redistribution, at least one served value, and a title in both catalogues
 </table></div>
 {% else %}
 <p class="muted">No candidate matches these filters.</p>
+{% endif %}
+{% if pagina > 1 or more %}
+<p class="pager">
+{% if pagina > 1 %}<a href="?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina - 1 }}">previous</a>{% endif %}
+<span class="muted">page {{ pagina }}</span>
+{% if more %}<a href="?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina + 1 }}">next</a>{% endif %}
+</p>
 {% endif %}
 
 <h2>Audit</h2>

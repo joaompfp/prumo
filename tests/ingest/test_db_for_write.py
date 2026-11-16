@@ -109,6 +109,24 @@ def test_foreign_keys_are_enforced(path):
         db.close()
 
 
+def test_the_handle_refuses_writes_outside_the_editorial_tables(path):
+    """D7 says the backoffice edits the composition and nothing else. The mount makes the write
+    possible; the authorizer makes any other write fail, so a future bug cannot reach served
+    data through this handle."""
+    db = open_db_for_write(path)
+    try:
+        for statement in (
+                "UPDATE observation SET value_text = 'x'",
+                "DELETE FROM dataset_run",
+                "INSERT INTO setting(key, value) VALUES ('x', 'y')"):
+            with pytest.raises(sqlite3.DatabaseError):
+                db.conn.execute(statement)
+        db.conn.execute("INSERT INTO editorial_page(slug) VALUES ('inicio')")
+        assert db.conn.execute("SELECT COUNT(*) FROM editorial_page").fetchone()[0] == 1
+    finally:
+        db.close()
+
+
 def test_a_refusal_leaks_no_handle(path):
     """The refusal must close the connection: a leaked writable handle holds the WAL lock."""
     _sql(path, "DELETE FROM schema_migration WHERE version = ?", (CURRENT,))
