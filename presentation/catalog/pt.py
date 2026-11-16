@@ -343,3 +343,16 @@ CURATED_HOME = [
     {"series": "eurostat.electricity_price_household.PT", "label": "Preço da eletricidade",
      "derived": None},
 ]
+
+
+# Public pages whose composition the backoffice may edit. The page itself (route, title,
+# section copy) stays in code: only the ordered series list is data. `note_all_pt` is
+# rendered when every visible card is Portuguese, `note_mixed` when any card is not.
+PAGES: dict[str, dict[str, str]] = {
+    "inicio": {
+        "title": "Início",
+        "section_title": "Números em destaque",
+        "note_all_pt": "Portugal. Valores publicados tal como a fonte os publica.",
+        "note_mixed": "Cada número indica a instituição e a data da recolha.",
+    },
+}

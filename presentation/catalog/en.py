@@ -80,3 +80,4 @@ SOURCE_TITLES: dict[str, str] = {}
 WITHHELD_NOTES: dict[str, str] = {}
 CURATED_HOME: list[dict] = []
 SEARCH_ALIASES: dict[str, str] = {}
+PAGES: dict[str, dict[str, str]] = {}  # v1 is PT-only; a missing slug raises MissingText

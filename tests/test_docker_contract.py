@@ -287,14 +287,24 @@ def test_backoffice_has_its_own_image_tag_and_runs_the_factory(backoffice):
     assert callable(app_from_env)
 
 
-def test_backoffice_is_tailscale_only_and_mounts_data_read_only(backoffice):
+def test_backoffice_is_tailscale_only_and_has_exactly_one_writable_mount(backoffice):
+    """The read mount stays read-only; the editorial editor gets one rw mount of the same
+    directory. Exactly one writable path, named here, so a review of this test is a review of
+    the container's whole write surface."""
     assert backoffice["ports"] == ["100.118.19.6:8089:8080"]
     assert "labels" not in backoffice  # no Traefik route
     # no resolv.conf: the app makes no outbound call and no lookup (see the no-egress test)
-    assert backoffice["volumes"] == ["${DOCKER_DIR}/stacks/web/appdata/prumo:/data:ro"]
+    volumes = backoffice["volumes"]
+    assert len(volumes) == 2
+    ro = [v for v in volumes if v.endswith(":/data:ro")]
+    rw = [v for v in volumes if v.endswith(":/data-w:rw")]
+    assert len(ro) == 1 and len(rw) == 1
+    host_ro, host_rw = ro[0].rsplit(":", 2)[0], rw[0].rsplit(":", 2)[0]
+    assert host_ro == host_rw == "${DOCKER_DIR}/stacks/web/appdata/prumo"
     assert backoffice["environment"] == {
         "TZ": "${TZ}",
         "PRUMO_DB_PATH": "/data/prumo.sqlite3",
+        "PRUMO_EDITORIAL_DB": "/data-w/prumo.sqlite3",
         "PRUMO_RAW_DIR": "/data/raw",
         "PYTHONUNBUFFERED": "1",
     }

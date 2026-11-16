@@ -103,3 +103,25 @@ def series_title(lang: str, family: str, geography: str) -> str:
     if family in catalog.SELF_LOCATING_FAMILIES:
         return title
     return f"{title} — {_lookup(catalog.GEOGRAPHIES, 'geography', lang, geography)}"
+
+
+def family_of(indicator_key: str) -> str:
+    """The indicator family: the key without its trailing geography and frequency parts.
+    `consumer_confidence.AT.M` -> `consumer_confidence`; a two-part key stays whole.
+    Lives here because a family is what `series_title` needs, not what the data layer stores.
+    """
+    parts = indicator_key.split(".")
+    return ".".join(parts[:-2]) if len(parts) >= 3 else indicator_key
+
+
+def page_text(lang: str, slug: str) -> dict[str, str]:
+    """A public page's copy (title, section heading and notes) by slug.
+
+    The page set lives in code so every public sentence is reviewed; a composition in the
+    database only chooses which series appear. An unknown slug raises MissingText.
+    """
+    catalog = _catalog(lang)
+    try:
+        return catalog.PAGES[slug]
+    except KeyError:
+        raise MissingText(f"no {lang} page text for {slug!r}") from None

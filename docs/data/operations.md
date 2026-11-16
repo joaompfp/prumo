@@ -475,20 +475,26 @@ verify <run_id>` (in the web container, worker stopped as for any manual write).
 
 ## Backoffice
 
-`prumo-backoffice` is a strictly read-only operator view of the pipeline at
+`prumo-backoffice` is an operator view of the pipeline at
 `http://100.118.19.6:8089` (Tailscale address of f0nix only; there is no Traefik or public
 route and no login: Tailscale membership is the perimeter). It runs the same Dockerfile
 under its own image tag `prumo-backoffice:latest`, so deploying it never retags or restarts
 the worker's `prumo-ingest:latest`. Its include is `deploy/prumo-backoffice.yml`, installed
 as `~/docker/stacks/web/compose/prumo-backoffice.yml`.
 
-Read-only guarantee, in three layers: the `/data` volume is mounted `:ro`; every page opens
+It is read-only except for one editor: `/editorial` chooses which series a public page shows
+(see "Editorial composition" below). That is the container's only write path; every other
+page reads.
+
+Read-only guarantee, in three layers: the `/data` volume is mounted `:ro`; every read opens
 the database through `ingest.db.read_db_readonly` (sqlite `mode=ro`, `query_only`, never
-migrates or creates the file); every route is `GET`/`HEAD` (a test enforces it). A missing
-database or a schema older/newer than the image's code gives an HTTP 503 page with the
-refusal text, like `python -m ingest status`. `/healthz` always answers 200 while the app
-runs and reports `"db": "ready"` or `"db": "unavailable"` (with `db_detail`) in its JSON
-body, so a database hiccup never makes the container restart-loop.
+migrates or creates the file); every route is `GET`/`HEAD` except the six editorial POSTs. A
+test (`tests/backoffice/test_app_overview.py`) fails when a non-GET route appears that is not
+one of those six, so the write surface cannot grow unnoticed. A missing database or a schema
+older/newer than the image's code gives an HTTP 503 page with the refusal text, like
+`python -m ingest status`. `/healthz` always answers 200 while the app runs and reports
+`"db": "ready"` or `"db": "unavailable"` (with `db_detail`) in its JSON body, so a database
+hiccup never makes the container restart-loop.
 
 | Page | Shows |
 |---|---|
@@ -500,6 +506,46 @@ body, so a database hiccup never makes the container restart-loop.
 
 Every page that uses the status report says when it was generated and how many seconds
 ago: the report is cached for 30 s, so a page can be up to 30 s behind `ingest status`.
+
+### Editorial composition
+
+`GET /editorial` lists the code pages and says which list is in force; `GET /editorial/inicio`
+edits one page: up/down/remove on the draft, a candidate list of eligible series with an
+optional calculated companion, a publish block with the change against what is live and a
+mandatory reason, discard, and reset.
+
+What may appear on a page is one rule, applied twice: primary, active, licence allows
+redistribution, at least one served fetched value, a title in the language the page renders,
+and no other slot with the same title. `ingest/editorial_rules.py` holds it and both the
+publish refusal and the render drop call it. A series that loses its licence after a publish
+disappears from the page on the next request with one WARNING line naming the slug, the
+series and the reason; the other cards render.
+
+Writes go through `ingest.db.open_db_for_write` on `/data-w` (the same host directory as the
+read-only `/data`), never through the read handle. That opener never migrates and refuses a
+schema that differs from the image's code in either direction, so the editor answers 503
+rather than writing into an unknown table shape. Every mutation bumps `editorial_page.version`,
+so a form rendered in another tab gets 409 and writes nothing, and writes exactly one
+`editorial_event` row inside the same transaction (publish stores the whole list in
+`detail_json`).
+
+CSRF: there is no session, so every POST requires an `Origin` whose host is in the
+allowed-hosts list and refuses `Sec-Fetch-Site: cross-site`. Tailscale stays the perimeter;
+there is no login.
+
+Rollback of a composition is the page itself: reset deletes both states and the page returns
+to the list in code. The release that added the editor changes nothing a reader sees while
+the tables are empty.
+
+Installing the include (once, on f0nix) is what turns the editor on; before that the container
+has no `/data-w` mount and `PRUMO_EDITORIAL_DB` is unset, so `/editorial` renders read-only
+and every POST answers 503 while the rest of the backoffice works:
+
+```bash
+sudo cp ~/docker/stacks/web/images/prumo/deploy/prumo-backoffice.yml \
+        ~/docker/stacks/web/compose/prumo-backoffice.yml
+bash -lic 'dc-web-up prumo-backoffice'
+```
 
 ### Review queue rules
 

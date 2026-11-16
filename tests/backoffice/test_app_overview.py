@@ -118,12 +118,27 @@ def test_queue_shows_stuck_pending_with_remedy(env):
     assert "stuck_pending" in r.text and f"python -m ingest verify {run}" in r.text
 
 
-def test_all_routes_are_get_or_head_only(env):
+EDITORIAL_POSTS = {
+    "/editorial/{slug}/add", "/editorial/{slug}/move", "/editorial/{slug}/remove",
+    "/editorial/{slug}/discard", "/editorial/{slug}/publish", "/editorial/{slug}/reset",
+}
+
+
+def test_every_route_is_get_or_head_except_the_six_editorial_posts(env):
+    """The backoffice gained a write path (editorial composition). It is exactly six POST
+    routes on /editorial; any other non-GET route is a defect, and so is a seventh."""
     app = create_app(env.db_path, env.registry, now=lambda: NOW)
     routes = [r for r in app.routes if isinstance(r, (APIRoute, Route))]
     assert routes
+    posts = set()
     for r in routes:
-        assert r.methods <= {"GET", "HEAD"}, (r.path, r.methods)
+        extra = (r.methods or set()) - {"GET", "HEAD"}
+        if extra:
+            assert extra == {"POST"} and r.path in EDITORIAL_POSTS, (r.path, r.methods)
+            posts.add(r.path)
+        else:
+            assert r.methods <= {"GET", "HEAD"}, (r.path, r.methods)
+    assert posts == EDITORIAL_POSTS
 
 
 def test_html_in_event_detail_is_escaped(env):

@@ -5,26 +5,39 @@ creates the file). A missing database or a schema that differs from this code is
 with HTTP 503 and the refusal message, exactly like `python -m ingest status`.
 """
 import json
+import logging
 import time
 from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal, TypeVar
-from urllib.parse import urlencode
+from urllib.parse import parse_qs, urlencode
 
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi import Path as PathParam
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup, escape
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from backoffice import reads, replay
-from backoffice.deps import DEFAULT_ALLOWED_HOSTS, allowed_hosts_from_env, paths_from_env
+from backoffice.deps import (
+    DEFAULT_ALLOWED_HOSTS,
+    LANG,
+    allowed_hosts_from_env,
+    editorial_path_from_env,
+    paths_from_env,
+)
+from backoffice.editorial import Editorial, EditorialUnavailable, same_origin
 from backoffice.registry_notes import inactive_notes
 from backoffice.ttl_cache import TtlCache
-from ingest.db import Db, ReadOnlyOpenError, read_db_readonly
+from ingest.db import Db, EditorialConflict, EditorialRefused, ReadOnlyOpenError, read_db_readonly
+from ingest.editorial_rules import MAX_SLOTS
 from ingest.registry import load_registry
+from presentation import MissingText
+
+log = logging.getLogger("backoffice")
 
 T = TypeVar("T")
 TEMPLATES = Path(__file__).resolve().parent / "templates"
@@ -65,7 +78,8 @@ def create_app(db_path: Path, registry_path: Path,
                now: Callable[[], datetime] | None = None, *,
                raw_dir: Path | None = None, status_ttl_s: float = STATUS_TTL_S,
                monotonic: Callable[[], float] = time.monotonic,
-               allowed_hosts: list[str] = DEFAULT_ALLOWED_HOSTS) -> FastAPI:
+               allowed_hosts: list[str] = DEFAULT_ALLOWED_HOSTS,
+               editorial_db_path: Path | None = None) -> FastAPI:
     """`raw_dir` is the raw evidence store verification items are replayed from (None: the
     replay page says it cannot replay). The full status report is computed at most once per
     `status_ttl_s` (on the `monotonic` clock), and so is the /derived list; pages show
@@ -85,6 +99,8 @@ def create_app(db_path: Path, registry_path: Path,
 
     def read(fn: Callable[[Db], T]) -> T:
         return read_db_readonly(db_path, fn)
+
+    editorial = Editorial(db_path, editorial_db_path, lang=LANG)
 
     status_cache = TtlCache(status_ttl_s, monotonic)
     derived_cache = TtlCache(status_ttl_s, monotonic)  # /derived evaluates every derived key
@@ -197,6 +213,109 @@ def create_app(db_path: Path, registry_path: Path,
                           message=f"unknown verification item: {item_id}")
         return render(request, "item.html", r=r, i=r.item, known=r.item["series_id"] in by_id)
 
+    # --- editorial composition: the only write path in this app ------------------------------
+    #
+    # Every POST is a plain form (no JavaScript), checked against `Origin` because there is no
+    # session to ride, and answered with a 303 back to the page so a reload cannot re-submit.
+    # Nothing here touches served data: the mutations write `editorial_*` and nothing else.
+
+    @app.exception_handler(EditorialUnavailable)
+    def editorial_unavailable(request: Request, exc: EditorialUnavailable):
+        log.error("editorial write path unavailable: %s", exc)
+        return render(request, "error.html", 503, title="Editorial editor unavailable",
+                      message="the writable mount is not configured or not usable; reads are "
+                              "unaffected. See docs/data/operations.md, editorial section.")
+
+    async def form(request: Request) -> dict[str, str]:
+        body = (await request.body()).decode("utf-8", "replace")
+        return {k: v[0] for k, v in parse_qs(body, keep_blank_values=True).items()}
+
+    def editor_page(request: Request, slug: str, *, status_code: int = 200, **extra):
+        try:
+            page = editorial.page(slug)
+        except MissingText:
+            return render(request, "error.html", 404, title="Unknown page",
+                          message=f"unknown page: {slug}")
+        query = request.query_params
+        return render(request, "editorial_page.html", status_code=status_code, page=page,
+                      candidates=editorial.candidates(query=query.get("q", ""),
+                                                      source=query.get("fonte", ""),
+                                                      theme=query.get("tema", "")),
+                      events=read(lambda db: db.editorial_events(slug)),
+                      max_slots=MAX_SLOTS, **extra)
+
+    def guard(request: Request) -> None:
+        if not same_origin(request, allowed_hosts):
+            raise HTTPException(status_code=403, detail="cross-origin form refused")
+
+    @app.api_route("/editorial", methods=PAGE_METHODS)
+    def editorial_list(request: Request):
+        return render(request, "editorial_list.html", pages=editorial.pages(),
+                      available=editorial.available())
+
+    @app.api_route("/editorial/{slug}", methods=PAGE_METHODS)
+    def editorial_detail(request: Request, slug: str):
+        return editor_page(request, slug)
+
+    async def mutate(request: Request, slug: str, action: str):
+        guard(request)
+        fields = await form(request)
+        try:
+            version = int(fields.get("version", "0"))
+        except ValueError:
+            return editor_page(request, slug, status_code=400, error="invalid version field")
+        note = fields.get("note", "").strip()
+        auto_note = note or f"{action} via backoffice"
+        try:
+            if action == "add":
+                editorial.add(slug, fields.get("series_id", ""), fields.get("derived_key") or None,
+                              version, auto_note)
+            elif action == "move":
+                editorial.move(slug, fields.get("series_id", ""),
+                               int(fields.get("to_position", "0")), version, auto_note)
+            elif action == "remove":
+                editorial.remove(slug, fields.get("series_id", ""), version, auto_note)
+            elif action == "discard":
+                editorial.discard(slug, version, auto_note)
+            elif action == "publish":
+                editorial.publish(slug, version, note)
+            elif action == "reset":
+                editorial.reset(slug, version, note)
+            else:  # pragma: no cover - the routes below name every action
+                raise HTTPException(status_code=404)
+        except (EditorialRefused, ValueError) as e:
+            return editor_page(request, slug, status_code=422, error=str(e))
+        except EditorialConflict as e:
+            return editor_page(request, slug, status_code=409, error=str(e))
+        except MissingText:
+            return render(request, "error.html", 404, title="Unknown page",
+                          message=f"unknown page: {slug}")
+        return RedirectResponse(f"/editorial/{slug}", status_code=303)
+
+    @app.post("/editorial/{slug}/add")
+    async def editorial_add(request: Request, slug: str):
+        return await mutate(request, slug, "add")
+
+    @app.post("/editorial/{slug}/move")
+    async def editorial_move(request: Request, slug: str):
+        return await mutate(request, slug, "move")
+
+    @app.post("/editorial/{slug}/remove")
+    async def editorial_remove(request: Request, slug: str):
+        return await mutate(request, slug, "remove")
+
+    @app.post("/editorial/{slug}/discard")
+    async def editorial_discard(request: Request, slug: str):
+        return await mutate(request, slug, "discard")
+
+    @app.post("/editorial/{slug}/publish")
+    async def editorial_publish(request: Request, slug: str):
+        return await mutate(request, slug, "publish")
+
+    @app.post("/editorial/{slug}/reset")
+    async def editorial_reset(request: Request, slug: str):
+        return await mutate(request, slug, "reset")
+
     return app
 
 
@@ -204,4 +323,5 @@ def app_from_env() -> FastAPI:
     """uvicorn entry point (`uvicorn backoffice.app:app_from_env --factory`)."""
     db_path, registry_path, raw_dir = paths_from_env()
     return create_app(db_path, registry_path, raw_dir=raw_dir,
-                      allowed_hosts=allowed_hosts_from_env())
+                      allowed_hosts=allowed_hosts_from_env(),
+                      editorial_db_path=editorial_path_from_env())

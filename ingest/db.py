@@ -1464,6 +1464,54 @@ class Db:
         keys = ("id", "ts", "slug", "action", "version", "note", "detail_json")
         return [dict(zip(keys, r)) for r in rows]
 
+    def all_series_ids(self) -> list[str]:
+        """Every series id, active or not: the backoffice offers candidates from this list and
+        lets the eligibility rule explain why most of them are not eligible."""
+        return [r[0] for r in self.conn.execute("SELECT id FROM series ORDER BY id")]
+
+    def series_facts(self, series_ids: list[str]) -> dict[str, dict]:
+        """Per-id registry facts for the eligibility rule, one indexed lookup per id.
+
+        Deliberately not a join over `served_observation`: the EXISTS over `observation` and
+        `dataset_run` is the same question (a fetched row of a verified, non-withdrawn run)
+        for an active, redistributable series, at a fraction of the cost, and the render path
+        calls this for at most twelve slots.
+        """
+        sql = ("SELECT s.id, s.indicator_key, s.geography, s.theme, s.frequency, s.unit, "
+               " s.role, s.active, p.name, p.redistribution_ok, "
+               " EXISTS(SELECT 1 FROM observation o JOIN dataset_run r "
+               "        ON r.id = o.dataset_run_id WHERE o.series_id = s.id "
+               "        AND o.kind = 'fetched' AND r.state = 'verified') "
+               "FROM series s JOIN source p ON p.id = s.source_id WHERE s.id = ?")
+        keys = ("id", "indicator_key", "geography", "theme", "frequency", "unit", "role",
+                "active", "source", "redistribution_ok", "has_served")
+        out: dict[str, dict] = {}
+        for sid in series_ids:
+            row = self.conn.execute(sql, (sid,)).fetchone()
+            if row is not None:
+                out[sid] = dict(zip(keys, row))
+        return out
+
+    def derived_facts(self, keys: list[str]) -> dict[str, dict]:
+        """Per-key derived metadata for the eligibility rule (never the values)."""
+        sql = ("SELECT key, base_series_id, unit, formula, active FROM derived_series "
+               "WHERE key = ?")
+        cols = ("key", "base_series_id", "unit", "formula", "active")
+        out: dict[str, dict] = {}
+        for key in keys:
+            row = self.conn.execute(sql, (key,)).fetchone()
+            if row is not None:
+                out[key] = dict(zip(cols, row))
+        return out
+
+    def derived_list(self) -> list[dict]:
+        """Every derived key's metadata (23 rows today): the editor offers companions per base."""
+        rows = self.conn.execute(
+            "SELECT key, base_series_id, unit, formula, active FROM derived_series "
+            "ORDER BY key").fetchall()
+        cols = ("key", "base_series_id", "unit", "formula", "active")
+        return [dict(zip(cols, r)) for r in rows]
+
     def _editorial_event(self, c, slug: str, action: str, version: int, note: str,
                          detail: dict | None) -> None:
         c.execute(

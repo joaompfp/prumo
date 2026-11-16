@@ -6,6 +6,9 @@
 #   to internal networks; the 100.118.19.6 bind stays the perimeter.
 # - no resolv.conf mount: the app makes no outbound call and no DNS lookup.
 # - read-only root filesystem (+ tmpfs /tmp), every capability dropped, no-new-privileges.
+# - ONE write path, named here and nowhere else: /data-w (rw) is the same appdata directory as
+#   /data (ro), and only backoffice/editorial.py opens it, to write the editorial_* tables.
+#   The read path keeps its read-only mount; a read bug must stay unable to write.
 # - runs as uid 1000: RawStore writes raw evidence 0644 (public-source bytes) so the replay page
 #   can read it. Files written by a worker image older than that change are 0600 root and need
 #   a one-off `chmod -R a+rX` of the raw store (see docs/data/operations.md).
@@ -38,10 +41,12 @@ services:
     environment:
       TZ: ${TZ}
       PRUMO_DB_PATH: /data/prumo.sqlite3
+      PRUMO_EDITORIAL_DB: /data-w/prumo.sqlite3
       PRUMO_RAW_DIR: /data/raw
       PYTHONUNBUFFERED: "1"
     volumes:
       - ${DOCKER_DIR}/stacks/web/appdata/prumo:/data:ro
+      - ${DOCKER_DIR}/stacks/web/appdata/prumo:/data-w:rw
     networks:
       - prumo_backoffice
     logging:

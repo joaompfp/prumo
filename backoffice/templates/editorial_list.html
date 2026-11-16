@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Editorial - Prumo backoffice{% endblock %}
+{% block content %}
+<h1>Editorial composition</h1>
+<p class="note">Which series a public page shows, and in what order. The page itself (route,
+title, section copy) lives in code; this editor changes only the ordered list of series. An
+empty composition renders the code list, exactly as the site did before this feature existed,
+and that is also the rollback: reset the page.</p>
+{% if not available %}
+<p class="bad">The writable mount is not configured (<code>PRUMO_EDITORIAL_DB</code>): every
+read works, editing does not.</p>
+{% endif %}
+<div class="scroll"><table>
+<tr><th>Page</th><th>Slug</th><th>In force</th><th class="num">Published cards</th>
+<th class="num">Draft cards</th><th>Last publish</th></tr>
+{% for p in pages %}
+<tr>
+<td><a href="/editorial/{{ p.slug }}">{{ p.title }}</a></td>
+<td class="mono">{{ p.slug }}</td>
+<td>{% if p.composed %}<span class="calc">composition</span>{% else %}code list{% endif %}</td>
+<td class="num">{{ p.published_count }}</td>
+<td class="num">{{ p.draft_count }}</td>
+<td>{{ p.published_at or "never" }}</td>
+</tr>
+{% endfor %}
+</table></div>
+{% endblock %}

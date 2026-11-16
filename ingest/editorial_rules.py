@@ -8,9 +8,14 @@ function applied to the same facts.
 A slot that stops qualifying at render time must cost one card, never a 503 and never a hole.
 That is why the rule returns a short machine reason instead of raising: the caller decides
 whether to refuse (write time) or to drop and log (read time).
+
+The title requirement is per LANGUAGE, not "both catalogues". The English catalogue is
+deliberately empty in v1, so demanding an English title would make every series ineligible for
+a page rendered in Portuguese. A page is checked in the language it will be rendered in, and
+when English ships the same rule runs with lang="en" and drops what it cannot name.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 MAX_SLOTS = 12
 
@@ -21,8 +26,7 @@ REASONS = frozenset({
     "cross_check",
     "withheld",
     "no_served_value",
-    "missing_title_pt",
-    "missing_title_en",
+    "missing_title",
     "duplicate_title",
     "unknown_derived",
     "inactive_derived",
@@ -35,7 +39,7 @@ REASONS = frozenset({
 class SlotFacts:
     """Everything the rule needs about one slot, resolved by the caller.
 
-    `title_pt` and `title_en` are the titles the catalogues would render, or None when the
+    `titles` holds the title each catalogue would render, per language, or None where the
     catalogue cannot name that family and geography. Titles, not ids, are what collide: the
     seasonal and unadjusted variants of one indicator share both family and geography, so
     they render the same label and would appear as two identical cards.
@@ -46,16 +50,14 @@ class SlotFacts:
     role: str
     redistribution_ok: bool
     has_served: bool
-    title_pt: str | None
-    title_en: str | None
+    titles: dict[str, str | None] = field(default_factory=dict)
     derived_key: str | None = None
     derived_active: bool = False
     derived_base_series_id: str | None = None
-    derived_title_pt: str | None = None
-    derived_title_en: str | None = None
+    derived_titles: dict[str, str | None] = field(default_factory=dict)
 
 
-def slot_problem(facts: SlotFacts | None, *, titles_taken: set[str]) -> str | None:
+def slot_problem(facts: SlotFacts | None, *, titles_taken: set[str], lang: str = "pt") -> str | None:
     """None when the slot may stand, else the first failing reason in a fixed order."""
     if facts is None:
         return "unknown_series"
@@ -67,11 +69,10 @@ def slot_problem(facts: SlotFacts | None, *, titles_taken: set[str]) -> str | No
         return "withheld"
     if not facts.has_served:
         return "no_served_value"
-    if not facts.title_pt:
-        return "missing_title_pt"
-    if not facts.title_en:
-        return "missing_title_en"
-    if facts.title_pt in titles_taken:
+    title = facts.titles.get(lang)
+    if not title:
+        return "missing_title"
+    if title in titles_taken:
         return "duplicate_title"
     if facts.derived_key:
         if facts.derived_base_series_id is None:
@@ -80,13 +81,13 @@ def slot_problem(facts: SlotFacts | None, *, titles_taken: set[str]) -> str | No
             return "inactive_derived"
         if facts.derived_base_series_id != facts.series_id:
             return "derived_base_mismatch"
-        if not facts.derived_title_pt or not facts.derived_title_en:
+        if not facts.derived_titles.get(lang):
             return "derived_missing_title"
     return None
 
 
-def page_problems(facts: list[SlotFacts | None]) -> list[tuple[int, str]]:
-    """(position, reason) for every failing slot, in page order.
+def page_problems(facts: list[SlotFacts | None], *, lang: str = "pt") -> list[tuple[int, str]]:
+    """(position, reason) for every failing slot, in page order, in Portuguese.
 
     Duplicate titles resolve in page order: the first slot keeps the title, later ones fail.
     That is the same order the reader sees, so a publish refusal names the card the operator
@@ -95,10 +96,11 @@ def page_problems(facts: list[SlotFacts | None]) -> list[tuple[int, str]]:
     problems: list[tuple[int, str]] = []
     taken: set[str] = set()
     for position, slot in enumerate(facts):
-        problem = slot_problem(slot, titles_taken=taken)
+        problem = slot_problem(slot, titles_taken=taken, lang=lang)
         if problem is not None:
             problems.append((position, problem))
             continue
-        assert slot is not None and slot.title_pt is not None  # guaranteed by slot_problem
-        taken.add(slot.title_pt)
+        title = (slot.titles.get(lang) if slot else None)
+        if title:
+            taken.add(title)
     return problems
