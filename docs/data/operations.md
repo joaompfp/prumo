@@ -982,6 +982,45 @@ appear only inside the two `href`s to the series pages; no `<script>`, no `style
 own provenance for the last **common** period (one value sampled, the other explicitly not);
 `docker logs prumo` shows no `error`, `Traceback` or `MissingText`.
 
+### Typography cleanup: installation record (2026-11-16)
+
+The owner authorized the repository-wide U+2014 removal, commit/push/merge and web-only deploy.
+Code release `9001113e677aee3f707fd28041240f06c230b632` was fast-forwarded to main, pushed,
+and installed on f0nix through `bash -lic 'dc-web-up prumo'`. Only `prumo` was recreated:
+`StartedAt` `2026-11-16T19:31:02.759397671Z`, image
+`a46672e3d205946c96509dd6441a7897313f79eabc21492004e272038c0eee3e`, healthy, restart count 0.
+Worker and backoffice kept exactly the same container ids, image ids, StartedAt and restart counts
+as before (worker 1, backoffice 0); no schema migration, registry sync, manual import or data edit ran.
+
+The cleanup changes authored strings, not original source receipts. Stored source attribution and
+licence strings can still contain U+2014 because the worker was intentionally not replaced;
+`presentation.source_text` normalizes those fields only at public display/export boundaries.
+Observation tokens, source records, URLs and publisher bytes remain unchanged. The original
+receipt with an encoded publisher dash is hash-pinned by `tests/test_typography.py`; the DGEG
+raw receipts and the extracted publisher bodies are unchanged, with derived-preamble hashes
+updated in their manifest. The punctuation-only change to historical migration 0014 does not
+rerun that migration; deployed schema remains 0018.
+
+Release gates: independent cleanup review and scoped re-review approved; six old-metadata route
+regressions failed before and passed after; full offline suite `2274 passed, 7 deselected,
+3 warnings in 964.91 s`; ruff clean. GitHub CI for the released code passed:
+https://github.com/joaompfp/prumo/actions/runs/43938228195 .
+Desktop/mobile methodology screenshots against the production copy were checked before release.
+
+Post-deploy: 42 HTTP 200 checks across `cae.joao.date` and `joao.date/dados`, including methodology,
+sources, themes, comparisons, primary and derived detail, both CSV export types, CSS and health.
+Every response is free of literal and HTML-encoded U+2014; the unknown comparison stays 404 on both.
+CSP and prefixed CSS links are preserved. Browser DOM: `Metodologia - Prumo`, zero U+2014.
+The web log has no error-class line. The before/after SHA-256 of the SQLite schema is
+`026ff19e19052fa239024ab758e7a2247af39909eecf2b268574ce807b1b6ccf`, and the complete source
+metadata hash is `1d74e8c63dc8422573830456b27596842518be3e911ca62f5c943027639df814`, unchanged.
+This is not a claim that all observation counts stay fixed while the scheduler runs.
+
+Rollback: code `3cb9d51`, previous web image
+`ff71f0425fdde43ba1441fe4b2f437bec6ceca09b0f846a7dc26fdf8a9b8a66c`, with the same code-only
+web deploy; no database rollback is needed. Later documentation-only commits advance the checkout
+without rebuilding the already-verified image. ECharts remains a design/probe, not an installed feature.
+
 ## Rollback
 
 The safe ingestion rollback is to stop the worker and retain the new maintenance web app,
