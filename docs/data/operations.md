@@ -949,6 +949,39 @@ Rollback: deploy the previous commit on `main` again (`git checkout <prev> && ba
 'dc-web-up prumo'`). The database is not touched by this release, so there is no data step; the
 previous image is the maintenance page.
 
+### Two-series comparisons: installation record (2026-11-16)
+
+DEPLOYED by owner authorization at 15:33 UTC on `main` `f0233bf` (fast-forward from
+`pipeline-rebuild`, pushed; the f0nix checkout was fast-forwarded to the same commit). Code only:
+`deploy/` is byte-identical to the installed `compose/prumo.yml` and `compose/prumo-ingest.yml`
+includes, no migration, no write path, so `bash -lic 'dc-web-up prumo'` rebuilt the shared image
+and recreated only `prumo` (image `ff71f042…`, `StartedAt` 2026-11-16T15:33:49Z, restart count 0).
+`prumo-ingest` (`StartedAt` 12:36:07Z) and `prumo-backoffice` (`StartedAt` 12:44:35Z) were not
+restarted. Pre-deploy rollback point: `main` `46d8d2e`, image `c761fef6…`; the database is
+untouched, so the rollback is the previous commit and the same command. Infra pointer: `7520155`.
+
+Gate before the rebuild: full suite on the merged tree `2250 passed, 7 deselected in 955.65 s`,
+`ruff check app/ ingest/` clean, on top of the two review rounds already closed on the branch.
+
+Post-deploy checks that held:
+
+```bash
+curl -fsS https://cae.joao.date/healthz                                     # 200
+curl -fsS https://cae.joao.date/ | grep -q 'Estatísticas oficiais'
+curl -fsS https://cae.joao.date/comparar | grep -c 'períodos comuns'        # 3 pairs listed
+curl -fsS https://cae.joao.date/comparar/credito-e-taxa | grep -c '<circle' # 788 = 2*393 + 2 markers
+curl -fsSI https://cae.joao.date/comparar | grep -i 'content-security-policy'
+curl -fsS https://joao.date/dados/comparar | grep -q '/dados/'
+curl -s -o /dev/null -w '%{http_code}\n' https://cae.joao.date/comparar/nao-existe  # 404
+```
+
+Measured after the rebuild: `/comparar` 3,807 bytes at the root prefix and 3,921 at `/dados`;
+the three pair pages 200 with 344 / 359 / 393 plotted points and as many table rows; series ids
+appear only inside the two `href`s to the series pages; no `<script>`, no `style=`, no
+`must confirm|pending|UNVERIFIED`; CSP unchanged at `default-src 'none'`; each side carries its
+own provenance for the last **common** period (one value sampled, the other explicitly not);
+`docker logs prumo` shows no `error`, `Traceback` or `MissingText`.
+
 ## Rollback
 
 The safe ingestion rollback is to stop the worker and retain the new maintenance web app,

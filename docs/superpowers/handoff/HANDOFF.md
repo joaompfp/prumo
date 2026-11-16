@@ -1,10 +1,10 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## STATUS 2026-11-16 ~15:40 UTC (two-series comparisons built, reviewed twice, proofed; NOT deployed)
+## STATUS 2026-11-16 15:33 UTC (two-series comparisons DEPLOYED; dual axis kept by the owner)
 
 The owner asked on 2026-11-16 for "uma secção em que se plotam dois indicadores no mesmo gráfico, para analisar efeitos relacionados", with the pairs chosen by the planner. The editorial composition shipped first the same day; this is the comparison half.
 
-Spec `docs/superpowers/specs/2026-11-16-two-series-comparisons-design.md`, plan `docs/superpowers/plans/2026-11-16-two-series-comparisons.md`. Code on `pipeline-rebuild`: `24713d0` (feature), `3f4a627` (first review round), `22ae4c8` (second). **`main` is still `46d8d2e` and production serves it**: no merge, no deploy, no migration, no write path.
+Spec `docs/superpowers/specs/2026-11-16-two-series-comparisons-design.md`, plan `docs/superpowers/plans/2026-11-16-two-series-comparisons.md`. Code on `pipeline-rebuild`: `24713d0` (feature), `3f4a627` (first review round), `22ae4c8` (second). **`main` is `f0233bf` and production serves it** (fast-forward merge and code-only deploy at 15:33 UTC; record in `docs/data/operations.md`, "Two-series comparisons: installation record").
 
 Shape: a `/comparar` index and one page per pair, with the navigation gaining "Comparações". Pairs are curated in `presentation/catalog/pt.py` (`COMPARISONS`: slug, two series ids, title, subtitle, one-sentence mechanism, `scale`, caption note); the route takes a slug and never two series ids. Three pairs, all monthly, both sides redistributable and served:
 
@@ -31,7 +31,7 @@ Two independent reviews (specification and quality) both returned CHANGES_REQUIR
 
 One deliberate re-capture: `tests/app/golden/home_code_list.html`, because the nav item changes every page's HTML. `home_before_editorial.html` stays in the tree and the two differ by that one anchor plus the whitespace line the loop emits around it.
 
-**OPEN [owner]:** whether pair 3 keeps a dual axis. The alternative is dropping that pair and shipping two same-unit pairs; the planner's default was to ship it, labelled on both sides, because "what a household pays against how much is owed" is the mechanism the owner named. Also open: the deploy itself - code only, `bash -lic 'dc-web-up prumo'`, no worker or backoffice restart, rollback the previous commit and the same command.
+**CLOSED:** the owner kept the dual axis for pair 3 and authorized the deploy. Released 2026-11-16 at 15:33 UTC: `main` fast-forwarded to `f0233bf` and pushed, f0nix checkout fast-forwarded, code-only `bash -lic 'dc-web-up prumo'` (image `ff71f042…`, `StartedAt` 2026-11-16T15:33:49Z), worker and backoffice untouched (12:36:07Z and 12:44:35Z), infra pointer `7520155`. Gate: `2250 passed, 7 deselected in 955.65 s` on the merged tree plus `ruff check app/ ingest/` clean. Live checks: `/healthz`, home, `/comparar` (3,807 B, three pairs) and `joao.date/dados/comparar` (3,921 B) at 200, the three pair pages 200 with 344 / 359 / 393 plotted points, unknown slug 404, CSP unchanged, ids only inside the two series `href`s, no `<script>`/`style=`, worker log clean. Rollback point: `main` `46d8d2e`, image `c761fef6…`, database untouched.
 
 Unchanged by this work: the Task 18 24 h observation clock (restarted by the worker's SIGBUS restart at 12:36), the identical-content short-circuit proof in production, the licence gates for FRED/OECD/REN/DGEG, and the operational write actions (migration 0019).
 
