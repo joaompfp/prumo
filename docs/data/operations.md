@@ -573,6 +573,38 @@ because the tables are empty. Check it with `docker exec prumo-ingest ls -ln /da
 database, `-wal` and `-shm` must be `1000:1000`) and with one real POST from the editor: the
 first publish is the only proof the write path is not a readonly 503.
 
+### Editorial composition: installation record (2026-11-16)
+
+DEPLOYED by owner authorization at 12:20-12:21 UTC on `main` `81c8eb9` (fast-forward from
+`pipeline-rebuild`, pushed; the f0nix checkout `~/docker/stacks/web/images/prumo` was already
+at the same commit). The order above was followed literally: all three containers stopped
+(`prumo-ingest` exits 143), a cold copy of the database taken with every writer down
+(`prumo-cold-20261116T122038Z.sqlite3`, 217 MB), the data directory chowned to `1000:1000`,
+then `prumo-ingest` (12:21:04, applied 0018), `prumo` (12:21:31) and `prumo-backoffice`
+(12:21:31). Images: `prumo` `c761fef64812`, `prumo-ingest` `d65a19e91a0f`,
+`prumo-backoffice` `0fd546b4d87b`. Rollback point: `main` `7e563b2`, images `86215c61…`,
+`34029ffc…`, `19023ee4…`, plus the two database copies above.
+
+Post-deploy checks: `integrity_check` ok, 0 foreign-key violations, `observation` 542,822,
+`quarantine` 34,219, `served_derived` 6,665 (23 keys, all `is_calculated = 1`) and `series`
+1,791 all unchanged; `schema_migration` ends at `0018_editorial_composition`; the four
+editorial tables exist and the page rendered from the code list is byte-identical to the
+17,146-byte pre-deploy capture. `docker inspect` reports the worker as `1000:1000` and the
+database, `-wal` and `-shm` as `1000:1000`. Restart count 0 on all three, no `error`,
+`Traceback`, `MissingText` or `database unusable` in any log.
+
+The write path was proved with one real publication, not a GET: two slots added
+(`bportugal.credit_consumer.PT` with `derived.credit_consumer.PT.yoy_change_pct`, then
+`bportugal.credit_housing.PT`), each answered 303; publish answered 303 and the home served
+the composition (6,973 bytes, both cards, derived line included). `editorial_event` held the
+three rows with versions 1, 2, 3 and publish's `detail_json` carrying both slots. Refusals
+held on the live container: 403 with no `Origin`, 403 with `Origin: https://evil.example` and
+`Sec-Fetch-Site: cross-site`, 404 for an unknown slug. `reset` (version 4) then deleted both
+states, logged `reset_to_code`, and the home came back byte-identical to the 17,146-byte
+pre-deploy capture: **the production site is serving the code list, not the trial
+composition.** Every link on the home (21), the series CSV, the calculated page and its CSV,
+`cae.joao.date`, `joao.date/dados` and the CSP header were re-checked after the deploy.
+
 ### Review queue rules
 
 Derived on every `/queue` request from the last 7 days; nothing is stored. Event kinds are
