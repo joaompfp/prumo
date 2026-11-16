@@ -164,7 +164,7 @@ function optionFor(payload, width, height) {
     type: 'line',
     name: entry.title,
     data: dataFor(payload, index),
-    yAxisIndex: index,
+    yAxisIndex: index < payload.axes.length ? index : 0,
     connectNulls: payload.kind === 'line',
     showSymbol: true,
     symbol: 'circle',
