@@ -12,11 +12,15 @@ incluindo rotulos fixos de SVG/canvas, clamps e a geometria que os acomoda.
   `300px` -> `330px` para manter a mesma largura relativa das etiquetas de navegacao.
 - Clamps preferidos: publico `h1 6.9vw -> 7.6vw`, `h2 3.6vw -> 4vw`, valor de figura
   `7.5vw -> 8.25vw`; Admin `h1 3.3vw -> 3.63vw` e titulo do editor `3vw -> 3.3vw`.
-- Graficos: ticks SVG `16.5px -> 18.15px`; titulo de eixo e ultimo valor valido
-  `18px -> 19.8px`. Adapter ECharts equivalente (`18.15`, `19.8`, tooltip `19.8/29.7`).
+- Graficos: ticks SVG e nomes de unidade `.chart-axis-label` `16.5px -> 18.15px`;
+  ultimo valor valido SVG `18px -> 19.8px`, tal como o papel sem consumidor
+  `.chart-axis-title`. O adapter ECharts usa nomes de eixo a `19.8px` e os restantes papeis
+  equivalentes (`18.15`, tooltip `19.8/29.7`). A geometria e a mesma; o tamanho do nome de
+  eixo difere entre SVG (`18.15`) e canvas (`19.8`).
 - Geometria partilhada: margens `88/30/28/62 -> 97/33/31/68`, eixo duplo `156 -> 172`,
   estimativa de texto `9/5 -> 9.9/5.5`, deslocamentos de rotulos e limiares de colisao
-  escalados na mesma proporcao. O SVG e o canvas usam os mesmos numeros.
+  escalados na mesma proporcao. A geometria partilhada usa os mesmos numeros nos dois
+  renderizadores.
 - Estreito: piso do SVG sem JavaScript `600x240 -> 660x264`; a search publica passa a
   ocupar uma linha propria abaixo de `900px` (antes de `760px`), porque o campo rotulado
   ampliado deixava de caber ao lado da marca em 768px. Nenhum texto foi reduzido nem

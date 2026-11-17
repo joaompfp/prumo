@@ -23,9 +23,9 @@ from app.formatting import (
 )
 
 WIDTH, HEIGHT = 880, 340
-# Margins grew with the 18.15-unit axis label role. The left gutter must hold a
-# publisher value such as "1 000 000" at 18.15 user units without clipping; the top
-# gutter holds the 19.8-unit axis name. These values match the adapter's canvas grid.
+# Margins grew with the 18.15-unit SVG axis label role. The left gutter must hold a
+# publisher value such as "1 000 000" at 18.15 user units without clipping; the canvas
+# adapter draws its 19.8px axis name in the same top gutter. These values match its grid.
 LEFT, RIGHT, TOP, BOTTOM = 97, 33, 31, 68
 RIGHT_DUAL = 172
 
@@ -33,15 +33,23 @@ RIGHT_DUAL = 172
 def _text_width(text: str) -> float:
     """A conservative SVG text width at the 18.15-unit axis type scale.
 
-    Digits are close to 9.9 units in Lato tabular; spaces and punctuation are narrower.
-    This is an estimate for margin allocation only; it never formats or rounds a value.
+    Chromium with the served Lato subset measures a tabular digit at 10.52 units, a group
+    separator at 4.64 and a hyphen at 6.74. Rounding digit and sign advances up to 10.6 and
+    separators to 4.8 keeps the estimate above the rendered width. This is margin allocation
+    only; it never formats or rounds a value.
     """
-    return sum(9.9 if char.isdigit() else 5.5 for char in text)
+    total = 0.0
+    for char in text:
+        if char.isdigit() or char in "-\u2212+":
+            total += 10.6
+        else:
+            total += 4.8
+    return total
 
 
 def _left_gutter(texts: list[str], width: int, right: int) -> int:
     """Grow the left gutter for long publisher values, leaving at least 200 units of plot."""
-    needed = max((_text_width(text) for text in texts), default=0) + 13
+    needed = max((_text_width(text) for text in texts), default=0) + 15
     return int(round(max(LEFT, min(needed, width - right - 200))))
 
 

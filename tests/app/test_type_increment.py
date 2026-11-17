@@ -53,7 +53,7 @@ def test_fixed_svg_and_canvas_labels_use_the_new_type_role():
     css = _read(CSS / "prumo.css")
     adapter = _read(ADAPTER)
     assert css.count("font-size: 18.15px") == 2   # x/y ticks and axis unit names
-    assert css.count("font-size: 19.8px") == 2    # axis title and last-value labels
+    assert css.count("font-size: 19.8px") == 2    # unused axis-title role and last-value labels
     assert adapter.count("fontSize: 18.15") == 2  # ECharts axis labels
     assert adapter.count("fontSize: 19.8") == 2   # axis names and tooltip text
     assert "lineHeight: 29.7" in adapter
@@ -72,9 +72,11 @@ def test_chart_gutters_and_adapter_grid_share_the_scaled_geometry():
         f"{chart_model.RIGHT};",
         f"left: {chart_model.LEFT} * scale,",
         "right: right * scale,",
-        f"top: {chart_model.TOP} * scale,",
+        f"const top = Math.max({chart_model.TOP} * scale, {chart_model.TOP});",
         f"bottom: {chart_model.BOTTOM} * scale,",
-        "nameGap: 13 * scale,",
+        "const nameGap = Math.max(13 * scale, 13);",
+        "top,",
+        "nameGap,",
     ):
         assert token in adapter, token
 

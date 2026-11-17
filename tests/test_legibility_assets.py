@@ -62,16 +62,18 @@ def test_public_root_and_wrap_support_the_approved_scale():
 def test_public_fixed_role_tokens_meet_the_one_and_a_half_floor():
     css = (ROOT / "static" / "css" / "prumo.css").read_text()
     for token in (
-        ".site-nav a {", "font-size: 0.95rem",          # nav 16.15 -> 24.225
-        ".card-label {", "font-size: .8rem",            # 13.6 -> 20.4
-        ".card-source {", "font-size: .78rem",          # 13.26 -> 19.89
-        ".data-table th {", "font-size: .74rem",        # 12.58 -> 18.87
-        ".figure-meta {", "font-size: .82rem",          # 13.94 -> 20.91
-        ".site-footer p {", "font-size: .82rem",        # 13.94 -> 20.91
+        ".site-nav a {", "font-size: 0.95rem",          # nav 26.6475px
+        ".card-label {", "font-size: .8rem",            # 22.44px
+        ".card-source {", "font-size: .78rem",          # 21.879px
+        ".data-table th {", "font-size: .74rem",        # 20.757px
+        ".figure-meta {", "font-size: .82rem",          # 23.001px
+        ".site-footer p {", "font-size: .82rem",        # 23.001px
     ):
         assert token in css, token
-    assert css.count("font-size: 18.15px") == 2           # SVG ticks, 16.5 -> 18.15
-    assert css.count("font-size: 19.8px") == 2            # SVG axis/last labels, 18 -> 19.8
+    # SVG unit names use .chart-axis-label at 18.15px; .chart-axis-title at 19.8px has no
+    # consumer. The canvas adapter draws its axis names at 19.8 CSS px.
+    assert css.count("font-size: 18.15px") == 2           # SVG ticks and axis unit names
+    assert css.count("font-size: 19.8px") == 2            # last-value labels, unused axis title
     assert "min-width: 660px; min-height: 264px;" in css
     assert ".chart-enhanced .chart-wrap { min-width: 0; }" in css
 
@@ -85,8 +87,8 @@ def test_admin_root_sidebar_and_record_stack_follow_the_approved_scale():
     assert "content: attr(data-label)" in css
     assert ".bo-menu { display: block; }" in css
     assert ".nav-desktop { display: none; }" in css
-    assert "font-size: 0.65rem" in css                     # table th, 10.4 -> 15.6
-    assert "font-size: 0.58rem" in css                     # legacy badge, 9.28 -> 13.92
+    assert "font-size: 0.65rem" in css                     # table th, 17.16px
+    assert "font-size: 0.58rem" in css                     # legacy badge, 15.312px
 
 
 def test_card_value_turns_group_spaces_into_wrappable_spaces_only():

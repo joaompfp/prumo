@@ -152,6 +152,11 @@ function optionFor(payload, width, activePoint) {
   };
   const scale = width / VIEW_W;
   const right = payload.axes.length > 1 ? 172 : 33;
+  // The axis name and gap are fixed CSS pixels, so the top gutter cannot keep shrinking with
+  // the stage. At 320/480px the scaled 31/13 values would put the 19.8px unit name above the
+  // canvas. The floor preserves the designed gutter from the full 880px view.
+  const top = Math.max(31 * scale, 31);
+  const nameGap = Math.max(13 * scale, 13);
 
   const yAxis = payload.axes.map((axis, index) => ({
     type: 'value',
@@ -161,7 +166,7 @@ function optionFor(payload, width, activePoint) {
     position: index === 0 ? 'left' : 'right',
     name: axis.unit,
     nameLocation: 'end',
-    nameGap: 13 * scale,
+    nameGap,
     nameTextStyle: {
       color: muted,
       fontFamily: sans,
@@ -249,7 +254,7 @@ function optionFor(payload, width, activePoint) {
     grid: {
       left: 97 * scale,
       right: right * scale,
-      top: 31 * scale,
+      top,
       bottom: 68 * scale,
       containLabel: true,
     },
