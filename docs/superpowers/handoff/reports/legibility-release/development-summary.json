@@ -1,0 +1,21 @@
+{
+  "browser-cms-final": {
+    "checks": 783,
+    "passed": 783,
+    "errors": [],
+    "warnings": [],
+    "type_samples": 485,
+    "minimum_ratio": 1.65,
+    "protected_tables": 20,
+    "unchanged_protected": true
+  },
+  "browser-countries-final": {
+    "checks": 410,
+    "passed": 410,
+    "errors": [],
+    "warnings": [],
+    "unchanged_all_tables": true,
+    "tables": 23
+  },
+  "runtime": "42c581f"
+}

@@ -1,0 +1,434 @@
+{
+  "checks": [
+    {
+      "name": "real populated homepage has twelve cards",
+      "passed": true
+    },
+    {
+      "name": "home 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "home 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "home 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "home@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 eyebrow at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_unit at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_period at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_source at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_link at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 theme_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 theme_blurb at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "home 1440 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 1440 exact values",
+      "passed": true
+    },
+    {
+      "name": "home 1440 Schola display",
+      "passed": true
+    }
+  ],
+  "ratios": [
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "body",
+      "before": 17.0,
+      "after": 28.05,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "h1",
+      "before": 56.1,
+      "after": 92.565,
+      "ratio": 1.65
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "h2",
+      "before": 29.75,
+      "after": 49.0875,
+      "ratio": 1.65
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "nav",
+      "before": 16.15,
+      "after": 26.6475,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "lede",
+      "before": 20.74,
+      "after": 34.221,
+      "ratio": 1.65
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "eyebrow",
+      "before": 13.26,
+      "after": 21.879,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_label",
+      "before": 13.6,
+      "after": 22.44,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_value",
+      "before": 35.7,
+      "after": 58.905,
+      "ratio": 1.65
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_unit",
+      "before": 13.26,
+      "after": 22.44,
+      "ratio": 1.6923076923076925
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_period",
+      "before": 14.45,
+      "after": 23.8425,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_source",
+      "before": 13.26,
+      "after": 21.879,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_link",
+      "before": 14.45,
+      "after": 23.8425,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "badge",
+      "before": 11.22,
+      "after": 18.513,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "theme_title",
+      "before": 22.95,
+      "after": 37.8675,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "theme_blurb",
+      "before": 16.15,
+      "after": 26.6475,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "footer",
+      "before": 13.94,
+      "after": 23.001,
+      "ratio": 1.6500000000000001
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "button",
+      "before": 15.3,
+      "after": 25.245,
+      "ratio": 1.65
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "search",
+      "before": 15.3,
+      "after": 25.245,
+      "ratio": 1.65
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "external": [],
+  "screens": [],
+  "protected_before": {
+    "dataset_run": {
+      "rows": 92,
+      "sha256": "4666153b439e08f706ff6d9e962f5bd2265e52f860a4f4fbc960120be5c70557"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_run": {
+      "rows": 8,
+      "sha256": "45913f88c6bfbebe0a5212c8e26deeb2ab045e2e77b5644f6d806b869a42d57b"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 373,
+      "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+    },
+    "observation": {
+      "rows": 543113,
+      "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "raw_fetch": {
+      "rows": 766,
+      "sha256": "1d34371f3172101c1c68e04c824757d6b9f61e263d4b38d1d7aaceb312bd45cd"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "c47f96788ec40082c0d56dea7feec452f5424efdf492af9dd1915e193f85fa12"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 48,
+      "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+    },
+    "verification_item": {
+      "rows": 94408,
+      "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+    },
+    "verification_spec": {
+      "rows": 706,
+      "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+    }
+  },
+  "notebook_before": {
+    "cms_document": {
+      "rows": 3,
+      "sha256": "5dd4b5ffe6e88c2978e51a397f05bebdd436941be8ea7a95b42a1694690ef19d"
+    },
+    "cms_event": {
+      "rows": 11,
+      "sha256": "cfd5f62a456794548ba5c46a7f96f67d1e6b6e6801f73a73612a47fa21a8ae15"
+    },
+    "cms_revision": {
+      "rows": 6,
+      "sha256": "a7d3c02da7a34c992c735550fb40036fd5b004e43ff805c30ef64388da23c702"
+    },
+    "dataset_run": {
+      "rows": 92,
+      "sha256": "4666153b439e08f706ff6d9e962f5bd2265e52f860a4f4fbc960120be5c70557"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_run": {
+      "rows": 8,
+      "sha256": "45913f88c6bfbebe0a5212c8e26deeb2ab045e2e77b5644f6d806b869a42d57b"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 373,
+      "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+    },
+    "observation": {
+      "rows": 543113,
+      "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "raw_fetch": {
+      "rows": 766,
+      "sha256": "1d34371f3172101c1c68e04c824757d6b9f61e263d4b38d1d7aaceb312bd45cd"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "c47f96788ec40082c0d56dea7feec452f5424efdf492af9dd1915e193f85fa12"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 48,
+      "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+    },
+    "verification_item": {
+      "rows": 94408,
+      "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+    },
+    "verification_spec": {
+      "rows": 706,
+      "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+    }
+  }
+}
