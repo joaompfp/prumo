@@ -595,7 +595,7 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
     def editor_page(request: Request, kind: str, slug: str, *, status_code: int = 200,
                     error: str | None = None, doc: dict | None = None,
                     values: dict[str, str] | None = None,
-                    expected_version: int | None = None):
+                    expected_version: int | str | None = None):
         if kind not in KINDS:
             return render_error(request, 404, "Documento desconhecido",
                                 f"tipo de documento desconhecido: {kind}")
@@ -793,7 +793,8 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
         except FormError as exc:
             return await run_in_threadpool(
                 editor_page, request, kind, slug, status_code=422, error=str(exc), doc=doc,
-                values=fields if action == "save" and fields else None)
+                values=fields if action == "save" and fields else None,
+                expected_version=fields.get("version") if fields else None)
         except HTTPException:
             raise
         try:
@@ -830,7 +831,9 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
                 expected_version=version)
         except CmsRefused as exc:
             return await run_in_threadpool(editor_page, request, kind, slug,
-                                           status_code=422, error=str(exc), doc=doc)
+                                           status_code=422, error=str(exc), doc=doc,
+                                           values=fields if action == "save" else None,
+                                           expected_version=version)
         except CmsNotFound:
             return render_error(request, 404, "Documento desconhecido",
                                 f"{kind}/{slug} não existe")

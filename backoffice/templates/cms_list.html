@@ -57,18 +57,18 @@
   <p class="section-note"><a href="#nova-pagina"><i class="icon icon-plus" aria-hidden="true"></i> Criar página</a></p>
 </div>
 {% if pages %}
-<div class="scroll"><table>
+<div class="scroll"><table class="cms-table" role="table">
 <thead><tr><th>Título</th><th>Slug</th><th>Secção</th><th class="num">Versão</th><th>Estado</th>
 <th>Ações</th></tr></thead>
 <tbody>
 {% for p in pages %}
 <tr>
-<td class="wrap">{{ p.title }}</td>
-<td class="mono">{{ p.slug }}</td>
-<td>{{ p.section or "-" }}</td>
-<td class="num">{{ p.version }}</td>
-<td>{% if p.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
-<td>
+<td class="wrap" data-label="Título">{{ p.title }}</td>
+<td class="mono" data-label="Endereço">{{ p.slug }}</td>
+<td data-label="Secção">{{ p.section or "-" }}</td>
+<td class="num" data-label="Versão">{{ p.version }}</td>
+<td data-label="Estado">{% if p.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
+<td data-label="Ações">
 <div class="button-row">
 <a class="button button-small" href="{{ base }}/cms/page/{{ p.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
 <a class="button button-small" href="{{ base }}/cms/page/{{ p.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
@@ -126,16 +126,16 @@
   <p class="section-note"><a href="#novo-grafico"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</a></p>
 </div>
 {% if charts %}
-<div class="scroll"><table>
+<div class="scroll"><table class="cms-table" role="table">
 <thead><tr><th>Título</th><th>Slug</th><th class="num">Versão</th><th>Estado</th><th>Ações</th></tr></thead>
 <tbody>
 {% for c in charts %}
 <tr>
-<td class="wrap">{{ c.title }}</td>
-<td class="mono">{{ c.slug }}</td>
-<td class="num">{{ c.version }}</td>
-<td>{% if c.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicado</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
-<td>
+<td class="wrap" data-label="Título">{{ c.title }}</td>
+<td class="mono" data-label="Endereço">{{ c.slug }}</td>
+<td class="num" data-label="Versão">{{ c.version }}</td>
+<td data-label="Estado">{% if c.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicado</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
+<td data-label="Ações">
 <div class="button-row">
 <a class="button button-small" href="{{ base }}/cms/chart/{{ c.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
 <a class="button button-small" href="{{ base }}/cms/chart/{{ c.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
