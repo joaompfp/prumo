@@ -2,11 +2,17 @@
 
 ## Status and scope
 
-Implemented on `pipeline-rebuild`, runtime `0162e7c0009a1da431a5ead44e604151bf8743b5`. Main remains `7a35f47`; this report does not authorize or claim a deployment. A read-only public favicon fetch still matched the installed baseline exactly during acceptance. No database migration, operational source change, access rule, shared-edge change or production mutation ran.
+Installed on f0nix on 2026-11-17, runtime `14f845e`, after explicit owner release approval, main merge/push and hosted CI `44090471137`. The owner rejected the initial petrol-green colour direction: final highlights are carmim `#9b1c2e` on warm paper/charcoal, with the approved plumb-bob geometry intact. Only public web and backoffice were recreated; no schema, source-data, CMS-content, worker or shared-edge change. See [installed carmim release](carmim-installation.md) and the production receipts.
 
-The backoffice now uses local Tabler 1.7.5 controls, cards, tables, badges and navigation, with the existing native forms/disclosures and progressive Admin script. The palette is paper/petrol green with a restrained brass detail and separate semantic danger colour. The new mark is a hanging plumb bob. The public site shares the identity and refines its existing search, filters, navigation, buttons, chart interval links and surfaces; it does not load the admin toolkit. SVG summaries and the pinned ECharts analytical/detail bundle retain their current roles.
+The backoffice now uses local Tabler 1.7.5 controls, cards, tables, badges and navigation, with the existing native forms/disclosures and progressive Admin script. The final palette is warm paper/charcoal/carmim with a restrained brass detail and labelled semantic state colours. The new mark is a hanging plumb bob. The public site shares the identity and refines its existing search, filters, navigation, buttons, chart interval links and surfaces; it does not load the admin toolkit. SVG summaries and the pinned ECharts analytical/detail bundle retain their current roles.
 
-## Evidence
+## Final carmim release evidence
+
+`carmim-review.md` records the palette reviews and the actual-focus correction. `carmim-delivery.json`, `carmim-final-suite.log.gz`, `carmim-ci.json`, `carmim-browser/acceptance.json` and `carmim-browser/contrast.json` establish the final 2,688-test/205-browser-check/17-colour-group gate on runtime 14f845e. `carmim-interrupted-suite.log.gz` is deliberately interrupted pre-fix evidence, never a passing result. The final acceptance copy is a fresh 217,755,648-byte SQLite online backup from production, not the earlier copy below.
+
+For the final acceptance, use the same QA server on port 8118 with `PRUMO_QA_DB=/home/joao/.hermes/cache/scratch/prumo-tabler-carmim/production-copy.sqlite3`, and set `PRUMO_QA_URL=http://127.0.0.1:8118` and `PRUMO_QA_OUT` to a separate output folder for the browser driver. `carmim_contrast.py` reads the actual loaded cascade and focused outline rather than trusting root tokens. `production_probe.py` and `public_production_smoke.py` are read-only installed checks; the former uses the existing internal proxy credential without printing it and is not a human login.
+
+## Earlier implementation evidence (historical green-palette checkpoint)
 
 - `admin-implementation.md`: implementer scope and initial 299-test result. Its intercepted vendor CSS was an interim probe, not final installed-asset acceptance.
 - `spec-review.md`: independent compliance PASS. F1 closed by committing vendor/build/identity assets in `07a981c`. F2 closed by unconditional vendor HTTP assertion in `5f3e4e2`. F3 is accepted as intentional CSS-only public work: no public template changes are needed for the requested surfaces, table hover, filter/search controls and colours. Browser acceptance checks real rendered output.
@@ -50,15 +56,13 @@ The QA server refuses databases outside scratch. Browser acceptance exercises ac
 
 One intermediate capture helper used `.bo-nav`, a nonexistent selector, alongside the toolbar. It was corrected to require the actual seven `nav.nav` anchors and their geometry rather than accepting an empty set. Another intermediate contrast probe emitted a Canvas read-frequency diagnostic; the helper now requests the appropriate probe context. Neither correction changed application runtime or muted real errors.
 
-## Future installation boundary
+## Installed release and recovery
 
-Owner release approval is still required. Only `prumo` and `prumo-backoffice` need rebuilding/recreation. The worker, schema 0019, authored homepage content, Authelia and Traefik are unchanged. Use the existing `docs/data/operations.md` and `docs/data/cms.md` release contract, a clean f0nix checkout at the exact approved remote SHA and the existing `dc-web-*` aliases. Preserve/pin the previous web and backoffice images before rebuilding.
-
-After an approved merge/push and remote fast-forward, the service-specific operations are:
+The owner-authorized release used the exact pushed main SHA, a clean f0nix checkout and the existing dc-web aliases. Previous images were pinned before building. Only these services were recreated:
 
 ```bash
 bash -lic 'dc-web-up prumo'
 bash -lic 'dc-web-up prumo-backoffice'
 ```
 
-Verify both public prefixes, local CSS/favicon hashes, strict Admin protection, a technical CMS operation with cleanup if authorized, logs and unchanged worker identity/image/StartedAt/restart count. No shared-edge restart or credential provisioning is part of this release. Rollback uses the earlier code and the pinned web/backoffice images; do not restore the database or erase authored CMS history for a presentation-only rollback.
+Schema 0019, authored CMS content/history, worker identity/image/start/restarts and the pre-existing infrastructure edits were read back unchanged. No shared-edge restart or credential provisioning ran. Recovery uses old code 7a35f47 and the two rollback-tabler-carmim-20261117T125839Z image tags through the documented aliases. Do not move remote main backwards, restore the database or erase authored history for this presentation-only rollback. Full installed receipt: carmim-installation.md.

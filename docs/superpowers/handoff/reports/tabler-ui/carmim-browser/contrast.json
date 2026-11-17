@@ -1,0 +1,1853 @@
+{
+  "runtime": "14f845ec2ca006fa992c460fd2af579940ac28bd",
+  "samples": {
+    "light/primary": [
+      {
+        "text": "Guardar rascunho",
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          155,
+          28,
+          46
+        ],
+        "ratio": 8.079205777232639
+      }
+    ],
+    "light/danger": [
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      },
+      {
+        "text": "Despublicar (mantém o histórico)",
+        "fg": [
+          193,
+          18,
+          31
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.224436119827817
+      }
+    ],
+    "light/active_nav": [
+      {
+        "text": "Página inicial",
+        "fg": [
+          155,
+          28,
+          46
+        ],
+        "bg": [
+          247,
+          231,
+          234
+        ],
+        "ratio": 6.76087158858264
+      }
+    ],
+    "light/neutral_badges": [
+      {
+        "text": "Versão 8",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          232.94901960784316,
+          231.1529411764706,
+          228.45882352941177
+        ],
+        "ratio": 5.542019293058406
+      }
+    ],
+    "light/hints": [
+      {
+        "text": "Fica na auditoria; guardar não publica.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Lida da base de dados em cada pedido; não fica guardada no texto.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Lida da base de dados em cada pedido; não fica guardada no texto.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Caminho interno, por exemplo /metodologia.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Caminho interno, por exemplo /metodologia.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      },
+      {
+        "text": "Minúsculas e hífenes; imutável depois de criado.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      }
+    ],
+    "light/sidebar_hint": [
+      {
+        "text": "Leitura apenas, exceto CMS e Editorial.",
+        "fg": [
+          95,
+          90,
+          83
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 6.83159741910504
+      }
+    ],
+    "light/focus": {
+      "ring": [
+        155,
+        28,
+        46,
+        255
+      ],
+      "surface": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "outlineStyle": "solid",
+      "outlineWidth": "3px",
+      "transition": "0s",
+      "composite": [
+        155.0,
+        28.0,
+        46.0
+      ],
+      "ratio": 8.079205777232639
+    },
+    "dark/primary": [
+      {
+        "text": "Guardar rascunho",
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          168,
+          35,
+          27
+        ],
+        "ratio": 7.188813580256624
+      }
+    ],
+    "dark/danger": [
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Remover",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      },
+      {
+        "text": "Despublicar (mantém o histórico)",
+        "fg": [
+          255,
+          143,
+          122
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 7.594726927810607
+      }
+    ],
+    "dark/active_nav": [
+      {
+        "text": "Página inicial",
+        "fg": [
+          255,
+          180,
+          171
+        ],
+        "bg": [
+          58,
+          29,
+          31
+        ],
+        "ratio": 8.992438377849334
+      }
+    ],
+    "dark/neutral_badges": [
+      {
+        "text": "Versão 8",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          37.682352941176475,
+          36.78431372549019,
+          34.98823529411764
+        ],
+        "ratio": 6.2058671240617995
+      }
+    ],
+    "dark/hints": [
+      {
+        "text": "Fica na auditoria; guardar não publica.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Lida da base de dados em cada pedido; não fica guardada no texto.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Lida da base de dados em cada pedido; não fica guardada no texto.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Caminho interno, por exemplo /temas/economy.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Sem texto, usa o título da série.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Caminho interno, por exemplo /metodologia.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Só os campos do tipo escolhido contam.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Caminho interno, por exemplo /metodologia.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      },
+      {
+        "text": "Minúsculas e hífenes; imutável depois de criado.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      }
+    ],
+    "dark/sidebar_hint": [
+      {
+        "text": "Leitura apenas, exceto CMS e Editorial.",
+        "fg": [
+          170,
+          164,
+          154
+        ],
+        "bg": [
+          30,
+          29,
+          26
+        ],
+        "ratio": 6.811335867773244
+      }
+    ],
+    "dark/focus": {
+      "ring": [
+        255,
+        180,
+        171,
+        255
+      ],
+      "surface": [
+        30,
+        29,
+        26,
+        255
+      ],
+      "outlineStyle": "solid",
+      "outlineWidth": "3px",
+      "transition": "0s",
+      "composite": [
+        255.0,
+        180.0,
+        171.0
+      ],
+      "ratio": 9.927678956387462
+    },
+    "public_primary": [
+      {
+        "text": "Explorar os dados",
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          155,
+          28,
+          46
+        ],
+        "ratio": 8.079205777232639
+      }
+    ],
+    "public_quiet": [
+      {
+        "text": "Como verificamos",
+        "fg": [
+          155,
+          28,
+          46
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "ratio": 8.079205777232639
+      }
+    ],
+    "public_muted": [
+      {
+        "text": "1 308 séries de 5 instituições. Cada valor liga à publicação original, à data em que foi recolhido e",
+        "fg": [
+          82,
+          77,
+          72
+        ],
+        "bg": [
+          246,
+          244,
+          241
+        ],
+        "ratio": 7.609314793292952
+      }
+    ]
+  },
+  "assets": {
+    "static/css/prumo.css": {
+      "bytes": 22330,
+      "sha256": "780ef1977bf252bdd27cfc214a981c7114fb3a5a48ef8a802afad6c7686ea17f"
+    },
+    "static/css/admin.css": {
+      "bytes": 27129,
+      "sha256": "93ad373539425fc06461d64d2d246d82d4687cefbe5d018319e0b85d98313af6"
+    },
+    "static/images/prumo/favicon.svg": {
+      "bytes": 319,
+      "sha256": "0654b83780747bd7218a0c5dce9f62d2d120359aea178fb30c75757e94c92db6"
+    },
+    "static/js/prumo-charts.min.js": {
+      "bytes": 505823,
+      "sha256": "6d8bae1690ca5a812dc774107c2dda19bebe94b9373f8d8f2e012abe6df23bb5"
+    },
+    "static/vendor/tabler/1.7.5/tabler.min.css": {
+      "bytes": 683684,
+      "sha256": "4421622c90b17e122517d1f4bcc245be004ef3e353f43481ef07e13a55d32ce3"
+    }
+  }
+}

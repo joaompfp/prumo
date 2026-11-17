@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current homepage/UI extension: installed 2026-11-17
+## Current Tabler/carmim interface: installed 2026-11-17
+
+Runtime 14f845e is merged, pushed and installed after owner approval and hosted CI 44090471137. Public web was recreated at 13:20:58 UTC and backoffice at 13:21:00; both healthy, zero restarts. Worker identity/image/StartedAt/restarts are exactly unchanged. No migration, source-data/content write, ownership, credentials or shared-edge change. Schema remains 0019, next free 0020.
+
+Final gate: 2,688 tests passed, 7 network deselected, 3 warnings; ruff and Admin JavaScript syntax clean. Local production-copy acceptance passed 205 browser checks and 17 measured colour groups, preserving all 20 non-CMS fingerprints. Installed acceptance passed 90 public and 33 trusted-proxy/state checks. CMS content/history and schema fingerprints match the pre-release state; quick_check ok, zero FK violations. No trial content was published live.
+
+Edit the current homepage at https://joao.date/dados/admin/cms/page/inicio. Installed images, recovery tags, evidence and known shared-edge warning: [Tabler/carmim installation](../superpowers/handoff/reports/tabler-ui/carmim-installation.md). This is a schema-unchanged release: recover old web/backoffice code 7a35f47 and pinned images through the existing dc-web aliases, without a database restore or worker restart. The earlier homepage creation and combined-migration records below are historical.
+
+## Previous homepage/UI extension: installed 2026-11-17
 
 Runtime b842199 is installed on f0nix after owner authorization. Public web and backoffice were recreated at 09:55:52 and 09:55:53 UTC; worker identity/image/StartedAt/restarts are unchanged. No migration, ownership repair or shared-edge change. Schema 0019, next free 0020. Hosted CI 44055444383 passed on this SHA; fresh release checks: 92 passed, ruff/JS syntax clean.
 

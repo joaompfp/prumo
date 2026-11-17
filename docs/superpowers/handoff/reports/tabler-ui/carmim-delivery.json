@@ -1,0 +1,51 @@
+{
+  "runtime": "14f845ec2ca006fa992c460fd2af579940ac28bd",
+  "authoritative_suite": {
+    "command": ".venv-ci/bin/python -m pytest tests -q",
+    "passed": 2688,
+    "deselected": 7,
+    "warnings": 3,
+    "seconds": 1280.12,
+    "exit_code": 0
+  },
+  "lint": "ruff and admin.js syntax clean",
+  "browser_checks": 205,
+  "browser_all_passed": true,
+  "browser_errors": [],
+  "browser_warnings": [],
+  "protected_tables": 20,
+  "fingerprints_unchanged": true,
+  "contrast_groups": 17,
+  "small_text_minimum_measured": 5.542019293058406,
+  "focus_contrast": {
+    "light/focus": 8.079205777232639,
+    "dark/focus": 9.927678956387462
+  },
+  "logs": {
+    "carmim-final-suite": {
+      "archive": "carmim-final-suite.log.gz",
+      "raw_sha256": "eaf42590db8d1979d0683b57a55740abd13b6f03d7c86ca42c7128162419705c",
+      "bytes": 11885
+    },
+    "carmim-interrupted-suite": {
+      "archive": "carmim-interrupted-suite.log.gz",
+      "raw_sha256": "6508e94ec95abe99f88bdde0d491aa7694c368cb6e74f35cc537bc920e7f265e",
+      "bytes": 8006
+    }
+  },
+  "deployment": {
+    "state": "installed",
+    "runtime": "14f845ec2ca006fa992c460fd2af579940ac28bd",
+    "public_browser_checks": 90,
+    "admin_state_checks": 33,
+    "receipt": "carmim-installation.md",
+    "operator_dir": "f0nix:/home/joao/prumo-operations/tabler-carmim-20261117T125839Z"
+  },
+  "ci": {
+    "id": 44090471137,
+    "sha": "14f845ec2ca006fa992c460fd2af579940ac28bd",
+    "state": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/joaompfp/prumo/actions/runs/44090471137"
+  }
+}

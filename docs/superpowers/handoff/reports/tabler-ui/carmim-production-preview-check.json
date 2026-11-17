@@ -1,0 +1,189 @@
+{
+  "at": "2026-11-17T13:22:45.463136+00:00",
+  "containers": {
+    "prumo": {
+      "id": "beee240849c651820043472c5af5fc034e47e753e88f3d0f8f1a2c7a9c32b3bb",
+      "image": "sha256:47f3feb6cf3455ca6a8872ed832091b11423cbfbf3604ddcf99aef0a24fee1d9",
+      "started": "2026-11-17T13:20:58.803961973Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    },
+    "prumo-ingest": {
+      "id": "3921475705a35df28b81a7d381e4d388918616c681607a116ac9df69ad334e4b",
+      "image": "sha256:ff50b981e4cdc7923c773fe1f017567340d64e979d6b336553045504806e53a3",
+      "started": "2026-11-17T01:45:15.558866311Z",
+      "restarts": 0,
+      "running": true,
+      "health": null
+    },
+    "prumo-backoffice": {
+      "id": "e8ef49b4abceed8c8afb4f46a4d2e5d2549caf826436ff688e2232d4ae9205f8",
+      "image": "sha256:027cb9b3487d3c2fd846e8651e885b24fc12931afddbbe577a33019c89f4cf14",
+      "started": "2026-11-17T13:21:00.364134607Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    }
+  },
+  "checks": [
+    {
+      "check": "all services running",
+      "passed": true
+    },
+    {
+      "check": "web and admin healthy",
+      "passed": true
+    },
+    {
+      "check": "integrity and FK",
+      "passed": true
+    },
+    {
+      "check": "worker identity/image/start/restarts unchanged",
+      "passed": true
+    },
+    {
+      "check": "schema/migrations unchanged",
+      "passed": true
+    },
+    {
+      "check": "authored CMS/history unchanged",
+      "passed": true
+    },
+    {
+      "check": "preexisting infra edits preserved",
+      "passed": true
+    },
+    {
+      "check": "prumo recreated",
+      "passed": true
+    },
+    {
+      "check": "prumo logs free of error-class lines",
+      "passed": true
+    },
+    {
+      "check": "prumo-backoffice recreated",
+      "passed": true
+    },
+    {
+      "check": "prumo-backoffice logs free of error-class lines",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms/page/inicio",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms/page/inicio",
+      "passed": true
+    },
+    {
+      "check": "new editor with local toolkit",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms/page/inicio/preview",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms/page/inicio/preview",
+      "passed": false
+    }
+  ],
+  "checkout": "14f845ec2ca006fa992c460fd2af579940ac28bd",
+  "infra_status": [
+    " M secrets/web.enc.env",
+    " M stacks/web/compose/prumo-backoffice.yml",
+    " M stacks/web/images/prumo"
+  ],
+  "preexisting_infra_diff": {
+    "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+    "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb"
+  },
+  "schema": "e314abd22f6d1575a620881e1f2e8bc480c67206b3cf53f61d9369a8a145f13a",
+  "migrations": [
+    [
+      "0001_init"
+    ],
+    [
+      "0002_dataset_key"
+    ],
+    [
+      "0003_verification_replay"
+    ],
+    [
+      "0004_verification_audit"
+    ],
+    [
+      "0005_served_licence_gate"
+    ],
+    [
+      "0006_pt15m"
+    ],
+    [
+      "0007_scoped_legacy_serving"
+    ],
+    [
+      "0008_input_origin"
+    ],
+    [
+      "0009_blocked_stale_state"
+    ],
+    [
+      "0010_scheduler_state"
+    ],
+    [
+      "0011_data_time_serving_and_withdrawal"
+    ],
+    [
+      "0012_verification_audit_v2"
+    ],
+    [
+      "0013_run_and_audit_guards"
+    ],
+    [
+      "0014_derived_layer"
+    ],
+    [
+      "0015_observation_run_index"
+    ],
+    [
+      "0016_language_neutral_derived"
+    ],
+    [
+      "0017_derived_caveats"
+    ],
+    [
+      "0018_editorial_composition"
+    ],
+    [
+      "0019_statistics_cms"
+    ]
+  ],
+  "cms": {
+    "cms_document": {
+      "rows": 3,
+      "sha256": "fbb700210bff37310dddc6f1da5a1953c4ffaebf9c9214906676587eddf349ed"
+    },
+    "cms_revision": {
+      "rows": 6,
+      "sha256": "6a81e7c10d62dad959b9f1f098982a65f64405e3a51a9eb2a145d6e067329044"
+    },
+    "cms_event": {
+      "rows": 11,
+      "sha256": "3ad400b945bf819561f707f1ddb75d9a75b715e3a09ad6d4dceec94d12304883"
+    }
+  },
+  "quick_check": "ok",
+  "foreign_keys": []
+}

@@ -1,0 +1,405 @@
+{
+  "checks": [
+    {
+      "check": "https://cae.joao.date home HTTP200 320",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date carmim highlight 320",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date warm paper 320",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no overflow 320",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date populated homepage 320",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date summaries lightweight 320",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date authored punctuation 320",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date home HTTP200 390",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date carmim highlight 390",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date warm paper 390",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no overflow 390",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date populated homepage 390",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date summaries lightweight 390",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date authored punctuation 390",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date home HTTP200 768",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date carmim highlight 768",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date warm paper 768",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no overflow 768",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date populated homepage 768",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date summaries lightweight 768",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date authored punctuation 768",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date home HTTP200 1440",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date carmim highlight 1440",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date warm paper 1440",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no overflow 1440",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date populated homepage 1440",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date summaries lightweight 1440",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date authored punctuation 1440",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/healthz HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/fontes HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/metodologia HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/paginas HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/series/ine.hicp_yoy.PT HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/series/ine.hicp_yoy.PT.csv HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/static/css/prumo.css exact installed bytes",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/static/images/prumo/favicon.svg exact installed bytes",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/static/js/prumo-charts.min.js exact installed bytes",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date two-axis interactive chart",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date SVG fallback",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact first keyboard values",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact last keyboard values",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date unknown series404",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados home HTTP200 320",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados carmim highlight 320",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados warm paper 320",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no overflow 320",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados populated homepage 320",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados summaries lightweight 320",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados authored punctuation 320",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados home HTTP200 390",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados carmim highlight 390",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados warm paper 390",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no overflow 390",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados populated homepage 390",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados summaries lightweight 390",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados authored punctuation 390",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados home HTTP200 768",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados carmim highlight 768",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados warm paper 768",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no overflow 768",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados populated homepage 768",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados summaries lightweight 768",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados authored punctuation 768",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados home HTTP200 1440",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados carmim highlight 1440",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados warm paper 1440",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no overflow 1440",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados populated homepage 1440",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados summaries lightweight 1440",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados authored punctuation 1440",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/healthz HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/fontes HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/metodologia HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/paginas HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/series/ine.hicp_yoy.PT HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/series/ine.hicp_yoy.PT.csv HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/static/css/prumo.css exact installed bytes",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/static/images/prumo/favicon.svg exact installed bytes",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/static/js/prumo-charts.min.js exact installed bytes",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados two-axis interactive chart",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados SVG fallback",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact first keyboard values",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact last keyboard values",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados unknown series404",
+      "passed": true
+    },
+    {
+      "check": "real public Admin Authelia challenge",
+      "passed": true
+    },
+    {
+      "check": "no external public asset requests",
+      "passed": true
+    },
+    {
+      "check": "no page/CSP errors",
+      "passed": true
+    },
+    {
+      "check": "no unexpected console warnings",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'."
+  ],
+  "external": [],
+  "assets": {
+    "https://cae.joao.date/static/css/prumo.css": {
+      "bytes": 22330,
+      "sha256": "780ef1977bf252bdd27cfc214a981c7114fb3a5a48ef8a802afad6c7686ea17f"
+    },
+    "https://cae.joao.date/static/images/prumo/favicon.svg": {
+      "bytes": 319,
+      "sha256": "0654b83780747bd7218a0c5dce9f62d2d120359aea178fb30c75757e94c92db6"
+    },
+    "https://cae.joao.date/static/js/prumo-charts.min.js": {
+      "bytes": 505823,
+      "sha256": "6d8bae1690ca5a812dc774107c2dda19bebe94b9373f8d8f2e012abe6df23bb5"
+    },
+    "https://joao.date/dados/static/css/prumo.css": {
+      "bytes": 22330,
+      "sha256": "780ef1977bf252bdd27cfc214a981c7114fb3a5a48ef8a802afad6c7686ea17f"
+    },
+    "https://joao.date/dados/static/images/prumo/favicon.svg": {
+      "bytes": 319,
+      "sha256": "0654b83780747bd7218a0c5dce9f62d2d120359aea178fb30c75757e94c92db6"
+    },
+    "https://joao.date/dados/static/js/prumo-charts.min.js": {
+      "bytes": 505823,
+      "sha256": "6d8bae1690ca5a812dc774107c2dda19bebe94b9373f8d8f2e012abe6df23bb5"
+    }
+  },
+  "known_shared_edge_vr_warnings": 10
+}

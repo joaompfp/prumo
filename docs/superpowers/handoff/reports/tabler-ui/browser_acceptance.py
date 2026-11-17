@@ -12,8 +12,8 @@ from typing import Any
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[5]
-OUT = Path(__file__).resolve().parent / "browser"
-OUT.mkdir(exist_ok=True)
+OUT = Path(os.environ.get("PRUMO_QA_OUT", Path(__file__).resolve().parent / "browser"))
+OUT.mkdir(parents=True, exist_ok=True)
 DB = Path(os.environ["PRUMO_QA_DB"]).resolve(strict=True)
 if not DB.is_relative_to(Path("/home/joao/.hermes/cache/scratch")):
     raise ValueError("Refusing a database outside scratch")

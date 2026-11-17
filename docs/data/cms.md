@@ -1,6 +1,6 @@
 # Statistics CMS v1: operator guide and release contract
 
-Status 2026-11-17: CMS 0019 and public Admin are installed. The authorized homepage/UI release b842199 is now installed too: web/backoffice recreated at 09:55:52/53 UTC and the complete CMS homepage published at 09:57:20, version 2/revision 6. Worker, schema, Authelia and Traefik stayed unchanged. Hosted CI 44055444383,92 fresh local tests, 113 public browser checks and 17 trusted-proxy Admin checks passed. Human owner login/publication and screen-reader acceptance remain separate. See HANDOFF and the home-cms-ui/production-installation.md receipt for exact scope, known shared-edge warning and recovery points.
+Status 2026-11-17: CMS 0019, public Admin, the populated homepage and the Tabler/carmim interface are installed. Current runtime 14f845e recreates only public web (13:20:58 UTC) and backoffice (13:21:00); the worker, schema, authored content/history, Authelia and Traefik are unchanged. Main CI 44090471137 passed; final local suite 2,688 passed, 7 network deselected. Installed read-only acceptance passed on both public prefixes and the protected Admin. The original homepage creation at 09:57 UTC remains version 2/revision 6. See the tabler-ui/carmim-installation.md receipt for current images, known shared-edge warning and recovery points. Human owner login/publication and screen-reader acceptance remain separate.
 
 ## Access after release
 
