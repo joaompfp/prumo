@@ -580,7 +580,8 @@ section { margin: 80px 0; }
 .country-comparisons { margin-top: 56px; }
 .country-summary { margin: 0 0 36px; }
 .country-summary-list {
-  list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  list-style: none; display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
   gap: 12px 26px; margin: 0; padding: 0;
 }
 .country-summary-list li {

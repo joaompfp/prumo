@@ -271,8 +271,9 @@ def alignment_text(points: tuple[dict, ...], missing: tuple[int, ...],
     gaps = [f"{_periods_text(count)} de {label}"
             for count, label in zip(dropped, labels) if count]
     if gaps:
-        verb = "Fica" if len(gaps) == 1 else "Ficam"
-        parts.append(f"{verb} de fora " + " e ".join(gaps) + ", sem par nos outros países.")
+        verb = "Fica" if sum(dropped) == 1 else "Ficam"
+        parts.append(f"{verb} de fora " + " e ".join(gaps)
+                     + ", por faltar pelo menos um dos outros países em cada período.")
     if unparsed:
         parts.append(
             f"{_common_text(unparsed)} sem valor numérico na fonte "
