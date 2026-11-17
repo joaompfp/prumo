@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="7" fill="#1b514b"/>
+  <rect width="32" height="32" rx="7" fill="#9b1c2e"/>
   <path id="plumb-line" d="M15 4h2v10h-2z" fill="#fbf9f2"/>
   <path id="plumb-weight" d="M12 13h8v4l3 3-7 9-7-9 3-3z" fill="#fbf9f2"/>
   <path d="M16 13h4v4l3 3-7 9z" fill="#d9ad70"/>

@@ -2,16 +2,16 @@
    lightweight summaries, local interactive charts only on analytical pages. */
 
 :root {
-  --paper: #f6f5f0;
+  --paper: #f6f4f1;
   --surface: #ffffff;
-  --ink: #18322f;
-  --muted: #52645f;
-  --rule: #dbe2dd;
-  --rule-strong: #b8c8c0;
-  --accent: #1b514b;
-  --accent-hover: #123d38;
-  --accent-soft: #e8efea;
-  --series-b: #9c5b24;
+  --ink: #1a1a1a;
+  --muted: #524d48;
+  --rule: #e2ded9;
+  --rule-strong: #c9c3bc;
+  --accent: #9b1c2e;
+  --accent-hover: #7d1524;
+  --accent-soft: #f7e7ea;
+  --series-b: #c0392b;
   /* Compatibility name read by the pinned ECharts adapter, also used by SVG B. */
   --red: var(--series-b);
   --amber: #8a5a00;
@@ -190,7 +190,7 @@ section { margin: 54px 0; }
 .card-spark { margin: auto 0 2px; min-height: 40px; padding-top: 10px; }
 .spark { width: 100%; max-width: 160px; height: 40px; display: block; }
 .spark-line { fill: none; stroke: var(--ink); stroke-width: 1.4; }
-.spark-end { fill: var(--red); }
+.spark-end { fill: var(--accent); }
 .calc-line { font-size: 0.84rem; margin: 8px 0 0; color: var(--ink); min-height: 3em; }
 .calc-period { color: var(--muted); }
 .card-source {
@@ -284,8 +284,8 @@ section { margin: 54px 0; }
 .chart-axis-title { fill: var(--ink); font-family: var(--sans); font-size: 12px; font-weight: 600; }
 .chart-line { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
 .chart-point { fill: transparent; }
-.chart-last { fill: var(--red); }
-.chart-last-label { fill: var(--red); font-family: var(--sans); font-size: 12px; font-weight: 600; }
+.chart-last { fill: var(--accent); }
+.chart-last-label { fill: var(--accent); font-family: var(--sans); font-size: 12px; font-weight: 600; }
 .chart-empty { color: var(--muted); font-style: italic; }
 .chart-figure figcaption { font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
 

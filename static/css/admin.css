@@ -6,38 +6,38 @@
 :root {
   color-scheme: light dark;
 
-  --paper: #f6f5f0;
-  --paper: light-dark(#f6f5f0, #111714);
+  --paper: #f6f4f1;
+  --paper: light-dark(#f6f4f1, #171614);
   --surface: #ffffff;
-  --surface: light-dark(#ffffff, #18211f);
-  --surface-sunken: #eef1ec;
-  --surface-sunken: light-dark(#eef1ec, #1e2a26);
-  --ink: #18322f;
-  --ink: light-dark(#18322f, #e7efec);
-  --muted: #52645f;
-  --muted: light-dark(#52645f, #a8b8b2);
-  --line: #dbe2dd;
-  --line: light-dark(#dbe2dd, #2f3e39);
-  --line-strong: #c4d0c9;
-  --line-strong: light-dark(#c4d0c9, #43564f);
-  --primary: #1b514b;
-  --primary: light-dark(#1b514b, #8ac4b8);
-  --primary-hover: #123d38;
-  --primary-hover: light-dark(#123d38, #a9d8ce);
-  --primary-fill: #1b514b;
-  --primary-fill: light-dark(#1b514b, #2f7a6f);
-  --primary-fill-hover: #123d38;
-  --primary-fill-hover: light-dark(#123d38, #245f56);
-  --primary-soft: #e4eeea;
-  --primary-soft: light-dark(#e4eeea, #223b36);
+  --surface: light-dark(#ffffff, #1e1d1a);
+  --surface-sunken: #ece7de;
+  --surface-sunken: light-dark(#ece7de, #272520);
+  --ink: #1c1b19;
+  --ink: light-dark(#1c1b19, #ece8e0);
+  --muted: #5f5a53;
+  --muted: light-dark(#5f5a53, #aaa49a);
+  --line: #ddd7cc;
+  --line: light-dark(#ddd7cc, #3b3832);
+  --line-strong: #bfb7aa;
+  --line-strong: light-dark(#bfb7aa, #575249);
+  --primary: #9b1c2e;
+  --primary: light-dark(#9b1c2e, #ffb4ab);
+  --primary-hover: #7d1524;
+  --primary-hover: light-dark(#7d1524, #ffd0c9);
+  --primary-fill: #9b1c2e;
+  --primary-fill: light-dark(#9b1c2e, #a8231b);
+  --primary-fill-hover: #7d1524;
+  --primary-fill-hover: light-dark(#7d1524, #8f1f2a);
+  --primary-soft: #f7e7ea;
+  --primary-soft: light-dark(#f7e7ea, #3a1d1f);
   --brass: #99672d;
   --brass: light-dark(#99672d, #d7a55e);
   --brass-ink: #7d5424;
   --brass-ink: light-dark(#7d5424, #e0b77a);
   --brass-soft: #f4eadb;
   --brass-soft: light-dark(#f4eadb, #33281b);
-  --danger: #b42318;
-  --danger: light-dark(#b42318, #ff9b8f);
+  --danger: #c1121f;
+  --danger: light-dark(#c1121f, #ff8f7a);
   --danger-soft: #fbe9e6;
   --danger-soft: light-dark(#fbe9e6, #3b1f1c);
   --success: #2f6b32;
@@ -83,7 +83,7 @@
   --tblr-success: var(--success);
   --tblr-warning: var(--warning);
   --tblr-info: var(--info);
-  --tblr-focus-ring-color: color-mix(in oklab, var(--primary) 32%, transparent);
+  --tblr-focus-ring-color: color-mix(in oklab, var(--primary) 65%, transparent);
   --tblr-focus-ring-width: 3px;
   --tblr-card-bg: var(--surface);
   --tblr-card-border-color: var(--line);
@@ -100,7 +100,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --danger: #ff9b8f;
+    --danger: #ff8f7a;
     --danger-soft: #3b1f1c;
     --success: #9bd29a;
     --success-soft: #1e2e1d;
@@ -456,7 +456,7 @@ legend { font-size: 0.95rem; font-weight: 650; padding: 0 0.4rem; }
   gap: 0.6rem 0.9rem; align-items: end;
   padding: 0.7rem 0.85rem; margin: 0 0 0.75rem;
   background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px;
-  box-shadow: 0 1px 0 rgba(24, 50, 47, 0.04);
+  box-shadow: 0 1px 0 rgba(28, 27, 25, 0.05);
 }
 .draft-toolbar .field { gap: 0.2rem; }
 .draft-toolbar .form-hint { font-size: 0.7rem; }

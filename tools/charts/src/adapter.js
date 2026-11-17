@@ -123,7 +123,7 @@ function tooltipNode(payload, point) {
 
 function optionFor(payload, width) {
   const ink = css('--ink', '#1a1a1a');
-  const red = css('--red', '#cc0000');
+  const red = css('--red', '#c0392b');
   const muted = css('--muted', '#524d48');
   const rule = css('--rule', '#e2ded9');
   const sans = css('--sans', 'system-ui, sans-serif');
