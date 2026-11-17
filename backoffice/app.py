@@ -391,6 +391,8 @@ def create_app(db_path: Path, registry_path: Path,
         return await admin.form(request)
 
     def editor_page(request: Request, slug: str, *, status_code: int = 200, **extra):
+        if app.state.cms.legacy_home_locked(slug):
+            return RedirectResponse(admin.url(request, "/cms/page/inicio"), status_code=303)
         try:
             page = editorial.page(slug)
         except MissingText:
@@ -458,6 +460,10 @@ def create_app(db_path: Path, registry_path: Path,
 
     async def mutate(request: Request, slug: str, action: str):
         guard(request)
+        if await run_in_threadpool(app.state.cms.legacy_home_locked, slug):
+            return render(request, "error.html", 409, title="Editor antigo bloqueado",
+                          message="A página inicial já está no CMS. Abra Página inicial "
+                                  "para editar o seu conteúdo; nada foi alterado.")
         fields = await form(request)
         status, message = await run_in_threadpool(apply, slug, action, fields)
         if status == 303:
