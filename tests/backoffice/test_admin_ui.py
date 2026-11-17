@@ -36,9 +36,7 @@ def test_shell_loads_only_local_css_font_and_icons(env):
     assert 'href="/static/images/prumo/favicon.svg"' in html
     assert "<style" not in html.lower()
     assert not re.search(r'\sstyle="', html)
-    tabler = ROOT / "static/vendor/tabler/1.7.5/tabler.min.css"
-    if tabler.exists():  # the controller owns the pinned vendor copy
-        assert c.get("/static/vendor/tabler/1.7.5/tabler.min.css").status_code == 200
+    assert c.get("/static/vendor/tabler/1.7.5/tabler.min.css").status_code == 200
     assert c.get("/static/css/admin.css").status_code == 200
     assert c.get("/static/css/icons.css").status_code == 200
     assert c.get("/static/fonts/icons/prumo-icons.woff2").status_code == 200

@@ -27,6 +27,25 @@ def _visible_controls(html):
     return [tag for tag in tags if 'type="hidden"' not in tag]
 
 
+def test_editor_publication_dates_are_readable_and_preserve_machine_time(tmp_path):
+    from html import unescape
+
+    env = Env(tmp_path)
+    c = env.client()
+    assert page_create(c).status_code == 303
+    assert c.post("/cms/page/precos/publish", data={"version": "1", "note": "Publicar"},
+                  headers=ORIGIN).status_code == 303
+    html = c.get("/cms/page/precos").text
+    match = re.search(r'<p class="editor-status">(.*?)</p>', html, re.S)
+    assert match is not None
+    status = match.group(1)
+    assert "<time datetime=" in status
+    assert "UTC</time>" in status
+    visible = unescape(re.sub(r"<[^>]+>", " ", status))
+    assert not re.search(r"\d{4}-\d{2}-\d{2}T", visible)
+    assert re.search(r"\d{2}/\d{2}/\d{4}, \d{2}:\d{2} UTC", visible)
+
+
 def test_tabler_is_pinned_local_and_loads_before_prumo_styles(env):
     html = env.client().get("/").text
     links = _stylesheets(html)

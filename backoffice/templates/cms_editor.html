@@ -13,10 +13,8 @@
     <h1 class="editor-title">{{ doc.title or "(sem título)" }}</h1>
     <p class="editor-status">
       <span class="mono">{{ kind }}/{{ slug }}</span>
-      <span class="status-sep" aria-hidden="true">|</span>
       <span class="badge bg-secondary-lt">Versão {{ meta.version }}</span>
-      <span class="status-sep" aria-hidden="true">|</span>
-      {% if meta.published_revision_id %}<span class="badge bg-success-lt good">Em direto: revisão {{ meta.published_revision_id }}{% if published_at %} desde {{ published_at }}{% endif %}</span>{% else %}<span class="badge bg-secondary-lt">Só rascunho, ainda não publicado</span>{% endif %}
+      {% if meta.published_revision_id %}<span class="badge bg-success-lt good">Em direto: revisão {{ meta.published_revision_id }}</span>{% if published_at %}<time datetime="{{ published_at }}" title="{{ published_at }}">{{ published_at | display_time }}</time>{% endif %}{% else %}<span class="badge bg-secondary-lt">Só rascunho, ainda não publicado</span>{% endif %}
     </p>
   </div>
   <div class="page-actions">
@@ -496,7 +494,7 @@ versão em direto não são alterados.</p>
 {% for h in history %}
 <tr>
 <td class="num" data-label="Revisão">{{ h.id }}</td>
-<td data-label="Quando">{{ h.created_at }}</td>
+<td data-label="Quando"><time datetime="{{ h.created_at }}">{{ h.created_at | display_time }}</time></td>
 <td class="wrap" data-label="Autor">{{ h.actor }}</td>
 <td class="wrap" data-label="Corpo"><details class="bare"><summary>ver JSON canónico</summary><code>{{ h.body_json }}</code></details></td>
 <td data-label="Restaurar">
@@ -540,7 +538,7 @@ O original não é alterado.</p>
 <thead><tr><th>Quando</th><th>Ação</th><th class="num">Versão</th><th>Autor</th><th>Motivo</th></tr></thead>
 <tbody>
 {% for e in events %}
-<tr><td data-label="Quando">{{ e.ts }}</td><td data-label="Ação">{{ e.action }}</td><td class="num" data-label="Versão">{{ e.version }}</td>
+<tr><td data-label="Quando"><time datetime="{{ e.ts }}">{{ e.ts | display_time }}</time></td><td data-label="Ação">{{ e.action }}</td><td class="num" data-label="Versão">{{ e.version }}</td>
 <td class="wrap" data-label="Autor">{{ e.actor }}</td><td class="wrap" data-label="Motivo">{{ e.note }}</td></tr>
 {% endfor %}
 </tbody>

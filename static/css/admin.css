@@ -175,10 +175,8 @@ hr { border-color: var(--line); opacity: 1; }
 }
 .bo-brand:hover { color: var(--ink); }
 .bo-brand-mark {
-  width: 30px; height: 30px; display: block; flex: none;
-  padding: 3px; border: 1px solid var(--line); border-radius: 8px;
-  background: var(--paper);
-  box-shadow: inset 0 0 0 2px var(--surface);
+  width: 34px; height: 34px; display: block; flex: none;
+  border-radius: 7px;
 }
 .bo-brand-text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
 .bo-brand-word { font-size: 1.18rem; font-weight: 700; letter-spacing: -0.02em; }
@@ -440,9 +438,12 @@ legend { font-size: 0.95rem; font-weight: 650; padding: 0 0.4rem; }
   display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.5rem;
   margin: 0.3rem 0 0; color: var(--muted); font-size: 0.78rem;
 }
-.editor-status .mono { font-size: 0.85em; color: var(--muted); }
+.editor-status .mono { font-size: 0.95em; color: var(--muted); }
+.editor-status time { white-space: normal; overflow-wrap: anywhere; }
 .status-sep { color: var(--line-strong); }
 .editor-jumps { margin: 0 0 0.75rem; padding: 0.35rem 0; }
+.section-nav a { min-height: 44px; }
+.section-nav a[aria-current="location"] { color: var(--primary); border-color: var(--primary); background: var(--primary-soft); font-weight: 650; }
 
 .editor-form { margin: 0 0 1.15rem; }
 .editor-form .section-head { margin: 1rem 0 0.55rem; }

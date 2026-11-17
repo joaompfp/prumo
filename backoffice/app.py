@@ -25,6 +25,7 @@ from starlette.concurrency import run_in_threadpool
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.charts import sparkline
+from app.formatting import format_datetime
 from backoffice import reads, replay
 from backoffice.access import ADMIN_PREFIX, AccessDenied, AccessPolicy
 from backoffice.cms_routes import register_cms
@@ -87,6 +88,7 @@ def _templates() -> Jinja2Templates:
     env = Environment(loader=FileSystemLoader([TEMPLATES, APP_TEMPLATES]), autoescape=True)
     env.filters["link"] = link
     env.filters["as_json"] = as_json
+    env.filters["display_time"] = format_datetime
     env.globals.update(spark=sparkline)
     return Jinja2Templates(env=env)
 

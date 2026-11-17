@@ -3,6 +3,23 @@
 (function () {
   "use strict";
 
+  // These links navigate sections of one document; they are not separate tab panels.
+  var sectionLinks = document.querySelectorAll(".editor-jumps a");
+  function currentSection() {
+    var hash = window.location.hash || "#rascunho";
+    for (var n = 0; n < sectionLinks.length; n += 1) {
+      if (sectionLinks[n].getAttribute("href") === hash) {
+        sectionLinks[n].setAttribute("aria-current", "location");
+      } else {
+        sectionLinks[n].removeAttribute("aria-current");
+      }
+    }
+  }
+  if (sectionLinks.length) {
+    window.addEventListener("hashchange", currentSection);
+    currentSection();
+  }
+
   // Block-type disclosure. Server validation remains the authority; irrelevant fields are
   // only hidden, never disabled, so a submit without JavaScript still carries every value.
   var blocks = document.querySelectorAll("[data-block]");
