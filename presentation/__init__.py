@@ -167,3 +167,104 @@ def comparison_pair(lang: str, slug: str) -> dict[str, str]:
         if key not in pair or not str(pair[key]).strip():
             raise MissingText(f"comparison {slug!r} has no {lang} {key}")
     return pair
+
+
+# --- country comparisons (project 4, extension) -----------------------------------------------
+
+COUNTRY_COMPARISON_KEYS = (
+    "family", "source", "dataset", "frequency", "unit", "seasonal_adjustment", "multiplier",
+    "base_year", "dimensions", "title", "subtitle", "mechanism", "caption_note",
+    "definition_note", "notebook_action",
+)
+_COUNTRY_COMPARISON_TEXT_KEYS = (
+    "title", "subtitle", "mechanism", "caption_note", "definition_note", "notebook_action",
+)
+
+
+def country_comparisons(lang: str) -> dict[str, dict]:
+    """The curated country groups, in reading order, keyed by slug. Code, not data: there is no
+    route that accepts a list of series ids."""
+    groups = _catalog(lang).COUNTRY_COMPARISONS
+    if not isinstance(groups, dict):
+        raise MissingText(f"{lang} country comparisons are not a mapping")
+    return groups
+
+
+def country_comparisons_title(lang: str) -> str:
+    title = _catalog(lang).COUNTRY_COMPARISONS_TITLE
+    if not isinstance(title, str) or not title.strip():
+        raise MissingText(f"no {lang} country comparisons title")
+    return title
+
+
+def country_comparisons_intro(lang: str) -> str:
+    intro = _catalog(lang).COUNTRY_COMPARISONS_INTRO
+    if not isinstance(intro, str) or not intro.strip():
+        raise MissingText(f"no {lang} country comparisons intro")
+    return intro
+
+
+def country_comparison_countries(lang: str) -> tuple[str, ...]:
+    """The fixed ordered countries of every group, validated before any page uses them."""
+    countries = tuple(_catalog(lang).COUNTRY_COMPARISONS_COUNTRIES)
+    if not 3 <= len(countries) <= 6 or len(set(countries)) != len(countries):
+        raise MissingText(f"{lang} country comparisons need three to six unique countries")
+    if any(not isinstance(code, str) or not code.strip() for code in countries):
+        raise MissingText(f"{lang} country comparisons have a blank country code")
+    labels = [geography_name(lang, code) for code in countries]
+    if len(set(labels)) != len(labels):
+        raise MissingText(f"{lang} country comparisons have duplicate geography labels")
+    return countries
+
+
+def country_comparison(lang: str, slug: str) -> dict:
+    """One curated country group, with every reviewed field it needs.
+
+    Unknown slugs are the caller's 404. A known slug whose authored definition is incomplete or
+    malformed raises MissingText: the app logs it and serves the generic 503 instead of leaking a
+    KeyError or drawing a group under a title the catalogue no longer supports.
+    """
+    catalog = _catalog(lang)
+    try:
+        group = catalog.COUNTRY_COMPARISONS[slug]
+    except KeyError:
+        raise MissingText(f"no {lang} country comparison for {slug!r}") from None
+    if not isinstance(group, dict):
+        raise MissingText(f"country comparison {slug!r} is not a mapping in {lang}")
+    for key in COUNTRY_COMPARISON_KEYS:
+        if key not in group:
+            raise MissingText(f"country comparison {slug!r} has no {lang} {key}")
+    for key in _COUNTRY_COMPARISON_TEXT_KEYS:
+        value = group[key]
+        if not isinstance(value, str) or not value.strip():
+            raise MissingText(f"country comparison {slug!r} has a blank {lang} {key}")
+    for key in ("family", "source", "dataset", "unit", "frequency"):
+        value = group[key]
+        if not isinstance(value, str) or not value.strip():
+            raise MissingText(f"country comparison {slug!r} has a blank {lang} {key}")
+    dimensions = group["dimensions"]
+    if not isinstance(dimensions, dict) or not dimensions or "geo" in dimensions:
+        raise MissingText(f"country comparison {slug!r} has no pinned native dimensions")
+    for key, value in dimensions.items():
+        if not isinstance(key, str) or not key.strip() \
+                or not isinstance(value, str) or not value.strip():
+            raise MissingText(f"country comparison {slug!r} has a malformed native dimension")
+    adjustment = group["seasonal_adjustment"]
+    if adjustment is not None:
+        if not isinstance(adjustment, str) or not adjustment.strip():
+            raise MissingText(f"country comparison {slug!r} has a blank seasonal adjustment")
+        seasonal_text(lang, adjustment)
+    multiplier = group["multiplier"]
+    if multiplier is not None and (isinstance(multiplier, bool)
+                                   or not isinstance(multiplier, (int, float))):
+        raise MissingText(f"country comparison {slug!r} has a malformed multiplier")
+    base_year = group["base_year"]
+    if base_year is not None and (isinstance(base_year, bool) or not isinstance(base_year, int)):
+        raise MissingText(f"country comparison {slug!r} has a malformed base year")
+    # Every visible code must resolve; a missing family/unit/source is a catalogue fault.
+    family_title(lang, group["family"].replace(".", "_"))
+    source_title(lang, group["source"])
+    base_unit_text(lang, group["unit"])
+    frequency_text(lang, group["frequency"])
+    country_comparison_countries(lang)
+    return group

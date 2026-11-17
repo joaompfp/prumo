@@ -84,3 +84,7 @@ PAGES: dict[str, dict[str, str]] = {}  # v1 is PT-only; a missing slug raises Mi
 COMPARISONS_INTRO = ""
 CHART_UI: dict[str, str] = {}
 COMPARISONS: dict[str, dict[str, str]] = {}
+COUNTRY_COMPARISONS_TITLE = ""
+COUNTRY_COMPARISONS_INTRO = ""
+COUNTRY_COMPARISONS_COUNTRIES: tuple[str, ...] = ()
+COUNTRY_COMPARISONS: dict[str, dict] = {}

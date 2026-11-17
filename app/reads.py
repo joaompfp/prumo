@@ -350,6 +350,22 @@ def prepare_comparison_chart(points, *, frequency: str, title: str,
         chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"))
 
 
+def prepare_group_chart(points, *, frequency: str, title: str, labels: tuple[str, ...],
+                        unit: str = "", badge: str = "",
+                        lang: str = "pt") -> PreparedChart[ComparisonModel]:
+    """Prepare three to six same-unit series from already aligned points (`values` tokens).
+
+    This is the same preparation boundary as the pair wrapper: one model feeds the SVG, the
+    interactive payload and the page table, so geometry and exact reader strings cannot diverge.
+    """
+    chart = chart_model.group_model(list(points), frequency=frequency, title=title,
+                                    labels=labels, unit=unit)
+    return PreparedChart(
+        chart=chart,
+        chart_payload=interactive.build_payload(chart, badge=badge) if chart is not None else None,
+        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"))
+
+
 def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None = None,
                 lang: str = "pt") -> SeriesDetail | None:
     row = db.public_series(series_id)

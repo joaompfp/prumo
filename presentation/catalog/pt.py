@@ -416,3 +416,93 @@ COMPARISONS: dict[str, dict[str, str]] = {
                         "independentes: o gráfico compara direções, não grandezas.",
     },
 }
+
+
+# --- country comparisons (project 4, extension) -----------------------------------------------
+# The same five countries, in reading order, for every group. Each group pins the exact native
+# dimensions its series must share (except `geo`), so a registry drift hides the group instead of
+# drawing a different indicator under the same title. The values remain the publisher's tokens:
+# no rebasing, purchasing-power conversion, interpolation or rounding is authorised here.
+COUNTRY_COMPARISONS_TITLE = "Comparações entre países"
+COUNTRY_COMPARISONS_INTRO = (
+    "O mesmo indicador para Portugal, Espanha, França, Alemanha e Itália, numa única escala. "
+    "Três leituras com os valores tal como são publicados, sem escolha livre de séries."
+)
+COUNTRY_COMPARISONS_COUNTRIES = ("PT", "ES", "FR", "DE", "IT")
+
+COUNTRY_COMPARISONS: dict[str, dict] = {
+    "eletricidade-domestica": {
+        "family": "eurostat.electricity_price_household",
+        "source": "eurostat",
+        "dataset": "nrg_pc_204",
+        "frequency": "S",
+        "unit": "EUR/kWh",
+        "seasonal_adjustment": None,
+        "multiplier": None,
+        "base_year": None,
+        "dimensions": {
+            "freq": "S", "siec": "E7000", "nrg_cons": "KWH2500-4999",
+            "unit": "KWH", "tax": "I_TAX", "currency": "EUR",
+        },
+        "title": "Preço da eletricidade doméstica",
+        "subtitle": "A média semestral do preço da eletricidade para uma casa, em cinco países "
+                    "europeus.",
+        "mechanism": "O preço publicado depende do escalão de consumo, dos impostos e da regulação "
+                     "de cada país. O gráfico compara a média do mesmo escalão, não a conta de "
+                     "uma casa concreta nem o custo de um contrato em vigor.",
+        "caption_note": "Média semestral do preço da eletricidade para 2 500 a 4 999 kWh por ano, "
+                        "com impostos e taxas incluídos.",
+        "definition_note": "O valor é a média semestral publicada pelo Eurostat para o escalão de "
+                           "consumo anual entre 2 500 e 4 999 kWh, com impostos e taxas incluídos. "
+                           "Não é uma tarifa em vigor, uma fatura estimada nem uma medida de "
+                           "acessibilidade.",
+        "notebook_action": "Criar caderno com estes cinco países",
+    },
+    "pib-por-habitante": {
+        "family": "eurostat.gdp_per_capita_eur",
+        "source": "eurostat",
+        "dataset": "nama_10_pc",
+        "frequency": "A",
+        "unit": "EUR per capita",
+        "seasonal_adjustment": None,
+        "multiplier": None,
+        "base_year": None,
+        "dimensions": {"freq": "A", "unit": "CP_EUR_HAB", "na_item": "B1GQ"},
+        "title": "PIB por habitante",
+        "subtitle": "O produto interno bruto por habitante, em euros correntes, em cinco países "
+                    "europeus.",
+        "mechanism": "Um valor mais alto significa mais produção por habitante em euros correntes, "
+                     "não necessariamente mais rendimento disponível. A comparação não corrige "
+                     "diferenças de preços nem de repartição.",
+        "caption_note": "Produto interno bruto a preços correntes por habitante, em euros. Não é "
+                        "rendimento das famílias nem uma medida de bem-estar ajustada ao poder de "
+                        "compra.",
+        "definition_note": "O PIB por habitante é o produto interno bruto a preços correntes "
+                           "dividido pela população residente. Não é o rendimento das famílias, "
+                           "não mede o crescimento real e não está ajustado ao poder de compra.",
+        "notebook_action": "Criar caderno com estes cinco países",
+    },
+    "divida-publica": {
+        "family": "eurostat.gov_debt_pct_gdp",
+        "source": "eurostat",
+        "dataset": "gov_10dd_edpt1",
+        "frequency": "A",
+        "unit": "% GDP",
+        "seasonal_adjustment": None,
+        "multiplier": None,
+        "base_year": None,
+        "dimensions": {"freq": "A", "unit": "PC_GDP", "sector": "S13", "na_item": "GD"},
+        "title": "Dívida pública",
+        "subtitle": "A dívida bruta das administrações públicas, em percentagem do PIB, em cinco "
+                    "países europeus.",
+        "mechanism": "O rácio compara o montante acumulado com o tamanho da economia. Um rácio mais "
+                     "alto não diz, por si, quanto custa financiá-lo nem qual é o esforço "
+                     "orçamental do ano.",
+        "caption_note": "Dívida bruta consolidada das administrações públicas em percentagem do PIB. "
+                        "É um saldo, não o défice anual.",
+        "definition_note": "A dívida pública é o stock bruto consolidado das administrações "
+                           "públicas em percentagem do PIB. Não é o défice anual nem a dívida "
+                           "líquida.",
+        "notebook_action": "Criar caderno com estes cinco países",
+    },
+}
