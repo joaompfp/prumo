@@ -1841,6 +1841,20 @@ class Db:
             " FROM cms_document WHERE kind = ? AND slug = ?", (kind, slug)).fetchone()
         return _cms_metadata_row(row) if row is not None else None
 
+    def cms_published_once(self, kind: str, slug: str) -> bool:
+        """True once this document has a `published` audit event, even after unpublishing.
+
+        The reserved home must stay on its legacy presentation until its FIRST publication;
+        only then does the CMS own `/` and an unpublish becomes a neutral page instead of
+        resurrecting the old list. The audit trail is append-only, so this survives every
+        later draft, restore and unpublish without another table or column.
+        """
+        kind = self._cms_kind(kind)
+        row = self.conn.execute(
+            "SELECT 1 FROM cms_event WHERE kind = ? AND slug = ? AND action = 'published' "
+            "LIMIT 1", (kind, slug)).fetchone()
+        return row is not None
+
     def cms_list(self, kind: str, published_only: bool = False) -> list[dict]:
         """Head metadata of every document of one kind, by slug."""
         kind = self._cms_kind(kind)

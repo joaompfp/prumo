@@ -44,6 +44,7 @@ SECTION_TITLES = {"general": "Geral"}
 WINDOW_TEXT = {"max": "Máximo", "1y": "1 ano", "5y": "5 anos", "10y": "10 anos"}
 AVAILABILITY_NOTE = "Parte desta página não está disponível neste momento."
 CHART_UNAVAILABLE_NOTE = "Este gráfico não está disponível neste momento."
+HOME_SLUG = "inicio"
 _SUMMARY_CHARS = 180
 
 
@@ -179,6 +180,20 @@ class CmsSection:
 @dataclass(frozen=True)
 class CmsIndex:
     sections: tuple[CmsSection, ...]
+
+
+@dataclass(frozen=True)
+class HomeState:
+    """What `/` must render: the legacy list, the CMS page, or a closed state.
+
+    `legacy` is returned only while the reserved document has never been published, so merely
+    preparing a draft cannot change the public home. `unpublished` is the deliberate neutral
+    state after an unpublish. `unusable` means the published pointer exists but its revision
+    cannot be parsed, so the caller must fail closed instead of resurrecting the old list.
+    """
+
+    mode: str
+    page: CmsPageView | None = None
 
 
 # --- helpers ---------------------------------------------------------------------------------
@@ -504,6 +519,33 @@ def public_page(db: Db, slug: str, lang: str = "pt") -> CmsPageView | None:
     return _page_view(db, slug, doc, lang) if doc is not None else None
 
 
+def home_state(db: Db, lang: str = "pt") -> HomeState:
+    """Resolve `/` from the reserved page's head, one read-only snapshot.
+
+    The distinction between `legacy` and `unpublished` comes from the append-only audit trail,
+    never from the presence of a draft: creating the `inicio` document must not change the
+    public home. A published pointer whose revision is missing or invalid is `unusable`, and
+    the caller must fail closed rather than fall back to the old list.
+    """
+    meta = db.cms_get("page", HOME_SLUG)
+    if meta is None:
+        return HomeState("legacy")
+    if meta["published_revision_id"] is not None:
+        doc = _document(db, "page", HOME_SLUG, meta["published_revision_id"])
+        if not isinstance(doc, documents.PageDocument):
+            return HomeState("unusable")
+        return HomeState("published", _page_view(db, HOME_SLUG, doc, lang))
+    if db.cms_published_once("page", HOME_SLUG):
+        return HomeState("unpublished")
+    return HomeState("legacy")
+
+
+def home_is_published(db: Db) -> bool:
+    """True when `/paginas/inicio` is a duplicate address of a live homepage."""
+    meta = db.cms_get("page", HOME_SLUG)
+    return meta is not None and meta["published_revision_id"] is not None
+
+
 def public_chart(db: Db, slug: str, lang: str = "pt") -> CmsChartView | None:
     """One published chart by slug; None (a 404) when it cannot be drawn from public data."""
     try:
@@ -541,7 +583,8 @@ def render_preview(db: Db, kind: str, slug: str,
     if doc is None:
         return None
     if kind == "page" and isinstance(doc, documents.PageDocument):
-        return "cms_page.html", _page_view(db, slug, doc, lang)
+        name = "cms_home.html" if slug == HOME_SLUG else "cms_page.html"
+        return name, _page_view(db, slug, doc, lang)
     if kind == "chart" and isinstance(doc, documents.ChartDocument):
         view, reason = chart_view(db, slug, doc, lang)
         if view is None:
@@ -557,6 +600,8 @@ def published_page_summaries(db: Db, lang: str = "pt") -> tuple[CmsPageSummary, 
     """Published pages, section order then title, for /paginas and the theme links."""
     out: list[CmsPageSummary] = []
     for meta in db.cms_list("page", published_only=True):
+        if meta["slug"] == HOME_SLUG:
+            continue  # the homepage is canonical at `/`, never a second listing entry
         doc = _document(db, "page", meta["slug"], meta["published_revision_id"])
         if not isinstance(doc, documents.PageDocument):
             continue

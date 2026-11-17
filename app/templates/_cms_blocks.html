@@ -1,0 +1,38 @@
+{# One renderer for an authored page and the CMS homepage.
+
+   Contiguous card blocks share a single responsive `.cards` grid, so the order of blocks is
+   preserved while the cards land in one grid instead of one grid per card. Text stays escaped
+   by the environment's autoescape. A chart block renders its static SVG; the page-level
+   template decides whether the published eligible payload may load the local chart script. #}
+{% from "_chart.html" import chart_shell %}
+{% macro render_blocks(blocks) %}
+{% set state = namespace(cards_open=false) %}
+{% for block in blocks %}
+{% if block.type == "card" %}
+{% if not state.cards_open %}<div class="cards">{% set state.cards_open = true %}{% endif %}
+{% with card = block.card %}{% include "_card.html" %}{% endwith %}
+{% if loop.last or blocks[loop.index].type != "card" %}
+</div>{% set state.cards_open = false %}
+{% endif %}
+{% elif block.type == "text" %}
+<div class="cms-text">
+  {% for paragraph in block.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+</div>
+{% elif block.type == "chart" %}
+<section class="chart-section" aria-labelledby="cms-chart-{{ loop.index }}">
+  <div class="section-head">
+    <h2 id="cms-chart-{{ loop.index }}">{{ block.chart.title }}</h2>
+    {% if block.chart.note %}<p class="section-note">{{ block.chart.note }}</p>{% endif %}
+  </div>
+  <figure class="chart-figure chart-figure-interactive">
+    {% if block.chart.chart_payload %}{{ chart_shell(block.chart, "cms-" ~ loop.index) }}{% else %}{{ chart_svg(block.chart.chart) }}{% endif %}
+    <figcaption>
+      {% for line in block.chart.provenance %}{{ line.title }}. Fonte: {{ line.source_title }}. {% endfor %}
+      Último valor em {{ block.chart.provenance[0].period_text }}.
+    </figcaption>
+  </figure>
+  <p class="download"><a href="{{ base }}/graficos/{{ block.chart.slug }}">Ver gráfico, tabela e proveniência</a></p>
+</section>
+{% endif %}
+{% endfor %}
+{% endmacro %}

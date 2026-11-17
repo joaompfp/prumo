@@ -40,13 +40,17 @@ from presentation import (
     derived_title,
     frequency_text,
     geography_name,
+    page_text,
     source_title,
     unit_text,
 )
+from presentation.catalog import pt
 
 __all__ = ["Cms", "CmsBusy", "CmsConflict", "CmsNotFound", "CmsRefused", "CmsUnavailable"]
 
 log = logging.getLogger("backoffice")
+
+HOME_SLUG = cms_reads.HOME_SLUG
 
 
 class CmsUnavailable(RuntimeError):
@@ -69,6 +73,29 @@ class Cms:
 
     def available(self) -> bool:
         return self.writable_path is not None
+
+    def home(self) -> dict | None:
+        """The reserved homepage's head summary (title, version, published), or None."""
+        def build(db: Db):
+            meta = db.cms_get("page", HOME_SLUG)
+            if meta is None:
+                return None
+            doc = self._doc(db, "page", HOME_SLUG, meta["draft_revision_id"])
+            return {
+                **meta,
+                "kind": "page",
+                "title": getattr(doc, "title", None) or HOME_SLUG,
+                "published": meta["published_revision_id"] is not None,
+            }
+        return self._read(build)
+
+    def home_prepared(self) -> bool:
+        """True once the private home draft exists; the legacy editor must stop writing."""
+        return self._read(lambda db: db.cms_get("page", HOME_SLUG) is not None)
+
+    def legacy_home_locked(self, slug: str) -> bool:
+        """Gate for the retired fixed-home editor: only the reserved slug is locked."""
+        return slug == HOME_SLUG and self.home_prepared()
 
     def list(self, kind: str) -> tuple[dict, ...]:
         """Head summaries: kind, slug, title, version, published (and section for pages)."""
@@ -161,9 +188,29 @@ class Cms:
 
     # --- writes --------------------------------------------------------------------------
 
+    def prepare_home(self, *, actor: str, note: str) -> dict:
+        """Create the private `inicio` draft from the effective legacy/default home.
+
+        This is the only way the reserved page appears, and it never overwrites: an existing
+        document raises `CmsConflict` before anything is written. The imported body carries
+        registry references only, so source metadata, observation values and the legacy
+        editorial slots stay untouched. Publication remains a separate explicit step.
+        """
+        def write(db: Db):
+            existing = db.cms_get("page", HOME_SLUG)
+            if existing is not None:
+                raise CmsConflict("page", HOME_SLUG, 0, existing["version"])
+            body = self._canonical("page", self._home_body(db))
+            return db.cms_create("page", HOME_SLUG, body, actor=actor, note=note)
+
+        return self._write(write)
+
     def create(self, kind: str, slug: str, body_dict, *, actor: str, note: str) -> dict:
         kind = self._kind(kind)
         slug = self._slug(slug)
+        if kind == "page" and slug == HOME_SLUG:
+            raise CmsRefused(
+                "page/inicio é reservado à página inicial; use /cms/home para a preparar")
         body = self._canonical(kind, body_dict)
         return self._write(lambda db: db.cms_create(kind, slug, body, actor=actor, note=note))
 
@@ -206,11 +253,56 @@ class Cms:
         kind = self._kind(kind)
         slug = self._slug(slug)
         new_slug = self._slug(new_slug, "new_slug")
+        if kind == "page" and new_slug == HOME_SLUG:
+            raise CmsRefused(
+                "page/inicio é reservado à página inicial; use /cms/home para a preparar")
         return self._write(lambda db: db.cms_duplicate(kind, slug, new_slug,
                                                        expected_version=version, actor=actor,
                                                        note=note))
 
     # --- internals -----------------------------------------------------------------------
+
+    def _home_body(self, db: Db) -> dict:
+        """The private draft body imported from whatever `/` renders today.
+
+        A published editorial composition wins over the code list, exactly as `reads.home`
+        does. Each slot goes through the same `prepare_card` rule the public CMS renderer
+        uses, so the draft contains only cards that can actually render. A calculated
+        companion that is no longer eligible degrades to its base card instead of silently
+        removing the card the reader currently sees.
+        """
+        composed = reads.page_composition(db, HOME_SLUG, self.lang)
+        slots = ([(row["id"], key) for row, key in composed] if composed is not None
+                 else [(item["series"], item["derived"]) for item in pt.CURATED_HOME])
+        facts, raw = reads.slot_facts(db, slots, self.lang)
+        taken: set[str] = set()
+        blocks: list[dict] = []
+        kept: list[str] = []
+        for (series_id, derived_key), fact in zip(slots, facts):
+            if fact is None:
+                continue  # not part of this database's effective home
+            card, reason = reads.prepare_card(db, series_id, derived_key, lang=self.lang,
+                                              titles_taken=taken)
+            used_key = derived_key
+            if card is None and derived_key is not None:
+                card, reason = reads.prepare_card(db, series_id, None, lang=self.lang,
+                                                  titles_taken=taken)
+                used_key = None
+            if card is None:
+                log.warning("cms home prepare: card dropped series=%s reason=%s",
+                            series_id, reason)
+                continue
+            taken.add(card.title)
+            blocks.append({"type": "card", "series_id": series_id, "derived_key": used_key})
+            kept.append(series_id)
+        text = page_text(self.lang, HOME_SLUG)
+        all_pt = all(raw[series_id]["geography"] in reads.PT_GEOS for series_id in kept)
+        return {
+            "title": text["title"],
+            "introduction": text["note_all_pt"] if all_pt else text["note_mixed"],
+            "section": "general",
+            "blocks": blocks,
+        }
 
     @staticmethod
     def _coverage_text(frequency: str, first: str | None, latest: str | None) -> str:

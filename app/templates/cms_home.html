@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% from "_cms_blocks.html" import render_blocks with context %}
+{% block title %}{{ page.title }} - Prumo{% endblock %}
+{% block content %}
+{% if preview %}
+<div class="preview-banner" role="status">
+  <p><strong>Pré-visualização.</strong> Este é o rascunho da página inicial no backoffice; a página pública não foi alterada.</p>
+  <p><a class="button" href="{{ admin_base }}">Voltar ao editor</a></p>
+</div>
+{% endif %}
+<section class="hero" aria-labelledby="inicio-titulo">
+  <p class="eyebrow">Página inicial</p>
+  <h1 id="inicio-titulo">{{ page.title }}</h1>
+  {% for paragraph in page.introduction %}<p class="lede">{{ paragraph }}</p>{% endfor %}
+</section>
+
+{% if page.availability_note %}<p class="note cms-unavailable">{{ page.availability_note }}</p>{% endif %}
+
+{{ render_blocks(page.blocks) }}
+{% endblock %}
+{% block scripts %}{% if page.chart_payload and not preview %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

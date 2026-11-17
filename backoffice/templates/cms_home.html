@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Página inicial no CMS - Prumo backoffice{% endblock %}
+{% block content %}
+<h1>Página inicial no CMS</h1>
+{% if error %}<p class="bad" role="alert">{{ error }}</p>{% endif %}
+<p class="note">O CMS ainda não gere a página inicial. Preparar cria um rascunho privado com
+os cartões e o texto que estão agora em vigor. Nada é publicado e a página pública só muda
+na primeira publicação explícita. A preparação nunca substitui um documento existente nem
+altera as linhas editoriais antigas.</p>
+{% if not available %}
+<p class="bad">O editor está em modo só de leitura: o ponto de escrita não está configurado.
+A preparação e a publicação estão indisponíveis.</p>
+{% else %}
+<form method="post" action="{{ base }}/cms/home/prepare">
+  <p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="4000"
+   size="55" value="preparar a página inicial"></label></p>
+  <button type="submit">Preparar rascunho da página inicial</button>
+</form>
+{% endif %}
+<p class="note">Depois de preparado, o editor antigo da página inicial fica bloqueado e a
+lista de cartões passa a ser editada no CMS, como qualquer página. Despublicar mostra um
+estado neutro, nunca a lista antiga.</p>
+<p><a href="{{ base }}/cms">Voltar ao CMS</a></p>
+{% endblock %}

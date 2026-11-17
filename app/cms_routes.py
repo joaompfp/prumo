@@ -5,10 +5,11 @@ prefix, security headers and 503 handling of every other public page. Only GET a
 routed; an unknown, draft-only or unpublished slug is a 404, exactly like an absent page.
 """
 from fastapi import Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app import cms_reads
 from ingest.db import ReadOnlyOpenError, read_db_readonly
+from presentation.web import mount_prefix, prefixed
 
 PAGE_METHODS = ["GET", "HEAD"]
 
@@ -37,6 +38,15 @@ def add_routes(app, *, templates, render, unavailable) -> None:
 
     @app.api_route("/paginas/{slug}", methods=PAGE_METHODS, response_class=HTMLResponse)
     def cms_page(request: Request, slug: str):
+        if slug == cms_reads.HOME_SLUG:
+            # The homepage is canonical at `/`. A draft or an unpublished document is not a
+            # page and must not leak its body (or even its existence) through this old address.
+            published, failure = load(request, cms_reads.home_is_published)
+            if failure is not None:
+                return failure
+            if published:
+                return RedirectResponse(prefixed(mount_prefix(request), "/"), status_code=301)
+            return render(templates, request, "404.html", {}, status=404)
         data, failure = load(request, lambda db: cms_reads.public_page(db, slug))
         if failure is not None:
             return failure

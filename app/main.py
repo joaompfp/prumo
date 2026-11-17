@@ -18,6 +18,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 
 from app import cms_reads, cms_routes, interactive, reads
+from app import home as home_page
 from app.charts import chart_legend, chart_plot, chart_svg, line_chart, sparkline, two_series_chart
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
@@ -151,8 +152,15 @@ def create_app(db_path: str | None = None) -> FastAPI:
             return PlainTextResponse("Série não publicada.", status_code=404)
         return _csv_response(export)
 
-    app.add_api_route("/", page("home.html", lambda db: reads.home(db)), methods=PAGE_METHODS,
-                      response_class=HTMLResponse)
+    @app.api_route("/", methods=PAGE_METHODS, response_class=HTMLResponse)
+    def home(request: Request):
+        """Legacy home until the first CMS publication; the CMS page thereafter."""
+        try:
+            plan = _read(request, lambda db: home_page.page(db))
+        except ReadOnlyOpenError as exc:
+            return unavailable(request, exc)
+        return _render(templates, request, plan.template, plan.context, status=plan.status,
+                       script=plan.script)
 
     @app.api_route("/temas/{code}", methods=PAGE_METHODS, response_class=HTMLResponse)
     def theme(request: Request, code: str, grupo: str = "", fonte: str = "",

@@ -124,16 +124,16 @@ EDITORIAL_POSTS = {
 }
 
 CMS_POSTS = {
-    "/cms/new", "/cms/{kind}/{slug}/save", "/cms/{kind}/{slug}/publish",
-    "/cms/{kind}/{slug}/unpublish", "/cms/{kind}/{slug}/restore",
-    "/cms/{kind}/{slug}/duplicate",
+    "/cms/new", "/cms/home/prepare", "/cms/{kind}/{slug}/save",
+    "/cms/{kind}/{slug}/publish", "/cms/{kind}/{slug}/unpublish",
+    "/cms/{kind}/{slug}/restore", "/cms/{kind}/{slug}/duplicate",
 }
 
 
 def test_every_route_is_get_or_head_except_the_editorial_and_cms_posts(env):
     """The backoffice gained two write paths: exactly six POST routes for editorial
-    composition and exactly six for CMS authoring. Any other non-GET route is a defect,
-    and so is a seventh of either kind."""
+    composition and exactly seven for CMS authoring (the homepage preparation is the
+    seventh, explicit and audited). Any other non-GET route is a defect."""
     app = create_app(env.db_path, env.registry, now=lambda: NOW)
     routes = [r for r in app.routes if isinstance(r, (APIRoute, Route))]
     assert routes

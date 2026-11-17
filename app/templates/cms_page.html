@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_chart.html" import chart_shell %}
+{% from "_cms_blocks.html" import render_blocks with context %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block content %}
 {% if preview %}
@@ -20,31 +20,6 @@
 
 {% if page.availability_note %}<p class="note cms-unavailable">{{ page.availability_note }}</p>{% endif %}
 
-{% for block in page.blocks %}
-{% if block.type == "text" %}
-<div class="cms-text">
-  {% for paragraph in block.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
-</div>
-{% elif block.type == "card" %}
-<div class="cards">
-  {% with card = block.card %}{% include "_card.html" %}{% endwith %}
-</div>
-{% elif block.type == "chart" %}
-<section class="chart-section" aria-labelledby="cms-chart-{{ loop.index }}">
-  <div class="section-head">
-    <h2 id="cms-chart-{{ loop.index }}">{{ block.chart.title }}</h2>
-    {% if block.chart.note %}<p class="section-note">{{ block.chart.note }}</p>{% endif %}
-  </div>
-  <figure class="chart-figure chart-figure-interactive">
-    {% if block.chart.chart_payload %}{{ chart_shell(block.chart, "cms-" ~ loop.index) }}{% else %}{{ chart_svg(block.chart.chart) }}{% endif %}
-    <figcaption>
-      {% for line in block.chart.provenance %}{{ line.title }}. Fonte: {{ line.source_title }}. {% endfor %}
-      Último valor em {{ block.chart.provenance[0].period_text }}.
-    </figcaption>
-  </figure>
-  <p class="download"><a href="{{ base }}/graficos/{{ block.chart.slug }}">Ver gráfico, tabela e proveniência</a></p>
-</section>
-{% endif %}
-{% endfor %}
+{{ render_blocks(page.blocks) }}
 {% endblock %}
 {% block scripts %}{% if page.chart_payload and not preview %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

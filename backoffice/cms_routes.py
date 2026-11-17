@@ -25,7 +25,15 @@ from fastapi.responses import RedirectResponse
 from starlette.concurrency import run_in_threadpool
 
 from backoffice.access import ADMIN_PREFIX
-from backoffice.cms import Cms, CmsBusy, CmsConflict, CmsNotFound, CmsRefused, CmsUnavailable
+from backoffice.cms import (
+    HOME_SLUG,
+    Cms,
+    CmsBusy,
+    CmsConflict,
+    CmsNotFound,
+    CmsRefused,
+    CmsUnavailable,
+)
 from backoffice.deps import LANG
 from backoffice.forms import parse_int
 from ingest.cms import KINDS, MAX_BLOCKS, MAX_SLUG, MAX_TEXT, MAX_TITLE
@@ -354,7 +362,8 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             events=data.get("events", ()), usages=data.get("usages", ()),
             choices=choices, charts=charts, sections=_SECTIONS, windows=_WINDOWS,
             scales=_SCALES, max_blocks=MAX_BLOCKS, max_slug=MAX_SLUG,
-            max_title=MAX_TITLE, max_text=MAX_TEXT, error=error)
+            max_title=MAX_TITLE, max_text=MAX_TEXT, error=error,
+            is_home=(kind == "page" and slug == HOME_SLUG))
 
     def list_page(request: Request, *, status_code: int = 200, error: str | None = None,
                   values: dict[str, str] | None = None):
@@ -362,11 +371,12 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             pages = cms.list("page")
             charts = cms.list("chart")
             choices = cms.choices()
+            home = cms.home()
         except (CmsUnavailable, CmsBusy) as exc:
             return render_error(request, 503, "Editor CMS indisponível", str(exc))
         return admin.render(
             request, "cms_list.html", status_code=status_code, pages=pages, charts=charts,
-            choices=choices, values=values or {},
+            choices=choices, values=values or {}, home=home,
             sections=_SECTIONS, windows=_WINDOWS, scales=_SCALES,
             max_blocks=MAX_BLOCKS, max_slug=MAX_SLUG, max_title=MAX_TITLE, max_text=MAX_TEXT,
             error=error)
@@ -374,6 +384,48 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
     @app.api_route("/cms", methods=PAGE_METHODS)
     def cms_dashboard(request: Request):
         return list_page(request)
+
+    def home_page(request: Request, *, status_code: int = 200, error: str | None = None):
+        try:
+            home = cms.home()
+        except (CmsUnavailable, CmsBusy) as exc:
+            return render_error(request, 503, "Editor CMS indisponível", str(exc))
+        if home is not None and status_code == 200:
+            return RedirectResponse(admin.url(request, f"/cms/page/{HOME_SLUG}"),
+                                    status_code=302)
+        return admin.render(request, "cms_home.html", status_code=status_code, home=home,
+                            available=cms.available(), error=error)
+
+    @app.api_route("/cms/home", methods=PAGE_METHODS)
+    def cms_home(request: Request):
+        return home_page(request)
+
+    @app.post("/cms/home/prepare")
+    async def cms_home_prepare(request: Request):
+        """Explicit, same-origin, audited creation of the private home draft."""
+        admin.guard(request)
+        fields: dict[str, str] = {}
+        try:
+            fields, _ = await _read_form(request)
+            note = _note(fields)
+        except FormError as exc:
+            return await run_in_threadpool(home_page, request, status_code=422,
+                                           error=str(exc))
+        except HTTPException:
+            raise
+        try:
+            await run_in_threadpool(cms.prepare_home, actor=admin.actor(request), note=note)
+        except CmsConflict as exc:
+            return await run_in_threadpool(editor_page, request, "page", HOME_SLUG,
+                                           status_code=409, error=str(exc))
+        except CmsRefused as exc:
+            return await run_in_threadpool(home_page, request, status_code=422, error=str(exc))
+        except (CmsUnavailable, CmsBusy) as exc:
+            status = 503
+            title = ("Editor ocupado" if isinstance(exc, CmsBusy)
+                     else "Editor CMS indisponível")
+            return render_error(request, status, title, str(exc))
+        return RedirectResponse(admin.url(request, f"/cms/page/{HOME_SLUG}"), status_code=303)
 
     @app.api_route("/cms/{kind}/{slug}/preview", methods=PAGE_METHODS)
     def cms_preview(request: Request, kind: str, slug: str):
