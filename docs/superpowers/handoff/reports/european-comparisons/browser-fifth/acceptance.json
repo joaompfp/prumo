@@ -1,0 +1,121 @@
+{
+  "checks": [
+    {
+      "name": "quick_check",
+      "passed": true
+    },
+    {
+      "name": "foreign keys",
+      "passed": true
+    },
+    {
+      "name": "actual compiled asset",
+      "passed": true
+    },
+    {
+      "name": "index200 ",
+      "passed": true
+    },
+    {
+      "name": "index scriptfree ",
+      "passed": true
+    },
+    {
+      "name": "discoverable eletricidade-domestica",
+      "passed": true
+    },
+    {
+      "name": "discoverable pib-por-habitante",
+      "passed": true
+    },
+    {
+      "name": "discoverable divida-publica",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "provenance five /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "local fonts /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "punctuation /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/14400",
+      "passed": false
+    }
+  ],
+  "errors": [],
+  "external": [],
+  "screens": [
+    "eletricidade-domestica-overview-1440.png",
+    "eletricidade-domestica-chart-1440.png"
+  ],
+  "pointer_probes": [
+    {
+      "page": "/eletricidade-domestica/1440",
+      "point": 0,
+      "bounds": {
+        "left": 283,
+        "right": 1268,
+        "y": 411,
+        "valid": true
+      },
+      "x": 283.0,
+      "actual": "0"
+    }
+  ],
+  "failure": "AssertionError: pointer five exact tooltip /eletricidade-domestica/14400"
+}

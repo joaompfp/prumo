@@ -1,0 +1,100 @@
+{
+  "context": "Local production-copy server; full offline test suite running concurrently.",
+  "samples": 20,
+  "paths": [
+    {
+      "route": "/comparar",
+      "median_ms": 56.629139464348555,
+      "p95_ms": 64.9196298327297
+    },
+    {
+      "route": "/comparar/paises/eletricidade-domestica",
+      "median_ms": 150.7021989673376,
+      "p95_ms": 172.83953889273107
+    },
+    {
+      "route": "/comparar/paises/pib-por-habitante",
+      "median_ms": 157.30632352642715,
+      "p95_ms": 168.77894010394812
+    },
+    {
+      "route": "/comparar/paises/divida-publica",
+      "median_ms": 154.04859895352274,
+      "p95_ms": 189.47889609262347
+    }
+  ],
+  "raw_bodies": [
+    {
+      "route": "/comparar",
+      "status": 200,
+      "headers": {
+        "date": "Tue, 17 Nov 2026 20:12:10 GMT",
+        "server": "uvicorn",
+        "content-length": "6426",
+        "content-type": "text/html; charset=utf-8",
+        "content-security-policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "no-referrer",
+        "vary": "X-Forwarded-Prefix",
+        "connection": "close"
+      },
+      "file": "comparar.html.gz",
+      "bytes": 6426,
+      "sha256": "595661cd1eb4e8625fcb48c44b7864e0cf3de24477c5ceb185b970f02645cb2f"
+    },
+    {
+      "route": "/comparar/paises/eletricidade-domestica",
+      "status": 200,
+      "headers": {
+        "date": "Tue, 17 Nov 2026 20:12:11 GMT",
+        "server": "uvicorn",
+        "content-length": "59856",
+        "content-type": "text/html; charset=utf-8",
+        "content-security-policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'; script-src 'self'; script-src-attr 'none'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "no-referrer",
+        "vary": "X-Forwarded-Prefix",
+        "connection": "close"
+      },
+      "file": "eletricidade-domestica.html.gz",
+      "bytes": 59856,
+      "sha256": "8f9f5e9a731a6be2b6349dddb210029dcd4d310a8320d4a10e96362e34682347"
+    },
+    {
+      "route": "/comparar/paises/pib-por-habitante",
+      "status": 200,
+      "headers": {
+        "date": "Tue, 17 Nov 2026 20:12:14 GMT",
+        "server": "uvicorn",
+        "content-length": "52452",
+        "content-type": "text/html; charset=utf-8",
+        "content-security-policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'; script-src 'self'; script-src-attr 'none'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "no-referrer",
+        "vary": "X-Forwarded-Prefix",
+        "connection": "close"
+      },
+      "file": "pib-por-habitante.html.gz",
+      "bytes": 52452,
+      "sha256": "d788b5bae07699ab01fcdd597e73a3be35e434b5c9ab1c5f175de3b23d4012a3"
+    },
+    {
+      "route": "/comparar/paises/divida-publica",
+      "status": 200,
+      "headers": {
+        "date": "Tue, 17 Nov 2026 20:12:18 GMT",
+        "server": "uvicorn",
+        "content-length": "45849",
+        "content-type": "text/html; charset=utf-8",
+        "content-security-policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'; script-src 'self'; script-src-attr 'none'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "no-referrer",
+        "vary": "X-Forwarded-Prefix",
+        "connection": "close"
+      },
+      "file": "divida-publica.html.gz",
+      "bytes": 45849,
+      "sha256": "7e60c982e752841a5a06d3e8ee5bfcaf2c90cd292209701882c40fa1cb5c516a"
+    }
+  ]
+}

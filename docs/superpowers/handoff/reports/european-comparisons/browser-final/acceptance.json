@@ -1,0 +1,1938 @@
+{
+  "checks": [
+    {
+      "name": "quick_check",
+      "passed": true
+    },
+    {
+      "name": "foreign keys",
+      "passed": true
+    },
+    {
+      "name": "actual compiled asset",
+      "passed": true
+    },
+    {
+      "name": "index200 ",
+      "passed": true
+    },
+    {
+      "name": "index scriptfree ",
+      "passed": true
+    },
+    {
+      "name": "discoverable eletricidade-domestica",
+      "passed": true
+    },
+    {
+      "name": "discoverable pib-por-habitante",
+      "passed": true
+    },
+    {
+      "name": "discoverable divida-publica",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "provenance five /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "local fonts /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "punctuation /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/14400",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/144018",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/144036",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "provenance five /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "local fonts /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "punctuation /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "provenance five /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "local fonts /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "punctuation /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "one axis /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "legend five /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "provenance five /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/7680",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/76818",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/76836",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "one axis /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "legend five /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "provenance five /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "one axis /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "legend five /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "provenance five /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "one axis /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "legend five /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "provenance five /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/3900",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/39018",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/39036",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "one axis /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "legend five /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "provenance five /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "one axis /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "legend five /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "provenance five /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "one axis /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "legend five /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "provenance five /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/3200",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/32018",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /eletricidade-domestica/32036",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "one axis /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "legend five /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "provenance five /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "one axis /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "legend five /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "provenance five /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "old pair credito-e-taxa",
+      "passed": true
+    },
+    {
+      "name": "old pair inflacao-e-desemprego",
+      "passed": true
+    },
+    {
+      "name": "unknown404 scriptfree ",
+      "passed": true
+    },
+    {
+      "name": "index200 /dados",
+      "passed": true
+    },
+    {
+      "name": "index scriptfree /dados",
+      "passed": true
+    },
+    {
+      "name": "discoverable /dadoseletricidade-domestica",
+      "passed": true
+    },
+    {
+      "name": "discoverable /dadospib-por-habitante",
+      "passed": true
+    },
+    {
+      "name": "discoverable /dadosdivida-publica",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/14400",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/144018",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/144036",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /dados/eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/pib-por-habitante/1440",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/divida-publica/1440",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/7680",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/76818",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/76836",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /dados/eletricidade-domestica/768",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/pib-por-habitante/768",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/divida-publica/768",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/3900",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/39018",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/39036",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /dados/eletricidade-domestica/390",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/pib-por-habitante/390",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/divida-publica/390",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "Carmim painted bounds /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/3200",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/32018",
+      "passed": true
+    },
+    {
+      "name": "pointer five exact tooltip /dados/eletricidade-domestica/32036",
+      "passed": true
+    },
+    {
+      "name": "print restores SVG /dados/eletricidade-domestica/320",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/pib-por-habitante/320",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "one axis /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "legend five /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "provenance five /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "SVG text contained /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard first exact /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard second exact /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "keyboard last exact /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "polite complete announcement /dados/divida-publica/320",
+      "passed": true
+    },
+    {
+      "name": "old pair /dadoscredito-e-taxa",
+      "passed": true
+    },
+    {
+      "name": "old pair /dadosinflacao-e-desemprego",
+      "passed": true
+    },
+    {
+      "name": "unknown404 scriptfree /dados",
+      "passed": true
+    },
+    {
+      "name": "fallback named SVG no-js",
+      "passed": true
+    },
+    {
+      "name": "fallback complete table no-js",
+      "passed": true
+    },
+    {
+      "name": "fallback no overflow no-js",
+      "passed": true
+    },
+    {
+      "name": "fallback named SVG blocked",
+      "passed": true
+    },
+    {
+      "name": "fallback complete table blocked",
+      "passed": true
+    },
+    {
+      "name": "fallback no overflow blocked",
+      "passed": true
+    },
+    {
+      "name": "touch exact 0",
+      "passed": true
+    },
+    {
+      "name": "touch exact 18",
+      "passed": true
+    },
+    {
+      "name": "touch exact 36",
+      "passed": true
+    },
+    {
+      "name": "touch remains scrollable",
+      "passed": true
+    },
+    {
+      "name": "no errors or warnings",
+      "passed": false
+    }
+  ],
+  "errors": [
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "external": [],
+  "screens": [
+    "eletricidade-domestica-overview-1440.png",
+    "eletricidade-domestica-chart-1440.png",
+    "pib-por-habitante-overview-1440.png",
+    "pib-por-habitante-chart-1440.png",
+    "divida-publica-overview-1440.png",
+    "divida-publica-chart-1440.png",
+    "eletricidade-domestica-overview-390.png",
+    "eletricidade-domestica-chart-390.png",
+    "pib-por-habitante-overview-390.png",
+    "pib-por-habitante-chart-390.png",
+    "divida-publica-overview-390.png",
+    "divida-publica-chart-390.png"
+  ],
+  "pointer_probes": [
+    {
+      "page": "/eletricidade-domestica/1440",
+      "point": 0,
+      "bounds": {
+        "left": 283,
+        "right": 1268,
+        "y": 411,
+        "valid": true
+      },
+      "x": 284.0,
+      "actual": "0"
+    },
+    {
+      "page": "/eletricidade-domestica/1440",
+      "point": 18,
+      "bounds": {
+        "left": 283,
+        "right": 1268,
+        "y": 411,
+        "valid": true
+      },
+      "x": 775.5,
+      "actual": "18"
+    },
+    {
+      "page": "/eletricidade-domestica/1440",
+      "point": 36,
+      "bounds": {
+        "left": 283,
+        "right": 1268,
+        "y": 411,
+        "valid": true
+      },
+      "x": 1267.0,
+      "actual": "36"
+    },
+    {
+      "page": "/eletricidade-domestica/768",
+      "point": 0,
+      "bounds": {
+        "left": 129,
+        "right": 719,
+        "y": 196.828125,
+        "valid": true
+      },
+      "x": 130.0,
+      "actual": "0"
+    },
+    {
+      "page": "/eletricidade-domestica/768",
+      "point": 18,
+      "bounds": {
+        "left": 129,
+        "right": 719,
+        "y": 196.828125,
+        "valid": true
+      },
+      "x": 424.0,
+      "actual": "18"
+    },
+    {
+      "page": "/eletricidade-domestica/768",
+      "point": 36,
+      "bounds": {
+        "left": 129,
+        "right": 719,
+        "y": 196.828125,
+        "valid": true
+      },
+      "x": 718.0,
+      "actual": "36"
+    },
+    {
+      "page": "/eletricidade-domestica/390",
+      "point": 0,
+      "bounds": {
+        "left": 87,
+        "right": 354,
+        "y": 119.546875,
+        "valid": true
+      },
+      "x": 88.0,
+      "actual": "0"
+    },
+    {
+      "page": "/eletricidade-domestica/390",
+      "point": 18,
+      "bounds": {
+        "left": 87,
+        "right": 354,
+        "y": 119.546875,
+        "valid": true
+      },
+      "x": 220.5,
+      "actual": "18"
+    },
+    {
+      "page": "/eletricidade-domestica/390",
+      "point": 36,
+      "bounds": {
+        "left": 87,
+        "right": 354,
+        "y": 119.546875,
+        "valid": true
+      },
+      "x": 353.0,
+      "actual": "36"
+    },
+    {
+      "page": "/eletricidade-domestica/320",
+      "point": 0,
+      "bounds": {
+        "left": 80,
+        "right": 283,
+        "y": 119.71875,
+        "valid": true
+      },
+      "x": 81.0,
+      "actual": "0"
+    },
+    {
+      "page": "/eletricidade-domestica/320",
+      "point": 18,
+      "bounds": {
+        "left": 80,
+        "right": 283,
+        "y": 119.71875,
+        "valid": true
+      },
+      "x": 181.5,
+      "actual": "18"
+    },
+    {
+      "page": "/eletricidade-domestica/320",
+      "point": 36,
+      "bounds": {
+        "left": 80,
+        "right": 283,
+        "y": 119.71875,
+        "valid": true
+      },
+      "x": 282.0,
+      "actual": "36"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/1440",
+      "point": 0,
+      "bounds": {
+        "left": 283,
+        "right": 1268,
+        "y": 227,
+        "valid": true
+      },
+      "x": 284.0,
+      "actual": "0"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/1440",
+      "point": 18,
+      "bounds": {
+        "left": 283,
+        "right": 1268,
+        "y": 227,
+        "valid": true
+      },
+      "x": 775.5,
+      "actual": "18"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/1440",
+      "point": 36,
+      "bounds": {
+        "left": 283,
+        "right": 1268,
+        "y": 227,
+        "valid": true
+      },
+      "x": 1267.0,
+      "actual": "36"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/768",
+      "point": 0,
+      "bounds": {
+        "left": 129,
+        "right": 719,
+        "y": 196.828125,
+        "valid": true
+      },
+      "x": 130.0,
+      "actual": "0"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/768",
+      "point": 18,
+      "bounds": {
+        "left": 129,
+        "right": 719,
+        "y": 196.828125,
+        "valid": true
+      },
+      "x": 424.0,
+      "actual": "18"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/768",
+      "point": 36,
+      "bounds": {
+        "left": 129,
+        "right": 719,
+        "y": 196.828125,
+        "valid": true
+      },
+      "x": 718.0,
+      "actual": "36"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/390",
+      "point": 0,
+      "bounds": {
+        "left": 87,
+        "right": 354,
+        "y": 119.546875,
+        "valid": true
+      },
+      "x": 88.0,
+      "actual": "0"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/390",
+      "point": 18,
+      "bounds": {
+        "left": 87,
+        "right": 354,
+        "y": 119.546875,
+        "valid": true
+      },
+      "x": 220.5,
+      "actual": "18"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/390",
+      "point": 36,
+      "bounds": {
+        "left": 87,
+        "right": 354,
+        "y": 119.546875,
+        "valid": true
+      },
+      "x": 353.0,
+      "actual": "36"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/320",
+      "point": 0,
+      "bounds": {
+        "left": 80,
+        "right": 283,
+        "y": 119.71875,
+        "valid": true
+      },
+      "x": 81.0,
+      "actual": "0"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/320",
+      "point": 18,
+      "bounds": {
+        "left": 80,
+        "right": 283,
+        "y": 119.71875,
+        "valid": true
+      },
+      "x": 181.5,
+      "actual": "18"
+    },
+    {
+      "page": "/dados/eletricidade-domestica/320",
+      "point": 36,
+      "bounds": {
+        "left": 80,
+        "right": 283,
+        "y": 119.71875,
+        "valid": true
+      },
+      "x": 282.0,
+      "actual": "36"
+    }
+  ],
+  "failure": "AssertionError: no errors or warnings"
+}

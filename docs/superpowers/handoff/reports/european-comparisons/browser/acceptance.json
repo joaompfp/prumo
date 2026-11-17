@@ -1,0 +1,64 @@
+{
+  "checks": [
+    {
+      "name": "quick_check",
+      "passed": true
+    },
+    {
+      "name": "foreign keys",
+      "passed": true
+    },
+    {
+      "name": "actual compiled asset",
+      "passed": true
+    },
+    {
+      "name": "index200 ",
+      "passed": true
+    },
+    {
+      "name": "index scriptfree ",
+      "passed": true
+    },
+    {
+      "name": "discoverable eletricidade-domestica",
+      "passed": true
+    },
+    {
+      "name": "discoverable pib-por-habitante",
+      "passed": true
+    },
+    {
+      "name": "discoverable divida-publica",
+      "passed": true
+    },
+    {
+      "name": "HTTP200 /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "five ordered countries /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot count /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "one axis /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /eletricidade-domestica/1440",
+      "passed": true
+    },
+    {
+      "name": "legend five /eletricidade-domestica/1440",
+      "passed": false
+    }
+  ],
+  "errors": [],
+  "external": [],
+  "screens": [],
+  "failure": "AssertionError: legend five /eletricidade-domestica/1440"
+}
