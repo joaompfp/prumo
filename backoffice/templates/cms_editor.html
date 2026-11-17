@@ -2,6 +2,7 @@
 {% from "cms_macros.html" import series_options, derived_options, chart_options %}
 {% block title %}CMS: {{ doc.title or slug }} - Prumo backoffice{% endblock %}
 {% block content %}
+{% set form_version = expected_version if expected_version is defined and expected_version is not none else meta.version %}
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
   <a href="{{ base }}/cms">Páginas e gráficos</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
@@ -60,7 +61,7 @@ O rascunho não está em direto; guardar não publica.</p>
   <p class="section-note">{% if is_home is defined and is_home %}<a href="{{ base }}/cms/home">Gerir entrada da página inicial</a>{% endif %}</p>
 </div>
 <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/save" data-dirty-watch>
-<input type="hidden" name="version" value="{{ meta.version }}">
+<input type="hidden" name="version" value="{{ form_version }}">
 
 {% if kind == 'page' %}
 {% set blocks = doc.blocks if doc.blocks is defined else [] %}
@@ -107,6 +108,7 @@ O rascunho não está em direto; guardar não publica.</p>
     <option value="sources"{% if b.type == 'sources' %} selected{% endif %}>instituições publicadas</option>
     <option value="card"{% if b.type == 'card' %} selected{% endif %}>cartão de série</option>
     <option value="chart"{% if b.type == 'chart' %} selected{% endif %}>gráfico</option>
+    {% if b.type not in ('text', 'heading', 'hero', 'themes', 'verification', 'sources', 'card', 'chart') %}<option value="{{ b.type }}" selected>tipo inválido: {{ b.type or "(vazio)" }}</option>{% endif %}
     </select>
     <span class="hint">Só os campos do tipo escolhido contam.</span>
   </div>
@@ -421,7 +423,7 @@ deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
 <div class="panel">
   <div class="field">
     <label for="draft-note">Motivo (obrigatório)</label>
-    <input id="draft-note" type="text" name="note" required maxlength="{{ max_text }}" size="50">
+    <input id="draft-note" type="text" name="note" required maxlength="{{ max_text }}" size="50" value="{{ values.note if values is defined and values.note is defined else '' }}">
     <span class="hint">Fica na auditoria com a versão que está a ser guardada.</span>
   </div>
   <div class="button-row">
@@ -452,7 +454,7 @@ deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
   {% endif %}
 
   <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish" data-confirm="Publicar este rascunho e substituir a versão em direto?">
-  <input type="hidden" name="version" value="{{ meta.version }}">
+  <input type="hidden" name="version" value="{{ form_version }}">
   <div class="field"><label for="publish-note">Motivo (obrigatório)</label>
   <input id="publish-note" type="text" name="note" required maxlength="{{ max_text }}" size="50"></div>
   <div class="button-row"><button type="submit" class="button-primary"><i class="icon icon-publish" aria-hidden="true"></i> Publicar este rascunho</button></div>
@@ -460,7 +462,7 @@ deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
 
   {% if published %}
   <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/unpublish" data-confirm="Despublicar? A versão em direto deixa de ser servida; o histórico mantém-se.">
-  <input type="hidden" name="version" value="{{ meta.version }}">
+  <input type="hidden" name="version" value="{{ form_version }}">
   <div class="field"><label for="unpublish-note">Motivo (obrigatório)</label>
   <input id="unpublish-note" type="text" name="note" required maxlength="{{ max_text }}" size="50"></div>
   <div class="button-row"><button type="submit" class="button-danger"><i class="icon icon-archive" aria-hidden="true"></i> Despublicar (mantém o histórico)</button></div>
@@ -483,7 +485,7 @@ versão em direto não são alterados.</p>
 <td class="wrap"><details class="bare"><summary>ver JSON canónico</summary><code>{{ h.body_json }}</code></details></td>
 <td>
 <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/restore" data-confirm="Restaurar a revisão {{ h.id }} como novo rascunho?">
-<input type="hidden" name="version" value="{{ meta.version }}">
+<input type="hidden" name="version" value="{{ form_version }}">
 <input type="hidden" name="revision_id" value="{{ h.id }}">
 <div class="field"><label for="restore-note-{{ h.id }}">Motivo</label>
 <input id="restore-note-{{ h.id }}" type="text" name="note" required maxlength="{{ max_text }}" size="24"></div>
@@ -504,7 +506,7 @@ versão em direto não são alterados.</p>
 <p class="note">Cria um documento independente a partir do rascunho atual, com um novo slug.
 O original não é alterado.</p>
 <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/duplicate">
-<input type="hidden" name="version" value="{{ meta.version }}">
+<input type="hidden" name="version" value="{{ form_version }}">
 <div class="form-grid">
   <div class="field"><label for="duplicate-slug">Novo slug</label>
   <input id="duplicate-slug" type="text" name="new_slug" required maxlength="{{ max_slug }}" size="30">

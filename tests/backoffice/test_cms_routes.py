@@ -234,6 +234,10 @@ def test_stale_version_is_409_and_writes_nothing(env):
                headers=ORIGIN)
     assert r.status_code == 409
     assert "nothing was written" in r.text and "version 2" in r.text
+    # The re-render keeps what the operator submitted and the version it was written against;
+    # it does not silently adopt the fresh version and invite a blind resubmit.
+    assert ">B</textarea>" in r.text and 'name="version" value="1"' in r.text
+    assert 'name="version" value="2"' not in r.text
     assert env.meta("page", "precos")["version"] == 2
     assert env.revisions("page", "precos") == before
 
@@ -248,6 +252,75 @@ def test_validation_refusal_is_422_and_does_not_bump_the_version(env):
     assert "title" in r.text.lower()
     assert env.meta("page", "precos")["version"] == 1
     assert len(env.revisions("page", "precos")) == 1
+
+
+def test_form_error_keeps_every_submitted_page_value(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    before_meta = env.meta("page", "precos")
+    before_history = env.revisions("page", "precos")
+
+    r = c.post("/cms/page/precos/save",
+               data=page_form(1, title="TÍTULO ESCRITO PELO OPERADOR",
+                              intro="INTRODUÇÃO ESCRITA PELO OPERADOR", blocks=[
+                                  {"type": "hero", "title": "Abertura",
+                                   "actions": [{"label": "Ler", "href": ""}]}]),
+               headers=ORIGIN)
+    assert r.status_code == 422 and "endereço" in r.text
+    assert "TÍTULO ESCRITO PELO OPERADOR" in r.text
+    assert "INTRODUÇÃO ESCRITA PELO OPERADOR" in r.text
+    assert 'value="Ler"' in r.text
+    assert env.meta("page", "precos") == before_meta
+    assert env.revisions("page", "precos") == before_history
+
+
+def test_form_error_keeps_values_when_the_block_count_is_not_a_number(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    before_meta = env.meta("page", "precos")
+    before_history = env.revisions("page", "precos")
+    data = page_form(1, title="TÍTULO COM NÚMERO INVÁLIDO",
+                     blocks=[{"type": "text", "text": "TEXTO PRESERVADO"}])
+    data["block_count"] = "muitos"
+
+    r = c.post("/cms/page/precos/save", data=data, headers=ORIGIN)
+    assert r.status_code == 422 and "número de blocos" in r.text
+    assert "TÍTULO COM NÚMERO INVÁLIDO" in r.text
+    assert "TEXTO PRESERVADO" in r.text
+    assert env.meta("page", "precos") == before_meta
+    assert env.revisions("page", "precos") == before_history
+
+
+def test_form_error_keeps_values_when_the_note_is_missing(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    before_meta = env.meta("page", "precos")
+    before_history = env.revisions("page", "precos")
+
+    r = c.post("/cms/page/precos/save",
+               data=page_form(1, title="TÍTULO SEM MOTIVO",
+                              intro="INTRODUÇÃO SEM MOTIVO", note=""),
+               headers=ORIGIN)
+    assert r.status_code == 422 and "motivo" in r.text
+    assert "TÍTULO SEM MOTIVO" in r.text and "INTRODUÇÃO SEM MOTIVO" in r.text
+    assert env.meta("page", "precos") == before_meta
+    assert env.revisions("page", "precos") == before_history
+
+
+def test_form_error_keeps_the_submitted_chart_title_and_note(env):
+    c = env.client()
+    assert chart_create(c).status_code == 303
+    before_meta = env.meta("chart", "inflacao")
+    before_history = env.revisions("chart", "inflacao")
+    data = {"version": "1", "title": "TÍTULO DO GRÁFICO", "note_text": "NOTA NOVA",
+            "series_a": "ine.hicp_yoy.PT", "series_b": "", "derived_key": "",
+            "window": "max", "scale": "single", "day": "", "note": ""}
+
+    r = c.post("/cms/chart/inflacao/save", data=data, headers=ORIGIN)
+    assert r.status_code == 422 and "motivo" in r.text
+    assert "TÍTULO DO GRÁFICO" in r.text and "NOTA NOVA" in r.text
+    assert env.meta("chart", "inflacao") == before_meta
+    assert env.revisions("chart", "inflacao") == before_history
 
 
 def test_a_submitted_xss_string_is_escaped_in_the_editor(env):

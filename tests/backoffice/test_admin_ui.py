@@ -1,6 +1,7 @@
 """Admin shell and CMS editor affordances: local assets, active navigation, prefixed public
 link, progressive hooks that leave the server-rendered forms authoritative."""
 import re
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -10,6 +11,8 @@ from backoffice.app import SECURITY_HEADERS, create_app
 from tests.backoffice.conftest import NOW
 from tests.backoffice.test_cms_routes import Env as CmsEnv
 from tests.backoffice.test_cms_routes import page_create
+
+ROOT = Path(__file__).resolve().parents[2]
 
 SECRET = "0123456789abcdef" * 4
 PREFIX = "/dados/admin"
@@ -152,3 +155,17 @@ def test_admin_css_keeps_the_editorial_identity(env):
     assert "linear-gradient" not in css and "radial-gradient" not in css
     assert "--red" in css and "--paper" in css and "--serif" in css
     assert "prefers-reduced-motion" in css
+
+
+def test_reorder_controls_keep_visible_text_when_the_icon_font_fails():
+    html = (ROOT / "backoffice/templates/editorial_page.html").read_text(encoding="utf-8")
+    assert '<span class="sr-only">Subir</span>' not in html
+    assert '<span class="sr-only">Descer</span>' not in html
+    assert re.search(r'aria-hidden="true"></i> Subir</button>', html)
+    assert re.search(r'aria-hidden="true"></i> Descer</button>', html)
+
+
+def test_admin_script_splits_the_show_for_attribute_on_whitespace():
+    js = (ROOT / "static/js/admin.js").read_text(encoding="utf-8")
+    assert ".split(/\\s+/)" in js
+    assert ".split(/\\\\s+/)" not in js

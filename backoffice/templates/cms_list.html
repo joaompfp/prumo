@@ -31,9 +31,16 @@
     <h2 id="home-title">{{ home_doc.title or "Página inicial" }}</h2>
     <p class="status-line">
       {% if home_doc.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>
+      {% elif home_doc.published_once %}<span class="badge bad">Despublicada</span>
       {% else %}<span class="badge">Rascunho privado</span>{% endif %}
       {% if home_doc.version is defined and home_doc.version %}<span class="badge">versão {{ home_doc.version }}</span>{% endif %}
+      {% if home_doc.published %}
       <span class="muted">O CMS gere o que aparece em <code>/</code>.</span>
+      {% elif home_doc.published_once %}
+      <span class="muted">A página inicial está por publicar: <code>/</code> mostra o estado neutro até nova publicação.</span>
+      {% else %}
+      <span class="muted">Ainda não publicada: o site mantém a página inicial antiga até à primeira publicação.</span>
+      {% endif %}
     </p>
     {% else %}
     <h2 id="home-title">Página inicial ainda não preparada</h2>

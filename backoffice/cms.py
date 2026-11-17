@@ -102,7 +102,12 @@ class Cms:
         return self.writable_path is not None
 
     def home(self) -> dict | None:
-        """The reserved homepage's head summary (title, version, published), or None."""
+        """The reserved homepage's head summary, or None before preparation.
+
+        `published_once` separates a private draft that never reached the public site from a
+        home the CMS took over and later unpublished; the dashboard needs that distinction to
+        avoid claiming `/` before the first publication.
+        """
         def build(db: Db):
             meta = db.cms_get("page", HOME_SLUG)
             if meta is None:
@@ -113,6 +118,7 @@ class Cms:
                 "kind": "page",
                 "title": getattr(doc, "title", None) or HOME_SLUG,
                 "published": meta["published_revision_id"] is not None,
+                "published_once": db.cms_published_once("page", HOME_SLUG),
             }
         return self._read(build)
 

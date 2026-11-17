@@ -355,6 +355,102 @@ def _add_block(fields: dict[str, str]) -> dict:
     raise FormError("escolha o tipo de bloco a acrescentar")
 
 
+def _submitted_document(kind: str, fields: dict[str, str]) -> dict:
+    """A display-only document rebuilt from the submitted fields after a refusal.
+
+    This mirrors the keys the editor template reads, using the values exactly as typed. It is
+    never validated and never written: `_document_from_fields` stays the only authoritative
+    parser and every later submit is validated again. It exists so a 422 or 409 re-render shows
+    the operator's work instead of silently replacing it with the stored draft.
+    """
+    if kind == "chart":
+        return {
+            "title": fields.get("title", ""),
+            "note": fields.get("note_text", ""),
+            "series_a": fields.get("series_a", ""),
+            "series_b": fields.get("series_b", ""),
+            "derived_key": fields.get("derived_key", ""),
+            "window": fields.get("window", ""),
+            "scale": fields.get("scale", ""),
+            "day": fields.get("day", ""),
+        }
+
+    # An `add` submit failed: carry its fields into the block list as the block it was trying
+    # to append, so the attempted addition is not lost with the error.
+    merged = dict(fields)
+    if fields.get("op", "save") == "add":
+        indices = [int(m.group(2)) for name in fields if (m := _BLOCK.fullmatch(name))]
+        index = max(indices) + 1 if indices else 0
+        for name, value in fields.items():
+            added = _ADD.fullmatch(name)
+            if added is None:
+                continue
+            slot = f"_{added.group(2)}" if added.group(2) else ""
+            merged[f"block_{added.group(1)}_{index}{slot}"] = value
+
+    indices = {int(m.group(2)) for name in merged if (m := _BLOCK.fullmatch(name))}
+    blocks = []
+    for index in sorted(indices):
+        block_type = merged.get(f"block_type_{index}", "").strip()
+        block: dict = {"type": block_type}
+        if block_type == "text":
+            block["text"] = merged.get(f"block_text_{index}", "")
+        elif block_type == "card":
+            block.update(series_id=merged.get(f"block_series_{index}", ""),
+                         derived_key=merged.get(f"block_derived_{index}", ""),
+                         label=merged.get(f"block_label_{index}", ""))
+        elif block_type == "chart":
+            block["chart_slug"] = merged.get(f"block_chart_{index}", "")
+        elif block_type in ("hero", "heading", "themes", "verification", "sources"):
+            block["title"] = merged.get(f"block_title_{index}", "")
+            block["note"] = merged.get(f"block_note_{index}", "")
+            if block_type == "hero":
+                block["eyebrow"] = merged.get(f"block_eyebrow_{index}", "")
+                block["counts"] = merged.get(f"block_counts_{index}", "") == "1"
+                block["freshness"] = merged.get(f"block_freshness_{index}", "") == "1"
+                block["actions"] = [
+                    {"label": merged.get(f"block_link_label_{index}_{position}", ""),
+                     "href": merged.get(f"block_link_href_{index}_{position}", "")}
+                    for position in range(MAX_ACTIONS)
+                ]
+            elif block_type == "themes":
+                block["themes"] = [
+                    merged.get(f"block_theme_{index}_{position}", "")
+                    for position in range(MAX_THEME_REFS)
+                ]
+            elif block_type == "verification":
+                block["steps"] = [
+                    {"label": merged.get(f"block_step_label_{index}_{position}", ""),
+                     "text": merged.get(f"block_step_text_{index}_{position}", "")}
+                    for position in range(MAX_STEPS)
+                ]
+        else:
+            # Unknown type: keep every submitted value under its own key so switching the
+            # select back to a valid type still finds what was typed.
+            block.update(
+                text=merged.get(f"block_text_{index}", ""),
+                title=merged.get(f"block_title_{index}", ""),
+                note=merged.get(f"block_note_{index}", ""),
+                eyebrow=merged.get(f"block_eyebrow_{index}", ""),
+                label=merged.get(f"block_label_{index}", ""),
+                series_id=merged.get(f"block_series_{index}", ""),
+                derived_key=merged.get(f"block_derived_{index}", ""),
+                chart_slug=merged.get(f"block_chart_{index}", ""),
+            )
+        if block_type in ("verification", "sources"):
+            label = merged.get(f"block_link_label_{index}", "")
+            href = merged.get(f"block_link_href_{index}", "")
+            if label or href:
+                block["action"] = {"label": label, "href": href}
+        blocks.append(block)
+    return {
+        "title": fields.get("title", ""),
+        "introduction": fields.get("introduction", ""),
+        "section": fields.get("section", ""),
+        "blocks": blocks,
+    }
+
+
 def _apply_block_control(body: dict, controls: dict[str, str]) -> dict:
     """Move or remove one rendered block; the whole document is saved afterwards."""
     if len(controls) != 1:
@@ -497,7 +593,9 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
         return admin.render(request, "error.html", status, title=title, message=message)
 
     def editor_page(request: Request, kind: str, slug: str, *, status_code: int = 200,
-                    error: str | None = None, doc: dict | None = None):
+                    error: str | None = None, doc: dict | None = None,
+                    values: dict[str, str] | None = None,
+                    expected_version: int | None = None):
         if kind not in KINDS:
             return render_error(request, 404, "Documento desconhecido",
                                 f"tipo de documento desconhecido: {kind}")
@@ -519,7 +617,8 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             return render_error(request, 503, "Documento indisponível",
                                 f"{kind}/{slug}: o corpo do rascunho não pôde ser lido")
         if doc is None:
-            doc = draft.model_dump(mode="json")
+            doc = (_submitted_document(kind, values) if values is not None
+                   else draft.model_dump(mode="json"))
         history = data.get("history", ())
         published_at = None
         if meta["published_revision_id"] is not None:
@@ -542,7 +641,8 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             windows=_WINDOWS, scales=_SCALES, max_blocks=MAX_BLOCKS, max_slug=MAX_SLUG,
             max_title=MAX_TITLE, max_text=MAX_TEXT, max_reference=MAX_REFERENCE,
             max_actions=MAX_ACTIONS, max_theme_refs=MAX_THEME_REFS, max_steps=MAX_STEPS,
-            error=error, is_home=(kind == "page" and slug == HOME_SLUG))
+            error=error, is_home=(kind == "page" and slug == HOME_SLUG),
+            values=values or {}, expected_version=expected_version)
 
     def list_page(request: Request, *, status_code: int = 200, error: str | None = None,
                   values: dict[str, str] | None = None):
@@ -682,6 +782,7 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
         if kind not in KINDS:
             return render_error(request, 404, "Documento desconhecido",
                                 f"tipo de documento desconhecido: {kind}")
+        fields: dict[str, str] = {}
         doc = None
         try:
             fields, controls = await _read_form(request)
@@ -690,8 +791,9 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             doc = (_document_from_fields(kind, fields, controls)
                    if action == "save" else None)
         except FormError as exc:
-            return await run_in_threadpool(editor_page, request, kind, slug,
-                                           status_code=422, error=str(exc), doc=doc)
+            return await run_in_threadpool(
+                editor_page, request, kind, slug, status_code=422, error=str(exc), doc=doc,
+                values=fields if action == "save" and fields else None)
         except HTTPException:
             raise
         try:
@@ -722,8 +824,10 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             return await run_in_threadpool(editor_page, request, kind, slug,
                                            status_code=422, error=str(exc), doc=doc)
         except CmsConflict as exc:
-            return await run_in_threadpool(editor_page, request, kind, slug,
-                                           status_code=409, error=str(exc), doc=doc)
+            return await run_in_threadpool(
+                editor_page, request, kind, slug, status_code=409, error=str(exc), doc=doc,
+                values=fields if action == "save" and fields else None,
+                expected_version=version)
         except CmsRefused as exc:
             return await run_in_threadpool(editor_page, request, kind, slug,
                                            status_code=422, error=str(exc), doc=doc)

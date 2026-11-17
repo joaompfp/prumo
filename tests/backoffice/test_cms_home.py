@@ -165,8 +165,12 @@ def test_dashboard_reports_the_home_head_after_preparation(env):
     home = seen["cms_list.html"]["home"]
     assert home["slug"] == HOME_SLUG
     assert home["title"] == "Início"
-    assert home["published"] is False
+    assert home["published"] is False and home["published_once"] is False
     assert home["version"] == 1 and home["published_revision_id"] is None
+    prepared = c.get("/cms").text
+    assert "Ainda não publicada" in prepared
+    assert "mantém a página inicial antiga" in prepared
+    assert "O CMS gere" not in prepared
 
     meta = env.meta("page", HOME_SLUG)
     assert c.post("/cms/page/inicio/publish",
@@ -174,8 +178,22 @@ def test_dashboard_reports_the_home_head_after_preparation(env):
                   headers=ORIGIN, follow_redirects=False).status_code == 303
     assert c.get("/cms").status_code == 200
     published = seen["cms_list.html"]["home"]
-    assert published["published"] is True
+    assert published["published"] is True and published["published_once"] is True
     assert published["published_revision_id"] == 1
+    live = c.get("/cms").text
+    assert "Publicada" in live and "O CMS gere" in live
+    assert "Ainda não publicada" not in live
+
+    meta = env.meta("page", HOME_SLUG)
+    assert c.post("/cms/page/inicio/unpublish",
+                  data={"version": str(meta["version"]), "note": "despublicar"},
+                  headers=ORIGIN, follow_redirects=False).status_code == 303
+    assert c.get("/cms").status_code == 200
+    unpublished = seen["cms_list.html"]["home"]
+    assert unpublished["published"] is False and unpublished["published_once"] is True
+    after = c.get("/cms").text
+    assert "Despublicada" in after and "estado neutro" in after
+    assert "Rascunho privado" not in after and "O CMS gere" not in after
 
 
 def test_stale_home_editor_form_is_409_and_writes_nothing_on_either_prefix(env):
