@@ -1,0 +1,33 @@
+{
+  "runtime_revision": "0162e7c0009a1da431a5ead44e604151bf8743b5",
+  "main_at_verification": "7a35f4773688ceb97ce23b517cae4096533e6ab4",
+  "deployed": false,
+  "full_suite": {
+    "command": ".venv-ci/bin/python -m pytest tests -q --tb=short",
+    "exit_code": 0,
+    "passed": 2682,
+    "deselected": 7,
+    "warnings": 3,
+    "duration_seconds": 1286.74,
+    "raw_log_sha256": "4086f1b106caea06c2fce74488f2c404319c3a5ceb6e1cc1abdf9e5ec97c5005",
+    "archive_sha256": "1111d8122ecacf052567ca534f72c72e950d15c19199c58e7e555d3c214daa84",
+    "archive": "release-suite.log.gz"
+  },
+  "browser": {
+    "receipt": "browser/acceptance.json",
+    "sha256": "9294f2c6c5bf4054b331526cba735adbe9551b01e83cb726129270732ec5117e",
+    "checks": 205,
+    "errors": [],
+    "warnings": [],
+    "external_requests": [],
+    "protected_tables": 20
+  },
+  "reviews": {
+    "spec": "PASS",
+    "quality": "APPROVED after Q1 fix and scoped re-review"
+  },
+  "ruff": "clean",
+  "admin_js_syntax": "clean",
+  "manual_screen_reader_acceptance": "pending",
+  "production_release_authorization": "pending"
+}

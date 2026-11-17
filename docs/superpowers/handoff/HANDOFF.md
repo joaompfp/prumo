@@ -1,6 +1,16 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Current resume point: CMS homepage and interface INSTALLED (2026-11-17)
+## Current resume point: Tabler visual pass implemented, release NOT installed (2026-11-17)
+
+Owner approved Tabler and a palette/icon redesign for the backoffice and public site. Runtime branch HEAD is 0162e7c on pipeline-rebuild; main and production remain at the previously installed CMS-home release. This pass has no migration, ingestion, source-data, access, Authelia or Traefik change. Only public web and backoffice would need recreation in a separately authorized release; no worker restart.
+
+The backoffice now uses actual pinned local Tabler 1.7.5 form controls, buttons, cards, tables and badges, with a compact Prumo shell, content-led block summaries, light/dark tokens, human-readable CMS dates and section-jump state. The new vector mark is a plumb bob rather than sigma. Public CSS shares the paper/petrol-green/brass identity and refines search, navigation, filters, chart windows, table and card surfaces; public summaries do not load Tabler or new JavaScript. SVG/ECharts roles and exact statistical tokens are unchanged. Vendor preparation is byte-pinned and documented, no CDN or external font, no Bootstrap JavaScript.
+
+Independent specification review passed; its vendor-commit and conditional-test findings are closed in 07a981c/5f3e4e2. Independent quality review identified insufficient neutral-badge contrast caused by a vendor important rule; fixed with a scoped override and regression in 0162e7c. Scoped re-review approved with actual computed light/dark contrast. Browser acceptance on an isolated production-derived database passes the CMS lifecycle, both public prefixes, four viewport widths, light/dark, no-JS/blocked fonts, strict CSP and exact keyboard chart values; all 20 non-CMS table fingerprints remain unchanged. Human screen-reader acceptance remains separate. Final authoritative suite on runtime 0162e7c: 2,682 passed, 7 network tests deselected, 3 warnings in 1,286.74 seconds. Ruff and Admin JavaScript syntax checks are clean. The final browser receipt has 205 passing checks, no errors/warnings or external requests. Delivery receipt and lossless raw log: reports/tabler-ui/delivery.json and release-suite.log.gz. This is implemented/reviewed branch work, not a deployed version.
+
+Plan and evidence: plans/2026-11-17-tabler-ui.md and reports/tabler-ui/. The next section records the still-installed version. Existing rights/DGEG, worker observation and product backlog remain separate.
+
+## Previous installed baseline: CMS homepage and interface INSTALLED (2026-11-17)
 
 Runtime revision b8421994f9d311714de8369a61c66d3ccdb6c1d0 is installed on f0nix after explicit owner release approval. Main and both clean checkouts already referenced that approved revision at preflight; hosted CI 44055444383 passed on it (2,657 passed, 9 skipped, 7 network deselected). Fresh local release checks: 92 passed, ruff and Admin JavaScript syntax clean. The earlier failing development-suite receipt remains historical evidence, not the release CI result.
 

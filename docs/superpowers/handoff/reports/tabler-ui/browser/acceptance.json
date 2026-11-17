@@ -1,0 +1,1027 @@
+{
+  "checks": [
+    {
+      "check": "populated real-data home",
+      "passed": true
+    },
+    {
+      "check": "home light 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home light 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home light 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home light 320 exact values",
+      "passed": true
+    },
+    {
+      "check": "home light 320 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 320 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 320 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 320 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 320 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 320 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor light 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor light 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor light 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor light 320 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor light 320 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor light 320 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "home light 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home light 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home light 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home light 390 exact values",
+      "passed": true
+    },
+    {
+      "check": "home light 390 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 390 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 390 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 390 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 390 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 390 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor light 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor light 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor light 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor light 390 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor light 390 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor light 390 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "home light 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home light 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home light 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home light 768 exact values",
+      "passed": true
+    },
+    {
+      "check": "home light 768 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 768 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 768 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 768 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 768 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 768 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor light 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor light 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor light 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor light 768 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor light 768 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor light 768 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "home light 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home light 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home light 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home light 1440 exact values",
+      "passed": true
+    },
+    {
+      "check": "home light 1440 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 1440 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted light 1440 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 1440 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 1440 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard light 1440 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor light 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor light 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor light 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor light 1440 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor light 1440 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor light 1440 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "home dark 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home dark 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home dark 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home dark 320 exact values",
+      "passed": true
+    },
+    {
+      "check": "home dark 320 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 320 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 320 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 320 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 320 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 320 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor dark 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor dark 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor dark 320 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor dark 320 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor dark 320 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor dark 320 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "home dark 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home dark 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home dark 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home dark 390 exact values",
+      "passed": true
+    },
+    {
+      "check": "home dark 390 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 390 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 390 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 390 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 390 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 390 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor dark 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor dark 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor dark 390 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor dark 390 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor dark 390 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor dark 390 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "home dark 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home dark 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home dark 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home dark 768 exact values",
+      "passed": true
+    },
+    {
+      "check": "home dark 768 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 768 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 768 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 768 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 768 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 768 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor dark 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor dark 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor dark 768 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor dark 768 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor dark 768 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor dark 768 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "home dark 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home dark 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home dark 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home dark 1440 exact values",
+      "passed": true
+    },
+    {
+      "check": "home dark 1440 script-free",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 1440 exact values",
+      "passed": true
+    },
+    {
+      "check": "home-mounted dark 1440 script-free",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 1440 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 1440 one active nav",
+      "passed": true
+    },
+    {
+      "check": "dashboard dark 1440 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "editor dark 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "editor dark 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "editor dark 1440 no authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "editor dark 1440 pinned stylesheet loaded",
+      "passed": true
+    },
+    {
+      "check": "editor dark 1440 one active nav",
+      "passed": true
+    },
+    {
+      "check": "editor dark 1440 controls inside screen",
+      "passed": true
+    },
+    {
+      "check": "local icon font loaded",
+      "passed": true
+    },
+    {
+      "check": "light neutral small badges AA",
+      "passed": true
+    },
+    {
+      "check": "dark neutral small badges AA",
+      "passed": true
+    },
+    {
+      "check": "readable publication date",
+      "passed": true
+    },
+    {
+      "check": "all visible inputs have labels",
+      "passed": true
+    },
+    {
+      "check": "section jump shows current location",
+      "passed": true
+    },
+    {
+      "check": "admin CSP unchanged strict",
+      "passed": true
+    },
+    {
+      "check": "dirty publication stopped before POST",
+      "passed": true
+    },
+    {
+      "check": "real form saved draft",
+      "passed": true
+    },
+    {
+      "check": "draft remains private",
+      "passed": true
+    },
+    {
+      "check": "static preview has saved content",
+      "passed": true
+    },
+    {
+      "check": "publication read back ",
+      "passed": true
+    },
+    {
+      "check": "publication read back /dados",
+      "passed": true
+    },
+    {
+      "check": "stale publication refuses",
+      "passed": true
+    },
+    {
+      "check": "unpublication read back",
+      "passed": true
+    },
+    {
+      "check": "restored exact original cards",
+      "passed": true
+    },
+    {
+      "check": "two-axis canvas active",
+      "passed": true
+    },
+    {
+      "check": "exact first-point keyboard values",
+      "passed": true
+    },
+    {
+      "check": "exact last-point keyboard values",
+      "passed": true
+    },
+    {
+      "check": "print keeps SVG",
+      "passed": true
+    },
+    {
+      "check": "keyboard focus has outline",
+      "passed": true
+    },
+    {
+      "check": "reduced motion respected",
+      "passed": true
+    },
+    {
+      "check": "no-JS save has visible action text",
+      "passed": true
+    },
+    {
+      "check": "no-JS actual save accepted",
+      "passed": true
+    },
+    {
+      "check": "no external browser requests",
+      "passed": true
+    },
+    {
+      "check": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "check": "all non-CMS fingerprints unchanged",
+      "passed": true
+    },
+    {
+      "check": "database integrity and FK",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "external": [],
+  "console_warnings": [],
+  "protected_before": {
+    "dataset_run": {
+      "rows": 90,
+      "sha256": "1a224bf776b9acb85777f5058b8b4f1fdd2c66f94b2d20254d699d03c4346b9b"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_run": {
+      "rows": 6,
+      "sha256": "68a65fa51e7f0fb6b3f6e6c6f3f679dd52b2095c40fb6504e6ebb19a2e66f219"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 373,
+      "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+    },
+    "observation": {
+      "rows": 543113,
+      "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "raw_fetch": {
+      "rows": 736,
+      "sha256": "ad385fcc76b16ea41dfdee10108fe904f7efdcfad5f3c0db02d6e26c65cee7f8"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "fee44454495669084fc040a0dc3dc9619a094c257426b56aa21799fa68be364b"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 48,
+      "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+    },
+    "verification_item": {
+      "rows": 94408,
+      "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+    },
+    "verification_spec": {
+      "rows": 706,
+      "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+    }
+  },
+  "badge_contrast": {
+    "light": [
+      {
+        "text": "Versão 16",
+        "fg": [
+          82,
+          100,
+          95
+        ],
+        "bg": [
+          232.94901960784316,
+          232.05098039215687,
+          227.5607843137255
+        ],
+        "ratio": 5.117245787477666
+      }
+    ],
+    "dark": [
+      {
+        "text": "Versão 16",
+        "fg": [
+          168,
+          184,
+          178
+        ],
+        "bg": [
+          32.294117647058826,
+          37.682352941176475,
+          34.98823529411764
+        ],
+        "ratio": 7.474557839438947
+      }
+    ]
+  },
+  "protected_after": {
+    "dataset_run": {
+      "rows": 90,
+      "sha256": "1a224bf776b9acb85777f5058b8b4f1fdd2c66f94b2d20254d699d03c4346b9b"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_run": {
+      "rows": 6,
+      "sha256": "68a65fa51e7f0fb6b3f6e6c6f3f679dd52b2095c40fb6504e6ebb19a2e66f219"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 373,
+      "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+    },
+    "observation": {
+      "rows": 543113,
+      "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "raw_fetch": {
+      "rows": 736,
+      "sha256": "ad385fcc76b16ea41dfdee10108fe904f7efdcfad5f3c0db02d6e26c65cee7f8"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "fee44454495669084fc040a0dc3dc9619a094c257426b56aa21799fa68be364b"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 48,
+      "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+    },
+    "verification_item": {
+      "rows": 94408,
+      "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+    },
+    "verification_spec": {
+      "rows": 706,
+      "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+    }
+  },
+  "integrity": "ok",
+  "foreign_keys": []
+}
