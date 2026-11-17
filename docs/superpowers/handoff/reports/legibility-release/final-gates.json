@@ -1,0 +1,32 @@
+{
+  "runtime": "42c581f",
+  "full_suite": {
+    "passed": 2785,
+    "deselected": 7,
+    "warnings": 3,
+    "seconds": 1432.38,
+    "run_scope": "controller full working tree; runtime and tests unchanged through 9b3f280"
+  },
+  "committed_gate": {
+    "revision": "9b3f280",
+    "passed": 130,
+    "warnings": 1,
+    "seconds": 167.02,
+    "imports_from_detached_checkout": true,
+    "advertised_routes_assets_http200": true
+  },
+  "ruff": "passed app ingest presentation backoffice tests",
+  "javascript_syntax": "passed chart bundle and admin",
+  "receipts": {
+    "full-suite-42c581f.log": {
+      "archive": "receipts/full-suite-42c581f.log.gz",
+      "sha256_uncompressed": "99612f81f8c59a7cdeecd72974c1b20b7d6887516a7142ef2714df2fc1f11222",
+      "bytes_uncompressed": 12605
+    },
+    "committed-9b3f280.log": {
+      "archive": "receipts/committed-9b3f280.log.gz",
+      "sha256_uncompressed": "f09fa58e148dbfc6805364551eaf5c10107f4003fcd84910f3519259f7ff96d2",
+      "bytes_uncompressed": 1006
+    }
+  }
+}

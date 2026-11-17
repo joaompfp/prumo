@@ -43,11 +43,14 @@ accepted receipts remain distinguishable from the final-runtime receipts. A temp
 independent report used forbidden punctuation; only its authored punctuation was corrected,
 then all 18 typography checks passed. No original statistical receipt was modified.
 
-The controller full offline suite is running against final runtime `42c581f`; its raw log
-is initially retained under the approved scratch path and will be archived losslessly
-with the result. No executable runtime, test, dependency or asset changes are allowed
-while that authoritative run is in progress. Clean-committed-tree acceptance, exact remote
-readback, hosted CI and installed behavior are separate release gates, not implied here.
+The controller full offline suite PASSED: 2,785 passed, seven network tests deselected,
+three warnings in 1,432.38 seconds. It launched at runtime `42c581f`; runtime, assets and
+tests stayed byte-identical through the documentation checkout `9b3f280`. Ruff across
+app/ingest/presentation/backoffice/tests and both JavaScript syntax checks are clean.
+A detached committed checkout at `9b3f280` passed 130 affected tests and the actual
+entrypoint, routes/assets and module-origin checks. Raw logs are archived losslessly
+in `receipts/`, with uncompressed digests in `final-gates.json`. The exact branch remote
+was read back after push. Hosted CI and installed behavior remain separate release gates.
 
 ## Reproduction
 
