@@ -431,7 +431,7 @@ def _submitted_document(kind: str, fields: dict[str, str]) -> dict:
                 ]
         else:
             # Unknown type: keep every submitted value under its own key so switching the
-            # select back to a valid type still finds what was typed.
+            # dropdown back to a valid type still finds what was typed.
             block.update(
                 text=merged.get(f"block_text_{index}", ""),
                 title=merged.get(f"block_title_{index}", ""),
