@@ -66,6 +66,19 @@ def _x_ticks(model) -> list[dict] | None:
     return rows
 
 
+def _comparison_series(model: ComparisonModel) -> list[dict]:
+    """Series metadata in label order.
+
+    Existing pairs keep their ink/red contract without an axis field. A bounded group declares
+    its style key and its single explicit axis so the adapter never infers a second scale.
+    """
+    if model.kind == "comparison":
+        return [{"title": model.labels[0], "unit": model.unit_a, "style": "ink", "badge": ""},
+                {"title": model.labels[1], "unit": model.unit_b, "style": "red", "badge": ""}]
+    return [{"title": label, "unit": unit, "style": style, "badge": "", "axis": 0}
+            for label, unit, style in zip(model.labels, model.units, model.styles)]
+
+
 def build_payload(model: LineChartModel | ComparisonModel, *, badge: str = "",
                   lang: str = "pt") -> dict | None:
     """The browser model for one prepared chart, or None to decline enhancement safely."""
@@ -88,18 +101,16 @@ def build_payload(model: LineChartModel | ComparisonModel, *, badge: str = "",
                    "badge": badge}]
         breaks: list[int] = []
     else:
-        ys = [[_finite(point.a.number), _finite(point.b.number)] for point in model.points]
+        ys = [[_finite(value.number) for value in point.values] for point in model.points]
         periods = [point.period_text for point in model.points]
-        display = [[_display(point.a.value_display, model.unit_a),
-                    _display(point.b.value_display, model.unit_b)] for point in model.points]
+        display = [[_display(value.value_display, unit)
+                    for value, unit in zip(point.values, model.units)]
+                   for point in model.points]
         axes = [_axis(model.lo_a, model.hi_a, model.interval_a, model.ticks_a, model.unit_a)]
         if model.dual:
             axes.append(_axis(model.lo_b, model.hi_b, model.interval_b, model.ticks_b,
                               model.unit_b))
-        series = [{"title": model.labels[0], "unit": model.unit_a, "style": "ink",
-                   "badge": ""},
-                  {"title": model.labels[1], "unit": model.unit_b, "style": "red",
-                   "badge": ""}]
+        series = _comparison_series(model)
         breaks = list(model.breaks)
 
     if any(value is None for row in ys for value in row):

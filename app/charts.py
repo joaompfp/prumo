@@ -131,22 +131,21 @@ def _comparison_plot(model) -> Markup:
         parts.append(f'<text class="chart-axis-label" x="{width - 6}" y="{TOP - 8}" '
                      f'text-anchor="end">{escape(model.unit_b)}</text>')
 
-    for index, value, cls in ((1, lambda p: p.a, "chart-line-a"),
-                              (2, lambda p: p.b, "chart-line-b")):
+    for index, style in enumerate(model.styles):
         commands = [f"{'M' if i == 0 or i in model.breaks else 'L'}"
-                    f"{round(p.x, 1)},{round(value(p).y, 1)}"
+                    f"{round(p.x, 1)},{round(p.values[index].y, 1)}"
                     for i, p in enumerate(model.points)]
         d = " ".join(commands)
-        parts.append(f'<path class="chart-line {cls}" d="{d}" />')
+        parts.append(f'<path class="chart-line chart-line-{style}" d="{d}" />')
 
     for point in model.points:
         cx = round(point.x, 1)
-        for cy, token, label, unit in (
-                (point.a.y, point.a.value_display, model.labels[0], model.unit_a),
-                (point.b.y, point.b.value_display, model.labels[1], model.unit_b)):
-            parts.append(f'<circle class="chart-point" cx="{cx}" cy="{round(cy, 1)}" r="7">'
-                         f'<title>{escape(label)} - {escape(point.period_text)}: '
-                         f'{escape(token)} {escape(unit)}</title></circle>')
+        for index, value in enumerate(point.values):
+            parts.append(f'<circle class="chart-point" cx="{cx}" cy="{round(value.y, 1)}" r="7">'
+                         f'<title>{escape(model.labels[index])} - '
+                         f'{escape(point.period_text)}: '
+                         f'{escape(value.value_display)} {escape(model.units[index])}'
+                         f'</title></circle>')
 
     lx = round(model.last_x, 1)
     for mark in model.marks:
@@ -157,9 +156,9 @@ def _comparison_plot(model) -> Markup:
 
     # A dot on each last point: a pair with one common period draws a one-command path, which is
     # invisible, so the dot is what makes the value locatable.
-    for suffix, cy in (("a", model.points[-1].a.y), ("b", model.points[-1].b.y)):
-        parts.append(f'<circle class="chart-last chart-last-{suffix}" cx="{lx}" '
-                     f'cy="{round(cy, 1)}" r="3.5" />')
+    for index, style in enumerate(model.styles):
+        parts.append(f'<circle class="chart-last chart-last-{style}" cx="{lx}" '
+                     f'cy="{round(model.points[-1].values[index].y, 1)}" r="3.5" />')
 
     parts.extend(_x_tick_markup(model))
     parts.append("</svg>")
@@ -170,16 +169,13 @@ def _comparison_legend(model) -> Markup:
     if model is None:
         return Markup("")
     last = model.points[-1]
-    legend = (
-        '<ul class="legend">'
-        f'<li><span class="legend-swatch swatch-a" aria-hidden="true"></span>{escape(model.labels[0])}'
-        f'<span class="legend-value">{escape(last.a.value_display)} {escape(model.unit_a)}</span>'
-        '</li>'
-        f'<li><span class="legend-swatch swatch-b" aria-hidden="true"></span>{escape(model.labels[1])}'
-        f'<span class="legend-value">{escape(last.b.value_display)} '
-        f'{escape(model.unit_b)}</span></li>'
-        '</ul>')
-    return Markup(legend)
+    items = "".join(
+        f'<li><span class="legend-swatch swatch-{style}" aria-hidden="true"></span>'
+        f'{escape(model.labels[index])}'
+        f'<span class="legend-value">{escape(value.value_display)} '
+        f'{escape(model.units[index])}</span></li>'
+        for index, (style, value) in enumerate(zip(model.styles, last.values)))
+    return Markup(f'<ul class="legend">{items}</ul>')
 
 
 def comparison_svg(model) -> Markup:

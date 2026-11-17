@@ -334,21 +334,38 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
 
 
 @dataclass(frozen=True)
-class ComparisonValue:
+class SeriesValue:
+    """One prepared value on one period, with its exact stored token and display string."""
     number: Decimal
     value_text: str
     value_display: str
     y: float
 
 
+# The pair-facing name stays valid for catalogue readers and CMS code that already imports it.
+ComparisonValue = SeriesValue
+
+
 @dataclass(frozen=True)
-class ComparisonPoint:
+class SeriesPoint:
+    """One shared period with an ordered value for every series in the chart."""
     period: str
     period_text: str
     ordinal: float
     x: float
-    a: ComparisonValue
-    b: ComparisonValue
+    values: tuple[SeriesValue, ...]
+
+    @property
+    def a(self) -> SeriesValue:
+        return self.values[0]
+
+    @property
+    def b(self) -> SeriesValue:
+        return self.values[1]
+
+
+# The pair-facing name stays valid for existing two-series consumers.
+ComparisonPoint = SeriesPoint
 
 
 @dataclass(frozen=True)
@@ -361,9 +378,15 @@ class LastMark:
 
 @dataclass(frozen=True)
 class ComparisonModel:
+    """One or two axes over an ordered set of two-to-six series.
+
+    Pair consumers keep their named fields (`labels`, `unit_a`, `unit_b`, `ticks_a`, `ticks_b`,
+    `lo_a`, `hi_a`, and the `a`/`b` values on each point). The ordered `values` and `styles`
+    tuples are the authoritative representation every renderer loops over.
+    """
     kind: str
     title: str
-    labels: tuple[str, str]
+    labels: tuple[str, ...]
     unit_a: str
     unit_b: str
     dual: bool
@@ -375,7 +398,7 @@ class ComparisonModel:
     right: int
     top: int
     bottom: int
-    points: tuple[ComparisonPoint, ...]
+    points: tuple[SeriesPoint, ...]
     ticks_a: tuple[YTick, ...]
     ticks_b: tuple[YTick, ...]
     lo_a: Decimal
@@ -390,6 +413,92 @@ class ComparisonModel:
     last_anchor: str
     last_dx: int
     marks: tuple[LastMark, ...]
+    styles: tuple[str, ...]
+
+    @property
+    def units(self) -> tuple[str, ...]:
+        """The display unit for each series, in label order."""
+        if len(self.labels) == 2:
+            return (self.unit_a, self.unit_b)
+        return (self.unit_a,) * len(self.labels)
+
+
+def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *,
+                      kind: str, title: str, name: str, labels: tuple[str, ...],
+                      unit_a: str, unit_b: str, styles: tuple[str, ...], dual: bool,
+                      frequency: str, width: int = WIDTH,
+                      height: int = HEIGHT) -> ComparisonModel | None:
+    """Prepare ordered rows, one value tuple per series, for one or two axes.
+
+    Every renderer loops over `SeriesPoint.values`; pair fields are assembled from the same
+    tuples so the SVG and the interactive payload cannot describe different points.
+    """
+    if not rows:
+        return None
+    periods = [r[0] for r in rows]
+    if dual:
+        lo_a, hi_a, ticks_a = padded_domain([r[1][0][0] for r in rows])
+        lo_b, hi_b, ticks_b = padded_domain([r[1][1][0] for r in rows])
+    else:
+        numbers = [value[0] for row in rows for value in row[1]]
+        lo_a, hi_a, ticks_a = padded_domain(numbers)
+        lo_b, hi_b, ticks_b = lo_a, hi_a, ticks_a
+
+    right = RIGHT_DUAL if dual else RIGHT
+    texts_a = [format_axis(t) for t in ticks_a]
+    texts_b = [format_axis(t) for t in ticks_b] if dual else []
+    left = _left_gutter(texts_a + texts_b, width, right)
+    plot_w, plot_h = width - left - right, height - TOP - BOTTOM
+
+    def y_of(number: Decimal, lo: Decimal, hi: Decimal) -> float:
+        span = hi - lo or Decimal(1)
+        return TOP + float((hi - number) / span * plot_h)
+
+    def value_y(index: int, number: Decimal) -> float:
+        return y_of(number, lo_b, hi_b) if dual and index == 1 else y_of(number, lo_a, hi_a)
+
+    ordinals = ordinals_for(periods, frequency)
+    xs = positions(ordinals, left, plot_w)
+    prepared = tuple(
+        SeriesPoint(
+            period=period, period_text=format_period(period, frequency), ordinal=ordinal, x=x,
+            values=tuple(
+                SeriesValue(number=number, value_text=token,
+                            value_display=format_value(token), y=value_y(index, number))
+                for index, (number, token) in enumerate(values)))
+        for (period, values), ordinal, x in zip(rows, ordinals, xs))
+
+    last = prepared[-1]
+    lx = round(last.x, 1)
+    anchor = "end" if lx > width - right - 40 else "middle"
+    marks: list[LastMark] = []
+    for index, style in enumerate(styles):
+        candidate = last.values[index]
+        if marks and abs(candidate.y - marks[-1].y) < 30:
+            continue
+        marks.append(LastMark(y=candidate.y, label=candidate.value_display, suffix=style,
+                              label_y=0.0))
+    prepared_marks = tuple(
+        LastMark(y=m.y, label=m.label, suffix=m.suffix,
+                 label_y=float(m.y - 18 if m.y - 18 >= TOP + 10 else m.y + 26))
+        for m in marks)
+    return ComparisonModel(
+        kind=kind, title=title, labels=labels, unit_a=unit_a, unit_b=unit_b, dual=dual,
+        name=name, frequency=frequency, width=width, height=height, left=left, right=right,
+        top=TOP, bottom=BOTTOM, points=prepared,
+        ticks_a=tuple(YTick(value=t, text=text, y=y_of(t, lo_a, hi_a),
+                            zero=(not dual and t == 0))
+                      for t, text in zip(ticks_a, texts_a)),
+        ticks_b=tuple(YTick(value=t, text=text, y=y_of(t, lo_b, hi_b), zero=False)
+                      for t, text in zip(ticks_b, texts_b)),
+        lo_a=lo_a, hi_a=hi_a, lo_b=lo_b, hi_b=hi_b,
+        interval_a=axis_interval(ticks_a, lo_a, hi_a),
+        interval_b=axis_interval(ticks_b, lo_b, hi_b),
+        x_ticks=tuple(XTick(index=i, ordinal=ordinals[i], x=xs[i], text=text)
+                      for i, text in x_labels(periods, frequency)),
+        breaks=break_indices(ordinals, expected_step(periods, frequency)),
+        last_x=last.x, last_anchor=anchor, last_dx=-6 if anchor == "end" else 0,
+        marks=prepared_marks, styles=styles)
 
 
 def comparison_model(points: list[dict], *, frequency: str, title: str,
@@ -407,67 +516,15 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
         a, b = decimal_or_none(p["a"]), decimal_or_none(p["b"])
         if a is None or b is None:
             continue
-        rows.append((p["period"], a, b, p["a"], p["b"]))
+        rows.append((p["period"], ((a, p["a"]), (b, p["b"]))))
     if not rows:
         return None
 
-    periods = [r[0] for r in rows]
     if dual is None:
         dual = unit_b is not None and unit_b != unit_a
-    if dual:
-        lo_a, hi_a, ticks_a = padded_domain([r[1] for r in rows])
-        lo_b, hi_b, ticks_b = padded_domain([r[2] for r in rows])
-    else:
-        lo_a, hi_a, ticks_a = padded_domain([r[1] for r in rows] + [r[2] for r in rows])
-        lo_b, hi_b, ticks_b = lo_a, hi_a, ticks_a
-
-    right = RIGHT_DUAL if dual else RIGHT
-    texts_a = [format_axis(t) for t in ticks_a]
-    texts_b = [format_axis(t) for t in ticks_b] if dual else []
-    left = _left_gutter(texts_a + texts_b, width, right)
-    plot_w, plot_h = width - left - right, height - TOP - BOTTOM
-
-    def y_of(number: Decimal, lo: Decimal, hi: Decimal) -> float:
-        span = hi - lo or Decimal(1)
-        return TOP + float((hi - number) / span * plot_h)
-
-    ordinals = ordinals_for(periods, frequency)
-    xs = positions(ordinals, left, plot_w)
-    prepared = tuple(
-        ComparisonPoint(
-            period=period, period_text=format_period(period, frequency), ordinal=ordinal, x=x,
-            a=ComparisonValue(number=a, value_text=token_a, value_display=format_value(token_a),
-                              y=y_of(a, lo_a, hi_a)),
-            b=ComparisonValue(number=b, value_text=token_b, value_display=format_value(token_b),
-                              y=y_of(b, lo_b, hi_b)))
-        for (period, a, b, token_a, token_b), ordinal, x in zip(rows, ordinals, xs))
-
-    name = f"{title}: {labels[0]} ({unit_a}) e {labels[1]} ({unit_b or unit_a})"
-    last = prepared[-1]
-    lx = round(last.x, 1)
-    anchor = "end" if lx > width - right - 40 else "middle"
-    marks = [LastMark(y=last.a.y, label=last.a.value_display, suffix="a", label_y=0.0)]
-    if abs(last.a.y - last.b.y) >= 30:
-        marks.append(LastMark(y=last.b.y, label=last.b.value_display, suffix="b", label_y=0.0))
-    marks = tuple(
-        LastMark(y=m.y, label=m.label, suffix=m.suffix,
-                 label_y=float(m.y - 18 if m.y - 18 >= TOP + 10 else m.y + 26))
-        for m in marks)
-    return ComparisonModel(
-        kind="comparison", title=title, labels=labels, unit_a=unit_a,
-        unit_b=unit_b or unit_a, dual=bool(dual), name=name, frequency=frequency,
-        width=width, height=height, left=left, right=right, top=TOP, bottom=BOTTOM,
-        points=prepared,
-        ticks_a=tuple(YTick(value=t, text=text, y=y_of(t, lo_a, hi_a),
-                            zero=(not dual and t == 0))
-                      for t, text in zip(ticks_a, texts_a)),
-        ticks_b=tuple(YTick(value=t, text=text, y=y_of(t, lo_b, hi_b), zero=False)
-                      for t, text in zip(ticks_b, texts_b)),
-        lo_a=lo_a, hi_a=hi_a, lo_b=lo_b, hi_b=hi_b,
-        interval_a=axis_interval(ticks_a, lo_a, hi_a),
-        interval_b=axis_interval(ticks_b, lo_b, hi_b),
-        x_ticks=tuple(XTick(index=i, ordinal=ordinals[i], x=xs[i], text=text)
-                      for i, text in x_labels(periods, frequency)),
-        breaks=break_indices(ordinals, expected_step(periods, frequency)),
-        last_x=last.x, last_anchor=anchor, last_dx=-6 if anchor == "end" else 0,
-        marks=marks)
+    second_unit = unit_b or unit_a
+    name = f"{title}: {labels[0]} ({unit_a}) e {labels[1]} ({second_unit})"
+    return _comparison_model(
+        rows, kind="comparison", title=title, name=name, labels=labels,
+        unit_a=unit_a, unit_b=second_unit, styles=("a", "b"), dual=bool(dual),
+        frequency=frequency, width=width, height=height)
