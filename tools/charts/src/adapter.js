@@ -102,7 +102,26 @@ function nearest(xs, value) {
   return lo;
 }
 
-function optionFor(payload, width, height) {
+/* One block per line, filled with textContent so a publisher title can never become markup.
+ * The browser wraps the text inside the box; values keep their U+00A0 thousands groups. */
+function tooltipNode(payload, point) {
+  const box = document.createElement('div');
+  const lines = [];
+  if (payload.series[0].badge) lines.push(payload.series[0].badge);
+  lines.push(payload.periods[point]);
+  for (let i = 0; i < payload.series.length; i += 1) {
+    lines.push(payload.series[i].title + ': ' + payload.display[point][i]);
+  }
+  for (let i = 0; i < lines.length; i += 1) {
+    const row = document.createElement('div');
+    row.className = 'chart-tip-line';
+    row.textContent = lines[i];
+    box.appendChild(row);
+  }
+  return box;
+}
+
+function optionFor(payload, width) {
   const ink = css('--ink', '#1a1a1a');
   const red = css('--red', '#cc0000');
   const muted = css('--muted', '#524d48');
@@ -124,7 +143,11 @@ function optionFor(payload, width, height) {
       color: muted,
       fontFamily: sans,
       fontSize: 11,
-      align: index === 0 ? 'right' : 'left',
+      // Both names end on their axis. A name that starts at the right axis has to fit inside
+      // `grid.right`, and ECharts 6 shrinks the whole plot when it cannot: at 390px the long
+      // "milhões de euros" would take a quarter of the canvas and move every point under the
+      // cursor. Ending the name at the axis keeps the plot at its designed width.
+      align: 'right',
     },
     axisLine: { show: false },
     axisTick: { show: false },
@@ -184,13 +207,7 @@ function optionFor(payload, width, height) {
     if (!params || !params.length) return '';
     const point = map[params[0].dataIndex];
     if (point === undefined || point < 0) return '';
-    const lines = [];
-    if (payload.series[0].badge) lines.push(payload.series[0].badge);
-    lines.push(payload.periods[point]);
-    for (let i = 0; i < payload.series.length; i += 1) {
-      lines.push(payload.series[i].title + ': ' + payload.display[point][i]);
-    }
-    return lines.join('\n');
+    return tooltipNode(payload, point);
   };
 
   return {
@@ -207,7 +224,8 @@ function optionFor(payload, width, height) {
     series,
     tooltip: {
       trigger: 'axis',
-      renderMode: 'richText',
+      renderMode: 'html',
+      className: 'chart-tooltip',
       confine: true,
       backgroundColor: 'rgba(255, 255, 255, 0.98)',
       borderColor: rule,
@@ -258,7 +276,7 @@ function enhance(root) {
   let chart;
   try {
     chart = init(stage, null, { renderer: 'canvas', width, height });
-    chart.setOption(optionFor(payload, width, height), true);
+    chart.setOption(optionFor(payload, width), true);
   } catch (error) {
     if (chart) {
       try { chart.dispose(); } catch (ignored) { /* fallback stays usable */ }
@@ -269,6 +287,8 @@ function enhance(root) {
 
   const xs = payload.x;
   const map = indexMap(payload);
+  const low = Math.min(xs[0], xs[xs.length - 1]);
+  const high = Math.max(xs[0], xs[xs.length - 1]);
   let current = xs.length - 1;
 
   function show(point, announce) {
@@ -292,17 +312,16 @@ function enhance(root) {
     return point;
   }
 
-  if (width && height) {
-    root.classList.add('chart-enhanced');
-    if (xs.length > 1) {
-      range.hidden = false;
-      range.max = String(xs.length - 1);
-    } else {
-      range.hidden = true;
-    }
-    if (hint) hint.hidden = false;
-    show(xs.length - 1, false);
+  root.classList.add('chart-enhanced');
+  if (xs.length > 1) {
+    range.hidden = false;
+    range.max = String(xs.length - 1);
+  } else {
+    range.hidden = true;
   }
+  // The hint explains arrow-key stepping, which only exists with more than one period.
+  if (hint) hint.hidden = xs.length < 2;
+  show(xs.length - 1, false);
 
   chart.on('updateAxisPointer', (event) => {
     const info = event.axesInfo && event.axesInfo[0];
@@ -310,8 +329,11 @@ function enhance(root) {
     show(nearest(xs, info.value), false);
   });
 
-  // Native pointer/touch selection keeps the persistent readout in step even when the
-  // library's axis-pointer event does not fire for a synthetic or touch event.
+  // The readout follows the same cartesian conversion the series are drawn with. The finder
+  // must name the grid (or both axes): `{xAxisIndex}` alone resolves to the x axis and then
+  // `toLocalCoord` receives a point where it expects one scalar, yielding NaN. Clamping to the
+  // data domain keeps the first and last period reachable at the plot edges and makes the
+  // padding around the plot select that edge instead of a stale period.
   const locate = (event) => {
     const rect = stage.getBoundingClientRect();
     const px = event.clientX - rect.left;
@@ -319,18 +341,48 @@ function enhance(root) {
     if (px < 0 || py < 0 || px > rect.width || py > rect.height) return;
     let value;
     try {
-      const converted = chart.convertFromPixel({ xAxisIndex: 0 }, [px, py]);
+      const converted = chart.convertFromPixel({ gridIndex: 0 }, [px, py]);
       value = Array.isArray(converted) ? converted[0] : converted;
     } catch (ignored) {
       return;
     }
     if (!finite(value)) return;
-    show(nearest(xs, value), false);
+    show(nearest(xs, Math.min(Math.max(value, low), high)), false);
   };
+
+  const showTip = (point) => {
+    try {
+      chart.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: dataIndex(point) });
+    } catch (ignored) { /* the readout is already correct */ }
+  };
+
   // Capture phase: zrender may stop propagation at the canvas, and the readout must still
-  // follow the same pointer/touch position the tooltip uses.
-  stage.addEventListener('pointermove', locate, true);
-  stage.addEventListener('pointerdown', locate, true);
+  // follow the same pointer/touch position the tooltip uses. A touch only selects on release
+  // and only when it did not turn into a scroll, so panning the page over the chart stays inert.
+  let touchStart = null;
+  stage.addEventListener('pointermove', (event) => {
+    if (event.pointerType !== 'touch') locate(event);
+  }, true);
+  stage.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'touch') {
+      touchStart = [event.clientX, event.clientY];
+    } else {
+      locate(event);
+    }
+  }, true);
+  stage.addEventListener('pointerup', (event) => {
+    if (event.pointerType !== 'touch') return;
+    const start = touchStart;
+    touchStart = null;
+    if (!start) return;
+    if (Math.abs(event.clientX - start[0]) > 10 || Math.abs(event.clientY - start[1]) > 10) return;
+    locate(event);
+    showTip(current);
+  }, true);
+  stage.addEventListener('pointercancel', () => { touchStart = null; }, true);
+  stage.addEventListener('pointerleave', () => {
+    try { chart.dispatchAction({ type: 'hideTip' }); } catch (ignored) { /* nothing shown */ }
+  }, true);
 
   range.addEventListener('input', () => show(Number(range.value), true));
   range.addEventListener('focus', () => {
@@ -342,7 +394,7 @@ function enhance(root) {
     const h = stage.clientHeight;
     if (!w || !h) return;
     chart.resize({ width: w, height: h });
-    chart.setOption({ grid: optionFor(payload, w, h).grid });
+    chart.setOption({ grid: optionFor(payload, w).grid });
   };
   if (window.ResizeObserver) {
     const observer = new ResizeObserver(onResize);

@@ -11,8 +11,9 @@ Versions are exact in `package.json` and `package-lock.json`:
 - esbuild 0.25.12
 
 The entry point imports only `LineChart`, `GridComponent`, `TooltipComponent` and
-`CanvasRenderer`, plus Prumo's adapter. The adapter uses `tooltip.renderMode = 'richText'` and
-never builds HTML.
+`CanvasRenderer`, plus Prumo's adapter. The adapter uses `tooltip.renderMode = 'html'`, but the
+formatter returns DOM nodes filled with `textContent`, never an HTML string: publisher titles
+cannot become markup, and CSS wraps the long values instead of clipping them.
 
 ## Rebuild
 

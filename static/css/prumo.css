@@ -277,6 +277,13 @@ section { margin: 54px 0; }
 .chart-readout {
   font-size: 0.9rem; font-variant-numeric: tabular-nums; color: var(--ink);
 }
+/* The tooltip is a DOM node (textContent only, never markup). ECharts writes
+   `white-space: nowrap` inline for HTML tooltips; wrapping it here is what keeps a long
+   value whole instead of letting the box run past the canvas edge. */
+.chart-tooltip {
+  white-space: normal !important;
+  max-width: calc(100% - 16px);
+}
 .chart-hint { font-size: 0.8rem; color: var(--muted); margin: 0; }
 .chart-empty + .chart-controls { min-height: 0; }
 .windows { display: flex; gap: 14px; font-size: 0.85rem; }
@@ -336,7 +343,9 @@ section { margin: 54px 0; }
 .site-footer { border-top: 1px solid var(--rule); margin-top: 80px; padding: 30px 0 40px; }
 .footer-row { display: flex; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
 .site-footer p { margin: 0; font-size: 0.82rem; color: var(--muted); max-width: 56ch; }
-.footer-links { white-space: nowrap; }
+/* Links wrap between whole labels; a link itself never breaks mid-word. */
+.footer-links { white-space: normal; }
+.footer-links a { white-space: nowrap; }
 .site-footer a { color: var(--muted); }
 .site-footer a:hover { color: var(--ink); }
 
@@ -359,6 +368,11 @@ section { margin: 54px 0; }
   .figure-block { padding: 18px; }
   .data-table { display: block; overflow-x: auto; white-space: nowrap; }
   .data-table th, .data-table td { padding: 8px 6px; }
+  /* The readout is long next to a 320px track; stack them so the keyboard range keeps the
+     full content width instead of collapsing to a stub. */
+  .chart-controls { flex-wrap: wrap; gap: 8px 12px; }
+  .chart-range { flex: 1 1 100%; }
+  .chart-readout { flex: 1 1 100%; }
 }
 
 /* --- two-series comparisons --------------------------------------------------------------- */
