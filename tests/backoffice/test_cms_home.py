@@ -5,11 +5,21 @@ authenticated actor as every other CMS mutation. These tests use the real migrat
 the real service and both Admin mount prefixes.
 """
 import json
+from pathlib import Path
 
 import pytest
+import yaml
+from fastapi.testclient import TestClient
 
-from backoffice.cms import HOME_SLUG, Cms
+from app import reads
+from app.main import create_app
+from backoffice.cms import HOME_SLUG, Cms, CmsConflict, CmsRefused
+from ingest.db import open_db
+from ingest.models import Observation
+from ingest.registry import load_registry, sync_registry
+from presentation.catalog import pt
 from tests.backoffice.test_cms_routes import (
+    FETCHED,
     ORIGIN,
     PREFIX,
     Env,
@@ -94,7 +104,11 @@ def test_prepare_is_authenticated_same_origin_audited_and_redirects_to_the_edito
     assert events[0]["note"] == "preparar a página inicial"
     body = json.loads(env.revisions("page", HOME_SLUG)[0]["body_json"])
     assert body["title"] == "Início"
-    assert [block["series_id"] for block in body["blocks"]] == ["ine.hicp_yoy.PT"]
+    assert [block["type"] for block in body["blocks"]] == [
+        "hero", "heading", "card", "themes", "verification", "sources"]
+    cards = [block for block in body["blocks"] if block["type"] == "card"]
+    assert [(card["series_id"], card["label"]) for card in cards] == [
+        ("ine.hicp_yoy.PT", "Inflação (IHPC)")]
 
 
 def test_a_second_prepare_is_409_and_overwrites_nothing(env):
@@ -279,3 +293,294 @@ def test_prepare_and_publication_leave_statistical_and_editorial_rows_unchanged(
             "(SELECT COUNT(*) FROM editorial_event)").fetchone() == editorial
     finally:
         db.close()
+
+
+# --- the complete authored homepage ----------------------------------------------------------
+
+def test_prepared_body_holds_the_complete_current_copy_and_no_live_facts(env):
+    c = env.client()
+    assert _prepare(c).status_code == 303
+    body = json.loads(env.revisions("page", HOME_SLUG)[0]["body_json"])
+    hero, heading, card, themes, verification, sources = body["blocks"]
+    assert hero == {
+        "type": "hero", "eyebrow": "Dados oficiais · proveniência verificada",
+        "title": "Estatísticas oficiais, com a proveniência à vista.",
+        "note": "Cada valor liga à publicação original, à data em que foi recolhido e à "
+                "verificação independente que o acompanhou.",
+        "counts": True, "freshness": True,
+        "actions": [{"label": "Explorar os dados", "href": "/temas/economy"},
+                    {"label": "Como verificamos", "href": "/metodologia"}],
+    }
+    assert heading == {"type": "heading", "title": "Números em destaque",
+                       "note": "Portugal. Valores publicados tal como a fonte os publica."}
+    assert card["label"] == "Inflação (IHPC)"
+    assert themes == {"type": "themes", "title": "Temas",
+                      "note": "Todo o catálogo, por assunto.",
+                      "themes": ["economy", "demography", "energy"]}
+    assert verification["steps"] == [
+        {"label": "Recolha", "text": "O ficheiro original é guardado intacto, com o endereço, "
+                                     "a hora e o resumo criptográfico."},
+        {"label": "Validação", "text": "Unidade, período, sinal e duplicados são verificados "
+                                       "antes de qualquer valor ser aceite."},
+        {"label": "Verificação independente", "text": "Uma amostra aleatória é comparada com "
+                                                      "outra via da mesma instituição, exigindo "
+                                                      "100% de coincidência."},
+    ]
+    assert verification["action"] == {"label": "Ler a metodologia completa",
+                                      "href": "/metodologia"}
+    assert sources == {"type": "sources", "title": "Instituições publicadas", "note": "",
+                       "action": {"label": "Licenças, atribuições e fontes em avaliação",
+                                  "href": "/fontes"}}
+    raw = env.revisions("page", HOME_SLUG)[0]["body_json"]
+    assert "2 séries" not in raw and "13/11/2026" not in raw and "Última recolha" not in raw
+
+
+def test_home_preview_renders_the_complete_home_with_live_facts(env):
+    c = env.client()
+    assert _prepare(c).status_code == 303
+    meta = env.meta("page", HOME_SLUG)
+    assert c.post("/cms/page/inicio/publish",
+                  data={"version": str(meta["version"]), "note": "publicar"},
+                  headers=ORIGIN, follow_redirects=False).status_code == 303
+    preview = c.get("/cms/page/inicio/preview",
+                    headers={"X-Forwarded-Prefix": PREFIX})
+    assert preview.status_code == 200
+    assert "Pré-visualização" in preview.text
+    for text in (
+            "Dados oficiais · proveniência verificada",
+            "Estatísticas oficiais, com a proveniência à vista.",
+            "2 séries de 1 instituições.",
+            "Última recolha verificada: 13/11/2026, 00:00 UTC",
+            "Números em destaque", "Inflação (IHPC)",
+            "Temas", "Todo o catálogo, por assunto.",
+            "A cadeia de verificação", "Recolha.", "Validação.",
+            "Verificação independente.", "Ler a metodologia completa",
+            "Instituições publicadas", "INE - Instituto Nacional de Estatística",
+            "Licenças, atribuições e fontes em avaliação"):
+        assert text in preview.text, text
+    assert 'href="/dados/temas/economy">Explorar os dados' in preview.text
+    assert 'href="/dados/metodologia">Como verificamos' in preview.text
+    assert 'href="/dados/fontes">Licenças, atribuições e fontes em avaliação' in preview.text
+    assert 'href="/dados/temas/energy"' in preview.text
+    assert 'class="theme-count">2 séries' in preview.text
+    assert "/dados/admin/static/css/prumo.css" in preview.text
+    assert 'href="/dados/admin/cms/page/inicio"' in preview.text
+    assert "/static/js/prumo-charts" not in preview.text
+
+
+def test_the_seed_fits_the_full_twelve_card_current_homepage(tmp_path):
+    core = yaml.safe_load(
+        (Path(__file__).resolve().parents[2] / "registry" / "core.yaml").read_text())
+    wanted = {item["series"] for item in pt.CURATED_HOME}
+    registry = tmp_path / "full.yaml"
+    registry.write_text(yaml.safe_dump(
+        {"sources": core["sources"],
+         "series": [row for row in core["series"] if row["id"] in wanted]},
+        sort_keys=False))
+    db_path = tmp_path / "full.sqlite3"
+    specs = load_registry(registry)
+    db = open_db(db_path)
+    try:
+        sync_registry(db, specs)
+        for spec in specs:
+            period = {"A": "2026", "S": "2026-S1", "Q": "2026-Q1", "M": "2026-01"}[
+                spec.frequency]
+            run = db.begin_run(spec.source.name, f"k-{spec.id}", FETCHED)
+            fid = db.record_raw_fetch(
+                source_name=spec.source.name, run_id=run, url="https://x",
+                params_json=None, fetched_at=FETCHED, http_status=200,
+                sha256="a" * 64, path="p", n_bytes=1, ok=True)
+            db.write_observations(run, [
+                (Observation.from_raw(spec.id, period, "1.5"), fid, FETCHED)])
+            db.set_run_state(run, "verified")
+    finally:
+        db.close()
+
+    cms = Cms(db_path, db_path)
+    meta = cms.prepare_home(actor="owner", note="preparar a página inicial")
+    draft = cms.get("page", HOME_SLUG)["draft"]
+    assert len(draft.blocks) == 17  # hero + heading + 12 cards + 3 sections
+    cards = [block for block in draft.blocks if block.type == "card"]
+    assert [(card.series_id, card.label) for card in cards] == [
+        (item["series"], item["label"]) for item in pt.CURATED_HOME]
+
+    cms.publish("page", HOME_SLUG, meta["version"], actor="owner", note="publicar")
+    reads.clear_cache()
+    with TestClient(create_app(str(db_path))) as client:
+        html = client.get("/").text
+    assert html.count('<div class="cards">') == 1
+    assert "12 séries de 3 instituições." in html
+    assert "Última recolha verificada: 13/11/2026, 00:00 UTC" in html
+    for item in pt.CURATED_HOME:
+        assert f">{item['label']}</p>" in html
+    assert "Instituições publicadas" in html
+    assert "A cadeia de verificação" in html
+
+
+def test_initializer_creates_once_and_refuses_an_existing_draft(tmp_path):
+    path = tmp_path / "fresh"
+    path.mkdir()
+    env = Env(path)
+    cms = Cms(env.db_path, env.db_path)
+
+    prepared = cms.initialize_home(actor="deploy-script", prepare_note="inicializar conteúdo")
+    assert prepared["status"] == "prepared"
+    assert prepared["meta"]["published_revision_id"] is None
+    assert [event["action"] for event in env.events("page", HOME_SLUG)] == ["created"]
+
+    with pytest.raises(CmsConflict):
+        cms.initialize_home(actor="deploy-script", prepare_note="repetir")
+    with pytest.raises(CmsConflict):
+        Cms(env.db_path, env.db_path).initialize_home(
+            actor="deploy-script", prepare_note="inicializar", publish=True,
+            publish_note="publicar conteúdo inicial")
+    assert [event["action"] for event in env.events("page", HOME_SLUG)] == ["created"]
+
+
+def test_initializer_publishes_a_fresh_home_and_then_leaves_it_untouched(tmp_path):
+    path = tmp_path / "fresh-publish"
+    path.mkdir()
+    env = Env(path)
+    cms = Cms(env.db_path, env.db_path)
+
+    with pytest.raises(CmsRefused):
+        cms.initialize_home(actor="deploy-script", prepare_note="inicializar", publish=True)
+    assert env.meta("page", HOME_SLUG) is None
+
+    result = cms.initialize_home(actor="deploy-script", prepare_note="inicializar",
+                                 publish=True, publish_note="publicar conteúdo inicial")
+    assert result["status"] == "published"
+    assert result["meta"]["published_revision_id"] == 1
+    events = env.events("page", HOME_SLUG)
+    assert [(event["action"], event["actor"], event["note"]) for event in events] == [
+        ("published", "deploy-script", "publicar conteúdo inicial"),
+        ("created", "deploy-script", "inicializar"),
+    ]
+    before = env.revisions("page", HOME_SLUG)
+
+    again = cms.initialize_home(actor="deploy-script", prepare_note="repetir",
+                                publish=True, publish_note="repetir publicação")
+    assert again["status"] == "already_published"
+    assert env.revisions("page", HOME_SLUG) == before
+    assert len(env.events("page", HOME_SLUG)) == 2
+
+
+def test_home_editor_exposes_labelled_controls_for_every_authored_section(env):
+    c = env.client()
+    assert _prepare(c).status_code == 303
+    editor = c.get("/cms/page/inicio")
+    assert editor.status_code == 200
+    for value in ("hero", "heading", "themes", "verification", "sources"):
+        assert f'value="{value}"' in editor.text
+    assert 'name="block_eyebrow_0"' in editor.text
+    assert 'value="Dados oficiais · proveniência verificada"' in editor.text
+    assert 'name="block_counts_0" value="1" checked' in editor.text
+    assert 'name="block_freshness_0" value="1" checked' in editor.text
+    assert 'name="block_link_label_0_0"' in editor.text
+    assert 'value="Explorar os dados"' in editor.text
+    assert 'name="block_title_1"' in editor.text
+    assert 'value="Números em destaque"' in editor.text
+    assert 'name="block_label_2"' in editor.text
+    assert 'value="Inflação (IHPC)"' in editor.text
+    assert 'name="block_theme_3_0"' in editor.text
+    assert 'value="economy" selected' in editor.text
+    assert 'name="block_step_label_4_0"' in editor.text
+    assert 'value="Recolha"' in editor.text
+    assert 'name="block_link_href_5"' in editor.text
+    assert 'value="/fontes"' in editor.text
+    for name in ("add_eyebrow", "add_title", "add_note", "add_counts", "add_freshness",
+                 "add_link_label_0", "add_theme_0", "add_step_label_0", "add_label"):
+        assert f'name="{name}"' in editor.text, name
+    assert 'data-show-for="hero"' in editor.text
+    assert 'data-show-for="heading hero themes sources"' in editor.text
+    assert 'data-show-for="verification"' in editor.text
+
+
+def test_editor_route_can_edit_reorder_and_remove_the_authored_sections(env):
+    c = env.client()
+    assert _prepare(c).status_code == 303
+    card = {"type": "card", "series_id": "ine.hicp_yoy.PT", "derived_key": None,
+            "label": "Inflação (IHPC)"}
+    blocks = [
+        {"type": "sources", "title": "Fontes em direto", "note": "",
+         "action": {"label": "Ver fontes", "href": "/fontes"}},
+        {"type": "heading", "title": "Números em destaque", "note": "Portugal."},
+        card,
+        {"type": "themes", "title": "Temas", "note": "Por assunto.",
+         "themes": ["economy", "energy"]},
+        {"type": "verification", "title": "A cadeia de verificação",
+         "steps": [{"label": "Recolha", "text": "Ficheiro intacto."}],
+         "action": {"label": "Metodologia", "href": "/metodologia"}},
+        {"type": "hero", "eyebrow": "Abertura", "title": "Título novo", "note": "Nota nova.",
+         "counts": True, "freshness": False,
+         "actions": [{"label": "Ver temas", "href": "/temas/energy"}]},
+    ]
+    meta = env.meta("page", HOME_SLUG)
+    saved = c.post("/cms/page/inicio/save",
+                   data=page_form(meta["version"], title="Início", blocks=blocks,
+                                  note="reordenar secções"),
+                   headers=ORIGIN, follow_redirects=False)
+    assert saved.status_code == 303
+    meta = env.meta("page", HOME_SLUG)
+    assert c.post("/cms/page/inicio/publish",
+                  data={"version": str(meta["version"]), "note": "publicar"},
+                  headers=ORIGIN, follow_redirects=False).status_code == 303
+    preview = c.get("/cms/page/inicio/preview", headers={"X-Forwarded-Prefix": PREFIX})
+    assert "Fontes em direto" in preview.text
+    assert preview.text.index("Fontes em direto") < preview.text.index("Números em destaque") \
+        < preview.text.index("Título novo")
+    assert "Por assunto." in preview.text and "Ficheiro intacto." in preview.text
+    assert 'href="/dados/temas/energy">Ver temas' in preview.text
+
+    # Remove the first block through the ordinary control and save the whole form.
+    meta = env.meta("page", HOME_SLUG)
+    form = page_form(meta["version"], title="Início", blocks=blocks, note="remover fontes")
+    form["remove_0"] = "1"
+    removed = c.post("/cms/page/inicio/save", data=form, headers=ORIGIN,
+                     follow_redirects=False)
+    assert removed.status_code == 303
+    published = c.post("/cms/page/inicio/publish",
+                       data={"version": str(env.meta("page", HOME_SLUG)["version"]),
+                             "note": "publicar remoção"},
+                       headers=ORIGIN, follow_redirects=False)
+    assert published.status_code == 303
+    final = c.get("/cms/page/inicio/preview", headers={"X-Forwarded-Prefix": PREFIX})
+    assert "Fontes em direto" not in final.text
+    assert "Números em destaque" in final.text
+
+
+def test_invalid_home_block_fields_are_422_and_write_nothing(env):
+    c = env.client()
+    assert _prepare(c).status_code == 303
+    before_meta = env.meta("page", HOME_SLUG)
+    before_history = env.revisions("page", HOME_SLUG)
+    version = before_meta["version"]
+
+    missing_href = page_form(version, title="Início", blocks=[
+        {"type": "hero", "eyebrow": "", "title": "Título", "note": "",
+         "counts": False, "freshness": False,
+         "actions": [{"label": "Sem destino", "href": ""}]}], note="inválido")
+    response = c.post("/cms/page/inicio/save", data=missing_href, headers=ORIGIN)
+    assert response.status_code == 422
+    assert "endereço" in response.text
+
+    duplicate = page_form(version, title="Início", blocks=[
+        {"type": "themes", "title": "Temas", "note": "",
+         "themes": ["economy", "economy"]}], note="inválido")
+    response = c.post("/cms/page/inicio/save", data=duplicate, headers=ORIGIN)
+    assert response.status_code == 422
+    assert "tema" in response.text
+
+    out_of_range = page_form(version, title="Início", blocks=[
+        {"type": "text", "text": "A"}], note="inválido")
+    out_of_range["block_theme_0_9"] = "economy"
+    response = c.post("/cms/page/inicio/save", data=out_of_range, headers=ORIGIN)
+    assert response.status_code == 422
+
+    beyond_blocks = page_form(version, title="Início", blocks=[
+        {"type": "text", "text": "A"}], note="inválido")
+    beyond_blocks["block_title_20"] = "Fora do limite"
+    response = c.post("/cms/page/inicio/save", data=beyond_blocks, headers=ORIGIN)
+    assert response.status_code == 422
+    assert env.meta("page", HOME_SLUG) == before_meta
+    assert env.revisions("page", HOME_SLUG) == before_history

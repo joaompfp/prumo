@@ -187,17 +187,97 @@ def test_title_introduction_text_and_note_bounds():
         canonical_chart(note="n" * 4001)
 
 
-def test_block_list_holds_at_most_twelve_typed_blocks():
-    blocks = [{"type": "text", "text": f"paragrafo {i}"} for i in range(12)]
-    assert len(json.loads(canonical_page(blocks=blocks))["blocks"]) == 12
+def test_block_list_holds_the_current_homepage_and_a_bounded_edit_margin():
+    blocks = [{"type": "text", "text": f"paragrafo {i}"} for i in range(cms.MAX_BLOCKS)]
+    assert len(json.loads(canonical_page(blocks=blocks))["blocks"]) == cms.MAX_BLOCKS
     with pytest.raises(ValidationError):
         canonical_page(blocks=blocks + [{"type": "text", "text": "a mais"}])
     with pytest.raises(ValidationError):
         canonical_page(blocks=[{"type": "unknown"}])
+    assert cms.MAX_BLOCKS >= 17  # twelve cards plus the five current home sections
     missing = page_body()
     del missing["blocks"]
     with pytest.raises(ValidationError):
         cms.parse_body("page", missing)
+
+
+def home_blocks():
+    return [
+        {"type": "hero", "eyebrow": "Dados oficiais", "title": "Titulo da inicial",
+         "note": "Uma nota.", "counts": True, "freshness": True,
+         "actions": [{"label": "Explorar", "href": "/temas/economy"}]},
+        {"type": "heading", "title": "Números em destaque", "note": "Portugal."},
+        {"type": "themes", "title": "Temas", "note": "Por assunto.",
+         "themes": ["economy", "demography", "energy"]},
+        {"type": "verification", "title": "A cadeia de verificação",
+         "steps": [{"label": "Recolha", "text": "O ficheiro fica intacto."}],
+         "action": {"label": "Ler a metodologia", "href": "/metodologia"}},
+        {"type": "sources", "title": "Instituições publicadas", "note": "",
+         "action": {"label": "Licenças e fontes", "href": "/fontes"}},
+    ]
+
+
+def test_home_content_blocks_are_typed_and_round_trip():
+    raw = canonical_page(blocks=home_blocks())
+    document = cms.parse_body("page", raw)
+    assert [block.type for block in document.blocks] == [
+        "hero", "heading", "themes", "verification", "sources"]
+    assert document.blocks[0].actions[0].href == "/temas/economy"
+    assert document.blocks[2].themes == ["economy", "demography", "energy"]
+    assert document.blocks[3].steps[0].label == "Recolha"
+    assert cms.canonical_body(document) == raw
+
+
+def test_existing_page_bodies_keep_their_canonical_form():
+    raw = canonical_page()
+    assert cms.require_canonical_body("page", raw) == raw
+    assert json.loads(raw)["blocks"][0] == {
+        "type": "text", "text": "O texto editorial fica em paragrafos simples."}
+
+
+def test_older_card_bodies_without_the_optional_label_stay_canonical():
+    raw = ('{"blocks":[{"derived_key":null,"series_id":"ine.hicp_yoy.PT","type":"card"}],'
+           '"introduction":"","section":"general","title":"Inicio"}')
+    assert cms.canonical_body(cms.parse_body("page", raw)) == raw
+    assert cms.require_canonical_body("page", raw) == raw
+
+
+@pytest.mark.parametrize("href", [
+    "javascript:alert(1)", "https://example.com/x", "//example.com/x", "/x y",
+    "/x\\y", "", "/" + "a" * 201,
+])
+def test_home_block_links_must_be_bounded_site_relative_paths(href):
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{
+            "type": "hero", "eyebrow": "", "title": "Titulo", "note": "",
+            "counts": False, "freshness": False,
+            "actions": [{"label": "Abrir", "href": href}]}])
+
+
+def test_home_block_lists_are_bounded_and_themes_are_unique():
+    hero = home_blocks()[0]
+    actions = [{"label": f"L{i}", "href": "/x"} for i in range(cms.MAX_ACTIONS)]
+    assert len(json.loads(canonical_page(
+        blocks=[{**hero, "actions": actions}]))["blocks"][0]["actions"]) == cms.MAX_ACTIONS
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**hero, "actions": actions + [{"label": "L", "href": "/x"}]}])
+    themes = home_blocks()[2]
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**themes, "themes": ["economy", "economy"]}])
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**themes, "themes": []}])
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**themes, "themes": ["economy"] * (cms.MAX_THEME_REFS + 1)}])
+    verification = home_blocks()[3]
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**verification, "steps": [
+            {"label": f"P{i}", "text": "x"} for i in range(cms.MAX_STEPS + 1)]}])
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**verification, "steps": []}])
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**hero, "title": ""}])
+    with pytest.raises(ValidationError):
+        canonical_page(blocks=[{**hero, "eyebrow": "x" * (cms.MAX_TITLE + 1)}])
 
 
 def test_registry_references_are_ids_not_free_text_or_html():

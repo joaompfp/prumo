@@ -18,6 +18,61 @@
 <div class="cms-text">
   {% for paragraph in block.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
 </div>
+{% elif block.type == "hero" %}
+<section class="hero" aria-labelledby="cms-hero-{{ loop.index }}">
+  {% if block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+  <h1 id="cms-hero-{{ loop.index }}">{{ block.title }}</h1>
+  {% if block.counts_text or block.paragraphs %}
+  <p class="lede">{% if block.counts_text %}{{ block.counts_text }}{% if block.paragraphs %} {% endif %}{% endif %}{% if block.paragraphs %}{{ block.paragraphs[0] }}{% endif %}</p>
+  {% for paragraph in block.paragraphs[1:] %}<p class="lede">{{ paragraph }}</p>{% endfor %}
+  {% endif %}
+  {% if block.actions %}
+  <p class="hero-actions">
+    {% for action in block.actions %}<a class="{{ 'button' if loop.first else 'button-quiet' }}" href="{{ base }}{{ action.href }}">{{ action.label }}</a>{% if not loop.last %} {% endif %}{% endfor %}
+  </p>
+  {% endif %}
+  {% if block.freshness_text %}<p class="freshness"><span class="dot" aria-hidden="true"></span>{{ block.freshness_text }}</p>{% endif %}
+</section>
+{% elif block.type == "heading" %}
+<div class="section-head">
+  <h2 id="cms-heading-{{ loop.index }}">{{ block.title }}</h2>
+  {% if block.note %}<p class="section-note">{{ block.note }}</p>{% endif %}
+</div>
+{% elif block.type == "themes" %}
+<section aria-labelledby="cms-themes-{{ loop.index }}">
+  <div class="section-head">
+    <h2 id="cms-themes-{{ loop.index }}">{{ block.title }}</h2>
+    {% if block.note %}<p class="section-note">{{ block.note }}</p>{% endif %}
+  </div>
+  <div class="themes">
+    {% for theme in block.themes %}
+    <a class="theme-card" href="{{ base }}{{ theme.href }}">
+      <span class="theme-title">{{ theme.title }}</span>
+      <span class="theme-blurb">{{ theme.blurb }}</span>
+      <span class="theme-count">{{ theme.count_text }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% elif block.type == "verification" %}
+<section class="method-strip" aria-labelledby="cms-verification-{{ loop.index }}">
+  <div class="section-head">
+    <h2 id="cms-verification-{{ loop.index }}">{{ block.title }}</h2>
+  </div>
+  <ol class="steps">
+    {% for step in block.steps %}<li><strong>{{ step.label }}.</strong> {{ step.text }}</li>{% endfor %}
+  </ol>
+  {% if block.action %}<p><a href="{{ base }}{{ block.action.href }}">{{ block.action.label }}</a></p>{% endif %}
+</section>
+{% elif block.type == "sources" %}
+<section aria-labelledby="cms-sources-{{ loop.index }}">
+  <div class="section-head">
+    <h2 id="cms-sources-{{ loop.index }}">{{ block.title }}</h2>
+    {% if block.note %}<p class="section-note">{{ block.note }}</p>{% endif %}
+  </div>
+  <p class="sources-strip">{{ block.sources|join(' · ') }}</p>
+  {% if block.action %}<p class="section-note"><a href="{{ base }}{{ block.action.href }}">{{ block.action.label }}</a></p>{% endif %}
+</section>
 {% elif block.type == "chart" %}
 <section class="chart-section" aria-labelledby="cms-chart-{{ loop.index }}">
   <div class="section-head">

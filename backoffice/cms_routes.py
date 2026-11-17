@@ -36,7 +36,17 @@ from backoffice.cms import (
 )
 from backoffice.deps import LANG
 from backoffice.forms import parse_int
-from ingest.cms import KINDS, MAX_BLOCKS, MAX_SLUG, MAX_TEXT, MAX_TITLE
+from ingest.cms import (
+    KINDS,
+    MAX_ACTIONS,
+    MAX_BLOCKS,
+    MAX_REFERENCE,
+    MAX_SLUG,
+    MAX_STEPS,
+    MAX_TEXT,
+    MAX_THEME_REFS,
+    MAX_TITLE,
+)
 
 PAGE_METHODS = ["GET", "HEAD"]
 # The preview links the real public stylesheet from this app's /static mount. Everything else
@@ -44,17 +54,27 @@ PAGE_METHODS = ["GET", "HEAD"]
 PREVIEW_CSP = ("default-src 'none'; style-src 'self' 'unsafe-inline'; "
                "img-src 'self' data:; form-action 'self'; base-uri 'none'; "
                "frame-ancestors 'none'")
-# The editor form is bigger than the editorial one (12 blocks), but still explicitly bounded.
+# The editor form is bigger than the editorial one: 20 blocks with every field group visible
+# so a no-JavaScript switch still carries the values, plus the add-block form. The rendered
+# max-block form carries ~890 names today; 1000 keeps a deliberate bound with headroom.
 CMS_FORM_MAX_BYTES = 131_072
-MAX_FIELDS = 200  # 12 block rows x 5 fields + controls + the scalar fields, with headroom
+MAX_FIELDS = 1000
 
 _SCALARS = frozenset({
     "title", "introduction", "section", "note", "note_text", "version", "block_count",
     "op", "kind", "slug", "new_slug", "revision_id", "series_a", "series_b",
     "derived_key", "window", "scale", "day",
-    "add_type", "add_text", "add_series", "add_derived", "add_chart",
 })
-_BLOCK = re.compile(r"block_(type|text|series|derived|chart)_([0-9]{1,2})\Z")
+_BLOCK = re.compile(
+    r"block_(type|text|series|derived|chart|label|eyebrow|title|note|counts|freshness|"
+    r"link_label|link_href|theme|step_label|step_text)_([0-9]{1,2})(?:_([0-9]{1,2}))?\Z")
+_ADD = re.compile(
+    r"add_(type|text|series|derived|chart|label|eyebrow|title|note|counts|freshness|"
+    r"link_label|link_href|theme|step_label|step_text)(?:_([0-9]{1,2}))?\Z")
+_SLOT_LIMITS = {
+    "link_label": MAX_ACTIONS, "link_href": MAX_ACTIONS,
+    "theme": MAX_THEME_REFS, "step_label": MAX_STEPS, "step_text": MAX_STEPS,
+}
 _CONTROL = re.compile(r"(move_up|move_down|remove)_([0-9]{1,2})\Z")
 _SECTIONS = ("economy", "demography", "energy", "general")
 _WINDOWS = ("max", "1y", "5y", "10y")
@@ -96,6 +116,18 @@ async def _read_form(request: Request) -> tuple[dict[str, str], dict[str, str]]:
         if block is not None:
             if int(block.group(2)) >= MAX_BLOCKS:
                 raise FormError(f"índice de bloco fora do limite: {name}")
+            if block.group(3) is not None:
+                limit = _SLOT_LIMITS.get(block.group(1))
+                if limit is None or int(block.group(3)) >= limit:
+                    raise FormError(f"índice de campo fora do limite: {name}")
+            values[name] = value
+            continue
+        added = _ADD.fullmatch(name)
+        if added is not None:
+            if added.group(2) is not None:
+                limit = _SLOT_LIMITS.get(added.group(1))
+                if limit is None or int(added.group(2)) >= limit:
+                    raise FormError(f"índice de campo fora do limite: {name}")
             values[name] = value
             continue
         control = _CONTROL.fullmatch(name)
@@ -134,23 +166,122 @@ def _block_count(fields: dict[str, str]) -> int:
     return count
 
 
+def _link(fields: dict[str, str], label_name: str, href_name: str, where: str) -> dict | None:
+    label = fields.get(label_name, "").strip()
+    href = fields.get(href_name, "").strip()
+    if not label and not href:
+        return None
+    if not label or not href:
+        raise FormError(f"{where}: a etiqueta e o endereço da ligação têm de ser preenchidos")
+    return {"label": label, "href": href}
+
+
+def _links(fields: dict[str, str], label_prefix: str, href_prefix: str,
+           where: str) -> list[dict]:
+    links = []
+    for position in range(MAX_ACTIONS):
+        link = _link(fields, f"{label_prefix}{position}", f"{href_prefix}{position}", where)
+        if link is not None:
+            links.append(link)
+    return links
+
+
+def _steps(fields: dict[str, str], label_prefix: str, text_prefix: str,
+           where: str) -> list[dict]:
+    steps = []
+    for position in range(MAX_STEPS):
+        label = fields.get(f"{label_prefix}{position}", "").strip()
+        text = fields.get(f"{text_prefix}{position}", "").strip()
+        if not label and not text:
+            continue
+        if not label or not text:
+            raise FormError(f"{where}: o passo {position + 1} precisa de etiqueta e texto")
+        steps.append({"label": label, "text": text})
+    if not steps:
+        raise FormError(f"{where}: acrescente pelo menos um passo")
+    return steps
+
+
+def _themes(fields: dict[str, str], prefix: str, where: str) -> list[str]:
+    codes = [fields.get(f"{prefix}{position}", "").strip()
+             for position in range(MAX_THEME_REFS)]
+    codes = [code for code in codes if code]
+    if not codes:
+        raise FormError(f"{where}: escolha pelo menos um tema")
+    if len(set(codes)) != len(codes):
+        raise FormError(f"{where}: não repita um tema")
+    return codes
+
+
 def _page_body(fields: dict[str, str]) -> dict:
     blocks = []
     for index in range(_block_count(fields)):
         kind = fields.get(f"block_type_{index}", "").strip()
+        where = f"bloco {index + 1}"
         if kind == "text":
             blocks.append({"type": "text", "text": fields.get(f"block_text_{index}", "")})
         elif kind == "card":
-            blocks.append({
+            block = {
                 "type": "card",
                 "series_id": fields.get(f"block_series_{index}", ""),
                 "derived_key": fields.get(f"block_derived_{index}", "").strip() or None,
-            })
+            }
+            label = fields.get(f"block_label_{index}", "").strip()
+            if label:
+                block["label"] = label
+            blocks.append(block)
         elif kind == "chart":
             blocks.append({
                 "type": "chart",
                 "chart_slug": fields.get(f"block_chart_{index}", ""),
             })
+        elif kind == "hero":
+            blocks.append({
+                "type": "hero",
+                "eyebrow": fields.get(f"block_eyebrow_{index}", ""),
+                "title": fields.get(f"block_title_{index}", ""),
+                "note": fields.get(f"block_note_{index}", ""),
+                "counts": fields.get(f"block_counts_{index}", "") == "1",
+                "freshness": fields.get(f"block_freshness_{index}", "") == "1",
+                "actions": _links(fields, f"block_link_label_{index}_",
+                                  f"block_link_href_{index}_", where),
+            })
+        elif kind == "heading":
+            blocks.append({
+                "type": "heading",
+                "title": fields.get(f"block_title_{index}", ""),
+                "note": fields.get(f"block_note_{index}", ""),
+            })
+        elif kind == "themes":
+            blocks.append({
+                "type": "themes",
+                "title": fields.get(f"block_title_{index}", ""),
+                "note": fields.get(f"block_note_{index}", ""),
+                "themes": _themes(fields, f"block_theme_{index}_", where),
+            })
+        elif kind == "verification":
+            block = {
+                "type": "verification",
+                "title": fields.get(f"block_title_{index}", ""),
+                "steps": _steps(fields, f"block_step_label_{index}_",
+                                f"block_step_text_{index}_", where),
+            }
+            action = _link(fields, f"block_link_label_{index}",
+                           f"block_link_href_{index}", where)
+            if action is not None:
+                block["action"] = action
+            blocks.append(block)
+        elif kind == "sources":
+            block = {
+                "type": "sources",
+                "title": fields.get(f"block_title_{index}", ""),
+                "note": fields.get(f"block_note_{index}", ""),
+            }
+            action = _link(fields, f"block_link_label_{index}",
+                           f"block_link_href_{index}", where)
+            if action is not None:
+                block["action"] = action
+            blocks.append(block)
         else:
             raise FormError(f"bloco {index + 1}: tipo de bloco desconhecido")
     return {
@@ -179,13 +310,48 @@ def _add_block(fields: dict[str, str]) -> dict:
     if kind == "text":
         return {"type": "text", "text": fields.get("add_text", "")}
     if kind == "card":
-        return {
+        block = {
             "type": "card",
             "series_id": fields.get("add_series", ""),
             "derived_key": fields.get("add_derived", "").strip() or None,
         }
+        label = fields.get("add_label", "").strip()
+        if label:
+            block["label"] = label
+        return block
     if kind == "chart":
         return {"type": "chart", "chart_slug": fields.get("add_chart", "")}
+    if kind == "hero":
+        return {
+            "type": "hero",
+            "eyebrow": fields.get("add_eyebrow", ""),
+            "title": fields.get("add_title", ""),
+            "note": fields.get("add_note", ""),
+            "counts": fields.get("add_counts", "") == "1",
+            "freshness": fields.get("add_freshness", "") == "1",
+            "actions": _links(fields, "add_link_label_", "add_link_href_", "novo bloco"),
+        }
+    if kind == "heading":
+        return {"type": "heading", "title": fields.get("add_title", ""),
+                "note": fields.get("add_note", "")}
+    if kind == "themes":
+        return {"type": "themes", "title": fields.get("add_title", ""),
+                "note": fields.get("add_note", ""),
+                "themes": _themes(fields, "add_theme_", "novo bloco")}
+    if kind == "verification":
+        block = {"type": "verification", "title": fields.get("add_title", ""),
+                 "steps": _steps(fields, "add_step_label_", "add_step_text_", "novo bloco")}
+        action = _link(fields, "add_link_label", "add_link_href", "novo bloco")
+        if action is not None:
+            block["action"] = action
+        return block
+    if kind == "sources":
+        block = {"type": "sources", "title": fields.get("add_title", ""),
+                 "note": fields.get("add_note", "")}
+        action = _link(fields, "add_link_label", "add_link_href", "novo bloco")
+        if action is not None:
+            block["action"] = action
+        return block
     raise FormError("escolha o tipo de bloco a acrescentar")
 
 
@@ -240,10 +406,21 @@ def _page_label(block: dict) -> str:
     if kind == "text":
         return f"texto: {_short(block.get('text'))}"
     if kind == "card":
+        label = block.get("label") or block.get("series_id")
         suffix = f" + {block.get('derived_key')}" if block.get("derived_key") else ""
-        return f"cartão: {block.get('series_id')}{suffix}"
+        return f"cartão: {label}{suffix}"
     if kind == "chart":
         return f"gráfico: {block.get('chart_slug')}"
+    if kind == "hero":
+        return f"cabeçalho: {_short(block.get('title'))}"
+    if kind == "heading":
+        return f"título: {_short(block.get('title'))}"
+    if kind == "themes":
+        return f"temas: {', '.join(block.get('themes') or ())}"
+    if kind == "verification":
+        return f"verificação: {_short(block.get('title'))}"
+    if kind == "sources":
+        return f"fontes: {_short(block.get('title'))}"
     return "bloco desconhecido"
 
 
@@ -353,6 +530,7 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
         try:
             choices = cms.choices()
             charts = cms.charts() if kind == "page" else ()
+            themes = cms.themes() if kind == "page" else ()
         except (CmsUnavailable, CmsBusy) as exc:
             return render_error(request, 503, "Editor CMS indisponível", str(exc))
         return admin.render(
@@ -360,10 +538,11 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             meta=meta, doc=doc, published=published, published_at=published_at,
             diff=_diff(kind, published, doc), history=history,
             events=data.get("events", ()), usages=data.get("usages", ()),
-            choices=choices, charts=charts, sections=_SECTIONS, windows=_WINDOWS,
-            scales=_SCALES, max_blocks=MAX_BLOCKS, max_slug=MAX_SLUG,
-            max_title=MAX_TITLE, max_text=MAX_TEXT, error=error,
-            is_home=(kind == "page" and slug == HOME_SLUG))
+            choices=choices, charts=charts, themes=themes, sections=_SECTIONS,
+            windows=_WINDOWS, scales=_SCALES, max_blocks=MAX_BLOCKS, max_slug=MAX_SLUG,
+            max_title=MAX_TITLE, max_text=MAX_TEXT, max_reference=MAX_REFERENCE,
+            max_actions=MAX_ACTIONS, max_theme_refs=MAX_THEME_REFS, max_steps=MAX_STEPS,
+            error=error, is_home=(kind == "page" and slug == HOME_SLUG))
 
     def list_page(request: Request, *, status_code: int = 200, error: str | None = None,
                   values: dict[str, str] | None = None):

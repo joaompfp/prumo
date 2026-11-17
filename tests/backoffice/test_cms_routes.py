@@ -6,6 +6,7 @@ real INE source names so the eligibility rules are the production ones, not a mo
 """
 
 import json
+import re
 
 import pytest
 import yaml
@@ -13,6 +14,8 @@ from fastapi.testclient import TestClient
 
 from backoffice.app import create_app
 from backoffice.cms import Cms, CmsBusy
+from backoffice.cms_routes import MAX_FIELDS
+from ingest.cms import MAX_BLOCKS
 from ingest.db import open_db
 from ingest.models import Observation
 from ingest.registry import load_derived, load_registry, sync_derived, sync_registry
@@ -131,6 +134,26 @@ def page_form(version, title="Preços no consumidor", intro="", section="economy
         data[f"block_series_{index}"] = block.get("series_id", "")
         data[f"block_derived_{index}"] = block.get("derived_key", "")
         data[f"block_chart_{index}"] = block.get("chart_slug", "")
+        data[f"block_label_{index}"] = block.get("label", "")
+        data[f"block_eyebrow_{index}"] = block.get("eyebrow", "")
+        data[f"block_title_{index}"] = block.get("title", "")
+        data[f"block_note_{index}"] = block.get("note", "")
+        if block.get("counts"):
+            data[f"block_counts_{index}"] = "1"
+        if block.get("freshness"):
+            data[f"block_freshness_{index}"] = "1"
+        for position, action in enumerate(block.get("actions", [])):
+            data[f"block_link_label_{index}_{position}"] = action["label"]
+            data[f"block_link_href_{index}_{position}"] = action["href"]
+        action = block.get("action")
+        if action:
+            data[f"block_link_label_{index}"] = action["label"]
+            data[f"block_link_href_{index}"] = action["href"]
+        for position, theme in enumerate(block.get("themes", [])):
+            data[f"block_theme_{index}_{position}"] = theme
+        for position, step in enumerate(block.get("steps", [])):
+            data[f"block_step_label_{index}_{position}"] = step["label"]
+            data[f"block_step_text_{index}_{position}"] = step["text"]
     return data
 
 
@@ -434,14 +457,37 @@ def test_forms_refuse_cross_origin_duplicate_fields_and_oversized_bodies(env):
     assert r.status_code == 422 and "repetido" in r.text
 
     assert page_create(c, slug="grande").status_code == 303
-    too_many = page_form(1, blocks=[{"type": "text", "text": "A"}] * 13)
+    too_many = page_form(1, blocks=[{"type": "text", "text": "A"}] * (MAX_BLOCKS + 1))
     r = c.post("/cms/page/grande/save", data=too_many, headers=ORIGIN)
-    assert r.status_code == 422 and "12" in r.text
+    assert r.status_code == 422 and str(MAX_BLOCKS) in r.text
 
     huge = "x" * 140_000
     r = c.post("/cms/page/grande/save",
                data=page_form(1, blocks=[{"type": "text", "text": huge}]), headers=ORIGIN)
     assert r.status_code == 413
+
+
+def test_the_editor_field_bound_covers_the_rendered_max_block_page(env):
+    c = env.client()
+    assert page_create(c, slug="grande").status_code == 303
+    meta = env.meta("page", "grande")
+    blocks = [{"type": "text", "text": f"Paragrafo {i}"} for i in range(MAX_BLOCKS)]
+    saved = c.post("/cms/page/grande/save",
+                   data=page_form(meta["version"], title="Grande", blocks=blocks),
+                   headers=ORIGIN, follow_redirects=False)
+    assert saved.status_code == 303
+    html = c.get("/cms/page/grande").text
+    names = set(re.findall(r'name="([^"]+)"', html))
+    assert len(names) <= MAX_FIELDS
+    assert len(names) > 700  # every type's fields are rendered for a no-JS switch
+
+    before = (env.meta("page", "grande")["version"], len(env.revisions("page", "grande")))
+    flood = {"title": "Grande", "section": "general", "note": "n", "block_count": "0",
+             "version": str(before[0])}
+    flood.update({f"campo_ignorado_{i}": "" for i in range(MAX_FIELDS + 1)})
+    response = c.post("/cms/page/grande/save", data=flood, headers=ORIGIN)
+    assert response.status_code == 422
+    assert (env.meta("page", "grande")["version"], len(env.revisions("page", "grande"))) == before
 
 
 def test_every_action_and_redirect_uses_the_admin_prefix(env):

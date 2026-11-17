@@ -26,9 +26,12 @@ Scale = Literal["single", "dual"]
 KINDS = ("page", "chart")
 MAX_SLUG = 60
 MAX_TITLE = 160
-MAX_BLOCKS = 12
+MAX_BLOCKS = 20  # twelve curated cards plus the five authored home sections, with edit margin
 MAX_TEXT = 4000
 MAX_REFERENCE = 200
+MAX_ACTIONS = 4
+MAX_THEME_REFS = 6
+MAX_STEPS = 6
 
 _SLUG_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*\Z")
 _REFERENCE_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,199}\Z")
@@ -101,6 +104,17 @@ def _validate_reference(value: str, field: str) -> str:
     return value
 
 
+def _validate_href(value: str) -> str:
+    """An authored link is a bounded path inside this site, never a scheme or free URL."""
+    if not value.startswith("/") or value.startswith("//"):
+        raise ValueError("href must be a site-relative path starting with one slash")
+    if "\\" in value or any(char.isspace() or ord(char) < 32 for char in value):
+        raise ValueError("href must not contain whitespace, control characters or backslashes")
+    if len(value) > MAX_REFERENCE:
+        raise ValueError(f"href must be at most {MAX_REFERENCE} characters")
+    return value
+
+
 class _CmsModel(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
 
@@ -119,6 +133,7 @@ class CardBlock(_CmsModel):
     type: Literal["card"]
     series_id: str = Field(min_length=1, max_length=MAX_REFERENCE)
     derived_key: str | None = Field(default=None, max_length=MAX_REFERENCE)
+    label: str | None = Field(default=None, max_length=MAX_TITLE)
 
     @field_validator("series_id")
     @classmethod
@@ -129,6 +144,13 @@ class CardBlock(_CmsModel):
     @classmethod
     def _derived(cls, value: str | None) -> str | None:
         return None if value is None else _validate_reference(value, "derived_key")
+
+    @field_validator("label")
+    @classmethod
+    def _label(cls, value: str | None) -> str | None:
+        if value is None or not value.strip():
+            return None
+        return _validate_text(value, "label", allow_empty=False)
 
 
 class ChartBlock(_CmsModel):
@@ -141,7 +163,146 @@ class ChartBlock(_CmsModel):
         return validate_slug(value)
 
 
-Block = Annotated[TextBlock | CardBlock | ChartBlock, Field(discriminator="type")]
+class Action(_CmsModel):
+    """One authored link. The target is a site path, so the renderer only prefixes the mount."""
+
+    label: str = Field(min_length=1, max_length=MAX_TITLE)
+    href: str = Field(min_length=1, max_length=MAX_REFERENCE)
+
+    @field_validator("label")
+    @classmethod
+    def _label(cls, value: str) -> str:
+        return _validate_text(value, "label", allow_empty=False)
+
+    @field_validator("href")
+    @classmethod
+    def _href(cls, value: str) -> str:
+        return _validate_href(value)
+
+
+class Step(_CmsModel):
+    """One step of the verification chain: a short label plus its explanation."""
+
+    label: str = Field(min_length=1, max_length=MAX_TITLE)
+    text: str = Field(min_length=1, max_length=MAX_TEXT)
+
+    @field_validator("label")
+    @classmethod
+    def _label(cls, value: str) -> str:
+        return _validate_text(value, "label", allow_empty=False)
+
+    @field_validator("text")
+    @classmethod
+    def _text(cls, value: str) -> str:
+        return _validate_text(value, "text", allow_empty=False)
+
+
+class HeroBlock(_CmsModel):
+    """The home masthead. Counts and freshness are live flags, never stored numbers or text."""
+
+    type: Literal["hero"]
+    eyebrow: str = Field(default="", max_length=MAX_TITLE)
+    title: str = Field(min_length=1, max_length=MAX_TITLE)
+    note: str = Field(default="", max_length=MAX_TEXT)
+    counts: bool = False
+    freshness: bool = False
+    actions: list[Action] = Field(default_factory=list, max_length=MAX_ACTIONS)
+
+    @field_validator("eyebrow")
+    @classmethod
+    def _eyebrow(cls, value: str) -> str:
+        return _validate_text(value, "eyebrow", allow_empty=True)
+
+    @field_validator("title")
+    @classmethod
+    def _title(cls, value: str) -> str:
+        return _validate_text(value, "title", allow_empty=False)
+
+    @field_validator("note")
+    @classmethod
+    def _note(cls, value: str) -> str:
+        return _validate_text(value, "note", allow_empty=True)
+
+
+class HeadingBlock(_CmsModel):
+    """A section head: the only section copy the current home needs besides the body blocks."""
+
+    type: Literal["heading"]
+    title: str = Field(min_length=1, max_length=MAX_TITLE)
+    note: str = Field(default="", max_length=MAX_TEXT)
+
+    @field_validator("title")
+    @classmethod
+    def _title(cls, value: str) -> str:
+        return _validate_text(value, "title", allow_empty=False)
+
+    @field_validator("note")
+    @classmethod
+    def _note(cls, value: str) -> str:
+        return _validate_text(value, "note", allow_empty=True)
+
+
+class ThemesBlock(_CmsModel):
+    """The theme directory. References are theme codes; titles, blurbs and counts read live."""
+
+    type: Literal["themes"]
+    title: str = Field(min_length=1, max_length=MAX_TITLE)
+    note: str = Field(default="", max_length=MAX_TEXT)
+    themes: list[str] = Field(min_length=1, max_length=MAX_THEME_REFS)
+
+    @field_validator("title")
+    @classmethod
+    def _title(cls, value: str) -> str:
+        return _validate_text(value, "title", allow_empty=False)
+
+    @field_validator("note")
+    @classmethod
+    def _note(cls, value: str) -> str:
+        return _validate_text(value, "note", allow_empty=True)
+
+    @field_validator("themes")
+    @classmethod
+    def _themes(cls, value: list[str]) -> list[str]:
+        codes = [_validate_reference(code, "theme") for code in value]
+        if len(set(codes)) != len(codes):
+            raise ValueError("themes must not repeat a theme code")
+        return codes
+
+
+class VerificationBlock(_CmsModel):
+    type: Literal["verification"]
+    title: str = Field(min_length=1, max_length=MAX_TITLE)
+    steps: list[Step] = Field(min_length=1, max_length=MAX_STEPS)
+    action: Action | None = None
+
+    @field_validator("title")
+    @classmethod
+    def _title(cls, value: str) -> str:
+        return _validate_text(value, "title", allow_empty=False)
+
+
+class SourcesBlock(_CmsModel):
+    type: Literal["sources"]
+    title: str = Field(min_length=1, max_length=MAX_TITLE)
+    note: str = Field(default="", max_length=MAX_TEXT)
+    action: Action | None = None
+
+    @field_validator("title")
+    @classmethod
+    def _title(cls, value: str) -> str:
+        return _validate_text(value, "title", allow_empty=False)
+
+    @field_validator("note")
+    @classmethod
+    def _note(cls, value: str) -> str:
+        return _validate_text(value, "note", allow_empty=True)
+
+
+Block = Annotated[
+    TextBlock | CardBlock | ChartBlock | HeroBlock | HeadingBlock | ThemesBlock
+    | VerificationBlock | SourcesBlock,
+    Field(discriminator="type"),
+]
 
 
 class PageDocument(_CmsModel):
@@ -256,11 +417,16 @@ def parse_body(kind: str, body_json: str | bytes | dict) -> Document:
 
 
 def canonical_body(document: Document) -> str:
-    """Stable JSON text: sorted keys, compact separators, Unicode kept as authored."""
+    """Stable JSON text: sorted keys, compact separators, Unicode kept as authored.
+
+    Optional fields that were absent from the stored body stay absent. That is what keeps an
+    older revision canonical (and restorable) after a new optional field is added: the
+    storage gate compares this exact text, so re-canonicalizing must not invent defaults.
+    """
     if not isinstance(document, (PageDocument, ChartDocument)):
         raise CmsDocumentError("canonical_body needs a typed PageDocument or ChartDocument")
     return json.dumps(
-        document.model_dump(mode="json"),
+        document.model_dump(mode="json", exclude_unset=True),
         ensure_ascii=False,
         sort_keys=True,
         separators=(",", ":"),

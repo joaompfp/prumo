@@ -57,10 +57,16 @@ def _publish_chart(cms):
     return cms.publish("chart", CHART, meta["version"], actor="owner", note="publicar")
 
 
-def _home(site_path):
+def _home(site_path, prefix: str | None = None):
     reads.clear_cache()
+    headers = {"X-Forwarded-Prefix": prefix} if prefix else {}
     with TestClient(create_app(str(site_path))) as client:
-        return client.get("/")
+        return client.get("/", headers=headers)
+
+
+def _publish_prepared(cms):
+    meta = cms.prepare_home(actor="owner", note="preparar a página inicial completa")
+    return cms.publish("page", HOME_SLUG, meta["version"], actor="owner", note="publicar")
 
 
 def visible(html: str) -> str:
@@ -69,7 +75,7 @@ def visible(html: str) -> str:
 
 # --- preparation -----------------------------------------------------------------------------
 
-def test_prepare_imports_effective_home_cards_title_and_introduction(cms, site_path):
+def test_prepare_imports_the_complete_effective_home_as_typed_sections(cms, site_path):
     meta = cms.prepare_home(actor="owner", note="preparar a página inicial")
     assert meta["version"] == 1
     assert meta["published_revision_id"] is None
@@ -77,20 +83,67 @@ def test_prepare_imports_effective_home_cards_title_and_introduction(cms, site_p
     data = cms.get("page", HOME_SLUG)
     draft = data["draft"]
     assert draft.title == "Início"
-    assert draft.introduction == "Portugal. Valores publicados tal como a fonte os publica."
-    cards = [(block.series_id, block.derived_key) for block in draft.blocks
+    assert draft.introduction == ""
+    assert [block.type for block in draft.blocks] == [
+        "hero", "heading", "card", "card", "themes", "verification", "sources"]
+
+    hero = draft.blocks[0]
+    assert hero.eyebrow == "Dados oficiais · proveniência verificada"
+    assert hero.title == "Estatísticas oficiais, com a proveniência à vista."
+    assert hero.note == ("Cada valor liga à publicação original, à data em que foi recolhido "
+                         "e à verificação independente que o acompanhou.")
+    assert hero.counts is True and hero.freshness is True
+    assert [(action.label, action.href) for action in hero.actions] == [
+        ("Explorar os dados", "/temas/economy"), ("Como verificamos", "/metodologia")]
+
+    heading = draft.blocks[1]
+    assert heading.title == "Números em destaque"
+    assert heading.note == "Portugal. Valores publicados tal como a fonte os publica."
+
+    cards = [(block.series_id, block.derived_key, block.label) for block in draft.blocks
              if block.type == "card"]
-    assert cards == [(HICP, None), (UNEMP, DERIVED)]
+    assert cards == [(HICP, None, "Inflação (IHPC)"), (UNEMP, DERIVED, "Desemprego")]
+
+    themes = draft.blocks[4]
+    assert themes.title == "Temas" and themes.note == "Todo o catálogo, por assunto."
+    assert themes.themes == ["economy", "demography", "energy"]
+
+    verification = draft.blocks[5]
+    assert verification.title == "A cadeia de verificação"
+    assert [step.label for step in verification.steps] == [
+        "Recolha", "Validação", "Verificação independente"]
+    assert verification.action.href == "/metodologia"
+
+    sources = draft.blocks[6]
+    assert sources.title == "Instituições publicadas"
+    assert sources.action.href == "/fontes"
     assert data["events"][0]["action"] == "created"
     assert data["events"][0]["actor"] == "owner"
     assert data["events"][0]["note"] == "preparar a página inicial"
 
-    # The preparation is a private draft: the public home is still the legacy one.
+    # The preparation is a private draft and stores no rendered counts or dates.
+    body = data["history"][0]["body_json"]
+    assert "séries de" not in body and "Última recolha" not in body
     response = _home(site_path)
     assert response.status_code == 200
     assert LEGACY_TITLE in response.text
     assert LEGACY_CARD in response.text
     assert PAGE_TITLE not in response.text
+
+
+def test_prepared_cards_match_the_effective_legacy_home_in_order(cms, site_path):
+    db = open_db(site_path)
+    try:
+        legacy = reads.home(db)
+    finally:
+        db.close()
+    cms.prepare_home(actor="owner", note="preparar")
+    draft = cms.get("page", HOME_SLUG)["draft"]
+    cards = [block for block in draft.blocks if block.type == "card"]
+    assert [card.series_id for card in cards] == [card.series_id for card in legacy.cards]
+    assert [card.derived_key for card in cards] == [
+        DERIVED if card.derived_value_display else None for card in legacy.cards]
+    assert [card.label for card in cards] == [card.label for card in legacy.cards]
 
 
 def test_prepare_does_not_overwrite_and_leaves_source_rows_untouched(cms, site_path):
@@ -291,3 +344,160 @@ def test_only_a_published_eligible_chart_payload_enables_scripts_on_the_home(cms
     assert "/static/js/prumo-charts" not in dropped.text
     assert "Parte desta página não está disponível neste momento." in dropped.text
     assert LEGACY_TITLE not in dropped.text
+
+
+# --- the complete authored homepage ----------------------------------------------------------
+
+def test_prepared_and_published_home_renders_every_current_section(cms, site_path):
+    _publish_prepared(cms)
+    response = _home(site_path)
+    html = response.text
+    assert response.status_code == 200
+
+    for text in (
+            "Dados oficiais · proveniência verificada",
+            "Estatísticas oficiais, com a proveniência à vista.",
+            "3 séries de 2 instituições.",
+            "Cada valor liga à publicação original, à data em que foi recolhido e à "
+            "verificação independente que o acompanhou.",
+            "Última recolha verificada: 03/11/2026, 09:00 UTC",
+            "Explorar os dados", "Como verificamos",
+            "Números em destaque",
+            "Portugal. Valores publicados tal como a fonte os publica.",
+            "Temas", "Todo o catálogo, por assunto.",
+            "A cadeia de verificação",
+            "Recolha.", "Validação.", "Verificação independente.",
+            "Ler a metodologia completa",
+            "Instituições publicadas",
+            "INE - Instituto Nacional de Estatística · Banco Mundial",
+            "Licenças, atribuições e fontes em avaliação"):
+        assert text in html, text
+
+    assert 'href="/temas/economy">Explorar os dados' in html
+    assert 'href="/metodologia">Como verificamos' in html
+    assert 'href="/metodologia">Ler a metodologia completa' in html
+    assert 'href="/fontes">Licenças, atribuições e fontes em avaliação' in html
+    assert 'href="/series/ine.hicp_yoy.PT"' in html
+    assert 'href="/series/ine.unemployment_monthly.PT"' in html
+    assert 'href="/temas/economy"' in html
+    assert 'href="/temas/demography"' in html
+    assert 'href="/temas/energy"' in html
+    assert html.count('<div class="cards">') == 1
+
+    labels = html.index("Dados oficiais")
+    highlights = html.index("Números em destaque")
+    first_card = html.index("Inflação (IHPC)")
+    themes = html.index(">Temas<")
+    verification = html.index("A cadeia de verificação")
+    sources = html.index("Instituições publicadas")
+    assert labels < highlights < first_card < themes < verification < sources
+    assert 'id="cms-hero-1"' in html
+    assert response.headers["content-security-policy"] == SECURITY_HEADERS["Content-Security-Policy"]
+
+
+def test_live_home_facts_change_with_the_database_and_are_not_in_the_body(cms, site_path):
+    published = _publish_prepared(cms)
+    first = _home(site_path)
+    assert "3 séries de 2 instituições." in first.text
+    assert "Última recolha verificada: 03/11/2026, 09:00 UTC" in first.text
+
+    db = open_db(site_path)
+    try:
+        db.conn.execute("UPDATE series SET active = 0 WHERE id = ?", (WORLD,))
+        db.conn.commit()
+    finally:
+        db.close()
+
+    second = _home(site_path)
+    assert "2 séries de 1 instituições." in second.text
+    assert "3 séries de 2 instituições." not in second.text
+    # The authored revision still carries flags, never the rendered numbers.
+    db = open_db(site_path)
+    try:
+        body = db.cms_revision("page", HOME_SLUG, published["published_revision_id"])["body_json"]
+    finally:
+        db.close()
+    assert "séries de" not in body and "Última recolha" not in body
+
+
+def test_revoking_a_source_updates_hero_theme_and_sources_facts(cms, site_path):
+    _publish_prepared(cms)
+    assert "Banco Mundial" in _home(site_path).text
+
+    db = open_db(site_path)
+    try:
+        db.conn.execute("UPDATE source SET redistribution_ok = 0 WHERE name = 'worldbank'")
+        db.conn.commit()
+    finally:
+        db.close()
+
+    html = _home(site_path).text
+    assert "Banco Mundial" not in html
+    assert "2 séries de 1 instituições." in html
+
+
+def test_home_sections_can_be_edited_reordered_and_removed_as_ordinary_blocks(cms, site_path):
+    meta = cms.prepare_home(actor="owner", note="preparar")
+    draft = cms.get("page", HOME_SLUG)["draft"]
+    body = draft.model_dump(mode="json")
+    blocks = body["blocks"]
+    hero, heading = blocks[0], blocks[1]
+    cards = [b for b in blocks if b["type"] == "card"]
+    themes, verification, sources = blocks[-3], blocks[-2], blocks[-1]
+
+    hero["title"] = "Outro título de abertura"
+    hero["note"] = "Outra nota de abertura."
+    hero["actions"] = [{"label": "Ver temas", "href": "/temas/energy"}]
+    themes["note"] = "Escolha por assunto."
+    sources["title"] = "Fontes em direto"
+    new_blocks = [sources, heading, *cards, themes, verification, hero]
+    body["blocks"] = new_blocks
+    saved = cms.save("page", HOME_SLUG, meta["version"], body, actor="owner", note="reordenar")
+    cms.publish("page", HOME_SLUG, saved["version"], actor="owner", note="publicar")
+
+    html = _home(site_path).text
+    assert "Outro título de abertura" in html
+    assert "Outra nota de abertura." in html
+    assert 'href="/temas/energy">Ver temas' in html
+    assert "Escolha por assunto." in html
+    assert "Fontes em direto" in html
+    assert "A cadeia de verificação" in html
+    assert "Números em destaque" in html
+    assert html.index("Fontes em direto") < html.index("Números em destaque") \
+        < html.index("Outro título de abertura")
+    assert html.count('<div class="cards">') == 1
+
+    body["blocks"] = [b for b in new_blocks if b["type"] != "sources"]
+    current = cms.get("page", HOME_SLUG)["meta"]
+    saved = cms.save("page", HOME_SLUG, current["version"], body, actor="owner",
+                     note="remover fontes")
+    cms.publish("page", HOME_SLUG, saved["version"], actor="owner", note="publicar")
+    removed = _home(site_path)
+    assert "Fontes em direto" not in removed.text
+    assert "Licenças, atribuições e fontes em avaliação" not in removed.text
+
+
+def test_home_section_links_use_each_public_prefix_and_preview_matches(cms, site_path):
+    meta = cms.prepare_home(actor="owner", note="preparar")
+    cms.publish("page", HOME_SLUG, meta["version"], actor="owner", note="publicar")
+    html = _home(site_path, prefix="/dados").text
+    for href in ("/dados/temas/economy", "/dados/metodologia", "/dados/fontes"):
+        assert f'href="{href}"' in html
+
+    meta = cms.get("page", HOME_SLUG)["meta"]
+    cms.save("page", HOME_SLUG, meta["version"], {
+        "title": "Início", "introduction": "", "section": "general",
+        "blocks": [{"type": "hero", "eyebrow": "Rascunho", "title": "Título privado",
+                    "note": "", "counts": True, "freshness": True,
+                    "actions": [{"label": "Ver temas", "href": "/temas/energy"}]}],
+    }, actor="owner", note="novo rascunho")
+    assert "Rascunho" not in _home(site_path).text
+
+    name, view = cms.preview("page", HOME_SLUG)
+    preview = _templates().env.get_template(name).render(
+        page=view, preview=True, admin_base="/dados/admin/cms/page/inicio",
+        base="/dados", nav=[], path="/dados/admin/cms/page/inicio/preview")
+    assert "Título privado" in preview
+    assert 'href="/dados/temas/energy">Ver temas' in preview
+    assert "3 séries de 2 instituições." in preview
+    assert "/static/js/prumo-charts" not in preview

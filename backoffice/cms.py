@@ -42,6 +42,8 @@ from presentation import (
     geography_name,
     page_text,
     source_title,
+    theme_blurb,
+    theme_text,
     unit_text,
 )
 from presentation.catalog import pt
@@ -51,6 +53,31 @@ __all__ = ["Cms", "CmsBusy", "CmsConflict", "CmsNotFound", "CmsRefused", "CmsUna
 log = logging.getLogger("backoffice")
 
 HOME_SLUG = cms_reads.HOME_SLUG
+
+# The current homepage copy when the reserved document was migrated from `app/templates/
+# home.html`. These values only seed a new document: after preparation the CMS revision is the
+# authority and edits never read them back. Counts and dates are deliberately NOT here; the
+# seed stores booleans and the renderer resolves them from the database on every request.
+HOME_HERO_EYEBROW = "Dados oficiais · proveniência verificada"
+HOME_HERO_TITLE = "Estatísticas oficiais, com a proveniência à vista."
+HOME_HERO_NOTE = ("Cada valor liga à publicação original, à data em que foi recolhido "
+                  "e à verificação independente que o acompanhou.")
+HOME_HERO_ACTIONS = (("Explorar os dados", "/temas/economy"),
+                     ("Como verificamos", "/metodologia"))
+HOME_THEMES_TITLE = "Temas"
+HOME_THEMES_NOTE = "Todo o catálogo, por assunto."
+HOME_VERIFICATION_TITLE = "A cadeia de verificação"
+HOME_VERIFICATION_STEPS = (
+    ("Recolha", "O ficheiro original é guardado intacto, com o endereço, a hora e o resumo "
+                "criptográfico."),
+    ("Validação", "Unidade, período, sinal e duplicados são verificados antes de qualquer "
+                  "valor ser aceite."),
+    ("Verificação independente", "Uma amostra aleatória é comparada com outra via da mesma "
+                                 "instituição, exigindo 100% de coincidência."),
+)
+HOME_VERIFICATION_ACTION = ("Ler a metodologia completa", "/metodologia")
+HOME_SOURCES_TITLE = "Instituições publicadas"
+HOME_SOURCES_ACTION = ("Licenças, atribuições e fontes em avaliação", "/fontes")
 
 
 class CmsUnavailable(RuntimeError):
@@ -175,6 +202,12 @@ class Cms:
                 for meta in db.cms_list("chart", published_only=True))
             if summary is not None))
 
+    def themes(self) -> tuple[dict, ...]:
+        """The theme directory choices: stable codes with their catalogue titles."""
+        return self._read(lambda db: tuple(
+            {"code": code, "title": self._text(theme_text, code) or code}
+            for code in reads.THEME_ORDER))
+
     def preview(self, kind: str, slug: str) -> tuple[str, object] | None:
         """(template_name, view) for the current DRAFT, in one read-only snapshot.
 
@@ -204,6 +237,30 @@ class Cms:
             return db.cms_create("page", HOME_SLUG, body, actor=actor, note=note)
 
         return self._write(write)
+
+    def initialize_home(self, *, actor: str, prepare_note: str, publish: bool = False,
+                        publish_note: str = "") -> dict:
+        """Idempotent, audited initialization of the complete homepage content.
+
+        A fresh database gets the current homepage as a private draft. With `publish=True`
+        the same call then publishes it as a second audited step. A document that is already
+        published is left untouched and reported as `already_published`; an existing draft
+        is ambiguous (it may contain operator edits) and raises `CmsConflict` instead of
+        being overwritten. The caller must save or discard that draft deliberately.
+        """
+        if publish and not publish_note.strip():
+            raise CmsRefused("publicar a página inicial: o motivo é obrigatório")
+        existing = self.home()
+        if existing is not None:
+            if existing["published_revision_id"] is not None:
+                return {"status": "already_published", "meta": existing}
+            raise CmsConflict("page", HOME_SLUG, 0, existing["version"])
+        prepared = self.prepare_home(actor=actor, note=prepare_note)
+        if publish:
+            self.publish("page", HOME_SLUG, prepared["version"], actor=actor,
+                         note=publish_note)
+            return {"status": "published", "meta": self.home()}
+        return {"status": "prepared", "meta": self.home()}
 
     def create(self, kind: str, slug: str, body_dict, *, actor: str, note: str) -> dict:
         kind = self._kind(kind)
@@ -263,22 +320,29 @@ class Cms:
     # --- internals -----------------------------------------------------------------------
 
     def _home_body(self, db: Db) -> dict:
-        """The private draft body imported from whatever `/` renders today.
+        """The complete current homepage as a private typed draft.
 
         A published editorial composition wins over the code list, exactly as `reads.home`
         does. Each slot goes through the same `prepare_card` rule the public CMS renderer
         uses, so the draft contains only cards that can actually render. A calculated
         companion that is no longer eligible degrades to its base card instead of silently
         removing the card the reader currently sees.
+
+        The hero stores live flags, not the rendered counts or dates; the theme directory
+        stores theme codes, not their titles or counts; the sources section stores no list.
+        All of those facts are resolved from the read-only snapshot at render time.
         """
+        text = page_text(self.lang, HOME_SLUG)
         composed = reads.page_composition(db, HOME_SLUG, self.lang)
-        slots = ([(row["id"], key) for row, key in composed] if composed is not None
-                 else [(item["series"], item["derived"]) for item in pt.CURATED_HOME])
-        facts, raw = reads.slot_facts(db, slots, self.lang)
+        slots = ([(row["id"], key, None) for row, key in composed] if composed is not None
+                 else [(item["series"], item["derived"], item["label"])
+                       for item in pt.CURATED_HOME])
+        facts, raw = reads.slot_facts(db, [(series_id, key) for series_id, key, _ in slots],
+                                      self.lang)
         taken: set[str] = set()
-        blocks: list[dict] = []
+        cards: list[dict] = []
         kept: list[str] = []
-        for (series_id, derived_key), fact in zip(slots, facts):
+        for (series_id, derived_key, label), fact in zip(slots, facts):
             if fact is None:
                 continue  # not part of this database's effective home
             card, reason = reads.prepare_card(db, series_id, derived_key, lang=self.lang,
@@ -293,13 +357,53 @@ class Cms:
                             series_id, reason)
                 continue
             taken.add(card.title)
-            blocks.append({"type": "card", "series_id": series_id, "derived_key": used_key})
+            block = {"type": "card", "series_id": series_id, "derived_key": used_key}
+            if label is not None:
+                block["label"] = label
+            cards.append(block)
             kept.append(series_id)
-        text = page_text(self.lang, HOME_SLUG)
         all_pt = all(raw[series_id]["geography"] in reads.PT_GEOS for series_id in kept)
+        blocks = [
+            {
+                "type": "hero",
+                "eyebrow": HOME_HERO_EYEBROW,
+                "title": HOME_HERO_TITLE,
+                "note": HOME_HERO_NOTE,
+                "counts": True,
+                "freshness": True,
+                "actions": [{"label": label, "href": href}
+                            for label, href in HOME_HERO_ACTIONS],
+            },
+            {
+                "type": "heading",
+                "title": text["section_title"],
+                "note": text["note_all_pt"] if all_pt else text["note_mixed"],
+            },
+            *cards,
+            {
+                "type": "themes",
+                "title": HOME_THEMES_TITLE,
+                "note": HOME_THEMES_NOTE,
+                "themes": list(reads.THEME_ORDER),
+            },
+            {
+                "type": "verification",
+                "title": HOME_VERIFICATION_TITLE,
+                "steps": [{"label": label, "text": body}
+                          for label, body in HOME_VERIFICATION_STEPS],
+                "action": {"label": HOME_VERIFICATION_ACTION[0],
+                           "href": HOME_VERIFICATION_ACTION[1]},
+            },
+            {
+                "type": "sources",
+                "title": HOME_SOURCES_TITLE,
+                "note": "",
+                "action": {"label": HOME_SOURCES_ACTION[0], "href": HOME_SOURCES_ACTION[1]},
+            },
+        ]
         return {
             "title": text["title"],
-            "introduction": text["note_all_pt"] if all_pt else text["note_mixed"],
+            "introduction": "",
             "section": "general",
             "blocks": blocks,
         }
@@ -463,6 +567,17 @@ class Cms:
         if problems:
             return "; ".join(f"cartão {position + 1}: {reason}"
                              for position, reason in problems)
+        for block in doc.blocks:
+            if not isinstance(block, documents.ThemesBlock):
+                continue
+            for code in block.themes:
+                if code not in reads.THEME_ORDER:
+                    return f"tema desconhecido: {code}"
+                try:
+                    theme_text(self.lang, code)
+                    theme_blurb(self.lang, code)
+                except MissingText:
+                    return f"o tema {code} não tem texto editorial nesta língua"
         for block in doc.blocks:
             if not isinstance(block, documents.ChartBlock):
                 continue

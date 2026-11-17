@@ -33,6 +33,7 @@ from presentation import (
     series_title,
     source_text,
     source_title,
+    theme_blurb,
     theme_text,
     unit_text,
 )
@@ -127,6 +128,69 @@ class TextBlockView:
 
 
 @dataclass(frozen=True)
+class ActionView:
+    label: str
+    href: str
+
+
+@dataclass(frozen=True)
+class HeroBlockView:
+    type: str
+    eyebrow: str
+    title: str
+    paragraphs: tuple[str, ...]
+    counts_text: str
+    freshness_text: str
+    actions: tuple[ActionView, ...]
+
+
+@dataclass(frozen=True)
+class HeadingBlockView:
+    type: str
+    title: str
+    note: str
+
+
+@dataclass(frozen=True)
+class ThemeLink:
+    title: str
+    blurb: str
+    count_text: str
+    href: str
+
+
+@dataclass(frozen=True)
+class ThemesBlockView:
+    type: str
+    title: str
+    note: str
+    themes: tuple[ThemeLink, ...]
+
+
+@dataclass(frozen=True)
+class StepView:
+    label: str
+    text: str
+
+
+@dataclass(frozen=True)
+class VerificationBlockView:
+    type: str
+    title: str
+    steps: tuple[StepView, ...]
+    action: ActionView | None
+
+
+@dataclass(frozen=True)
+class SourcesBlockView:
+    type: str
+    title: str
+    note: str
+    sources: tuple[str, ...]
+    action: ActionView | None
+
+
+@dataclass(frozen=True)
 class CardBlockView:
     type: str
     card: reads.Card
@@ -138,7 +202,8 @@ class ChartBlockView:
     chart: CmsChartView
 
 
-BlockView = TextBlockView | CardBlockView | ChartBlockView
+BlockView = (TextBlockView | HeroBlockView | HeadingBlockView | ThemesBlockView
+             | VerificationBlockView | SourcesBlockView | CardBlockView | ChartBlockView)
 
 
 @dataclass(frozen=True)
@@ -151,6 +216,11 @@ class CmsPageView:
     blocks: tuple[BlockView, ...]
     has_charts: bool
     availability_note: str
+
+    @property
+    def has_hero(self) -> bool:
+        """True when the author placed a hero block: the home shell must not add a second."""
+        return any(isinstance(block, HeroBlockView) for block in self.blocks)
 
     @property
     def chart_payload(self) -> dict | None:
@@ -459,18 +529,91 @@ def _derived_chart_view(db: Db, slug: str, doc: documents.ChartDocument, key: st
 
 # --- pages -----------------------------------------------------------------------------------
 
+def _action_view(action: documents.Action) -> ActionView:
+    return ActionView(label=action.label, href=action.href)
+
+
+def _hero_view(block: documents.HeroBlock, facts: dict | None) -> HeroBlockView:
+    counts_text = ""
+    if block.counts and facts is not None:
+        counts_text = (f"{format_count(facts['series'])} séries de "
+                       f"{format_count(facts['sources'])} instituições.")
+    freshness_text = ""
+    if block.freshness and facts is not None:
+        last = format_datetime(facts["last_fetched_at"])
+        freshness_text = f"Última recolha verificada: {last}" if last else ""
+    return HeroBlockView(
+        type="hero", eyebrow=block.eyebrow, title=block.title,
+        paragraphs=_paragraphs(block.note), counts_text=counts_text,
+        freshness_text=freshness_text,
+        actions=tuple(_action_view(action) for action in block.actions))
+
+
+def _themes_view(db: Db, slug: str, block: documents.ThemesBlock,
+                 lang: str) -> ThemesBlockView:
+    rows = reads.catalogue(db)
+    themes = []
+    for code in block.themes:
+        try:
+            title = theme_text(lang, code)
+            blurb = theme_blurb(lang, code)
+        except MissingText as exc:
+            log.warning("cms page block theme dropped slug=%s theme=%s reason=%s",
+                        slug, code, exc)
+            continue
+        themes.append(ThemeLink(
+            title=title, blurb=blurb,
+            count_text=f"{format_count(sum(1 for row in rows if row['theme'] == code))} séries",
+            href=f"/temas/{code}"))
+    return ThemesBlockView(type="themes", title=block.title, note=block.note,
+                           themes=tuple(themes))
+
+
+def _sources_view(db: Db, block: documents.SourcesBlock,
+                  lang: str) -> SourcesBlockView:
+    published = tuple(source_title(lang, source["name"]) for source in db.public_sources()
+                      if source["redistribution_ok"] and source["series"])
+    return SourcesBlockView(
+        type="sources", title=block.title, note=block.note, sources=published,
+        action=_action_view(block.action) if block.action is not None else None)
+
+
 def _page_view(db: Db, slug: str, doc: documents.PageDocument, lang: str) -> CmsPageView:
     blocks: list[BlockView] = []
     dropped = 0
     taken: set[str] = set()
+    needs_facts = any(
+        isinstance(block, documents.HeroBlock) and (block.counts or block.freshness)
+        for block in doc.blocks)
+    facts = db.public_counts() if needs_facts else None
     for block in doc.blocks:
         if isinstance(block, documents.TextBlock):
             blocks.append(TextBlockView(type="text", paragraphs=_paragraphs(block.text)))
             continue
+        if isinstance(block, documents.HeroBlock):
+            blocks.append(_hero_view(block, facts))
+            continue
+        if isinstance(block, documents.HeadingBlock):
+            blocks.append(HeadingBlockView(type="heading", title=block.title, note=block.note))
+            continue
+        if isinstance(block, documents.ThemesBlock):
+            blocks.append(_themes_view(db, slug, block, lang))
+            continue
+        if isinstance(block, documents.VerificationBlock):
+            blocks.append(VerificationBlockView(
+                type="verification", title=block.title,
+                steps=tuple(StepView(label=step.label, text=step.text)
+                            for step in block.steps),
+                action=_action_view(block.action) if block.action is not None else None))
+            continue
+        if isinstance(block, documents.SourcesBlock):
+            blocks.append(_sources_view(db, block, lang))
+            continue
         if isinstance(block, documents.CardBlock):
             try:
                 card, reason = reads.prepare_card(db, block.series_id, block.derived_key,
-                                                  lang=lang, titles_taken=taken)
+                                                  label=block.label, lang=lang,
+                                                  titles_taken=taken)
             except MissingText as exc:
                 card, reason = None, f"missing_text:{exc}"
             if card is None:
@@ -481,6 +624,8 @@ def _page_view(db: Db, slug: str, doc: documents.PageDocument, lang: str) -> Cms
             taken.add(card.title)
             blocks.append(CardBlockView(type="card", card=card))
             continue
+        if not isinstance(block, documents.ChartBlock):
+            continue  # unreachable for a typed document
         meta = db.cms_get("chart", block.chart_slug)
         chart_doc = (_document(db, "chart", block.chart_slug, meta["published_revision_id"])
                      if meta is not None else None)

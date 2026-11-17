@@ -100,6 +100,11 @@ O rascunho não está em direto; guardar não publica.</p>
     <label for="block-type-{{ i }}">Tipo</label>
     <select id="block-type-{{ i }}" name="block_type_{{ i }}" data-block-type-select>
     <option value="text"{% if b.type == 'text' %} selected{% endif %}>texto</option>
+    <option value="heading"{% if b.type == 'heading' %} selected{% endif %}>título de secção</option>
+    <option value="hero"{% if b.type == 'hero' %} selected{% endif %}>cabeçalho de abertura</option>
+    <option value="themes"{% if b.type == 'themes' %} selected{% endif %}>diretório de temas</option>
+    <option value="verification"{% if b.type == 'verification' %} selected{% endif %}>cadeia de verificação</option>
+    <option value="sources"{% if b.type == 'sources' %} selected{% endif %}>instituições publicadas</option>
     <option value="card"{% if b.type == 'card' %} selected{% endif %}>cartão de série</option>
     <option value="chart"{% if b.type == 'chart' %} selected{% endif %}>gráfico</option>
     </select>
@@ -112,12 +117,105 @@ O rascunho não está em direto; guardar não publica.</p>
     <textarea id="block-text-{{ i }}" name="block_text_{{ i }}" maxlength="{{ max_text }}" rows="4" cols="70">{{ b.text if b.type == 'text' and b.text is defined else '' }}</textarea>
   </div>
 </div>
+<div class="form-grid" data-show-for="heading hero themes verification sources">
+  <div class="field span-2">
+    <label for="block-title-{{ i }}">Título</label>
+    <input id="block-title-{{ i }}" type="text" name="block_title_{{ i }}" maxlength="{{ max_title }}" size="60"
+     value="{{ b.get('title', '') }}">
+  </div>
+</div>
+<div class="form-grid" data-show-for="heading hero themes sources">
+  <div class="field span-2">
+    <label for="block-note-{{ i }}">Nota (opcional)</label>
+    <textarea id="block-note-{{ i }}" name="block_note_{{ i }}" maxlength="{{ max_text }}" rows="3" cols="70">{{ b.get('note', '') }}</textarea>
+  </div>
+</div>
+<div class="form-grid" data-show-for="hero">
+  <div class="field span-2">
+    <label for="block-eyebrow-{{ i }}">Sobretítulo</label>
+    <input id="block-eyebrow-{{ i }}" type="text" name="block_eyebrow_{{ i }}" maxlength="{{ max_title }}" size="60"
+     value="{{ b.get('eyebrow', '') }}">
+  </div>
+  <div class="field">
+    <label><input type="checkbox" name="block_counts_{{ i }}" value="1"{% if b.get('counts') %} checked{% endif %}> Mostrar contagem de séries e instituições</label>
+    <span class="hint">Lida da base de dados em cada pedido; não fica guardada no texto.</span>
+  </div>
+  <div class="field">
+    <label><input type="checkbox" name="block_freshness_{{ i }}" value="1"{% if b.get('freshness') %} checked{% endif %}> Mostrar data da última recolha verificada</label>
+    <span class="hint">Lida da base de dados em cada pedido; não fica guardada no texto.</span>
+  </div>
+</div>
+<div class="form-grid" data-show-for="hero">
+  {% set actions = b.get('actions', []) if b.type == 'hero' else [] %}
+  {% for j in range(max_actions) %}
+  {% set action = actions[j] if actions|length > j else none %}
+  <div class="field">
+    <label for="block-link-label-{{ i }}-{{ j }}">Ligação {{ j + 1 }}: texto</label>
+    <input id="block-link-label-{{ i }}-{{ j }}" type="text" name="block_link_label_{{ i }}_{{ j }}"
+     maxlength="{{ max_title }}" size="30" value="{{ action.label if action else '' }}">
+  </div>
+  <div class="field">
+    <label for="block-link-href-{{ i }}-{{ j }}">Ligação {{ j + 1 }}: endereço</label>
+    <input id="block-link-href-{{ i }}-{{ j }}" type="text" name="block_link_href_{{ i }}_{{ j }}"
+     maxlength="{{ max_reference }}" size="30" value="{{ action.href if action else '' }}">
+    <span class="hint">Caminho interno, por exemplo /temas/economy.</span>
+  </div>
+  {% endfor %}
+</div>
+<div class="form-grid" data-show-for="themes">
+  {% set selected_themes = b.get('themes', []) if b.type == 'themes' else [] %}
+  {% for j in range(max_theme_refs) %}
+  <div class="field">
+    <label for="block-theme-{{ i }}-{{ j }}">Tema {{ j + 1 }}</label>
+    <select id="block-theme-{{ i }}-{{ j }}" name="block_theme_{{ i }}_{{ j }}">
+      <option value="">(sem tema)</option>
+      {% for theme in themes %}<option value="{{ theme.code }}"{% if selected_themes|length > j and selected_themes[j] == theme.code %} selected{% endif %}>{{ theme.title }}</option>{% endfor %}
+    </select>
+  </div>
+  {% endfor %}
+</div>
+<div class="form-grid" data-show-for="verification">
+  {% set steps = b.get('steps', []) if b.type == 'verification' else [] %}
+  {% for j in range(max_steps) %}
+  {% set step = steps[j] if steps|length > j else none %}
+  <div class="field">
+    <label for="block-step-label-{{ i }}-{{ j }}">Passo {{ j + 1 }}: etiqueta</label>
+    <input id="block-step-label-{{ i }}-{{ j }}" type="text" name="block_step_label_{{ i }}_{{ j }}"
+     maxlength="{{ max_title }}" size="30" value="{{ step.label if step else '' }}">
+  </div>
+  <div class="field span-2">
+    <label for="block-step-text-{{ i }}-{{ j }}">Passo {{ j + 1 }}: texto</label>
+    <textarea id="block-step-text-{{ i }}-{{ j }}" name="block_step_text_{{ i }}_{{ j }}"
+     maxlength="{{ max_text }}" rows="2" cols="70">{{ step.text if step else '' }}</textarea>
+  </div>
+  {% endfor %}
+</div>
+<div class="form-grid" data-show-for="verification sources">
+  {% set action = b.get('action') if b.type in ('verification', 'sources') else none %}
+  <div class="field">
+    <label for="block-link-label-{{ i }}">Ligação: texto (opcional)</label>
+    <input id="block-link-label-{{ i }}" type="text" name="block_link_label_{{ i }}"
+     maxlength="{{ max_title }}" size="40" value="{{ action.label if action else '' }}">
+  </div>
+  <div class="field">
+    <label for="block-link-href-{{ i }}">Ligação: endereço</label>
+    <input id="block-link-href-{{ i }}" type="text" name="block_link_href_{{ i }}"
+     maxlength="{{ max_reference }}" size="30" value="{{ action.href if action else '' }}">
+    <span class="hint">Caminho interno, por exemplo /metodologia.</span>
+  </div>
+</div>
 <div class="form-grid" data-show-for="card">
   <div class="field">
     <label for="block-series-{{ i }}">Série do cartão</label>
     <select id="block-series-{{ i }}" name="block_series_{{ i }}" data-filterable data-filter-label="Filtrar séries do cartão">
     {{ series_options(choices, b.series_id if b.type == 'card' and b.series_id is defined else None, "escolher série") }}
     </select>
+  </div>
+  <div class="field">
+    <label for="block-label-{{ i }}">Texto do cartão (opcional)</label>
+    <input id="block-label-{{ i }}" type="text" name="block_label_{{ i }}" maxlength="{{ max_title }}"
+     size="30" value="{{ b.get('label') or '' }}">
+    <span class="hint">Sem texto, usa o título da série.</span>
   </div>
   <div class="field">
     <label for="block-derived-{{ i }}">Série calculada do cartão</label>
@@ -149,6 +247,11 @@ O rascunho não está em direto; guardar não publica.</p>
     <label for="add-type">Tipo</label>
     <select id="add-type" name="add_type" data-block-type-select>
     <option value="text">texto</option>
+    <option value="heading">título de secção</option>
+    <option value="hero">cabeçalho de abertura</option>
+    <option value="themes">diretório de temas</option>
+    <option value="verification">cadeia de verificação</option>
+    <option value="sources">instituições publicadas</option>
     <option value="card">cartão de série</option>
     <option value="chart">gráfico</option>
     </select>
@@ -160,10 +263,89 @@ O rascunho não está em direto; guardar não publica.</p>
     <textarea id="add-text" name="add_text" maxlength="{{ max_text }}" rows="3" cols="70"></textarea>
   </div>
 </div>
+<div class="form-grid" data-show-for="heading hero themes verification sources">
+  <div class="field span-2">
+    <label for="add-title">Título</label>
+    <input id="add-title" type="text" name="add_title" maxlength="{{ max_title }}" size="60">
+  </div>
+</div>
+<div class="form-grid" data-show-for="heading hero themes sources">
+  <div class="field span-2">
+    <label for="add-note">Nota (opcional)</label>
+    <textarea id="add-note" name="add_note" maxlength="{{ max_text }}" rows="3" cols="70"></textarea>
+  </div>
+</div>
+<div class="form-grid" data-show-for="hero">
+  <div class="field span-2">
+    <label for="add-eyebrow">Sobretítulo</label>
+    <input id="add-eyebrow" type="text" name="add_eyebrow" maxlength="{{ max_title }}" size="60">
+  </div>
+  <div class="field">
+    <label><input type="checkbox" name="add_counts" value="1"> Mostrar contagem de séries e instituições</label>
+  </div>
+  <div class="field">
+    <label><input type="checkbox" name="add_freshness" value="1"> Mostrar data da última recolha verificada</label>
+  </div>
+</div>
+<div class="form-grid" data-show-for="hero">
+  {% for j in range(max_actions) %}
+  <div class="field">
+    <label for="add-link-label-{{ j }}">Ligação {{ j + 1 }}: texto</label>
+    <input id="add-link-label-{{ j }}" type="text" name="add_link_label_{{ j }}"
+     maxlength="{{ max_title }}" size="30">
+  </div>
+  <div class="field">
+    <label for="add-link-href-{{ j }}">Ligação {{ j + 1 }}: endereço</label>
+    <input id="add-link-href-{{ j }}" type="text" name="add_link_href_{{ j }}"
+     maxlength="{{ max_reference }}" size="30">
+  </div>
+  {% endfor %}
+</div>
+<div class="form-grid" data-show-for="themes">
+  {% for j in range(max_theme_refs) %}
+  <div class="field">
+    <label for="add-theme-{{ j }}">Tema {{ j + 1 }}</label>
+    <select id="add-theme-{{ j }}" name="add_theme_{{ j }}">
+      <option value="">(sem tema)</option>
+      {% for theme in themes %}<option value="{{ theme.code }}">{{ theme.title }}</option>{% endfor %}
+    </select>
+  </div>
+  {% endfor %}
+</div>
+<div class="form-grid" data-show-for="verification">
+  {% for j in range(max_steps) %}
+  <div class="field">
+    <label for="add-step-label-{{ j }}">Passo {{ j + 1 }}: etiqueta</label>
+    <input id="add-step-label-{{ j }}" type="text" name="add_step_label_{{ j }}"
+     maxlength="{{ max_title }}" size="30">
+  </div>
+  <div class="field span-2">
+    <label for="add-step-text-{{ j }}">Passo {{ j + 1 }}: texto</label>
+    <textarea id="add-step-text-{{ j }}" name="add_step_text_{{ j }}" maxlength="{{ max_text }}"
+     rows="2" cols="70"></textarea>
+  </div>
+  {% endfor %}
+</div>
+<div class="form-grid" data-show-for="verification sources">
+  <div class="field">
+    <label for="add-link-label">Ligação: texto (opcional)</label>
+    <input id="add-link-label" type="text" name="add_link_label" maxlength="{{ max_title }}" size="40">
+  </div>
+  <div class="field">
+    <label for="add-link-href">Ligação: endereço</label>
+    <input id="add-link-href" type="text" name="add_link_href" maxlength="{{ max_reference }}" size="30">
+    <span class="hint">Caminho interno, por exemplo /fontes.</span>
+  </div>
+</div>
 <div class="form-grid" data-show-for="card">
   <div class="field">
     <label for="add-series">Série do novo cartão</label>
     <select id="add-series" name="add_series" data-filterable data-filter-label="Filtrar séries do novo cartão">{{ series_options(choices, None, "escolher série") }}</select>
+  </div>
+  <div class="field">
+    <label for="add-label">Texto do cartão (opcional)</label>
+    <input id="add-label" type="text" name="add_label" maxlength="{{ max_title }}" size="30">
+    <span class="hint">Sem texto, usa o título da série.</span>
   </div>
   <div class="field">
     <label for="add-derived">Série calculada do novo cartão</label>
