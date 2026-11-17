@@ -529,11 +529,13 @@ section { margin: 80px 0; }
 .compare-list { list-style: none; margin: 0; padding: 0; }
 .compare-item { border-top: 1px solid var(--rule); padding: 28px 0; }
 .compare-item:first-child { border-top: 0; }
-.compare-link {
+.compare-link,
+.country-link {
   font-family: var(--serif); font-size: 1.35rem; color: var(--ink); text-decoration: none;
   border-bottom: 1px solid var(--rule-strong);
 }
-.compare-link:hover, .compare-link:focus { border-bottom-color: var(--ink); }
+.compare-link:hover, .compare-link:focus,
+.country-link:hover, .country-link:focus { border-bottom-color: var(--ink); }
 .compare-mechanism { margin: 10px 0 5px; max-width: 62ch; color: var(--muted); }
 /* A is solid ink and B is dashed brass in the SVG, canvas adapter and legend. */
 .chart-line-a { stroke: var(--ink); }
@@ -574,8 +576,32 @@ section { margin: 80px 0; }
 .legend-value { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
 .compare-provenance { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 
+/* Country groups: one shared scale, five short labels, a complete table. */
+.country-comparisons { margin-top: 56px; }
+.country-summary { margin: 0 0 36px; }
+.country-summary-list {
+  list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 12px 26px; margin: 0; padding: 0;
+}
+.country-summary-list li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px;
+  border-top: 1px solid var(--rule); padding-top: 12px;
+}
+.country-name { font-weight: 600; }
+.country-value { font-variant-numeric: tabular-nums; }
+.country-table-scroll { overflow-x: auto; }
+.country-table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.table-caption {
+  caption-side: top; text-align: left; color: var(--muted); font-size: .85rem;
+  padding: 0 0 10px;
+}
+.country-provenance { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
 @media (max-width: 820px) {
   .compare-provenance { grid-template-columns: 1fr; }
+  .country-provenance { grid-template-columns: 1fr; }
+  /* The wrapper is the one labelled horizontal scroller; the page itself never overflows. */
+  .country-table { display: table; width: 46rem; overflow: visible; white-space: normal; }
 }
 
 @media print {

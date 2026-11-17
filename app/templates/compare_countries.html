@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% from "_chart.html" import chart_shell %}
+{% block title %}{{ page.title }} - Prumo{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/comparar">Comparações</a> <span aria-hidden="true">/</span> {{ page.title }}
+</nav>
+
+<header class="page-head">
+  <h1>{{ page.title }}</h1>
+  <p class="detail-actions">
+    <a class="button-quiet" href="{{ base }}{{ notebook_path(page.countries|map(attribute='id')|list) }}">{{ page.notebook_action }}</a>
+  </p>
+  <p class="lede">{{ page.subtitle }}</p>
+  <p class="meta">{{ page.countries|length }} países · {{ page.frequency_text }} · {{ page.unit_text }}</p>
+</header>
+
+<p class="compare-claim">{{ page.mechanism }}</p>
+<p class="note">{{ page.definition_note }}</p>
+
+<section class="country-summary" aria-labelledby="resumo">
+  <div class="section-head">
+    <h2 id="resumo">Último período comum</h2>
+    <p class="section-note">{{ page.latest_period_text }}. Os valores são os publicados, sem arredondamento.</p>
+  </div>
+  <ul class="country-summary-list">
+    {% for side in page.countries %}
+    <li>
+      <span class="country-name">{{ side.label }}</span>
+      <span class="country-value">{{ side.latest_display }} {{ page.unit_text }}</span>
+      {% if side.status_text %}<span class="flag">{{ side.status_text }}</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="chart-section" aria-labelledby="grafico">
+  <div class="section-head">
+    <h2 id="grafico">Os cinco países</h2>
+  </div>
+  <figure class="chart-figure chart-figure-interactive">
+    {% if page.chart_payload %}{{ chart_shell(page, "countries") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
+    <figcaption>{{ page.caption_note }} Últimos valores no período comum de {{ page.latest_period_text }}.</figcaption>
+  </figure>
+  <p class="note">{{ page.alignment_text }}</p>
+  <details class="table-details" open>
+    <summary>Ver tabela completa de valores</summary>
+    <div class="country-table-scroll" role="region" aria-label="Tabela completa de valores por país" tabindex="0">
+      <table class="data-table country-table">
+        <caption class="table-caption">Valores em {{ page.unit_text }}. Todas as linhas correspondem a períodos desenhados no gráfico.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Período</th>
+            {% for side in page.countries %}<th scope="col" class="num">{{ side.label }}</th>{% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in page.table_rows %}
+          <tr>
+            <td>{{ row.period_text }}</td>
+            {% for cell in row.cells %}<td class="num">{{ cell.display }}{% if cell.status_text %} <span class="flag">{{ cell.status_text }}</span>{% endif %}</td>{% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</section>
+
+<section class="provenance" aria-labelledby="proveniencia">
+  <div class="section-head">
+    <h2 id="proveniencia">Proveniência</h2>
+    <p class="section-note">Cada país mantém o seu próprio caminho, do editor até esta página. A proveniência é a do período comum que o gráfico mostra.</p>
+  </div>
+  <div class="country-provenance">
+    {% for side in page.countries %}
+    <dl class="provenance-list">
+      <dt>Série</dt><dd><a href="{{ base }}/series/{{ side.id }}">{{ side.title }}</a></dd>
+      <dt>Publicado por</dt><dd>{{ side.source_title }}</dd>
+      <dt>Atribuição</dt><dd>{{ side.attribution }}</dd>
+      <dt>Último período comum</dt><dd>{{ side.latest_period_text }}: {{ side.latest_display }} {{ side.unit_text }}{% if side.status_text %} · {{ side.status_text }}{% endif %}</dd>
+      {% if side.provenance %}
+      <dt>Recolhido</dt><dd>{{ side.provenance.fetched_text }}</dd>
+      <dt>Execução</dt><dd>#{{ side.provenance.run_id }}</dd>
+      <dt>Ficheiro arquivado</dt><dd>{% if side.provenance.sha256 %}<code title="{{ side.provenance.sha256 }}">{{ side.provenance.sha256[:12] }}…{{ side.provenance.sha256[-6:] }}</code>{% else %}-{% endif %}</dd>
+      <dt>Verificação</dt>
+      <dd>
+        {% if side.provenance.verification_created_text %}
+        {{ side.provenance.verification_created_text }}{% if side.provenance.sample_size_text %}, amostra de {{ side.provenance.sample_size_text }} valores do conjunto{% endif %}{% if side.provenance.verification_passed %}, 100% coincidentes{% endif %}.
+        {% if side.provenance.sampled %}Este valor foi um dos comparados.{% else %}Este valor não foi um dos amostrados; a verificação cobre o conjunto de onde ele vem.{% endif %}
+        {% else %}Sem registo de verificação para esta execução.{% endif %}
+      </dd>
+      {% else %}
+      <dt>Recolha</dt><dd>Sem registo de recolha para este período.</dd>
+      {% endif %}
+      <dt>Licença</dt><dd>{{ side.licence }}</dd>
+    </dl>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}{% if page.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

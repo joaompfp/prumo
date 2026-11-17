@@ -19,4 +19,22 @@
   </li>
   {% endfor %}
 </ul>
+
+{% if countries.rows %}
+<section class="country-comparisons" aria-labelledby="paises">
+  <div class="section-head">
+    <h2 id="paises">{{ countries.title }}</h2>
+    <p class="section-note">{{ countries.intro }}</p>
+  </div>
+  <ul class="compare-list country-list">
+    {% for row in countries.rows %}
+    <li class="compare-item">
+      <a class="country-link" href="{{ base }}/comparar/paises/{{ row.slug }}">{{ row.title }}</a>
+      <p class="compare-mechanism">{{ row.subtitle }}</p>
+      <p class="meta">{{ row.countries_text }} · {{ row.span_text }} · {{ row.common_text }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
 {% endblock %}
