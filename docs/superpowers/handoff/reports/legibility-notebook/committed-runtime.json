@@ -1,0 +1,9 @@
+{
+  "revision": "f291ae2b0cc3c36351820da2c2be4b64683f3a06",
+  "files": 181,
+  "bytes": 4174379,
+  "sha256": "1da0f0b9b3f2afa0469a9959cb345d801eb8b6c09ff928ec666646cef87564b7",
+  "working_and_committed_bytes_identical": true,
+  "clean_checkout": "/home/joao/.hermes/cache/scratch/prumo-legibility-committed",
+  "focused_tests_passed": 129
+}

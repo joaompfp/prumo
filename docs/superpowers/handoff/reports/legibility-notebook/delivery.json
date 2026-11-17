@@ -6,7 +6,8 @@
     "deselected": 7,
     "warnings": 3,
     "seconds": 1292.46,
-    "exit_code": 0
+    "exit_code": 0,
+    "scope": "complete working tree; provider was then untracked and later included in f291ae2"
   },
   "hosted_ci": "not run for pipeline-rebuild; workflow targets main and pull requests",
   "logs": {
@@ -34,6 +35,11 @@
       "raw_bytes": 12125,
       "raw_sha256": "16aa43b72c997256fd7cb94fc5b371a4563c2bfad431dcace851bec1c04992c9",
       "gzip_sha256": "d57e76686865e3be28e66349507e6d03d45b329b32fc513dbc75fcfa0481f44a"
+    },
+    "docs/superpowers/handoff/reports/legibility-notebook/logs/committed-tree.log.gz": {
+      "raw_bytes": 918,
+      "raw_sha256": "4df355d87ce2e2cd9af92d6b8f534f6282b3f93e9d8db69a54e5ffa64eb22faa",
+      "gzip_sha256": "05525dcea2229fd00b4d672e6aa0867492888ff91387e1946e57a16ec7b46543"
     }
   },
   "screens": {
@@ -119,9 +125,15 @@
     "warnings": [],
     "external": []
   },
-  "code_revision": "a7388dc3537ee7aeb85bde5e7d0ee9574131dc4a",
+  "code_revision": "f291ae2b0cc3c36351820da2c2be4b64683f3a06",
   "post_suite_packaging_checks": {
     "passed": 30,
     "scope": "licence whitespace and lossless historic archive packaging; no application behavior or compiled asset change"
+  },
+  "committed_tree": {
+    "revision": "f291ae2b0cc3c36351820da2c2be4b64683f3a06",
+    "focused_passed": 129,
+    "runtime_files_identical": 181,
+    "receipt": "committed-runtime.json"
   }
 }

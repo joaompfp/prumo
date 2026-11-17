@@ -2,7 +2,7 @@
 
 Status: implemented and independently reviewed on `pipeline-rebuild`, not installed. Baseline
 checkout `6f851d4`; production public/Admin runtime remains `14f845e`. Controller full suite passed: 2,717 tests, 7 network deselected, 3 warnings in 1,292.46 seconds.
-Code commit: a7388dc3537ee7aeb85bde5e7d0ee9574131dc4a. Implementation approval covers
+Code commit: f291ae2b0cc3c36351820da2c2be4b64683f3a06. Implementation approval covers
 larger typography, requested designer refinement and a useful surprise feature. No production
 release, migration, source-data write, authentication change or edge operation ran.
 
@@ -77,6 +77,17 @@ first browser matrix passed 773 checks before the additional SVG-bounds assertio
 matrix adds those actual bounds checks. A generated-HTML whitespace failure was corrected in
 the template and fixture, not suppressed. Raw logs are retained losslessly as compressed
 archives with SHA-256 entries in the delivery receipt.
+
+## Committed-tree correction
+
+The first push omitted `presentation/notebook.py` even though the complete working tree had
+passed the controller suite. This was caught by the post-push status check before any merge
+or installation. Fix `f291ae2` includes the provider; a detached clean checkout imports from
+its own paths and passed 129 notebook/public-route/CMS-route/asset/typography checks. The
+181 runtime/registry/requirement files are byte-identical between that checkout and the tested
+working tree; see `committed-runtime.json`. The final fixed branch was pushed and read back.
+The raw clean-checkout log is archived losslessly. This is separate from the full working-tree
+suite, not a claim that all 2,717 tests were rerun on the clean checkout.
 
 ## Acceptance and release boundary
 
