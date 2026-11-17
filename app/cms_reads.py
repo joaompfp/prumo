@@ -85,6 +85,7 @@ class CalculatedNote:
     caveats: tuple[str, ...]
     base_title: str
     base_value_display: str
+    base_unit_text: str
     base_period_text: str
     computed_text: str
     attribution: str
@@ -290,6 +291,9 @@ def _chart_view(db: Db, slug: str, doc: documents.ChartDocument,
     for fact in facts:
         if slot_problem(fact, titles_taken=set(), lang=lang) is not None:
             return None
+    frequency = raw[doc.series_a]["frequency"]
+    if doc.day and frequency != "PT15M":
+        raise ValueError("o dia UTC só é válido para séries de 15 minutos")
 
     if derived_key is not None:
         return _derived_chart_view(db, slug, doc, derived_key, facts[0], raw[doc.series_a], lang)
@@ -427,6 +431,7 @@ def _derived_chart_view(db: Db, slug: str, doc: documents.ChartDocument, key: st
         caveats=tuple(caveat_text(lang, c) for c in d["caveats"]),
         base_title=base_title,
         base_value_display=format_value(base["latest_value_text"]) if base else "",
+        base_unit_text=base_unit_text(lang, base["unit"]) if base else "",
         base_period_text=format_period(base["latest_period"], frequency) if base else "",
         computed_text=format_datetime(newest["computed_at"]) if newest else "",
         attribution=calculated_attribution(lang, newest["attribution"]) if newest else "",

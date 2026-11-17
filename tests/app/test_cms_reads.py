@@ -9,7 +9,7 @@ import pytest
 
 from app import reads
 from app.main import CHART_CSP, SECURITY_HEADERS, _templates
-from backoffice.cms import Cms
+from backoffice.cms import Cms, CmsRefused
 from ingest.db import open_db
 from presentation.catalog import pt
 from tests.app.conftest import (
@@ -200,6 +200,33 @@ def test_calculated_chart_shows_badge_formula_base_and_caveats_without_raw_keys(
     assert f'href="/series/{UNEMP}"' in html
     assert DERIVED not in visible(html) and UNEMP not in visible(html)
     assert "Base" in html and "p.p." in html
+    assert "6,2 %" in html
+    assert "6,2 p.p." not in html
+
+
+def test_day_is_refused_outside_fifteen_minutes_and_an_old_bad_chart_is_dropped(
+        client, cms, site_path):
+    meta = cms.create("chart", "dia-mensal", _chart(
+        series_b=None, scale="single", day="2026-11-10"), actor="owner", note="criar")
+    with pytest.raises(CmsRefused, match="15 minutos"):
+        cms.publish("chart", "dia-mensal", meta["version"], actor="owner", note="publicar")
+    assert cms.get("chart", "dia-mensal")["meta"]["published_revision_id"] is None
+
+    publish(cms, "chart", CHART, _chart())
+    publish(cms, "page", PAGE, _page([{"type": "chart", "chart_slug": CHART}]))
+    current = cms.get("chart", CHART)["meta"]
+    cms.save("chart", CHART, current["version"], _chart(day="2026-11-10"),
+             actor="owner", note="rascunho inválido")
+    db = open_db(site_path)
+    try:
+        legacy = db.cms_get("chart", CHART)
+        db.cms_publish("chart", CHART, legacy["version"], actor="owner", note="legado")
+    finally:
+        db.close()
+    assert client.get(f"/graficos/{CHART}").status_code == 404
+    html = client.get(f"/paginas/{PAGE}").text
+    assert "Parte desta página não está disponível neste momento." in html
+    assert f'href="/graficos/{CHART}"' not in html
 
 
 def test_chart_provenance_links_each_line_to_its_own_data_page(client, cms):

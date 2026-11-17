@@ -474,3 +474,87 @@ def test_every_action_and_redirect_uses_the_admin_prefix(env):
     # A valid but unrelated prefix is not reflected.
     ignored = c.get("/cms", headers={"X-Forwarded-Prefix": "/outro"})
     assert 'action="/cms/new"' in ignored.text
+
+
+def test_preview_data_links_use_the_public_prefix_while_assets_use_admin(env):
+    c = env.client()
+    assert chart_create(c).status_code == 303
+    assert c.post("/cms/chart/inflacao/publish",
+                  data={"version": "1", "note": "publicar"}, headers=ORIGIN).status_code == 303
+    assert page_create(c).status_code == 303
+    saved = c.post("/cms/page/precos/save",
+                   data=page_form(1, blocks=[{"type": "chart", "chart_slug": "inflacao"}]),
+                   headers=ORIGIN)
+    assert saved.status_code == 303
+    preview = c.get("/cms/page/precos/preview", headers={"X-Forwarded-Prefix": PREFIX})
+    assert preview.status_code == 200
+    assert 'href="/dados/graficos/inflacao"' in preview.text
+    assert "/dados/admin/graficos" not in preview.text
+    assert 'href="/dados/paginas"' in preview.text
+    assert "/dados/admin/static/css/prumo.css" in preview.text
+    assert 'href="/dados/admin/cms/page/precos"' in preview.text
+
+
+@pytest.mark.parametrize(("field", "value"), [
+    ("version", "9" * 5000),
+    ("version", "\u0661"),
+    ("version", str(2**63)),
+    ("block_count", "9" * 5000),
+    ("block_count", "\u0661"),
+    ("block_count", str(2**63)),
+])
+def test_unbounded_integer_form_fields_are_422_and_write_nothing(env, field, value):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    before = (env.meta("page", "precos")["version"], len(env.revisions("page", "precos")))
+    data = page_form(1, blocks=[{"type": "text", "text": "A"}])
+    data[field] = value
+    assert c.post("/cms/page/precos/save", data=data, headers=ORIGIN).status_code == 422
+    assert (env.meta("page", "precos")["version"],
+            len(env.revisions("page", "precos"))) == before
+
+
+@pytest.mark.parametrize("value", ["9" * 5000, "\u0661", str(2**63)])
+def test_unbounded_restore_revision_is_422_and_writes_nothing(env, value):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    assert c.post("/cms/page/precos/save",
+                  data=page_form(1, blocks=[{"type": "text", "text": "A"}]),
+                  headers=ORIGIN).status_code == 303
+    before = (env.meta("page", "precos")["version"], len(env.revisions("page", "precos")))
+    response = c.post("/cms/page/precos/restore",
+                      data={"version": "2", "revision_id": value, "note": "restaurar"},
+                      headers=ORIGIN)
+    assert response.status_code == 422
+    assert (env.meta("page", "precos")["version"],
+            len(env.revisions("page", "precos"))) == before
+
+
+def test_diff_detects_a_text_change_after_the_display_limit(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    first = "x" * 130 + " A"
+    second = "x" * 130 + " B"
+    assert c.post("/cms/page/precos/save", data=page_form(
+        1, blocks=[{"type": "text", "text": first}]), headers=ORIGIN).status_code == 303
+    assert c.post("/cms/page/precos/publish",
+                  data={"version": "2", "note": "publicar"}, headers=ORIGIN).status_code == 303
+    assert c.post("/cms/page/precos/save", data=page_form(
+        3, blocks=[{"type": "text", "text": second}]), headers=ORIGIN).status_code == 303
+    editor = c.get("/cms/page/precos")
+    assert "Alterações face à versão em direto" in editor.text
+    assert "Bloco 1" in editor.text
+
+
+def test_chart_day_outside_fifteen_minutes_is_refused_and_not_silently_cleared(env):
+    c = env.client()
+    assert chart_create(c, day="2026-11-10").status_code == 303
+    editor = c.get("/cms/chart/inflacao")
+    assert 'name="day" value="2026-11-10"' in editor.text
+    assert "só para séries de 15 minutos" in editor.text
+    response = c.post("/cms/chart/inflacao/publish",
+                      data={"version": "1", "note": "publicar"}, headers=ORIGIN)
+    assert response.status_code == 422
+    assert "15 minutos" in response.text
+    assert env.meta("chart", "inflacao")["published_revision_id"] is None
+    assert "pré-visualização estática com os dados e a composição da página pública" in editor.text

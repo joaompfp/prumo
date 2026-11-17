@@ -14,6 +14,7 @@ the block limit, and ignores unknown keys (submit buttons carry their action in 
 
 from __future__ import annotations
 
+import os
 import re
 from collections.abc import Mapping
 from pathlib import Path
@@ -23,8 +24,10 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from starlette.concurrency import run_in_threadpool
 
+from backoffice.access import ADMIN_PREFIX
 from backoffice.cms import Cms, CmsBusy, CmsConflict, CmsNotFound, CmsRefused, CmsUnavailable
 from backoffice.deps import LANG
+from backoffice.forms import parse_int
 from ingest.cms import KINDS, MAX_BLOCKS, MAX_SLUG, MAX_TEXT, MAX_TITLE
 
 PAGE_METHODS = ["GET", "HEAD"]
@@ -98,10 +101,10 @@ async def _read_form(request: Request) -> tuple[dict[str, str], dict[str, str]]:
 
 
 def _version(fields: dict[str, str]) -> int:
-    raw = fields.get("version", "").strip()
-    if not raw.isdigit():
-        raise FormError("versão em falta ou inválida; recarregue o editor")
-    return int(raw)
+    try:
+        return parse_int(fields.get("version", ""), field="versão")
+    except ValueError:
+        raise FormError("versão em falta ou inválida; recarregue o editor") from None
 
 
 def _note(fields: dict[str, str]) -> str:
@@ -114,10 +117,13 @@ def _note(fields: dict[str, str]) -> str:
 
 
 def _block_count(fields: dict[str, str]) -> int:
-    raw = fields.get("block_count", "0").strip() or "0"
-    if not raw.isdigit() or int(raw) > MAX_BLOCKS:
+    try:
+        count = parse_int(fields.get("block_count", "0") or "0", field="número de blocos")
+    except ValueError:
+        raise FormError(f"o número de blocos tem de estar entre 0 e {MAX_BLOCKS}") from None
+    if count > MAX_BLOCKS:
         raise FormError(f"o número de blocos tem de estar entre 0 e {MAX_BLOCKS}")
-    return int(raw)
+    return count
 
 
 def _page_body(fields: dict[str, str]) -> dict:
@@ -253,9 +259,12 @@ def _diff(kind: str, live: dict | None, draft: dict | None) -> list[dict[str, st
         if len(old) != len(new):
             rows.append({"field": "Blocos", "live": str(len(old)), "draft": str(len(new))})
         for index in range(min(len(old), len(new))):
-            before, after = _page_label(old[index]), _page_label(new[index])
-            if before != after:
-                rows.append({"field": f"Bloco {index + 1}", "live": before, "draft": after})
+            # Detect the change on the whole block: the 120-character label is display only,
+            # so two long texts that differ after that point are still a reported change.
+            if old[index] != new[index]:
+                rows.append({"field": f"Bloco {index + 1}",
+                             "live": _page_label(old[index]),
+                             "draft": _page_label(new[index])})
     return rows
 
 
@@ -270,6 +279,24 @@ def _metadata(meta: dict) -> dict:
         "created_at": meta.get("created_at"),
         "updated_at": meta.get("updated_at"),
     }
+
+
+_PUBLIC_PREFIX = re.compile(r"/(?:[A-Za-z0-9._~-]+(?:/[A-Za-z0-9._~-]+)*)?")
+
+
+def _public_base(asset_base: str) -> str:
+    """The public mount for data links in a preview, or '' when there is no configured one.
+
+    Under the deployed Admin mount the public app is the same origin without the `/admin`
+    suffix. Direct development has no shared prefix, so an explicit `PRUMO_PUBLIC_BASE`
+    (for example `http://localhost:8000`) is used; an invalid value is ignored, never echoed.
+    """
+    if asset_base == ADMIN_PREFIX:
+        return ADMIN_PREFIX.removesuffix("/admin")
+    configured = os.environ.get("PRUMO_PUBLIC_BASE", "").strip().rstrip("/")
+    if configured and (configured.startswith("http://") or configured.startswith("https://")):
+        return configured
+    return configured if _PUBLIC_PREFIX.fullmatch(configured) else ""
 
 
 def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | None) -> None:
@@ -368,7 +395,9 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
         # keeps the preview exact without a second rendering path. Admin values come last so a
         # prepared mapping cannot rewrite the mount prefix or turn the script back on.
         context = dict(view) if isinstance(view, Mapping) else {"page": view, "chart": view}
-        context.update(base=admin.base(request), nav=NAV, path=request.url.path,
+        asset_base = admin.base(request)
+        context.update(base=_public_base(asset_base), asset_base=asset_base, nav=NAV,
+                       path=request.url.path,
                        admin_base=admin.url(request, f"/cms/{kind}/{slug}"), preview=True)
         response = preview_templates.TemplateResponse(request, template_name, context)
         response.headers["Content-Security-Policy"] = PREVIEW_CSP
@@ -446,10 +475,11 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
                 await run_in_threadpool(cms.unpublish, kind, slug, version,
                                         actor=admin.actor(request), note=note)
             elif action == "restore":
-                revision = fields.get("revision_id", "").strip()
-                if not revision.isdigit():
-                    raise FormError("revisão em falta ou inválida")
-                await run_in_threadpool(cms.restore, kind, slug, version, int(revision),
+                try:
+                    revision = parse_int(fields.get("revision_id", ""), field="revisão")
+                except ValueError:
+                    raise FormError("revisão em falta ou inválida") from None
+                await run_in_threadpool(cms.restore, kind, slug, version, revision,
                                         actor=admin.actor(request), note=note)
             elif action == "duplicate":
                 result = await run_in_threadpool(cms.duplicate, kind, slug,

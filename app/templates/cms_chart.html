@@ -61,7 +61,7 @@
     <h2 id="calculado">Valor calculado</h2>
   </div>
   <p><span class="badge">{{ page.calculated.badge }}</span> {{ page.calculated.formula_text }}</p>
-  <p class="figure-period"><span class="mini-label">Base</span>{{ page.calculated.base_title }}: {{ page.calculated.base_value_display }} {{ page.unit_text }} ({{ page.calculated.base_period_text }})</p>
+  <p class="figure-period"><span class="mini-label">Base</span>{{ page.calculated.base_title }}: {{ page.calculated.base_value_display }} {{ page.calculated.base_unit_text }} ({{ page.calculated.base_period_text }})</p>
   {% for caveat in page.calculated.caveats %}<p class="caveat">{{ caveat }}</p>{% endfor %}
   <p class="note">Calculado a {{ page.calculated.computed_text }}. {{ page.calculated.attribution }}</p>
 </section>

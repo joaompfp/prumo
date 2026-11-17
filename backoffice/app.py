@@ -36,6 +36,7 @@ from backoffice.deps import (
     paths_from_env,
 )
 from backoffice.editorial import Editorial, EditorialBusy, EditorialUnavailable, same_origin
+from backoffice.forms import SQLITE_MAX_INT, parse_int
 from backoffice.registry_notes import inactive_notes
 from backoffice.ttl_cache import TtlCache
 from ingest.db import Db, EditorialConflict, EditorialRefused, ReadOnlyOpenError, read_db_readonly
@@ -54,7 +55,6 @@ APP_TEMPLATES = Path(__file__).resolve().parent.parent / "app" / "templates"
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 PAGE_METHODS = ["GET", "HEAD"]
 STATUS_TTL_S = 30.0  # the full status report is reused this long across pages
-SQLITE_MAX_INT = 2**63 - 1  # largest id SQLite can bind; above it -> 422, never a 500
 MAX_FORM_BYTES = 16_384
 # No JavaScript anywhere: nothing may run, load or frame the pages; inline styles only.
 # Forms may only post to this same origin, and the page has no <base> to rewrite URLs.
@@ -378,8 +378,8 @@ def create_app(db_path: Path, registry_path: Path,
     def apply(slug: str, action: str, fields: dict[str, str]) -> tuple[int, str | None]:
         """Run one mutation. Returns (status, message): 303 means it landed."""
         try:
-            version = int(fields.get("version", "0"))
-            to_position = int(fields.get("to_position", "0"))
+            version = parse_int(fields.get("version", "0"), field="version")
+            to_position = parse_int(fields.get("to_position", "0"), field="position")
         except ValueError:
             return 422, "invalid numeric field"
         note = fields.get("note", "").strip()

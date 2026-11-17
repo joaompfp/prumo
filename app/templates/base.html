@@ -6,15 +6,15 @@
 <title>{% block title %}Prumo - estatísticas oficiais com proveniência{% endblock %}</title>
 <meta name="description" content="Estatísticas oficiais de Portugal, da Europa e do mundo, cada valor ligado à publicação original e à data em que foi recolhido e verificado.">
 <meta name="robots" content="index, follow">
-<link rel="icon" type="image/svg+xml" href="{{ base }}/static/images/prumo/favicon.svg">
-<link rel="stylesheet" href="{{ base }}/static/css/prumo.css">
+<link rel="icon" type="image/svg+xml" href="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg">
+<link rel="stylesheet" href="{{ asset_base|default(base) }}/static/css/prumo.css">
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
 <header class="site-header">
   <div class="wrap header-row">
     <a class="brand" href="{{ base }}/">
-      <img class="brand-icon" src="{{ base }}/static/images/prumo/favicon.svg" alt="" width="28" height="28">
+      <img class="brand-icon" src="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg" alt="" width="28" height="28">
       <span class="brand-name">Prumo</span>
     </a>
     <nav class="site-nav" aria-label="Secções">

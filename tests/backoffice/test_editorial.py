@@ -468,3 +468,21 @@ def test_no_template_carries_javascript(env):
         assert "<script" not in html.lower()
         assert "javascript:" not in html.lower()
         assert "style=" not in html.lower()
+
+
+@pytest.mark.parametrize(("field", "value"), [
+    ("version", "9" * 5000),
+    ("version", "\u0661"),
+    ("version", str(2**63)),
+    ("to_position", "9" * 5000),
+    ("to_position", "\u0661"),
+    ("to_position", str(2**63)),
+])
+def test_move_integer_fields_are_bounded_before_any_write(env, field, value):
+    c = env.client()
+    assert c.post(f"/editorial/{SLUG}/add", headers=ORIGIN,
+                  data={"version": "0", "series_id": "ine.hicp_yoy.PT"}).status_code == 303
+    data = {"version": "1", "series_id": "ine.hicp_yoy.PT", "to_position": "0"}
+    data[field] = value
+    assert c.post(f"/editorial/{SLUG}/move", headers=ORIGIN, data=data).status_code == 422
+    assert env.version() == 1 and env.slots() == ["ine.hicp_yoy.PT"]

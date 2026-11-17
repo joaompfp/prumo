@@ -7,7 +7,7 @@
 {% if meta.published_revision_id %}Em direto: revisão {{ meta.published_revision_id }}{% if published_at %} desde {{ published_at }}{% endif %}.{% else %}Ainda não publicado.{% endif %}
 O editor altera apenas o rascunho; publicar substitui a versão em direto e fica na auditoria.</p>
 <p><a href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview">Pré-visualizar este rascunho</a>
-(vista pública exata, sem scripts) · <a href="{{ base }}/cms">Páginas e gráficos</a></p>
+(pré-visualização estática com os dados e a composição da página pública, sem scripts) · <a href="{{ base }}/cms">Páginas e gráficos</a></p>
 {% if error %}<p class="bad" role="alert">{{ error }}</p>{% endif %}
 
 {% if usages %}
@@ -119,9 +119,10 @@ só são atualizadas quando o gráfico publicado muda.</p>
 <select name="scale">
 {% for s in scales %}<option value="{{ s }}"{% if doc.scale == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
 </select></label>
-<label>Dia UTC (opcional, AAAA-MM-DD) <input type="date" name="day" value="{{ doc.day or '' }}"></label></p>
+<label>Dia UTC (opcional, AAAA-MM-DD; só para séries de 15 minutos) <input type="date" name="day" value="{{ doc.day or '' }}"></label></p>
 <p class="note">Dois eixos são uma escolha explícita e independente; a comparação não
-estabelece causalidade. Séries diárias como a E-REDES usam um único dia UTC, sem agregação.</p>
+estabelece causalidade. O dia UTC só é válido para séries de 15 minutos, como a E-REDES. Nas restantes frequências
+deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
 {% endif %}
 
 <p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
@@ -129,7 +130,7 @@ estabelece causalidade. Séries diárias como a E-REDES usam um único dia UTC, 
 </form>
 
 <h2>Publicação</h2>
-<p class="note">A pré-visualização abre a vista pública exata deste rascunho. Publicar
+<p class="note">Esta é uma pré-visualização estática com os dados e a composição da página pública; publicar
 substitui a versão em direto por este rascunho; o motivo fica na auditoria.</p>
 {% if published %}
 <p>Alterações face à versão em direto:</p>
