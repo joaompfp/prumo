@@ -1,10 +1,12 @@
 # Prumo image and ingestion operations
 
-## Current homepage/UI extension: branch only
+## Current homepage/UI extension: installed 2026-11-17
 
-The complete current homepage is implemented as CMS content on pipeline-rebuild, runtime source a291e7f (comment-equivalent to tested executable0d004e2), not installed. The approved scope is implementation; a new release still needs owner authorization for public web and backoffice plus audited initial home publication. No schema migration, worker restart, data-directory ownership change or shared-edge reload is needed. Both apps must be upgraded BEFORE new block content is published. Follow the single authoritative procedure in [cms.md](cms.md), "Homepage and UI extension", including the stdin helper invocation and rollback limitations for old code. Evidence: [home CMS/UI acceptance](../superpowers/handoff/reports/home-cms-ui/README.md).
+Runtime b842199 is installed on f0nix after owner authorization. Public web and backoffice were recreated at 09:55:52 and 09:55:53 UTC; worker identity/image/StartedAt/restarts are unchanged. No migration, ownership repair or shared-edge change. Schema 0019, next free 0020. Hosted CI 44055444383 passed on this SHA; fresh release checks: 92 passed, ruff/JS syntax clean.
 
-Production remains the installed baseline described below. Do not apply its historical combined-migration procedure to this schema-unchanged extension.
+The complete current homepage was created and published at 09:57:20 UTC: page/inicio version 2, revision 6,17 ordered blocks and audit events 10/11. All 20 non-CMS table fingerprints and migrations matched before/after publication, quick_check ok and zero FK violations. The public Chromium smoke passed 113 checks across both mounts and four widths;17 trusted-proxy Admin checks passed. The public editor URL still challenges through Authelia. Human login/publication and screen-reader acceptance are distinct from this technical proof.
+
+Edit at https://joao.date/dados/admin/cms/page/inicio. Installation/image/rollback evidence: [installed home CMS/UI](../superpowers/handoff/reports/home-cms-ui/production-installation.md); machine receipt is alongside it. Follow the authoritative [cms.md](cms.md) procedure for future initialization and schema-unchanged rollback. Preserve authored history, and do not restore source data to downgrade a content shape. A public-only Permissions-Policy vr warning remains a shared-edge follow-up; no edge change ran here. The combined-migration baseline below is historical, not this release procedure.
 
 ## Installed product baseline (2026-11-17)
 

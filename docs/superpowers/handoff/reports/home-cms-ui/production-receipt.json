@@ -1,0 +1,1048 @@
+{
+  "code_revision": "b8421994f9d311714de8369a61c66d3ccdb6c1d0",
+  "operator_receipts": "/home/joao/prumo-operations/home-cms-ui-release-20261117T095414Z",
+  "ci": {
+    "run_id": 44055444383,
+    "sha": "b8421994f9d311714de8369a61c66d3ccdb6c1d0",
+    "conclusion": "success",
+    "passed": 2657,
+    "skipped": 9,
+    "deselected": 7
+  },
+  "fresh_local_checks": {
+    "passed": 92,
+    "ruff": "clean",
+    "admin_js_syntax": "clean"
+  },
+  "before": {
+    "containers": [
+      {
+        "name": "prumo",
+        "id": "b98763dc5d4f3b42a57a320529bee76a4c8668bb9e3a324ce016dc66cea7b8b6",
+        "image": "sha256:ba41eb17c8f111a148417bafbf05412c1ddffb81dbfeda16fabb33e9440835fd",
+        "started_at": "2026-11-17T01:45:23.938574495Z",
+        "status": "running",
+        "restart_count": 0,
+        "oom": false,
+        "health": "healthy"
+      },
+      {
+        "name": "prumo-backoffice",
+        "id": "a8c3162a4ee4efcf4aa70313b51d2731530ea2d6932d7b6e629bb68f0e352acd",
+        "image": "sha256:4f22c6da51428669b3e4aba0d7190a8b84ad2c3e18a3925ca7298a73714079c9",
+        "started_at": "2026-11-17T01:45:25.017364041Z",
+        "status": "running",
+        "restart_count": 0,
+        "oom": false,
+        "health": "healthy"
+      },
+      {
+        "name": "prumo-ingest",
+        "id": "3921475705a35df28b81a7d381e4d388918616c681607a116ac9df69ad334e4b",
+        "image": "sha256:ff50b981e4cdc7923c773fe1f017567340d64e979d6b336553045504806e53a3",
+        "started_at": "2026-11-17T01:45:15.558866311Z",
+        "status": "running",
+        "restart_count": 0,
+        "oom": false,
+        "health": null
+      }
+    ],
+    "counts": {
+      "observation": 543113,
+      "quarantine": 34219,
+      "series": 1791,
+      "served_derived": 6665,
+      "cms_document": 2,
+      "cms_revision": 5,
+      "cms_event": 9
+    },
+    "checkout": "b8421994f9d311714de8369a61c66d3ccdb6c1d0"
+  },
+  "after_build": {
+    "containers": [
+      {
+        "name": "prumo",
+        "id": "687fc2d663c0025b8edc6dacecb9bc9de91ef53a296e29f8eea33fbb4080d562",
+        "image": "sha256:5ae9cfbad41ebaaead7f065e4766ae3c72cd5827f67c359fe661bd7ffb781b5c",
+        "started_at": "2026-11-17T09:55:52.404401417Z",
+        "status": "running",
+        "restart_count": 0,
+        "oom": false,
+        "health": "healthy"
+      },
+      {
+        "name": "prumo-backoffice",
+        "id": "985d821468196a0cc3aaa44b52e5f438a3bd0fd497ca63eeb37ae790e73b0b6e",
+        "image": "sha256:3e8e3d44be23be110595121412e665b28e61754a20e1ef4af8b5b880e1e9bd41",
+        "started_at": "2026-11-17T09:55:53.892237017Z",
+        "status": "running",
+        "restart_count": 0,
+        "oom": false,
+        "health": "healthy"
+      },
+      {
+        "name": "prumo-ingest",
+        "id": "3921475705a35df28b81a7d381e4d388918616c681607a116ac9df69ad334e4b",
+        "image": "sha256:ff50b981e4cdc7923c773fe1f017567340d64e979d6b336553045504806e53a3",
+        "started_at": "2026-11-17T01:45:15.558866311Z",
+        "status": "running",
+        "restart_count": 0,
+        "oom": false,
+        "health": null
+      }
+    ],
+    "counts": {
+      "observation": 543113,
+      "quarantine": 34219,
+      "series": 1791,
+      "served_derived": 6665,
+      "cms_document": 2,
+      "cms_revision": 5,
+      "cms_event": 9
+    }
+  },
+  "publication": {
+    "started_at": "2026-11-17T09:57:17.298090+00:00",
+    "protected_before": {
+      "dataset_run": {
+        "rows": 91,
+        "sha256": "0050d24be1a8022655cf4021250d95d7a7a3f56d7d91215882b5143e58fc9048"
+      },
+      "derived_event": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "derived_observation": {
+        "rows": 7825,
+        "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+      },
+      "derived_run": {
+        "rows": 7,
+        "sha256": "5d3f1784ebe1d956ff079858cec03510bac5e894d3fe1cd3d5b74cdfb4ff49a1"
+      },
+      "derived_series": {
+        "rows": 23,
+        "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+      },
+      "editorial_event": {
+        "rows": 4,
+        "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+      },
+      "editorial_page": {
+        "rows": 1,
+        "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+      },
+      "editorial_slot": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "event": {
+        "rows": 373,
+        "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+      },
+      "observation": {
+        "rows": 543113,
+        "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+      },
+      "quarantine": {
+        "rows": 34219,
+        "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+      },
+      "raw_fetch": {
+        "rows": 747,
+        "sha256": "1d4e5ecbddde44a0be2063a90375ca81b10e84de51efac9b49c209e6cebff65f"
+      },
+      "scheduler_state": {
+        "rows": 26,
+        "sha256": "88eda0d9102be553b1fa6fd6ad1f2a4682eba82019c88ea1174dcf3a45f85ad5"
+      },
+      "schema_migration": {
+        "rows": 19,
+        "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+      },
+      "series": {
+        "rows": 1791,
+        "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+      },
+      "setting": {
+        "rows": 2,
+        "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+      },
+      "source": {
+        "rows": 9,
+        "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+      },
+      "verification": {
+        "rows": 48,
+        "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+      },
+      "verification_item": {
+        "rows": 94408,
+        "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+      },
+      "verification_spec": {
+        "rows": 706,
+        "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+      }
+    },
+    "migrations_before": [
+      [
+        "0001_init",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0002_dataset_key",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0003_verification_replay",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0004_verification_audit",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0005_served_licence_gate",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0006_pt15m",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0007_scoped_legacy_serving",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0008_input_origin",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0009_blocked_stale_state",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0010_scheduler_state",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0011_data_time_serving_and_withdrawal",
+        "2026-11-14 10:24:32"
+      ],
+      [
+        "0012_verification_audit_v2",
+        "2026-11-14 10:24:32"
+      ],
+      [
+        "0013_run_and_audit_guards",
+        "2026-11-14 10:24:32"
+      ],
+      [
+        "0014_derived_layer",
+        "2026-11-15 11:39:45"
+      ],
+      [
+        "0015_observation_run_index",
+        "2026-11-15 19:14:41"
+      ],
+      [
+        "0016_language_neutral_derived",
+        "2026-11-15 19:14:41"
+      ],
+      [
+        "0017_derived_caveats",
+        "2026-11-15 19:14:41"
+      ],
+      [
+        "0018_editorial_composition",
+        "2026-11-16 12:21:07"
+      ],
+      [
+        "0019_statistics_cms",
+        "2026-11-17 01:45:17"
+      ]
+    ],
+    "before_html_sha256": "7f0d2db7cae67c69e33ddc3b50d864a1f46dad779f04721d689eae5e5300d8fb",
+    "initializer_exit": 0,
+    "initializer_stdout": "{\"meta\": {\"created_at\": \"2026-11-17T09:57:20.977540+00:00\", \"draft_revision_id\": 6, \"kind\": \"page\", \"published\": true, \"published_once\": true, \"published_revision_id\": 6, \"slug\": \"inicio\", \"title\": \"Início\", \"updated_at\": \"2026-11-17T09:57:20.981536+00:00\", \"version\": 2}, \"status\": \"published\"}\n",
+    "initializer_stderr": "",
+    "protected_after": {
+      "dataset_run": {
+        "rows": 91,
+        "sha256": "0050d24be1a8022655cf4021250d95d7a7a3f56d7d91215882b5143e58fc9048"
+      },
+      "derived_event": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "derived_observation": {
+        "rows": 7825,
+        "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+      },
+      "derived_run": {
+        "rows": 7,
+        "sha256": "5d3f1784ebe1d956ff079858cec03510bac5e894d3fe1cd3d5b74cdfb4ff49a1"
+      },
+      "derived_series": {
+        "rows": 23,
+        "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+      },
+      "editorial_event": {
+        "rows": 4,
+        "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+      },
+      "editorial_page": {
+        "rows": 1,
+        "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+      },
+      "editorial_slot": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "event": {
+        "rows": 373,
+        "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+      },
+      "observation": {
+        "rows": 543113,
+        "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+      },
+      "quarantine": {
+        "rows": 34219,
+        "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+      },
+      "raw_fetch": {
+        "rows": 747,
+        "sha256": "1d4e5ecbddde44a0be2063a90375ca81b10e84de51efac9b49c209e6cebff65f"
+      },
+      "scheduler_state": {
+        "rows": 26,
+        "sha256": "88eda0d9102be553b1fa6fd6ad1f2a4682eba82019c88ea1174dcf3a45f85ad5"
+      },
+      "schema_migration": {
+        "rows": 19,
+        "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+      },
+      "series": {
+        "rows": 1791,
+        "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+      },
+      "setting": {
+        "rows": 2,
+        "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+      },
+      "source": {
+        "rows": 9,
+        "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+      },
+      "verification": {
+        "rows": 48,
+        "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+      },
+      "verification_item": {
+        "rows": 94408,
+        "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+      },
+      "verification_spec": {
+        "rows": 706,
+        "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+      }
+    },
+    "migrations_after": [
+      [
+        "0001_init",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0002_dataset_key",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0003_verification_replay",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0004_verification_audit",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0005_served_licence_gate",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0006_pt15m",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0007_scoped_legacy_serving",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0008_input_origin",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0009_blocked_stale_state",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0010_scheduler_state",
+        "2026-11-13 01:15:36"
+      ],
+      [
+        "0011_data_time_serving_and_withdrawal",
+        "2026-11-14 10:24:32"
+      ],
+      [
+        "0012_verification_audit_v2",
+        "2026-11-14 10:24:32"
+      ],
+      [
+        "0013_run_and_audit_guards",
+        "2026-11-14 10:24:32"
+      ],
+      [
+        "0014_derived_layer",
+        "2026-11-15 11:39:45"
+      ],
+      [
+        "0015_observation_run_index",
+        "2026-11-15 19:14:41"
+      ],
+      [
+        "0016_language_neutral_derived",
+        "2026-11-15 19:14:41"
+      ],
+      [
+        "0017_derived_caveats",
+        "2026-11-15 19:14:41"
+      ],
+      [
+        "0018_editorial_composition",
+        "2026-11-16 12:21:07"
+      ],
+      [
+        "0019_statistics_cms",
+        "2026-11-17 01:45:17"
+      ]
+    ],
+    "changed_protected_tables": [],
+    "home": [
+      {
+        "kind": "page",
+        "slug": "inicio",
+        "version": 2,
+        "draft_revision_id": 6,
+        "published_revision_id": 6,
+        "created_at": "2026-11-17T09:57:20.977540+00:00",
+        "updated_at": "2026-11-17T09:57:20.981536+00:00"
+      }
+    ],
+    "revision": [
+      {
+        "id": 6,
+        "kind": "page",
+        "slug": "inicio",
+        "body_json": "{\"blocks\":[{\"actions\":[{\"href\":\"/temas/economy\",\"label\":\"Explorar os dados\"},{\"href\":\"/metodologia\",\"label\":\"Como verificamos\"}],\"counts\":true,\"eyebrow\":\"Dados oficiais · proveniência verificada\",\"freshness\":true,\"note\":\"Cada valor liga à publicação original, à data em que foi recolhido e à verificação independente que o acompanhou.\",\"title\":\"Estatísticas oficiais, com a proveniência à vista.\",\"type\":\"hero\"},{\"note\":\"Portugal. Valores publicados tal como a fonte os publica.\",\"title\":\"Números em destaque\",\"type\":\"heading\"},{\"derived_key\":null,\"label\":\"Inflação (IHPC)\",\"series_id\":\"ine.hicp_yoy.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.unemployment_monthly.PT.yoy_change\",\"label\":\"Desemprego\",\"series_id\":\"ine.unemployment_monthly.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct\",\"label\":\"Produção industrial\",\"series_id\":\"ine.ipi_seasonal_cae_TOT.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.cci.PT.period_change\",\"label\":\"Confiança dos consumidores\",\"series_id\":\"eurostat.cci.PT\",\"type\":\"card\"},{\"derived_key\":null,\"label\":\"Confiança da indústria\",\"series_id\":\"ine.conf_manufacturing.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.credit_consumer.PT.yoy_change_pct\",\"label\":\"Crédito ao consumo\",\"series_id\":\"bportugal.credit_consumer.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.deposits_households.PT.yoy_change_pct\",\"label\":\"Depósitos das famílias\",\"series_id\":\"bportugal.deposits_households.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.pt_10y.PT.yoy_change\",\"label\":\"Dívida pública a 10 anos\",\"series_id\":\"bportugal.pt_10y.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.population.PT.yoy_change_pct\",\"label\":\"População residente\",\"series_id\":\"ine.population.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.live_births.PT.yoy_change_pct\",\"label\":\"Nados-vivos\",\"series_id\":\"ine.live_births.PT\",\"type\":\"card\"},{\"derived_key\":\"derived.exports_monthly.PT.yoy_change_pct\",\"label\":\"Exportações de bens\",\"series_id\":\"ine.exports_monthly.PT\",\"type\":\"card\"},{\"derived_key\":null,\"label\":\"Preço da eletricidade\",\"series_id\":\"eurostat.electricity_price_household.PT\",\"type\":\"card\"},{\"note\":\"Todo o catálogo, por assunto.\",\"themes\":[\"economy\",\"demography\",\"energy\"],\"title\":\"Temas\",\"type\":\"themes\"},{\"action\":{\"href\":\"/metodologia\",\"label\":\"Ler a metodologia completa\"},\"steps\":[{\"label\":\"Recolha\",\"text\":\"O ficheiro original é guardado intacto, com o endereço, a hora e o resumo criptográfico.\"},{\"label\":\"Validação\",\"text\":\"Unidade, período, sinal e duplicados são verificados antes de qualquer valor ser aceite.\"},{\"label\":\"Verificação independente\",\"text\":\"Uma amostra aleatória é comparada com outra via da mesma instituição, exigindo 100% de coincidência.\"}],\"title\":\"A cadeia de verificação\",\"type\":\"verification\"},{\"action\":{\"href\":\"/fontes\",\"label\":\"Licenças, atribuições e fontes em avaliação\"},\"note\":\"\",\"title\":\"Instituições publicadas\",\"type\":\"sources\"}],\"introduction\":\"\",\"section\":\"general\",\"title\":\"Início\"}",
+        "created_at": "2026-11-17T09:57:20.977540+00:00",
+        "actor": "joao"
+      }
+    ],
+    "events": [
+      {
+        "id": 10,
+        "ts": "2026-11-17T09:57:20.977540+00:00",
+        "kind": "page",
+        "slug": "inicio",
+        "action": "created",
+        "version": 1,
+        "revision_id": 6,
+        "actor": "joao",
+        "note": "Importar a homepage atual completa para o CMS"
+      },
+      {
+        "id": 11,
+        "ts": "2026-11-17T09:57:20.981536+00:00",
+        "kind": "page",
+        "slug": "inicio",
+        "action": "published",
+        "version": 2,
+        "revision_id": 6,
+        "actor": "joao",
+        "note": "Publicar a mesma homepage a partir do CMS"
+      }
+    ],
+    "quick_check": "ok",
+    "foreign_keys": [],
+    "after_html_sha256": "b3fd9301e66ff0f95c5d3ddc0424467efaaad013bcbcc8b568d76581926937a1",
+    "finished_at": "2026-11-17T09:57:24.916095+00:00"
+  },
+  "admin": {
+    "scope": "trusted internal proxy, not a human Authelia login",
+    "checks": [
+      {
+        "check": "editor ready through trusted proxy",
+        "passed": true
+      },
+      {
+        "check": "populated 17-block form",
+        "passed": true
+      },
+      {
+        "check": "save and publish remain distinct",
+        "passed": true
+      },
+      {
+        "check": "local font stylesheet present",
+        "passed": true
+      },
+      {
+        "check": "local progressive script present",
+        "passed": true
+      },
+      {
+        "check": "correct prefixed editor actions",
+        "passed": true
+      },
+      {
+        "check": "all opening and section controls present",
+        "passed": true
+      },
+      {
+        "check": "visible interface has no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "missing credentials refused",
+        "passed": true
+      },
+      {
+        "check": "forged credentials refused",
+        "passed": true
+      },
+      {
+        "check": "non-owner refused",
+        "passed": true
+      },
+      {
+        "check": "home entry redirects to real editor",
+        "passed": true
+      },
+      {
+        "check": "legacy editor routes to CMS",
+        "passed": true
+      },
+      {
+        "check": "local asset /static/css/admin.css",
+        "passed": true
+      },
+      {
+        "check": "local asset /static/css/icons.css",
+        "passed": true
+      },
+      {
+        "check": "local asset /static/js/admin.js",
+        "passed": true
+      },
+      {
+        "check": "local asset /static/fonts/icons/prumo-icons.woff2",
+        "passed": true
+      }
+    ],
+    "assets": {
+      "/static/css/admin.css": {
+        "bytes": 23170,
+        "sha256": "94e1787fa3b5e1657b6d4a70677664d1e2c21baa95a17974fb15cd75d0b97257"
+      },
+      "/static/css/icons.css": {
+        "bytes": 2326,
+        "sha256": "be96ae3a97b95d1dba03369bff30e445d512abcccdc9dc117f568d1ae869605f"
+      },
+      "/static/js/admin.js": {
+        "bytes": 6065,
+        "sha256": "b30345546166cb18f5a2b98fad890ebec27d3d0c8eb6d8dcf28fc9445c947606"
+      },
+      "/static/fonts/icons/prumo-icons.woff2": {
+        "bytes": 3684,
+        "sha256": "7130305a08b09c6e8d75ca6c14b087dd53aa89a09b87ad71d5fd0edf3700fd0c"
+      }
+    },
+    "editor_bytes": 3900743
+  },
+  "public_browser": {
+    "checks": [
+      {
+        "check": "baseline has twelve cards",
+        "passed": true
+      },
+      {
+        "check": "direct 320 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "direct 320 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 320 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 320 single h1",
+        "passed": true
+      },
+      {
+        "check": "direct 320 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "direct 320 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "direct 320 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "direct 320 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "direct 320 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "direct 320 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "direct 320 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "direct 320 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "direct 390 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "direct 390 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 390 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 390 single h1",
+        "passed": true
+      },
+      {
+        "check": "direct 390 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "direct 390 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "direct 390 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "direct 390 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "direct 390 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "direct 390 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "direct 390 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "direct 390 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "direct 768 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "direct 768 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 768 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 768 single h1",
+        "passed": true
+      },
+      {
+        "check": "direct 768 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "direct 768 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "direct 768 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "direct 768 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "direct 768 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "direct 768 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "direct 768 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "direct 768 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 single h1",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "direct 1440 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "direct/metodologia",
+        "passed": true
+      },
+      {
+        "check": "direct/fontes",
+        "passed": true
+      },
+      {
+        "check": "direct/comparar",
+        "passed": true
+      },
+      {
+        "check": "direct/paginas",
+        "passed": true
+      },
+      {
+        "check": "direct/paginas/inexistente-ensaio-release",
+        "passed": true
+      },
+      {
+        "check": "direct canonical home redirect",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 single h1",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "mounted 320 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 single h1",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "mounted 390 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 single h1",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "mounted 768 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 HTTP200",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 all labels unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 all exact displayed values unchanged",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 single h1",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 no page overflow",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 script-free summary",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 section Todo o catálogo, por assunto.",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 section A cadeia de verificação",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 section Instituições publicadas",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 section Explorar os dados",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 section Como verificamos",
+        "passed": true
+      },
+      {
+        "check": "mounted 1440 no forbidden punctuation",
+        "passed": true
+      },
+      {
+        "check": "mounted/metodologia",
+        "passed": true
+      },
+      {
+        "check": "mounted/fontes",
+        "passed": true
+      },
+      {
+        "check": "mounted/comparar",
+        "passed": true
+      },
+      {
+        "check": "mounted/paginas",
+        "passed": true
+      },
+      {
+        "check": "mounted/paginas/inexistente-ensaio-release",
+        "passed": true
+      },
+      {
+        "check": "mounted canonical home redirect",
+        "passed": true
+      },
+      {
+        "check": "existing interactive dual-axis comparison ready",
+        "passed": true
+      },
+      {
+        "check": "dual-axis chart has no page overflow",
+        "passed": true
+      },
+      {
+        "check": "no unexpected console messages or page errors",
+        "passed": true
+      },
+      {
+        "check": "all public requests same-site",
+        "passed": true
+      }
+    ],
+    "errors": [],
+    "external": [],
+    "known_edge_warnings": [
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+      "Error with Permissions-Policy header: Unrecognized feature: 'vr'."
+    ],
+    "scope": "installed public app, both mounts, Chromium widths 320/390/768/1440; public-only vr Permissions-Policy warning retained separately"
+  },
+  "rollback_images": {
+    "prumo": "prumo:rollback-home-cms-20261117T095414Z",
+    "prumo-backoffice": "prumo-backoffice:rollback-home-cms-20261117T095414Z"
+  }
+}

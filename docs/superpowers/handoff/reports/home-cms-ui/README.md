@@ -1,6 +1,6 @@
 # CMS homepage and interface acceptance
 
-Status: implemented on pipeline-rebuild, executable tree 0d004e2. NOT merged or installed. The live baseline remains f493045 on schema0019. The owner clarified that the existing homepage must be CREATED as actual CMS content, including every current section. A card-only import was replaced before acceptance.
+Status: installed from b842199 on 2026-11-17, schema 0019, after explicit owner release approval. The complete homepage is published as real CMS content in production. See [production-installation.md](production-installation.md) and production-receipt.json for the release CI, 92 fresh tests, 113 public checks,17 trusted-proxy Admin checks, audit readback and unchanged source-table fingerprints. The development evidence below retains its original scope, including the earlier full-suite failure; it does not supersede the later exact-SHA hosted CI success. Human owner and screen-reader acceptance remain separate.
 
 ## Delivered scope
 

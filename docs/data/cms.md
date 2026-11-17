@@ -1,24 +1,24 @@
 # Statistics CMS v1: operator guide and release contract
 
-Status 2026-11-17: application release f493045 is installed with schema 0019; main is pushed and its hosted CI passed. Public Admin activation completed at 01:58:12 UTC after renewed owner approval. https://joao.date/dados/admin/ redirects anonymous visitors to Authelia, including through a public-IPv4 probe from f0nix. The direct backoffice port remains locked. The technical production trial published and read back a page/chart on both public prefixes, checked private drafts, stale forms and restore, then unpublished both; immutable audit history remains. This internal-proxy test is not a human owner login. Owner browser acceptance and human screen-reader acceptance remain pending. See the current HANDOFF and operations.md for release and recovery points.
+Status 2026-11-17: CMS 0019 and public Admin are installed. The authorized homepage/UI release b842199 is now installed too: web/backoffice recreated at 09:55:52/53 UTC and the complete CMS homepage published at 09:57:20, version 2/revision 6. Worker, schema, Authelia and Traefik stayed unchanged. Hosted CI 44055444383,92 fresh local tests, 113 public browser checks and 17 trusted-proxy Admin checks passed. Human owner login/publication and screen-reader acceptance remain separate. See HANDOFF and the home-cms-ui/production-installation.md receipt for exact scope, known shared-edge warning and recovery points.
 
 ## Access after release
 
 Use the footer Admin link, or https://joao.date/dados/admin/. Authelia performs two-factor authentication; the application separately admits only the configured operator identity. There is no VPN bypass. The direct Tailscale port refuses ordinary page requests after proxy mode is enabled; /healthz remains non-sensitive liveness/readiness.
 
-The content dashboard is /dados/admin/cms. Its Páginas and Gráficos links are editorial tools; the overview, series, queue and derived views remain operational tools. The installed f493045 release still uses /editorial/inicio for the built-in home. The homepage/UI extension below replaces that path after its separate release; do not confuse branch behavior with the installed runtime.
+The content dashboard is /dados/admin/cms. Its Páginas and Gráficos links are editorial tools; the overview, series, queue and derived views remain operational tools. Página inicial opens the populated editor at /dados/admin/cms/page/inicio. The old /editorial/inicio entry redirects to the CMS; its mutation routes refuse changes after preparation.
 
 ## A page from draft to public
 
 On Páginas, create a page with a permanent lower-case hyphenated slug, a title, an introduction and a section. The section controls where the page is listed in the public catalogue. Public addresses are /paginas/{slug}, with /dados prepended on joao.date; Páginas in the footer lists every published section, including Geral.
 
-Use the labelled controls to add text, an indicator card or a reusable chart. Up/down/remove buttons save a new draft with the submitted ordering. The installed release allows twelve blocks; the homepage extension raises the limit to twenty and adds the current homepage section types. Text is plain escaped text, never HTML. Every save and publication needs a reason for the audit trail. The slug stays fixed; duplicate to a new slug when a new address is needed.
+Use the labelled controls to add text, an indicator card or a reusable chart. Up/down/remove buttons save a new draft with the submitted ordering. The installed release allows twenty blocks and includes the current homepage section types. Text is plain escaped text, never HTML. Every save and publication needs a reason for the audit trail. The slug stays fixed; duplicate to a new slug when a new address is needed.
 
 Saving does not change the public page. The preview is deliberately static, using the draft and the same public data/rendering, with SVG charts and tables; it is labelled as a preview and is accessible only inside Admin. Public chart interaction is exercised separately. Review the publication diff and preview, enter the reason, then publish. Publication swaps the live revision atomically.
 
 Unpublish removes the public route from the page index and returns 404 at its address; it does not delete history. Restore copies a selected revision into a NEW private draft. Inspect and publish that draft to change the public page. A form from an older version returns 409 without writing; reload and review the current state instead of repeating the stale form.
 
-## Homepage and UI extension: implemented, awaiting release
+## Homepage and UI extension: installed
 
 The deliverable is the complete CURRENT homepage stored as CMS content, not an empty example or a card-only import. The reserved page `inicio` contains its existing opening copy and links, highlights heading and twelve indicator references, theme directory, verification chain and institution section. On the production copy this is seventeen ordered blocks. Statistical values, source names, theme counts, overall counts and latest verified collection date are resolved read-only on every request, not frozen into prose.
 
@@ -55,7 +55,7 @@ A refusal leaves any existing draft for review. Do not clear it with SQL or repe
 
 For a code rollback, freeze editorial writes and use the recorded old web/backoffice images/code through the normal aliases, without moving remote main backwards or restoring source data. The old public code ignores the CMS home and renders the preserved legacy homepage. Keep all new CMS rows/history intact; old backoffice code cannot edit new block shapes, and ordinary pages that used new block types are unavailable until newer code returns. If those pages were published, retire them deliberately with the new editor before the downgrade. A database rollback is not required for schema0019-to0019 and must not discard newer ingestion or authored history.
 
-Verification evidence: `../superpowers/handoff/reports/home-cms-ui/README.md`. Production installation and human screen-reader acceptance remain separate gates.
+Development evidence: `../superpowers/handoff/reports/home-cms-ui/README.md`. Production installation is recorded in `../superpowers/handoff/reports/home-cms-ui/production-installation.md`; human owner and screen-reader acceptance remain separate gates.
 
 ## Reusable charts
 
