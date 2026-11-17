@@ -1,0 +1,22 @@
+{
+  "package": "@tabler/core",
+  "version": "1.7.5",
+  "url": "https://registry.npmjs.org/@tabler/core/-/core-1.7.5.tgz",
+  "archive_integrity": "sha512-lqR2kfrxvH6q0fESm4ABJk3lhUJGQ/tBtiNi4oSCvDgMNljStTLpY38F+e5EtaUqufpbZq8MIxN94QK8cTApAA==",
+  "upstream_css_sha256": "d1708c69e6b07a5a3138b8549bf64e00cd9d18c130b9b2ba2d9e294956f7c564",
+  "changes": {
+    "U+2014_to_ASCII_hyphen": 2,
+    "source_map_reference_removed": true
+  },
+  "files": {
+    "tabler.min.css": {
+      "bytes": 683684,
+      "sha256": "4421622c90b17e122517d1f4bcc245be004ef3e353f43481ef07e13a55d32ce3"
+    },
+    "LICENSE": {
+      "bytes": 1090,
+      "sha256": "4f88a82d13be3c5c63a12c5631eae914aa4381b6dc17641bf1ab85f3f8f6c8a5"
+    }
+  },
+  "local_gzip_bytes": 85019
+}

@@ -1,8 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <!-- Fundo vermelho rounded -->
-  <rect width="32" height="32" rx="6" fill="#C0392B"/>
-  <!-- Σ branco -->
-  <text x="16" y="23" text-anchor="middle"
-        font-family="Georgia, serif" font-size="20" font-weight="700"
-        fill="white">Σ</text>
+  <rect width="32" height="32" rx="7" fill="#1b514b"/>
+  <path id="plumb-line" d="M15 4h2v10h-2z" fill="#fbf9f2"/>
+  <path id="plumb-weight" d="M12 13h8v4l3 3-7 9-7-9 3-3z" fill="#fbf9f2"/>
+  <path d="M16 13h4v4l3 3-7 9z" fill="#d9ad70"/>
 </svg>
