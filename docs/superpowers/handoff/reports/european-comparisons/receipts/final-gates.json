@@ -1,0 +1,14 @@
+{
+  "file": "docs/superpowers/handoff/reports/european-comparisons/receipts/full-suite-b1fca40.log.gz",
+  "raw_sha256": "7d6c09c1a61e03befe1d892bb88c307c5d6c1a2ebe4a737a01dfeb711e21663e",
+  "raw_bytes": 12445,
+  "last_line": "========= 2774 passed, 7 deselected, 3 warnings in 1507.85s (0:25:07) ==========",
+  "passed": 2774,
+  "network_deselected": 7,
+  "warnings": 3,
+  "duration_s": 1507.85,
+  "runtime": "0902617",
+  "launch_head": "b1fca40",
+  "clean_checkout": "32146a5",
+  "clean_focused_passed": 124
+}

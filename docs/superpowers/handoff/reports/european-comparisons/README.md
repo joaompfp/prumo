@@ -78,4 +78,10 @@ PRUMO_QA_DB=/absolute/scratch/production-copy.sqlite3 \
 
 Choose an unused output directory to retain earlier evidence. The helper `capture_pages.py` refuses to overwrite existing raw HTML captures. Timings in `receipts/http-and-timings.json` are n=20 per route after warmup, with the full suite running concurrently. They are local development timings, not a production SLA or a zero-concurrency benchmark. Public index median/p95 was 56.6/64.9 ms; group pages median 150.7 to 157.3 ms, p95 168.8 to 189.5 ms.
 
-Full-suite, clean-committed-tree, lint and delivery receipts are recorded in the final gate section once those executions complete. Production remains the installed Carmim/Tabler baseline; no URLs for the new country groups are claimed live.
+## Final gates
+
+Controller authoritative offline suite: 2 774 passed, 7 network tests deselected, 3 warnings in 1 507.85 seconds. It launched at b1fca40 with runtime 0902617 and no application, dependency, configuration, asset or test changes during the run. Later changes are documentation/evidence only. Exact raw output is archived losslessly in `receipts/full-suite-b1fca40.log.gz`; `final-gates.json` pins the uncompressed SHA-256 and scope. Ruff across app/ingest/presentation/backoffice/tests and JavaScript syntax checks are clean.
+
+Detached clean committed checkout 32146a5: actual module origins point into the detached tree; the index and all country routes return 200 against the production snapshot; the compiled asset matches its manifest. The affected engine, country, pair, presentation, layout, interactive and typography suite passed 124 tests with one dependency warning in 199.45 seconds. This is committed-tree packaging evidence, not another full-suite claim. Runtime/tests match the authoritative full run byte-for-byte.
+
+The localhost development server was stopped after acceptance. Production remains the installed Carmim/Tabler baseline; no URLs for the new country groups are claimed live. The owner roadmap and technical handoff distinguish the completed branch candidate from pending merge/installation. A release of this combined branch affects web/backoffice only and requires owner approval; no migration, worker or edge change is needed.
