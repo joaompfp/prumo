@@ -1,0 +1,3306 @@
+{
+ "overview@1440": {
+  "status": 200,
+  "vw": 1440,
+  "html": "16px",
+  "scrollW": 1440,
+  "bodyH": 1534,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1440,
+    "h": 1000
+   },
+   "h1": {
+    "size": "30.4px",
+    "lh": "34.96px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 692,
+    "h": 35
+   },
+   "h2": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 692,
+    "h": 141
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 212,
+    "h": 37
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 203,
+    "h": 15
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 1136,
+    "h": 18
+   },
+   "card_title": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "metric_label": {
+    "size": "10.24px",
+    "lh": "13.312px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 182,
+    "h": 13
+   },
+   "metric_value": {
+    "size": "25.6px",
+    "lh": "28.16px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 182,
+    "h": 28
+   },
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 2879,
+    "h": 341
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 84,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 84,
+    "h": 35
+   },
+   "form_label": null,
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 201,
+    "h": 32
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ]
+  ],
+  "tables": 9,
+  "cards": 6,
+  "navlinks": 7
+ },
+ "cms_list@1440": {
+  "status": 200,
+  "vw": 1440,
+  "html": "16px",
+  "scrollW": 1440,
+  "bodyH": 1000,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1440,
+    "h": 1000
+   },
+   "h1": {
+    "size": "30.4px",
+    "lh": "34.96px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 692,
+    "h": 35
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 385,
+    "h": 22
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 692,
+    "h": 84
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 212,
+    "h": 37
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 203,
+    "h": 15
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 1136,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1134,
+    "h": 125
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 253,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 253,
+    "h": 47
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 263,
+    "h": 17
+   },
+   "hint": {
+    "size": "12px",
+    "lh": "16.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 263,
+    "h": 32
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 201,
+    "h": 32
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    253,
+    254,
+    100,
+    90,
+    134,
+    303
+   ],
+   [
+    253,
+    254,
+    100,
+    90,
+    134,
+    303
+   ],
+   [
+    345,
+    245,
+    96,
+    123,
+    325
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "cms_editor@1440": {
+  "status": 200,
+  "vw": 1440,
+  "html": "16px",
+  "scrollW": 1440,
+  "bodyH": 4528,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1440,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24.8px",
+    "lh": "28.52px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 453,
+    "h": 29
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 107,
+    "h": 22
+   },
+   "h3": {
+    "size": "15.2px",
+    "lh": "19.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1097,
+    "h": 20
+   },
+   "lede": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 150,
+    "h": 32
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(155, 28, 46)",
+    "w": 212,
+    "h": 37
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 203,
+    "h": 15
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 1136,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1134,
+    "h": 804
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 99,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 99,
+    "h": 111
+   },
+   "form_label": {
+    "size": "11.84px",
+    "lh": "17.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 908,
+    "h": 18
+   },
+   "hint": {
+    "size": "11.2px",
+    "lh": "15.12px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 908,
+    "h": 15
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 201,
+    "h": 32
+   },
+   "editor_title": {
+    "size": "24.8px",
+    "lh": "28.52px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 453,
+    "h": 29
+   },
+   "editor_status": {
+    "size": "12.48px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 453,
+    "h": 28
+   },
+   "summary": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "600",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1134,
+    "h": 43
+   },
+   "block_kind": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 169,
+    "h": 16
+   },
+   "caveat": null
+  },
+  "rows": [
+   [
+    99,
+    226,
+    262,
+    262,
+    286
+   ],
+   [
+    99,
+    226,
+    262,
+    262,
+    286
+   ],
+   [
+    99,
+    226,
+    262,
+    262,
+    286
+   ],
+   [
+    99,
+    226,
+    262,
+    262,
+    286
+   ],
+   [
+    99,
+    226,
+    262,
+    262,
+    286
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "series_list@1440": {
+  "status": 200,
+  "vw": 1440,
+  "html": "16px",
+  "scrollW": 1440,
+  "bodyH": 4042,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1440,
+    "h": 1000
+   },
+   "h1": {
+    "size": "30.4px",
+    "lh": "34.96px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 692,
+    "h": 35
+   },
+   "h2": null,
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 692,
+    "h": 58
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 212,
+    "h": 37
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 203,
+    "h": 15
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 1136,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1564,
+    "h": 3487
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 264,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 264,
+    "h": 35
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 153,
+    "h": 17
+   },
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 201,
+    "h": 32
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ]
+  ],
+  "tables": 1,
+  "cards": 0,
+  "navlinks": 7
+ },
+ "overview@768": {
+  "status": 200,
+  "vw": 768,
+  "html": "16px",
+  "scrollW": 768,
+  "bodyH": 1913,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 768,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 692,
+    "h": 28
+   },
+   "h2": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 692,
+    "h": 141
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 139,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 736,
+    "h": 18
+   },
+   "card_title": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "metric_label": {
+    "size": "10.24px",
+    "lh": "13.312px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 332,
+    "h": 13
+   },
+   "metric_value": {
+    "size": "25.6px",
+    "lh": "28.16px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 332,
+    "h": 28
+   },
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 2879,
+    "h": 341
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 84,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 84,
+    "h": 35
+   },
+   "form_label": null,
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ]
+  ],
+  "tables": 9,
+  "cards": 6,
+  "navlinks": 7
+ },
+ "cms_list@768": {
+  "status": 200,
+  "vw": 768,
+  "html": "16px",
+  "scrollW": 768,
+  "bodyH": 1223,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 768,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 692,
+    "h": 28
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 385,
+    "h": 22
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 692,
+    "h": 84
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 139,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 736,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 775,
+    "h": 204
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 192,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 192,
+    "h": 87
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 223,
+    "h": 17
+   },
+   "hint": {
+    "size": "12px",
+    "lh": "16.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 223,
+    "h": 32
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    192,
+    194,
+    76,
+    68,
+    102,
+    143
+   ],
+   [
+    192,
+    194,
+    76,
+    68,
+    102,
+    143
+   ],
+   [
+    218,
+    173,
+    68,
+    88,
+    187
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "cms_editor@768": {
+  "status": 200,
+  "vw": 768,
+  "html": "16px",
+  "scrollW": 768,
+  "bodyH": 5064,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 768,
+    "h": 1000
+   },
+   "h1": {
+    "size": "20px",
+    "lh": "23px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 453,
+    "h": 23
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 107,
+    "h": 22
+   },
+   "h3": {
+    "size": "15.2px",
+    "lh": "19.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 697,
+    "h": 20
+   },
+   "lede": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 150,
+    "h": 32
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(155, 28, 46)",
+    "w": 153,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 736,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 832,
+    "h": 804
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 73,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 73,
+    "h": 111
+   },
+   "form_label": {
+    "size": "11.84px",
+    "lh": "17.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 508,
+    "h": 18
+   },
+   "hint": {
+    "size": "11.2px",
+    "lh": "15.12px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 508,
+    "h": 15
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": {
+    "size": "20px",
+    "lh": "23px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 453,
+    "h": 23
+   },
+   "editor_status": {
+    "size": "12.48px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 453,
+    "h": 28
+   },
+   "summary": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "600",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 734,
+    "h": 43
+   },
+   "block_kind": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 169,
+    "h": 16
+   },
+   "caveat": null
+  },
+  "rows": [
+   [
+    73,
+    166,
+    192,
+    192,
+    210
+   ],
+   [
+    73,
+    166,
+    192,
+    192,
+    210
+   ],
+   [
+    73,
+    166,
+    192,
+    192,
+    210
+   ],
+   [
+    73,
+    166,
+    192,
+    192,
+    210
+   ],
+   [
+    73,
+    166,
+    192,
+    192,
+    210
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "series_list@768": {
+  "status": 200,
+  "vw": 768,
+  "html": "16px",
+  "scrollW": 768,
+  "bodyH": 4176,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 768,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 692,
+    "h": 28
+   },
+   "h2": null,
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 692,
+    "h": 58
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 139,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 736,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 1564,
+    "h": 3487
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 264,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 264,
+    "h": 35
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 165,
+    "h": 17
+   },
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ],
+   [
+    264,
+    80,
+    76,
+    90,
+    60,
+    192,
+    54,
+    169,
+    258,
+    320
+   ]
+  ],
+  "tables": 1,
+  "cards": 0,
+  "navlinks": 7
+ },
+ "overview@390": {
+  "status": 200,
+  "vw": 390,
+  "html": "16px",
+  "scrollW": 390,
+  "bodyH": 2601,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 390,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 364,
+    "h": 28
+   },
+   "h2": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 253
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 139,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 18
+   },
+   "card_title": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "metric_label": {
+    "size": "10.24px",
+    "lh": "13.312px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 332,
+    "h": 13
+   },
+   "metric_value": {
+    "size": "25.6px",
+    "lh": "28.16px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 332,
+    "h": 28
+   },
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 2879,
+    "h": 341
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 84,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 84,
+    "h": 35
+   },
+   "form_label": null,
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ]
+  ],
+  "tables": 9,
+  "cards": 6,
+  "navlinks": 7
+ },
+ "cms_list@390": {
+  "status": 200,
+  "vw": 390,
+  "html": "16px",
+  "scrollW": 390,
+  "bodyH": 1979,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 390,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 364,
+    "h": 28
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 326,
+    "h": 22
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 140
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 139,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 362,
+    "h": 604
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 362,
+    "h": 49
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 334,
+    "h": 17
+   },
+   "hint": {
+    "size": "12px",
+    "lh": "16.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 334,
+    "h": 16
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    362,
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "cms_editor@390": {
+  "status": 200,
+  "vw": 390,
+  "html": "16px",
+  "scrollW": 390,
+  "bodyH": 10222,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 390,
+    "h": 1000
+   },
+   "h1": {
+    "size": "20px",
+    "lh": "23px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 364,
+    "h": 23
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 107,
+    "h": 22
+   },
+   "h3": {
+    "size": "15.2px",
+    "lh": "19.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 326,
+    "h": 20
+   },
+   "lede": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 150,
+    "h": 32
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(155, 28, 46)",
+    "w": 153,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 362,
+    "h": 2307
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 362,
+    "h": 49
+   },
+   "form_label": {
+    "size": "11.84px",
+    "lh": "17.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 335,
+    "h": 18
+   },
+   "hint": {
+    "size": "11.2px",
+    "lh": "15.12px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": {
+    "size": "20px",
+    "lh": "23px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 364,
+    "h": 23
+   },
+   "editor_status": {
+    "size": "12.48px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 58
+   },
+   "summary": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "600",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 362,
+    "h": 85
+   },
+   "block_kind": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 169,
+    "h": 16
+   },
+   "caveat": null
+  },
+  "rows": [
+   [
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "series_list@390": {
+  "status": 200,
+  "vw": 390,
+  "html": "16px",
+  "scrollW": 390,
+  "bodyH": 50329,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 390,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 364,
+    "h": 28
+   },
+   "h2": null,
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 86
+   },
+   "nav": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 139,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 364,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 362,
+    "h": 49141
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 362,
+    "h": 49
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 340,
+    "h": 17
+   },
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 57,
+    "h": 15
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362
+   ],
+   [
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362,
+    362
+   ]
+  ],
+  "tables": 1,
+  "cards": 0,
+  "navlinks": 7
+ },
+ "overview@320": {
+  "status": 200,
+  "vw": 320,
+  "html": "16px",
+  "scrollW": 320,
+  "bodyH": 2908,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 320,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 294,
+    "h": 28
+   },
+   "h2": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 337
+   },
+   "nav": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 126,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 18
+   },
+   "card_title": {
+    "size": "15.2px",
+    "lh": "24px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 152,
+    "h": 24
+   },
+   "metric_label": {
+    "size": "10.24px",
+    "lh": "13.312px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 262,
+    "h": 13
+   },
+   "metric_value": {
+    "size": "25.6px",
+    "lh": "28.16px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 262,
+    "h": 28
+   },
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 2879,
+    "h": 341
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 84,
+    "h": 31
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 84,
+    "h": 35
+   },
+   "form_label": null,
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 0,
+    "h": 0
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ],
+   [
+    84,
+    62,
+    75,
+    217,
+    129,
+    146,
+    149,
+    320,
+    258,
+    258,
+    258,
+    346,
+    140,
+    438
+   ]
+  ],
+  "tables": 9,
+  "cards": 6,
+  "navlinks": 7
+ },
+ "cms_list@320": {
+  "status": 200,
+  "vw": 320,
+  "html": "16px",
+  "scrollW": 320,
+  "bodyH": 2035,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 320,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 294,
+    "h": 28
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 256,
+    "h": 22
+   },
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 196
+   },
+   "nav": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 126,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 292,
+    "h": 604
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 292,
+    "h": 49
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 264,
+    "h": 17
+   },
+   "hint": {
+    "size": "12px",
+    "lh": "16.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 264,
+    "h": 32
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 0,
+    "h": 0
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    292,
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "cms_editor@320": {
+  "status": 200,
+  "vw": 320,
+  "html": "16px",
+  "scrollW": 320,
+  "bodyH": 10635,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 320,
+    "h": 1000
+   },
+   "h1": {
+    "size": "20px",
+    "lh": "23px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 294,
+    "h": 23
+   },
+   "h2": {
+    "size": "17.28px",
+    "lh": "21.6px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 107,
+    "h": 22
+   },
+   "h3": {
+    "size": "15.2px",
+    "lh": "19.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 256,
+    "h": 40
+   },
+   "lede": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 150,
+    "h": 32
+   },
+   "nav": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(155, 28, 46)",
+    "w": 139,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 292,
+    "h": 2307
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 292,
+    "h": 49
+   },
+   "form_label": {
+    "size": "11.84px",
+    "lh": "17.76px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 265,
+    "h": 18
+   },
+   "hint": {
+    "size": "11.2px",
+    "lh": "15.12px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 0,
+    "h": 0
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": {
+    "size": "20px",
+    "lh": "23px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 294,
+    "h": 23
+   },
+   "editor_status": {
+    "size": "12.48px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 58
+   },
+   "summary": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "600",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 292,
+    "h": 85
+   },
+   "block_kind": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 169,
+    "h": 16
+   },
+   "caveat": null
+  },
+  "rows": [
+   [
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292
+   ]
+  ],
+  "tables": 2,
+  "cards": 1,
+  "navlinks": 7
+ },
+ "series_list@320": {
+  "status": 200,
+  "vw": 320,
+  "html": "16px",
+  "scrollW": 320,
+  "bodyH": 51815,
+  "fonts": {
+   "body": {
+    "size": "14px",
+    "lh": "21px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 320,
+    "h": 1000
+   },
+   "h1": {
+    "size": "24px",
+    "lh": "27.6px",
+    "weight": "700",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 294,
+    "h": 28
+   },
+   "h2": null,
+   "h3": null,
+   "lede": {
+    "size": "13.6px",
+    "lh": "28px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 114
+   },
+   "nav": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 126,
+    "h": 42
+   },
+   "nav_label": {
+    "size": "9.92px",
+    "lh": "14.88px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "meta": {
+    "size": "12.16px",
+    "lh": "18.24px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 294,
+    "h": 18
+   },
+   "card_title": null,
+   "metric_label": null,
+   "metric_value": null,
+   "table": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 292,
+    "h": 50599
+   },
+   "th": {
+    "size": "10.4px",
+    "lh": "16px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 0,
+    "h": 0
+   },
+   "td": {
+    "size": "12.8px",
+    "lh": "19.2px",
+    "weight": "400",
+    "family": "system-ui",
+    "color": "rgb(28, 27, 25)",
+    "w": 292,
+    "h": 49
+   },
+   "form_label": {
+    "size": "11.2px",
+    "lh": "16.8px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(95, 90, 83)",
+    "w": 270,
+    "h": 17
+   },
+   "hint": null,
+   "badge": {
+    "size": "9.28px",
+    "lh": "9.28px",
+    "weight": "650",
+    "family": "system-ui",
+    "color": "rgb(125, 84, 36)",
+    "w": 0,
+    "h": 0
+   },
+   "button": {
+    "size": "12px",
+    "lh": "16px",
+    "weight": "500",
+    "family": "system-ui",
+    "color": "oklch(0.5555 0 0)",
+    "w": 0,
+    "h": 0
+   },
+   "editor_title": null,
+   "editor_status": null,
+   "summary": null,
+   "block_kind": null,
+   "caveat": null
+  },
+  "rows": [
+   [
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292
+   ],
+   [
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292,
+    292
+   ]
+  ],
+  "tables": 1,
+  "cards": 0,
+  "navlinks": 7
+ }
+}

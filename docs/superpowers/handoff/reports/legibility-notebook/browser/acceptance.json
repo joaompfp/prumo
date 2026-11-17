@@ -1,0 +1,7253 @@
+{
+  "checks": [
+    {
+      "name": "real populated homepage has twelve cards",
+      "passed": true
+    },
+    {
+      "name": "home 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "home 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "home 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "home@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 eyebrow at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_unit at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_period at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_source at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 card_link at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 theme_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 theme_blurb at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1440 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "home 1440 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 1440 exact values",
+      "passed": true
+    },
+    {
+      "name": "home 1440 Schola display",
+      "passed": true
+    },
+    {
+      "name": "series 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 figure_meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 figure_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1440 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "comparison 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "comparison 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "comparison 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1440 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "themes 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "themes 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "themes 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1440 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "overview 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "overview 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "overview 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 card_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 metric_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 metric_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@1440 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@1440 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 h3 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 editor_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 editor_status at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 summary at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@1440 block_kind at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "series_list 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series_list 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series_list 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@1440 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "notebook 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "notebook 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "notebook 1440 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "notebook 1440 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "notebook 1440 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "home 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "home 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "home@1024 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 eyebrow at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 card_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 card_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 card_unit at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 card_period at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 card_source at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 card_link at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 theme_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 theme_blurb at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@1024 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "home 1024 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 1024 exact values",
+      "passed": true
+    },
+    {
+      "name": "home 1024 Schola display",
+      "passed": true
+    },
+    {
+      "name": "series 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series@1024 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 figure_meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 figure_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@1024 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "comparison 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "comparison 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "comparison 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@1024 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "themes 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "themes 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "themes 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@1024 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "overview 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "overview 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "overview 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "overview 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "overview 1024 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "overview 1024 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1024 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_list 1024 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1024 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 1024 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "series_list 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series_list 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series_list 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series_list 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "series_list 1024 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "series_list 1024 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "notebook 1024 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "notebook 1024 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "notebook 1024 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "notebook 1024 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "notebook 1024 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "home 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "home 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "home@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 eyebrow at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 card_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 card_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 card_unit at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 card_period at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 card_source at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 card_link at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 theme_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 theme_blurb at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@768 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "home 768 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 768 exact values",
+      "passed": true
+    },
+    {
+      "name": "home 768 Schola display",
+      "passed": true
+    },
+    {
+      "name": "series 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 figure_meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 figure_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@768 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "comparison 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "comparison 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "comparison 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@768 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "themes 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "themes 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "themes 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "themes@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@768 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "overview 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "overview 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "overview 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "overview@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 card_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 metric_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 metric_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@768 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "overview 768 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "overview 768 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_list 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_list 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_list 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@768 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_list 768 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_list 768 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 h3 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 editor_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 editor_status at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 summary at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@768 block_kind at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 768 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 768 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "series_list 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series_list 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series_list 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@768 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "series_list 768 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "series_list 768 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "notebook 768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "notebook 768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "notebook 768 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "notebook 768 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "notebook 768 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "home 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "home 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "home@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 eyebrow at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 card_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 card_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 card_unit at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 card_period at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 card_source at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 card_link at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 theme_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 theme_blurb at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@390 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "home 390 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 390 exact values",
+      "passed": true
+    },
+    {
+      "name": "home 390 Schola display",
+      "passed": true
+    },
+    {
+      "name": "home 390 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "series 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 figure_meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 figure_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@390 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "series 390 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "comparison 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "comparison 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "comparison 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@390 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "comparison 390 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "themes 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "themes 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "themes 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "themes@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@390 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "themes 390 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "overview 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "overview 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "overview 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "overview@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 card_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 metric_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 metric_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@390 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "overview 390 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "overview 390 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_list 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_list 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_list 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@390 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_list 390 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_list 390 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 h3 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 editor_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 editor_status at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 summary at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@390 block_kind at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 390 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 390 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "series_list 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series_list 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series_list 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@390 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "series_list 390 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "series_list 390 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "notebook 390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "notebook 390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "notebook 390 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "notebook 390 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "notebook 390 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "notebook 390 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "home 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "home 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "home 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "home@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 eyebrow at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 card_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 card_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 card_unit at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 card_period at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 card_source at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 card_link at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 theme_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 theme_blurb at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home@320 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "home 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "home 320 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "home 320 exact values",
+      "passed": true
+    },
+    {
+      "name": "home 320 Schola display",
+      "passed": true
+    },
+    {
+      "name": "home 320 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "series 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 figure_meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 figure_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series@320 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "series 320 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "comparison 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "comparison 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "comparison 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison@320 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "comparison 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "comparison 320 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "themes 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "themes 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "themes 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "themes@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 footer at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes@320 search at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "themes 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "themes 320 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "overview 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "overview 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "overview 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "overview@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 card_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 metric_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 metric_value at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview@320 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "overview 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "overview 320 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "overview 320 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_list 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_list 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_list 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list@320 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_list 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_list 320 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_list 320 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 h2 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 h3 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 hint at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 editor_title at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 editor_status at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 summary at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor@320 block_kind at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 320 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "cms_editor 320 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "series_list 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "series_list 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "series_list 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 body at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 h1 at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 lede at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 nav at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 nav_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 meta at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 table at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 th at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 td at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 form_label at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 badge at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list@320 button at least 50 percent larger",
+      "passed": true
+    },
+    {
+      "name": "series_list 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "series_list 320 compact native menu",
+      "passed": true
+    },
+    {
+      "name": "series_list 320 accessible current mobile location",
+      "passed": true
+    },
+    {
+      "name": "notebook 320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "notebook 320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "notebook 320 no authored forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "notebook 320 Lato loaded",
+      "passed": true
+    },
+    {
+      "name": "notebook 320 scriptfree",
+      "passed": true
+    },
+    {
+      "name": "notebook 320 notebook discoverable in mobile menu",
+      "passed": true
+    },
+    {
+      "name": "advertised font bytes lato-regular.woff2",
+      "passed": true
+    },
+    {
+      "name": "advertised font bytes lato-semibold.woff2",
+      "passed": true
+    },
+    {
+      "name": "advertised font bytes lato-bold.woff2",
+      "passed": true
+    },
+    {
+      "name": "advertised font bytes schola-regular.woff2",
+      "passed": true
+    },
+    {
+      "name": "advertised font bytes schola-bold.woff2",
+      "passed": true
+    },
+    {
+      "name": "series start action ",
+      "passed": true
+    },
+    {
+      "name": "search preserves selected card ",
+      "passed": true
+    },
+    {
+      "name": "add a second card ",
+      "passed": true
+    },
+    {
+      "name": "canonical strips only transient search ",
+      "passed": true
+    },
+    {
+      "name": "shared address reopens same cards ",
+      "passed": true
+    },
+    {
+      "name": "remove one card ",
+      "passed": true
+    },
+    {
+      "name": "clear notebook ",
+      "passed": true
+    },
+    {
+      "name": "comparison start action ",
+      "passed": true
+    },
+    {
+      "name": "notebook noindex meta ",
+      "passed": true
+    },
+    {
+      "name": "withheld notebook stays safe ",
+      "passed": true
+    },
+    {
+      "name": "series start action /dados",
+      "passed": true
+    },
+    {
+      "name": "search preserves selected card /dados",
+      "passed": true
+    },
+    {
+      "name": "add a second card /dados",
+      "passed": true
+    },
+    {
+      "name": "canonical strips only transient search /dados",
+      "passed": true
+    },
+    {
+      "name": "shared address reopens same cards /dados",
+      "passed": true
+    },
+    {
+      "name": "remove one card /dados",
+      "passed": true
+    },
+    {
+      "name": "clear notebook /dados",
+      "passed": true
+    },
+    {
+      "name": "comparison start action /dados",
+      "passed": true
+    },
+    {
+      "name": "notebook noindex meta /dados",
+      "passed": true
+    },
+    {
+      "name": "withheld notebook stays safe /dados",
+      "passed": true
+    },
+    {
+      "name": "entire database unchanged by notebook",
+      "passed": true
+    },
+    {
+      "name": "visible real keyboard outline light",
+      "passed": true
+    },
+    {
+      "name": "visible real keyboard outline dark",
+      "passed": true
+    },
+    {
+      "name": "dirty publication still blocked",
+      "passed": true
+    },
+    {
+      "name": "draft stays private",
+      "passed": true
+    },
+    {
+      "name": "static preview has local fonts but no executable scripts",
+      "passed": true
+    },
+    {
+      "name": "isolated publication actually served",
+      "passed": true
+    },
+    {
+      "name": "isolated unpublication actually removed",
+      "passed": true
+    },
+    {
+      "name": "original cards after history restore",
+      "passed": true
+    },
+    {
+      "name": "exact dual-axis keyboard Home",
+      "passed": true
+    },
+    {
+      "name": "exact dual-axis keyboard End",
+      "passed": true
+    },
+    {
+      "name": "print restores named SVG",
+      "passed": true
+    },
+    {
+      "name": "reduced motion retains static controls",
+      "passed": true
+    },
+    {
+      "name": "notebook usable without JavaScript",
+      "passed": true
+    },
+    {
+      "name": "no-JS readable scrollable SVG",
+      "passed": true
+    },
+    {
+      "name": "missing-font no-JS editor actions remain named",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no external requests",
+      "passed": true
+    },
+    {
+      "name": "all protected data fingerprints unchanged",
+      "passed": true
+    },
+    {
+      "name": "integrity and foreign keys",
+      "passed": true
+    }
+  ],
+  "ratios": [
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "h1",
+      "before": 56.1,
+      "after": 84.15,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "h2",
+      "before": 29.75,
+      "after": 44.625,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "eyebrow",
+      "before": 13.26,
+      "after": 19.89,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_label",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_value",
+      "before": 35.7,
+      "after": 53.55,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_unit",
+      "before": 13.26,
+      "after": 20.4,
+      "ratio": 1.5384615384615383
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_period",
+      "before": 14.45,
+      "after": 21.675,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_source",
+      "before": 13.26,
+      "after": 19.89,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "card_link",
+      "before": 14.45,
+      "after": 21.675,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "badge",
+      "before": 11.22,
+      "after": 16.83,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "theme_title",
+      "before": 22.95,
+      "after": 34.425,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "theme_blurb",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "button",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 1440,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "h1",
+      "before": 56.1,
+      "after": 84.15,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "h2",
+      "before": 29.75,
+      "after": 44.625,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "figure_meta",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "figure_value",
+      "before": 54.4,
+      "after": 81.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1440,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "h1",
+      "before": 56.1,
+      "after": 84.15,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "h2",
+      "before": 29.75,
+      "after": 44.625,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1440,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "h1",
+      "before": 56.1,
+      "after": 84.15,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "h2",
+      "before": 20.4,
+      "after": 30.6,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1440,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "h1",
+      "before": 30.4,
+      "after": 45.6,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "h2",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "card_title",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "metric_label",
+      "before": 10.24,
+      "after": 15.36,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "metric_value",
+      "before": 25.6,
+      "after": 38.4,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 1440,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "h1",
+      "before": 30.4,
+      "after": 45.6,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "hint",
+      "before": 12.0,
+      "after": 18.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 1440,
+      "role": "button",
+      "before": 12.0,
+      "after": 18.24,
+      "ratio": 1.5199999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "h1",
+      "before": 24.8,
+      "after": 37.2,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "h3",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "lede",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "form_label",
+      "before": 11.84,
+      "after": 17.76,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "hint",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "editor_title",
+      "before": 24.8,
+      "after": 37.2,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "editor_status",
+      "before": 12.48,
+      "after": 18.72,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "summary",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 1440,
+      "role": "block_kind",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "h1",
+      "before": 30.4,
+      "after": 45.6,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 1440,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "h1",
+      "before": 47.104,
+      "after": 70.656,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "h2",
+      "before": 24.576,
+      "after": 36.864,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "eyebrow",
+      "before": 13.26,
+      "after": 19.89,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "card_label",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "card_value",
+      "before": 35.7,
+      "after": 53.55,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "card_unit",
+      "before": 13.26,
+      "after": 20.4,
+      "ratio": 1.5384615384615383
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "card_period",
+      "before": 14.45,
+      "after": 21.675,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "card_source",
+      "before": 13.26,
+      "after": 19.89,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "card_link",
+      "before": 14.45,
+      "after": 21.675,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "badge",
+      "before": 11.22,
+      "after": 16.83,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "theme_title",
+      "before": 22.95,
+      "after": 34.425,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "theme_blurb",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "button",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 1024,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "h1",
+      "before": 47.104,
+      "after": 70.656,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "h2",
+      "before": 24.576,
+      "after": 36.864,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "figure_meta",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "figure_value",
+      "before": 51.2,
+      "after": 76.8,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series",
+      "width": 1024,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "h1",
+      "before": 47.104,
+      "after": 70.656,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "h2",
+      "before": 24.576,
+      "after": 36.864,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 1024,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "h1",
+      "before": 47.104,
+      "after": 70.656,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "h2",
+      "before": 20.4,
+      "after": 30.6,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 1024,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "h1",
+      "before": 35.7,
+      "after": 53.55,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "h2",
+      "before": 22.95,
+      "after": 34.425,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "eyebrow",
+      "before": 13.26,
+      "after": 19.89,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "card_label",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "card_value",
+      "before": 35.7,
+      "after": 53.55,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "card_unit",
+      "before": 13.26,
+      "after": 20.4,
+      "ratio": 1.5384615384615383
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "card_period",
+      "before": 14.45,
+      "after": 21.675,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "card_source",
+      "before": 13.26,
+      "after": 19.89,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "card_link",
+      "before": 14.45,
+      "after": 21.675,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "badge",
+      "before": 11.22,
+      "after": 16.83,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "theme_title",
+      "before": 22.95,
+      "after": 34.425,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "theme_blurb",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "button",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "home",
+      "width": 768,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "h1",
+      "before": 35.7,
+      "after": 53.55,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "h2",
+      "before": 22.95,
+      "after": 34.425,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "figure_meta",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "figure_value",
+      "before": 40.8,
+      "after": 61.2,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series",
+      "width": 768,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "h1",
+      "before": 35.7,
+      "after": 53.55,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "h2",
+      "before": 22.95,
+      "after": 34.425,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "comparison",
+      "width": 768,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "body",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "h1",
+      "before": 35.7,
+      "after": 53.55,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "h2",
+      "before": 20.4,
+      "after": 30.6,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "nav",
+      "before": 16.15,
+      "after": 24.225,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "lede",
+      "before": 20.74,
+      "after": 31.11,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "footer",
+      "before": 13.94,
+      "after": 20.91,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "table",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "th",
+      "before": 12.58,
+      "after": 18.87,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "td",
+      "before": 17.0,
+      "after": 25.5,
+      "ratio": 1.5
+    },
+    {
+      "page": "themes",
+      "width": 768,
+      "role": "search",
+      "before": 15.3,
+      "after": 22.95,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "h2",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "card_title",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "metric_label",
+      "before": 10.24,
+      "after": 15.36,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "metric_value",
+      "before": 25.6,
+      "after": 38.4,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 768,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "hint",
+      "before": 12.0,
+      "after": 18.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 768,
+      "role": "button",
+      "before": 12.0,
+      "after": 18.24,
+      "ratio": 1.5199999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "h1",
+      "before": 20.0,
+      "after": 30.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "h3",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "lede",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "form_label",
+      "before": 11.84,
+      "after": 17.76,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "hint",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "editor_title",
+      "before": 20.0,
+      "after": 30.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "editor_status",
+      "before": 12.48,
+      "after": 18.72,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "summary",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 768,
+      "role": "block_kind",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 768,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "h2",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "lede",
+      "before": 19.52,
+      "after": 31.11,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "eyebrow",
+      "before": 12.48,
+      "after": 19.89,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "card_label",
+      "before": 12.8,
+      "after": 20.4,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "card_value",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "card_unit",
+      "before": 12.48,
+      "after": 20.4,
+      "ratio": 1.6346153846153844
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "card_period",
+      "before": 13.6,
+      "after": 21.675,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "card_source",
+      "before": 12.48,
+      "after": 19.89,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "card_link",
+      "before": 13.6,
+      "after": 21.675,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "badge",
+      "before": 10.56,
+      "after": 16.83,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "theme_title",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "theme_blurb",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "button",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 390,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "h2",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "table",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "th",
+      "before": 11.84,
+      "after": 18.87,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "td",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "figure_meta",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "figure_value",
+      "before": 38.4,
+      "after": 61.2,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "series",
+      "width": 390,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "h2",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "lede",
+      "before": 19.52,
+      "after": 31.11,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "table",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "th",
+      "before": 11.84,
+      "after": 18.87,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "td",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 390,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "h2",
+      "before": 19.2,
+      "after": 30.6,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "lede",
+      "before": 19.52,
+      "after": 31.11,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "table",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "th",
+      "before": 11.84,
+      "after": 18.87,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "td",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 390,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "h2",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "card_title",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "metric_label",
+      "before": 10.24,
+      "after": 15.36,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "metric_value",
+      "before": 25.6,
+      "after": 38.4,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 390,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "hint",
+      "before": 12.0,
+      "after": 18.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 390,
+      "role": "button",
+      "before": 12.0,
+      "after": 18.24,
+      "ratio": 1.5199999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "h1",
+      "before": 20.0,
+      "after": 30.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "h3",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "lede",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "form_label",
+      "before": 11.84,
+      "after": 17.76,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "hint",
+      "before": 11.2,
+      "after": 18.0,
+      "ratio": 1.6071428571428572
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "editor_title",
+      "before": 20.0,
+      "after": 30.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "editor_status",
+      "before": 12.48,
+      "after": 18.72,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "summary",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 390,
+      "role": "block_kind",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "nav",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "badge",
+      "before": 9.28,
+      "after": 13.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 390,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "h2",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "lede",
+      "before": 19.52,
+      "after": 31.11,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "eyebrow",
+      "before": 12.48,
+      "after": 19.89,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "card_label",
+      "before": 12.8,
+      "after": 20.4,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "card_value",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "card_unit",
+      "before": 12.48,
+      "after": 20.4,
+      "ratio": 1.6346153846153844
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "card_period",
+      "before": 13.6,
+      "after": 21.675,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "card_source",
+      "before": 12.48,
+      "after": 19.89,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "card_link",
+      "before": 13.6,
+      "after": 21.675,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "badge",
+      "before": 10.56,
+      "after": 16.83,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "theme_title",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "theme_blurb",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "button",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "home",
+      "width": 320,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "h2",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "table",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "th",
+      "before": 11.84,
+      "after": 18.87,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "td",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "figure_meta",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "figure_value",
+      "before": 38.4,
+      "after": 61.2,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "series",
+      "width": 320,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "h2",
+      "before": 21.6,
+      "after": 34.425,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "lede",
+      "before": 19.52,
+      "after": 31.11,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "table",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "th",
+      "before": 11.84,
+      "after": 18.87,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "td",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "comparison",
+      "width": 320,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "body",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "h1",
+      "before": 33.6,
+      "after": 53.55,
+      "ratio": 1.5937499999999998
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "h2",
+      "before": 19.2,
+      "after": 30.6,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "nav",
+      "before": 15.2,
+      "after": 24.225,
+      "ratio": 1.5937500000000002
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "lede",
+      "before": 19.52,
+      "after": 31.11,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "footer",
+      "before": 13.12,
+      "after": 20.91,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "table",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "th",
+      "before": 11.84,
+      "after": 18.87,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "td",
+      "before": 16.0,
+      "after": 25.5,
+      "ratio": 1.59375
+    },
+    {
+      "page": "themes",
+      "width": 320,
+      "role": "search",
+      "before": 14.4,
+      "after": 22.95,
+      "ratio": 1.59375
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "h2",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "nav",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "card_title",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "metric_label",
+      "before": 10.24,
+      "after": 15.36,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "metric_value",
+      "before": 25.6,
+      "after": 38.4,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "badge",
+      "before": 9.28,
+      "after": 16.4571,
+      "ratio": 1.7733943965517243
+    },
+    {
+      "page": "overview",
+      "width": 320,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "nav",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "hint",
+      "before": 12.0,
+      "after": 18.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "badge",
+      "before": 9.28,
+      "after": 16.4571,
+      "ratio": 1.7733943965517243
+    },
+    {
+      "page": "cms_list",
+      "width": 320,
+      "role": "button",
+      "before": 12.0,
+      "after": 18.24,
+      "ratio": 1.5199999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "h1",
+      "before": 20.0,
+      "after": 30.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "h2",
+      "before": 17.28,
+      "after": 25.92,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "h3",
+      "before": 15.2,
+      "after": 22.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "lede",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "nav",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "form_label",
+      "before": 11.84,
+      "after": 17.76,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "hint",
+      "before": 11.2,
+      "after": 18.0,
+      "ratio": 1.6071428571428572
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "badge",
+      "before": 9.28,
+      "after": 16.0457,
+      "ratio": 1.7290625000000002
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "editor_title",
+      "before": 20.0,
+      "after": 30.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "editor_status",
+      "before": 12.48,
+      "after": 18.72,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "summary",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "cms_editor",
+      "width": 320,
+      "role": "block_kind",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "body",
+      "before": 14.0,
+      "after": 21.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "h1",
+      "before": 24.0,
+      "after": 36.0,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "lede",
+      "before": 13.6,
+      "after": 20.4,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "nav",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "nav_label",
+      "before": 9.92,
+      "after": 14.88,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "meta",
+      "before": 12.16,
+      "after": 18.24,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "table",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "th",
+      "before": 10.4,
+      "after": 15.6,
+      "ratio": 1.5
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "td",
+      "before": 12.8,
+      "after": 19.2,
+      "ratio": 1.4999999999999998
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "form_label",
+      "before": 11.2,
+      "after": 16.8,
+      "ratio": 1.5000000000000002
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "badge",
+      "before": 9.28,
+      "after": 16.4571,
+      "ratio": 1.7733943965517243
+    },
+    {
+      "page": "series_list",
+      "width": 320,
+      "role": "button",
+      "before": 12.0,
+      "after": 21.0,
+      "ratio": 1.75
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "external": [],
+  "screens": [
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/home-1440.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/comparison-1440.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/cms_editor-1440.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/notebook-1440.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/home-390.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/comparison-390.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/cms_editor-390.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/notebook-390.png",
+    "docs/superpowers/handoff/reports/legibility-notebook/browser/editor-dark-1440.png"
+  ],
+  "protected_before": {
+    "dataset_run": {
+      "rows": 92,
+      "sha256": "4666153b439e08f706ff6d9e962f5bd2265e52f860a4f4fbc960120be5c70557"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_run": {
+      "rows": 8,
+      "sha256": "45913f88c6bfbebe0a5212c8e26deeb2ab045e2e77b5644f6d806b869a42d57b"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 373,
+      "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+    },
+    "observation": {
+      "rows": 543113,
+      "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "raw_fetch": {
+      "rows": 766,
+      "sha256": "1d34371f3172101c1c68e04c824757d6b9f61e263d4b38d1d7aaceb312bd45cd"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "c47f96788ec40082c0d56dea7feec452f5424efdf492af9dd1915e193f85fa12"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 48,
+      "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+    },
+    "verification_item": {
+      "rows": 94408,
+      "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+    },
+    "verification_spec": {
+      "rows": 706,
+      "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+    }
+  },
+  "notebook_before": {
+    "cms_document": {
+      "rows": 3,
+      "sha256": "5dd4b5ffe6e88c2978e51a397f05bebdd436941be8ea7a95b42a1694690ef19d"
+    },
+    "cms_event": {
+      "rows": 11,
+      "sha256": "cfd5f62a456794548ba5c46a7f96f67d1e6b6e6801f73a73612a47fa21a8ae15"
+    },
+    "cms_revision": {
+      "rows": 6,
+      "sha256": "a7d3c02da7a34c992c735550fb40036fd5b004e43ff805c30ef64388da23c702"
+    },
+    "dataset_run": {
+      "rows": 92,
+      "sha256": "4666153b439e08f706ff6d9e962f5bd2265e52f860a4f4fbc960120be5c70557"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_run": {
+      "rows": 8,
+      "sha256": "45913f88c6bfbebe0a5212c8e26deeb2ab045e2e77b5644f6d806b869a42d57b"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 373,
+      "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+    },
+    "observation": {
+      "rows": 543113,
+      "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "raw_fetch": {
+      "rows": 766,
+      "sha256": "1d34371f3172101c1c68e04c824757d6b9f61e263d4b38d1d7aaceb312bd45cd"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "c47f96788ec40082c0d56dea7feec452f5424efdf492af9dd1915e193f85fa12"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 48,
+      "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+    },
+    "verification_item": {
+      "rows": 94408,
+      "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+    },
+    "verification_spec": {
+      "rows": 706,
+      "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+    }
+  },
+  "protected_after": {
+    "dataset_run": {
+      "rows": 92,
+      "sha256": "4666153b439e08f706ff6d9e962f5bd2265e52f860a4f4fbc960120be5c70557"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_run": {
+      "rows": 8,
+      "sha256": "45913f88c6bfbebe0a5212c8e26deeb2ab045e2e77b5644f6d806b869a42d57b"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 373,
+      "sha256": "cfc56d4f2290f065ba07f671ee3e110ffb616d5bef043db9741d2b1dc30e619d"
+    },
+    "observation": {
+      "rows": 543113,
+      "sha256": "affa64ecffbd49898b47c9edac3bb39f9519a0625f19f85a8c14b992b630890d"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "raw_fetch": {
+      "rows": 766,
+      "sha256": "1d34371f3172101c1c68e04c824757d6b9f61e263d4b38d1d7aaceb312bd45cd"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "c47f96788ec40082c0d56dea7feec452f5424efdf492af9dd1915e193f85fa12"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 48,
+      "sha256": "4f767631f047a13153c93b6d7fb8b36aae7929d21573bad56431918be94e6d5d"
+    },
+    "verification_item": {
+      "rows": 94408,
+      "sha256": "2f1f424ad90c8be22584200df5c15cb11daecca56fa05d0420993259d916f26b"
+    },
+    "verification_spec": {
+      "rows": 706,
+      "sha256": "c67ae4222c3e86d46207135ee4b5c0b2aa6be18fb75c8c99182a9835ff38722d"
+    }
+  },
+  "integrity": "ok",
+  "foreign_keys": [],
+  "complete": true
+}

@@ -1,6 +1,14 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Current resume point: carmim Tabler interface INSTALLED (2026-11-17)
+## Current resume point: legibility and notebook candidate, not installed (2026-11-17)
+
+The owner requested at least 50 percent larger text, an independent designer pass and a useful integrated surprise. Implemented on pipeline-rebuild over 6f851d4: local licensed Lato/TeX Gyre Schola, public 25.5px body and Admin 21px body, recomposed grids/native mobile menus/editor outline, larger exact charts and a stateless GET/HEAD Caderno selection. Carmim and plumb-bob geometry remain intact. No schema, ingestion, source-data, CMS-content, authentication or shared-edge change is included.
+
+Independent specification/safety, scoped quality re-review and final integration are APPROVED after inward SVG endpoint/left-unit corrections. Final production-copy browser acceptance passed 783 checks and 485 measured type samples at matching viewports, minimum 1.5x, plus 17 contrast groups and reproduced local fonts. All 20 non-CMS data fingerprints unchanged; notebook alone leaves the entire copy unchanged. Controller final full suite: 2,717 passed, 7 network deselected, 3 warnings in 1,292.46 seconds; ruff and JavaScript syntax clean. Later licence/historical-capture packaging-only correction passed30 focused checks; application behavior and compiled font/chart bytes unchanged. Code commit a7388dc3537ee7aeb85bde5e7d0ee9574131dc4a is the reviewed candidate. Evidence: reports/legibility-notebook/. Human screen-reader acceptance remains separate.
+
+Production remains the installed 14f845e baseline below. No merge, production installation, container restart, CMS initialization or live publication ran. Candidate release would affect only prumo and prumo-backoffice through existing dc-web aliases; preserve source data, authored history and worker identity. The reviewed candidate is complete, but installation still requires the owner release boundary. Hosted CI has not run on pipeline-rebuild; the workflow targets main/pull requests. Roadmap: /home/joao/vaults/projects/prumo/roadmap-e-implementacao.md. Reader guide: docs/data/notebook.md.
+
+## Installed baseline: carmim Tabler interface (2026-11-17)
 
 Owner approved merge/push and installation while explicitly restoring carmim highlights and retaining the plumb-bob icon. Runtime 14f845ec2ca006fa992c460fd2af579940ac28bd is merged and pushed to main and installed on f0nix. Public web was recreated at 13:20:58 UTC, backoffice at 13:21:00 UTC; both are healthy with zero restarts. Actual images are recorded in reports/tabler-ui/carmim-production-state.json. Later documentation commits do not require rebuilding the same runtime.
 

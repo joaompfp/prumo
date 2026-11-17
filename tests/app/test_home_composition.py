@@ -20,7 +20,7 @@ wrapped row never starts with an orphan ` · ` at 320px. No other byte changed. 
 on the byte comparison is frozen between approved presentation changes. The legibility
 release deliberately adds local font links, native mobile navigation and the Caderno entry,
 and uses the new shared chart geometry. Its earlier full capture remains unchanged in
-`golden/pre_legibility/home_code_list.html`; the current golden is the reviewed new chrome
+`golden/pre_legibility/home_code_list.html.gz` (lossless archive); the current golden is the reviewed new chrome
 against the unchanged fixture. Source values and publisher precision remain unchanged.
 """
 

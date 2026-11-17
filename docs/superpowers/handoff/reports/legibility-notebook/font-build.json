@@ -1,0 +1,30 @@
+{
+  "toolchain": "pyftsubset (FontTools 4.62.1) with Brotli 1.2.0 on Debian Python 3.12.3",
+  "fonts": {
+    "lato-regular.woff2": {
+      "bytes": 42764,
+      "sha256": "a427dcf9e48c28ef00cb201073169cb585567e2002991e948a8b2ce8d9913261",
+      "reproduced": true
+    },
+    "lato-semibold.woff2": {
+      "bytes": 42920,
+      "sha256": "8070d2274064acd5ab5b9ce8d3380ead2e7b0e445a5887e375b72efd61c466f6",
+      "reproduced": true
+    },
+    "lato-bold.woff2": {
+      "bytes": 42472,
+      "sha256": "dd645ba320ebe2a34a2b968af665696f5e7c67e67c16ad9883448a5a1bf42aec",
+      "reproduced": true
+    },
+    "schola-regular.woff2": {
+      "bytes": 30208,
+      "sha256": "c8b4ab7b6bcf54972c6938efd806a7488449b5989156f20d8b9bed11a1bd66d5",
+      "reproduced": true
+    },
+    "schola-bold.woff2": {
+      "bytes": 30708,
+      "sha256": "3bac7b8e9fefeba49df5b64772cbdc869f8a2484ac747ce2ece14dcfd7445d58",
+      "reproduced": true
+    }
+  }
+}

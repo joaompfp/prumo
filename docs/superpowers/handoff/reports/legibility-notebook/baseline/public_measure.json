@@ -1,0 +1,2677 @@
+{
+ "home@1440": {
+  "status": 200,
+  "vw": 1440,
+  "scrollW": 1440,
+  "bodyH": 3140,
+  "cards": [
+   252,
+   252
+  ],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1440,
+    "h": 3140,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "56.1px",
+    "lh": "62.832px",
+    "weight": "600",
+    "w": 859,
+    "h": 126,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "29.75px",
+    "lh": "33.32px",
+    "weight": "600",
+    "w": 368,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 818,
+    "h": 66,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": {
+    "size": "13.26px",
+    "lh": "21.216px",
+    "weight": "400",
+    "w": 884,
+    "h": 21,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_label": {
+    "size": "13.6px",
+    "lh": "17.68px",
+    "weight": "400",
+    "w": 206,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_value": {
+    "size": "35.7px",
+    "lh": "39.27px",
+    "weight": "650",
+    "w": 206,
+    "h": 82,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_unit": {
+    "size": "13.26px",
+    "lh": "15.912px",
+    "weight": "400",
+    "w": 206,
+    "h": 16,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_period": {
+    "size": "14.45px",
+    "lh": "23.12px",
+    "weight": "400",
+    "w": 206,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_source": {
+    "size": "13.26px",
+    "lh": "21.216px",
+    "weight": "400",
+    "w": 206,
+    "h": 74,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_link": {
+    "size": "14.45px",
+    "lh": "23.12px",
+    "weight": "400",
+    "w": 206,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "badge": {
+    "size": "11.22px",
+    "lh": "17.952px",
+    "weight": "600",
+    "w": 99,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "theme_title": {
+    "size": "22.95px",
+    "lh": "36.72px",
+    "weight": "600",
+    "w": 299,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "theme_blurb": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 299,
+    "h": 52,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": null,
+   "th": null,
+   "td": null,
+   "figure_meta": null,
+   "figure_value": null,
+   "button": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "550",
+    "w": 193,
+    "h": 46,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "series@1440": {
+  "status": 200,
+  "vw": 1440,
+  "scrollW": 1440,
+  "bodyH": 2291,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1440,
+    "h": 2291,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "56.1px",
+    "lh": "62.832px",
+    "weight": "600",
+    "w": 1054,
+    "h": 126,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "29.75px",
+    "lh": "33.32px",
+    "weight": "600",
+    "w": 85,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": null,
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1072,
+    "h": 2928,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 356,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 356,
+    "h": 48,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 442,
+    "h": 169,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_value": {
+    "size": "54.4px",
+    "lh": "57.12px",
+    "weight": "650",
+    "w": 539,
+    "h": 57,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "comparison@1440": {
+  "status": 200,
+  "vw": 1440,
+  "scrollW": 1440,
+  "bodyH": 2175,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1440,
+    "h": 2175,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "56.1px",
+    "lh": "62.832px",
+    "weight": "600",
+    "w": 1054,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "29.75px",
+    "lh": "33.32px",
+    "weight": "600",
+    "w": 233,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 818,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1072,
+    "h": 16614,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 197,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 197,
+    "h": 48,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "themes@1440": {
+  "status": 200,
+  "vw": 1440,
+  "scrollW": 1440,
+  "bodyH": 4459,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1440,
+    "h": 4459,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "56.1px",
+    "lh": "62.832px",
+    "weight": "600",
+    "w": 1054,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "20.4px",
+    "lh": "22.848px",
+    "weight": "600",
+    "w": 1072,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 818,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1072,
+    "h": 3593,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 368,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 368,
+    "h": 71,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "home@1024": {
+  "status": 200,
+  "vw": 1024,
+  "scrollW": 1024,
+  "bodyH": 3541,
+  "cards": [
+   311,
+   311
+  ],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1024,
+    "h": 3541,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "47.104px",
+    "lh": "52.7565px",
+    "weight": "600",
+    "w": 721,
+    "h": 106,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "24.576px",
+    "lh": "27.5251px",
+    "weight": "600",
+    "w": 304,
+    "h": 28,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 818,
+    "h": 66,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": {
+    "size": "13.26px",
+    "lh": "21.216px",
+    "weight": "400",
+    "w": 884,
+    "h": 21,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_label": {
+    "size": "13.6px",
+    "lh": "17.68px",
+    "weight": "400",
+    "w": 265,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_value": {
+    "size": "35.7px",
+    "lh": "39.27px",
+    "weight": "650",
+    "w": 265,
+    "h": 82,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_unit": {
+    "size": "13.26px",
+    "lh": "15.912px",
+    "weight": "400",
+    "w": 265,
+    "h": 16,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_period": {
+    "size": "14.45px",
+    "lh": "23.12px",
+    "weight": "400",
+    "w": 265,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_source": {
+    "size": "13.26px",
+    "lh": "21.216px",
+    "weight": "400",
+    "w": 265,
+    "h": 52,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_link": {
+    "size": "14.45px",
+    "lh": "23.12px",
+    "weight": "400",
+    "w": 265,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "badge": {
+    "size": "11.22px",
+    "lh": "17.952px",
+    "weight": "600",
+    "w": 99,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "theme_title": {
+    "size": "22.95px",
+    "lh": "36.72px",
+    "weight": "600",
+    "w": 267,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "theme_blurb": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 267,
+    "h": 52,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": null,
+   "th": null,
+   "td": null,
+   "figure_meta": null,
+   "figure_value": null,
+   "button": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "550",
+    "w": 193,
+    "h": 46,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "series@1024": {
+  "status": 200,
+  "vw": 1024,
+  "scrollW": 1024,
+  "bodyH": 2245,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1024,
+    "h": 2245,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "47.104px",
+    "lh": "52.7565px",
+    "weight": "600",
+    "w": 976,
+    "h": 106,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "24.576px",
+    "lh": "27.5251px",
+    "weight": "600",
+    "w": 70,
+    "h": 28,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": null,
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 976,
+    "h": 2928,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 324,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 324,
+    "h": 48,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 442,
+    "h": 169,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_value": {
+    "size": "51.2px",
+    "lh": "53.76px",
+    "weight": "650",
+    "w": 443,
+    "h": 54,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "comparison@1024": {
+  "status": 200,
+  "vw": 1024,
+  "scrollW": 1024,
+  "bodyH": 2217,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1024,
+    "h": 2217,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "47.104px",
+    "lh": "52.7565px",
+    "weight": "600",
+    "w": 976,
+    "h": 53,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "24.576px",
+    "lh": "27.5251px",
+    "weight": "600",
+    "w": 193,
+    "h": 28,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 818,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 976,
+    "h": 16614,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 179,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 179,
+    "h": 48,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "themes@1024": {
+  "status": 200,
+  "vw": 1024,
+  "scrollW": 1024,
+  "bodyH": 4449,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 1024,
+    "h": 4449,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "47.104px",
+    "lh": "52.7565px",
+    "weight": "600",
+    "w": 976,
+    "h": 53,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "20.4px",
+    "lh": "22.848px",
+    "weight": "600",
+    "w": 976,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 818,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 976,
+    "h": 3593,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 335,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 335,
+    "h": 71,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 218,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "home@768": {
+  "status": 200,
+  "vw": 768,
+  "scrollW": 768,
+  "bodyH": 4745,
+  "cards": [
+   349,
+   349
+  ],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 768,
+    "h": 4745,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "35.7px",
+    "lh": "39.984px",
+    "weight": "600",
+    "w": 546,
+    "h": 80,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "22.95px",
+    "lh": "25.704px",
+    "weight": "600",
+    "w": 284,
+    "h": 26,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 720,
+    "h": 100,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": {
+    "size": "13.26px",
+    "lh": "21.216px",
+    "weight": "400",
+    "w": 720,
+    "h": 21,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_label": {
+    "size": "13.6px",
+    "lh": "17.68px",
+    "weight": "400",
+    "w": 303,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_value": {
+    "size": "35.7px",
+    "lh": "39.27px",
+    "weight": "650",
+    "w": 303,
+    "h": 82,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_unit": {
+    "size": "13.26px",
+    "lh": "15.912px",
+    "weight": "400",
+    "w": 303,
+    "h": 16,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_period": {
+    "size": "14.45px",
+    "lh": "23.12px",
+    "weight": "400",
+    "w": 303,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_source": {
+    "size": "13.26px",
+    "lh": "21.216px",
+    "weight": "400",
+    "w": 303,
+    "h": 52,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_link": {
+    "size": "14.45px",
+    "lh": "23.12px",
+    "weight": "400",
+    "w": 303,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "badge": {
+    "size": "11.22px",
+    "lh": "17.952px",
+    "weight": "600",
+    "w": 99,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "theme_title": {
+    "size": "22.95px",
+    "lh": "36.72px",
+    "weight": "600",
+    "w": 305,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "theme_blurb": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 305,
+    "h": 52,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": null,
+   "th": null,
+   "td": null,
+   "figure_meta": null,
+   "figure_value": null,
+   "button": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "550",
+    "w": 193,
+    "h": 46,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 609,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "series@768": {
+  "status": 200,
+  "vw": 768,
+  "scrollW": 768,
+  "bodyH": 2639,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 768,
+    "h": 2639,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "35.7px",
+    "lh": "39.984px",
+    "weight": "600",
+    "w": 720,
+    "h": 80,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "22.95px",
+    "lh": "25.704px",
+    "weight": "600",
+    "w": 65,
+    "h": 26,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": null,
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 720,
+    "h": 2928,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 239,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 239,
+    "h": 48,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 659,
+    "h": 162,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_value": {
+    "size": "40.8px",
+    "lh": "42.84px",
+    "weight": "650",
+    "w": 659,
+    "h": 43,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 609,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "comparison@768": {
+  "status": 200,
+  "vw": 768,
+  "scrollW": 768,
+  "bodyH": 2441,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 768,
+    "h": 2441,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "35.7px",
+    "lh": "39.984px",
+    "weight": "600",
+    "w": 720,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "22.95px",
+    "lh": "25.704px",
+    "weight": "600",
+    "w": 180,
+    "h": 26,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 720,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 892,
+    "h": 25966,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 102,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 102,
+    "h": 75,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 609,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "themes@768": {
+  "status": 200,
+  "vw": 768,
+  "scrollW": 768,
+  "bodyH": 7348,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 768,
+    "h": 7348,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "35.7px",
+    "lh": "39.984px",
+    "weight": "600",
+    "w": 720,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "20.4px",
+    "lh": "22.848px",
+    "weight": "600",
+    "w": 720,
+    "h": 23,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "16.15px",
+    "lh": "25.84px",
+    "weight": "400",
+    "w": 63,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "20.74px",
+    "lh": "33.184px",
+    "weight": "400",
+    "w": 720,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.94px",
+    "lh": "22.304px",
+    "weight": "400",
+    "w": 497,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 720,
+    "h": 6333,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "th": {
+    "size": "12.58px",
+    "lh": "20.128px",
+    "weight": "600",
+    "w": 157,
+    "h": 37,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "td": {
+    "size": "17px",
+    "lh": "27.2px",
+    "weight": "400",
+    "w": 157,
+    "h": 126,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "15.3px",
+    "lh": "24.48px",
+    "weight": "400",
+    "w": 609,
+    "h": 42,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "home@390": {
+  "status": 200,
+  "vw": 390,
+  "scrollW": 390,
+  "bodyH": 7629,
+  "cards": [
+   354,
+   354
+  ],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 390,
+    "h": 7629,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 354,
+    "h": 151,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "21.6px",
+    "lh": "24.192px",
+    "weight": "600",
+    "w": 267,
+    "h": 24,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "19.52px",
+    "lh": "31.232px",
+    "weight": "400",
+    "w": 354,
+    "h": 156,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": {
+    "size": "12.48px",
+    "lh": "19.968px",
+    "weight": "400",
+    "w": 354,
+    "h": 20,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_label": {
+    "size": "12.8px",
+    "lh": "16.64px",
+    "weight": "400",
+    "w": 308,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_value": {
+    "size": "33.6px",
+    "lh": "36.96px",
+    "weight": "650",
+    "w": 308,
+    "h": 77,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_unit": {
+    "size": "12.48px",
+    "lh": "14.976px",
+    "weight": "400",
+    "w": 308,
+    "h": 15,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_period": {
+    "size": "13.6px",
+    "lh": "21.76px",
+    "weight": "400",
+    "w": 308,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_source": {
+    "size": "12.48px",
+    "lh": "19.968px",
+    "weight": "400",
+    "w": 308,
+    "h": 50,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_link": {
+    "size": "13.6px",
+    "lh": "21.76px",
+    "weight": "400",
+    "w": 308,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "badge": {
+    "size": "10.56px",
+    "lh": "16.896px",
+    "weight": "600",
+    "w": 94,
+    "h": 21,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "theme_title": {
+    "size": "21.6px",
+    "lh": "34.56px",
+    "weight": "600",
+    "w": 308,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "theme_blurb": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 308,
+    "h": 49,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 354,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": null,
+   "th": null,
+   "td": null,
+   "figure_meta": null,
+   "figure_value": null,
+   "button": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "550",
+    "w": 183,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 247,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "series@390": {
+  "status": 200,
+  "vw": 390,
+  "scrollW": 390,
+  "bodyH": 2928,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 390,
+    "h": 2928,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 354,
+    "h": 113,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "21.6px",
+    "lh": "24.192px",
+    "weight": "600",
+    "w": 62,
+    "h": 24,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": null,
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 354,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 354,
+    "h": 2592,
+    "overflowX": "auto",
+    "whiteSpace": "nowrap"
+   },
+   "th": {
+    "size": "11.84px",
+    "lh": "18.944px",
+    "weight": "600",
+    "w": 164,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "td": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 164,
+    "h": 43,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "figure_meta": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 313,
+    "h": 176,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_value": {
+    "size": "38.4px",
+    "lh": "40.32px",
+    "weight": "650",
+    "w": 313,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 247,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "comparison@390": {
+  "status": 200,
+  "vw": 390,
+  "scrollW": 390,
+  "bodyH": 3291,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 390,
+    "h": 3291,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 354,
+    "h": 75,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "21.6px",
+    "lh": "24.192px",
+    "weight": "600",
+    "w": 169,
+    "h": 24,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "19.52px",
+    "lh": "31.232px",
+    "weight": "400",
+    "w": 354,
+    "h": 62,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 354,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 354,
+    "h": 14688,
+    "overflowX": "auto",
+    "whiteSpace": "nowrap"
+   },
+   "th": {
+    "size": "11.84px",
+    "lh": "18.944px",
+    "weight": "600",
+    "w": 164,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "td": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 164,
+    "h": 43,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 247,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "themes@390": {
+  "status": 200,
+  "vw": 390,
+  "scrollW": 390,
+  "bodyH": 4423,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 390,
+    "h": 4423,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 354,
+    "h": 38,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "19.2px",
+    "lh": "21.504px",
+    "weight": "600",
+    "w": 354,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "19.52px",
+    "lh": "31.232px",
+    "weight": "400",
+    "w": 354,
+    "h": 62,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 354,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 354,
+    "h": 3250,
+    "overflowX": "auto",
+    "whiteSpace": "nowrap"
+   },
+   "th": {
+    "size": "11.84px",
+    "lh": "18.944px",
+    "weight": "600",
+    "w": 297,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "td": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 297,
+    "h": 64,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 247,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "home@320": {
+  "status": 200,
+  "vw": 320,
+  "scrollW": 320,
+  "bodyH": 8028,
+  "cards": [
+   284,
+   284
+  ],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 320,
+    "h": 8028,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 284,
+    "h": 151,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "21.6px",
+    "lh": "24.192px",
+    "weight": "600",
+    "w": 267,
+    "h": 24,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "19.52px",
+    "lh": "31.232px",
+    "weight": "400",
+    "w": 284,
+    "h": 187,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": {
+    "size": "12.48px",
+    "lh": "19.968px",
+    "weight": "400",
+    "w": 284,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_label": {
+    "size": "12.8px",
+    "lh": "16.64px",
+    "weight": "400",
+    "w": 238,
+    "h": 33,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_value": {
+    "size": "33.6px",
+    "lh": "36.96px",
+    "weight": "650",
+    "w": 238,
+    "h": 77,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_unit": {
+    "size": "12.48px",
+    "lh": "14.976px",
+    "weight": "400",
+    "w": 238,
+    "h": 15,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_period": {
+    "size": "13.6px",
+    "lh": "21.76px",
+    "weight": "400",
+    "w": 238,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_source": {
+    "size": "12.48px",
+    "lh": "19.968px",
+    "weight": "400",
+    "w": 238,
+    "h": 50,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "card_link": {
+    "size": "13.6px",
+    "lh": "21.76px",
+    "weight": "400",
+    "w": 238,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "badge": {
+    "size": "10.56px",
+    "lh": "16.896px",
+    "weight": "600",
+    "w": 94,
+    "h": 21,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "theme_title": {
+    "size": "21.6px",
+    "lh": "34.56px",
+    "weight": "600",
+    "w": 238,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "theme_blurb": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 238,
+    "h": 49,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 284,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": null,
+   "th": null,
+   "td": null,
+   "figure_meta": null,
+   "figure_value": null,
+   "button": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "550",
+    "w": 183,
+    "h": 45,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 177,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "series@320": {
+  "status": 200,
+  "vw": 320,
+  "scrollW": 320,
+  "bodyH": 3295,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 320,
+    "h": 3295,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 284,
+    "h": 188,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "21.6px",
+    "lh": "24.192px",
+    "weight": "600",
+    "w": 62,
+    "h": 24,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": null,
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 284,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 284,
+    "h": 2592,
+    "overflowX": "auto",
+    "whiteSpace": "nowrap"
+   },
+   "th": {
+    "size": "11.84px",
+    "lh": "18.944px",
+    "weight": "600",
+    "w": 164,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "td": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 164,
+    "h": 43,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "figure_meta": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 243,
+    "h": 197,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "figure_value": {
+    "size": "38.4px",
+    "lh": "40.32px",
+    "weight": "650",
+    "w": 243,
+    "h": 40,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 177,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "comparison@320": {
+  "status": 200,
+  "vw": 320,
+  "scrollW": 320,
+  "bodyH": 3658,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 320,
+    "h": 3658,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 284,
+    "h": 75,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "21.6px",
+    "lh": "24.192px",
+    "weight": "600",
+    "w": 169,
+    "h": 24,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "19.52px",
+    "lh": "31.232px",
+    "weight": "400",
+    "w": 284,
+    "h": 62,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 284,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 284,
+    "h": 14688,
+    "overflowX": "auto",
+    "whiteSpace": "nowrap"
+   },
+   "th": {
+    "size": "11.84px",
+    "lh": "18.944px",
+    "weight": "600",
+    "w": 164,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "td": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 164,
+    "h": 43,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 177,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ },
+ "themes@320": {
+  "status": 200,
+  "vw": 320,
+  "scrollW": 352,
+  "bodyH": 4528,
+  "cards": [],
+  "clipped": [],
+  "fonts": {
+   "body": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 320,
+    "h": 4528,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h1": {
+    "size": "33.6px",
+    "lh": "37.632px",
+    "weight": "600",
+    "w": 284,
+    "h": 38,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h2": {
+    "size": "19.2px",
+    "lh": "21.504px",
+    "weight": "600",
+    "w": 284,
+    "h": 22,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "h3": null,
+   "nav": {
+    "size": "15.2px",
+    "lh": "24.32px",
+    "weight": "400",
+    "w": 56,
+    "h": 44,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "lede": {
+    "size": "19.52px",
+    "lh": "31.232px",
+    "weight": "400",
+    "w": 284,
+    "h": 62,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "eyebrow": null,
+   "card_label": null,
+   "card_value": null,
+   "card_unit": null,
+   "card_period": null,
+   "card_source": null,
+   "card_link": null,
+   "badge": null,
+   "theme_title": null,
+   "theme_blurb": null,
+   "footer": {
+    "size": "13.12px",
+    "lh": "20.992px",
+    "weight": "400",
+    "w": 284,
+    "h": 63,
+    "overflowX": "visible",
+    "whiteSpace": "normal"
+   },
+   "table": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 284,
+    "h": 3250,
+    "overflowX": "auto",
+    "whiteSpace": "nowrap"
+   },
+   "th": {
+    "size": "11.84px",
+    "lh": "18.944px",
+    "weight": "600",
+    "w": 297,
+    "h": 35,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "td": {
+    "size": "16px",
+    "lh": "25.6px",
+    "weight": "400",
+    "w": 297,
+    "h": 64,
+    "overflowX": "visible",
+    "whiteSpace": "nowrap"
+   },
+   "figure_meta": null,
+   "figure_value": null,
+   "button": null,
+   "compare_link": null,
+   "search": {
+    "size": "14.4px",
+    "lh": "23.04px",
+    "weight": "400",
+    "w": 177,
+    "h": 44,
+    "overflowX": "clip",
+    "whiteSpace": "normal"
+   }
+  }
+ }
+}

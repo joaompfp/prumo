@@ -1,5 +1,9 @@
 # Prumo image and ingestion operations
 
+## Candidate: legibility and indicator notebook
+
+The new type scale, local licensed fonts, native mobile navigation/editor outline and stateless Caderno are implemented on pipeline-rebuild at code a7388dc, not installed. The full controller suite passed2,717 tests with7 network deselected;783 browser checks and485 type measurements passed, with20 protected tables unchanged. This is a schema-unchanged public-web/backoffice release only. No CMS initialization/publication or worker, authentication, ownership or shared-edge change is required. Use the existing dc-web schema-unchanged procedure and pin both currently installed images first. Rollback changes only those two code/images; retain all data and CMS history. The current installed baseline remains the Tabler/carmim section below. Acceptance: [legibility/notebook report](../superpowers/handoff/reports/legibility-notebook/README.md); reader instructions: [Caderno](notebook.md).
+
 ## Current Tabler/carmim interface: installed 2026-11-17
 
 Runtime 14f845e is merged, pushed and installed after owner approval and hosted CI 44090471137. Public web was recreated at 13:20:58 UTC and backoffice at 13:21:00; both healthy, zero restarts. Worker identity/image/StartedAt/restarts are exactly unchanged. No migration, source-data/content write, ownership, credentials or shared-edge change. Schema remains 0019, next free 0020.

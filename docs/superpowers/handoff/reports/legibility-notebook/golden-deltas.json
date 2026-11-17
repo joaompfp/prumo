@@ -1,0 +1,75 @@
+{
+  "home_code_list.html": {
+    "before_sha256": "42b0444ae322157037a72d3b4f63c7b7ccd0d31d1df550f76f9ca54e8c7013b9",
+    "after_sha256": "c189cefedc97502958053124b88da6401a6982ce58627fb8c1e18e81a8bc0a58",
+    "historical": "tests/app/golden/pre_legibility/home_code_list.html.gz",
+    "chart_text_unchanged": null,
+    "historical_encoding": "lossless gzip; before_sha256 is the decompressed bytes"
+  },
+  "charts/cmp_dual.svg": {
+    "before_sha256": "3747437ff5f459e41c6335d5d95da2c19e0dbf21aa1087efab589280a7efb738",
+    "after_sha256": "c6897fb87e03dd29071660749e439cdd039456aee62add00e63fdeee2d894699",
+    "historical": "tests/app/golden/pre_legibility/charts/cmp_dual.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/cmp_empty.svg": {
+    "before_sha256": "5e3c477aa4555df3a017d823075448f323ba570a139808fe36c26e9bc2cde924",
+    "after_sha256": "5e3c477aa4555df3a017d823075448f323ba570a139808fe36c26e9bc2cde924",
+    "historical": "tests/app/golden/pre_legibility/charts/cmp_empty.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/cmp_gap.svg": {
+    "before_sha256": "340559359992486478e55315e3c349d9c3a44bc53d8ac945c86a818a92f71f5d",
+    "after_sha256": "1678a2b31861c598e97028ffc1d6d8f69ec403075d8779e4a14b4572b8fee8d3",
+    "historical": "tests/app/golden/pre_legibility/charts/cmp_gap.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/cmp_negative.svg": {
+    "before_sha256": "e9befb5dcec13385d62daf827764015b45bca282955f388f03e90ec58e02e04d",
+    "after_sha256": "5865aa01d812176fa76f890b07aa88497355227225b23264add04b79d62d2c0e",
+    "historical": "tests/app/golden/pre_legibility/charts/cmp_negative.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/cmp_single.svg": {
+    "before_sha256": "cf4598c4827f140988076e18a27978a306eece6da9805e9298c44d979564e6da",
+    "after_sha256": "dba7b2c056ddc36c6b3b3e326726f46ad72de2cff1a74266b52774b27e3114db",
+    "historical": "tests/app/golden/pre_legibility/charts/cmp_single.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/line_annual.svg": {
+    "before_sha256": "c36836374e8a4711162c32b17c2aa5f0ac064d94c4578b8b4d67cc0d22713406",
+    "after_sha256": "9483d46461a24d1413ede32c7a36c14df0ff8798f42039f68305563e721c007c",
+    "historical": "tests/app/golden/pre_legibility/charts/line_annual.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/line_empty.svg": {
+    "before_sha256": "5e3c477aa4555df3a017d823075448f323ba570a139808fe36c26e9bc2cde924",
+    "after_sha256": "5e3c477aa4555df3a017d823075448f323ba570a139808fe36c26e9bc2cde924",
+    "historical": "tests/app/golden/pre_legibility/charts/line_empty.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/line_monthly.svg": {
+    "before_sha256": "428ef1add721f21ea1851b96b0ae92f84a56b2ad83c99d7e66d998ca9a729051",
+    "after_sha256": "47a2ecab182abaa291620cb30b05779429ab041724327fbffccf6bb64380c08b",
+    "historical": "tests/app/golden/pre_legibility/charts/line_monthly.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/line_negative.svg": {
+    "before_sha256": "e96953d198defd37295b648a2bf291e4aaff506dfeb52f8d03b094dfbc29415a",
+    "after_sha256": "7428f8ef9e2e5b9b8b0a121026621677b55e7a9bbf2bff0c1ff00e4cc81b1868",
+    "historical": "tests/app/golden/pre_legibility/charts/line_negative.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/line_nonfinite.svg": {
+    "before_sha256": "9c72e923612aad2bea7e0958929495ccc8604f1ecd9289a7433ce2e78d5e69bb",
+    "after_sha256": "3a13455d1cec59aac75a8bede61944d67c543e3135399953fbd351158bf0494c",
+    "historical": "tests/app/golden/pre_legibility/charts/line_nonfinite.svg",
+    "chart_text_unchanged": true
+  },
+  "charts/line_single.svg": {
+    "before_sha256": "a73ecb58d01422e4add907c86b0968c23871a3094106e783fbadd26e7332b75c",
+    "after_sha256": "786693a13682694da5de1afc2865919343886aef5081ca97055c4e5baa25cb4d",
+    "historical": "tests/app/golden/pre_legibility/charts/line_single.svg",
+    "chart_text_unchanged": true
+  }
+}
