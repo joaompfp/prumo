@@ -1,108 +1,65 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-PT">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>{% block title %}Prumo backoffice{% endblock %}</title>
-<style>
-:root {
-  color-scheme: light dark;
-  --bg: #fbfaf7; --fg: #1d1d1b; --muted: #6b6a66; --line: #dcd9d2; --head: #f0eee8;
-  --link: #1f5f8b; --high: #a8231b; --high-bg: #fbe9e7; --medium: #8a5a00; --medium-bg: #fdf3dc;
-  --info: #3b5b7a; --info-bg: #e8eef5; --ok: #2e6b30;
-  --legacy: #6b4b00; --legacy-bg: repeating-linear-gradient(135deg, #fff4d6 0 6px, #fbe9b8 6px 12px);
-  /* aliases so the public card partial renders here with its own rules */
-  --surface: #ffffff; --rule: var(--line); --rule-strong: #b9b4a8; --ink: var(--fg);
-  --red: #a8231b; --amber: #8a5a00;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #161615; --fg: #e8e6e1; --muted: #a09d96; --line: #3a3936; --head: #22211f;
-    --link: #8cc4ec; --high: #ff9b8f; --high-bg: #3a1a17; --medium: #f0c060; --medium-bg: #33280f;
-    --info: #a9c4e0; --info-bg: #1c2632; --ok: #8fd08f;
-    --legacy: #f3d58a; --legacy-bg: repeating-linear-gradient(135deg, #2e2510 0 6px, #3a2f14 6px 12px);
-    --surface: #1c1c1a; --rule: var(--line); --rule-strong: #55534e; --ink: var(--fg);
-    --red: #ff9b8f; --amber: #f0c060;
-  }
-}
-* { box-sizing: border-box; }
-html, body { background: var(--bg); color: var(--fg); }
-body { margin: 0; font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
-header { display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: baseline;
-  padding: .6rem 16px; border-bottom: 1px solid var(--line); background: var(--head); }
-header strong { margin-right: .5rem; }
-header nav a { margin-right: .9rem; }
-main { padding: 12px 16px 40px; max-width: 1400px; }
-a { color: var(--link); }
-h1 { font-size: 1.25rem; margin: .4rem 0 .6rem; }
-h2 { font-size: 1.05rem; margin: 1.4rem 0 .4rem; }
-p.note, .muted { color: var(--muted); }
-.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: .3rem 0 1rem;
-  border: 1px solid var(--line); }
-table { border-collapse: collapse; width: 100%; font-size: 13px; }
-th, td { padding: .3rem .5rem; border-bottom: 1px solid var(--line); text-align: left;
-  vertical-align: top; white-space: nowrap; }
-th { background: var(--head); font-weight: 600; position: sticky; top: 0; }
-td.wrap { white-space: normal; min-width: 14rem; overflow-wrap: anywhere; }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-code, .mono, td.value { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-.sev-high { color: var(--high); background: var(--high-bg); font-weight: 600; }
-.sev-medium { color: var(--medium); background: var(--medium-bg); }
-.sev-info { color: var(--info); background: var(--info-bg); }
-.bad { color: var(--high); font-weight: 600; }
-.good { color: var(--ok); }
-tr.legacy td { background: var(--legacy-bg); color: var(--legacy); }
-.badge { display: inline-block; padding: 0 .35rem; border: 1px solid currentColor;
-  border-radius: 3px; font-size: 12px; }
-.served-mark { font-weight: 700; }
-.calc { display: inline-block; padding: 0 .35rem; border-radius: 3px; font-size: 11px;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-style: italic;
-  color: var(--info); background: var(--info-bg); border: 1px dashed currentColor; }
-dl.spec { display: grid; grid-template-columns: max-content 1fr; gap: .2rem .9rem; margin: 0; }
-dl.spec dt { color: var(--muted); }
-dl.spec dd { margin: 0; overflow-wrap: anywhere; }
-form.filters { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: end; margin: .4rem 0; }
-form.filters label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); }
-input, select, button { font: inherit; color: var(--fg); background: var(--bg);
-  border: 1px solid var(--line); padding: .3rem .4rem; min-height: 2.2rem; }
-details summary { cursor: pointer; }
-.pager { display: flex; gap: 1rem; align-items: center; }
-/* The public card, verbatim (see static/css/prumo.css): the editorial preview is the real thing. */
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 22px; }
-.card { background: var(--surface); border: 1px solid var(--rule); padding: 20px 20px 16px;
-  display: flex; flex-direction: column; }
-.card-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.07em;
-  color: var(--muted); margin-bottom: 8px; line-height: 1.3; min-height: 2.6em; }
-.card-value { font-size: 2.1rem; font-weight: 650; letter-spacing: -0.02em; line-height: 1.1;
-  font-variant-numeric: tabular-nums; margin: 0; min-height: 2.3em; }
-.card-value--long { font-size: 1.45rem; letter-spacing: -0.015em; }
-.card-unit { display: block; font-size: 0.78rem; font-weight: 400; color: var(--muted);
-  letter-spacing: 0; line-height: 1.2; margin-top: 3px; }
-.card-period { font-size: 0.85rem; color: var(--muted); margin: 4px 0 0; min-height: 1.4em; }
-.card-tags { margin: 5px 0 0; min-height: 1.35em; }
-.card-spark { margin: auto 0 2px; min-height: 40px; padding-top: 10px; }
-.spark { width: 100%; max-width: 160px; height: 40px; display: block; }
-.spark-line { fill: none; stroke: var(--ink); stroke-width: 1.4; }
-.spark-end { fill: var(--red); }
-.calc-line { font-size: 0.84rem; margin: 8px 0 0; color: var(--ink); min-height: 3em; }
-.calc-period { color: var(--muted); }
-.card-source { font-size: 0.78rem; color: var(--muted); margin: 12px 0 8px;
-  border-top: 1px solid var(--rule); padding-top: 9px; }
-.card-link { font-size: 0.85rem; margin-top: auto; }
-.flag { display: inline-block; margin-left: 6px; border: 1px solid #e3d3a8; color: var(--amber);
-  font-size: 0.66rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em;
-  padding: 1px 6px; vertical-align: 1px; white-space: nowrap; }
-</style>
+<link rel="icon" type="image/svg+xml" href="{{ base }}/static/images/prumo/favicon.svg">
+<link rel="stylesheet" href="{{ base }}/static/css/admin.css">
+<link rel="stylesheet" href="{{ base }}/static/css/icons.css">
 </head>
 <body>
-<header>
-  <strong>Prumo backoffice</strong>
-  <nav><a href="{{ base }}/">Overview</a><a href="{{ base }}/queue">Queue</a><a href="{{ base }}/series">Series</a><a href="{{ base }}/derived">Derivadas</a><a href="{{ base }}/editorial">Editorial</a><span class="muted">CMS</span><a href="{{ base }}/cms#paginas">Páginas</a><a href="{{ base }}/cms#graficos">Gráficos</a></nav>
-  <span class="muted">read-only, except Editorial and CMS</span>
-</header>
-<main>
+<a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+{% set nav_path = path|default('') %}
+{% set nav_home = nav_path == '/cms/home' or (is_home is defined and is_home) %}
+{% set nav_cms = (nav_path == '/cms' or nav_path.startswith('/cms/')) and not nav_home %}
+{% set nav_editorial = nav_path == '/editorial' or nav_path.startswith('/editorial/') %}
+{% set nav_series = nav_path == '/series' or nav_path.startswith('/series/') %}
+{% set nav_derived = nav_path == '/derived' or nav_path.startswith('/derived/') %}
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="{{ base }}/">
+      <img src="{{ base }}/static/images/prumo/favicon.svg" alt="" width="26" height="26">
+      <span class="brand-text">
+        <span class="brand-word">Prumo</span>
+        <span class="brand-sub">Backoffice</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Navegação principal">
+      <div class="nav-group">
+        <p class="nav-label" id="nav-conteudo">Conteúdo</p>
+        <ul class="nav-list" aria-labelledby="nav-conteudo">
+          <li><a class="nav-link" href="{{ base }}/cms/home"{% if nav_home %} aria-current="page"{% endif %}><i class="icon icon-home" aria-hidden="true"></i><span>Página inicial</span></a></li>
+          <li><a class="nav-link" href="{{ base }}/cms"{% if nav_cms %} aria-current="page"{% endif %}><i class="icon icon-page" aria-hidden="true"></i><span>Páginas e gráficos</span></a></li>
+          <li><a class="nav-link is-legacy" href="{{ base }}/editorial"{% if nav_editorial %} aria-current="page"{% endif %}><i class="icon icon-editorial" aria-hidden="true"></i><span>Editorial</span><span class="tag tag-legacy">legado</span></a></li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-label" id="nav-dados">Dados</p>
+        <ul class="nav-list" aria-labelledby="nav-dados">
+          <li><a class="nav-link" href="{{ base }}/"{% if nav_path == '/' %} aria-current="page"{% endif %}><i class="icon icon-grid" aria-hidden="true"></i><span>Visão geral</span></a></li>
+          <li><a class="nav-link" href="{{ base }}/queue"{% if nav_path == '/queue' %} aria-current="page"{% endif %}><i class="icon icon-queue" aria-hidden="true"></i><span>Fila de revisão</span></a></li>
+          <li><a class="nav-link" href="{{ base }}/series"{% if nav_series %} aria-current="page"{% endif %}><i class="icon icon-graph-up" aria-hidden="true"></i><span>Séries</span></a></li>
+          <li><a class="nav-link" href="{{ base }}/derived"{% if nav_derived %} aria-current="page"{% endif %}><i class="icon icon-calculator" aria-hidden="true"></i><span>Calculadas</span></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      {% if public_url %}<a class="site-link" href="{{ public_url }}"><i class="icon icon-external" aria-hidden="true"></i><span>Ver site público</span></a>{% endif %}
+      <p class="quiet">Leitura apenas, exceto CMS e Editorial.</p>
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <main id="conteudo" class="main">
 {% block content %}{% endblock %}
-</main>
+    </main>
+  </div>
+</div>
+{% block scripts %}{% endblock %}
 </body>
 </html>

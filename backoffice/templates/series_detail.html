@@ -2,13 +2,35 @@
 {% block title %}{{ spec.id }} - Prumo backoffice{% endblock %}
 {% block content %}
 {% set st = d.status %}
-<h1>{{ spec.id }}</h1>
-<p>Status: <span class="badge{% if st.availability == 'legacy-unverified' %} sev-medium{% elif st.stale is not false %} bad{% else %} good{% endif %}">{{ label }}</span>
-{% if not spec.active %}<span class="badge muted">inactive</span>{% endif %}
-{% if d.source.blockers %}<span class="badge sev-info">{{ d.source.blockers | join(", ") }}</span>{% endif %}
-&middot; {{ d.total }} served rows</p>
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <a href="{{ base }}/series">Séries</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <span aria-current="page">{{ spec.id }}</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Série do registo</p>
+    <h1>{{ spec.id }}</h1>
+    <p class="page-sub">
+      <span class="badge{% if st.availability == 'legacy-unverified' %} sev-medium{% elif st.stale is not false %} bad{% else %} good{% endif %}">{{ label }}</span>
+      {% if not spec.active %}<span class="badge muted">inactive</span>{% endif %}
+      {% if d.source.blockers %}<span class="badge sev-info">{{ d.source.blockers | join(", ") }}</span>{% endif %}
+      &middot; {{ d.total }} served rows
+    </p>
+  </div>
+</header>
 
-<h2>Registry and licence</h2>
+<nav class="section-nav" aria-label="Nesta página">
+  <a href="#registo">Registo e licença</a>
+  {% if not spec.active %}<a href="#inactive">Motivo de inatividade</a>{% endif %}
+  <a href="#estado">Estado</a>
+  {% if d.vintages is not none %}<a href="#vintages">Vintages</a>{% endif %}
+  <a href="#periods">Períodos</a>
+  <a href="#observacoes">Observações servidas</a>
+  <a href="#evidencia">Evidência</a>
+</nav>
+
+<h2 id="registo">Registry and licence</h2>
 <dl class="spec">
 <dt>indicator</dt><dd>{{ spec.indicator_key }} ({{ spec.role }})</dd>
 <dt>theme / geography</dt><dd>{{ spec.theme }} / {{ spec.geography }}</dd>
@@ -31,17 +53,19 @@
 <p class="note">Verbatim lines of the registry notes (registry/unmapped-*.md in git) that name
 this series, with the section they sit in.</p>
 <div class="scroll"><table>
-<tr><th>File</th><th>Section</th><th>Line</th></tr>
+<thead><tr><th>File</th><th>Section</th><th>Line</th></tr></thead>
+<tbody>
 {% for n in inactive_notes %}
 <tr><td>{{ n.file }}</td><td class="wrap">{{ n.section }}</td><td class="wrap">{{ n.text }}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
 <p class="muted">Inactive, but no reason found in registry/unmapped-*.md for this series.</p>
 {% endif %}
 {% endif %}
 
-<h2>Status</h2>
+<h2 id="estado">Status</h2>
 <p class="note">From the {% include "_report_age.html" %}.</p>
 <dl class="spec">
 <dt>availability</dt><dd>{{ st.availability }}{% if st.legacy_rows %} ({{ st.legacy_rows }} legacy rows){% endif %}</dd>
@@ -59,7 +83,8 @@ this series, with the section they sit in.</p>
 the served view returns is marked served.</p>
 {% if d.vintages %}
 <div class="scroll"><table>
-<tr><th>Run</th><th>Run state</th><th>Fetched</th><th>Value</th><th>Flag</th><th>Origin</th><th>Served</th></tr>
+<thead><tr><th>Run</th><th>Run state</th><th>Fetched</th><th>Value</th><th>Flag</th><th>Origin</th><th>Served</th></tr></thead>
+<tbody>
 {% for v in d.vintages %}
 <tr class="vintage-row{% if v.origin == 'legacy' %} legacy{% endif %}">
 <td class="num">{{ v.run_id }}</td>
@@ -70,6 +95,7 @@ the served view returns is marked served.</p>
 <td>{% if v.served %}<span class="served-mark">served</span>{% endif %}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
 <p>No stored row for period <code>{{ period }}</code>.</p>
@@ -80,24 +106,31 @@ the served view returns is marked served.</p>
 <p class="note">Every period with any stored row, whatever its run's state (served, withdrawn,
 failed, pending, legacy) and whether or not the source may be served publicly. Click one for
 all its vintages, or type any period:</p>
-<form method="get" action="#vintages"><input name="period" value="{{ period }}" placeholder="e.g. 2024-03"> <button type="submit">Show vintages</button></form>
+<form method="get" action="#vintages" class="field-inline">
+  <div class="field span-limit"><label for="period-input">Período</label>
+  <input id="period-input" name="period" value="{{ period }}" placeholder="ex.: 2024-03"></div>
+  <button type="submit"><i class="icon icon-history" aria-hidden="true"></i> Show vintages</button>
+</form>
 {% if d.periods %}
 <div class="scroll"><table>
-<tr><th>Period</th><th class="num">Stored rows</th><th>Served</th></tr>
+<thead><tr><th>Period</th><th class="num">Stored rows</th><th>Served</th></tr></thead>
+<tbody>
 {% for p in d.periods %}
 <tr><td><a href="?period={{ p.period | urlencode }}#vintages">{{ p.period }}</a></td>
 <td class="num">{{ p.rows }}</td>
 <td{% if not p.served %} class="muted"{% endif %}>{{ "served" if p.served else "not served" }}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}<p class="muted">No stored rows.</p>{% endif %}
 
-<h2>Served observations</h2>
+<h2 id="observacoes">Served observations</h2>
 <p class="note">{% if d.total > d.observations | length %}newest {{ d.observations | length }} of {{ d.total }} served rows{% else %}{{ d.total }} served rows{% endif %};
 values exactly as the publisher's token. Click a period for its vintages.</p>
 {% if d.observations %}
 <div class="scroll"><table>
-<tr><th>Period</th><th>Value</th><th>Flag</th><th>Origin</th><th>Run</th><th>Fetched</th><th>Payload sha256</th></tr>
+<thead><tr><th>Period</th><th>Value</th><th>Flag</th><th>Origin</th><th>Run</th><th>Fetched</th><th>Payload sha256</th></tr></thead>
+<tbody>
 {% for o in d.observations %}
 <tr class="obs-row{% if o.origin == 'legacy' %} legacy{% endif %}">
 <td><a href="?period={{ o.period | urlencode }}#vintages">{{ o.period }}</a></td>
@@ -108,42 +141,51 @@ values exactly as the publisher's token. Click a period for its vintages.</p>
 <td class="mono">{{ o.raw_sha or "-" }}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% endif %}
 
-<h2>Raw fetches ({{ d.raw_fetches | length }})</h2>
+<div class="section-head"><h2 id="evidencia">Evidência</h2><p class="section-note">Tentativas, verificações e quarentena desta série.</p></div>
+
+<h3>Raw fetches ({{ d.raw_fetches | length }})</h3>
 {% if d.raw_fetches %}
 <div class="scroll"><table>
-<tr><th>Fetched</th><th>Run</th><th>HTTP</th><th>sha256</th><th>URL</th></tr>
+<thead><tr><th>Fetched</th><th>Run</th><th>HTTP</th><th>sha256</th><th>URL</th></tr></thead>
+<tbody>
 {% for f in d.raw_fetches %}
 <tr><td>{{ f.fetched_at }}</td><td class="num">{{ f.run_id }}</td><td>{{ f.http_status }}</td>
 <td class="mono">{{ f.sha256 }}</td><td class="wrap">{{ f.url | link }}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}<p class="muted">None.</p>{% endif %}
 
-<h2>Verification items ({{ d.items | length }}{% if d.items | length >= cap %}, newest {{ cap }}{% endif %})</h2>
+<h3>Verification items ({{ d.items | length }}{% if d.items | length >= cap %}, newest {{ cap }}{% endif %})</h3>
 {% if d.items %}
 <div class="scroll"><table>
-<tr><th>Item</th><th>Run</th><th>Verified at</th><th>Period</th><th>Expected</th><th>Observed</th>
-<th>Match</th><th>Reason drawn</th><th>Evidence</th></tr>
+<thead><tr><th>Item</th><th>Run</th><th>Verified at</th><th>Period</th><th>Expected</th><th>Observed</th>
+<th>Match</th><th>Reason drawn</th><th>Evidence</th></tr></thead>
+<tbody>
 {% for i in d.items %}
 <tr><td class="num"><a href="{{ base }}/verification/item/{{ i.item_id }}">{{ i.item_id }}</a></td><td class="num">{{ i.run_id }}</td><td>{{ i.created_at }}</td>
 <td>{{ i.period }}</td><td class="value">{{ i.expected_text }}</td><td class="value">{{ i.observed_text }}</td>
 <td class="{{ 'good' if i.match else 'bad' }}">{{ "match" if i.match else "MISMATCH" }}</td>
 <td>{{ i.reason or "" }}</td><td class="wrap">{{ i.evidence_url | link }}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}<p class="muted">None.</p>{% endif %}
 
-<h2>Quarantine ({{ d.quarantine | length }}{% if d.quarantine | length >= cap %}, newest {{ cap }}{% endif %})</h2>
+<h3>Quarantine ({{ d.quarantine | length }}{% if d.quarantine | length >= cap %}, newest {{ cap }}{% endif %})</h3>
 {% if d.quarantine %}
 <div class="scroll"><table>
-<tr><th>Created</th><th>Run</th><th>Period</th><th>Raw value</th><th>Reason</th></tr>
+<thead><tr><th>Created</th><th>Run</th><th>Period</th><th>Raw value</th><th>Reason</th></tr></thead>
+<tbody>
 {% for q in d.quarantine %}
 <tr><td>{{ q.created_at }}</td><td class="num">{{ q.run_id }}</td><td>{{ q.period }}</td>
 <td class="value wrap">{{ q.raw_value }}</td><td>{{ q.reason }}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}<p class="muted">None.</p>{% endif %}
 {% endblock %}

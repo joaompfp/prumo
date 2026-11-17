@@ -1,8 +1,23 @@
 {% extends "base.html" %}
 {% block title %}{{ title }} - Prumo backoffice{% endblock %}
 {% block content %}
-<h1>{{ title }}</h1>
-<p class="bad">{{ message }}</p>
-<p class="note">This page only reads. The one write path in the backoffice is the editorial
-editor, it never migrates or creates the database, and a refused write changes nothing.</p>
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i><span aria-current="page">{{ title }}</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Não foi possível mostrar a página</p>
+    <h1>{{ title }}</h1>
+  </div>
+</header>
+<div class="notice notice-warn">
+  <p class="callout-title"><i class="icon icon-warning" aria-hidden="true"></i> Pedido recusado</p>
+  <p>{{ message }}</p>
+</div>
+<div class="panel">
+  <p class="note">This page only reads. The one write path in the backoffice is the editorial
+  editor and the CMS; neither migrates nor creates the database, and a refused write changes
+  nothing.</p>
+  <p><a class="button" href="{{ base }}/"><i class="icon icon-grid" aria-hidden="true"></i> Voltar à visão geral</a></p>
+</div>
 {% endblock %}

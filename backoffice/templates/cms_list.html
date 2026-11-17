@@ -2,114 +2,216 @@
 {% from "cms_macros.html" import series_options, derived_options, chart_options %}
 {% block title %}CMS: páginas e gráficos - Prumo backoffice{% endblock %}
 {% block content %}
-<h1>Páginas e gráficos</h1>
-<p class="note">Conteúdo editorial do CMS. Aqui só se escolhem referências e se escreve texto;
-observações, unidades, licenças e metadados das fontes continuam a ser geridos pelo pipeline.
-Um rascunho não altera o que está em direto até ser publicado.</p>
-{% if error %}<p class="bad" role="alert">{{ error }}</p>{% endif %}
-<p><a href="#paginas">Páginas</a> · <a href="#graficos">Gráficos</a> ·
-<a href="#nova-pagina">Nova página</a> · <a href="#novo-grafico">Novo gráfico</a></p>
+{% set home_doc = home if home is defined and home else none %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i><span aria-current="page">Páginas e gráficos</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Conteúdo editorial</p>
+    <h1>Páginas e gráficos</h1>
+    <p class="page-sub">Conteúdo editorial do CMS. Aqui só se escolhem referências e se escreve texto;
+    observações, unidades, licenças e metadados das fontes continuam a ser geridos pelo pipeline.
+    Um rascunho não altera o que está em direto até ser publicado.</p>
+  </div>
+</header>
+{% if error %}<div class="notice notice-warn"><p class="bad" role="alert">{{ error }}</p></div>{% endif %}
 
-<h2 id="paginas">Páginas</h2>
+<div class="jump" aria-label="Secções desta página">
+  <a href="{{ base }}/cms#paginas">Páginas</a>
+  <a href="{{ base }}/cms#graficos">Gráficos</a>
+  <a href="{{ base }}/cms#nova-pagina">Nova página</a>
+  <a href="{{ base }}/cms#novo-grafico">Novo gráfico</a>
+</div>
+
+<section class="panel home-panel" aria-labelledby="home-title">
+  <div class="home-copy">
+    <p class="eyebrow">Página inicial</p>
+    {% if home_doc %}
+    <h2 id="home-title">{{ home_doc.title or "Página inicial" }}</h2>
+    <p class="status-line">
+      {% if home_doc.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>
+      {% else %}<span class="badge">Rascunho privado</span>{% endif %}
+      {% if home_doc.version is defined and home_doc.version %}<span class="badge">versão {{ home_doc.version }}</span>{% endif %}
+      <span class="muted">O CMS gere o que aparece em <code>/</code>.</span>
+    </p>
+    {% else %}
+    <h2 id="home-title">Página inicial ainda não preparada</h2>
+    <p class="quiet">Enquanto não houver publicação do CMS, o site mantém a página inicial antiga.
+    Preparar cria um rascunho privado a partir dos cartões atuais, sem alterar o que está em direto.</p>
+    {% endif %}
+  </div>
+  <a class="button button-primary" href="{{ base }}/cms/home"><i class="icon icon-home" aria-hidden="true"></i> {% if home_doc %}Gerir página inicial{% else %}Preparar página inicial{% endif %}</a>
+</section>
+
+<div class="section-head">
+  <h2 id="paginas">Páginas</h2>
+  <p class="section-note"><a href="#nova-pagina"><i class="icon icon-plus" aria-hidden="true"></i> Criar página</a></p>
+</div>
 {% if pages %}
 <div class="scroll"><table>
-<tr><th>Título</th><th>Slug</th><th>Secção</th><th class="num">Versão</th><th>Estado</th>
-<th>Editor</th><th>Pré-visualizar</th></tr>
+<thead><tr><th>Título</th><th>Slug</th><th>Secção</th><th class="num">Versão</th><th>Estado</th>
+<th>Ações</th></tr></thead>
+<tbody>
 {% for p in pages %}
 <tr>
 <td class="wrap">{{ p.title }}</td>
 <td class="mono">{{ p.slug }}</td>
 <td>{{ p.section or "-" }}</td>
 <td class="num">{{ p.version }}</td>
-<td>{% if p.published %}<span class="good">Publicada</span>{% else %}<span class="muted">Só rascunho</span>{% endif %}</td>
-<td><a href="{{ base }}/cms/page/{{ p.slug }}">editar</a></td>
-<td><a href="{{ base }}/cms/page/{{ p.slug }}/preview">ver rascunho</a></td>
+<td>{% if p.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
+<td>
+<div class="button-row">
+<a class="button button-small" href="{{ base }}/cms/page/{{ p.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
+<a class="button button-small" href="{{ base }}/cms/page/{{ p.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
+</div>
+</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
-<p class="muted">Ainda não há páginas CMS.</p>
+<div class="empty-state">
+  <i class="icon icon-page" aria-hidden="true"></i>
+  <p>Ainda não há páginas CMS.</p>
+  <p><a href="#nova-pagina">Criar a primeira página</a></p>
+</div>
 {% endif %}
 
-<details id="nova-pagina">
-<summary>Criar página</summary>
+<details class="disclosure" id="nova-pagina">
+<summary><i class="icon icon-plus" aria-hidden="true"></i> Criar página</summary>
 <form method="post" action="{{ base }}/cms/new">
 <input type="hidden" name="kind" value="page">
-<p><label>Slug (minúsculas, hífenes, imutável)
-<input type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
- value="{{ values.get('slug', '') if values.get('kind') == 'page' else '' }}"></label></p>
-<p><label>Título
-<input type="text" name="title" required maxlength="{{ max_title }}" size="60"
- value="{{ values.get('title', '') if values.get('kind') == 'page' else '' }}"></label></p>
-<p><label>Introdução (opcional)<br>
-<textarea name="introduction" maxlength="{{ max_text }}" rows="4" cols="70">{{ values.get('introduction', '') if values.get('kind') == 'page' else '' }}</textarea></label></p>
-<p><label>Secção
-<select name="section">
-{% for s in sections %}<option value="{{ s }}"{% if values.get('kind') == 'page' and values.get('section') == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
-</select></label></p>
-<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
-<button type="submit">Criar página</button>
+<div class="form-grid">
+  <div class="field">
+    <label for="new-page-slug">Slug</label>
+    <input id="new-page-slug" type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
+     value="{{ values.get('slug', '') if values.get('kind') == 'page' else '' }}">
+    <span class="hint">Minúsculas e hífenes; imutável depois de criado.</span>
+  </div>
+  <div class="field">
+    <label for="new-page-title">Título</label>
+    <input id="new-page-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
+     value="{{ values.get('title', '') if values.get('kind') == 'page' else '' }}">
+  </div>
+  <div class="field span-2">
+    <label for="new-page-intro">Introdução (opcional)</label>
+    <textarea id="new-page-intro" name="introduction" maxlength="{{ max_text }}" rows="4" cols="70">{{ values.get('introduction', '') if values.get('kind') == 'page' else '' }}</textarea>
+  </div>
+  <div class="field">
+    <label for="new-page-section">Secção</label>
+    <select id="new-page-section" name="section">
+    {% for s in sections %}<option value="{{ s }}"{% if values.get('kind') == 'page' and values.get('section') == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="new-page-note">Motivo (obrigatório)</label>
+    <input id="new-page-note" type="text" name="note" required maxlength="{{ max_text }}" size="50">
+  </div>
+</div>
+<div class="button-row"><button type="submit" class="button-primary"><i class="icon icon-plus" aria-hidden="true"></i> Criar página</button></div>
 </form>
 </details>
 
-<h2 id="graficos">Gráficos</h2>
+<div class="section-head">
+  <h2 id="graficos">Gráficos</h2>
+  <p class="section-note"><a href="#novo-grafico"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</a></p>
+</div>
 {% if charts %}
 <div class="scroll"><table>
-<tr><th>Título</th><th>Slug</th><th class="num">Versão</th><th>Estado</th>
-<th>Editor</th><th>Pré-visualizar</th></tr>
+<thead><tr><th>Título</th><th>Slug</th><th class="num">Versão</th><th>Estado</th><th>Ações</th></tr></thead>
+<tbody>
 {% for c in charts %}
 <tr>
 <td class="wrap">{{ c.title }}</td>
 <td class="mono">{{ c.slug }}</td>
 <td class="num">{{ c.version }}</td>
-<td>{% if c.published %}<span class="good">Publicado</span>{% else %}<span class="muted">Só rascunho</span>{% endif %}</td>
-<td><a href="{{ base }}/cms/chart/{{ c.slug }}">editar</a></td>
-<td><a href="{{ base }}/cms/chart/{{ c.slug }}/preview">ver rascunho</a></td>
+<td>{% if c.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicado</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
+<td>
+<div class="button-row">
+<a class="button button-small" href="{{ base }}/cms/chart/{{ c.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
+<a class="button button-small" href="{{ base }}/cms/chart/{{ c.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
+</div>
+</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
-<p class="muted">Ainda não há gráficos CMS.</p>
+<div class="empty-state">
+  <i class="icon icon-bar-chart" aria-hidden="true"></i>
+  <p>Ainda não há gráficos CMS.</p>
+  <p><a href="#novo-grafico">Criar o primeiro gráfico</a></p>
+</div>
 {% endif %}
 
-<details id="novo-grafico">
-<summary>Criar gráfico</summary>
+<details class="disclosure" id="novo-grafico">
+<summary><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</summary>
 <form method="post" action="{{ base }}/cms/new">
 <input type="hidden" name="kind" value="chart">
-<p><label>Slug (minúsculas, hífenes, imutável)
-<input type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
- value="{{ values.get('slug', '') if values.get('kind') == 'chart' else '' }}"></label></p>
-<p><label>Título
-<input type="text" name="title" required maxlength="{{ max_title }}" size="60"
- value="{{ values.get('title', '') if values.get('kind') == 'chart' else '' }}"></label></p>
-<p><label>Nota editorial<br>
-<textarea name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ values.get('note_text', '') if values.get('kind') == 'chart' else '' }}</textarea></label></p>
-<p><label>Série A
-<select name="series_a" required>
-{{ series_options(choices, values.get('series_a') if values.get('kind') == 'chart' else None, "escolher série") }}
-</select></label></p>
-<p><label>Série B (opcional; tem de ser diferente da série A)
-<select name="series_b">
-{{ series_options(choices, values.get('series_b') if values.get('kind') == 'chart' else None, "sem segunda série") }}
-</select></label></p>
-<p><label>Série calculada (opcional; só em gráfico de série única)
-<select name="derived_key">
-{{ derived_options(choices, values.get('derived_key') if values.get('kind') == 'chart' else None, "sem série calculada") }}
-</select></label></p>
-<p><label>Janela
-<select name="window">
-{% for w in windows %}<option value="{{ w }}"{% if values.get('kind') == 'chart' and values.get('window') == w %} selected{% endif %}>{{ w }}</option>{% endfor %}
-</select></label>
-<label>Escala
-<select name="scale">
-{% for s in scales %}<option value="{{ s }}"{% if values.get('kind') == 'chart' and values.get('scale') == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
-</select></label>
-<label>Dia UTC (opcional, AAAA-MM-DD) <input type="date" name="day"
- value="{{ values.get('day', '') if values.get('kind') == 'chart' else '' }}"></label></p>
+<div class="form-grid">
+  <div class="field">
+    <label for="new-chart-slug">Slug</label>
+    <input id="new-chart-slug" type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
+     value="{{ values.get('slug', '') if values.get('kind') == 'chart' else '' }}">
+    <span class="hint">Minúsculas e hífenes; imutável depois de criado.</span>
+  </div>
+  <div class="field">
+    <label for="new-chart-title">Título</label>
+    <input id="new-chart-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
+     value="{{ values.get('title', '') if values.get('kind') == 'chart' else '' }}">
+  </div>
+  <div class="field span-2">
+    <label for="new-chart-note">Nota editorial</label>
+    <textarea id="new-chart-note" name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ values.get('note_text', '') if values.get('kind') == 'chart' else '' }}</textarea>
+  </div>
+  <div class="field">
+    <label for="new-chart-series-a">Série A</label>
+    <select id="new-chart-series-a" name="series_a" required data-filterable data-filter-label="Filtrar séries da série A">
+    {{ series_options(choices, values.get('series_a') if values.get('kind') == 'chart' else None, "escolher série") }}
+    </select>
+  </div>
+  <div class="field">
+    <label for="new-chart-series-b">Série B (opcional)</label>
+    <select id="new-chart-series-b" name="series_b" data-filterable data-filter-label="Filtrar séries da série B">
+    {{ series_options(choices, values.get('series_b') if values.get('kind') == 'chart' else None, "sem segunda série") }}
+    </select>
+    <span class="hint">Tem de ser diferente da série A.</span>
+  </div>
+  <div class="field">
+    <label for="new-chart-derived">Série calculada (opcional)</label>
+    <select id="new-chart-derived" name="derived_key" data-filterable data-filter-label="Filtrar séries calculadas">
+    {{ derived_options(choices, values.get('derived_key') if values.get('kind') == 'chart' else None, "sem série calculada") }}
+    </select>
+    <span class="hint">Só em gráfico de série única.</span>
+  </div>
+  <div class="field">
+    <label for="new-chart-window">Janela</label>
+    <select id="new-chart-window" name="window">
+    {% for w in windows %}<option value="{{ w }}"{% if values.get('kind') == 'chart' and values.get('window') == w %} selected{% endif %}>{{ w }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="new-chart-scale">Escala</label>
+    <select id="new-chart-scale" name="scale">
+    {% for s in scales %}<option value="{{ s }}"{% if values.get('kind') == 'chart' and values.get('scale') == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="new-chart-day">Dia UTC (opcional)</label>
+    <input id="new-chart-day" type="date" name="day"
+     value="{{ values.get('day', '') if values.get('kind') == 'chart' else '' }}">
+    <span class="hint">AAAA-MM-DD, só para séries de 15 minutos.</span>
+  </div>
+  <div class="field span-2">
+    <label for="new-chart-reason">Motivo (obrigatório)</label>
+    <input id="new-chart-reason" type="text" name="note" required maxlength="{{ max_text }}" size="50">
+  </div>
+</div>
 <p class="note">Dois eixos são uma escolha explícita e independente; a comparação não
 estabelece causalidade. Séries diárias como a E-REDES usam um único dia UTC, sem agregação.</p>
-<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
-<button type="submit">Criar gráfico</button>
+<div class="button-row"><button type="submit" class="button-primary"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</button></div>
 </form>
 </details>
 {% endblock %}
+{% block scripts %}<script src="{{ base }}/static/js/admin.js" defer></script>{% endblock %}

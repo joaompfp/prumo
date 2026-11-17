@@ -1,18 +1,37 @@
 {% extends "base.html" %}
-{% block title %}Editorial - Prumo backoffice{% endblock %}
+{% block title %}Editorial (legado) - Prumo backoffice{% endblock %}
 {% block content %}
-<h1>Editorial composition</h1>
-<p class="note">Which series a public page shows, and in what order. The page itself (route,
-title, section copy) lives in code; this editor changes only the ordered list of series. An
-empty composition renders the code list, exactly as the site did before this feature existed,
-and that is also the rollback: reset the page.</p>
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i><span aria-current="page">Editorial (legado)</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Composição antiga</p>
+    <h1>Editorial composition <span class="tag tag-legacy">legado</span></h1>
+    <p class="page-sub">Which series a public page shows, and in what order. The page itself
+    (route, title, section copy) lives in code; this editor changes only the ordered list of
+    series. An empty composition renders the code list, exactly as the site did before this
+    feature existed, and that is also the rollback: reset the page.</p>
+  </div>
+</header>
+<div class="notice notice-legacy">
+  <p class="callout-title"><i class="icon icon-archive" aria-hidden="true"></i> Editor antigo</p>
+  <p>A página inicial passou a ser gerida em <a href="{{ base }}/cms/home">Página inicial</a>.
+  Esta composição fixa mantém-se apenas para consulta e reversão, enquanto a página inicial do
+  CMS não estiver publicada.</p>
+</div>
 {% if not available %}
-<p class="bad">The writable mount is not configured (<code>PRUMO_EDITORIAL_DB</code>): every
-read works, editing does not.</p>
+<div class="notice notice-warn">
+  <p>The writable mount is not configured (<code>PRUMO_EDITORIAL_DB</code>): every read works,
+  editing does not.</p>
+</div>
 {% endif %}
+
+{% if pages %}
 <div class="scroll"><table>
-<tr><th>Page</th><th>Slug</th><th>In force</th><th class="num">Published cards</th>
-<th class="num">Draft cards</th><th>Last publish</th></tr>
+<thead><tr><th>Page</th><th>Slug</th><th>In force</th><th class="num">Published cards</th>
+<th class="num">Draft cards</th><th>Last publish</th></tr></thead>
+<tbody>
 {% for p in pages %}
 <tr>
 <td><a href="{{ base }}/editorial/{{ p.slug }}">{{ p.title }}</a></td>
@@ -23,5 +42,12 @@ read works, editing does not.</p>
 <td>{{ p.published_at or "never" }}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
+{% else %}
+<div class="empty-state">
+  <i class="icon icon-editorial" aria-hidden="true"></i>
+  <p>Nenhuma página de composição fixa.</p>
+</div>
+{% endif %}
 {% endblock %}

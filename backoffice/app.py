@@ -56,14 +56,13 @@ STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 PAGE_METHODS = ["GET", "HEAD"]
 STATUS_TTL_S = 30.0  # the full status report is reused this long across pages
 MAX_FORM_BYTES = 16_384
-# No JavaScript anywhere: nothing may run, load or frame the pages; inline styles only.
-# Forms may only post to this same origin, and the page has no <base> to rewrite URLs.
-# The CMS preview adds `style-src 'self'` for the exact public stylesheet; every other page
-# keeps this policy unchanged.
+# Every page loads only this origin's stylesheet, icon font and (on CMS pages) one script.
+# There is no inline execution, no eval, no CDN and no <base>. Forms may only post to this
+# same origin. The CMS preview narrows the policy again in `backoffice.cms_routes`.
 SECURITY_HEADERS = {
-    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; "
-                               "img-src 'self' data:; form-action 'self'; base-uri 'none'; "
-                               "frame-ancestors 'none'",
+    "Content-Security-Policy": "default-src 'none'; style-src 'self'; script-src 'self'; "
+                               "font-src 'self'; img-src 'self' data:; form-action 'self'; "
+                               "base-uri 'none'; frame-ancestors 'none'",
     "X-Content-Type-Options": "nosniff",
     "Cache-Control": "no-store",
 }
@@ -120,8 +119,47 @@ class AdminContext:
     def url(self, request: Request, path: str) -> str:
         return prefixed(self.base(request), path)
 
+    def page_path(self, request: Request) -> str:
+        """The current page below the validated Admin mount, never the raw request path.
+
+        Navigation compares this value with route prefixes; a hostile or unrelated forwarded
+        prefix has already been discarded by `base`, so it cannot choose a foreign link.
+        """
+        base = self.base(request)
+        path = request.url.path
+        if base and (path == base or path.startswith(base + "/")):
+            path = path[len(base):] or "/"
+        return path
+
+    def public_base(self, request: Request) -> str:
+        """The public mount derived from the validated Admin mount, or '' in local mode.
+
+        This is deliberately not `X-Forwarded-Prefix`: only the one deployed pair
+        `/dados` + `/dados/admin` may produce a prefixed public link.
+        """
+        base = self.base(request)
+        return base.removesuffix("/admin") if base == ADMIN_PREFIX else ""
+
+    def public_url(self, request: Request) -> str | None:
+        """The public site link, built from a configured canonical origin, never a header.
+
+        Proxy mode gets the one canonical HTTPS origin the access policy already validated.
+        Local development keeps a relative `/` only when the app is mounted at the root; an
+        unprefixed public link under an arbitrary development prefix is omitted rather than
+        guessed. Production therefore links `https://joao.date/dados/`, not a forwarded host.
+        """
+        path = self.public_base(request)
+        if self.access.proxy is not None:
+            return self.access.proxy.origin.rstrip("/") + path + "/"
+        if self.base(request) == "":
+            return "/"
+        return None
+
     def render(self, request: Request, name: str, status_code: int = 200, **context):
         context.setdefault("base", self.base(request))
+        context.setdefault("path", self.page_path(request))
+        context.setdefault("public_base", self.public_base(request))
+        context.setdefault("public_url", self.public_url(request))
         return self.templates.TemplateResponse(request, name, context, status_code=status_code)
 
     def actor(self, request: Request) -> str:

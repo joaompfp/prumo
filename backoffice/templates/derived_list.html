@@ -1,17 +1,35 @@
 {% extends "base.html" %}
-{% block title %}Derivadas - Prumo backoffice{% endblock %}
+{% block title %}Calculadas - Prumo backoffice{% endblock %}
 {% block content %}
-<h1>Derivadas</h1>
-<p class="note">Series Prumo calculates from verified, served publisher values (the
-<code>derived:</code> list of <code>registry/core.yaml</code>, synced to the database). Every
-value is calculated, never published: each one carries {% include "_calc_badge.html" %}.
-Stale means a newer verified base vintage arrived after the latest derived run that covered
-the series, or that base data is served but no derived value is (run derive). The
-list generated {{ generated_at }} ({{ age_s }} s ago; reused for up to {{ status_ttl_s }} s).</p>
+{% set stale = rows | selectattr("stale") | list | length %}
+{% set total = namespace(served=0) %}
+{% for r in rows %}{% set total.served = total.served + (r.served_values or 0) %}{% endfor %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i><span aria-current="page">Calculadas</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Camada derivada</p>
+    <h1>Calculadas</h1>
+    <p class="page-sub">Series Prumo calculates from verified, served publisher values (the
+    <code>derived:</code> list of <code>registry/core.yaml</code>, synced to the database).
+    Every value is calculated, never published: each one carries {% include "_calc_badge.html" %}.
+    Stale means a newer verified base vintage arrived after the latest derived run that covered
+    the series, or that base data is served but no derived value is (run derive).
+    list generated {{ generated_at }} ({{ age_s }} s ago; reused for up to {{ status_ttl_s }} s).</p>
+  </div>
+</header>
+
 {% if rows %}
+<p class="status-line">
+  <span class="badge">{{ rows | length }} séries</span>
+  <span class="badge">{{ total.served }} valores servidos</span>
+  {% if stale %}<span class="badge bad">{{ stale }} desatualizadas</span>{% else %}<span class="badge good">todas atuais</span>{% endif %}
+</p>
 <div class="scroll"><table>
-<tr><th>Derived series</th><th>Title</th><th>Formula</th><th>Base series</th><th>Unit</th>
-<th>Active</th><th class="num">Served values</th><th>State</th><th>Last covered</th></tr>
+<thead><tr><th>Série calculada</th><th>Título</th><th>Fórmula</th><th>Série base</th><th>Unidade</th>
+<th>Ativa</th><th class="num">Valores servidos</th><th>Estado</th><th>Último período coberto</th></tr></thead>
+<tbody>
 {% for r in rows %}
 <tr class="derived-row" id="row-{{ r.key }}">
 <td><a href="{{ base }}/derived/{{ r.key | urlencode }}">{{ r.key }}</a> {% include "_calc_badge.html" %}{% if r.caveat_texts %} <span class="caveat-mark" title="{{ r.caveat_texts | join(' ') }}">*</span>{% endif %}</td>
@@ -19,14 +37,19 @@ list generated {{ generated_at }} ({{ age_s }} s ago; reused for up to {{ status
 <td class="wrap">{{ r.formula_text }}</td>
 <td><a href="{{ base }}/series/{{ r.base_series_id | urlencode }}">{{ r.base_series_id }}</a></td>
 <td>{{ r.unit_text }} <span class="muted"><code>{{ r.unit }}</code></span></td>
-<td>{{ "yes" if r.active else "no" }}</td>
+<td>{{ "sim" if r.active else "não" }}</td>
 <td class="num">{{ r.served_values }}</td>
 <td{% if r.stale or r.state == "never computed" %} class="bad"{% elif r.state == "current" %} class="good"{% endif %}>{{ r.state }}</td>
-<td>{{ r.last_covered_at or "never" }}</td>
+<td>{{ r.last_covered_at or "nunca" }}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
-<p class="muted">No derived series in the database.</p>
+<div class="empty-state">
+  <i class="icon icon-calculator" aria-hidden="true"></i>
+  <p>No derived series in the database.</p>
+  <p>Uma série calculada só aparece depois de o registo <code>derived:</code> ser sincronizado.</p>
+</div>
 {% endif %}
 {% endblock %}

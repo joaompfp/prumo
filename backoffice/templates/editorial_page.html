@@ -1,21 +1,48 @@
 {% extends "base.html" %}
 {% block title %}Editorial: {{ page.title }} - Prumo backoffice{% endblock %}
 {% block content %}
-<h1>{{ page.title }} <span class="muted mono">{{ page.slug }}</span></h1>
-<p class="note">Version {{ page.version }}.
-{% if page.published_at %}Last published {{ page.published_at }}.{% else %}No composition
-published: the code list is in force.{% endif %}
-A card is a reference to a series; the value, the unit, the publisher and the receipt date are
-read at request time, so nothing here can go stale.</p>
-{% if error %}<p class="bad">{{ error }}</p>{% endif %}
-{% if not available %}<p class="bad">The writable mount is not configured, so every form below
-will refuse. Reads still work.</p>{% endif %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <a href="{{ base }}/editorial">Editorial (legado)</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <span aria-current="page">{{ page.title }}</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Composição antiga</p>
+    <h1>{{ page.title }} <span class="muted mono">{{ page.slug }}</span></h1>
+    <p class="page-sub">Version {{ page.version }}.
+    {% if page.published_at %}Last published {{ page.published_at }}.{% else %}No composition
+    published: the code list is in force.{% endif %}
+    A card is a reference to a series; the value, the unit, the publisher and the receipt date are
+    read at request time, so nothing here can go stale.</p>
+    <p class="head-badges"><span class="tag tag-legacy">legado</span></p>
+  </div>
+  <div class="page-actions">
+    <a class="button" href="{{ base }}/cms/home"><i class="icon icon-home" aria-hidden="true"></i> Gerir página inicial</a>
+  </div>
+</header>
+{% if error %}<div class="notice notice-warn"><p class="bad" role="alert">{{ error }}</p></div>{% endif %}
+{% if not available %}
+<div class="notice notice-warn">
+  <p>The writable mount is not configured, so every form below will refuse. Reads still work.</p>
+</div>
+{% endif %}
 
-<h2>Published {% if page.published %}<span class="muted">({{ page.published | length }} cards)</span>{% endif %}</h2>
+<nav class="section-nav" aria-label="Nesta página">
+  <a href="#publicado">Publicado</a>
+  <a href="#rascunho">Rascunho</a>
+  <a href="#pre-visualizacao">Pré-visualização</a>
+  <a href="#publicar">Publicação</a>
+  <a href="#candidatos">Candidatos</a>
+  <a href="#auditoria">Auditoria</a>
+</nav>
+
+<h2 id="publicado">Published {% if page.published %}<span class="muted">({{ page.published | length }} cards)</span>{% endif %}</h2>
 {% if page.published %}
 <div class="scroll"><table>
-<tr><th class="num">#</th><th>Card</th><th>Calculated line</th><th>Source</th>
-<th>Frequency</th><th>State</th></tr>
+<thead><tr><th class="num">#</th><th>Card</th><th>Calculated line</th><th>Source</th>
+<th>Frequency</th><th>State</th></tr></thead>
+<tbody>
 {% for s in page.published %}
 <tr>
 <td class="num">{{ loop.index }}</td>
@@ -26,16 +53,21 @@ will refuse. Reads still work.</p>{% endif %}
 <td>{% if s.problem %}<span class="bad">{{ s.problem }}</span>{% else %}<span class="good">ok</span>{% endif %}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
-<p class="muted">Nothing published. The public page renders the list in code.</p>
+<div class="empty-state">
+  <i class="icon icon-archive" aria-hidden="true"></i>
+  <p>Nothing published. The public page renders the list in code.</p>
+</div>
 {% endif %}
 
-<h2>Draft {% if page.draft %}<span class="muted">({{ page.draft | length }} of {{ max_slots }} cards)</span>{% endif %}</h2>
+<h2 id="rascunho">Draft {% if page.draft %}<span class="muted">({{ page.draft | length }} of {{ max_slots }} cards)</span>{% endif %}</h2>
 {% if page.draft %}
 <div class="scroll"><table>
-<tr><th class="num">#</th><th>Card</th><th>Calculated line</th><th>Source</th>
-<th>State</th><th>Order</th><th></th></tr>
+<thead><tr><th class="num">#</th><th>Card</th><th>Calculated line</th><th>Source</th>
+<th>State</th><th>Order</th><th></th></tr></thead>
+<tbody>
 {% for s in page.draft %}
 <tr>
 <td class="num">{{ loop.index }}</td>
@@ -48,43 +80,50 @@ will refuse. Reads still work.</p>{% endif %}
 <input type="hidden" name="version" value="{{ page.version }}">
 <input type="hidden" name="series_id" value="{{ s.series_id }}">
 <input type="hidden" name="to_position" value="{{ loop.index0 - 1 }}">
-<button type="submit"{% if loop.first %} disabled{% endif %}>up</button>
+<button type="submit" class="button-small"{% if loop.first %} disabled{% endif %}><i class="icon icon-arrow-up" aria-hidden="true"></i><span class="sr-only">Subir</span></button>
 </form>
 <form method="post" action="{{ base }}/editorial/{{ page.slug }}/move">
 <input type="hidden" name="version" value="{{ page.version }}">
 <input type="hidden" name="series_id" value="{{ s.series_id }}">
 <input type="hidden" name="to_position" value="{{ loop.index0 + 1 }}">
-<button type="submit"{% if loop.last %} disabled{% endif %}>down</button>
+<button type="submit" class="button-small"{% if loop.last %} disabled{% endif %}><i class="icon icon-arrow-down" aria-hidden="true"></i><span class="sr-only">Descer</span></button>
 </form>
 </td>
 <td>
 <form method="post" action="{{ base }}/editorial/{{ page.slug }}/remove">
 <input type="hidden" name="version" value="{{ page.version }}">
 <input type="hidden" name="series_id" value="{{ s.series_id }}">
-<button type="submit">remove</button>
+<button type="submit" class="button-small"><i class="icon icon-trash" aria-hidden="true"></i> Remover</button>
 </form>
 </td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
 <p class="muted">The draft is empty.</p>
 {% endif %}
 
-<h2>Preview</h2>
+<h2 id="pre-visualizacao">Preview</h2>
 <p class="note">The cards the home would draw from this draft, built by the home's own card
 builder and read in the same transaction as the values. This is what publishing puts on the
 front page.</p>
 {% if cards %}
 <div class="cards">{% for card in cards %}{% include "_card.html" %}{% endfor %}</div>
 {% elif page.draft %}
-<p class="muted">Every slot in this draft is dropped at render: the home would draw no cards
-rather than fall back to the list in code.</p>
+<div class="empty-state">
+  <i class="icon icon-eye" aria-hidden="true"></i>
+  <p>Every slot in this draft is dropped at render: the home would draw no cards</p>
+  <p>rather than fall back to the list in code.</p>
+</div>
 {% else %}
-<p class="muted">Nothing to preview: the draft is empty.</p>
+<div class="empty-state">
+  <i class="icon icon-eye" aria-hidden="true"></i>
+  <p>Nothing to preview: the draft is empty.</p>
+</div>
 {% endif %}
 
-<h2>Publish</h2>
+<h2 id="publicar">Publish</h2>
 {% if page.published %}
 <p class="note">Change against what is live now:
 {% if page.diff.added %}<span class="good">added {% for sid in page.diff.added %}{{ page.titles.get(sid, sid) }}{% if not loop.last %}, {% endif %}{% endfor %}</span>{% endif %}
@@ -93,39 +132,51 @@ rather than fall back to the list in code.</p>
 {% if not page.diff.added and not page.diff.removed and not page.diff.moved %}no change.{% endif %}</p>
 {% endif %}
 {% if page.draft %}
-<form method="post" action="{{ base }}/editorial/{{ page.slug }}/publish">
-<input type="hidden" name="version" value="{{ page.version }}">
-<label>Reason (required) <input type="text" name="note" required maxlength="300" size="50"></label>
-<button type="submit">Publish the draft</button>
-</form>
-<form method="post" action="{{ base }}/editorial/{{ page.slug }}/discard">
-<input type="hidden" name="version" value="{{ page.version }}">
-<button type="submit">Discard the draft, back to the published list</button>
-</form>
+<div class="panel">
+  <div class="panel-head"><h3>Publicar o rascunho</h3><span class="tag">passo deliberado</span></div>
+  <form method="post" action="{{ base }}/editorial/{{ page.slug }}/publish">
+  <input type="hidden" name="version" value="{{ page.version }}">
+  <div class="field"><label for="publish-note">Reason (required)</label>
+  <input id="publish-note" type="text" name="note" required maxlength="300" size="50"></div>
+  <div class="button-row"><button type="submit" class="button-primary"><i class="icon icon-publish" aria-hidden="true"></i> Publish the draft</button></div>
+  </form>
+  <form method="post" action="{{ base }}/editorial/{{ page.slug }}/discard">
+  <input type="hidden" name="version" value="{{ page.version }}">
+  <div class="button-row"><button type="submit" class="button-quiet">Discard the draft, back to the published list</button></div>
+  </form>
+</div>
 {% else %}
 <p class="muted">Nothing to publish: add a card below first.</p>
 {% endif %}
-<form method="post" action="{{ base }}/editorial/{{ page.slug }}/reset">
-<input type="hidden" name="version" value="{{ page.version }}">
-<label>Reason (required) <input type="text" name="note" required maxlength="300" size="50"></label>
-<button type="submit" class="bad">Reset to the code list</button>
-</form>
-<p class="note">Reset deletes the draft and the published composition and returns the page to
-the list in code. It is the documented rollback and it is logged with what it deleted.</p>
+<div class="panel">
+  <div class="panel-head"><h3>Reset to the code list</h3></div>
+  <form method="post" action="{{ base }}/editorial/{{ page.slug }}/reset">
+  <input type="hidden" name="version" value="{{ page.version }}">
+  <div class="field"><label for="reset-note">Reason (required)</label>
+  <input id="reset-note" type="text" name="note" required maxlength="300" size="50"></div>
+  <div class="button-row"><button type="submit" class="button-danger"><i class="icon icon-archive" aria-hidden="true"></i> Reset to the code list</button></div>
+  </form>
+  <p class="note">Reset deletes the draft and the published composition and returns the page to
+  the list in code. It is the documented rollback and it is logged with what it deleted.</p>
+</div>
 
-<h2>Candidates</h2>
+<h2 id="candidatos">Candidates</h2>
 <p class="note">Only series that could actually render are listed: primary, active, licence
 allows redistribution, at least one served value, a title in the language this page renders,
 and no title already on the draft.</p>
-<form class="filters" method="get" action="{{ base }}/editorial/{{ page.slug }}">
-<label>Search <input type="search" name="q" value="{{ request.query_params.get('q', '') }}"></label>
-<label>Source <input type="text" name="fonte" value="{{ request.query_params.get('fonte', '') }}" size="12"></label>
-<label>Theme <input type="text" name="tema" value="{{ request.query_params.get('tema', '') }}" size="12"></label>
-<button type="submit">Filter</button>
+<form class="filters" method="get" action="{{ base }}/editorial/{{ page.slug }}" aria-label="Filtrar candidatos">
+  <div class="field"><label for="cand-q">Search</label>
+  <input id="cand-q" type="search" name="q" value="{{ request.query_params.get('q', '') }}"></div>
+  <div class="field"><label for="cand-fonte">Source</label>
+  <input id="cand-fonte" type="text" name="fonte" value="{{ request.query_params.get('fonte', '') }}" size="12"></div>
+  <div class="field"><label for="cand-tema">Theme</label>
+  <input id="cand-tema" type="text" name="tema" value="{{ request.query_params.get('tema', '') }}" size="12"></div>
+  <button type="submit"><i class="icon icon-search" aria-hidden="true"></i> Filter</button>
 </form>
 {% if candidates %}
 <div class="scroll"><table>
-<tr><th>Card</th><th>Source</th><th>Theme</th><th>Frequency</th><th>Add</th></tr>
+<thead><tr><th>Card</th><th>Source</th><th>Theme</th><th>Frequency</th><th>Add</th></tr></thead>
+<tbody>
 {% for c in candidates %}
 <tr>
 <td class="wrap">{{ c.title }}</td>
@@ -140,36 +191,43 @@ and no title already on the draft.</p>
 <option value="">no calculated line</option>
 {% for key, label in c.derived %}<option value="{{ key }}">{{ label }}</option>{% endfor %}
 </select>
-<button type="submit">add</button>
+<button type="submit" class="button-small"><i class="icon icon-plus" aria-hidden="true"></i> add</button>
 </form>
 </td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
-<p class="muted">No candidate matches these filters.</p>
+<div class="empty-state">
+  <i class="icon icon-search" aria-hidden="true"></i>
+  <p>No candidate matches these filters.</p>
+  <p><a href="{{ base }}/editorial/{{ page.slug }}">Limpar os filtros</a></p>
+</div>
 {% endif %}
 {% if pagina > 1 or more %}
-<p class="pager">
-{% if pagina > 1 %}<a href="{{ base }}/editorial/{{ page.slug }}?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina - 1 }}">previous</a>{% endif %}
+<nav class="pager" aria-label="Paginação de candidatos">
+{% if pagina > 1 %}<a class="button" href="{{ base }}/editorial/{{ page.slug }}?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina - 1 }}"><i class="icon icon-arrow-left" aria-hidden="true"></i> previous</a>{% endif %}
 <span class="muted">page {{ pagina }}</span>
-{% if more %}<a href="{{ base }}/editorial/{{ page.slug }}?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina + 1 }}">next</a>{% endif %}
-</p>
+{% if more %}<a class="button" href="{{ base }}/editorial/{{ page.slug }}?q={{ request.query_params.get('q', '') | urlencode }}&amp;fonte={{ request.query_params.get('fonte', '') | urlencode }}&amp;tema={{ request.query_params.get('tema', '') | urlencode }}&amp;pagina={{ pagina + 1 }}">next <i class="icon icon-arrow-right" aria-hidden="true"></i></a>{% endif %}
+</nav>
 {% endif %}
 
-<h2>Audit</h2>
+<h2 id="auditoria">Audit</h2>
 {% if events %}
 <div class="scroll"><table>
-<tr><th>When</th><th>Action</th><th class="num">Version</th><th>Note</th><th>Detail</th></tr>
+<thead><tr><th>When</th><th>Action</th><th class="num">Version</th><th>Note</th><th>Detail</th></tr></thead>
+<tbody>
 {% for e in events %}
 <tr>
 <td>{{ e.ts }}</td>
 <td>{{ e.action }}</td>
 <td class="num">{{ e.version }}</td>
 <td class="wrap">{{ e.note }}</td>
-<td class="wrap">{% if e.detail_json %}<details><summary>detail</summary><code>{{ e.detail_json }}</code></details>{% else %}-{% endif %}</td>
+<td class="wrap">{% if e.detail_json %}<details class="bare"><summary>detail</summary><code>{{ e.detail_json }}</code></details>{% else %}-{% endif %}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
 <p class="muted">No editorial change yet.</p>

@@ -1,36 +1,78 @@
 {% extends "base.html" %}
+{% block title %}Visão geral - Prumo backoffice{% endblock %}
 {% block content %}
 {% set t = report.totals %}
-<h1>Overview</h1>
-<p class="note">Status schema {{ report.schema }} v{{ report.version }},
-{% include "_report_age.html" %}. Same report as <code>python -m ingest status</code>. Stale means our
-refresh policy ({{ report.staleness_policy.meaning }}), judged on
-{{ report.staleness_policy.judged_on }}.</p>
-
-<div class="scroll"><table>
-<tr><th>Active series</th><th>Stale</th><th>Never fetched</th><th>Never verified</th>
-<th>Pending verification &gt; {{ report.staleness_policy.pending_stale_after_hours }} h</th></tr>
-<tr>
-<td class="num" id="t-active_series">{{ t.active_series }}</td>
-<td class="num{% if t.stale %} bad{% endif %}" id="t-stale">{{ t.stale }}</td>
-<td class="num" id="t-never_fetched">{{ t.never_fetched }}</td>
-<td class="num" id="t-never_verified">{{ t.never_verified }}</td>
-<td class="num{% if t.pending_stuck %} bad{% endif %}" id="t-pending_stuck">{{ t.pending_stuck }}</td>
-</tr></table></div>
-
 {% set dv = report.derived %}
-<p id="derived-line"><a href="{{ base }}/derived">Derived layer</a>: {{ dv.active_series }} active derived series,
-{{ dv.served_values }} served values {% include "_calc_badge.html" %};
-<span{% if dv.stale %} class="bad"{% endif %}>stale {{ dv.stale }}</span>, never computed {{ dv.never_computed }};
-last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }} (<span{% if dv.last_run_state == "failed" %} class="bad"{% endif %}>{{ dv.last_run_state }}</span>, {{ dv.last_run_at }}){% else %}none{% endif %};
-<span{% if dv.failed_runs_7d %} class="bad"{% endif %}>failed runs 7 d {{ dv.failed_runs_7d }}</span>.</p>
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i><span aria-current="page">Visão geral</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Estado do pipeline</p>
+    <h1>Visão geral</h1>
+    <p class="page-sub">Esquema {{ report.schema }} v{{ report.version }}. {% include "_report_age.html" %}.
+    É o mesmo relatório de <code>python -m ingest status</code>; desatualizado segue a política
+    definida ({{ report.staleness_policy.meaning }}), avaliada sobre {{ report.staleness_policy.judged_on }}.</p>
+  </div>
+  <div class="page-actions">
+    <a class="button" href="{{ base }}/queue"><i class="icon icon-list-check" aria-hidden="true"></i> Abrir fila de revisão</a>
+  </div>
+</header>
 
-<h2>Sources</h2>
+<div class="metrics">
+  <div class="metric">
+    <span class="metric-label">Séries ativas</span>
+    <p class="metric-value" id="t-active_series">{{ t.active_series }}</p>
+    <span class="metric-note">no registo</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">Desatualizadas</span>
+    <p class="metric-value{% if t.stale %} bad{% endif %}" id="t-stale">{{ t.stale }}</p>
+    <span class="metric-note">fora da política</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">Nunca recolhidas</span>
+    <p class="metric-value" id="t-never_fetched">{{ t.never_fetched }}</p>
+    <span class="metric-note">sem tentativa</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">Nunca verificadas</span>
+    <p class="metric-value" id="t-never_verified">{{ t.never_verified }}</p>
+    <span class="metric-note">sem prova independente</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">Pendentes &gt; {{ report.staleness_policy.pending_stale_after_hours }} h</span>
+    <p class="metric-value{% if t.pending_stuck %} bad{% endif %}" id="t-pending_stuck">{{ t.pending_stuck }}</p>
+    <span class="metric-note">verificação parada</span>
+  </div>
+</div>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Camada calculada</h2>
+    <a href="{{ base }}/derived">Ver calculadas</a>
+  </div>
+  <p id="derived-line">
+    {{ dv.active_series }} active derived series, {{ dv.served_values }} served values
+    {% include "_calc_badge.html" %};
+    <span{% if dv.stale %} class="bad"{% endif %}>stale {{ dv.stale }}</span>,
+    never computed {{ dv.never_computed }};
+    last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }}
+    (<span{% if dv.last_run_state == "failed" %} class="bad"{% endif %}>{{ dv.last_run_state }}</span>, {{ dv.last_run_at }}){% else %}none{% endif %};
+    <span{% if dv.failed_runs_7d %} class="bad"{% endif %}>failed runs 7 d {{ dv.failed_runs_7d }}</span>.
+  </p>
+</section>
+
+<div class="section-head">
+  <h2>Fontes</h2>
+  <p class="section-note">Cada linha liga à lista de séries dessa fonte. Bloqueios e datas são os do relatório acima.</p>
+</div>
 <div class="scroll"><table>
-<tr><th>Source</th><th class="num">Active</th><th class="num">Inactive</th><th>Blocked</th>
-<th class="num">Stale</th><th class="num">Never fetched</th><th class="num">Never verified</th>
-<th>Latest attempt</th><th>Last verified</th><th>Last confirmed current</th>
-<th>Data fetched</th><th>Scheduler</th><th>Events 24 h</th><th>Events 7 d</th></tr>
+<thead><tr><th>Fonte</th><th class="num">Ativas</th><th class="num">Inativas</th><th>Bloqueada</th>
+<th class="num">Desatualizadas</th><th class="num">Nunca recolhidas</th><th class="num">Nunca verificadas</th>
+<th>Última tentativa</th><th>Última verificação</th><th>Última confirmação atual</th>
+<th>Dados recolhidos</th><th>Agendador</th><th>Eventos 24 h</th><th>Eventos 7 d</th></tr></thead>
+<tbody>
 {% for s in report.sources %}
 <tr id="src-{{ s.name }}">
 <td><a href="{{ base }}/series?source={{ s.name | urlencode }}">{{ s.name }}</a></td>
@@ -41,49 +83,54 @@ last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }} (<span{% if dv.
 <td class="num">{{ s.never_fetched }}</td>
 <td class="num">{{ s.never_verified }}</td>
 <td>{{ s.latest_attempt or "-" }} ({{ s.latest_attempt_state or "-" }})</td>
-<td>{{ s.last_verified or "never" }}</td>
-<td>{{ s.last_confirmed_current or "never" }}</td>
-<td>{{ s.real_data_fetched_at or "none" }}</td>
-<td>{% if s.datasets %}{{ s.scheduler_retrying }} retrying (max streak {{ s.scheduler_max_streak }}),
-{{ s.scheduler_running }} running/interrupted{% else %}-{% endif %}</td>
+<td>{{ s.last_verified or "nunca" }}</td>
+<td>{{ s.last_confirmed_current or "nunca" }}</td>
+<td>{{ s.real_data_fetched_at or "nenhum" }}</td>
+<td>{% if s.datasets %}{{ s.scheduler_retrying }} em repetição (máx. {{ s.scheduler_max_streak }}),
+{{ s.scheduler_running }} em curso/interrompidas{% else %}-{% endif %}</td>
 <td class="mono">{{ s.events_24h | as_json if s.events_24h else "-" }}</td>
 <td class="mono">{{ s.events_7d | as_json if s.events_7d else "-" }}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 
 {% for s in report.sources if s.datasets or s.pending_runs or s.stale_series %}
-<details>
+<details class="disclosure">
 <summary><strong>{{ s.name }}</strong>: {{ s.datasets | length }} datasets,
-{{ s.pending_runs | length }} pending runs, {{ s.stale_series | length }} stale series</summary>
+{{ s.pending_runs | length }} execuções pendentes, {{ s.stale_series | length }} séries desatualizadas</summary>
 {% if s.pending_runs %}
 <div class="scroll"><table>
-<tr><th>Pending run</th><th>Dataset</th><th>Input</th><th>Since</th><th>Note</th></tr>
+<thead><tr><th>Execução pendente</th><th>Dataset</th><th>Entrada</th><th>Desde</th><th>Nota</th></tr></thead>
+<tbody>
 {% for p in s.pending_runs %}
 <tr><td class="num">{{ p.run_id }}</td><td>{{ p.dataset }}</td><td>{{ p.input_origin }}</td>
 <td>{{ p.started_at }}</td>
-<td>{% if p.stale %}<span class="bad">STALE</span>: resolve with
+<td>{% if p.stale %}<span class="bad">PARADA</span>: resolver com
 <code>python -m ingest verify {{ p.run_id }}</code>{% endif %}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% endif %}
 {% if s.datasets %}
 <div class="scroll"><table>
-<tr><th>Dataset</th><th>Latest state</th><th>Latest attempt</th><th>Input</th>
-<th>Verified via</th><th>Scheduler</th><th class="num">Streak</th><th>Next eligible</th></tr>
+<thead><tr><th>Dataset</th><th>Último estado</th><th>Última tentativa</th><th>Entrada</th>
+<th>Verificação</th><th>Agendador</th><th class="num">Repetições</th><th>Próxima elegível</th></tr></thead>
+<tbody>
 {% for d in s.datasets %}
 <tr><td>{{ d.label }}</td>
-<td{% if d.latest_state and d.latest_state != "verified" %} class="bad"{% endif %}>{{ d.latest_state or "no attempt" }}</td>
+<td{% if d.latest_state and d.latest_state != "verified" %} class="bad"{% endif %}>{{ d.latest_state or "sem tentativa" }}</td>
 <td>{{ d.latest_attempt or "-" }}</td><td>{{ d.input_origin or "-" }}</td>
 <td>{{ d.verifier_channel or "-" }}</td>
 <td>{{ d.scheduler.last_attempt_state if d.scheduler else "-" }}</td>
 <td class="num">{{ d.scheduler.failure_streak if d.scheduler else "-" }}</td>
-<td>{{ (d.scheduler.next_eligible_at or "now") if d.scheduler else "-" }}</td></tr>
+<td>{{ (d.scheduler.next_eligible_at or "agora") if d.scheduler else "-" }}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% endif %}
 {% if s.stale_series %}
-<p>Stale:
+<p>Desatualizadas:
 {% for sid in s.stale_series %}<a href="{{ base }}/series/{{ sid | urlencode }}">{{ sid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
 {% endif %}
 </details>

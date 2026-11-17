@@ -4,12 +4,31 @@
 {% for i in inputs %}{% if i.series_id is not none %}<a href="{{ base }}/series/{{ i.series_id | urlencode }}?period={{ i.period | urlencode }}">{{ i.series_id }} {{ i.period }}</a>{% else %}<span class="bad">unknown</span>{% endif %} <span class="muted">obs {{ i.observation_id }}</span>{% if not loop.last %}; {% endif %}{% endfor %}
 {%- endmacro %}
 {% block content %}
-<h1>{{ s.key }} {% include "_calc_badge.html" %}</h1>
-<p>{% if s.title is not none %}{{ s.title }}{% else %}<span class="muted">no title in the catalog</span>{% endif %}{% if not s.active %} <span class="badge muted">inactive</span>{% endif %}
-&middot; {{ d.total }} served values</p>
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <a href="{{ base }}/derived">Calculadas</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <span aria-current="page">{{ s.key }}</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Série calculada</p>
+    <h1>{{ s.key }} {% include "_calc_badge.html" %}</h1>
+    <p class="page-sub">{% if s.title is not none %}{{ s.title }}{% else %}<span class="muted">no title in the catalog</span>{% endif %}
+    {% if not s.active %}<span class="badge muted">inactive</span>{% endif %}
+    &middot; {{ d.total }} served values</p>
+  </div>
+</header>
+
+<nav class="section-nav" aria-label="Nesta página">
+  <a href="#definicao">Definição</a>
+  <a href="#valores">Valores servidos</a>
+  <a href="#versoes">Versões guardadas</a>
+  <a href="#execucoes">Execuções</a>
+</nav>
+
 {% for text in s.caveat_texts %}<p class="caveat note">{{ text }}</p>
 {% endfor %}
-<h2>Definition</h2>
+<h2 id="definicao">Definition</h2>
 <dl class="spec">
 <dt>formula</dt><dd>{{ s.formula_text }} (<code>{{ s.formula }}</code>)</dd>
 <dt>params</dt><dd>{% if s.params %}{% for k, v in s.params | dictsort %}<code>{{ k }} = {{ v }}</code>{% if not loop.last %}, {% endif %}{% endfor %}{% else %}none{% endif %}</dd>
@@ -19,14 +38,15 @@
 {% if d.served %}<dt>licence</dt><dd>{{ d.served[0].licence }} &middot; {{ d.served[0].licence_url | link }}</dd>{% endif %}
 </dl>
 
-<h2>Served values</h2>
+<h2 id="valores">Served values</h2>
 <p class="note">{% if d.total > d.served | length %}newest {{ d.served | length }} of {{ d.total }}{% else %}{{ d.total }}{% endif %}
 rows of <code>served_derived</code>: recomputed independently (match), from a verified derived
 run, every input currently served. Values are the stored text. Inputs link to the base
 series' vintages of that period (current input first).</p>
 {% if d.served %}
 <div class="scroll"><table>
-<tr><th>Period</th><th>Value</th><th>Inputs</th><th>Run</th><th>Computed</th><th class="num">Row</th></tr>
+<thead><tr><th>Period</th><th>Value</th><th>Inputs</th><th>Run</th><th>Computed</th><th class="num">Row</th></tr></thead>
+<tbody>
 {% for o in d.served %}
 <tr class="served-row">
 <td>{{ o.period }}</td>
@@ -36,17 +56,19 @@ series' vintages of that period (current input first).</p>
 <td class="num">{{ o.derived_observation_id }}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}<p class="muted">No served values.</p>{% endif %}
 
-<h2>Stored versions ({{ d.versions | length }}{% if d.versions | length >= list_cap %}, newest {{ list_cap }}{% endif %})</h2>
+<h2 id="versoes">Stored versions ({{ d.versions | length }}{% if d.versions | length >= list_cap %}, newest {{ list_cap }}{% endif %})</h2>
 <p class="note">Every stored derived row, any state: row state is the independent
 recomputation's verdict (<code>match</code> / <code>mismatch</code> / <code>pending</code>);
 only the version the served view returns is served.</p>
 {% if d.versions %}
 <div class="scroll"><table>
-<tr><th class="num">Row</th><th>Period</th><th>Value</th><th>Row state</th><th>Run</th>
-<th>Run state</th><th>Served</th><th>Inputs</th><th>Computed</th></tr>
+<thead><tr><th class="num">Row</th><th>Period</th><th>Value</th><th>Row state</th><th>Run</th>
+<th>Run state</th><th>Served</th><th>Inputs</th><th>Computed</th></tr></thead>
+<tbody>
 {% for v in d.versions %}
 <tr class="version-row" id="v-{{ v.id }}">
 <td class="num">{{ v.id }}</td><td>{{ v.period }}</td>
@@ -59,14 +81,16 @@ only the version the served view returns is served.</p>
 <td>{{ v.computed_at }}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}<p class="muted">No stored versions.</p>{% endif %}
 
-<h2>Derived runs (newest {{ d.runs | length }}, all series)</h2>
+<h2 id="execucoes">Derived runs (newest {{ d.runs | length }}, all series)</h2>
 {% if d.runs %}
 <div class="scroll"><table>
-<tr><th class="num">Run</th><th>State</th><th>Trigger</th><th>Started</th><th>Finished</th>
-<th>Covers this series</th><th class="num">Written</th><th class="num">Checked</th><th class="num">Mismatch</th></tr>
+<thead><tr><th class="num">Run</th><th>State</th><th>Trigger</th><th>Started</th><th>Finished</th>
+<th>Covers this series</th><th class="num">Written</th><th class="num">Checked</th><th class="num">Mismatch</th></tr></thead>
+<tbody>
 {% for r in d.runs %}
 <tr class="run-row" id="run-{{ r.id }}">
 <td class="num">{{ r.id }}</td>
@@ -78,6 +102,7 @@ only the version the served view returns is served.</p>
 <td class="num{% if r.n_mismatch %} bad{% endif %}">{{ r.n_mismatch if r.n_mismatch is not none else "-" }}</td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}<p class="muted">No derived runs.</p>{% endif %}
 {% endblock %}

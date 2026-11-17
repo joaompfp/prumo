@@ -2,212 +2,351 @@
 {% from "cms_macros.html" import series_options, derived_options, chart_options %}
 {% block title %}CMS: {{ doc.title or slug }} - Prumo backoffice{% endblock %}
 {% block content %}
-<h1>{{ doc.title or "(sem título)" }} <span class="muted mono">{{ kind }}/{{ slug }}</span></h1>
-<p class="note">Versão {{ meta.version }}.
-{% if meta.published_revision_id %}Em direto: revisão {{ meta.published_revision_id }}{% if published_at %} desde {{ published_at }}{% endif %}.{% else %}Ainda não publicado.{% endif %}
-O editor altera apenas o rascunho; publicar substitui a versão em direto e fica na auditoria.</p>
-<p><a href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview">Pré-visualizar este rascunho</a>
-(pré-visualização estática com os dados e a composição da página pública, sem scripts) · <a href="{{ base }}/cms">Páginas e gráficos</a></p>
-{% if error %}<p class="bad" role="alert">{{ error }}</p>{% endif %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <a href="{{ base }}/cms">Páginas e gráficos</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <span aria-current="page">{% if is_home is defined and is_home %}Página inicial{% else %}{{ doc.title or slug }}{% endif %}</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">{% if is_home is defined and is_home %}Página inicial{% elif kind == "page" %}Página CMS{% else %}Gráfico CMS{% endif %}</p>
+    <h1>{{ doc.title or "(sem título)" }} <span class="muted mono">{{ kind }}/{{ slug }}</span></h1>
+    <p class="page-sub">Versão {{ meta.version }}.
+    {% if meta.published_revision_id %}Em direto: revisão {{ meta.published_revision_id }}{% if published_at %} desde {{ published_at }}{% endif %}.{% else %}Ainda não publicado.{% endif %}
+    O editor altera apenas o rascunho; publicar substitui a versão em direto e fica na auditoria.</p>
+    <p class="head-badges">
+      <span class="badge">{{ "Página" if kind == "page" else "Gráfico" }}</span>
+      <span class="badge">versão {{ meta.version }}</span>
+      {% if meta.published_revision_id %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Em direto</span>{% else %}<span class="badge muted">Só rascunho</span>{% endif %}
+      {% if is_home is defined and is_home %}<span class="badge good"><i class="icon icon-home" aria-hidden="true"></i> Página inicial</span>{% endif %}
+    </p>
+  </div>
+  <div class="page-actions">
+    <a class="button" href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar rascunho</a>
+    <a class="button button-quiet" href="{{ base }}/cms"><i class="icon icon-arrow-left" aria-hidden="true"></i> Páginas e gráficos</a>
+  </div>
+</header>
+<p class="note">A pré-visualização estática com os dados e a composição da página pública, sem scripts.
+O rascunho não está em direto; guardar não publica.</p>
+{% if error %}<div class="notice notice-warn"><p class="bad" role="alert">{{ error }}</p></div>{% endif %}
 
 {% if usages %}
-<h2>Páginas que usam este gráfico</h2>
-<p class="note">Publicar este gráfico pode alterar o que estas páginas mostram. As páginas
-só são atualizadas quando o gráfico publicado muda.</p>
-<div class="scroll"><table>
-<tr><th>Página</th><th>Slug</th><th>Estado</th></tr>
-{% for u in usages %}
-<tr><td class="wrap">{{ u.title }}</td><td class="mono">{{ u.slug }}</td>
-<td>{% if u.published %}<span class="good">publicada</span>{% else %}<span class="muted">só rascunho</span>{% endif %}
-<a href="{{ base }}/cms/{{ u.kind }}/{{ u.slug }}">editar</a></td></tr>
-{% endfor %}
-</table></div>
+<section class="panel" aria-labelledby="usages-title">
+  <div class="panel-head"><h2 id="usages-title">Páginas que usam este gráfico</h2><span class="badge">{{ usages | length }}</span></div>
+  <p class="note">Publicar este gráfico pode alterar o que estas páginas mostram. As páginas
+  só são atualizadas quando o gráfico publicado muda.</p>
+  <div class="scroll"><table>
+  <thead><tr><th>Página</th><th>Slug</th><th>Estado</th></tr></thead>
+  <tbody>
+  {% for u in usages %}
+  <tr><td class="wrap">{{ u.title }}</td><td class="mono">{{ u.slug }}</td>
+  <td>{% if u.published %}<span class="badge good">publicada</span>{% else %}<span class="badge muted">só rascunho</span>{% endif %}
+  <a href="{{ base }}/cms/{{ u.kind }}/{{ u.slug }}">editar</a></td></tr>
+  {% endfor %}
+  </tbody>
+  </table></div>
+</section>
 {% endif %}
 
-<h2>Rascunho</h2>
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/save">
+<nav class="section-nav" aria-label="Nesta página">
+  <a href="#rascunho">Rascunho</a>
+  <a href="#publicacao">Publicação</a>
+  <a href="#historico">Histórico</a>
+  <a href="#auditoria">Auditoria</a>
+</nav>
+
+<div class="section-head">
+  <h2 id="rascunho">Rascunho</h2>
+  <p class="section-note">{% if is_home is defined and is_home %}<a href="{{ base }}/cms/home">Gerir entrada da página inicial</a>{% endif %}</p>
+</div>
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/save" data-dirty-watch>
 <input type="hidden" name="version" value="{{ meta.version }}">
 
 {% if kind == 'page' %}
 {% set blocks = doc.blocks if doc.blocks is defined else [] %}
 <input type="hidden" name="block_count" value="{{ blocks | length }}">
-<p><label>Título
-<input type="text" name="title" required maxlength="{{ max_title }}" size="60"
- value="{{ doc.title or '' }}"></label></p>
-<p><label>Introdução (opcional)<br>
-<textarea name="introduction" maxlength="{{ max_text }}" rows="4" cols="70">{{ doc.introduction or '' }}</textarea></label></p>
-<p><label>Secção
-<select name="section">
-{% for s in sections %}<option value="{{ s }}"{% if doc.section == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
-</select></label></p>
 
+<fieldset>
+<legend>Identidade da página</legend>
+<div class="form-grid">
+  <div class="field span-2">
+    <label for="doc-title">Título</label>
+    <input id="doc-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
+     value="{{ doc.title or '' }}">
+  </div>
+  <div class="field span-2">
+    <label for="doc-introduction">Introdução (opcional)</label>
+    <textarea id="doc-introduction" name="introduction" maxlength="{{ max_text }}" rows="4" cols="70">{{ doc.introduction or '' }}</textarea>
+  </div>
+  <div class="field">
+    <label for="doc-section">Secção</label>
+    <select id="doc-section" name="section">
+    {% for s in sections %}<option value="{{ s }}"{% if doc.section == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+</div>
+</fieldset>
+
+<div class="section-head">
+  <h2>Blocos <span class="muted">({{ blocks | length }})</span></h2>
+  <p class="section-note"><a href="#adicionar-bloco"><i class="icon icon-plus" aria-hidden="true"></i> Adicionar bloco</a></p>
+</div>
 {% for b in blocks %}
 {% set i = loop.index0 %}
-<fieldset>
-<legend>Bloco {{ loop.index }}</legend>
-<p><label>Tipo
-<select name="block_type_{{ i }}">
-<option value="text"{% if b.type == 'text' %} selected{% endif %}>texto</option>
-<option value="card"{% if b.type == 'card' %} selected{% endif %}>cartão de série</option>
-<option value="chart"{% if b.type == 'chart' %} selected{% endif %}>gráfico</option>
-</select></label>
-<span class="muted">Só os campos do tipo escolhido contam.</span></p>
-<p><label>Texto<br>
-<textarea name="block_text_{{ i }}" maxlength="{{ max_text }}" rows="4" cols="70">{{ b.text if b.type == 'text' and b.text is defined else '' }}</textarea></label></p>
-<p><label>Série do cartão
-<select name="block_series_{{ i }}">
-{{ series_options(choices, b.series_id if b.type == 'card' and b.series_id is defined else None, "escolher série") }}
-</select></label></p>
-<p><label>Série calculada do cartão
-<select name="block_derived_{{ i }}">
-{{ derived_options(choices, b.derived_key if b.type == 'card' and b.derived_key is defined else None, "sem calculada") }}
-</select></label></p>
-<p><label>Gráfico
-<select name="block_chart_{{ i }}">
-{{ chart_options(charts, b.chart_slug if b.type == 'chart' and b.chart_slug is defined else None, "escolher gráfico publicado") }}
-</select></label></p>
-<p>
-<button type="submit" name="move_up_{{ i }}" value="1"{% if loop.first %} disabled{% endif %}>Subir</button>
-<button type="submit" name="move_down_{{ i }}" value="1"{% if loop.last %} disabled{% endif %}>Descer</button>
-<button type="submit" name="remove_{{ i }}" value="1">Remover</button>
-</p>
+<fieldset class="block-card" data-block data-block-type="{{ b.type }}">
+<legend>Bloco {{ loop.index }} <span class="tag">{{ b.type }}</span></legend>
+<div class="form-grid">
+  <div class="field">
+    <label for="block-type-{{ i }}">Tipo</label>
+    <select id="block-type-{{ i }}" name="block_type_{{ i }}" data-block-type-select>
+    <option value="text"{% if b.type == 'text' %} selected{% endif %}>texto</option>
+    <option value="card"{% if b.type == 'card' %} selected{% endif %}>cartão de série</option>
+    <option value="chart"{% if b.type == 'chart' %} selected{% endif %}>gráfico</option>
+    </select>
+    <span class="hint">Só os campos do tipo escolhido contam.</span>
+  </div>
+</div>
+<div class="form-grid" data-show-for="text">
+  <div class="field span-2">
+    <label for="block-text-{{ i }}">Texto</label>
+    <textarea id="block-text-{{ i }}" name="block_text_{{ i }}" maxlength="{{ max_text }}" rows="4" cols="70">{{ b.text if b.type == 'text' and b.text is defined else '' }}</textarea>
+  </div>
+</div>
+<div class="form-grid" data-show-for="card">
+  <div class="field">
+    <label for="block-series-{{ i }}">Série do cartão</label>
+    <select id="block-series-{{ i }}" name="block_series_{{ i }}" data-filterable data-filter-label="Filtrar séries do cartão">
+    {{ series_options(choices, b.series_id if b.type == 'card' and b.series_id is defined else None, "escolher série") }}
+    </select>
+  </div>
+  <div class="field">
+    <label for="block-derived-{{ i }}">Série calculada do cartão</label>
+    <select id="block-derived-{{ i }}" name="block_derived_{{ i }}" data-filterable data-filter-label="Filtrar séries calculadas do cartão">
+    {{ derived_options(choices, b.derived_key if b.type == 'card' and b.derived_key is defined else None, "sem calculada") }}
+    </select>
+  </div>
+</div>
+<div class="form-grid" data-show-for="chart">
+  <div class="field">
+    <label for="block-chart-{{ i }}">Gráfico</label>
+    <select id="block-chart-{{ i }}" name="block_chart_{{ i }}" data-filterable data-filter-label="Filtrar gráficos publicados">
+    {{ chart_options(charts, b.chart_slug if b.type == 'chart' and b.chart_slug is defined else None, "escolher gráfico publicado") }}
+    </select>
+  </div>
+</div>
+<div class="block-actions">
+<button type="submit" class="button-small" name="move_up_{{ i }}" value="1"{% if loop.first %} disabled{% endif %}><i class="icon icon-arrow-up" aria-hidden="true"></i> Subir</button>
+<button type="submit" class="button-small" name="move_down_{{ i }}" value="1"{% if loop.last %} disabled{% endif %}><i class="icon icon-arrow-down" aria-hidden="true"></i> Descer</button>
+<button type="submit" class="button-small button-danger" name="remove_{{ i }}" value="1"><i class="icon icon-trash" aria-hidden="true"></i> Remover</button>
+</div>
 </fieldset>
 {% endfor %}
 
-<fieldset>
+<fieldset class="block-card" id="adicionar-bloco" data-block data-block-type="text">
 <legend>Adicionar bloco</legend>
-<p><label>Tipo
-<select name="add_type">
-<option value="text">texto</option>
-<option value="card">cartão de série</option>
-<option value="chart">gráfico</option>
-</select></label></p>
-<p><label>Texto do novo bloco<br>
-<textarea name="add_text" maxlength="{{ max_text }}" rows="3" cols="70"></textarea></label></p>
-<p><label>Série do novo cartão
-<select name="add_series">{{ series_options(choices, None, "escolher série") }}</select></label></p>
-<p><label>Série calculada do novo cartão
-<select name="add_derived">{{ derived_options(choices, None, "sem calculada") }}</select></label></p>
-<p><label>Gráfico do novo bloco
-<select name="add_chart">{{ chart_options(charts, None, "escolher gráfico publicado") }}</select></label></p>
-<button type="submit" name="op" value="add">Adicionar ao fim</button>
+<div class="form-grid">
+  <div class="field">
+    <label for="add-type">Tipo</label>
+    <select id="add-type" name="add_type" data-block-type-select>
+    <option value="text">texto</option>
+    <option value="card">cartão de série</option>
+    <option value="chart">gráfico</option>
+    </select>
+  </div>
+</div>
+<div class="form-grid" data-show-for="text">
+  <div class="field span-2">
+    <label for="add-text">Texto do novo bloco</label>
+    <textarea id="add-text" name="add_text" maxlength="{{ max_text }}" rows="3" cols="70"></textarea>
+  </div>
+</div>
+<div class="form-grid" data-show-for="card">
+  <div class="field">
+    <label for="add-series">Série do novo cartão</label>
+    <select id="add-series" name="add_series" data-filterable data-filter-label="Filtrar séries do novo cartão">{{ series_options(choices, None, "escolher série") }}</select>
+  </div>
+  <div class="field">
+    <label for="add-derived">Série calculada do novo cartão</label>
+    <select id="add-derived" name="add_derived" data-filterable data-filter-label="Filtrar séries calculadas do novo cartão">{{ derived_options(choices, None, "sem calculada") }}</select>
+  </div>
+</div>
+<div class="form-grid" data-show-for="chart">
+  <div class="field">
+    <label for="add-chart">Gráfico do novo bloco</label>
+    <select id="add-chart" name="add_chart" data-filterable data-filter-label="Filtrar gráficos do novo bloco">{{ chart_options(charts, None, "escolher gráfico publicado") }}</select>
+  </div>
+</div>
+<div class="button-row"><button type="submit" class="button-small" name="op" value="add"><i class="icon icon-plus" aria-hidden="true"></i> Adicionar ao fim</button></div>
 </fieldset>
 
 {% else %}
-<p><label>Título
-<input type="text" name="title" required maxlength="{{ max_title }}" size="60"
- value="{{ doc.title or '' }}"></label></p>
-<p><label>Nota editorial<br>
-<textarea name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ doc.note or '' }}</textarea></label></p>
-<p><label>Série A
-<select name="series_a" required>
-{{ series_options(choices, doc.series_a, "escolher série") }}
-</select></label></p>
-<p><label>Série B (opcional; tem de ser diferente da série A)
-<select name="series_b">
-{{ series_options(choices, doc.series_b, "sem segunda série") }}
-</select></label></p>
-<p><label>Série calculada (opcional; só em gráfico de série única)
-<select name="derived_key">
-{{ derived_options(choices, doc.derived_key, "sem série calculada") }}
-</select></label></p>
-<p><label>Janela
-<select name="window">
-{% for w in windows %}<option value="{{ w }}"{% if doc.window == w %} selected{% endif %}>{{ w }}</option>{% endfor %}
-</select></label>
-<label>Escala
-<select name="scale">
-{% for s in scales %}<option value="{{ s }}"{% if doc.scale == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
-</select></label>
-<label>Dia UTC (opcional, AAAA-MM-DD; só para séries de 15 minutos) <input type="date" name="day" value="{{ doc.day or '' }}"></label></p>
+<fieldset>
+<legend>Série e janela</legend>
+<div class="form-grid">
+  <div class="field span-2">
+    <label for="chart-title">Título</label>
+    <input id="chart-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
+     value="{{ doc.title or '' }}">
+  </div>
+  <div class="field span-2">
+    <label for="chart-note">Nota editorial</label>
+    <textarea id="chart-note" name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ doc.note or '' }}</textarea>
+  </div>
+  <div class="field">
+    <label for="chart-series-a">Série A</label>
+    <select id="chart-series-a" name="series_a" required data-filterable data-filter-label="Filtrar séries da série A">
+    {{ series_options(choices, doc.series_a, "escolher série") }}
+    </select>
+  </div>
+  <div class="field">
+    <label for="chart-series-b">Série B (opcional)</label>
+    <select id="chart-series-b" name="series_b" data-filterable data-filter-label="Filtrar séries da série B">
+    {{ series_options(choices, doc.series_b, "sem segunda série") }}
+    </select>
+    <span class="hint">Tem de ser diferente da série A.</span>
+  </div>
+  <div class="field">
+    <label for="chart-derived">Série calculada (opcional)</label>
+    <select id="chart-derived" name="derived_key" data-filterable data-filter-label="Filtrar séries calculadas">
+    {{ derived_options(choices, doc.derived_key, "sem série calculada") }}
+    </select>
+    <span class="hint">Só em gráfico de série única.</span>
+  </div>
+  <div class="field">
+    <label for="chart-window">Janela</label>
+    <select id="chart-window" name="window">
+    {% for w in windows %}<option value="{{ w }}"{% if doc.window == w %} selected{% endif %}>{{ w }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="chart-scale">Escala</label>
+    <select id="chart-scale" name="scale">
+    {% for s in scales %}<option value="{{ s }}"{% if doc.scale == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="chart-day">Dia UTC (opcional)</label>
+    <input id="chart-day" type="date" name="day" value="{{ doc.day or '' }}">
+    <span class="hint">AAAA-MM-DD; só para séries de 15 minutos.</span>
+  </div>
+</div>
 <p class="note">Dois eixos são uma escolha explícita e independente; a comparação não
 estabelece causalidade. O dia UTC só é válido para séries de 15 minutos, como a E-REDES. Nas restantes frequências
 deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
+</fieldset>
 {% endif %}
 
-<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
-<button type="submit" name="op" value="save">Guardar rascunho</button>
+<div class="panel">
+  <div class="field">
+    <label for="draft-note">Motivo (obrigatório)</label>
+    <input id="draft-note" type="text" name="note" required maxlength="{{ max_text }}" size="50">
+    <span class="hint">Fica na auditoria com a versão que está a ser guardada.</span>
+  </div>
+  <div class="button-row">
+    <button type="submit" class="button-primary" name="op" value="save"><i class="icon icon-edit" aria-hidden="true"></i> Guardar rascunho</button>
+    <a class="button button-quiet" href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
+  </div>
+</div>
 </form>
 
-<h2>Publicação</h2>
-<p class="note">Esta é uma pré-visualização estática com os dados e a composição da página pública; publicar
-substitui a versão em direto por este rascunho; o motivo fica na auditoria.</p>
-{% if published %}
-<p>Alterações face à versão em direto:</p>
-{% if diff %}
-<div class="scroll"><table>
-<tr><th>Campo</th><th>Em direto</th><th>Rascunho</th></tr>
-{% for d in diff %}<tr><td>{{ d.field }}</td><td class="wrap">{{ d.live }}</td><td class="wrap">{{ d.draft }}</td></tr>{% endfor %}
-</table></div>
-{% else %}
-<p class="muted">Sem alterações de conteúdo face à versão em direto.</p>
-{% endif %}
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish">
-<input type="hidden" name="version" value="{{ meta.version }}">
-<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
-<button type="submit">Publicar este rascunho</button>
-</form>
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/unpublish">
-<input type="hidden" name="version" value="{{ meta.version }}">
-<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
-<button type="submit">Despublicar (mantém o histórico)</button>
-</form>
-{% else %}
-<p class="muted">Ainda não há versão em direto.</p>
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish">
-<input type="hidden" name="version" value="{{ meta.version }}">
-<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
-<button type="submit">Publicar este rascunho</button>
-</form>
-{% endif %}
+<div class="section-head" id="publicacao"><h2>Publicação</h2></div>
+<div class="panel">
+  <p class="note">Publicar substitui a versão em direto por este rascunho. O motivo fica na auditoria.
+  A pré-visualização é estática e não publica.</p>
+  {% if published %}
+  <h3>Alterações face à versão em direto</h3>
+  {% if diff %}
+  <div class="scroll"><table>
+  <thead><tr><th>Campo</th><th>Em direto</th><th>Rascunho</th></tr></thead>
+  <tbody>
+  {% for d in diff %}<tr><td>{{ d.field }}</td><td class="wrap">{{ d.live }}</td><td class="wrap">{{ d.draft }}</td></tr>{% endfor %}
+  </tbody>
+  </table></div>
+  {% else %}
+  <p class="muted">Sem alterações de conteúdo face à versão em direto.</p>
+  {% endif %}
+  {% else %}
+  <p class="muted">Ainda não há versão em direto.</p>
+  {% endif %}
 
-<h2>Histórico</h2>
+  <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish" data-confirm="Publicar este rascunho e substituir a versão em direto?">
+  <input type="hidden" name="version" value="{{ meta.version }}">
+  <div class="field"><label for="publish-note">Motivo (obrigatório)</label>
+  <input id="publish-note" type="text" name="note" required maxlength="{{ max_text }}" size="50"></div>
+  <div class="button-row"><button type="submit" class="button-primary"><i class="icon icon-publish" aria-hidden="true"></i> Publicar este rascunho</button></div>
+  </form>
+
+  {% if published %}
+  <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/unpublish" data-confirm="Despublicar? A versão em direto deixa de ser servida; o histórico mantém-se.">
+  <input type="hidden" name="version" value="{{ meta.version }}">
+  <div class="field"><label for="unpublish-note">Motivo (obrigatório)</label>
+  <input id="unpublish-note" type="text" name="note" required maxlength="{{ max_text }}" size="50"></div>
+  <div class="button-row"><button type="submit" class="button-danger"><i class="icon icon-archive" aria-hidden="true"></i> Despublicar (mantém o histórico)</button></div>
+  </form>
+  {% endif %}
+</div>
+
+<div class="section-head" id="historico"><h2>Histórico</h2></div>
 <p class="note">Restaurar copia uma revisão antiga para um novo rascunho; o histórico e a
 versão em direto não são alterados.</p>
 {% if history %}
 <div class="scroll"><table>
-<tr><th class="num">Revisão</th><th>Quando</th><th>Autor</th><th>Corpo</th><th>Restaurar</th></tr>
+<thead><tr><th class="num">Revisão</th><th>Quando</th><th>Autor</th><th>Corpo</th><th>Restaurar</th></tr></thead>
+<tbody>
 {% for h in history %}
 <tr>
 <td class="num">{{ h.id }}</td>
 <td>{{ h.created_at }}</td>
 <td class="wrap">{{ h.actor }}</td>
-<td class="wrap"><details><summary>ver JSON canónico</summary><code>{{ h.body_json }}</code></details></td>
+<td class="wrap"><details class="bare"><summary>ver JSON canónico</summary><code>{{ h.body_json }}</code></details></td>
 <td>
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/restore">
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/restore" data-confirm="Restaurar a revisão {{ h.id }} como novo rascunho?">
 <input type="hidden" name="version" value="{{ meta.version }}">
 <input type="hidden" name="revision_id" value="{{ h.id }}">
-<label>Motivo <input type="text" name="note" required maxlength="{{ max_text }}" size="24"></label>
-<button type="submit">Restaurar</button>
+<div class="field"><label for="restore-note-{{ h.id }}">Motivo</label>
+<input id="restore-note-{{ h.id }}" type="text" name="note" required maxlength="{{ max_text }}" size="24"></div>
+<button type="submit" class="button-small"><i class="icon icon-history" aria-hidden="true"></i> Restaurar</button>
 </form>
 </td>
 </tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
 <p class="muted">Sem revisões.</p>
 {% endif %}
 
-<h2>Duplicar</h2>
+<div class="section-head" id="duplicar"><h2>Duplicar</h2></div>
+<details class="disclosure">
+<summary><i class="icon icon-copy" aria-hidden="true"></i> Criar documento independente</summary>
 <p class="note">Cria um documento independente a partir do rascunho atual, com um novo slug.
 O original não é alterado.</p>
 <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/duplicate">
 <input type="hidden" name="version" value="{{ meta.version }}">
-<p><label>Novo slug <input type="text" name="new_slug" required maxlength="{{ max_slug }}" size="30"></label></p>
-<p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="{{ max_text }}" size="50"></label></p>
-<button type="submit">Duplicar</button>
+<div class="form-grid">
+  <div class="field"><label for="duplicate-slug">Novo slug</label>
+  <input id="duplicate-slug" type="text" name="new_slug" required maxlength="{{ max_slug }}" size="30">
+  <span class="hint">Minúsculas e hífenes; imutável depois de criado.</span></div>
+  <div class="field"><label for="duplicate-note">Motivo (obrigatório)</label>
+  <input id="duplicate-note" type="text" name="note" required maxlength="{{ max_text }}" size="50"></div>
+</div>
+<div class="button-row"><button type="submit"><i class="icon icon-copy" aria-hidden="true"></i> Duplicar</button></div>
 </form>
+</details>
 
-<h2>Auditoria</h2>
+<div class="section-head" id="auditoria"><h2>Auditoria</h2></div>
 {% if events %}
 <div class="scroll"><table>
-<tr><th>Quando</th><th>Ação</th><th class="num">Versão</th><th>Autor</th><th>Motivo</th></tr>
+<thead><tr><th>Quando</th><th>Ação</th><th class="num">Versão</th><th>Autor</th><th>Motivo</th></tr></thead>
+<tbody>
 {% for e in events %}
 <tr><td>{{ e.ts }}</td><td>{{ e.action }}</td><td class="num">{{ e.version }}</td>
 <td class="wrap">{{ e.actor }}</td><td class="wrap">{{ e.note }}</td></tr>
 {% endfor %}
+</tbody>
 </table></div>
 {% else %}
 <p class="muted">Sem alterações registadas.</p>
 {% endif %}
 {% endblock %}
+{% block scripts %}<script src="{{ base }}/static/js/admin.js" defer></script>{% endblock %}
