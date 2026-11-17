@@ -7,6 +7,7 @@ real INE source names so the eligibility rules are the production ones, not a mo
 
 import json
 import re
+from urllib.parse import urlencode
 
 import pytest
 import yaml
@@ -14,8 +15,9 @@ from fastapi.testclient import TestClient
 
 from backoffice.app import create_app
 from backoffice.cms import Cms, CmsBusy
-from backoffice.cms_routes import MAX_FIELDS
-from ingest.cms import MAX_BLOCKS
+from backoffice.cms_routes import CMS_FORM_MAX_BYTES, MAX_FIELDS
+from ingest import cms as documents
+from ingest.cms import MAX_BLOCKS, MAX_STEPS, MAX_TEXT
 from ingest.db import open_db
 from ingest.models import Observation
 from ingest.registry import load_derived, load_registry, sync_derived, sync_registry
@@ -534,7 +536,7 @@ def test_forms_refuse_cross_origin_duplicate_fields_and_oversized_bodies(env):
     r = c.post("/cms/page/grande/save", data=too_many, headers=ORIGIN)
     assert r.status_code == 422 and str(MAX_BLOCKS) in r.text
 
-    huge = "x" * 140_000
+    huge = "x" * (CMS_FORM_MAX_BYTES + 1)
     r = c.post("/cms/page/grande/save",
                data=page_form(1, blocks=[{"type": "text", "text": huge}]), headers=ORIGIN)
     assert r.status_code == 413
@@ -677,3 +679,84 @@ def test_chart_day_outside_fifteen_minutes_is_refused_and_not_silently_cleared(e
     assert "15 minutos" in response.text
     assert env.meta("chart", "inflacao")["published_revision_id"] is None
     assert "pré-visualização estática com os dados e a composição da página pública" in editor.text
+
+
+def test_second_hero_is_refused_on_save_and_on_publish_without_writes(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    before = env.meta("page", "precos")
+    history = env.revisions("page", "precos")
+    events = env.events("page", "precos")
+
+    # A new authoring write never creates a two-hero draft.
+    two_heroes = page_form(1, blocks=[
+        {"type": "hero", "title": "Primeiro"},
+        {"type": "hero", "title": "Segundo"},
+    ])
+    refused = c.post("/cms/page/precos/save", data=two_heroes, headers=ORIGIN)
+    assert refused.status_code == 422
+    assert "cabeçalho de abertura" in refused.text
+    assert env.meta("page", "precos") == before
+    assert env.revisions("page", "precos") == history
+    assert env.events("page", "precos") == events
+
+    # A body stored before the invariant stays readable but can never be published.
+    stored = documents.canonical_body(documents.parse_body("page", {
+        "title": "Preços no consumidor",
+        "introduction": "",
+        "section": "economy",
+        "blocks": [{"type": "hero", "title": "Primeiro"},
+                   {"type": "hero", "title": "Segundo"}],
+    }))
+    db = env.db()
+    try:
+        db.cms_save("page", "precos", 1, stored, actor="owner", note="corpo antigo")
+    finally:
+        db.close()
+    draft = env.meta("page", "precos")
+    assert draft["version"] == 2 and draft["published_revision_id"] is None
+    history = env.revisions("page", "precos")
+    events = env.events("page", "precos")
+
+    refused = c.post("/cms/page/precos/publish",
+                     data={"version": "2", "note": "publicar"}, headers=ORIGIN)
+    assert refused.status_code == 422
+    assert "cabeçalho de abertura" in refused.text
+    assert env.meta("page", "precos") == draft
+    assert env.revisions("page", "precos") == history
+    assert env.events("page", "precos") == events
+
+
+def test_large_schema_valid_verification_block_survives_form_transport(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    long_text = "\U0001D11E" * MAX_TEXT
+    data = page_form(1, blocks=[{"type": "verification", "title": "Cadeia longa"}])
+    for position in range(MAX_STEPS):
+        data[f"block_step_label_0_{position}"] = f"Passo {position + 1}"
+        data[f"block_step_text_0_{position}"] = long_text
+    # This valid body is over the old 128 KiB cap only because of UTF-8 percent-encoding.
+    assert len(urlencode(data)) > 131_072
+
+    saved = c.post("/cms/page/precos/save", data=data, headers=ORIGIN)
+    assert saved.status_code == 303
+    body = json.loads(env.revisions("page", "precos")[0]["body_json"])
+    steps = body["blocks"][0]["steps"]
+    assert len(steps) == MAX_STEPS
+    assert all(len(step["text"]) == MAX_TEXT for step in steps)
+
+
+def test_form_over_the_transport_cap_is_413_and_writes_nothing(env):
+    c = env.client()
+    assert page_create(c).status_code == 303
+    before = env.meta("page", "precos")
+    history = env.revisions("page", "precos")
+    events = env.events("page", "precos")
+
+    body = b"version=1&note=motivo&title=" + b"a" * (CMS_FORM_MAX_BYTES + 1)
+    refused = c.post("/cms/page/precos/save", content=body, headers={
+        **ORIGIN, "Content-Type": "application/x-www-form-urlencoded"})
+    assert refused.status_code == 413
+    assert env.meta("page", "precos") == before
+    assert env.revisions("page", "precos") == history
+    assert env.events("page", "precos") == events

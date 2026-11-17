@@ -6,10 +6,13 @@ form field name and value the save route already expects.
 """
 import re
 from collections import Counter
+from pathlib import Path
 
 import pytest
 
 from tests.backoffice.test_cms_routes import ORIGIN, Env, page_create, page_form
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 @pytest.fixture
@@ -169,3 +172,36 @@ def test_save_form_contract_is_preserved_without_duplicate_field_names(client):
     saved = client.get("/cms/page/precos").text
     assert "Estatísticas oficiais" in saved
     assert 'name="block_count" value="1"' in saved
+
+
+def test_saved_state_actions_carry_the_dirty_watch_contract(client):
+    assert page_create(client).status_code == 303
+    assert client.post("/cms/page/precos/save",
+                       data=page_form(1, blocks=[{"type": "text", "text": "Original."}]),
+                       headers=ORIGIN).status_code == 303
+    assert client.post("/cms/page/precos/publish",
+                       data={"version": "2", "note": "publicar"},
+                       headers=ORIGIN).status_code == 303
+    assert client.post("/cms/page/precos/save",
+                       data=page_form(3, blocks=[{"type": "text", "text": "Novo."}]),
+                       headers=ORIGIN).status_code == 303
+    html = client.get("/cms/page/precos").text
+
+    for action in ("publish", "unpublish", "restore", "duplicate"):
+        forms = re.findall(
+            rf'<form method="post" action="[^"]*/{action}"[^>]*>', html)
+        assert forms, action
+        assert all("data-requires-clean" in form for form in forms), action
+
+    assert 'data-confirm="Publicar o rascunho guardado e substituir a versão em direto?"' in html
+    assert "ainda não guardadas não são incluídas" in html
+    assert "<noscript>" in html
+    assert "publica apenas o rascunho guardado" in html
+    assert "pré-visualize o rascunho guardado" in html
+
+    js = (ROOT / "static/js/admin.js").read_text(encoding="utf-8")
+    assert 'contains("select-filter")' in js              # the option filter is not a draft edit
+    assert 'form[data-requires-clean]' in js
+    assert "stopImmediatePropagation" in js                # no confirm before the dirty guard
+    assert ".draft-save" in js and "save.focus()" in js
+    assert "guarde o rascunho antes de publicar" in js

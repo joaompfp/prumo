@@ -348,6 +348,14 @@ def test_only_a_published_eligible_chart_payload_enables_scripts_on_the_home(cms
 
 # --- the complete authored homepage ----------------------------------------------------------
 
+def test_published_home_with_one_hero_renders_exactly_one_h1(cms, site_path):
+    _publish_page(cms, [{"type": "hero", "title": "Abertura da página inicial"}])
+    html = _home(site_path).text
+    headings = re.findall(r"<h1\b[^>]*>(.*?)</h1>", html, re.S)
+    assert len(headings) == 1
+    assert "Abertura da página inicial" in headings[0]
+
+
 def test_prepared_and_published_home_renders_every_current_section(cms, site_path):
     _publish_prepared(cms)
     response = _home(site_path)

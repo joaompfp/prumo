@@ -55,9 +55,14 @@ PREVIEW_CSP = ("default-src 'none'; style-src 'self' 'unsafe-inline'; "
                "img-src 'self' data:; form-action 'self'; base-uri 'none'; "
                "frame-ancestors 'none'")
 # The editor form is bigger than the editorial one: 20 blocks with every field group visible
-# so a no-JavaScript switch still carries the values, plus the add-block form. The rendered
-# max-block form carries ~890 names today; 1000 keeps a deliberate bound with headroom.
-CMS_FORM_MAX_BYTES = 131_072
+# so a no-JavaScript switch still carries the values, plus the add-block form. The largest
+# schema-valid body is 20 verification blocks with 6 steps of MAX_TEXT: 506,811 characters,
+# which urllib.parse.urlencode expands to about 5.9 MB because a 4-byte character becomes 12
+# percent-encoded bytes. Keeping every field group at its rendered maximum (values retained
+# while switching a block type) reaches about 8.4 MB. 12 MiB covers both with headroom and is
+# still a finite authenticated request bound; the numeric length guard below is unchanged.
+# The rendered max-block form carries ~890 names today; 1000 keeps a deliberate bound.
+CMS_FORM_MAX_BYTES = 12_582_912
 MAX_FIELDS = 1000
 
 _SCALARS = frozenset({

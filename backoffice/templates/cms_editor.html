@@ -429,8 +429,11 @@ deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
 
 <div class="section-head" id="publicacao"><h2>Publicação</h2></div>
 <div class="panel">
-  <p class="note">Publicar substitui a versão em direto por este rascunho. O motivo fica na auditoria.
-  A pré-visualização é estática e não publica.</p>
+  <p class="note">Publicar substitui a versão em direto por este rascunho guardado. Alterações
+  ainda não guardadas não são incluídas; guarde o rascunho primeiro. A pré-visualização estática com os dados e a composição da página pública mostra o rascunho guardado e não publica.</p>
+  <noscript><p class="note">Sem JavaScript não há aviso de alterações por guardar: este botão
+  publica apenas o rascunho guardado. Guarde antes de publicar e
+  <a href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview">pré-visualize o rascunho guardado</a>.</p></noscript>
   {% if published %}
   <h3>Alterações face à versão em direto</h3>
   {% if diff %}
@@ -447,7 +450,7 @@ deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
   <p class="muted">Ainda não há versão em direto.</p>
   {% endif %}
 
-  <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish" data-confirm="Publicar este rascunho e substituir a versão em direto?">
+  <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/publish" data-requires-clean data-confirm="Publicar o rascunho guardado e substituir a versão em direto?">
   <input type="hidden" name="version" value="{{ form_version }}">
   <div class="field"><label for="publish-note">Motivo (obrigatório)</label>
   <input id="publish-note" type="text" name="note" required maxlength="{{ max_text }}" size="50"></div>
@@ -455,7 +458,7 @@ deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
   </form>
 
   {% if published %}
-  <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/unpublish" data-confirm="Despublicar? A versão em direto deixa de ser servida; o histórico mantém-se.">
+  <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/unpublish" data-requires-clean data-confirm="Despublicar? A versão em direto deixa de ser servida; o histórico mantém-se.">
   <input type="hidden" name="version" value="{{ form_version }}">
   <div class="field"><label for="unpublish-note">Motivo (obrigatório)</label>
   <input id="unpublish-note" type="text" name="note" required maxlength="{{ max_text }}" size="50"></div>
@@ -478,7 +481,7 @@ versão em direto não são alterados.</p>
 <td class="wrap">{{ h.actor }}</td>
 <td class="wrap"><details class="bare"><summary>ver JSON canónico</summary><code>{{ h.body_json }}</code></details></td>
 <td>
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/restore" data-confirm="Restaurar a revisão {{ h.id }} como novo rascunho?">
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/restore" data-requires-clean data-confirm="Restaurar a revisão {{ h.id }} como novo rascunho?">
 <input type="hidden" name="version" value="{{ form_version }}">
 <input type="hidden" name="revision_id" value="{{ h.id }}">
 <div class="field"><label for="restore-note-{{ h.id }}">Motivo</label>
@@ -499,7 +502,7 @@ versão em direto não são alterados.</p>
 <summary><i class="icon icon-copy" aria-hidden="true"></i> Criar documento independente</summary>
 <p class="note">Cria um documento independente a partir do rascunho atual, com um novo slug.
 O original não é alterado.</p>
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/duplicate">
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/duplicate" data-requires-clean>
 <input type="hidden" name="version" value="{{ form_version }}">
 <div class="form-grid">
   <div class="field"><label for="duplicate-slug">Novo slug</label>

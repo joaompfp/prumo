@@ -416,6 +416,21 @@ def parse_body(kind: str, body_json: str | bytes | dict) -> Document:
     return ChartDocument.model_validate(data)
 
 
+def shape_problem(document: Document) -> str | None:
+    """Render invariants that are not part of the stored JSON schema.
+
+    A page renders exactly one top-level heading, so at most one HeroBlock may carry it.
+    This is deliberately not a pydantic model validator: bodies stored before the rule
+    existed must stay parseable (canonical, restorable and visible in the editor). The
+    canonical save path and every publication check it explicitly.
+    """
+    if isinstance(document, PageDocument):
+        heroes = sum(isinstance(block, HeroBlock) for block in document.blocks)
+        if heroes > 1:
+            return "a página tem mais de um cabeçalho de abertura; use apenas um"
+    return None
+
+
 def canonical_body(document: Document) -> str:
     """Stable JSON text: sorted keys, compact separators, Unicode kept as authored.
 
@@ -435,8 +450,12 @@ def canonical_body(document: Document) -> str:
 
 
 def canonical_for(kind: str, body_json: str | bytes | dict) -> str:
-    """Validate an untrusted body for `kind` and return its canonical text."""
-    return canonical_body(parse_body(kind, body_json))
+    """Validate an untrusted body for `kind`, enforce authoring shape, return canonical text."""
+    document = parse_body(kind, body_json)
+    problem = shape_problem(document)
+    if problem:
+        raise CmsDocumentError(problem)
+    return canonical_body(document)
 
 
 def require_canonical_body(kind: str, body_json: str) -> str:

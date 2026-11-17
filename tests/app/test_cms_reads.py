@@ -89,6 +89,29 @@ def test_page_renders_escaped_text_cards_and_a_chart(client, cms):
     assert client.head(f"/paginas/{PAGE}").status_code == 200
 
 
+def test_page_with_a_hero_renders_exactly_one_h1_and_keeps_section_metadata(client, cms):
+    publish(cms, "page", "abertura", _page([
+        {"type": "hero", "eyebrow": "Dados", "title": "Título de abertura"},
+        {"type": "text", "text": "Corpo depois do herói."},
+    ], introduction="Introdução da página."))
+    response = client.get("/paginas/abertura")
+    assert response.status_code == 200
+    html = response.text
+    headings = re.findall(r"<h1\b[^>]*>(.*?)</h1>", html, re.S)
+    assert len(headings) == 1
+    assert "Título de abertura" in headings[0]
+    assert 'aria-label="Caminho"' in html       # the breadcrumb stays
+    assert "Economia" in html                   # the section metadata stays
+
+
+def test_page_without_a_hero_keeps_the_page_title_as_its_single_h1(client, cms):
+    publish(cms, "page", "sem-abertura", _page([{"type": "text", "text": "Corpo."}]))
+    html = client.get("/paginas/sem-abertura").text
+    headings = re.findall(r"<h1\b[^>]*>(.*?)</h1>", html, re.S)
+    assert len(headings) == 1
+    assert "Preços e desemprego" in headings[0]
+
+
 def test_drafts_unknown_slugs_and_unpublished_documents_are_404(client, cms):
     cms.create("page", "rascunho", _page([{"type": "text", "text": "Por publicar."}]),
                actor="owner", note="criar")

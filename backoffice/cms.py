@@ -566,6 +566,9 @@ class Cms:
             raise CmsRefused(f"{kind}/{slug}: {problem}; nada foi publicado")
 
     def _page_problem(self, db: Db, doc: documents.PageDocument) -> str | None:
+        problem = documents.shape_problem(doc)
+        if problem:
+            return problem
         pairs = [(block.series_id, block.derived_key) for block in doc.blocks
                  if isinstance(block, documents.CardBlock)]
         facts, _raw = reads.slot_facts(db, pairs, self.lang)

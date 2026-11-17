@@ -76,7 +76,10 @@
     note.textContent = "Alterações por guardar.";
     document.body.appendChild(note);
 
-    function mark() {
+    function mark(event) {
+      // The option filter is a search helper: it changes visibility, never a submitted value.
+      if (event && event.target && event.target.classList &&
+          event.target.classList.contains("select-filter")) return;
       if (dirty) return;
       dirty = true;
       note.classList.add("is-visible");
@@ -91,6 +94,36 @@
       watched[w].addEventListener("change", mark);
       watched[w].addEventListener("submit", clear);
     }
+
+    // Publishing, unpublishing, restoring or duplicating acts on the STORED draft. Block it
+    // while the visible form has unsaved edits, before any confirmation dialog can appear,
+    // and send the operator to the save control instead of discarding the edits silently.
+    function blockStoredAction(event) {
+      if (!dirty) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      note.textContent = "Alterações por guardar: guarde o rascunho antes de publicar, " +
+        "despublicar, restaurar ou duplicar.";
+      note.classList.add("is-visible");
+      var save = document.querySelector(".draft-save");
+      if (save) {
+        if (save.scrollIntoView) save.scrollIntoView({ block: "center" });
+        save.focus();
+      }
+    }
+    var guarded = document.querySelectorAll("form[data-requires-clean]");
+    for (var g = 0; g < guarded.length; g += 1) {
+      // A click is caught first so browser validation of the reason field cannot hide the
+      // dirty warning; Enter still reaches the submit listener below.
+      guarded[g].addEventListener("click", function (event) {
+        var target = event.target;
+        var button = target && target.closest
+          ? target.closest('button[type="submit"]') : null;
+        if (button) blockStoredAction(event);
+      });
+      guarded[g].addEventListener("submit", blockStoredAction);
+    }
+
     window.addEventListener("beforeunload", function (event) {
       if (!dirty || submitting) return;
       event.preventDefault();
