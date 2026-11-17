@@ -184,6 +184,14 @@ def test_proxy_mode_accepts_the_verified_actor(env):
     assert c.get("/_actor", headers=PROXY_HEADERS).json() == {"actor": "joao"}
 
 
+def test_correct_secret_with_a_non_owner_identity_is_refused_before_html(env):
+    c = TestClient(_proxy_app(env), base_url="https://joao.date")
+    r = c.get("/", headers={PROXY_SECRET_HEADER: SECRET, IDENTITY_HEADER: "other"})
+    assert r.status_code == 401
+    assert r.text == "admin access denied"
+    assert "<html" not in r.text.lower()
+
+
 def test_rejected_credentials_are_not_logged(env, caplog):
     c = TestClient(_proxy_app(env), base_url="https://joao.date")
     with caplog.at_level(logging.INFO, logger="backoffice"):
@@ -331,6 +339,9 @@ def test_traefik_template_has_the_exact_boundary_and_middleware_order():
         "prumo-admin-sanitize", "prumo-admin-authelia",
         "prumo-admin-inject-secret", "prumo-admin-strip",
     ]
+    order = router["middlewares"]
+    assert order.index("prumo-admin-authelia") < order.index("prumo-admin-inject-secret")
+    assert order.index("prumo-admin-inject-secret") < order.index("prumo-admin-strip")
     middlewares = doc["http"]["middlewares"]
     assert middlewares["prumo-admin-sanitize"]["headers"]["customRequestHeaders"][
         "X-Prumo-Proxy-Secret"] == ""
@@ -352,16 +363,22 @@ def test_traefik_template_survives_the_allowed_secret_alphabet():
         "customRequestHeaders"]["X-Prumo-Proxy-Secret"] == secret
 
 
-def test_authelia_template_allows_the_owner_then_denies_before_generic_rules():
+def test_authelia_template_challenges_the_exact_scope_without_a_subject():
     doc = yaml.safe_load(
         (ROOT / "deploy/authelia-prumo-admin.yml").read_text(encoding="utf-8"))
     rules = doc["access_control"]["rules"]
-    allow, deny = rules[0], rules[1]
-    assert allow["subject"] == "user:joao"
-    assert allow["policy"] == "two_factor"
-    assert allow["resources"] == ["^/dados/admin(/.*)?$"]
-    assert deny["policy"] == "deny" and "subject" not in deny
-    assert deny["resources"] == allow["resources"]
+    assert len(rules) == 1
+    challenge = rules[0]
+    assert challenge["domain"] == "joao.date"
+    assert challenge["resources"] == ["^/dados/admin(/.*)?$"]
+    assert challenge["policy"] == "two_factor"
+    assert "subject" not in challenge
+    assert "networks" not in challenge
+    pattern = re.compile(challenge["resources"][0])
+    for covered in ("/dados/admin", "/dados/admin/", "/dados/admin/series"):
+        assert pattern.search(covered)
+    for outside in ("/dados", "/dados/administration", "/dados/adminx"):
+        assert not pattern.search(outside)
 
 
 def test_backoffice_compose_defaults_keep_proxy_mode_disabled():
@@ -389,5 +406,10 @@ def test_deployment_runbook_names_the_boundary_secret_and_rollback():
         "single-quoted YAML scalar",
         "only after the backoffice itself is in proxy mode",
         "local mode",
+        "policy: two_factor",
+        "Authelia authenticates; the app authorizes.",
+        "before the external wall, the `group:bots` rules and the generic",
+        "redirected to the Authelia portal",
+        "admin access denied",
     ):
         assert needed in text

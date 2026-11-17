@@ -28,12 +28,29 @@ The two middleware properties that matter:
   `X-Forwarded-Prefix` are removed before Authelia. The shared secret is injected only after
   forwardAuth succeeds. A client cannot mint either header.
 
+## Two layers: challenge at the edge, authorization in the app
+
+`deploy/authelia-prumo-admin.yml` is one rule, not an allow rule followed by a deny. It uses
+the same exact `resources` scope as the Traefik router, `policy: two_factor`, and no
+`subject`. An anonymous visitor is therefore redirected to the Authelia portal to
+authenticate instead of receiving a dead-end 403. The rule must be the first match under
+`access_control.rules`, before the external wall, the `group:bots` rules and the generic
+`two_factor` catch-alls: a later bot or bypass rule must not win.
+
+Authelia authenticates; the app authorizes. After forwardAuth succeeds, Traefik injects the
+shared secret and forwards `Remote-User`. The backoffice requires both and admits only its
+configured identity, `PRUMO_ADMIN_USER` (default `joao`). Any other Authelia user receives
+401 `admin access denied` from the app and no HTML or database content. A missing or wrong
+secret fails closed in exactly the same place. The owner allowlist lives in one verified
+place, the app; adding an unconditional `deny` after the challenge would instead block the
+owner immediately after a successful login.
+
 The versioned files are:
 
 - `deploy/traefik-prumo-admin.yml`: the file-provider router, middlewares and service.
-- `deploy/authelia-prumo-admin.yml`: the owner allow rule followed by an unconditional deny
-  rule, inserted as the first entries under `access_control.rules`, before the external
-  wall, the `group:bots` rules and the generic `two_factor` catch-alls.
+- `deploy/authelia-prumo-admin.yml`: the single exact-scope `two_factor` challenge rule,
+  inserted as the first entry under `access_control.rules`, before the external wall, the
+  `group:bots` rules and the generic `two_factor` catch-alls.
 - `deploy/prumo-backoffice.yml`: the staged environment variables, disabled by default.
 
 ## Secret provisioning (SOPS)
@@ -115,9 +132,10 @@ router exists. A mistake costs a 401 on a private service, not an open Admin pag
 4. **Verify the lock before exposing anything.** `GET /healthz` on the direct port still
    answers 200 with only `{"status":"ok","db":...}`. A page request without the secret
    answers 401; a request with only `Remote-User: joao` also answers 401.
-5. **Install the Authelia rules** in `configuration.yml` as the first access-control rules
-   and restart Authelia. Verify an unauthenticated `/dados/admin/` is challenged or denied,
-   and that the public `/dados` pages are unchanged for ordinary readers.
+5. **Install the Authelia rule** in `configuration.yml` as the first access-control rule
+   and restart Authelia. Verify an unauthenticated `/dados/admin/` is redirected to the
+   Authelia portal, not answered with a bare 403, and that the public `/dados` pages are
+   unchanged for ordinary readers.
 6. **Add the Traefik environment value** and recreate Traefik. It has no Admin router yet, so
    this cannot expose the app.
 7. **Install the dynamic router** by copying `deploy/traefik-prumo-admin.yml` to
@@ -137,8 +155,11 @@ would show it.
 
 ## Verification points
 
-- Unauthenticated `https://joao.date/dados/admin/` does not return the backoffice HTML.
+- Unauthenticated `https://joao.date/dados/admin/` is challenged by Authelia (redirect to the
+  portal), not a dead-end 403, and does not return the backoffice HTML.
 - An authenticated owner sees the overview and prefixed navigation under `/dados/admin/`.
+- An authenticated Authelia identity other than the owner receives 401
+  `admin access denied` from the app, with no HTML or database content.
 - `curl` to `http://100.118.19.6:8089/` answers 401, including with a forged
   `Remote-User: joao` header and without `X-Prumo-Proxy-Secret`.
 - A request with the right secret but `Host: 100.118.19.6:8089` still answers 401: the app
@@ -164,8 +185,8 @@ while reverting the app to local mode.
    returns to local mode and the Tailscale-only service behaves exactly as before.
 3. Remove the Traefik environment value and recreate Traefik, if the template file is also
    removed. Removing the template first makes this step optional.
-4. Remove the two Authelia rules if the path is no longer needed. They are harmless while no
-   router exists, but leaving a deny rule around invites a later false diagnosis.
+4. Remove the Authelia rule if the path is no longer needed. It is harmless while no
+   router exists, but leaving an access-control rule around invites a later false diagnosis.
 5. If the image itself is suspect, redeploy the recorded previous backoffice image id. No
    database migration, data copy or worker restart is involved in this slice.
 
