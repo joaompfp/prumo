@@ -16,6 +16,7 @@ from app.chart_model import (  # noqa: F401 - WIDTH/HEIGHT kept as the module's 
     TOP,
     WIDTH,
     comparison_model,
+    group_model,
     line_model,
 )
 from app.formatting import decimal_or_none
@@ -95,6 +96,19 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
     return comparison_svg(comparison_model(points, frequency=frequency, title=title,
                                            labels=labels, unit_a=unit_a, unit_b=unit_b,
                                            dual=dual, width=width, height=height))
+
+
+def group_chart(points: list[dict], *, frequency: str, title: str,
+                labels: tuple[str, ...], unit: str = "", width: int = WIDTH,
+                height: int = HEIGHT) -> Markup:
+    """Three to six same-unit series on one shared axis, with the same legend and geometry.
+
+    `points` are dicts with `period` and `values`, the exact stored tokens in label order. The
+    first series uses the Carmim style; every other series keeps a distinct colour and dash. A
+    missing or non-finite token drops the whole period, never one country.
+    """
+    return comparison_svg(group_model(points, frequency=frequency, title=title, labels=labels,
+                                      unit=unit, width=width, height=height))
 
 
 def _comparison_plot(model) -> Markup:

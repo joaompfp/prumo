@@ -6,8 +6,8 @@ coordinates, domains, ticks and exact display strings. Nothing here formats a va
 number: values are the stored tokens rendered by `app.formatting.format_value`.
 
 The module is pure: no HTML, no database, no request state. A CMS reader can call
-`line_model`/`comparison_model` and `app.interactive.build_payload` exactly as the built-in
-pages do.
+`line_model`/`comparison_model`/`group_model` and `app.interactive.build_payload` exactly as the
+built-in pages do.
 """
 import re
 from dataclasses import dataclass
@@ -471,17 +471,27 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
     last = prepared[-1]
     lx = round(last.x, 1)
     anchor = "end" if lx > width - right - 40 else "middle"
+
+    def label_y(y: float) -> float:
+        return float(y - 18 if y - 18 >= TOP + 10 else y + 26)
+
+    # Pair marks keep their reviewed selection: A always, B only when the two points are far
+    # enough apart. A group keeps the first label and suppresses any later label whose actual
+    # text box would collide with a kept one, so five close countries never print five labels.
     marks: list[LastMark] = []
+    pair = len(styles) == 2
     for index, style in enumerate(styles):
         candidate = last.values[index]
-        if marks and abs(candidate.y - marks[-1].y) < 30:
+        if pair:
+            too_close = bool(marks) and abs(candidate.y - marks[-1].y) < 30
+        else:
+            text_y = label_y(candidate.y)
+            too_close = any(abs(text_y - mark.label_y) < 22 for mark in marks)
+        if too_close:
             continue
         marks.append(LastMark(y=candidate.y, label=candidate.value_display, suffix=style,
-                              label_y=0.0))
-    prepared_marks = tuple(
-        LastMark(y=m.y, label=m.label, suffix=m.suffix,
-                 label_y=float(m.y - 18 if m.y - 18 >= TOP + 10 else m.y + 26))
-        for m in marks)
+                              label_y=label_y(candidate.y)))
+    prepared_marks = tuple(marks)
     return ComparisonModel(
         kind=kind, title=title, labels=labels, unit_a=unit_a, unit_b=unit_b, dual=dual,
         name=name, frequency=frequency, width=width, height=height, left=left, right=right,
@@ -527,4 +537,58 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
     return _comparison_model(
         rows, kind="comparison", title=title, name=name, labels=labels,
         unit_a=unit_a, unit_b=second_unit, styles=("a", "b"), dual=bool(dual),
+        frequency=frequency, width=width, height=height)
+
+
+GROUP_MIN_SERIES, GROUP_MAX_SERIES = 3, 6
+GROUP_STYLES = ("g0", "g1", "g2", "g3", "g4", "g5")
+
+
+def _label_series(labels: tuple[str, ...]) -> str:
+    if len(labels) == 1:
+        return labels[0]
+    return ", ".join(labels[:-1]) + " e " + labels[-1]
+
+
+def group_model(points: list[dict], *, frequency: str, title: str,
+                labels: tuple[str, ...], unit: str = "", width: int = WIDTH,
+                height: int = HEIGHT) -> ComparisonModel | None:
+    """Prepare three to six same-unit series on one shared axis.
+
+    `points` are ordered oldest first; each dict carries `period` and `values`, a list of exact
+    stored tokens in `labels` order. A row with any missing or non-finite token is dropped whole,
+    exactly like a pair: no country is silently drawn on a partial period. The shared factory
+    reuses the same Decimal domains, ticks, calendar positions and gap helper as the pair model.
+    Counts outside 3 to 6, duplicate labels and malformed row shapes raise `ValueError` because
+    they are authored-definition faults rather than absent data.
+    """
+    labels = tuple(labels)
+    if not GROUP_MIN_SERIES <= len(labels) <= GROUP_MAX_SERIES:
+        raise ValueError(f"group charts need {GROUP_MIN_SERIES} to {GROUP_MAX_SERIES} series")
+    if any(not isinstance(label, str) or not label.strip() for label in labels):
+        raise ValueError("every group series needs a short non-empty label")
+    if len(set(labels)) != len(labels):
+        raise ValueError("group series labels must be unique")
+
+    rows = []
+    for point in points:
+        if not isinstance(point, dict) or not isinstance(point.get("period"), str) \
+                or not point["period"]:
+            raise ValueError("each group point needs a period")
+        values = point.get("values")
+        if not isinstance(values, (list, tuple)) or len(values) != len(labels):
+            raise ValueError("each group point needs one value per label")
+        if any(token is not None and not isinstance(token, str) for token in values):
+            raise ValueError("group values must be stored text tokens")
+        parsed = tuple(decimal_or_none(token) for token in values)
+        if any(number is None for number in parsed):
+            continue
+        rows.append((point["period"], tuple(zip(parsed, values))))
+    if not rows:
+        return None
+
+    name = f"{title}: {_label_series(labels)}" + (f" ({unit})" if unit else "")
+    return _comparison_model(
+        rows, kind="group", title=title, name=name, labels=labels,
+        unit_a=unit, unit_b=unit, styles=GROUP_STYLES[:len(labels)], dual=False,
         frequency=frequency, width=width, height=height)

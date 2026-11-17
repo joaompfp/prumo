@@ -30,14 +30,27 @@ function valid(payload) {
   if (!Array.isArray(payload.y) || !Array.isArray(payload.display)) return false;
   if (!Array.isArray(payload.series) || !Array.isArray(payload.axes)) return false;
   if (!payload.series.length || !payload.axes.length) return false;
+  // A pair may use at most two scales; a country group declares exactly one shared axis.
+  if (payload.axes.length > 2) return false;
+  if (payload.kind === 'group' && payload.axes.length !== 1) return false;
   if (payload.x.length !== payload.periods.length || payload.x.length !== payload.y.length) {
     return false;
   }
   if (!payload.x.length) return false;
+  for (let i = 0; i < payload.series.length; i += 1) {
+    const entry = payload.series[i];
+    if (!entry || typeof entry.title !== 'string' || typeof entry.style !== 'string') return false;
+    if (entry.axis !== undefined
+        && (!Number.isInteger(entry.axis) || entry.axis < 0 || entry.axis >= payload.axes.length)) {
+      return false;
+    }
+  }
   for (let i = 0; i < payload.x.length; i += 1) {
     if (!finite(payload.x[i])) return false;
     if (!Array.isArray(payload.y[i]) || payload.y[i].length !== payload.series.length) return false;
     if (!payload.y[i].every(finite)) return false;
+    if (!Array.isArray(payload.display[i])
+        || payload.display[i].length !== payload.series.length) return false;
   }
   return finite(payload.x_min) && finite(payload.x_max);
 }
@@ -127,6 +140,16 @@ function optionFor(payload, width, activePoint) {
   const muted = css('--muted', '#524d48');
   const rule = css('--rule', '#e2ded9');
   const sans = css('--sans', 'system-ui, sans-serif');
+  const seriesStyles = {
+    ink: { color: ink, type: 'solid' },
+    red: { color: red, type: 'dashed' },
+    g0: { color: css('--accent', '#9b1c2e'), type: 'solid' },
+    g1: { color: css('--chart-series-2', '#2f5d8a'), type: [6, 3] },
+    g2: { color: css('--chart-series-3', '#8a5a00'), type: [2, 3] },
+    g3: { color: css('--chart-series-4', '#2e7d32'), type: [8, 3, 2, 3] },
+    g4: { color: css('--chart-series-5', '#6b3fa0'), type: [12, 4] },
+    g5: { color: css('--chart-series-6', '#0b6b6b'), type: [1, 4] },
+  };
   const scale = width / VIEW_W;
   const right = payload.axes.length > 1 ? 156 : 30;
 
@@ -183,24 +206,30 @@ function optionFor(payload, width, activePoint) {
   };
 
   const many = payload.x.length > 200;
-  const series = payload.series.map((entry, index) => ({
-    type: 'line',
-    name: entry.title,
-    data: dataFor(payload, index),
-    yAxisIndex: index < payload.axes.length ? index : 0,
-    connectNulls: payload.kind === 'line',
-    showSymbol: true,
-    symbol: 'circle',
-    symbolSize: many ? 3 : 6,
-    lineStyle: {
-      color: index === 0 ? ink : red,
-      width: 2.2,
-      type: index === 0 ? 'solid' : 'dashed',
-    },
-    itemStyle: { color: index === 0 ? ink : red },
-    emphasis: { focus: 'none' },
-    animation: false,
-  }));
+  const series = payload.series.map((entry, index) => {
+    const style = seriesStyles[entry.style] || seriesStyles.ink;
+    // A pair infers its axis from the series order; a group declares axis 0 explicitly.
+    const axis = Number.isInteger(entry.axis) ? entry.axis
+      : (index < payload.axes.length ? index : 0);
+    return {
+      type: 'line',
+      name: entry.title,
+      data: dataFor(payload, index),
+      yAxisIndex: axis,
+      connectNulls: payload.kind === 'line',
+      showSymbol: true,
+      symbol: 'circle',
+      symbolSize: many ? 3 : 6,
+      lineStyle: {
+        color: style.color,
+        width: 2.2,
+        type: style.type,
+      },
+      itemStyle: { color: style.color },
+      emphasis: { focus: 'none' },
+      animation: false,
+    };
+  });
 
   const map = indexMap(payload);
   const formatter = (params) => {

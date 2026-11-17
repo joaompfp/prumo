@@ -236,9 +236,11 @@ def test_comparison_colours_match_in_svg_canvas_and_legend():
     assert ".swatch-a { background: var(--ink); }" in css
     assert "repeating-linear-gradient(90deg, var(--red)" in css
     adapter = (ROOT / "tools" / "charts" / "src" / "adapter.js").read_text(encoding="utf-8")
-    assert "color: index === 0 ? ink : red" in adapter
-    assert "type: index === 0 ? 'solid' : 'dashed'" in adapter
-    assert "yAxisIndex: index < payload.axes.length ? index : 0" in adapter
+    assert "ink: { color: ink, type: 'solid' }" in adapter
+    assert "red: { color: red, type: 'dashed' }" in adapter
+    assert "g0: { color: css('--accent', '#9b1c2e'), type: 'solid' }" in adapter
+    assert "yAxisIndex: axis" in adapter
+    assert "const axis = Number.isInteger(entry.axis) ? entry.axis" in adapter
 
 
 def test_bundle_is_the_committed_fingerprinted_asset(client):
