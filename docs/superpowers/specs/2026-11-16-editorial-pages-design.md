@@ -178,7 +178,7 @@ The release has no migration of served data, no new source, no licence change an
 
 Non-goals: creating pages from the UI; any reader-facing text in the database; images, colours or layout per card; scheduling a publish; a second public page; per-slot ordering by drag and drop; multiple users or roles.
 
-Non-goals carried forward explicitly, because they were promised in the backoffice v1 design and are **not** in this project: `withdraw run`, `verify run` and review-queue acknowledgement. They write to served state and to the queue, not to a private composition, and they get their own spec and their own migration (0019+). Splitting them here is deliberate: this project must be deployable without any risk to data being served.
+Non-goals carried forward explicitly, because they were promised in the backoffice v1 design and are **not** in this project: `withdraw run`, `verify run` and review-queue acknowledgement. They write to served state and to the queue, not to a private composition, and they get their own spec and their own migration (0020+; 0019 is now reserved by the statistics CMS). Splitting them here is deliberate: this project must be deployable without any risk to data being served.
 
 Anti-goals, failure even if it works: a public page whose figures cannot be traced to a catalogue entry; a composition that survives a licence revocation; a write path in the backoffice that can touch anything other than the three `editorial_*` tables; reader text entering the data layer through the back door of an editorial form.
 

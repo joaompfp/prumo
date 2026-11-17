@@ -1,0 +1,245 @@
+{
+ "run": {
+  "app": "http://127.0.0.1:8811 (Prumo dev, prefix /dados; isolated production-copy DB acceptance-0019)",
+  "browser": "Playwright Chromium 1248, headless",
+  "viewports": [
+   320,
+   390,
+   768,
+   1440
+  ],
+  "date": "2026-11-16",
+  "scope": "public pages, chart interaction, mobile/touch, fallbacks, accessibility tree, CMS create/preview/publish/restore",
+  "screenreader_gate": "No human screen reader available. Recorded CDP Accessibility.getFullAXTree and Playwright aria_snapshot only."
+ },
+ "passes": {
+  "public_pages_load": {
+   "urls": [
+    "/graficos/juros-credito",
+    "/dados/paginas/juros-e-credito",
+    "/comparar/credito-e-taxa",
+    "/series/eredes.production_total.PT"
+   ],
+   "result": "HTTP 200, one chart container, one named SVG, no console errors, no page errors, no HTTP errors, no external requests on normal loads.",
+   "console_network": "results-public.json console entries all empty; requests only 127.0.0.1:8811."
+  },
+  "chart_1440_768": {
+   "390_issue": "see D2/D3",
+   "768": "pointer at 50% -> index 64 (fevereiro de 2022); expected midpoint index ~63/64; no horizontal document overflow",
+   "1440": "pointer at grid first/interior/last -> indices 0/59/119; readout exactly equals chart JSON periods+display; no overflow",
+   "pointer_first_last_1440": "outubro de 2016: -0,0688 % / 94 907,3 milhões de euros; setembro de 2026: 3,2470 % / 120 179,0 milhões de euros"
+  },
+  "keyboard": {
+   "method": "click visible range then native keys",
+   "result": "Home->0 outubro de 2016, ArrowRight->1 novembro de 2016, End->119 setembro de 2026, ArrowLeft->118 agosto de 2026; focus outline solid; aria-valuetext updated each step. Readout exact JSON both target pages at 390 and 1440."
+  },
+  "print": {
+   "result": "emulated print: 1 visible named SVG, canvas display none, range height 0; screenshots graficos-print.png / dados-pagina-print.png"
+  },
+  "js_off": {
+   "result": "390x844, JavaScript disabled: 1 visible named SVG, 0 canvas, range hidden, no console/network errors; graficos-js-off.png / dados-pagina-js-off.png"
+  },
+  "bundle_blocked": {
+   "result": "390x844, /static/js/prumo-charts.min.js aborted: 1 visible named SVG, 0 canvas, range hidden, fallback readable; only expected net::ERR_FAILED for blocked bundle; no other console errors; graficos-bundle-blocked.png"
+  },
+  "a11y": {
+   "result": "AX tree has exactly one image named with the full chart title, one slider named 'Período no gráfico', valuemin 0 valuemax 119, heading hierarchy present, no duplicate chart image. No human screen reader gate.",
+   "note": "Chrome CDP does not expose aria-valuetext on native ranges; a control page with aria-valuetext='May 2024' also reported value '5', so not counted as an app defect."
+  },
+  "comparison_and_eredes": {
+   "result": "/comparar/credito-e-taxa and /series/eredes.production_total.PT render; readout matches JSON for single-series EREDES format 'period: value'; no console/network errors. Footer overflow at 390 applies."
+  }
+ },
+ "defects": [
+  {
+   "id": "D1",
+   "severity": "high",
+   "title": "Mobile slider pointer/touch mapping is offset at 390px",
+   "urls": [
+    "/graficos/juros-credito",
+    "/dados/paginas/juros-e-credito"
+   ],
+   "repro": "At 390px viewport, move pointer to 50% of .chart-canvas (354px wide): slider and readout say 'abril de 2023' (index 78). Same fraction at 768 and 1440 gives fevereiro de 2022 (64) and janeiro de 2022 (63). Visible x-axis midpoint is about 2021.",
+   "actual": "Pointer selection is about 1.5 years later than the point under the cursor at 390. At 390, 75%-87.5% of canvas all select index 118; index 119 appears only at 88% and beyond. At 1440 first/interior/last are exact 0/59/119.",
+   "evidence": [
+    "graficos-390-hover-mid.png",
+    "graficos-390-pointer-first.png",
+    "results-interactions.json"
+   ],
+   "impact": "Tooltip/readout and slider do not match the hovered position on the primary mobile width."
+  },
+  {
+   "id": "D2",
+   "severity": "high",
+   "title": "Touch tap selection fails near the right side and is off by one at first point",
+   "urls": [
+    "/graficos/juros-credito",
+    "/dados/paginas/juros-e-credito"
+   ],
+   "repro": "390x844, has_touch. CDP Input.dispatchTouchEvent at grid-left+1px, mid 48%, 87.9% (inside the last data point), then 90%. First -> index 1 (novembro de 2016); mid -> index 74 (dezembro de 2022); 87.9% -> remains 74; 90% -> index 119.",
+   "actual": "Tap on the visible first point selects index 1 instead of 0. Tap at 87.9%, inside the last point, is a no-op; the last period 119 is selected only at 90% and beyond, outside the data point. No page scroll occurred (scrollY 0 throughout).",
+   "evidence": [
+    "results-diagnostics.json",
+    "graficos-390.png",
+    "bo-6-public-390.png"
+   ],
+   "impact": "Tap on the first and last visible points is off by one or does nothing; users must tap beyond the final point to reach the last period."
+  },
+  {
+   "id": "D3",
+   "severity": "medium",
+   "title": "Rich-text tooltip is clipped at 390px",
+   "urls": [
+    "/graficos/juros-credito",
+    "/dados/paginas/juros-e-credito"
+   ],
+   "repro": "390px, hover first or midpoint. Tooltip width exceeds 354px canvas; ECharts confine keeps the box inside but the text runs past the right edge.",
+   "actual": "Observed 'Crédito à habitação - Portugal: 94 907,3 milhões de eur' at first point and '98 689,4 milhões de eur' at midpoint; final 'os' missing. Full value remains in the readout below.",
+   "evidence": [
+    "graficos-390-pointer-first.png",
+    "graficos-390-hover-mid.png"
+   ],
+   "impact": "Tooltip cannot be read completely on mobile."
+  },
+  {
+   "id": "D4",
+   "severity": "medium",
+   "title": "CMS preview is not the exact public view: chart JavaScript is absent",
+   "urls": [
+    "/dados/admin/cms/page/juros-e-credito/preview",
+    "/dados/admin/cms/page/<slug>/preview"
+   ],
+   "repro": "Open the existing Juros e crédito preview at 1440. Evaluate DOM: scripts [] (no script tags), .chart-canvas has 0 children, input.chart-range hidden, readout empty. Public page has the bundle, visible range and populated readout.",
+   "actual": "Preview renders only the static SVG; slider, keyboard interaction and ECharts canvas are missing despite admin copy 'abre a vista pública exata deste rascunho'.",
+   "evidence": [
+    "preview-existing.png",
+    "results-bo.json"
+   ],
+   "impact": "Editors cannot verify the interactive chart before publishing."
+  },
+  {
+   "id": "D5",
+   "severity": "medium",
+   "title": "Horizontal document overflow from footer links on mobile",
+   "urls": [
+    "all public pages tested, including /dados/paginas/qa-aceitacao-232537"
+   ],
+   "repro": "390px viewport. document.documentElement.scrollWidth=417 while innerWidth=390. .footer-links bounding width 398.5, right 416.5, white-space nowrap, parent .wrap width 390. At 320, scrollWidth 417.",
+   "actual": "27px horizontal overflow at 390 and 97px at 320, caused by footer link row not wrapping; true at all tested public pages.",
+   "evidence": [
+    "graficos-390-true.png",
+    "graficos-320-true.png",
+    "bo-6-public-390.png"
+   ],
+   "impact": "Mobile page pans horizontally; content width exceeds viewport."
+  },
+  {
+   "id": "D6",
+   "severity": "low",
+   "title": "CMS editor repeats 1309 series options in every card block",
+   "urls": [
+    "/dados/admin/cms/page/juros-e-credito"
+   ],
+   "repro": "Measured served HTML 835,202 bytes, 17 select elements, 5,356 option elements. Each of block_series_0, block_series_1, block_series_2 and add_series contains 1,309 options. CMS index is 407,253 bytes with 2,652 options.",
+   "actual": "Four full copies of the 1309-item series list make the editor DOM heavy and each select long to scan.",
+   "evidence": [
+    "/tmp/editor.html (ephemeral curl copy)",
+    "results-bo.json"
+   ],
+   "impact": "Slow editor load and poor control usability; repeated options also appear in the add-block form."
+  },
+  {
+   "id": "D7",
+   "severity": "low",
+   "title": "Duplicate-slug server error is English in Portuguese admin",
+   "urls": [
+    "/dados/admin/cms/new"
+   ],
+   "repro": "Submit create form with slug juros-e-credito and valid title/note.",
+   "actual": "HTTP 422 page shows 'page/juros-e-credito: already exists; duplicate it for a new slug' in an otherwise Portuguese UI. Native required-field validation also appeared in English under the test browser locale.",
+   "evidence": [
+    "results-bo.json duplicate"
+   ],
+   "impact": "Error UX is inconsistent and not localized."
+  },
+  {
+   "id": "D8",
+   "severity": "low",
+   "title": "Left chart margin selects last data point",
+   "urls": [
+    "/graficos/juros-credito"
+   ],
+   "repro": "1440px, move pointer to 2% of .chart-canvas width (left of ECharts grid, x=0.02).",
+   "actual": "Slider jumps to index 119 / setembro de 2026 instead of first point or no change. 390px shows same behavior at 2%.",
+   "evidence": [
+    "results-interactions.json",
+    "results-public.json interactions"
+   ],
+   "impact": "Pointer in empty left padding shows the last period, contradicting position."
+  }
+ ],
+ "cms_acceptance": {
+  "slug": "qa-aceitacao-232537",
+  "created": "POST /dados/admin/cms/new -> 302/editor; title and intro retained; page version 4 after three block adds.",
+  "blocks": "text, card (bportugal.euribor_12m.EA), chart (juros-credito) added through labelled add form; block_count=3; saved draft version 5.",
+  "preview": "HTTP 200 at /dados/admin/cms/page/qa-aceitacao-232537/preview; title/text/card/SVG present; slider not enhanced (D4).",
+  "publish": "Publish form accepted; admin table shows Publicada; public /dados/paginas/qa-aceitacao-232537 -> HTTP 200 with h1, text block, 1 card (3,2386 %), 1 named chart SVG and visible slider.",
+  "restore": "History forms present; restored revision 6 (creation). Version changed 6 -> 7, block_count 0, preview showed no text/card/chart. Public page still served the previously published version 6 content (200, 1 card, 1 chart).",
+  "validation": "Empty create submit used HTML5 required validation; duplicate slug returned 422 English message (D7)."
+ },
+ "console_network": {
+  "normal_loads": "No console errors/warnings, no page errors, no failed requests, no external hosts.",
+  "favicon": "GET /favicon.ico -> 404 (browser default request); unrelated to page assets. No other 404/500 observed.",
+  "blocked_bundle": "Only expected net::ERR_FAILED for the deliberately aborted prumo-charts.min.js."
+ },
+ "screenshots": [
+  "bo-1-created.png",
+  "bo-2-editor-blocks.png",
+  "bo-3-preview.png",
+  "bo-4-published.png",
+  "bo-5-public-1440.png",
+  "bo-6-public-390.png",
+  "bo-7-restored.png",
+  "comparar-1440.png",
+  "comparar-390.png",
+  "dados-pagina-1440-tooltip-interior.png",
+  "dados-pagina-1440.png",
+  "dados-pagina-320.png",
+  "dados-pagina-390-tooltip-interior.png",
+  "dados-pagina-390.png",
+  "dados-pagina-768.png",
+  "dados-pagina-bundle-blocked.png",
+  "dados-pagina-js-off.png",
+  "dados-pagina-print.png",
+  "debug-hover-shell.png",
+  "debug-hover-viewport.png",
+  "eredes-1440.png",
+  "eredes-390.png",
+  "graficos-1440-chart-final.png",
+  "graficos-1440-pointer-first.png",
+  "graficos-1440-pointer-last.png",
+  "graficos-1440-tooltip-interior.png",
+  "graficos-1440.png",
+  "graficos-320-true.png",
+  "graficos-320.png",
+  "graficos-390-chart-final.png",
+  "graficos-390-hover-mid.png",
+  "graficos-390-pointer-first.png",
+  "graficos-390-pointer-last.png",
+  "graficos-390-tooltip-fixed.png",
+  "graficos-390-tooltip-interior.png",
+  "graficos-390-true.png",
+  "graficos-390.png",
+  "graficos-768.png",
+  "graficos-bundle-blocked.png",
+  "graficos-js-off.png",
+  "graficos-print.png",
+  "preview-existing.png"
+ ],
+ "json_files": [
+  "results-public.json",
+  "results-interactions.json",
+  "results-bo.json",
+  "results-diagnostics.json"
+ ]
+}

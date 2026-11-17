@@ -1,0 +1,77 @@
+{
+  "code": "/home/joao/projects/prumo-pipeline",
+  "db": "/home/joao/.hermes/cache/scratch/prumo-cms-acceptance/acceptance-0019.sqlite3",
+  "top_noninterval_populations": [
+    [
+      "ine.ipc_yoy.Continente",
+      934
+    ],
+    [
+      "ine.ipc_yoy.PT",
+      934
+    ],
+    [
+      "bportugal.credit_consumer.PT",
+      562
+    ]
+  ],
+  "samples": 20,
+  "routes": {
+    "/": {
+      "median_ms": 113.99198952130973,
+      "p95_ms": 161.85570997186005,
+      "html_bytes": 17286
+    },
+    "/comparar/credito-e-taxa": {
+      "median_ms": 90.02969809807837,
+      "p95_ms": 109.62370713241398,
+      "html_bytes": 222408
+    },
+    "/comparar/euribor-e-inflacao": {
+      "median_ms": 68.24948452413082,
+      "p95_ms": 84.92313395254314,
+      "html_bytes": 184912
+    },
+    "/series/eredes.production_total.PT": {
+      "median_ms": 89.46978591848165,
+      "p95_ms": 94.90440390072763,
+      "html_bytes": 53911
+    },
+    "/series/ine.hicp_yoy.PT": {
+      "median_ms": 54.88037038594484,
+      "p95_ms": 72.0698400400579,
+      "html_bytes": 73855
+    },
+    "/series/ine.ipc_yoy.Continente": {
+      "median_ms": 87.75515540037304,
+      "p95_ms": 97.5082169752568,
+      "html_bytes": 170111
+    },
+    "/series/ine.ipc_yoy.PT": {
+      "median_ms": 84.61195707786828,
+      "p95_ms": 105.28245684690773,
+      "html_bytes": 169731
+    },
+    "/series/bportugal.credit_consumer.PT": {
+      "median_ms": 43.02769911009818,
+      "p95_ms": 47.45878395624459,
+      "html_bytes": 136211
+    },
+    "/paginas": {
+      "median_ms": 8.048052550293505,
+      "p95_ms": 9.217787068337202,
+      "html_bytes": 3058
+    },
+    "/paginas/juros-e-credito": {
+      "median_ms": 60.29794050846249,
+      "p95_ms": 69.55682602711022,
+      "html_bytes": 61417
+    },
+    "/graficos/juros-credito": {
+      "median_ms": 59.29970252327621,
+      "p95_ms": 65.34216413274407,
+      "html_bytes": 75465
+    }
+  },
+  "method": "TestClient GET including templates and ASGI; same host/copy; no HTTP compression"
+}

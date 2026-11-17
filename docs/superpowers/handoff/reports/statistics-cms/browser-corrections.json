@@ -1,0 +1,403 @@
+[
+ {
+  "label": "320",
+  "canvas": [
+   284,
+   110
+  ],
+  "ink": [
+   19,
+   229
+  ],
+  "scroll": [
+   320,
+   320
+  ],
+  "rangeW": 280,
+  "controlsW": 284,
+  "checks": {
+   "first": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "mid": {
+    "want": null,
+    "got": 59,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "last": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-left": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-right": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   }
+  },
+  "tooltip": {
+   "present": true,
+   "rows_ok": true,
+   "rows": [
+    "setembro de 2021",
+    "Taxa Euribor a 12 meses - Área do euro: -0,4923 %",
+    "Crédito à habitação - Portugal: 95 821,1 milhões de euros"
+   ],
+   "box": [
+    0,
+    0,
+    268,
+    104
+   ],
+   "canvas": [
+    284,
+    109.7
+   ],
+   "inside": true
+  },
+  "keyboard": {
+   "home": [
+    0,
+    true
+   ],
+   "arrow": [
+    1,
+    true
+   ],
+   "end": [
+    119,
+    true
+   ]
+  },
+  "errors": []
+ },
+ {
+  "label": "390",
+  "canvas": [
+   354,
+   137
+  ],
+  "ink": [
+   24,
+   300
+  ],
+  "scroll": [
+   390,
+   390
+  ],
+  "rangeW": 350,
+  "controlsW": 354,
+  "checks": {
+   "first": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "mid": {
+    "want": null,
+    "got": 59,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "last": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-left": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-right": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   }
+  },
+  "tooltip": {
+   "present": true,
+   "rows_ok": true,
+   "rows": [
+    "setembro de 2021",
+    "Taxa Euribor a 12 meses - Área do euro: -0,4923 %",
+    "Crédito à habitação - Portugal: 95 821,1 milhões de euros"
+   ],
+   "box": [
+    0,
+    0,
+    338,
+    86
+   ],
+   "canvas": [
+    354,
+    136.8
+   ],
+   "inside": true
+  },
+  "keyboard": {
+   "home": [
+    0,
+    true
+   ],
+   "arrow": [
+    1,
+    true
+   ],
+   "end": [
+    119,
+    true
+   ]
+  },
+  "errors": []
+ },
+ {
+  "label": "768",
+  "canvas": [
+   720,
+   278
+  ],
+  "ink": [
+   53,
+   637
+  ],
+  "scroll": [
+   768,
+   768
+  ],
+  "rangeW": 170.3,
+  "controlsW": 720,
+  "checks": {
+   "first": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "mid": {
+    "want": null,
+    "got": 59,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "last": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-left": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-right": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   }
+  },
+  "tooltip": {
+   "present": true,
+   "rows_ok": true,
+   "rows": [
+    "setembro de 2021",
+    "Taxa Euribor a 12 meses - Área do euro: -0,4923 %",
+    "Crédito à habitação - Portugal: 95 821,1 milhões de euros"
+   ],
+   "box": [
+    0,
+    159,
+    365.3,
+    68
+   ],
+   "canvas": [
+    720,
+    278.2
+   ],
+   "inside": true
+  },
+  "keyboard": {
+   "home": [
+    0,
+    true
+   ],
+   "arrow": [
+    1,
+    true
+   ],
+   "end": [
+    119,
+    true
+   ]
+  },
+  "errors": []
+ },
+ {
+  "label": "1440",
+  "canvas": [
+   1072,
+   414
+  ],
+  "ink": [
+   80,
+   947
+  ],
+  "scroll": [
+   1440,
+   1440
+  ],
+  "rangeW": 255.5,
+  "controlsW": 1072,
+  "checks": {
+   "first": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "mid": {
+    "want": null,
+    "got": 59,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "last": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-left": {
+    "want": 0,
+    "got": 0,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   },
+   "pad-right": {
+    "want": 119,
+    "got": 119,
+    "ok": true,
+    "period_ok": true,
+    "readout_ok": true
+   }
+  },
+  "tooltip": {
+   "present": true,
+   "rows_ok": true,
+   "rows": [
+    "setembro de 2021",
+    "Taxa Euribor a 12 meses - Área do euro: -0,4923 %",
+    "Crédito à habitação - Portugal: 95 821,1 milhões de euros"
+   ],
+   "box": [
+    534,
+    227,
+    365.3,
+    68
+   ],
+   "canvas": [
+    1072,
+    414.2
+   ],
+   "inside": true
+  },
+  "keyboard": {
+   "home": [
+    0,
+    true
+   ],
+   "arrow": [
+    1,
+    true
+   ],
+   "end": [
+    119,
+    true
+   ]
+  },
+  "errors": []
+ },
+ {
+  "label": "390-touch",
+  "taps": {
+   "first": {
+    "want": 0,
+    "got": 0,
+    "vt": "outubro de 2016",
+    "readout_ok": true,
+    "tooltip_rows_ok": true
+   },
+   "last": {
+    "want": 119,
+    "got": 119,
+    "vt": "setembro de 2026",
+    "readout_ok": true,
+    "tooltip_rows_ok": true
+   },
+   "scroll_stable": true,
+   "scrollW": [
+    390,
+    390
+   ]
+  },
+  "errors": []
+ },
+ {
+  "label": "cms-page-390",
+  "enhanced": true,
+  "scroll": [
+   390,
+   390
+  ],
+  "readout_len": 127,
+  "errors": []
+ },
+ {
+  "label": "print-nojs-390",
+  "svg_visible": true,
+  "canvases": 0,
+  "range_hidden": true,
+  "scroll": [
+   390,
+   390
+  ]
+ }
+]

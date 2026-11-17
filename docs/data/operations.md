@@ -1,5 +1,25 @@
 # Prumo image and ingestion operations
 
+## Current product release contract (2026-11-17)
+
+Production remains on schema 0018 and the web code released as 9001113 (release record
+c9a2e5f). The statistics CMS, public Admin routing and ECharts implementation are on the
+development branch, not installed. The current operator guide and combined 0019 migration
+release/rollback contract are [cms.md](cms.md); edge preparation is
+[README-admin.md](../../deploy/README-admin.md). The complete branch is NOT a web-only or
+backoffice-only release: migration 0019 requires worker, web and backoffice in that order,
+plus an independently authorized shared-edge update. Old code rollback also needs the
+pre-migration database. Do not follow an older slice's code-only rollback for this release.
+
+The exact-path Authelia rule challenges visitors with two-factor authentication; owner-only
+authorization is enforced inside the app using a verified proxy secret and Remote-User
+allowlist. The first real public login and publication, edge transfer encoding and human
+screen-reader acceptance have not run. Source rights, DGEG blockers and the real worker
+observation remain separate from CMS acceptance. Operational write actions are not part of
+the CMS; the next free migration after 0019 is 0020.
+
+## Historical pipeline deployment and operating procedures
+
 The maintenance web app `prumo` and ingestion scheduler `prumo-ingest` are already
 deployed on f0nix. Task 18 runtime merge `49a3602` and infrastructure commit `6a58b51`
 were installed after owner authorization and release checks. This runbook describes

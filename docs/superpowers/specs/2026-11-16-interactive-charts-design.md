@@ -1,7 +1,13 @@
 # Prumo: interactive charts on comparison and detail pages
 
 Date: 2026-11-16
-Status: draft for owner review. Feasibility measured; no application implementation or deployment.
+Status: implementation authorized within the statistics CMS cycle; implemented on the development branch, not deployed. Final acceptance gates are recorded in the current handoff.
+
+## Implementation amendment (2026-11-17)
+
+The mobile verification found that ECharts 6.1.0 richText tooltips cannot wrap the complete exact value strings. The implemented formatter therefore returns DOM nodes constructed exclusively with createElement/textContent, never HTML strings. This is a narrow amendment to the richText-only/no-HTML-tooltip wording below, supported by an independent browser security review: hostile titles remained literal text, no injected element executed, and the existing strict CSP stayed unchanged, with no unsafe-inline, unsafe-eval, remote origin or connect-src permission. The formatter must always return a node; a future HTML-string formatter is outside this amendment. This is a presentation correction, not a change to source tokens, coordinate domains or statistical methods.
+
+Cartesian pixel conversion and touch-release handling were corrected from real mobile tests; right-axis names grow into their available margin instead of shrinking the data region. Controls and footer links wrap on narrow screens. SVG remains accessible, script-free fallback and print output. The separate CMS preview is intentionally static and identifies itself as such, while public analytical pages retain interactive inspection.
 Baseline: `3cb9d51` on `pipeline-rebuild` and `main`.
 
 ## Objective

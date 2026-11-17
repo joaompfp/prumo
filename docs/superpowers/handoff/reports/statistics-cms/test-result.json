@@ -1,0 +1,22 @@
+{
+  "suite_attributes": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "2580",
+      "time": "1230.164",
+      "timestamp": "2026-11-17T00:29:47.553200+00:00",
+      "hostname": "f3nix"
+    }
+  ],
+  "case_count": 2580,
+  "junit_sha256": "6faa0c863f619712d7eb4eed00b108efe40dbe9d2ed26d8736b4af9ecefce585",
+  "receipt": "/home/joao/prumo-operations/cms-20261117/full-suite.xml",
+  "runtime_revision": "7c54047",
+  "command": ".venv-ci/bin/python -m pytest tests -q",
+  "pytest_result": "2580 passed, 7 deselected, 3 warnings in 1230.31s",
+  "scope": "offline suite including available local Chromium browser tests; live marked tests excluded",
+  "later_changes": "operator documentation and preserved evidence only, no runtime code change"
+}

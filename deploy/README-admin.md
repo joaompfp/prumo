@@ -3,6 +3,11 @@
 Status: **prepared, not deployed.** This repository change does not touch the live edge, the
 live Authelia configuration, DNS or any running container. The owner gates the release.
 
+This guide describes the authentication/routing slice only. The complete statistics CMS branch
+also includes migration 0019; its combined release must follow `docs/data/cms.md` and the
+migration order in `docs/data/operations.md` (worker, web, backoffice, with a pre-migration
+recovery point). Do not apply the code-only rollback below to a database already on 0019.
+
 The Admin entry is `https://joao.date/dados/admin/`. It reaches the existing backoffice on
 f0nix through Traefik on f3nix. The backoffice keeps its own bridge network, its read-only
 root filesystem and its Tailscale-bound port; the public router is an additional path to the
@@ -55,21 +60,17 @@ The versioned files are:
 
 ## Secret provisioning (SOPS)
 
-The shared secret is required in two stacks because each stack is started with its own
-SOPS-decrypted environment file: Traefik injects it, the backoffice verifies it. Generate one
-value and put the **same** value in both files. Run these from `/home/joao/docker`:
+The shared secret is required in two stacks on different hosts. Generate one value with a
+password manager's random generator and place the **same** value in the two SOPS-encrypted
+files without printing or logging it. The respective editors are `sops secrets/web.enc.env`
+from `/home/joao/docker` on f0nix and `sops secrets/core.enc.env` from that path on f3nix.
 
-```bash
-openssl rand -hex 32
-sops secrets/web.enc.env
-sops secrets/core.enc.env
-```
-
-The accepted alphabet is exactly `[A-Za-z0-9_-]`, at least 32 characters. `openssl rand -hex 32`
-produces 64 hexadecimal characters and is the recommended form. The backoffice rejects any
-other character at startup, before a value can reach the edge: the Traefik template places the
-secret inside a single-quoted YAML scalar, where a quote cannot be represented safely. Do not
-substitute a passphrase containing spaces, quotes, `$`, `!` or a backslash.
+The accepted alphabet is exactly `[A-Za-z0-9_-]`, at least 32 characters. A 32-byte random
+value encoded as 64 hexadecimal characters is the recommended form (the format produced by
+`openssl rand -hex 32`, but do not run that command into a captured terminal log). The
+backoffice rejects any other character at startup, before a value can reach the edge: the
+Traefik template places the secret inside a single-quoted YAML scalar. Do not substitute a
+passphrase containing spaces, quotes, `$`, `!` or a backslash.
 
 In each editor add one line, for example:
 
@@ -132,10 +133,10 @@ router exists. A mistake costs a 401 on a private service, not an open Admin pag
 4. **Verify the lock before exposing anything.** `GET /healthz` on the direct port still
    answers 200 with only `{"status":"ok","db":...}`. A page request without the secret
    answers 401; a request with only `Remote-User: joao` also answers 401.
-5. **Install the Authelia rule** in `configuration.yml` as the first access-control rule
-   and restart Authelia. Verify an unauthenticated `/dados/admin/` is redirected to the
-   Authelia portal, not answered with a bare 403, and that the public `/dados` pages are
-   unchanged for ordinary readers.
+5. **Install the Authelia rule** in `configuration.yml` as the first access-control rule,
+   validate the configuration and restart Authelia. Confirm its health and preserve the
+   existing public `/dados` routes. The Admin challenge can only be checked at step 8,
+   after the router exists; a 404 at this point does not test the ACL.
 6. **Add the Traefik environment value** and recreate Traefik. It has no Admin router yet, so
    this cannot expose the app.
 7. **Install the dynamic router** by copying `deploy/traefik-prumo-admin.yml` to

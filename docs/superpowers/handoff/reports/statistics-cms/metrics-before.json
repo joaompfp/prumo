@@ -1,0 +1,62 @@
+{
+  "code": "/home/joao/.hermes/cache/scratch/prumo-cms-acceptance/baseline-code",
+  "db": "/home/joao/.hermes/cache/scratch/prumo-cms-acceptance/baseline-0018.sqlite3",
+  "top_noninterval_populations": [
+    [
+      "ine.ipc_yoy.Continente",
+      934
+    ],
+    [
+      "ine.ipc_yoy.PT",
+      934
+    ],
+    [
+      "bportugal.credit_consumer.PT",
+      562
+    ]
+  ],
+  "samples": 20,
+  "routes": {
+    "/": {
+      "median_ms": 107.21257200930268,
+      "p95_ms": 113.17994794808328,
+      "html_bytes": 17177
+    },
+    "/comparar/credito-e-taxa": {
+      "median_ms": 89.07383505720645,
+      "p95_ms": 105.6907579768449,
+      "html_bytes": 180767
+    },
+    "/comparar/euribor-e-inflacao": {
+      "median_ms": 68.92764056101441,
+      "p95_ms": 103.42257586307824,
+      "html_bytes": 159286
+    },
+    "/series/eredes.production_total.PT": {
+      "median_ms": 97.5065064849332,
+      "p95_ms": 120.60436606407166,
+      "html_bytes": 43971
+    },
+    "/series/ine.hicp_yoy.PT": {
+      "median_ms": 53.25195053592324,
+      "p95_ms": 60.70232088677585,
+      "html_bytes": 55679
+    },
+    "/series/ine.ipc_yoy.Continente": {
+      "median_ms": 88.48852198570967,
+      "p95_ms": 95.97521694377065,
+      "html_bytes": 123180
+    },
+    "/series/ine.ipc_yoy.PT": {
+      "median_ms": 85.04428702872247,
+      "p95_ms": 96.99861099943519,
+      "html_bytes": 122875
+    },
+    "/series/bportugal.credit_consumer.PT": {
+      "median_ms": 42.72852197755128,
+      "p95_ms": 45.654345070943236,
+      "html_bytes": 91379
+    }
+  },
+  "method": "TestClient GET including templates and ASGI; same host/copy; no HTTP compression"
+}

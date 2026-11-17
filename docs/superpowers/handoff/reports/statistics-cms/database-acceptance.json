@@ -1,0 +1,88 @@
+{
+  "migration_s": 0.5377393090166152,
+  "integrity": "ok",
+  "fk_violations": 0,
+  "migration": "0019_statistics_cms",
+  "protected_tables_unchanged": true,
+  "protected_tables": {
+    "source": {
+      "rows": 9,
+      "sha256": "d246c07a555d8beb6ceac407462320b6769f6bc0d5bcffa83b7f53eac4841513"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "observation": {
+      "rows": 542822,
+      "sha256": "d59ef94936616f008ab6869406924ee88c9f6d32b86fc12f4ab6c5d5aac588b5"
+    },
+    "quarantine": {
+      "rows": 34219,
+      "sha256": "da6c2f929f3a1b473a8118723f15d7dc79a0b87787e276b9ecc9645641145cb9"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "derived_run": {
+      "rows": 5,
+      "sha256": "9ddfc3231c4fb2c67db535e9f295dfef7b2bcb70aa690815e5d5804fdd9fc78a"
+    },
+    "derived_observation": {
+      "rows": 7825,
+      "sha256": "671418ca3d373d7fbb46aa4317f488eb69cd65b79fcb21afc4db58a654268c0a"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "verification": {
+      "rows": 47,
+      "sha256": "199a413a1b738ded0405b67861fe1298513b10b88bd8db2db2d0f2bce685200b"
+    },
+    "verification_item": {
+      "rows": 94117,
+      "sha256": "13ce86abf1c0e0f59c756da5ee154cfb6eea8401e20b9dae34fda91aebf937e2"
+    },
+    "raw_fetch": {
+      "rows": 671,
+      "sha256": "2c111dd5b55ababb4c1f0701de230e7bdee6cf9f0eb012f7d7f764f7c8d7c48b"
+    },
+    "dataset_run": {
+      "rows": 85,
+      "sha256": "b00566756782c1a6d13184b908e31d66bb0e38549f7a9a5f634ab6647adfe2f7"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "event": {
+      "rows": 370,
+      "sha256": "eb3502c11ae0843de65ec99b8fa983f67e38aa0fd00bf2eca9c29e8278b0b748"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "bad5ef48abe6b2589ae53c6fffddf06a0de6a048576eb58cdf14f6a26a424254"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    }
+  },
+  "choices": 1308,
+  "choices_s": 1.9656787619460374,
+  "workflow": "create chart, publish, create page, publish, private edit, restore, republish, duplicate",
+  "acceptance_db": "/home/joao/.hermes/cache/scratch/prumo-cms-acceptance/acceptance-0019.sqlite3",
+  "base_bytes": 217403392,
+  "screen_reader": "not exercised by a human",
+  "production_changed": false
+}
