@@ -15,59 +15,59 @@
 
 <form class="filters" method="get" action="{{ base }}/series" aria-label="Filtrar séries">
   <div class="field">
-    <label for="f-source">Fonte</label>
-    <select id="f-source" name="source"><option value="">todas</option>
+    <label class="form-label" for="f-source">Fonte</label>
+    <select class="form-select" id="f-source" name="source"><option value="">todas</option>
     {% for v in options.source %}<option value="{{ v }}"{% if filters.source == v %} selected{% endif %}>{{ v }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="f-theme">Tema</label>
-    <select id="f-theme" name="theme"><option value="">todos</option>
+    <label class="form-label" for="f-theme">Tema</label>
+    <select class="form-select" id="f-theme" name="theme"><option value="">todos</option>
     {% for v in options.theme %}<option value="{{ v }}"{% if filters.theme == v %} selected{% endif %}>{{ v }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="f-geography">Geografia</label>
-    <select id="f-geography" name="geography"><option value="">todas</option>
+    <label class="form-label" for="f-geography">Geografia</label>
+    <select class="form-select" id="f-geography" name="geography"><option value="">todas</option>
     {% for v in options.geography %}<option value="{{ v }}"{% if filters.geography == v %} selected{% endif %}>{{ v }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="f-frequency">Frequência</label>
-    <select id="f-frequency" name="frequency"><option value="">todas</option>
+    <label class="form-label" for="f-frequency">Frequência</label>
+    <select class="form-select" id="f-frequency" name="frequency"><option value="">todas</option>
     {% for v in options.frequency %}<option value="{{ v }}"{% if filters.frequency == v %} selected{% endif %}>{{ v }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="f-active">Ativa</label>
-    <select id="f-active" name="active">
+    <label class="form-label" for="f-active">Ativa</label>
+    <select class="form-select" id="f-active" name="active">
     {% for v, text in (("", "todas"), ("yes", "ativas"), ("no", "inativas")) %}<option value="{{ v }}"{% if filters.active == v %} selected{% endif %}>{{ text }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="f-q">Pesquisar</label>
-    <input id="f-q" type="search" name="q" value="{{ filters.q }}" placeholder="id, indicador ou código nativo">
+    <label class="form-label" for="f-q">Pesquisar</label>
+    <input class="form-control" id="f-q" type="search" name="q" value="{{ filters.q }}" placeholder="id, indicador ou código nativo">
   </div>
-  <button type="submit"><i class="icon icon-search" aria-hidden="true"></i> Filtrar</button>
-  <a class="button button-quiet" href="{{ base }}/series"><i class="icon icon-close" aria-hidden="true"></i> Limpar</a>
+  <button type="submit" class="btn btn-primary"><i class="icon icon-search" aria-hidden="true"></i> Filtrar</button>
+  <a class="btn btn-ghost-secondary" href="{{ base }}/series"><i class="icon icon-close" aria-hidden="true"></i> Limpar</a>
 </form>
 
-<p class="status-line"><span class="badge">{{ total }} series</span>{% if total %}<span class="muted">página {{ page }} de {{ pages }}</span>{% endif %}</p>
+<p class="status-line"><span class="badge bg-secondary-lt">{{ total }} series</span>{% if total %}<span class="muted">página {{ page }} de {{ pages }}</span>{% endif %}</p>
 
 {% if rows %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter cms-table">
 <thead><tr><th>Série</th><th>Fonte</th><th>Tema</th><th>Geo</th><th>Freq.</th><th>Unidade</th>
 <th>Ativa</th><th>Estado</th><th>Última confirmação atual</th><th>Última tentativa</th></tr></thead>
 <tbody>
 {% for s, st, label in rows %}
 <tr class="series-row" id="row-{{ s.id }}">
-<td><a href="{{ base }}/series/{{ s.id | urlencode }}">{{ s.id }}</a></td>
-<td>{{ s.source.name }}</td><td>{{ s.theme }}</td><td>{{ s.geography }}</td>
-<td>{{ s.frequency }}</td><td class="wrap">{{ s.unit }}</td>
-<td>{{ "sim" if s.active else "não" }}</td>
-<td{% if st.availability == "legacy-unverified" %} class="sev-medium"{% elif st.stale is not false and s.active %} class="bad"{% endif %}>{{ label }}</td>
-<td>{{ st.last_confirmed_current or "nunca" }}</td>
-<td>{{ st.latest_attempt or "-" }}{% if st.latest_attempt_state %} ({{ st.latest_attempt_state }}){% endif %}</td>
+<td data-label="Série"><a href="{{ base }}/series/{{ s.id | urlencode }}">{{ s.id }}</a></td>
+<td data-label="Fonte">{{ s.source.name }}</td><td data-label="Tema">{{ s.theme }}</td><td data-label="Geo">{{ s.geography }}</td>
+<td data-label="Freq.">{{ s.frequency }}</td><td class="wrap" data-label="Unidade">{{ s.unit }}</td>
+<td data-label="Ativa">{{ "sim" if s.active else "não" }}</td>
+<td data-label="Estado"{% if st.availability == "legacy-unverified" %} class="sev-medium"{% elif st.stale is not false and s.active %} class="bad"{% endif %}>{{ label }}</td>
+<td data-label="Última confirmação atual">{{ st.last_confirmed_current or "nunca" }}</td>
+<td data-label="Última tentativa">{{ st.latest_attempt or "-" }}{% if st.latest_attempt_state %} ({{ st.latest_attempt_state }}){% endif %}</td>
 </tr>
 {% endfor %}
 </tbody>
@@ -82,9 +82,9 @@
 
 {% if prev_url or next_url %}
 <nav class="pager" aria-label="Paginação">
-  {% if prev_url %}<a class="button" href="{{ prev_url }}"><i class="icon icon-arrow-left" aria-hidden="true"></i> Anterior</a>{% endif %}
+  {% if prev_url %}<a class="btn btn-sm btn-outline-secondary" href="{{ prev_url }}"><i class="icon icon-arrow-left" aria-hidden="true"></i> Anterior</a>{% endif %}
   <span class="muted">Página {{ page }} de {{ pages }}</span>
-  {% if next_url %}<a class="button" href="{{ next_url }}">Seguinte <i class="icon icon-arrow-right" aria-hidden="true"></i></a>{% endif %}
+  {% if next_url %}<a class="btn btn-sm btn-outline-secondary" href="{{ next_url }}">Seguinte <i class="icon icon-arrow-right" aria-hidden="true"></i></a>{% endif %}
 </nav>
 {% endif %}
 {% endblock %}

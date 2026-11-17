@@ -15,59 +15,81 @@
     definida ({{ report.staleness_policy.meaning }}), avaliada sobre {{ report.staleness_policy.judged_on }}.</p>
   </div>
   <div class="page-actions">
-    <a class="button" href="{{ base }}/queue"><i class="icon icon-list-check" aria-hidden="true"></i> Abrir fila de revisão</a>
+    <a class="btn btn-outline-secondary" href="{{ base }}/queue"><i class="icon icon-list-check" aria-hidden="true"></i> Abrir fila de revisão</a>
   </div>
 </header>
 
-<div class="metrics">
-  <div class="metric">
-    <span class="metric-label">Séries ativas</span>
-    <p class="metric-value" id="t-active_series">{{ t.active_series }}</p>
-    <span class="metric-note">no registo</span>
+<div class="row row-cards metrics g-3 mb-4">
+  <div class="col-12 col-sm-6 col-lg">
+    <div class="card metric">
+      <div class="card-body">
+        <span class="metric-label">Séries ativas</span>
+        <p class="metric-value" id="t-active_series">{{ t.active_series }}</p>
+        <span class="metric-note">no registo</span>
+      </div>
+    </div>
   </div>
-  <div class="metric">
-    <span class="metric-label">Desatualizadas</span>
-    <p class="metric-value{% if t.stale %} bad{% endif %}" id="t-stale">{{ t.stale }}</p>
-    <span class="metric-note">fora da política</span>
+  <div class="col-12 col-sm-6 col-lg">
+    <div class="card metric">
+      <div class="card-body">
+        <span class="metric-label">Desatualizadas</span>
+        <p class="metric-value{% if t.stale %} bad{% endif %}" id="t-stale">{{ t.stale }}</p>
+        <span class="metric-note">fora da política</span>
+      </div>
+    </div>
   </div>
-  <div class="metric">
-    <span class="metric-label">Nunca recolhidas</span>
-    <p class="metric-value" id="t-never_fetched">{{ t.never_fetched }}</p>
-    <span class="metric-note">sem tentativa</span>
+  <div class="col-12 col-sm-6 col-lg">
+    <div class="card metric">
+      <div class="card-body">
+        <span class="metric-label">Nunca recolhidas</span>
+        <p class="metric-value" id="t-never_fetched">{{ t.never_fetched }}</p>
+        <span class="metric-note">sem tentativa</span>
+      </div>
+    </div>
   </div>
-  <div class="metric">
-    <span class="metric-label">Nunca verificadas</span>
-    <p class="metric-value" id="t-never_verified">{{ t.never_verified }}</p>
-    <span class="metric-note">sem prova independente</span>
+  <div class="col-12 col-sm-6 col-lg">
+    <div class="card metric">
+      <div class="card-body">
+        <span class="metric-label">Nunca verificadas</span>
+        <p class="metric-value" id="t-never_verified">{{ t.never_verified }}</p>
+        <span class="metric-note">sem prova independente</span>
+      </div>
+    </div>
   </div>
-  <div class="metric">
-    <span class="metric-label">Pendentes &gt; {{ report.staleness_policy.pending_stale_after_hours }} h</span>
-    <p class="metric-value{% if t.pending_stuck %} bad{% endif %}" id="t-pending_stuck">{{ t.pending_stuck }}</p>
-    <span class="metric-note">verificação parada</span>
+  <div class="col-12 col-sm-6 col-lg">
+    <div class="card metric">
+      <div class="card-body">
+        <span class="metric-label">Pendentes &gt; {{ report.staleness_policy.pending_stale_after_hours }} h</span>
+        <p class="metric-value{% if t.pending_stuck %} bad{% endif %}" id="t-pending_stuck">{{ t.pending_stuck }}</p>
+        <span class="metric-note">verificação parada</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<section class="panel">
-  <div class="panel-head">
-    <h2>Camada calculada</h2>
-    <a href="{{ base }}/derived">Ver calculadas</a>
+<section class="card">
+  <div class="card-header">
+    <h2 class="card-title">Camada calculada</h2>
+    <a class="btn btn-sm btn-ghost-secondary" href="{{ base }}/derived">Ver calculadas</a>
   </div>
-  <p id="derived-line">
-    {{ dv.active_series }} active derived series, {{ dv.served_values }} served values
-    {% include "_calc_badge.html" %};
-    <span{% if dv.stale %} class="bad"{% endif %}>stale {{ dv.stale }}</span>,
-    never computed {{ dv.never_computed }};
-    last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }}
-    (<span{% if dv.last_run_state == "failed" %} class="bad"{% endif %}>{{ dv.last_run_state }}</span>, {{ dv.last_run_at }}){% else %}none{% endif %};
-    <span{% if dv.failed_runs_7d %} class="bad"{% endif %}>failed runs 7 d {{ dv.failed_runs_7d }}</span>.
-  </p>
+  <div class="card-body">
+    <p id="derived-line">
+      {{ dv.active_series }} active derived series, {{ dv.served_values }} served values
+      {% include "_calc_badge.html" %};
+      <span{% if dv.stale %} class="bad"{% endif %}>stale {{ dv.stale }}</span>,
+      never computed {{ dv.never_computed }};
+      last run {% if dv.last_run_id is not none %}{{ dv.last_run_id }}
+      (<span{% if dv.last_run_state == "failed" %} class="bad"{% endif %}>{{ dv.last_run_state }}</span>, {{ dv.last_run_at }}){% else %}none{% endif %};
+      <span{% if dv.failed_runs_7d %} class="bad"{% endif %}>failed runs 7 d {{ dv.failed_runs_7d }}</span>.
+    </p>
+  </div>
 </section>
 
 <div class="section-head">
   <h2>Fontes</h2>
   <p class="section-note">Cada linha liga à lista de séries dessa fonte. Bloqueios e datas são os do relatório acima.</p>
 </div>
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Fonte</th><th class="num">Ativas</th><th class="num">Inativas</th><th>Bloqueada</th>
 <th class="num">Desatualizadas</th><th class="num">Nunca recolhidas</th><th class="num">Nunca verificadas</th>
 <th>Última tentativa</th><th>Última verificação</th><th>Última confirmação atual</th>
@@ -78,7 +100,7 @@
 <td><a href="{{ base }}/series?source={{ s.name | urlencode }}">{{ s.name }}</a></td>
 <td class="num">{{ s.active_series }}</td>
 <td class="num">{{ s.inactive_series }}</td>
-<td>{% if s.blockers %}<span class="sev-info">{{ s.blockers | join(", ") }}</span>{% else %}-{% endif %}</td>
+<td>{% if s.blockers %}<span class="badge sev-info">{{ s.blockers | join(", ") }}</span>{% else %}-{% endif %}</td>
 <td class="num{% if s.stale %} bad{% endif %}">{{ s.stale }}</td>
 <td class="num">{{ s.never_fetched }}</td>
 <td class="num">{{ s.never_verified }}</td>
@@ -100,7 +122,7 @@
 <summary><strong>{{ s.name }}</strong>: {{ s.datasets | length }} datasets,
 {{ s.pending_runs | length }} execuções pendentes, {{ s.stale_series | length }} séries desatualizadas</summary>
 {% if s.pending_runs %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Execução pendente</th><th>Dataset</th><th>Entrada</th><th>Desde</th><th>Nota</th></tr></thead>
 <tbody>
 {% for p in s.pending_runs %}
@@ -113,7 +135,7 @@
 </table></div>
 {% endif %}
 {% if s.datasets %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Dataset</th><th>Último estado</th><th>Última tentativa</th><th>Entrada</th>
 <th>Verificação</th><th>Agendador</th><th class="num">Repetições</th><th>Próxima elegível</th></tr></thead>
 <tbody>
@@ -130,7 +152,7 @@
 </table></div>
 {% endif %}
 {% if s.stale_series %}
-<p>Desatualizadas:
+<p class="mb-0">Desatualizadas:
 {% for sid in s.stale_series %}<a href="{{ base }}/series/{{ sid | urlencode }}">{{ sid }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
 {% endif %}
 </details>

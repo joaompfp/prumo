@@ -30,9 +30,15 @@ def test_shell_loads_only_local_css_font_and_icons(env):
     html = c.get("/").text
     assert 'href="/static/css/admin.css"' in html
     assert 'href="/static/css/icons.css"' in html
+    assert 'href="/static/vendor/tabler/1.7.5/tabler.min.css"' in html
+    assert html.index('href="/static/vendor/tabler/1.7.5/tabler.min.css"') < \
+        html.index('href="/static/css/admin.css"') < html.index('href="/static/css/icons.css"')
     assert 'href="/static/images/prumo/favicon.svg"' in html
     assert "<style" not in html.lower()
     assert not re.search(r'\sstyle="', html)
+    tabler = ROOT / "static/vendor/tabler/1.7.5/tabler.min.css"
+    if tabler.exists():  # the controller owns the pinned vendor copy
+        assert c.get("/static/vendor/tabler/1.7.5/tabler.min.css").status_code == 200
     assert c.get("/static/css/admin.css").status_code == 200
     assert c.get("/static/css/icons.css").status_code == 200
     assert c.get("/static/fonts/icons/prumo-icons.woff2").status_code == 200
@@ -47,8 +53,8 @@ def test_navigation_is_content_first_and_marks_legacy_editorial(env):
                   "Visão geral", "Fila de revisão", "Séries", "Calculadas"):
         assert label in nav, label
     assert nav.index("Página inicial") < nav.index("Visão geral")
-    assert re.search(r'class="nav-link is-legacy" href="/editorial".*?</a>', nav, re.S)
-    assert 'class="tag tag-legacy">legado</span>' in nav
+    assert re.search(r'class="nav-link[^"]*is-legacy[^"]*" href="/editorial".*?</a>', nav, re.S)
+    assert re.search(r'class="[^"]*tag-legacy[^"]*">legado</span>', nav)
     assert 'href="/cms/home"' in nav
 
 
@@ -79,7 +85,7 @@ def test_active_navigation_uses_the_path_below_the_validated_mount(env):
 def test_hostile_prefix_cannot_supply_the_public_link(env):
     html = env.client().get("/", headers={"X-Forwarded-Prefix": "https://evil.example"}).text
     assert "evil.example" not in html
-    assert 'class="site-link" href="/"' in html
+    assert re.search(r'class="site-link[^"]*" href="/"', html)
 
 
 def test_proxy_mode_public_link_uses_the_configured_origin(env):
@@ -110,7 +116,7 @@ def test_cms_dashboard_and_editor_load_one_local_admin_script(tmp_path):
     for hook in ('data-dirty-watch', 'data-block', 'data-block-type-select',
                  'data-show-for="text"', 'data-show-for="card"', 'data-show-for="chart"'):
         assert hook in editor.text, hook
-    assert "Guardar rascunho" in editor.text and "button-primary" in editor.text
+    assert "Guardar rascunho" in editor.text and "btn-primary" in editor.text
     assert '<script src="/static/js/admin.js" defer></script>' in editor.text
     assert not re.search(r'\sstyle="', editor.text)
 
@@ -137,7 +143,7 @@ def test_legacy_editorial_stays_script_free(tmp_path):
     for path in ("/editorial", "/editorial/inicio"):
         html = c.get(path).text
         assert "<script" not in html.lower(), path
-        assert 'class="tag tag-legacy">legado</span>' in html, path
+        assert re.search(r'class="[^"]*tag-legacy[^"]*">legado</span>', html), path
 
 
 def test_admin_csp_is_strict_and_local(env):
@@ -153,7 +159,8 @@ def test_admin_csp_is_strict_and_local(env):
 def test_admin_css_keeps_the_editorial_identity(env):
     css = env.client().get("/static/css/admin.css").text
     assert "linear-gradient" not in css and "radial-gradient" not in css
-    assert "--red" in css and "--paper" in css and "--serif" in css
+    assert "--primary" in css and "--danger" in css and "--paper" in css and "--sans" in css
+    assert "--tblr-primary" in css and "light-dark(" in css
     assert "prefers-reduced-motion" in css
 
 

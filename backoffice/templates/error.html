@@ -10,14 +10,16 @@
     <h1>{{ title }}</h1>
   </div>
 </header>
-<div class="notice notice-warn">
+<div class="alert alert-danger" role="alert">
   <p class="callout-title"><i class="icon icon-warning" aria-hidden="true"></i> Pedido recusado</p>
   <p>{{ message }}</p>
 </div>
-<div class="panel">
-  <p class="note">This page only reads. The one write path in the backoffice is the editorial
-  editor and the CMS; neither migrates nor creates the database, and a refused write changes
-  nothing.</p>
-  <p><a class="button" href="{{ base }}/"><i class="icon icon-grid" aria-hidden="true"></i> Voltar à visão geral</a></p>
+<div class="card">
+  <div class="card-body">
+    <p class="note">This page only reads. The one write path in the backoffice is the editorial
+    editor and the CMS; neither migrates nor creates the database, and a refused write changes
+    nothing.</p>
+    <p class="mb-0"><a class="btn btn-outline-secondary" href="{{ base }}/"><i class="icon icon-grid" aria-hidden="true"></i> Voltar à visão geral</a></p>
+  </div>
 </div>
 {% endblock %}

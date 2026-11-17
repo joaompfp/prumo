@@ -22,11 +22,11 @@
 
 {% if rows %}
 <p class="status-line">
-  <span class="badge">{{ rows | length }} séries</span>
-  <span class="badge">{{ total.served }} valores servidos</span>
-  {% if stale %}<span class="badge bad">{{ stale }} desatualizadas</span>{% else %}<span class="badge good">todas atuais</span>{% endif %}
+  <span class="badge bg-secondary-lt">{{ rows | length }} séries</span>
+  <span class="badge bg-secondary-lt">{{ total.served }} valores servidos</span>
+  {% if stale %}<span class="badge bg-danger-lt bad">{{ stale }} desatualizadas</span>{% else %}<span class="badge bg-success-lt good">todas atuais</span>{% endif %}
 </p>
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Série calculada</th><th>Título</th><th>Fórmula</th><th>Série base</th><th>Unidade</th>
 <th>Ativa</th><th class="num">Valores servidos</th><th>Estado</th><th>Último período coberto</th></tr></thead>
 <tbody>

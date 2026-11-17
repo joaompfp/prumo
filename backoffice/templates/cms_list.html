@@ -15,49 +15,49 @@
     Um rascunho não altera o que está em direto até ser publicado.</p>
   </div>
 </header>
-{% if error %}<div class="notice notice-warn"><p class="bad" role="alert">{{ error }}</p></div>{% endif %}
+{% if error %}<div class="alert alert-danger" role="alert"><p>{{ error }}</p></div>{% endif %}
 
 <div class="jump" aria-label="Secções desta página">
-  <a href="{{ base }}/cms#paginas">Páginas</a>
-  <a href="{{ base }}/cms#graficos">Gráficos</a>
-  <a href="{{ base }}/cms#nova-pagina">Nova página</a>
-  <a href="{{ base }}/cms#novo-grafico">Novo gráfico</a>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ base }}/cms#paginas">Páginas</a>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ base }}/cms#graficos">Gráficos</a>
 </div>
 
-<section class="panel home-panel" aria-labelledby="home-title">
-  <div class="home-copy">
-    <p class="eyebrow">Página inicial</p>
-    {% if home_doc %}
-    <h2 id="home-title">{{ home_doc.title or "Página inicial" }}</h2>
-    <p class="status-line">
-      {% if home_doc.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>
-      {% elif home_doc.published_once %}<span class="badge bad">Despublicada</span>
-      {% else %}<span class="badge">Rascunho privado</span>{% endif %}
-      {% if home_doc.version is defined and home_doc.version %}<span class="badge">versão {{ home_doc.version }}</span>{% endif %}
-      {% if home_doc.published %}
-      <span class="muted">O CMS gere o que aparece em <code>/</code>.</span>
-      {% elif home_doc.published_once %}
-      <span class="muted">A página inicial está por publicar: <code>/</code> mostra o estado neutro até nova publicação.</span>
+<section class="card home-panel" aria-labelledby="home-title">
+  <div class="card-body">
+    <div class="home-copy">
+      <p class="eyebrow">Página inicial</p>
+      {% if home_doc %}
+      <h2 id="home-title">{{ home_doc.title or "Página inicial" }}</h2>
+      <p class="status-line">
+        {% if home_doc.published %}<span class="badge bg-success-lt good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>
+        {% elif home_doc.published_once %}<span class="badge bg-danger-lt bad">Despublicada</span>
+        {% else %}<span class="badge bg-secondary-lt">Rascunho privado</span>{% endif %}
+        {% if home_doc.version is defined and home_doc.version %}<span class="badge bg-secondary-lt">versão {{ home_doc.version }}</span>{% endif %}
+        {% if home_doc.published %}
+        <span class="muted">O CMS gere o que aparece em <code>/</code>.</span>
+        {% elif home_doc.published_once %}
+        <span class="muted">A página inicial está por publicar: <code>/</code> mostra o estado neutro até nova publicação.</span>
+        {% else %}
+        <span class="muted">Ainda não publicada: o site mantém a página inicial antiga até à primeira publicação.</span>
+        {% endif %}
+      </p>
       {% else %}
-      <span class="muted">Ainda não publicada: o site mantém a página inicial antiga até à primeira publicação.</span>
+      <h2 id="home-title">Página inicial ainda não preparada</h2>
+      <p class="quiet">Enquanto não houver publicação do CMS, o site mantém a página inicial antiga.
+      Preparar cria um rascunho privado com a página atual completa, sem alterar o que está em
+      direto.</p>
       {% endif %}
-    </p>
-    {% else %}
-    <h2 id="home-title">Página inicial ainda não preparada</h2>
-    <p class="quiet">Enquanto não houver publicação do CMS, o site mantém a página inicial antiga.
-    Preparar cria um rascunho privado com a página atual completa, sem alterar o que está em
-    direto.</p>
-    {% endif %}
+    </div>
+    <a class="btn btn-primary" href="{{ base }}/cms/home"><i class="icon icon-home" aria-hidden="true"></i> {% if home_doc %}Gerir página inicial{% else %}Preparar página inicial{% endif %}</a>
   </div>
-  <a class="button button-primary" href="{{ base }}/cms/home"><i class="icon icon-home" aria-hidden="true"></i> {% if home_doc %}Gerir página inicial{% else %}Preparar página inicial{% endif %}</a>
 </section>
 
 <div class="section-head">
   <h2 id="paginas">Páginas</h2>
-  <p class="section-note"><a href="#nova-pagina"><i class="icon icon-plus" aria-hidden="true"></i> Criar página</a></p>
+  <p class="section-note"><a class="btn btn-sm btn-outline-secondary" href="#nova-pagina"><i class="icon icon-plus" aria-hidden="true"></i> Criar página</a></p>
 </div>
 {% if pages %}
-<div class="scroll"><table class="cms-table" role="table">
+<div class="scroll"><table class="table table-vcenter cms-table">
 <thead><tr><th>Título</th><th>Slug</th><th>Secção</th><th class="num">Versão</th><th>Estado</th>
 <th>Ações</th></tr></thead>
 <tbody>
@@ -67,11 +67,11 @@
 <td class="mono" data-label="Endereço">{{ p.slug }}</td>
 <td data-label="Secção">{{ p.section or "-" }}</td>
 <td class="num" data-label="Versão">{{ p.version }}</td>
-<td data-label="Estado">{% if p.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
+<td data-label="Estado">{% if p.published %}<span class="badge bg-success-lt good"><i class="icon icon-check" aria-hidden="true"></i> Publicada</span>{% else %}<span class="badge bg-secondary-lt muted">Rascunho</span>{% endif %}</td>
 <td data-label="Ações">
-<div class="button-row">
-<a class="button button-small" href="{{ base }}/cms/page/{{ p.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
-<a class="button button-small" href="{{ base }}/cms/page/{{ p.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
+<div class="button-row mt-0">
+<a class="btn btn-sm btn-outline-secondary" href="{{ base }}/cms/page/{{ p.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
+<a class="btn btn-sm btn-ghost-secondary" href="{{ base }}/cms/page/{{ p.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
 </div>
 </td>
 </tr>
@@ -92,41 +92,41 @@
 <input type="hidden" name="kind" value="page">
 <div class="form-grid">
   <div class="field">
-    <label for="new-page-slug">Slug</label>
-    <input id="new-page-slug" type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
+    <label class="form-label" for="new-page-slug">Slug</label>
+    <input class="form-control" id="new-page-slug" type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
      value="{{ values.get('slug', '') if values.get('kind') == 'page' else '' }}">
-    <span class="hint">Minúsculas e hífenes; imutável depois de criado.</span>
+    <span class="form-hint">Minúsculas e hífenes; imutável depois de criado.</span>
   </div>
   <div class="field">
-    <label for="new-page-title">Título</label>
-    <input id="new-page-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
+    <label class="form-label" for="new-page-title">Título</label>
+    <input class="form-control" id="new-page-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
      value="{{ values.get('title', '') if values.get('kind') == 'page' else '' }}">
   </div>
   <div class="field span-2">
-    <label for="new-page-intro">Introdução (opcional)</label>
-    <textarea id="new-page-intro" name="introduction" maxlength="{{ max_text }}" rows="4" cols="70">{{ values.get('introduction', '') if values.get('kind') == 'page' else '' }}</textarea>
+    <label class="form-label" for="new-page-intro">Introdução (opcional)</label>
+    <textarea class="form-control" id="new-page-intro" name="introduction" maxlength="{{ max_text }}" rows="4" cols="70">{{ values.get('introduction', '') if values.get('kind') == 'page' else '' }}</textarea>
   </div>
   <div class="field">
-    <label for="new-page-section">Secção</label>
-    <select id="new-page-section" name="section">
+    <label class="form-label" for="new-page-section">Secção</label>
+    <select class="form-select" id="new-page-section" name="section">
     {% for s in sections %}<option value="{{ s }}"{% if values.get('kind') == 'page' and values.get('section') == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="new-page-note">Motivo (obrigatório)</label>
-    <input id="new-page-note" type="text" name="note" required maxlength="{{ max_text }}" size="50">
+    <label class="form-label" for="new-page-note">Motivo (obrigatório)</label>
+    <input class="form-control" id="new-page-note" type="text" name="note" required maxlength="{{ max_text }}" size="50">
   </div>
 </div>
-<div class="button-row"><button type="submit" class="button-primary"><i class="icon icon-plus" aria-hidden="true"></i> Criar página</button></div>
+<div class="button-row"><button type="submit" class="btn btn-primary"><i class="icon icon-plus" aria-hidden="true"></i> Criar página</button></div>
 </form>
 </details>
 
 <div class="section-head">
   <h2 id="graficos">Gráficos</h2>
-  <p class="section-note"><a href="#novo-grafico"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</a></p>
+  <p class="section-note"><a class="btn btn-sm btn-outline-secondary" href="#novo-grafico"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</a></p>
 </div>
 {% if charts %}
-<div class="scroll"><table class="cms-table" role="table">
+<div class="scroll"><table class="table table-vcenter cms-table">
 <thead><tr><th>Título</th><th>Slug</th><th class="num">Versão</th><th>Estado</th><th>Ações</th></tr></thead>
 <tbody>
 {% for c in charts %}
@@ -134,11 +134,11 @@
 <td class="wrap" data-label="Título">{{ c.title }}</td>
 <td class="mono" data-label="Endereço">{{ c.slug }}</td>
 <td class="num" data-label="Versão">{{ c.version }}</td>
-<td data-label="Estado">{% if c.published %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Publicado</span>{% else %}<span class="badge muted">Rascunho</span>{% endif %}</td>
+<td data-label="Estado">{% if c.published %}<span class="badge bg-success-lt good"><i class="icon icon-check" aria-hidden="true"></i> Publicado</span>{% else %}<span class="badge bg-secondary-lt muted">Rascunho</span>{% endif %}</td>
 <td data-label="Ações">
-<div class="button-row">
-<a class="button button-small" href="{{ base }}/cms/chart/{{ c.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
-<a class="button button-small" href="{{ base }}/cms/chart/{{ c.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
+<div class="button-row mt-0">
+<a class="btn btn-sm btn-outline-secondary" href="{{ base }}/cms/chart/{{ c.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar</a>
+<a class="btn btn-sm btn-ghost-secondary" href="{{ base }}/cms/chart/{{ c.slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
 </div>
 </td>
 </tr>
@@ -159,66 +159,66 @@
 <input type="hidden" name="kind" value="chart">
 <div class="form-grid">
   <div class="field">
-    <label for="new-chart-slug">Slug</label>
-    <input id="new-chart-slug" type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
+    <label class="form-label" for="new-chart-slug">Slug</label>
+    <input class="form-control" id="new-chart-slug" type="text" name="slug" required maxlength="{{ max_slug }}" size="30"
      value="{{ values.get('slug', '') if values.get('kind') == 'chart' else '' }}">
-    <span class="hint">Minúsculas e hífenes; imutável depois de criado.</span>
+    <span class="form-hint">Minúsculas e hífenes; imutável depois de criado.</span>
   </div>
   <div class="field">
-    <label for="new-chart-title">Título</label>
-    <input id="new-chart-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
+    <label class="form-label" for="new-chart-title">Título</label>
+    <input class="form-control" id="new-chart-title" type="text" name="title" required maxlength="{{ max_title }}" size="60"
      value="{{ values.get('title', '') if values.get('kind') == 'chart' else '' }}">
   </div>
   <div class="field span-2">
-    <label for="new-chart-note">Nota editorial</label>
-    <textarea id="new-chart-note" name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ values.get('note_text', '') if values.get('kind') == 'chart' else '' }}</textarea>
+    <label class="form-label" for="new-chart-note">Nota editorial</label>
+    <textarea class="form-control" id="new-chart-note" name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ values.get('note_text', '') if values.get('kind') == 'chart' else '' }}</textarea>
   </div>
   <div class="field">
-    <label for="new-chart-series-a">Série A</label>
-    <select id="new-chart-series-a" name="series_a" required data-filterable data-filter-label="Filtrar séries da série A">
+    <label class="form-label" for="new-chart-series-a">Série A</label>
+    <select class="form-select" id="new-chart-series-a" name="series_a" required data-filterable data-filter-label="Filtrar séries da série A">
     {{ series_options(choices, values.get('series_a') if values.get('kind') == 'chart' else None, "escolher série") }}
     </select>
   </div>
   <div class="field">
-    <label for="new-chart-series-b">Série B (opcional)</label>
-    <select id="new-chart-series-b" name="series_b" data-filterable data-filter-label="Filtrar séries da série B">
+    <label class="form-label" for="new-chart-series-b">Série B (opcional)</label>
+    <select class="form-select" id="new-chart-series-b" name="series_b" data-filterable data-filter-label="Filtrar séries da série B">
     {{ series_options(choices, values.get('series_b') if values.get('kind') == 'chart' else None, "sem segunda série") }}
     </select>
-    <span class="hint">Tem de ser diferente da série A.</span>
+    <span class="form-hint">Tem de ser diferente da série A.</span>
   </div>
   <div class="field">
-    <label for="new-chart-derived">Série calculada (opcional)</label>
-    <select id="new-chart-derived" name="derived_key" data-filterable data-filter-label="Filtrar séries calculadas">
+    <label class="form-label" for="new-chart-derived">Série calculada (opcional)</label>
+    <select class="form-select" id="new-chart-derived" name="derived_key" data-filterable data-filter-label="Filtrar séries calculadas">
     {{ derived_options(choices, values.get('derived_key') if values.get('kind') == 'chart' else None, "sem série calculada") }}
     </select>
-    <span class="hint">Só em gráfico de série única.</span>
+    <span class="form-hint">Só em gráfico de série única.</span>
   </div>
   <div class="field">
-    <label for="new-chart-window">Janela</label>
-    <select id="new-chart-window" name="window">
+    <label class="form-label" for="new-chart-window">Janela</label>
+    <select class="form-select" id="new-chart-window" name="window">
     {% for w in windows %}<option value="{{ w }}"{% if values.get('kind') == 'chart' and values.get('window') == w %} selected{% endif %}>{{ w }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="new-chart-scale">Escala</label>
-    <select id="new-chart-scale" name="scale">
+    <label class="form-label" for="new-chart-scale">Escala</label>
+    <select class="form-select" id="new-chart-scale" name="scale">
     {% for s in scales %}<option value="{{ s }}"{% if values.get('kind') == 'chart' and values.get('scale') == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
     </select>
   </div>
   <div class="field">
-    <label for="new-chart-day">Dia UTC (opcional)</label>
-    <input id="new-chart-day" type="date" name="day"
+    <label class="form-label" for="new-chart-day">Dia UTC (opcional)</label>
+    <input class="form-control" id="new-chart-day" type="date" name="day"
      value="{{ values.get('day', '') if values.get('kind') == 'chart' else '' }}">
-    <span class="hint">AAAA-MM-DD, só para séries de 15 minutos.</span>
+    <span class="form-hint">AAAA-MM-DD, só para séries de 15 minutos.</span>
   </div>
   <div class="field span-2">
-    <label for="new-chart-reason">Motivo (obrigatório)</label>
-    <input id="new-chart-reason" type="text" name="note" required maxlength="{{ max_text }}" size="50">
+    <label class="form-label" for="new-chart-reason">Motivo (obrigatório)</label>
+    <input class="form-control" id="new-chart-reason" type="text" name="note" required maxlength="{{ max_text }}" size="50">
   </div>
 </div>
 <p class="note">Dois eixos são uma escolha explícita e independente; a comparação não
 estabelece causalidade. Séries diárias como a E-REDES usam um único dia UTC, sem agregação.</p>
-<div class="button-row"><button type="submit" class="button-primary"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</button></div>
+<div class="button-row"><button type="submit" class="btn btn-primary"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</button></div>
 </form>
 </details>
 {% endblock %}

@@ -1,25 +1,49 @@
 {% extends "base.html" %}
 {% block title %}Página inicial no CMS - Prumo backoffice{% endblock %}
 {% block content %}
-<h1>Página inicial no CMS</h1>
-{% if error %}<p class="bad" role="alert">{{ error }}</p>{% endif %}
-<p class="note">O CMS ainda não gere a página inicial. Preparar cria um rascunho privado com a página
-inicial completa que está agora em vigor: abertura e ligações, destaques e cartões, temas,
-cadeia de verificação e instituições publicadas. Nada é publicado e a página pública só muda
-na primeira publicação explícita. A preparação nunca substitui um documento existente nem
-altera as linhas editoriais antigas.</p>
-{% if not available %}
-<p class="bad">O editor está em modo só de leitura: o ponto de escrita não está configurado.
-A preparação e a publicação estão indisponíveis.</p>
-{% else %}
-<form method="post" action="{{ base }}/cms/home/prepare">
-  <p><label>Motivo (obrigatório) <input type="text" name="note" required maxlength="4000"
-   size="55" value="preparar a página inicial"></label></p>
-  <button type="submit">Preparar rascunho da página inicial</button>
-</form>
-{% endif %}
-<p class="note">Depois de preparado, o editor antigo da página inicial fica bloqueado e a
-lista de cartões passa a ser editada no CMS, como qualquer página. Despublicar mostra um
-estado neutro, nunca a lista antiga.</p>
-<p><a href="{{ base }}/cms">Voltar ao CMS</a></p>
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <a href="{{ base }}/cms">Páginas e gráficos</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
+  <span aria-current="page">Página inicial</span>
+</nav>
+<header class="page-head">
+  <div class="page-title">
+    <p class="eyebrow">Preparação</p>
+    <h1>Página inicial no CMS</h1>
+    <p class="page-sub">Preparar cria um rascunho privado a partir da página inicial que está
+    agora em vigor. Nada é publicado e a página pública só muda na primeira publicação
+    explícita.</p>
+  </div>
+</header>
+{% if error %}<div class="alert alert-danger" role="alert"><p>{{ error }}</p></div>{% endif %}
+<div class="card">
+  <div class="card-body">
+    <p class="note">O CMS ainda não gere a página inicial. Preparar cria um rascunho privado com a página
+    inicial completa que está agora em vigor: abertura e ligações, destaques e cartões, temas,
+    cadeia de verificação e instituições publicadas. Nada é publicado e a página pública só muda
+    na primeira publicação explícita. A preparação nunca substitui um documento existente nem
+    altera as linhas editoriais antigas.</p>
+    {% if not available %}
+    <div class="alert alert-warning">
+      <p class="callout-title">Editor em modo só de leitura</p>
+      <p>O ponto de escrita não está configurado. A preparação e a publicação estão indisponíveis.</p>
+    </div>
+    {% else %}
+    <form method="post" action="{{ base }}/cms/home/prepare">
+      <div class="field field-narrow">
+        <label class="form-label" for="home-prepare-note">Motivo (obrigatório)</label>
+        <input class="form-control" id="home-prepare-note" type="text" name="note" required maxlength="4000"
+         size="55" value="preparar a página inicial">
+      </div>
+      <div class="button-row">
+        <button type="submit" class="btn btn-primary"><i class="icon icon-home" aria-hidden="true"></i> Preparar rascunho da página inicial</button>
+      </div>
+    </form>
+    {% endif %}
+    <p class="note">Depois de preparado, o editor antigo da página inicial fica bloqueado e a
+    lista de cartões passa a ser editada no CMS, como qualquer página. Despublicar mostra um
+    estado neutro, nunca a lista antiga.</p>
+    <p class="mb-0"><a class="btn btn-sm btn-ghost-secondary" href="{{ base }}/cms"><i class="icon icon-arrow-left" aria-hidden="true"></i> Voltar ao CMS</a></p>
+  </div>
+</div>
 {% endblock %}

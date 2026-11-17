@@ -16,21 +16,23 @@
   </div>
 </header>
 
-<section class="panel">
-  <div class="panel-head">
-    <h2>Replay now</h2>
-    <span class="badge{% if r.outcome == 'match' %} good{% else %} bad{% endif %}" id="replay-outcome">{{ r.outcome }}</span>
+<section class="card">
+  <div class="card-header">
+    <h2 class="card-title">Replay now</h2>
+    <span class="badge{% if r.outcome == "match" %} bg-success-lt good{% else %} bg-danger-lt bad{% endif %}" id="replay-outcome">{{ r.outcome }}</span>
   </div>
-  <p class="note">Re-reading the archived evidence:
-  <span class="badge{% if r.outcome == 'match' %} good{% else %} bad{% endif %}">{{ r.outcome }}</span></p>
-  {% if r.reason %}<p class="wrap">Reason: <code>{{ r.reason }}</code></p>{% endif %}
-  <p class="note">The verifier's pure re-read of the archived evidence bytes (sha256-checked) must
-  reproduce the stored claim exactly, and the stored comparison is then re-decided. No network,
-  nothing is written.</p>
+  <div class="card-body">
+    <p class="note">Re-reading the archived evidence:
+    <span class="badge{% if r.outcome == "match" %} bg-success-lt good{% else %} bg-danger-lt bad{% endif %}">{{ r.outcome }}</span></p>
+    {% if r.reason %}<p class="wrap">Reason: <code>{{ r.reason }}</code></p>{% endif %}
+    <p class="note mb-0">The verifier's pure re-read of the archived evidence bytes (sha256-checked) must
+    reproduce the stored claim exactly, and the stored comparison is then re-decided. No network,
+    nothing is written.</p>
+  </div>
 </section>
 
 <h2>Stored claim</h2>
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Field</th><th>Expected (pipeline)</th><th>Observed (verifier)</th></tr></thead>
 <tbody>
 <tr><td>series</td><td>{{ i.series_id }}</td><td>{{ i.observed_series_id or "" }}</td></tr>

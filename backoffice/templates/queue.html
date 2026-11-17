@@ -16,12 +16,12 @@
     {% include "_report_age.html" %}.</p>
   </div>
   <div class="page-actions">
-    <a class="button" href="{{ base }}/series"><i class="icon icon-graph-up" aria-hidden="true"></i> Ver séries</a>
+    <a class="btn btn-outline-secondary" href="{{ base }}/series"><i class="icon icon-graph-up" aria-hidden="true"></i> Ver séries</a>
   </div>
 </header>
 
 {% if queue.truncated %}
-<div class="notice notice-warn">
+<div class="alert alert-warning">
   <p class="callout-title"><i class="icon icon-warning" aria-hidden="true"></i> Leitura truncada</p>
   <p>These reads hit their row limit, so their items below may be incomplete:
   {{ queue.truncated | join(", ") }}.</p>
@@ -29,13 +29,13 @@
 {% endif %}
 
 <p class="status-line">
-  <span class="badge">{{ queue.items | length }} itens</span>
-  {% if high %}<span class="badge bad">{{ high }} alta prioridade</span>{% endif %}
-  {% if medium %}<span class="badge muted">{{ medium }} média prioridade</span>{% endif %}
+  <span class="badge bg-secondary-lt">{{ queue.items | length }} itens</span>
+  {% if high %}<span class="badge bg-danger-lt bad">{{ high }} alta prioridade</span>{% endif %}
+  {% if medium %}<span class="badge bg-warning-lt">{{ medium }} média prioridade</span>{% endif %}
 </p>
 
 {% if queue.items %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Severidade</th><th>Tipo</th><th>Referência</th><th>Resumo</th><th>Detalhe</th></tr></thead>
 <tbody>
 {% for i in queue.items %}

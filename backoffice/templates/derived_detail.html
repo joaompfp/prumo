@@ -14,7 +14,7 @@
     <p class="eyebrow">Série calculada</p>
     <h1>{{ s.key }} {% include "_calc_badge.html" %}</h1>
     <p class="page-sub">{% if s.title is not none %}{{ s.title }}{% else %}<span class="muted">no title in the catalog</span>{% endif %}
-    {% if not s.active %}<span class="badge muted">inactive</span>{% endif %}
+    {% if not s.active %}<span class="badge bg-secondary-lt muted">inactive</span>{% endif %}
     &middot; {{ d.total }} served values</p>
   </div>
 </header>
@@ -44,7 +44,7 @@ rows of <code>served_derived</code>: recomputed independently (match), from a ve
 run, every input currently served. Values are the stored text. Inputs link to the base
 series' vintages of that period (current input first).</p>
 {% if d.served %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Period</th><th>Value</th><th>Inputs</th><th>Run</th><th>Computed</th><th class="num">Row</th></tr></thead>
 <tbody>
 {% for o in d.served %}
@@ -65,7 +65,7 @@ series' vintages of that period (current input first).</p>
 recomputation's verdict (<code>match</code> / <code>mismatch</code> / <code>pending</code>);
 only the version the served view returns is served.</p>
 {% if d.versions %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th class="num">Row</th><th>Period</th><th>Value</th><th>Row state</th><th>Run</th>
 <th>Run state</th><th>Served</th><th>Inputs</th><th>Computed</th></tr></thead>
 <tbody>
@@ -87,7 +87,7 @@ only the version the served view returns is served.</p>
 
 <h2 id="execucoes">Derived runs (newest {{ d.runs | length }}, all series)</h2>
 {% if d.runs %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th class="num">Run</th><th>State</th><th>Trigger</th><th>Started</th><th>Finished</th>
 <th>Covers this series</th><th class="num">Written</th><th class="num">Checked</th><th class="num">Mismatch</th></tr></thead>
 <tbody>

@@ -12,8 +12,8 @@
     <p class="eyebrow">Série do registo</p>
     <h1>{{ spec.id }}</h1>
     <p class="page-sub">
-      <span class="badge{% if st.availability == 'legacy-unverified' %} sev-medium{% elif st.stale is not false %} bad{% else %} good{% endif %}">{{ label }}</span>
-      {% if not spec.active %}<span class="badge muted">inactive</span>{% endif %}
+      <span class="badge{% if st.availability == "legacy-unverified" %} sev-medium{% elif st.stale is not false %} bad{% else %} good{% endif %}">{{ label }}</span>
+      {% if not spec.active %}<span class="badge bg-secondary-lt muted">inactive</span>{% endif %}
       {% if d.source.blockers %}<span class="badge sev-info">{{ d.source.blockers | join(", ") }}</span>{% endif %}
       &middot; {{ d.total }} served rows
     </p>
@@ -52,7 +52,7 @@
 {% if inactive_notes %}
 <p class="note">Verbatim lines of the registry notes (registry/unmapped-*.md in git) that name
 this series, with the section they sit in.</p>
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>File</th><th>Section</th><th>Line</th></tr></thead>
 <tbody>
 {% for n in inactive_notes %}
@@ -82,7 +82,7 @@ this series, with the section they sit in.</p>
 <p class="note">Every stored version of this period across runs, oldest first. Only the version
 the served view returns is marked served.</p>
 {% if d.vintages %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Run</th><th>Run state</th><th>Fetched</th><th>Value</th><th>Flag</th><th>Origin</th><th>Served</th></tr></thead>
 <tbody>
 {% for v in d.vintages %}
@@ -107,12 +107,12 @@ the served view returns is marked served.</p>
 failed, pending, legacy) and whether or not the source may be served publicly. Click one for
 all its vintages, or type any period:</p>
 <form method="get" action="#vintages" class="field-inline">
-  <div class="field span-limit"><label for="period-input">Período</label>
-  <input id="period-input" name="period" value="{{ period }}" placeholder="ex.: 2024-03"></div>
-  <button type="submit"><i class="icon icon-history" aria-hidden="true"></i> Show vintages</button>
+  <div class="field field-narrow"><label class="form-label" for="period-input">Período</label>
+  <input class="form-control" id="period-input" name="period" value="{{ period }}" placeholder="ex.: 2024-03"></div>
+  <button type="submit" class="btn btn-outline-secondary"><i class="icon icon-history" aria-hidden="true"></i> Show vintages</button>
 </form>
 {% if d.periods %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Period</th><th class="num">Stored rows</th><th>Served</th></tr></thead>
 <tbody>
 {% for p in d.periods %}
@@ -128,7 +128,7 @@ all its vintages, or type any period:</p>
 <p class="note">{% if d.total > d.observations | length %}newest {{ d.observations | length }} of {{ d.total }} served rows{% else %}{{ d.total }} served rows{% endif %};
 values exactly as the publisher's token. Click a period for its vintages.</p>
 {% if d.observations %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Period</th><th>Value</th><th>Flag</th><th>Origin</th><th>Run</th><th>Fetched</th><th>Payload sha256</th></tr></thead>
 <tbody>
 {% for o in d.observations %}
@@ -149,7 +149,7 @@ values exactly as the publisher's token. Click a period for its vintages.</p>
 
 <h3>Raw fetches ({{ d.raw_fetches | length }})</h3>
 {% if d.raw_fetches %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Fetched</th><th>Run</th><th>HTTP</th><th>sha256</th><th>URL</th></tr></thead>
 <tbody>
 {% for f in d.raw_fetches %}
@@ -162,7 +162,7 @@ values exactly as the publisher's token. Click a period for its vintages.</p>
 
 <h3>Verification items ({{ d.items | length }}{% if d.items | length >= cap %}, newest {{ cap }}{% endif %})</h3>
 {% if d.items %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Item</th><th>Run</th><th>Verified at</th><th>Period</th><th>Expected</th><th>Observed</th>
 <th>Match</th><th>Reason drawn</th><th>Evidence</th></tr></thead>
 <tbody>
@@ -178,7 +178,7 @@ values exactly as the publisher's token. Click a period for its vintages.</p>
 
 <h3>Quarantine ({{ d.quarantine | length }}{% if d.quarantine | length >= cap %}, newest {{ cap }}{% endif %})</h3>
 {% if d.quarantine %}
-<div class="scroll"><table>
+<div class="scroll"><table class="table table-vcenter">
 <thead><tr><th>Created</th><th>Run</th><th>Period</th><th>Raw value</th><th>Reason</th></tr></thead>
 <tbody>
 {% for q in d.quarantine %}

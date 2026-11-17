@@ -33,7 +33,7 @@
       var field = select.parentNode;
       var input = document.createElement("input");
       input.type = "search";
-      input.className = "select-filter";
+      input.className = "select-filter form-control form-control-sm";
       input.autocomplete = "off";
       input.placeholder = select.getAttribute("data-filter-placeholder") || "Filtrar opções";
       input.setAttribute("aria-label", select.getAttribute("data-filter-label") || "Filtrar opções");

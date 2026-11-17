@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>{% block title %}Prumo backoffice{% endblock %}</title>
 <link rel="icon" type="image/svg+xml" href="{{ base }}/static/images/prumo/favicon.svg">
+<link rel="stylesheet" href="{{ base }}/static/vendor/tabler/1.7.5/tabler.min.css">
 <link rel="stylesheet" href="{{ base }}/static/css/admin.css">
 <link rel="stylesheet" href="{{ base }}/static/css/icons.css">
 </head>
@@ -17,13 +18,13 @@
 {% set nav_editorial = nav_path == '/editorial' or nav_path.startswith('/editorial/') %}
 {% set nav_series = nav_path == '/series' or nav_path.startswith('/series/') %}
 {% set nav_derived = nav_path == '/derived' or nav_path.startswith('/derived/') %}
-<div class="shell">
-  <aside class="sidebar">
-    <a class="brand" href="{{ base }}/">
-      <img src="{{ base }}/static/images/prumo/favicon.svg" alt="" width="26" height="26">
-      <span class="brand-text">
-        <span class="brand-word">Prumo</span>
-        <span class="brand-sub">Backoffice</span>
+<div class="bo-shell">
+  <aside class="bo-sidebar">
+    <a class="bo-brand" href="{{ base }}/">
+      <img class="bo-brand-mark" src="{{ base }}/static/images/prumo/favicon.svg" alt="" width="30" height="30">
+      <span class="bo-brand-text">
+        <span class="bo-brand-word">Prumo</span>
+        <span class="bo-brand-sub">Backoffice</span>
       </span>
     </a>
 
@@ -31,31 +32,31 @@
       <div class="nav-group">
         <p class="nav-label" id="nav-conteudo">Conteúdo</p>
         <ul class="nav-list" aria-labelledby="nav-conteudo">
-          <li><a class="nav-link" href="{{ base }}/cms/home"{% if nav_home %} aria-current="page"{% endif %}><i class="icon icon-home" aria-hidden="true"></i><span>Página inicial</span></a></li>
-          <li><a class="nav-link" href="{{ base }}/cms"{% if nav_cms %} aria-current="page"{% endif %}><i class="icon icon-page" aria-hidden="true"></i><span>Páginas e gráficos</span></a></li>
-          <li><a class="nav-link is-legacy" href="{{ base }}/editorial"{% if nav_editorial %} aria-current="page"{% endif %}><i class="icon icon-editorial" aria-hidden="true"></i><span>Editorial</span><span class="tag tag-legacy">legado</span></a></li>
+          <li><a class="nav-link{% if nav_home %} active{% endif %}" href="{{ base }}/cms/home"{% if nav_home %} aria-current="page"{% endif %}><i class="icon icon-home" aria-hidden="true"></i><span>Página inicial</span></a></li>
+          <li><a class="nav-link{% if nav_cms %} active{% endif %}" href="{{ base }}/cms"{% if nav_cms %} aria-current="page"{% endif %}><i class="icon icon-page" aria-hidden="true"></i><span>Páginas e gráficos</span></a></li>
+          <li><a class="nav-link is-legacy{% if nav_editorial %} active{% endif %}" href="{{ base }}/editorial"{% if nav_editorial %} aria-current="page"{% endif %}><i class="icon icon-editorial" aria-hidden="true"></i><span>Editorial</span><span class="badge badge-sm tag-legacy">legado</span></a></li>
         </ul>
       </div>
 
       <div class="nav-group">
         <p class="nav-label" id="nav-dados">Dados</p>
         <ul class="nav-list" aria-labelledby="nav-dados">
-          <li><a class="nav-link" href="{{ base }}/"{% if nav_path == '/' %} aria-current="page"{% endif %}><i class="icon icon-grid" aria-hidden="true"></i><span>Visão geral</span></a></li>
-          <li><a class="nav-link" href="{{ base }}/queue"{% if nav_path == '/queue' %} aria-current="page"{% endif %}><i class="icon icon-queue" aria-hidden="true"></i><span>Fila de revisão</span></a></li>
-          <li><a class="nav-link" href="{{ base }}/series"{% if nav_series %} aria-current="page"{% endif %}><i class="icon icon-graph-up" aria-hidden="true"></i><span>Séries</span></a></li>
-          <li><a class="nav-link" href="{{ base }}/derived"{% if nav_derived %} aria-current="page"{% endif %}><i class="icon icon-calculator" aria-hidden="true"></i><span>Calculadas</span></a></li>
+          <li><a class="nav-link{% if nav_path == '/' %} active{% endif %}" href="{{ base }}/"{% if nav_path == '/' %} aria-current="page"{% endif %}><i class="icon icon-grid" aria-hidden="true"></i><span>Visão geral</span></a></li>
+          <li><a class="nav-link{% if nav_path == '/queue' %} active{% endif %}" href="{{ base }}/queue"{% if nav_path == '/queue' %} aria-current="page"{% endif %}><i class="icon icon-queue" aria-hidden="true"></i><span>Fila de revisão</span></a></li>
+          <li><a class="nav-link{% if nav_series %} active{% endif %}" href="{{ base }}/series"{% if nav_series %} aria-current="page"{% endif %}><i class="icon icon-graph-up" aria-hidden="true"></i><span>Séries</span></a></li>
+          <li><a class="nav-link{% if nav_derived %} active{% endif %}" href="{{ base }}/derived"{% if nav_derived %} aria-current="page"{% endif %}><i class="icon icon-calculator" aria-hidden="true"></i><span>Calculadas</span></a></li>
         </ul>
       </div>
     </nav>
 
-    <div class="sidebar-foot">
-      {% if public_url %}<a class="site-link" href="{{ public_url }}"><i class="icon icon-external" aria-hidden="true"></i><span>Ver site público</span></a>{% endif %}
+    <div class="bo-sidebar-foot">
+      {% if public_url %}<a class="site-link btn btn-outline-secondary btn-sm" href="{{ public_url }}"><i class="icon icon-external" aria-hidden="true"></i><span>Ver site público</span></a>{% endif %}
       <p class="quiet">Leitura apenas, exceto CMS e Editorial.</p>
     </div>
   </aside>
 
-  <div class="main-col">
-    <main id="conteudo" class="main">
+  <div class="bo-main">
+    <main id="conteudo" class="bo-content">
 {% block content %}{% endblock %}
     </main>
   </div>
