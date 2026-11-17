@@ -1,7 +1,8 @@
 /* Prumo public presentation. Shared identity with the editorial workspace;
    lightweight summaries, local interactive charts only on analytical pages.
-   Type scale: the 25.5px root preserves the approved 1.5x minimum for every
-   rem-based role. Fixed SVG and canvas chart labels are enlarged separately. */
+   Type scale: the 28.05px root is a further 10 percent over the approved 25.5px
+   legibility release, so every rem-based role grows with it. Fixed SVG and canvas
+   chart labels, their margins and clamps are enlarged by the same scale. */
 
 :root {
   --paper: #f6f4f1;
@@ -33,7 +34,7 @@
 
 * { box-sizing: border-box; }
 
-html { font-size: 25.5px; }
+html { font-size: 28.05px; }
 
 body {
   margin: 0;
@@ -53,8 +54,8 @@ h1, h2, h3 {
   margin: 0;
   overflow-wrap: anywhere;
 }
-h1 { font-size: clamp(2.1rem, 6.9vw, 3.3rem); }
-h2 { font-size: clamp(1.35rem, 3.6vw, 1.75rem); }
+h1 { font-size: clamp(2.1rem, 7.6vw, 3.3rem); }
+h2 { font-size: clamp(1.35rem, 4vw, 1.75rem); }
 h3 { font-size: 1.15rem; }
 
 p { margin: 0 0 1rem; }
@@ -319,7 +320,7 @@ section { margin: 80px 0; }
   margin-bottom: 3px; font-weight: 600; text-transform: none;
 }
 .figure-value {
-  font-size: clamp(2.4rem, 7.5vw, 3.2rem); font-weight: 700; letter-spacing: -0.02em;
+  font-size: clamp(2.4rem, 8.25vw, 3.2rem); font-weight: 700; letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums lining-nums; line-height: 1.02; margin: 0;
   overflow-wrap: anywhere;
 }
@@ -333,12 +334,12 @@ section { margin: 80px 0; }
 .chart-zero { stroke: var(--ink); stroke-opacity: .38; stroke-width: 1.7; }
 /* SVG text is drawn in user units, so these values must scale with the plot margins in
    app/chart_model.py. At the rendered desktop width they remain above the 1.5x floor. */
-.chart-tick { fill: var(--muted); font-family: var(--sans); font-size: 16.5px; font-variant-numeric: tabular-nums; }
-.chart-axis-title { fill: var(--ink); font-family: var(--sans); font-size: 18px; font-weight: 600; }
+.chart-tick { fill: var(--muted); font-family: var(--sans); font-size: 18.15px; font-variant-numeric: tabular-nums; }
+.chart-axis-title { fill: var(--ink); font-family: var(--sans); font-size: 19.8px; font-weight: 600; }
 .chart-line { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; }
 .chart-point { fill: transparent; }
 .chart-last { fill: var(--accent); }
-.chart-last-label { fill: var(--accent); font-family: var(--sans); font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.chart-last-label { fill: var(--accent); font-family: var(--sans); font-size: 19.8px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .chart-empty { color: var(--muted); font-style: italic; }
 .chart-figure figcaption { font-size: .8rem; color: var(--muted); margin-top: 12px; max-width: 78ch; }
 
@@ -465,14 +466,16 @@ section { margin: 80px 0; }
   .hero { padding: 64px 0 40px; }
   .figure-block { padding: 24px; }
   .figure-meta { padding-left: 0; }
+  /* The enlarged labelled search no longer fits beside the brand here. Give it its own
+     full-width row instead of shrinking its field, button text or type role. */
+  .search { grid-column: 1 / -1; grid-row: 3; width: 100%; }
+  .search input { flex: 1; min-width: 0; }
   /* The full-detail table keeps its publisher strings; the table itself scrolls, the page does not. */
   .data-table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; }
 }
 
 @media (max-width: 760px) {
   .cards, .themes { grid-template-columns: 1fr; }
-  .search { grid-column: 1 / -1; grid-row: 3; width: 100%; }
-  .search input { flex: 1; min-width: 0; }
   .nav-disclosure { display: block; grid-row: 2; }
   .site-nav-desktop { display: none; }
   /* Fallback for a base template that has not yet replaced the desktop nav with the
@@ -491,7 +494,7 @@ section { margin: 80px 0; }
   /* No JavaScript: the server SVG keeps a readable fixed label scale and the wrapper scrolls.
      Once the canvas adapter has painted, the same chart fits the viewport for full-width
      pointer and touch selection; the canvas labels are real CSS pixels, not scaled user units. */
-  .chart-wrap { min-width: 600px; min-height: 240px; }
+  .chart-wrap { min-width: 660px; min-height: 264px; }
   .chart-enhanced .chart-wrap { min-width: 0; }
 }
 
@@ -555,7 +558,7 @@ section { margin: 80px 0; }
 .chart-last-g3 { fill: var(--chart-series-4); }
 .chart-last-g4 { fill: var(--chart-series-5); }
 .chart-last-g5 { fill: var(--chart-series-6); }
-.chart-axis-label { fill: var(--muted); font-family: var(--sans); font-size: 16.5px; }
+.chart-axis-label { fill: var(--muted); font-family: var(--sans); font-size: 18.15px; }
 .legend {
   list-style: none; display: flex; flex-wrap: wrap; gap: 8px 26px; margin: 14px 0 0;
   padding: 0; font-size: .9rem;

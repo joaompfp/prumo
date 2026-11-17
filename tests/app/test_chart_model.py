@@ -1,8 +1,10 @@
 """Chart preparation and the geometry shared by SVG and canvas.
 
 Goldens were deliberately recaptured for the approved 50 percent legibility pass: wider
-label margins and inward endpoint anchors. Original captures remain in golden/pre_legibility.
-Every point/title/tick text is compared unchanged in the versioned golden-deltas receipt.
+label margins and inward endpoint anchors. The 2026-11-17 typography increment recaptured
+the same cases again for the further 10 percent label role and gutter scale. Original
+captures remain in golden/pre_legibility. Every point/title/tick text is identical in both
+captures and in the versioned golden-deltas receipt.
 """
 import math
 from pathlib import Path

@@ -151,7 +151,7 @@ function optionFor(payload, width, activePoint) {
     g5: { color: css('--chart-series-6', '#0b6b6b'), type: [1, 4] },
   };
   const scale = width / VIEW_W;
-  const right = payload.axes.length > 1 ? 156 : 30;
+  const right = payload.axes.length > 1 ? 172 : 33;
 
   const yAxis = payload.axes.map((axis, index) => ({
     type: 'value',
@@ -161,11 +161,11 @@ function optionFor(payload, width, activePoint) {
     position: index === 0 ? 'left' : 'right',
     name: axis.unit,
     nameLocation: 'end',
-    nameGap: 12 * scale,
+    nameGap: 13 * scale,
     nameTextStyle: {
       color: muted,
       fontFamily: sans,
-      fontSize: 18,
+      fontSize: 19.8,
       // Both names end on their axis. A name that starts at the right axis has to fit inside
       // `grid.right`, and ECharts 6 shrinks the whole plot when it cannot: at 390px the long
       // "milhões de euros" would take a quarter of the canvas and move every point under the
@@ -181,7 +181,7 @@ function optionFor(payload, width, activePoint) {
     axisLabel: {
       color: muted,
       fontFamily: sans,
-      fontSize: 16.5,
+      fontSize: 18.15,
       customValues: axis.ticks.map((tick) => tick.value),
       formatter: (value) => tickText(axis.ticks, value),
     },
@@ -198,7 +198,7 @@ function optionFor(payload, width, activePoint) {
     axisLabel: {
       color: muted,
       fontFamily: sans,
-      fontSize: 16.5,
+      fontSize: 18.15,
       hideOverlap: true,
       customValues: payload.x_ticks.map((tick) => tick.x),
       formatter: (value) => xText(payload.x_ticks, value),
@@ -247,10 +247,10 @@ function optionFor(payload, width, activePoint) {
   return {
     animation: false,
     grid: {
-      left: 88 * scale,
+      left: 97 * scale,
       right: right * scale,
-      top: 28 * scale,
-      bottom: 62 * scale,
+      top: 31 * scale,
+      bottom: 68 * scale,
       containLabel: true,
     },
     xAxis,
@@ -265,7 +265,7 @@ function optionFor(payload, width, activePoint) {
       borderColor: rule,
       borderWidth: 1,
       padding: [10, 12],
-      textStyle: { color: ink, fontFamily: sans, fontSize: 18, lineHeight: 27 },
+      textStyle: { color: ink, fontFamily: sans, fontSize: 19.8, lineHeight: 29.7 },
       axisPointer: {
         type: 'line',
         lineStyle: { color: rule, width: 1 },

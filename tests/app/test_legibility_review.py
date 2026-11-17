@@ -10,8 +10,9 @@ from tests.app.conftest import HICP, UNEMP
 
 
 def ticks(svg):
+    baseline = str(chart_model.HEIGHT - 20)
     return [node for node in ET.fromstring(svg).iter()
-            if node.tag.endswith('text') and node.attrib.get('y') == '322']
+            if node.tag.endswith('text') and node.attrib.get('y') == baseline]
 
 
 def test_monthly_endpoint_labels_grow_inwards_instead_of_clipping():

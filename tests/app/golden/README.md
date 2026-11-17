@@ -1,6 +1,17 @@
 # Reviewed presentation fixtures
 
-The approved 2026-11-17 legibility release deliberately recaptures `home_code_list.html`
+The 2026-11-17 typography increment deliberately recaptured `charts/*.svg` once more over
+the legibility release: the axis tick role moved from 16.5 to 18.15 user units, axis names
+and last-value labels from 18 to 19.8, and the plot margins from 88/30/28/62 to 97/33/31/68
+(the dual right gutter from 156 to 172). Every point, title, tick and legend text is
+unchanged; only coordinate attributes differ. `home_code_list.html` and
+`home_before_editorial.html` are unaffected (the home render carries no chart labels and
+its CSS is external). All previous bytes stay in `pre_legibility/`; the earlier legibility
+before/after hashes remain in
+`docs/superpowers/handoff/reports/legibility-notebook/golden-deltas.json`, and this narrow
+delta is recorded in `docs/superpowers/handoff/reports/legibility-release/type-increment.md`.
+
+The approved 2026-11-17 legibility release deliberately recaptured `home_code_list.html`
 and `charts/*.svg` against the same deterministic fixtures. Deltas: local font links,
 native mobile navigation, Caderno entry, wrappable number grouping, wider SVG label margins
 and inward endpoint anchors. No fixture observations, point/title/tick text or publisher

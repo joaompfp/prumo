@@ -23,26 +23,26 @@ from app.formatting import (
 )
 
 WIDTH, HEIGHT = 880, 340
-# Margins were enlarged with the readable SVG type scale. The left gutter must hold a
-# publisher value such as "1 000 000" at 16.5 user units without clipping; the top gutter
-# holds the 18-unit axis name.
-LEFT, RIGHT, TOP, BOTTOM = 88, 30, 28, 62
-RIGHT_DUAL = 156
+# Margins grew with the 18.15-unit axis label role. The left gutter must hold a
+# publisher value such as "1 000 000" at 18.15 user units without clipping; the top
+# gutter holds the 19.8-unit axis name. These values match the adapter's canvas grid.
+LEFT, RIGHT, TOP, BOTTOM = 97, 33, 31, 68
+RIGHT_DUAL = 172
 
 
-def _text_width(text: str) -> int:
-    """A conservative SVG text width at the 16.5-unit axis type scale.
+def _text_width(text: str) -> float:
+    """A conservative SVG text width at the 18.15-unit axis type scale.
 
-    Digits are close to 9 units in Lato tabular; spaces and punctuation are narrower. This is
-    an estimate for margin allocation only; it never formats or rounds a reader value.
+    Digits are close to 9.9 units in Lato tabular; spaces and punctuation are narrower.
+    This is an estimate for margin allocation only; it never formats or rounds a value.
     """
-    return sum(9 if char.isdigit() else 5 for char in text)
+    return sum(9.9 if char.isdigit() else 5.5 for char in text)
 
 
 def _left_gutter(texts: list[str], width: int, right: int) -> int:
     """Grow the left gutter for long publisher values, leaving at least 200 units of plot."""
-    needed = max((_text_width(text) for text in texts), default=0) + 12
-    return max(LEFT, min(needed, width - right - 200))
+    needed = max((_text_width(text) for text in texts), default=0) + 13
+    return int(round(max(LEFT, min(needed, width - right - 200))))
 
 
 def calendar_position(period: str, frequency: str) -> float:
@@ -316,7 +316,7 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
     name = title + (f" ({unit})" if unit else "")
     last_x, last_y = prepared[-1].x, prepared[-1].y
     lx, ly = round(last_x, 1), round(last_y, 1)
-    anchor = "end" if lx > width - 40 else "middle"
+    anchor = "end" if lx > width - 44 else "middle"
     return LineChartModel(
         kind="line", title=title, unit=unit,
         display_unit=unit if display_unit is None else display_unit,
@@ -329,8 +329,8 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
                       for i, text in x_labels(periods, frequency)),
         lo=lo, hi=hi, interval=axis_interval(nice, lo, hi),
         last_x=last_x, last_y=last_y, last_label=format_value(values[-1][2]),
-        last_anchor=anchor, last_dx=-8 if anchor == "end" else 0,
-        last_label_y=float(ly - 18 if ly - 18 >= TOP + 10 else ly + 26))
+        last_anchor=anchor, last_dx=-9 if anchor == "end" else 0,
+        last_label_y=float(ly - 20 if ly - 20 >= TOP + 11 else ly + 29))
 
 
 @dataclass(frozen=True)
@@ -470,10 +470,10 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
 
     last = prepared[-1]
     lx = round(last.x, 1)
-    anchor = "end" if lx > width - right - 40 else "middle"
+    anchor = "end" if lx > width - right - 44 else "middle"
 
     def label_y(y: float) -> float:
-        return float(y - 18 if y - 18 >= TOP + 10 else y + 26)
+        return float(y - 20 if y - 20 >= TOP + 11 else y + 29)
 
     # Pair marks keep their reviewed selection: A always, B only when the two points are far
     # enough apart. A group keeps the first label and suppresses any later label whose actual
@@ -483,10 +483,10 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
     for index, style in enumerate(styles):
         candidate = last.values[index]
         if pair:
-            too_close = bool(marks) and abs(candidate.y - marks[-1].y) < 30
+            too_close = bool(marks) and abs(candidate.y - marks[-1].y) < 33
         else:
             text_y = label_y(candidate.y)
-            too_close = any(abs(text_y - mark.label_y) < 22 for mark in marks)
+            too_close = any(abs(text_y - mark.label_y) < 24 for mark in marks)
         if too_close:
             continue
         marks.append(LastMark(y=candidate.y, label=candidate.value_display, suffix=style,
@@ -507,7 +507,7 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
         x_ticks=tuple(XTick(index=i, ordinal=ordinals[i], x=xs[i], text=text)
                       for i, text in x_labels(periods, frequency)),
         breaks=break_indices(ordinals, expected_step(periods, frequency)),
-        last_x=last.x, last_anchor=anchor, last_dx=-6 if anchor == "end" else 0,
+        last_x=last.x, last_anchor=anchor, last_dx=-7 if anchor == "end" else 0,
         marks=prepared_marks, styles=styles)
 
 

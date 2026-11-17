@@ -1,8 +1,8 @@
 {
   "asset": "js/prumo-charts.min.js",
-  "sha256": "debf2758f06efd3ec451bc4972d5bfc38c66e954f85bb352cdb3c3fc957b4e1d",
-  "bytes": 506595,
-  "gzip_bytes": 173122,
+  "sha256": "63e097d47963d48d78cc19008e6e2bac724ff6a20c26591f5a8276a91c91cc3d",
+  "bytes": 506603,
+  "gzip_bytes": 173132,
   "gzip_method": "zlib level 9, mtime=0 (local measurement, not a transfer claim)",
   "echarts": "6.1.0",
   "zrender": "6.1.0",

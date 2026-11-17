@@ -48,7 +48,7 @@ def test_font_stylesheet_is_local_and_covers_regular_semibold_bold():
 
 def test_public_root_and_wrap_support_the_approved_scale():
     css = (ROOT / "static" / "css" / "prumo.css").read_text()
-    assert "html { font-size: 25.5px; }" in css
+    assert "html { font-size: 28.05px; }" in css
     assert "--wrap: 1240px;" in css
     assert '--sans: "Lato",' in css
     assert '--serif: "TeX Gyre Schola",' in css
@@ -70,17 +70,17 @@ def test_public_fixed_role_tokens_meet_the_one_and_a_half_floor():
         ".site-footer p {", "font-size: .82rem",        # 13.94 -> 20.91
     ):
         assert token in css, token
-    assert "font-size: 16.5px" in css                     # SVG ticks, 11 -> 16.5
-    assert "font-size: 18px" in css                       # SVG axis/last labels, 12 -> 18
-    assert "min-width: 600px; min-height: 240px;" in css
+    assert css.count("font-size: 18.15px") == 2           # SVG ticks, 16.5 -> 18.15
+    assert css.count("font-size: 19.8px") == 2            # SVG axis/last labels, 18 -> 19.8
+    assert "min-width: 660px; min-height: 264px;" in css
     assert ".chart-enhanced .chart-wrap { min-width: 0; }" in css
 
 
 def test_admin_root_sidebar_and_record_stack_follow_the_approved_scale():
     css = (ROOT / "static" / "css" / "admin.css").read_text()
-    assert "html { font-size: 24px; }" in css
-    assert "font: 400 0.875rem/1.5 var(--sans);" in css    # 21px body
-    assert "--sidebar: 300px;" in css
+    assert "html { font-size: 26.4px; }" in css
+    assert "font: 400 0.875rem/1.5 var(--sans);" in css    # 23.1px body
+    assert "--sidebar: 330px;" in css
     assert ".cms-table > tbody > tr > td::before" in css
     assert "content: attr(data-label)" in css
     assert ".bo-menu { display: block; }" in css
