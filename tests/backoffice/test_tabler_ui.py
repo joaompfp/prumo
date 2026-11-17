@@ -46,6 +46,11 @@ def test_editor_publication_dates_are_readable_and_preserve_machine_time(tmp_pat
     assert re.search(r"\d{2}/\d{2}/\d{4}, \d{2}:\d{2} UTC", visible)
 
 
+def test_small_neutral_badges_override_tabler_utility_colour():
+    css = (ROOT / "static/css/admin.css").read_text()
+    assert ".badge.bg-secondary-lt { color: var(--muted) !important; }" in css
+
+
 def test_tabler_is_pinned_local_and_loads_before_prumo_styles(env):
     html = env.client().get("/").text
     links = _stylesheets(html)

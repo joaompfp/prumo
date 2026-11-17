@@ -337,6 +337,8 @@ hr { border-color: var(--line); opacity: 1; }
 .badge.good { color: var(--success); }
 .badge.bad { color: var(--danger); }
 .badge.muted { color: var(--muted); }
+/* Tabler's light badge utility uses !important; keep small status text above AA contrast. */
+.badge.bg-secondary-lt { color: var(--muted) !important; }
 .sev-high { color: var(--danger); background: var(--danger-soft); font-weight: 650; }
 .sev-medium { color: var(--warning); background: var(--warning-soft); }
 .sev-info { color: var(--info); background: var(--info-soft); }
