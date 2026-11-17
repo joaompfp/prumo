@@ -1,22 +1,42 @@
 # Prumo image and ingestion operations
 
-## Current product release contract (2026-11-17)
+## Current homepage/UI extension: branch only
 
-Production remains on schema 0018 and the web code released as 9001113 (release record
-c9a2e5f). The statistics CMS, public Admin routing and ECharts implementation are on the
-development branch, not installed. The current operator guide and combined 0019 migration
-release/rollback contract are [cms.md](cms.md); edge preparation is
-[README-admin.md](../../deploy/README-admin.md). The complete branch is NOT a web-only or
-backoffice-only release: migration 0019 requires worker, web and backoffice in that order,
-plus an independently authorized shared-edge update. Old code rollback also needs the
-pre-migration database. Do not follow an older slice's code-only rollback for this release.
+The complete current homepage is implemented as CMS content on pipeline-rebuild, runtime source a291e7f (comment-equivalent to tested executable0d004e2), not installed. The approved scope is implementation; a new release still needs owner authorization for public web and backoffice plus audited initial home publication. No schema migration, worker restart, data-directory ownership change or shared-edge reload is needed. Both apps must be upgraded BEFORE new block content is published. Follow the single authoritative procedure in [cms.md](cms.md), "Homepage and UI extension", including the stdin helper invocation and rollback limitations for old code. Evidence: [home CMS/UI acceptance](../superpowers/handoff/reports/home-cms-ui/README.md).
 
-The exact-path Authelia rule challenges visitors with two-factor authentication; owner-only
-authorization is enforced inside the app using a verified proxy secret and Remote-User
-allowlist. The first real public login and publication, edge transfer encoding and human
-screen-reader acceptance have not run. Source rights, DGEG blockers and the real worker
-observation remain separate from CMS acceptance. Operational write actions are not part of
-the CMS; the next free migration after 0019 is 0020.
+Production remains the installed baseline described below. Do not apply its historical combined-migration procedure to this schema-unchanged extension.
+
+## Installed product baseline (2026-11-17)
+
+Application release installed 2026-11-17 at 01:45 UTC: runtime code f493045,
+schema0019, worker then public web then backoffice. Fresh controller suite2580 passed,
+7 deselected, ruff clean; hosted CI43996469531 passed on that SHA. Three containers running,
+zero restarts, both public health routes200. The recovery copy is on f0nix at
+/home/joao/prumo-operations/cms-release-20261117T012653Z/prumo-pre-0019.sqlite3
+(217,403,392 bytes, schema0018, integrity ok, zero FK violations). Old code c9a2e5f and
+all three previous images are recorded and pinned. BPstat/E-REDES/FRED collection resumed;
+E-REDES added291 observations, so scheduled runtime changes must not be mistaken for
+CMS writes or claimed unchanged.
+
+Admin activation completed at 01:58:12 UTC after renewed owner approval, through
+`bash -lic 'dc-core restart traefik'`. All 54 routers are enabled, including
+`prumo-admin@file`. The anonymous Admin request receives the Authelia login redirect locally
+and from f0nix through the public IPv4 address. The direct backoffice still returns 401;
+all 17 internal access/CSRF checks passed. The technical CMS trial completed 28 checks,
+including public readback on both prefixes, private-draft isolation, stale-form refusal,
+restore and final unpublication of the page/chart; the database retains 9 audit events.
+This was a trusted internal-proxy probe, NOT a real human Authelia login. The browser
+showed the Authelia login portal; owner login/publication acceptance remains open.
+
+The combined migration release/rollback contract is [cms.md](cms.md); edge details are
+[README-admin.md](../../deploy/README-admin.md). Rollback needs old code AND the pre0019
+DB, with writers stopped. Current resume details and exact image/start times are in
+[HANDOFF](../superpowers/handoff/HANDOFF.md). Live chart inspection verified the canvas,
+keyboard period selection and exact readout; the installed local bundle returned gzip,
+179,641 wire-body bytes. This scoped smoke test does not repeat the full development browser
+matrix. Human owner/screen-reader acceptance and separate rights/DGEG/worker-observation
+obligations remain open. Operational data-write actions stay outside CMS; next free migration
+0020. See [production activation](../superpowers/handoff/reports/statistics-cms/production-activation.md).
 
 ## Historical pipeline deployment and operating procedures
 

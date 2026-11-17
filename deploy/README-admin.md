@@ -1,7 +1,13 @@
 # Public Admin entry: versioned preparation, deployment and rollback
 
-Status: **prepared, not deployed.** This repository change does not touch the live edge, the
-live Authelia configuration, DNS or any running container. The owner gates the release.
+Status 2026-11-17: **installed and publicly routed.** The owner renewed approval and
+`bash -lic 'dc-core restart traefik'` completed at 01:58:12 UTC. All 54 routers are enabled,
+including `prumo-admin@file`. The exact Admin path redirects anonymous visitors to Authelia;
+the same challenge was verified from f0nix through the public IPv4 address, not Tailscale.
+The direct backoffice port remains locked. Technical CMS publication/readback/unpublication
+passed through the trusted internal proxy; this does not claim a human Authelia login.
+Owner browser acceptance and human screen-reader acceptance remain open. See the
+[production activation receipt](../docs/superpowers/handoff/reports/statistics-cms/production-activation.md).
 
 This guide describes the authentication/routing slice only. The complete statistics CMS branch
 also includes migration 0019; its combined release must follow `docs/data/cms.md` and the
@@ -142,9 +148,11 @@ router exists. A mistake costs a 401 on a private service, not an open Admin pag
 7. **Install the dynamic router** by copying `deploy/traefik-prumo-admin.yml` to
    `stacks/core/appdata/traefik2/rules/f3nix/router-prumo-admin.yml`. Keep the file watch on
    and confirm Traefik accepted it without dropping the existing `/dados` route. Inspect the
-   Traefik log for a template/parse error before trusting the route: the file-provider Go
-   template is rendered before YAML parsing, so a missing environment value or a malformed
-   expression leaves the router absent rather than half-configured.
+   Traefik log for a template/parse error before trusting the route. A missing environment
+   value renders an empty injected header; the router can still exist, but the backoffice
+   in proxy mode refuses it with 401. A malformed template or YAML leaves the router absent.
+   Verify both the route and a live authenticated request rather than inferring readiness
+   from successful template parsing.
 8. **Owner acceptance** in a browser: open `https://joao.date/dados/admin/`, complete
    Authelia, navigate every section, submit a harmless editorial form, and confirm the URL
    stays below `/dados/admin/`. Then verify a direct tailnet request and a forged

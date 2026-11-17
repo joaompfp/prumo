@@ -1,0 +1,12 @@
+{
+  "baseline": "0d004e2",
+  "changed_runtime_paths": [
+    "backoffice/cms_routes.py"
+  ],
+  "ast_equal": true,
+  "old_sha256": "ac395c0564c0cc6d4894c3beecdb59b1e0c6eaa4d91b6aa97056d88562bdf728",
+  "new_sha256": "1958a601ec3a809ebf2d73c4dc95c20e988cbb33a7aa957dd917e589742fdf62",
+  "other_runtime_assets_and_tests_unchanged": true,
+  "focused_after_comment_fix": "57 passed, 1 warning in 33.93s",
+  "full_suite_actual": "2665 passed, 1 failed (SQL scanner matched prose), 7 deselected, 3 warnings in 1291.67s"
+}

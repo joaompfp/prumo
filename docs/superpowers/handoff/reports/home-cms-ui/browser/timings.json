@@ -1,0 +1,29 @@
+{
+  "concurrent_full_suite": true,
+  "routes": {
+    "/": {
+      "n": 10,
+      "median_ms": 92.09,
+      "max_ms": 104.41,
+      "html_bytes": 17274
+    },
+    "/dados/": {
+      "n": 10,
+      "median_ms": 92.75,
+      "max_ms": 195.89,
+      "html_bytes": 17484
+    },
+    "/dados/admin/cms": {
+      "n": 10,
+      "median_ms": 2000.69,
+      "max_ms": 3308.24,
+      "html_bytes": 414594
+    },
+    "/dados/admin/cms/page/inicio": {
+      "n": 10,
+      "median_ms": 2192.62,
+      "max_ms": 2321.32,
+      "html_bytes": 3911160
+    }
+  }
+}
