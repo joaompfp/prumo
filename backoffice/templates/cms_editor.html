@@ -8,27 +8,21 @@
   <a href="{{ base }}/cms">Páginas e gráficos</a><i class="icon icon-chevron-right" aria-hidden="true"></i>
   <span aria-current="page">{% if is_home is defined and is_home %}Página inicial{% else %}{{ doc.title or slug }}{% endif %}</span>
 </nav>
-<header class="page-head">
+<header class="page-head editor-head">
   <div class="page-title">
-    <p class="eyebrow">{% if is_home is defined and is_home %}Página inicial{% elif kind == "page" %}Página CMS{% else %}Gráfico CMS{% endif %}</p>
-    <h1>{{ doc.title or "(sem título)" }} <span class="muted mono">{{ kind }}/{{ slug }}</span></h1>
-    <p class="page-sub">Versão {{ meta.version }}.
-    {% if meta.published_revision_id %}Em direto: revisão {{ meta.published_revision_id }}{% if published_at %} desde {{ published_at }}{% endif %}.{% else %}Ainda não publicado.{% endif %}
-    O editor altera apenas o rascunho; publicar substitui a versão em direto e fica na auditoria.</p>
-    <p class="head-badges">
-      <span class="badge">{{ "Página" if kind == "page" else "Gráfico" }}</span>
-      <span class="badge">versão {{ meta.version }}</span>
-      {% if meta.published_revision_id %}<span class="badge good"><i class="icon icon-check" aria-hidden="true"></i> Em direto</span>{% else %}<span class="badge muted">Só rascunho</span>{% endif %}
-      {% if is_home is defined and is_home %}<span class="badge good"><i class="icon icon-home" aria-hidden="true"></i> Página inicial</span>{% endif %}
+    <h1 class="editor-title">{{ doc.title or "(sem título)" }}</h1>
+    <p class="editor-status">
+      <span class="mono">{{ kind }}/{{ slug }}</span>
+      <span class="status-sep" aria-hidden="true">|</span>
+      <span>Versão {{ meta.version }}</span>
+      <span class="status-sep" aria-hidden="true">|</span>
+      {% if meta.published_revision_id %}<span>Em direto: revisão {{ meta.published_revision_id }}{% if published_at %} desde {{ published_at }}{% endif %}</span>{% else %}<span>Só rascunho, ainda não publicado</span>{% endif %}
     </p>
   </div>
   <div class="page-actions">
     <a class="button" href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar rascunho</a>
-    <a class="button button-quiet" href="{{ base }}/cms"><i class="icon icon-arrow-left" aria-hidden="true"></i> Páginas e gráficos</a>
   </div>
 </header>
-<p class="note">A pré-visualização estática com os dados e a composição da página pública, sem scripts.
-O rascunho não está em direto; guardar não publica.</p>
 {% if error %}<div class="notice notice-warn"><p class="bad" role="alert">{{ error }}</p></div>{% endif %}
 
 {% if usages %}
@@ -49,26 +43,32 @@ O rascunho não está em direto; guardar não publica.</p>
 </section>
 {% endif %}
 
-<nav class="section-nav" aria-label="Nesta página">
+<nav class="section-nav editor-jumps" aria-label="Nesta página">
   <a href="#rascunho">Rascunho</a>
   <a href="#publicacao">Publicação</a>
   <a href="#historico">Histórico</a>
   <a href="#auditoria">Auditoria</a>
 </nav>
 
-<div class="section-head">
-  <h2 id="rascunho">Rascunho</h2>
-  <p class="section-note">{% if is_home is defined and is_home %}<a href="{{ base }}/cms/home">Gerir entrada da página inicial</a>{% endif %}</p>
-</div>
-<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/save" data-dirty-watch>
+<form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/save" data-dirty-watch class="editor-form" id="rascunho" aria-label="Rascunho">
 <input type="hidden" name="version" value="{{ form_version }}">
+<div class="draft-toolbar">
+  <div class="field draft-reason">
+    <label for="draft-note">Motivo (obrigatório)</label>
+    <input id="draft-note" type="text" name="note" required maxlength="{{ max_text }}" size="50" value="{{ values.note if values is defined and values.note is defined else '' }}">
+    <span class="hint">Fica na auditoria; guardar não publica.</span>
+  </div>
+  <button type="submit" class="button-primary draft-save" name="op" value="save"><i class="icon icon-edit" aria-hidden="true"></i> Guardar rascunho</button>
+</div>
 
 {% if kind == 'page' %}
 {% set blocks = doc.blocks if doc.blocks is defined else [] %}
+{% set block_kind_labels = {"text": "Texto", "heading": "Título de secção", "hero": "Cabeçalho de abertura", "themes": "Diretório de temas", "verification": "Cadeia de verificação", "sources": "Instituições publicadas", "card": "Cartão de série", "chart": "Gráfico"} %}
 <input type="hidden" name="block_count" value="{{ blocks | length }}">
 
-<fieldset>
-<legend>Identidade da página</legend>
+<details class="identity-card"{% if (not (is_home is defined and is_home)) or error %} open{% endif %}>
+<summary><span class="identity-title">Identidade da página</span> <span class="identity-summary-note">título, introdução e secção</span></summary>
+<div class="card-body">
 <div class="form-grid">
   <div class="field span-2">
     <label for="doc-title">Título</label>
@@ -86,7 +86,8 @@ O rascunho não está em direto; guardar não publica.</p>
     </select>
   </div>
 </div>
-</fieldset>
+</div>
+</details>
 
 <div class="section-head">
   <h2>Blocos <span class="muted">({{ blocks | length }})</span></h2>
@@ -94,8 +95,10 @@ O rascunho não está em direto; guardar não publica.</p>
 </div>
 {% for b in blocks %}
 {% set i = loop.index0 %}
-<fieldset class="block-card" data-block data-block-type="{{ b.type }}">
-<legend>Bloco {{ loop.index }} <span class="tag">{{ b.type }}</span></legend>
+{% set snippet = b.get('title') or b.get('text') or b.get('label') or b.get('chart_slug') or b.get('series_id') or '' %}
+<details class="block-card" data-block data-block-type="{{ b.type }}"{% if loop.first %} open{% endif %}>
+<summary class="block-summary"><span class="block-index">Bloco {{ loop.index }}</span> <span class="block-kind">{{ block_kind_labels.get(b.type, "Tipo por corrigir") }}</span>{% if snippet %} <span class="block-snippet">{{ snippet | truncate(72, true, "...") }}</span>{% endif %}</summary>
+<div class="card-body">
 <div class="form-grid">
   <div class="field">
     <label for="block-type-{{ i }}">Tipo</label>
@@ -239,11 +242,13 @@ O rascunho não está em direto; guardar não publica.</p>
 <button type="submit" class="button-small" name="move_down_{{ i }}" value="1"{% if loop.last %} disabled{% endif %}><i class="icon icon-arrow-down" aria-hidden="true"></i> Descer</button>
 <button type="submit" class="button-small button-danger" name="remove_{{ i }}" value="1"><i class="icon icon-trash" aria-hidden="true"></i> Remover</button>
 </div>
-</fieldset>
+</div>
+</details>
 {% endfor %}
 
-<fieldset class="block-card" id="adicionar-bloco" data-block data-block-type="text">
-<legend>Adicionar bloco</legend>
+<details class="block-card add-block" id="adicionar-bloco" data-block data-block-type="text" open>
+<summary class="block-summary"><span class="block-kind">Adicionar bloco</span> <span class="block-snippet">novo bloco no fim da página</span></summary>
+<div class="card-body">
 <div class="form-grid">
   <div class="field">
     <label for="add-type">Tipo</label>
@@ -361,7 +366,8 @@ O rascunho não está em direto; guardar não publica.</p>
   </div>
 </div>
 <div class="button-row"><button type="submit" class="button-small" name="op" value="add"><i class="icon icon-plus" aria-hidden="true"></i> Adicionar ao fim</button></div>
-</fieldset>
+</div>
+</details>
 
 {% else %}
 <fieldset>
@@ -419,18 +425,6 @@ estabelece causalidade. O dia UTC só é válido para séries de 15 minutos, com
 deixe o campo vazio; guardar um dia preenchido é recusado na publicação.</p>
 </fieldset>
 {% endif %}
-
-<div class="panel">
-  <div class="field">
-    <label for="draft-note">Motivo (obrigatório)</label>
-    <input id="draft-note" type="text" name="note" required maxlength="{{ max_text }}" size="50" value="{{ values.note if values is defined and values.note is defined else '' }}">
-    <span class="hint">Fica na auditoria com a versão que está a ser guardada.</span>
-  </div>
-  <div class="button-row">
-    <button type="submit" class="button-primary" name="op" value="save"><i class="icon icon-edit" aria-hidden="true"></i> Guardar rascunho</button>
-    <a class="button button-quiet" href="{{ base }}/cms/{{ kind }}/{{ slug }}/preview"><i class="icon icon-eye" aria-hidden="true"></i> Pré-visualizar</a>
-  </div>
-</div>
 </form>
 
 <div class="section-head" id="publicacao"><h2>Publicação</h2></div>
