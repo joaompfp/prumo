@@ -52,7 +52,7 @@ PAGE_METHODS = ["GET", "HEAD"]
 # The preview links the real public stylesheet from this app's /static mount. Everything else
 # keeps the backoffice policy from `backoffice.app`; neither policy permits a script.
 PREVIEW_CSP = ("default-src 'none'; style-src 'self' 'unsafe-inline'; "
-               "img-src 'self' data:; form-action 'self'; base-uri 'none'; "
+               "font-src 'self'; img-src 'self' data:; form-action 'self'; base-uri 'none'; "
                "frame-ancestors 'none'")
 # The editor form is bigger than the editorial one: 20 blocks with every field group visible
 # so a no-JavaScript switch still carries the values, plus the add-block form. The largest

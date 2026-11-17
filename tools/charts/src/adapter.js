@@ -121,14 +121,14 @@ function tooltipNode(payload, point) {
   return box;
 }
 
-function optionFor(payload, width) {
+function optionFor(payload, width, activePoint) {
   const ink = css('--ink', '#1a1a1a');
   const red = css('--red', '#c0392b');
   const muted = css('--muted', '#524d48');
   const rule = css('--rule', '#e2ded9');
   const sans = css('--sans', 'system-ui, sans-serif');
   const scale = width / VIEW_W;
-  const right = payload.axes.length > 1 ? 104 : 20;
+  const right = payload.axes.length > 1 ? 156 : 30;
 
   const yAxis = payload.axes.map((axis, index) => ({
     type: 'value',
@@ -138,11 +138,11 @@ function optionFor(payload, width) {
     position: index === 0 ? 'left' : 'right',
     name: axis.unit,
     nameLocation: 'end',
-    nameGap: 8 * scale,
+    nameGap: 12 * scale,
     nameTextStyle: {
       color: muted,
       fontFamily: sans,
-      fontSize: 11,
+      fontSize: 18,
       // Both names end on their axis. A name that starts at the right axis has to fit inside
       // `grid.right`, and ECharts 6 shrinks the whole plot when it cannot: at 390px the long
       // "milhões de euros" would take a quarter of the canvas and move every point under the
@@ -153,12 +153,12 @@ function optionFor(payload, width) {
     axisTick: { show: false },
     splitLine: {
       show: index === 0,
-      lineStyle: { color: rule, width: 1 },
+      lineStyle: { color: rule, width: 1.35 },
     },
     axisLabel: {
       color: muted,
       fontFamily: sans,
-      fontSize: 11,
+      fontSize: 16.5,
       customValues: axis.ticks.map((tick) => tick.value),
       formatter: (value) => tickText(axis.ticks, value),
     },
@@ -175,7 +175,7 @@ function optionFor(payload, width) {
     axisLabel: {
       color: muted,
       fontFamily: sans,
-      fontSize: 11,
+      fontSize: 16.5,
       hideOverlap: true,
       customValues: payload.x_ticks.map((tick) => tick.x),
       formatter: (value) => xText(payload.x_ticks, value),
@@ -194,7 +194,7 @@ function optionFor(payload, width) {
     symbolSize: many ? 3 : 6,
     lineStyle: {
       color: index === 0 ? ink : red,
-      width: 1.6,
+      width: 2.2,
       type: index === 0 ? 'solid' : 'dashed',
     },
     itemStyle: { color: index === 0 ? ink : red },
@@ -204,8 +204,13 @@ function optionFor(payload, width) {
 
   const map = indexMap(payload);
   const formatter = (params) => {
-    if (!params || !params.length) return '';
-    const point = map[params[0].dataIndex];
+    // The readout snaps to a period before ECharts renders the tooltip. Prefer that same
+    // period: at the extreme plot edges ECharts can pass empty or edge-clamped params, and a
+    // touch must never open a tooltip for a different period than the live readout.
+    let point = activePoint();
+    if (point === undefined || point < 0) {
+      point = params && params.length ? map[params[0].dataIndex] : undefined;
+    }
     if (point === undefined || point < 0) return '';
     return tooltipNode(payload, point);
   };
@@ -213,11 +218,11 @@ function optionFor(payload, width) {
   return {
     animation: false,
     grid: {
-      left: 68 * scale,
+      left: 88 * scale,
       right: right * scale,
-      top: 18 * scale,
-      bottom: 44 * scale,
-      containLabel: false,
+      top: 28 * scale,
+      bottom: 62 * scale,
+      containLabel: true,
     },
     xAxis,
     yAxis,
@@ -230,8 +235,8 @@ function optionFor(payload, width) {
       backgroundColor: 'rgba(255, 255, 255, 0.98)',
       borderColor: rule,
       borderWidth: 1,
-      padding: [6, 8],
-      textStyle: { color: ink, fontFamily: sans, fontSize: 12, lineHeight: 18 },
+      padding: [10, 12],
+      textStyle: { color: ink, fontFamily: sans, fontSize: 18, lineHeight: 27 },
       axisPointer: {
         type: 'line',
         lineStyle: { color: rule, width: 1 },
@@ -274,9 +279,10 @@ function enhance(root) {
   if (!width || !height) return;
 
   let chart;
+  let activePoint = payload.x.length - 1;
   try {
     chart = init(stage, null, { renderer: 'canvas', width, height });
-    chart.setOption(optionFor(payload, width), true);
+    chart.setOption(optionFor(payload, width, () => activePoint), true);
   } catch (error) {
     if (chart) {
       try { chart.dispose(); } catch (ignored) { /* fallback stays usable */ }
@@ -291,25 +297,28 @@ function enhance(root) {
   const high = Math.max(xs[0], xs[xs.length - 1]);
   let current = xs.length - 1;
 
+  function showTip(point) {
+    try {
+      // Axis-trigger tooltips are positioned by a canvas coordinate, not by dataIndex.
+      // dataIndex works for item trigger only; using it here left the visible tooltip on the
+      // previous period after a touch at the other end of the plot.
+      const x = chart.convertToPixel({ xAxisIndex: 0 }, payload.x[point]);
+      if (!finite(x)) return;
+      chart.dispatchAction({ type: 'hideTip' });
+      chart.dispatchAction({ type: 'showTip', x, y: chart.getHeight() / 2 });
+    } catch (ignored) { /* the readout is already correct */ }
+  }
+
   function show(point, announce) {
     current = point;
+    activePoint = point;
     range.value = String(point);
     range.setAttribute('aria-valuetext', payload.periods[point]);
     readout.textContent = readoutText(payload, point);
     if (announce) {
       live.textContent = readout.textContent;
-      try {
-        chart.dispatchAction({ type: 'showTip', seriesIndex: 0,
-                               dataIndex: dataIndex(point) });
-      } catch (ignored) { /* the readout is already correct */ }
+      showTip(point);
     }
-  }
-
-  function dataIndex(point) {
-    for (let i = 0; i < map.length; i += 1) {
-      if (map[i] === point) return i;
-    }
-    return point;
   }
 
   root.classList.add('chart-enhanced');
@@ -350,12 +359,6 @@ function enhance(root) {
     show(nearest(xs, Math.min(Math.max(value, low), high)), false);
   };
 
-  const showTip = (point) => {
-    try {
-      chart.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: dataIndex(point) });
-    } catch (ignored) { /* the readout is already correct */ }
-  };
-
   // Capture phase: zrender may stop propagation at the canvas, and the readout must still
   // follow the same pointer/touch position the tooltip uses. A touch only selects on release
   // and only when it did not turn into a scroll, so panning the page over the chart stays inert.
@@ -394,7 +397,7 @@ function enhance(root) {
     const h = stage.clientHeight;
     if (!w || !h) return;
     chart.resize({ width: w, height: h });
-    chart.setOption({ grid: optionFor(payload, w).grid });
+    chart.setOption({ grid: optionFor(payload, w, () => activePoint).grid });
   };
   if (window.ResizeObserver) {
     const observer = new ResizeObserver(onResize);

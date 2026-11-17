@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}{{ page.copy.title }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}
+{% block content %}
+<nav class="crumbs" aria-label="Caminho">
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.copy.heading }}
+</nav>
+
+<header class="page-head">
+  <h1>{{ page.copy.heading }}</h1>
+  <p class="lede">{{ page.copy.lede }}</p>
+  <p class="meta"><strong>{{ format_count(page.cards|length) }} de {{ page.max_selection }} séries.</strong> {{ page.copy.public_link_note }} {{ page.copy.not_snapshot_note }}</p>
+</header>
+
+<section class="notebook-selection" aria-labelledby="selecao">
+  <div class="section-head">
+    <h2 id="selecao">{{ page.copy.cards_heading }}</h2>
+    {% if page.clear_path %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">{{ page.copy.clear_label }}</a>{% endif %}
+  </div>
+
+  {% if page.cards %}
+  <div class="cards">
+    {% for item in page.cards %}
+    {% with card=item.card, card_remove_path=item.remove_path %}{% include "_card.html" %}{% endwith %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty-state">{{ page.copy.empty }}</p>
+  {% endif %}
+
+  {% if page.skipped_count %}<p class="note" role="status">{{ page.skipped_notice }}</p>{% endif %}
+</section>
+
+<section class="notebook-links" aria-labelledby="ligacao">
+  <div class="section-head">
+    <h2 id="ligacao">{{ page.copy.canonical_heading }}</h2>
+  </div>
+  <p><a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ page.copy.canonical_label }}</a></p>
+  <p class="note">{{ page.copy.canonical_note }}</p>
+</section>
+
+<section class="notebook-search" aria-labelledby="pesquisa">
+  <div class="section-head">
+    <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
+  </div>
+  <form class="filters" action="{{ base }}/caderno" method="get">
+    {% for series_id in page.selection %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+    <label>{{ page.copy.search_label }}
+      <input name="q" type="search" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
+    </label>
+    <button type="submit">{{ page.copy.search_button }}</button>
+  </form>
+
+  {% if page.query %}
+    {% if page.results %}
+    <p class="meta">{{ page.results_notice }} {{ page.copy.search_note }}</p>
+    <table class="data-table">
+      <thead>
+        <tr><th scope="col">Série</th><th scope="col" class="num">Último valor</th><th scope="col">Período</th><th scope="col">Fonte</th><th scope="col">Recolhido</th><th scope="col">Caderno</th></tr>
+      </thead>
+      <tbody>
+        {% for result in page.results %}
+        <tr>
+          <td>{{ result.row.title }}<span class="row-meta">{{ result.row.geography_text }} · {{ result.row.frequency_text }}</span></td>
+          <td class="num">{{ result.row.value_display }} <span class="unit">{{ result.row.unit_text }}</span>{% if result.row.status_text %}<span class="flag">{{ result.row.status_text }}</span>{% endif %}</td>
+          <td>{{ result.row.period_text }}</td>
+          <td>{{ result.row.source_title }}</td>
+          <td>{{ result.row.fetched_text }}</td>
+          <td>
+            {% if result.selected %}
+            <a href="{{ base }}{{ result.action_path }}">{{ page.copy.remove_label }}</a> <span class="badge badge-quiet">{{ page.copy.in_notebook_label }}</span>
+            {% elif result.action_path %}
+            <a href="{{ base }}{{ result.action_path }}">{{ page.copy.add_label }}</a>
+            {% else %}
+            <span class="note">{{ page.copy.limit_reached }}</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">{{ page.search_empty_text }}</p>
+    {% endif %}
+    {% if page.at_limit %}<p class="note">{{ page.copy.limit_reached }}</p>{% endif %}
+  {% else %}
+  <p class="note">{{ page.copy.search_prompt }}</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{
+  "generated_by": "pyftsubset (FontTools 4.62.1) with Brotli 1.2.0 on Debian Python 3.12.3",
+  "generated_for": "Prumo legibility pass, 2026-11-17",
+  "unicode_ranges": "U+0000-00FF,U+0100-017F,U+2000-206F,U+20A0-20CF,U+2116,U+2122,U+2190-2193,U+2212,U+2264,U+2265",
+  "layout_features": "*",
+  "hinting": false,
+  "reproducible": "two independent builds into run1/run2 compared byte-identical (cmp)",
+  "files": {
+    "lato-regular.woff2": {
+      "bytes": 42764,
+      "sha256": "a427dcf9e48c28ef00cb201073169cb585567e2002991e948a8b2ce8d9913261",
+      "family": "Lato",
+      "weight": 400,
+      "source": "/usr/share/fonts/truetype/lato/Lato-Regular.ttf",
+      "source_sha256": "6f6940be0835c3ddec9199e5fc42be4cbc61ebcfd58c623fdf719366253f1780",
+      "package": "fonts-lato 2.015-1",
+      "licence": "OFL-1.1.txt"
+    },
+    "lato-semibold.woff2": {
+      "bytes": 42920,
+      "sha256": "8070d2274064acd5ab5b9ce8d3380ead2e7b0e445a5887e375b72efd61c466f6",
+      "family": "Lato",
+      "weight": 600,
+      "source": "/usr/share/fonts/truetype/lato/Lato-Semibold.ttf",
+      "source_sha256": "2dc5d31e2cf1e29f3430eb2dfa1ba9911e08ee401b61dd12f40e0acb047a17a3",
+      "package": "fonts-lato 2.015-1",
+      "licence": "OFL-1.1.txt"
+    },
+    "lato-bold.woff2": {
+      "bytes": 42472,
+      "sha256": "dd645ba320ebe2a34a2b968af665696f5e7c67e67c16ad9883448a5a1bf42aec",
+      "family": "Lato",
+      "weight": 700,
+      "source": "/usr/share/fonts/truetype/lato/Lato-Bold.ttf",
+      "source_sha256": "bf1b8130069b44b9148eeece35e5423bedac49777ba746615b826b8276574a7b",
+      "package": "fonts-lato 2.015-1",
+      "licence": "OFL-1.1.txt"
+    },
+    "schola-regular.woff2": {
+      "bytes": 30208,
+      "sha256": "c8b4ab7b6bcf54972c6938efd806a7488449b5989156f20d8b9bed11a1bd66d5",
+      "family": "TeX Gyre Schola",
+      "weight": 400,
+      "source": "/usr/share/texmf/fonts/opentype/public/tex-gyre/texgyreschola-regular.otf",
+      "source_sha256": "935b82e25f56b1d1276ca82793205e8ce254fbb37ebd38bedf7388cef21fbf44",
+      "package": "fonts-texgyre 20180621-6",
+      "licence": "GUST-FONT-LICENSE.txt"
+    },
+    "schola-bold.woff2": {
+      "bytes": 30708,
+      "sha256": "3bac7b8e9fefeba49df5b64772cbdc869f8a2484ac747ce2ece14dcfd7445d58",
+      "family": "TeX Gyre Schola",
+      "weight": 700,
+      "source": "/usr/share/texmf/fonts/opentype/public/tex-gyre/texgyreschola-bold.otf",
+      "source_sha256": "988c7b2a0ff0eae77d1df3338751b3c47a5e759117734a375b8e7f9de80e698b",
+      "package": "fonts-texgyre 20180621-6",
+      "licence": "GUST-FONT-LICENSE.txt"
+    }
+  }
+}

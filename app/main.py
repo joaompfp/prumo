@@ -17,12 +17,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 
-from app import cms_reads, cms_routes, interactive, reads
+from app import cms_reads, cms_routes, interactive, notebook, notebook_routes, reads
 from app import home as home_page
 from app.charts import chart_legend, chart_plot, chart_svg, line_chart, sparkline, two_series_chart
 from app.formatting import format_count, format_date, format_datetime, format_period, format_value
 from ingest.db import ReadOnlyOpenError, read_db_readonly
 from presentation import MissingText
+from presentation.notebook import text as notebook_text
 from presentation.web import mount_prefix as _base
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -35,7 +36,7 @@ NAV = (("/", "Início"), ("/temas/economy", "Economia"), ("/temas/demography", "
        ("/metodologia", "Metodologia"))
 SECURITY_HEADERS = {
     "Content-Security-Policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; "
-                               "form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+                               "font-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "no-referrer",
 }
@@ -55,7 +56,8 @@ def _templates() -> Jinja2Templates:
                        chart_js=interactive.asset_path(), spark=sparkline,
                        format_value=format_value, format_period=format_period,
                        format_datetime=format_datetime, format_date=format_date,
-                       format_count=format_count)
+                       format_count=format_count, notebook_path=notebook.selection_path,
+                       notebook_copy=notebook_text("pt"))
     return Jinja2Templates(env=env)
 
 
@@ -99,6 +101,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
         response = await call_next(request)
         for name, value in SECURITY_HEADERS.items():
             response.headers.setdefault(name, value)
+        if request.url.path == "/caderno":
+            response.headers["X-Robots-Tag"] = "noindex, follow"
         # A cached page must not be reused across mount prefixes.
         vary = response.headers.get("Vary")
         if not vary:
@@ -240,6 +244,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
                        script=data.chart_payload is not None)
 
     cms_routes.add_routes(app, templates=templates, render=_render, unavailable=unavailable)
+    notebook_routes.add_routes(app, templates=templates, render=_render, unavailable=unavailable)
 
     @app.exception_handler(MissingText)
     def missing_reader_text(request: Request, exc: MissingText):

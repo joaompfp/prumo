@@ -1,10 +1,10 @@
 <article class="card">
       <p class="card-label">{{ card.label }}</p>
-      <p class="card-value{% if card.value_display|length > 9 %} card-value--long{% endif %}">{{ card.value_display }} <span class="card-unit">{{ card.unit_text }}</span></p>
+      <p class="card-value{% if card.value_display|length > 9 %} card-value--long{% endif %}">{{ card.value_display | replace('\u00a0', ' ') }} <span class="card-unit">{{ card.unit_text }}</span></p>
       <p class="card-period">{{ card.period_text }}</p>
       <p class="card-tags">{% if card.status_text %}<span class="flag">{{ card.status_text }}</span>{% endif %}{% if card.derived_value_display %}<span class="badge">Calculado</span>{% endif %}</p>
-      <p class="calc-line">{% if card.derived_value_display %}{{ card.derived_label }}: {{ card.derived_value_display }} {{ card.derived_unit_text }} <span class="calc-period">{{ card.derived_period_text }}</span>{% endif %}</p>
+      <p class="calc-line">{% if card.derived_value_display %}{{ card.derived_label }}: {{ card.derived_value_display | replace('\u00a0', ' ') }} {{ card.derived_unit_text }} <span class="calc-period">{{ card.derived_period_text }}</span>{% endif %}</p>
       <div class="card-spark">{{ spark(card.spark_points) }}</div>
       <p class="card-source">{{ card.source_title }} · recolhido a {{ card.fetched_text }}</p>
-      <a class="card-link" href="{{ base }}{{ card.href }}">Série e proveniência</a>
+      {% if card_remove_path|default('') %}<p class="card-actions">{% endif %}<a class="card-link" href="{{ base }}{{ card.href }}">Série e proveniência</a>{% if card_remove_path|default('') %} <a class="card-remove" href="{{ base }}{{ card_remove_path }}">{{ notebook_copy.remove_label }}</a></p>{% endif %}
     </article>

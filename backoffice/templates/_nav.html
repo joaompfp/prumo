@@ -1,0 +1,22 @@
+{% macro primary_nav(base, nav_path, nav_home, nav_cms, nav_editorial, nav_series, nav_derived, suffix="") %}
+<nav class="nav{{ ' nav-mobile' if suffix else '' }}" aria-label="Navegação principal">
+  <div class="nav-group">
+    <p class="nav-label" id="nav-conteudo{{ suffix }}">Conteúdo</p>
+    <ul class="nav-list" aria-labelledby="nav-conteudo{{ suffix }}">
+      <li><a class="nav-link{% if nav_home %} active{% endif %}" href="{{ base }}/cms/home"{% if nav_home %} aria-current="page"{% endif %}><i class="icon icon-home" aria-hidden="true"></i><span>Página inicial</span></a></li>
+      <li><a class="nav-link{% if nav_cms %} active{% endif %}" href="{{ base }}/cms"{% if nav_cms %} aria-current="page"{% endif %}><i class="icon icon-page" aria-hidden="true"></i><span>Páginas e gráficos</span></a></li>
+      <li><a class="nav-link is-legacy{% if nav_editorial %} active{% endif %}" href="{{ base }}/editorial"{% if nav_editorial %} aria-current="page"{% endif %}><i class="icon icon-editorial" aria-hidden="true"></i><span>Editorial</span><span class="badge badge-sm tag-legacy">legado</span></a></li>
+    </ul>
+  </div>
+
+  <div class="nav-group">
+    <p class="nav-label" id="nav-dados{{ suffix }}">Dados</p>
+    <ul class="nav-list" aria-labelledby="nav-dados{{ suffix }}">
+      <li><a class="nav-link{% if nav_path == '/' %} active{% endif %}" href="{{ base }}/"{% if nav_path == '/' %} aria-current="page"{% endif %}><i class="icon icon-grid" aria-hidden="true"></i><span>Visão geral</span></a></li>
+      <li><a class="nav-link{% if nav_path == '/queue' %} active{% endif %}" href="{{ base }}/queue"{% if nav_path == '/queue' %} aria-current="page"{% endif %}><i class="icon icon-queue" aria-hidden="true"></i><span>Fila de revisão</span></a></li>
+      <li><a class="nav-link{% if nav_series %} active{% endif %}" href="{{ base }}/series"{% if nav_series %} aria-current="page"{% endif %}><i class="icon icon-graph-up" aria-hidden="true"></i><span>Séries</span></a></li>
+      <li><a class="nav-link{% if nav_derived %} active{% endif %}" href="{{ base }}/derived"{% if nav_derived %} aria-current="page"{% endif %}><i class="icon icon-calculator" aria-hidden="true"></i><span>Calculadas</span></a></li>
+    </ul>
+  </div>
+</nav>
+{% endmacro %}

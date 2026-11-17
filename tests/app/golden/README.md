@@ -1,3 +1,17 @@
+# Reviewed presentation fixtures
+
+The approved 2026-11-17 legibility release deliberately recaptures `home_code_list.html`
+and `charts/*.svg` against the same deterministic fixtures. Deltas: local font links,
+native mobile navigation, Caderno entry, wrappable number grouping, wider SVG label margins
+and inward endpoint anchors. No fixture observations, point/title/tick text or publisher
+precision changed. All previous bytes are retained under `pre_legibility/`; before/after
+hashes and text-comparison results are in
+`docs/superpowers/handoff/reports/legibility-notebook/golden-deltas.json`.
+
+`home_before_editorial.html` remains unchanged as the older historical reference.
+Subsequent captures require another explicitly reviewed presentation delta. The historical
+pre-legibility capture procedure and rationale follow below.
+
 # Home page golden (pre-editorial)
 
 `home_before_editorial.html` is the home page rendered by commit `7e563b2` (the deployed public

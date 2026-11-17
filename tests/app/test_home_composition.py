@@ -17,8 +17,11 @@ both public hosts (`cae.joao.date` and `joao.date/dados`) and does not depend on
 mount base on both hosts; `NAV` is unchanged, so the anchor appears only in `footer-links`.
 A fourth audited delta binds each footer separator to the link before it with `&nbsp;`, so a
 wrapped row never starts with an orphan ` · ` at 320px. No other byte changed. From here
-on the byte comparison is again frozen: any unintended change to the home with no composition
-fails, and a future re-capture needs the same kind of auditable reason.
+on the byte comparison is frozen between approved presentation changes. The legibility
+release deliberately adds local font links, native mobile navigation and the Caderno entry,
+and uses the new shared chart geometry. Its earlier full capture remains unchanged in
+`golden/pre_legibility/home_code_list.html`; the current golden is the reviewed new chrome
+against the unchanged fixture. Source values and publisher precision remain unchanged.
 """
 
 from pathlib import Path

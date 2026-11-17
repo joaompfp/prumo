@@ -1,0 +1,43 @@
+/* Prumo local typefaces. Licensed subsets only; no CDN, no runtime npm.
+   Lato: SIL Open Font License 1.1. TeX Gyre Schola: GUST Font License.
+   Files, source hashes and the reproducible subset command live next to the fonts. */
+
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/prumo/lato-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/prumo/lato-semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/prumo/lato-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TeX Gyre Schola";
+  src: url("../fonts/prumo/schola-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TeX Gyre Schola";
+  src: url("../fonts/prumo/schola-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

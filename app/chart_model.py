@@ -23,8 +23,26 @@ from app.formatting import (
 )
 
 WIDTH, HEIGHT = 880, 340
-LEFT, RIGHT, TOP, BOTTOM = 68, 20, 18, 44
-RIGHT_DUAL = 104
+# Margins were enlarged with the readable SVG type scale. The left gutter must hold a
+# publisher value such as "1 000 000" at 16.5 user units without clipping; the top gutter
+# holds the 18-unit axis name.
+LEFT, RIGHT, TOP, BOTTOM = 88, 30, 28, 62
+RIGHT_DUAL = 156
+
+
+def _text_width(text: str) -> int:
+    """A conservative SVG text width at the 16.5-unit axis type scale.
+
+    Digits are close to 9 units in Lato tabular; spaces and punctuation are narrower. This is
+    an estimate for margin allocation only; it never formats or rounds a reader value.
+    """
+    return sum(9 if char.isdigit() else 5 for char in text)
+
+
+def _left_gutter(texts: list[str], width: int, right: int) -> int:
+    """Grow the left gutter for long publisher values, leaving at least 200 units of plot."""
+    needed = max((_text_width(text) for text in texts), default=0) + 12
+    return max(LEFT, min(needed, width - right - 200))
 
 
 def calendar_position(period: str, frequency: str) -> float:
@@ -278,8 +296,10 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
     periods = [v[0] for v in values]
     numbers = [v[1] for v in values]
     lo, hi, nice = padded_domain(numbers)
+    tick_texts = [format_axis(t) for t in nice]
+    left = _left_gutter(tick_texts, width, RIGHT)
 
-    plot_w = width - LEFT - RIGHT
+    plot_w = width - left - RIGHT
     plot_h = height - TOP - BOTTOM
     span = hi - lo or Decimal(1)
 
@@ -287,7 +307,7 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
         return TOP + float((hi - number) / span * plot_h)
 
     ordinals = ordinals_for(periods, frequency)
-    xs = positions(ordinals, LEFT, plot_w)
+    xs = positions(ordinals, left, plot_w)
     prepared = tuple(
         LinePoint(period=period, period_text=format_period(period, frequency),
                   value_text=token, value_display=format_value(token), number=number,
@@ -301,15 +321,16 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
         kind="line", title=title, unit=unit,
         display_unit=unit if display_unit is None else display_unit,
         name=name, frequency=frequency,
-        width=width, height=height, left=LEFT, right=RIGHT, top=TOP, bottom=BOTTOM,
+        width=width, height=height, left=left, right=RIGHT, top=TOP, bottom=BOTTOM,
         points=prepared,
-        y_ticks=tuple(YTick(value=t, text=format_axis(t), y=y(t), zero=t == 0) for t in nice),
+        y_ticks=tuple(YTick(value=t, text=text, y=y(t), zero=t == 0)
+                      for t, text in zip(nice, tick_texts)),
         x_ticks=tuple(XTick(index=i, ordinal=ordinals[i], x=xs[i], text=text)
                       for i, text in x_labels(periods, frequency)),
         lo=lo, hi=hi, interval=axis_interval(nice, lo, hi),
         last_x=last_x, last_y=last_y, last_label=format_value(values[-1][2]),
-        last_anchor=anchor, last_dx=-6 if anchor == "end" else 0,
-        last_label_y=float(ly - 12 if ly - 12 >= TOP + 10 else ly + 20))
+        last_anchor=anchor, last_dx=-8 if anchor == "end" else 0,
+        last_label_y=float(ly - 18 if ly - 18 >= TOP + 10 else ly + 26))
 
 
 @dataclass(frozen=True)
@@ -401,14 +422,17 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
         lo_b, hi_b, ticks_b = lo_a, hi_a, ticks_a
 
     right = RIGHT_DUAL if dual else RIGHT
-    plot_w, plot_h = width - LEFT - right, height - TOP - BOTTOM
+    texts_a = [format_axis(t) for t in ticks_a]
+    texts_b = [format_axis(t) for t in ticks_b] if dual else []
+    left = _left_gutter(texts_a + texts_b, width, right)
+    plot_w, plot_h = width - left - right, height - TOP - BOTTOM
 
     def y_of(number: Decimal, lo: Decimal, hi: Decimal) -> float:
         span = hi - lo or Decimal(1)
         return TOP + float((hi - number) / span * plot_h)
 
     ordinals = ordinals_for(periods, frequency)
-    xs = positions(ordinals, LEFT, plot_w)
+    xs = positions(ordinals, left, plot_w)
     prepared = tuple(
         ComparisonPoint(
             period=period, period_text=format_period(period, frequency), ordinal=ordinal, x=x,
@@ -423,21 +447,22 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
     lx = round(last.x, 1)
     anchor = "end" if lx > width - right - 40 else "middle"
     marks = [LastMark(y=last.a.y, label=last.a.value_display, suffix="a", label_y=0.0)]
-    if abs(last.a.y - last.b.y) >= 22:
+    if abs(last.a.y - last.b.y) >= 30:
         marks.append(LastMark(y=last.b.y, label=last.b.value_display, suffix="b", label_y=0.0))
     marks = tuple(
         LastMark(y=m.y, label=m.label, suffix=m.suffix,
-                 label_y=float(m.y - 12 if m.y - 12 >= TOP + 10 else m.y + 20))
+                 label_y=float(m.y - 18 if m.y - 18 >= TOP + 10 else m.y + 26))
         for m in marks)
     return ComparisonModel(
         kind="comparison", title=title, labels=labels, unit_a=unit_a,
         unit_b=unit_b or unit_a, dual=bool(dual), name=name, frequency=frequency,
-        width=width, height=height, left=LEFT, right=right, top=TOP, bottom=BOTTOM,
+        width=width, height=height, left=left, right=right, top=TOP, bottom=BOTTOM,
         points=prepared,
-        ticks_a=tuple(YTick(value=t, text=format_axis(t), y=y_of(t, lo_a, hi_a),
-                            zero=(not dual and t == 0)) for t in ticks_a),
-        ticks_b=tuple(YTick(value=t, text=format_axis(t), y=y_of(t, lo_b, hi_b),
-                            zero=False) for t in ticks_b),
+        ticks_a=tuple(YTick(value=t, text=text, y=y_of(t, lo_a, hi_a),
+                            zero=(not dual and t == 0))
+                      for t, text in zip(ticks_a, texts_a)),
+        ticks_b=tuple(YTick(value=t, text=text, y=y_of(t, lo_b, hi_b), zero=False)
+                      for t, text in zip(ticks_b, texts_b)),
         lo_a=lo_a, hi_a=hi_a, lo_b=lo_b, hi_b=hi_b,
         interval_a=axis_interval(ticks_a, lo_a, hi_a),
         interval_b=axis_interval(ticks_b, lo_b, hi_b),

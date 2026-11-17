@@ -1,0 +1,14 @@
+{
+  "OFL-1.1.txt": {
+    "original_sha256": "6f2c2d25b8a272b644aa0c2da9e44b176c0b4f2fe085d0a6e3ad0c4266b4f12f",
+    "readable_copy_sha256": "4fdca86a5140eab4f7c0fa3461b3bf0d0a0c4a826593f93b0ff4d7fb56055b6b",
+    "original_archive": "OFL-1.1.txt.gz",
+    "change": "trailing whitespace only; all words identical"
+  },
+  "GUST-FONT-LICENSE.txt": {
+    "original_sha256": "2bd69affc3da00715116f713f57eab9707e96daf3562ad0215987b15b9c16f73",
+    "readable_copy_sha256": "e120f067589d589a9fa436db09940bd2e03b477cf29b15443c6f87d3861f734b",
+    "original_archive": "GUST-FONT-LICENSE.txt.gz",
+    "change": "trailing whitespace only; all words identical"
+  }
+}

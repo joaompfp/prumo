@@ -8,6 +8,7 @@
 
 <header class="page-head">
   <h1>{{ page.series.title }}</h1>
+  <p class="detail-actions"><a class="button-quiet" href="{{ base }}{{ notebook_path([page.series.id]) }}">{{ notebook_copy.series_action }}</a></p>
   <p class="meta">
     {{ page.series.geography_text }} · {{ page.series.frequency_text }} · {{ page.series.unit_text }}{% if page.series.seasonal_text %} · {{ page.series.seasonal_text }}{% endif %}{% if page.series.base_year %} · base {{ page.series.base_year }}{% endif %}
   </p>

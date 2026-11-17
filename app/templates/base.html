@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}Prumo - estatísticas oficiais com proveniência{% endblock %}</title>
 <meta name="description" content="Estatísticas oficiais de Portugal, da Europa e do mundo, cada valor ligado à publicação original e à data em que foi recolhido e verificado.">
-<meta name="robots" content="index, follow">
+{% block robots %}<meta name="robots" content="index, follow">{% endblock %}
 <link rel="icon" type="image/svg+xml" href="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg">
+<link rel="preload" href="{{ asset_base|default(base) }}/static/fonts/prumo/lato-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ asset_base|default(base) }}/static/fonts/prumo/lato-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ asset_base|default(base) }}/static/css/fonts.css">
 <link rel="stylesheet" href="{{ asset_base|default(base) }}/static/css/prumo.css">
 </head>
 <body>
@@ -17,11 +20,21 @@
       <img class="brand-icon" src="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg" alt="" width="28" height="28">
       <span class="brand-name">Prumo</span>
     </a>
-    <nav class="site-nav" aria-label="Secções">
+    <nav class="site-nav site-nav-desktop" aria-label="Secções">
       {% for href, label in nav %}
       <a href="{{ base }}{{ href }}"{% if path == href or (href != '/' and path.startswith(href)) %} aria-current="page"{% endif %}>{{ label }}</a>
       {% endfor %}
+      <a href="{{ base }}/caderno"{% if path == "/caderno" %} aria-current="page"{% endif %}>{{ notebook_copy.nav_label }}</a>
     </nav>
+    <details class="nav-disclosure">
+      <summary>Menu</summary>
+      <nav class="site-nav" aria-label="Secções no telemóvel">
+{% for href, label in nav %}
+        <a href="{{ base }}{{ href }}"{% if path == href or (href != "/" and path.startswith(href)) %} aria-current="page"{% endif %}>{{ label }}</a>
+{% endfor %}
+        <a href="{{ base }}/caderno"{% if path == "/caderno" %} aria-current="page"{% endif %}>{{ notebook_copy.nav_label }}</a>
+      </nav>
+    </details>
     <form class="search" action="{{ base }}/pesquisa" method="get" role="search">
       <label class="sr-only" for="q">Pesquisar séries</label>
       <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
@@ -35,7 +48,7 @@
 <footer class="site-footer">
   <div class="wrap footer-row">
     <p><strong>Prumo</strong> publica números de instituições oficiais com a proveniência à vista. Sem cookies, sem rastreio, sem publicidade.</p>
-    <p class="footer-links"><a href="{{ base }}/fontes">Fontes e licenças</a>&nbsp;· <a href="{{ base }}/metodologia">Metodologia</a>&nbsp;· <a href="{{ base }}/pesquisa">Pesquisar</a>&nbsp;· <a href="{{ base }}/paginas">Páginas</a>&nbsp;· <a href="https://joao.date/dados/admin/">Admin</a></p>
+    <p class="footer-links"><a href="{{ base }}/fontes">Fontes e licenças</a>&nbsp;· <a href="{{ base }}/metodologia">Metodologia</a>&nbsp;· <a href="{{ base }}/pesquisa">Pesquisar</a>&nbsp;· <a href="{{ base }}/paginas">Páginas</a>&nbsp;· <a href="{{ base }}/caderno">{{ notebook_copy.nav_label }}</a>&nbsp;· <a href="https://joao.date/dados/admin/">Admin</a></p>
   </div>
 </footer>{% block scripts %}{% endblock %}
 </body>

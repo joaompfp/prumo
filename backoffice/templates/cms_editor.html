@@ -53,6 +53,19 @@
   <a href="#auditoria">Auditoria</a>
 </nav>
 
+{% if kind == 'page' and (doc.blocks if doc.blocks is defined else []) %}
+{% set block_kind_labels = {"text": "Texto", "heading": "Título de secção", "hero": "Cabeçalho de abertura", "themes": "Diretório de temas", "verification": "Cadeia de verificação", "sources": "Instituições publicadas", "card": "Cartão de série", "chart": "Gráfico"} %}
+<details class="editor-outline">
+  <summary>Índice dos blocos ({{ doc.blocks | length }})</summary>
+  <ol>
+  {% for b in doc.blocks %}
+    {% set snippet = b.get('title') or b.get('text') or b.get('label') or b.get('chart_slug') or b.get('series_id') or '' %}
+    <li><a href="#bloco-{{ loop.index }}">Bloco {{ loop.index }}{% if snippet %}: {{ snippet | truncate(60, true, "...") }}{% endif %}</a> <span class="block-kind">{{ block_kind_labels.get(b.type, "Tipo por corrigir") }}</span></li>
+  {% endfor %}
+  </ol>
+</details>
+{% endif %}
+
 <form method="post" action="{{ base }}/cms/{{ kind }}/{{ slug }}/save" data-dirty-watch class="editor-form" id="rascunho" aria-label="Rascunho">
 <input type="hidden" name="version" value="{{ form_version }}">
 <div class="draft-toolbar">
@@ -66,7 +79,6 @@
 
 {% if kind == 'page' %}
 {% set blocks = doc.blocks if doc.blocks is defined else [] %}
-{% set block_kind_labels = {"text": "Texto", "heading": "Título de secção", "hero": "Cabeçalho de abertura", "themes": "Diretório de temas", "verification": "Cadeia de verificação", "sources": "Instituições publicadas", "card": "Cartão de série", "chart": "Gráfico"} %}
 <input type="hidden" name="block_count" value="{{ blocks | length }}">
 
 <details class="identity-card"{% if (not (is_home is defined and is_home)) or error %} open{% endif %}>
@@ -99,7 +111,7 @@
 {% for b in blocks %}
 {% set i = loop.index0 %}
 {% set snippet = b.get('title') or b.get('text') or b.get('label') or b.get('chart_slug') or b.get('series_id') or '' %}
-<details class="block-card" data-block data-block-type="{{ b.type }}"{% if loop.first %} open{% endif %}>
+<details class="block-card" data-block data-block-type="{{ b.type }}" id="bloco-{{ loop.index }}"{% if loop.first %} open{% endif %}>
 <summary class="block-summary"><span class="block-index">Bloco {{ loop.index }}</span>{% if snippet %} <span class="block-title-strong">{{ snippet | truncate(72, true, "...") }}</span>{% endif %} <span class="block-kind">{{ block_kind_labels.get(b.type, "Tipo por corrigir") }}</span></summary>
 <div class="card-body">
 <div class="form-grid">

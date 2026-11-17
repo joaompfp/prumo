@@ -29,6 +29,18 @@ def line_chart(points: list[dict], *, frequency: str, title: str, unit: str = ""
                                width=width, height=height))
 
 
+def _x_tick_markup(model) -> list[str]:
+    """Keep enlarged endpoint labels inside the shared SVG viewBox."""
+    labels = []
+    for index, tick in enumerate(model.x_ticks):
+        anchor = ("start" if index == 0 else "end" if index == len(model.x_ticks) - 1
+                  else "middle") if len(model.x_ticks) > 1 else "middle"
+        labels.append(f'<text class="chart-tick" x="{round(tick.x, 1)}" '
+                      f'y="{model.height - 18}" text-anchor="{anchor}">'
+                      f'{escape(tick.text)}</text>')
+    return labels
+
+
 def line_svg(model) -> Markup:
     """The SVG for an already prepared line model (the page renders it once)."""
     if model is None:
@@ -43,9 +55,9 @@ def line_svg(model) -> Markup:
     for tick in model.y_ticks:
         ty = round(tick.y, 1)
         cls = "chart-grid chart-zero" if tick.zero else "chart-grid"
-        parts.append(f'<line class="{cls}" x1="{LEFT}" y1="{ty}" x2="{width - RIGHT}" '
+        parts.append(f'<line class="{cls}" x1="{model.left}" y1="{ty}" x2="{width - RIGHT}" '
                      f'y2="{ty}" />')
-        parts.append(f'<text class="chart-tick" x="{LEFT - 8}" y="{ty + 4}" '
+        parts.append(f'<text class="chart-tick" x="{model.left - 10}" y="{ty + 6}" '
                      f'text-anchor="end">{escape(tick.text)}</text>')
 
     area = " ".join(f"{'M' if i == 0 else 'L'}{round(p.x, 1)},{round(p.y, 1)}"
@@ -63,9 +75,7 @@ def line_svg(model) -> Markup:
                  f'y="{round(model.last_label_y, 1)}" text-anchor="{model.last_anchor}">'
                  f'{escape(model.last_label)}</text>')
 
-    for tick in model.x_ticks:
-        parts.append(f'<text class="chart-tick" x="{round(tick.x, 1)}" '
-                     f'y="{height - 14}" text-anchor="middle">{escape(tick.text)}</text>')
+    parts.extend(_x_tick_markup(model))
     parts.append("</svg>")
     return Markup("".join(parts))
 
@@ -102,22 +112,23 @@ def _comparison_plot(model) -> Markup:
         # With two scales the highlighted "zero" belongs to the left series only, so a thick line
         # there would read as zero for both.
         cls = "chart-grid chart-zero" if tick.zero else "chart-grid"
-        parts.append(f'<line class="{cls}" x1="{LEFT}" y1="{ty}" x2="{width - right}" '
+        parts.append(f'<line class="{cls}" x1="{model.left}" y1="{ty}" x2="{width - right}" '
                      f'y2="{ty}" />')
-        parts.append(f'<text class="chart-tick" x="{LEFT - 8}" y="{ty + 4}" '
+        parts.append(f'<text class="chart-tick" x="{model.left - 10}" y="{ty + 6}" '
                      f'text-anchor="end">{escape(tick.text)}</text>')
     if model.dual:
         for tick in model.ticks_b:
             ty = round(tick.y, 1)
-            parts.append(f'<text class="chart-tick" x="{width - right + 8}" y="{ty + 4}" '
+            parts.append(f'<text class="chart-tick" x="{width - right + 10}" y="{ty + 6}" '
                          f'text-anchor="start">{escape(tick.text)}</text>')
 
-    parts.append(f'<text class="chart-axis-label" x="{LEFT - 8}" y="{TOP - 6}" '
-                 f'text-anchor="end">{escape(model.unit_a)}</text>')
+    # Unit names grow into the plot, not off the left edge of the viewBox.
+    parts.append(f'<text class="chart-axis-label" x="{model.left}" y="{TOP - 8}" '
+                 f'text-anchor="start">{escape(model.unit_a)}</text>')
     if model.dual:
         # Anchored to the viewBox edge: a long unit ("milhões de euros") grows leftwards instead
         # of past the right border, where it would be clipped.
-        parts.append(f'<text class="chart-axis-label" x="{width - 4}" y="{TOP - 6}" '
+        parts.append(f'<text class="chart-axis-label" x="{width - 6}" y="{TOP - 8}" '
                      f'text-anchor="end">{escape(model.unit_b)}</text>')
 
     for index, value, cls in ((1, lambda p: p.a, "chart-line-a"),
@@ -150,9 +161,7 @@ def _comparison_plot(model) -> Markup:
         parts.append(f'<circle class="chart-last chart-last-{suffix}" cx="{lx}" '
                      f'cy="{round(cy, 1)}" r="3.5" />')
 
-    for tick in model.x_ticks:
-        parts.append(f'<text class="chart-tick" x="{round(tick.x, 1)}" '
-                     f'y="{height - 14}" text-anchor="middle">{escape(tick.text)}</text>')
+    parts.extend(_x_tick_markup(model))
     parts.append("</svg>")
     return Markup("".join(parts))
 

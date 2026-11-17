@@ -7,6 +7,9 @@
 <meta name="description" content="Estatísticas oficiais de Portugal, da Europa e do mundo, cada valor ligado à publicação original e à data em que foi recolhido e verificado.">
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/static/images/prumo/favicon.svg">
+<link rel="preload" href="/static/fonts/prumo/lato-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/prumo/lato-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/fonts.css">
 <link rel="stylesheet" href="/static/css/prumo.css">
 </head>
 <body>
@@ -17,7 +20,7 @@
       <img class="brand-icon" src="/static/images/prumo/favicon.svg" alt="" width="28" height="28">
       <span class="brand-name">Prumo</span>
     </a>
-    <nav class="site-nav" aria-label="Secções">
+    <nav class="site-nav site-nav-desktop" aria-label="Secções">
       
       <a href="/" aria-current="page">Início</a>
       
@@ -33,7 +36,29 @@
       
       <a href="/metodologia">Metodologia</a>
       
+      <a href="/caderno">Caderno</a>
     </nav>
+    <details class="nav-disclosure">
+      <summary>Menu</summary>
+      <nav class="site-nav" aria-label="Secções no telemóvel">
+
+        <a href="/" aria-current="page">Início</a>
+
+        <a href="/temas/economy">Economia</a>
+
+        <a href="/temas/demography">Demografia</a>
+
+        <a href="/temas/energy">Energia</a>
+
+        <a href="/comparar">Comparações</a>
+
+        <a href="/fontes">Fontes</a>
+
+        <a href="/metodologia">Metodologia</a>
+
+        <a href="/caderno">Caderno</a>
+      </nav>
+    </details>
     <form class="search" action="/pesquisa" method="get" role="search">
       <label class="sr-only" for="q">Pesquisar séries</label>
       <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="">
@@ -135,7 +160,7 @@
 <footer class="site-footer">
   <div class="wrap footer-row">
     <p><strong>Prumo</strong> publica números de instituições oficiais com a proveniência à vista. Sem cookies, sem rastreio, sem publicidade.</p>
-    <p class="footer-links"><a href="/fontes">Fontes e licenças</a>&nbsp;· <a href="/metodologia">Metodologia</a>&nbsp;· <a href="/pesquisa">Pesquisar</a>&nbsp;· <a href="/paginas">Páginas</a>&nbsp;· <a href="https://joao.date/dados/admin/">Admin</a></p>
+    <p class="footer-links"><a href="/fontes">Fontes e licenças</a>&nbsp;· <a href="/metodologia">Metodologia</a>&nbsp;· <a href="/pesquisa">Pesquisar</a>&nbsp;· <a href="/paginas">Páginas</a>&nbsp;· <a href="/caderno">Caderno</a>&nbsp;· <a href="https://joao.date/dados/admin/">Admin</a></p>
   </div>
 </footer>
 </body>
