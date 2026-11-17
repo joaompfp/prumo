@@ -141,6 +141,20 @@ img { max-width: 100%; }
 hr { border-color: var(--line); opacity: 1; }
 
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* Tabler's .form-control:focus and friends outrank the bare :focus-visible rule above,
+   so keyboard focus on real controls fell back to the translucent ring token. Restate
+   the outline at matching class specificity so keyboard users keep the solid carmim ring.
+   Tabler also transitions outline-color, which fades the ring in from transparent; the
+   boundary paints it immediately so the ring is solid at the moment focus lands. */
+.form-control:focus-visible,
+.form-select:focus-visible,
+.form-check-input:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  box-shadow: none;
+  transition: none;
+}
 
 .skip-link {
   position: absolute; left: -999px; top: 0; z-index: 50;

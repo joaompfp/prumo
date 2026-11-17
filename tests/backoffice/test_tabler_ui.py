@@ -214,3 +214,26 @@ def test_light_and_dark_primary_control_text_meet_aa_contrast():
     assert _contrast(danger_light, danger_soft_light) >= 4.5
     assert _contrast(danger_dark, danger_soft_dark) >= 4.5
     assert "color-mix(in oklab, var(--primary) 65%, transparent)" in css
+
+def test_keyboard_focus_on_tabler_controls_uses_solid_primary_outline():
+    css = (ROOT / "static/css/admin.css").read_text(encoding="utf-8")
+    generic = css.index(":focus-visible { outline: 2px solid var(--primary)")
+    match = re.search(r"(\.form-control:focus-visible[^{}]*\{[^}]*\})", css)
+    assert match is not None
+    rule = match.group(1)
+    for selector in (".form-control:focus-visible",
+                     ".form-select:focus-visible",
+                     ".form-check-input:focus-visible"):
+        assert selector in rule
+    # Must land after the bare :focus-visible rule so it wins the cascade.
+    assert css.index(rule) > generic
+    assert re.search(r"outline:\s*3px solid var\(--primary\)", rule)
+    assert "color-mix" not in rule
+    assert re.search(r"box-shadow:\s*none", rule)
+    # No fade-in from a transparent ring: focus must paint at full contrast.
+    assert re.search(r"transition:\s*none", rule)
+
+    surface_light, surface_dark = _light_dark(css, "surface")
+    primary_light, primary_dark = _light_dark(css, "primary")
+    assert _contrast(primary_light, surface_light) >= 3
+    assert _contrast(primary_dark, surface_dark) >= 3
