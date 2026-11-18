@@ -62,7 +62,7 @@ def test_public_root_and_wrap_support_the_approved_scale():
 def test_public_fixed_role_tokens_meet_the_one_and_a_half_floor():
     css = (ROOT / "static" / "css" / "prumo.css").read_text()
     for token in (
-        ".site-nav a {", "font-size: 0.95rem",          # nav 26.6475px
+        ".site-nav > a {", "font-size: 0.95rem",        # grouped nav 26.6475px
         ".card-label {", "font-size: .8rem",            # 22.44px
         ".card-source {", "font-size: .78rem",          # 21.879px
         ".data-table th {", "font-size: .74rem",        # 20.757px
