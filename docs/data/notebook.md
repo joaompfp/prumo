@@ -1,6 +1,6 @@
 # Caderno de indicadores
 
-Estado: cartões instalados; extensão com gráfico conjunto implementada em `pipeline-rebuild`, ainda sem merge nem instalação desta extensão.
+Estado: cartões e gráfico conjunto instalados a 18/11/2026 às 07:51 UTC, após merge e push de `361eca7`. Ver [registo da instalação](../superpowers/handoff/reports/notebook-navigation-release/installed.md).
 
 O Caderno reúne até doze séries publicadas numa página. Cada cartão mantém o valor, unidade,
 período, fonte, data de recolha, estado e ligação à proveniência da série. A extensão permite
@@ -81,7 +81,7 @@ montado. `s` é a seleção ordenada, `g` o grupo explícito do gráfico, `grafi
 uma escolha explícita vazia de usar todas, `grafico=off` oculta o gráfico, `escala` aceita
 `comum` ou `dupla`, `janela` aceita `10a`, `5a` ou `max`, `dia` é uma data ISO e `q` uma
 pesquisa transitória. Os parâmetros não indicados usam os valores iniciais. Todas as
-respostas do Caderno mantêm `noindex, follow` nos metadados e no cabeçalho `X-Robots-Tag`.
+respostas diretas da aplicação mantêm `noindex, follow` nos metadados e no cabeçalho `X-Robots-Tag`. O encaminhamento público existente substitui o cabeçalho por uma política mais restritiva que inclui `none` (sem indexação nem seguimento); os metadados HTML mantêm a política da aplicação. Esta instalação não alterou essa configuração partilhada.
 
 ## Operação e custo
 

@@ -1,0 +1,13 @@
+# Build context only. Never use this manifest for service activation.
+include: !reset []
+services:
+  prumo:
+    image: prumo:latest
+    build:
+      context: /home/joao/prumo-operations/notebook-navigation-release-20261118T074000Z/code
+      dockerfile: Dockerfile
+  prumo-backoffice:
+    image: prumo-backoffice:latest
+    build:
+      context: /home/joao/prumo-operations/notebook-navigation-release-20261118T074000Z/code
+      dockerfile: Dockerfile

@@ -1,0 +1,16 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/joao/.hermes/cache/scratch/prumo-notebook-navigation-committed
+configfile: pytest.ini
+plugins: anyio-4.16.0
+collected 95 items
+
+tests/test_legibility_assets.py .......                                  [  7%]
+tests/test_typography.py ..................                              [ 26%]
+tests/backoffice/test_boundaries.py ....                                 [ 30%]
+tests/app/test_navigation.py ..............                              [ 45%]
+tests/app/test_notebook_chart.py ..........................              [ 72%]
+tests/app/test_notebook_settings.py .......                              [ 80%]
+tests/app/test_chart_model.py ...................                        [100%]
+
+======================== 95 passed, 1 warning in 34.24s ========================

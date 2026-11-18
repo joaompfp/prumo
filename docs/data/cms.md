@@ -1,10 +1,10 @@
 # Statistics CMS v1: operator guide and release contract
 
-Status 2026-11-17: CMS 0019, public Admin, the populated homepage and the Tabler/carmim interface are installed. Current runtime 14f845e recreates only public web (13:20:58 UTC) and backoffice (13:21:00); the worker, schema, authored content/history, Authelia and Traefik are unchanged. Main CI 44090471137 passed; final local suite 2,688 passed, 7 network deselected. Installed read-only acceptance passed on both public prefixes and the protected Admin. The original homepage creation at 09:57 UTC remains version 2/revision 6. See the tabler-ui/carmim-installation.md receipt for current images, known shared-edge warning and recovery points. Human owner login/publication and screen-reader acceptance remain separate.
+Status 2026-11-18: CMS0019, public Admin, the populated homepage, Tabler/carmim and enlarged local typography are installed. Current release361eca7 (runtime7baa127) recreates only public web at07:51:38 UTC and backoffice at07:51:40, with grouped public navigation also in static CMS previews. Worker/schema/authored history/Authelia/Traefik are unchanged. Exact-main CI44260267298 passed; installed acceptance passed2117 public browser,33 Admin/state and10 preview checks. Homepage remains its existing publication. Human owner/session and screen-reader acceptance remain separate. Images and recovery: [installed notebook/navigation](../superpowers/handoff/reports/notebook-navigation-release/installed.md).
 
-## Candidate interface refinement, not yet installed
+## Installed interface and reader notebook
 
-The legibility candidate increases the body type to 21px, keeps the Tabler controls/carmim palette and adds licensed local typefaces. Narrow screens use a native collapsed Menu instead of repeated navigation rows. The page editor has an index linking to each named block; its section links form a balanced 2x2 grid on mobile. Draft/save/preview/publish/audit behavior and stored content are unchanged. Public Caderno selections are a separate reader tool, not CMS documents: see [notebook.md](notebook.md). Installed behavior remains the status above until release acceptance.
+Admin body23.1px retains the local licensed typefaces, Tabler controls and Carmim. Narrow screens use a native collapsed Menu. The page editor has a named-block index and balanced mobile section links; draft/save/preview/publish/audit behavior and stored content are unchanged. The reader Caderno supports up to twelve address-based cards and a separate explicit chart group of up to six; this does not expand CMS chart documents beyond one/two series. See [notebook.md](notebook.md).
 
 ## Access after release
 

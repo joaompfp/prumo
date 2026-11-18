@@ -1,0 +1,73 @@
+{
+  "checks": [
+    {
+      "check": "https://cae.joao.date/@320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 no overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 large local type",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 aligned joined search",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 typography",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 native menu opens",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 open menu contained",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/@320 destinations visible",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno@320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno@320 no overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno@320 large local type",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno@320 aligned joined search",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno@320 typography",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno@320 noindex",
+      "passed": false
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'."
+  ],
+  "external": [],
+  "assets": {},
+  "screens": [],
+  "failure": "AssertionError: https://cae.joao.date/caderno@320 noindex"
+}

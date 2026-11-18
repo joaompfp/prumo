@@ -1,0 +1,34 @@
+{
+  "screens": [
+    "home-neutral-direct-1440.png",
+    "notebook-neutral-direct-1440.png",
+    "home-neutral-direct-390.png",
+    "notebook-neutral-direct-390.png",
+    "home-neutral-mounted-1440.png",
+    "notebook-neutral-mounted-1440.png",
+    "home-neutral-mounted-390.png",
+    "notebook-neutral-mounted-390.png"
+  ],
+  "transient_tooltip_checks": [
+    {
+      "base": "https://cae.joao.date",
+      "width": 1440,
+      "hides_on_pointerleave": true
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 390,
+      "hides_on_pointerleave": true
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 1440,
+      "hides_on_pointerleave": true
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 390,
+      "hides_on_pointerleave": true
+    }
+  ]
+}

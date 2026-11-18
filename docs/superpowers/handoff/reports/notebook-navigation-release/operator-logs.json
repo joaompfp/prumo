@@ -1,0 +1,10 @@
+{
+  "prebuild.log": {
+    "raw_bytes": 3252,
+    "raw_sha256": "9cec907556a7adbd556b37e5f4557d1da0dba829f52bc9d20d908c62c6520e31"
+  },
+  "activation.log": {
+    "raw_bytes": 7960,
+    "raw_sha256": "a667c2664b836e8d591670de61cbc1522e6a1ecb1522102bd75cd4b9a3390428"
+  }
+}

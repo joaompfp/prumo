@@ -2,18 +2,20 @@
 
 ## State
 
-Implemented and independently reviewed on `pipeline-rebuild`, runtime `7baa127`; the follow-up
-`a42324b` only updates the old navigation-selector regression. Not merged or installed.
-Installed production remains the prior runtime `42c581f`, with main at `24a3dc7` when work began.
+Implemented and independently reviewed with runtime `7baa127`; the follow-up `a42324b`
+only updates the old navigation-selector regression. Owner-authorized main `361eca7` was
+merged, pushed and installed on 2026-11-18 at07:51 UTC, updating only public web and Admin.
+The installed proof and recovery are [recorded separately](../notebook-navigation-release/installed.md).
+The sections below preserve development evidence; they do not describe a pending deploy.
 Code was pushed to `pipeline-rebuild` at `a42324b` and its exact remote SHA read back.
 The fresh exhaustive controller gate passed2835/2835 selected tests; seven network tests were
 excluded by the existing marker policy. No skipped selected tests, failures or errors.
 
 No migration, source collection, production content write, ownership change, worker restart,
-authentication or routing operation belongs to this change. Public presentation templates are
-also used by the CMS's static preview, so a future authorized installation should update web
-and backoffice together, preserving the worker and CMS contents. Existing bind-mount-aware
-prebuild/activation and image-retention rules in `docs/data/operations.md` still apply.
+authentication or routing operation belongs to this change. The authorized installation
+updated web and backoffice together because the CMS's static preview shares public templates;
+worker and CMS contents were preserved. Existing bind-mount-aware prebuild/activation and
+image-retention rules in `docs/data/operations.md` still apply.
 
 ## Implemented contract
 
