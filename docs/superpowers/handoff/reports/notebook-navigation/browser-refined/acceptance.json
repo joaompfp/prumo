@@ -1,0 +1,2796 @@
+{
+  "checks": [
+    {
+      "name": "quick_check",
+      "passed": true
+    },
+    {
+      "name": "foreign_keys",
+      "passed": true
+    },
+    {
+      "name": "electricity family PT",
+      "passed": true
+    },
+    {
+      "name": "electricity family ES",
+      "passed": true
+    },
+    {
+      "name": "electricity family FR",
+      "passed": true
+    },
+    {
+      "name": "electricity family DE",
+      "passed": true
+    },
+    {
+      "name": "electricity family IT",
+      "passed": true
+    },
+    {
+      "name": "compiled asset bytes",
+      "passed": true
+    },
+    {
+      "name": "200 /@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /@320",
+      "passed": true
+    },
+    {
+      "name": "large type /@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /@320",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /@320",
+      "passed": true
+    },
+    {
+      "name": "native menu open /@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@320",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?q=desemprego@320",
+      "passed": true
+    },
+    {
+      "name": "200 /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "large type /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "native menu open /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /metodologia@320",
+      "passed": true
+    },
+    {
+      "name": "200 /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "large type /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "local fonts /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "punctuation /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "native menu open /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /temas/economy@320",
+      "passed": true
+    },
+    {
+      "name": "200 /@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /@390",
+      "passed": true
+    },
+    {
+      "name": "large type /@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /@390",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /@390",
+      "passed": true
+    },
+    {
+      "name": "native menu open /@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@390",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?q=desemprego@390",
+      "passed": true
+    },
+    {
+      "name": "200 /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "large type /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "native menu open /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /metodologia@390",
+      "passed": true
+    },
+    {
+      "name": "200 /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "large type /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "local fonts /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "punctuation /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "native menu open /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /temas/economy@390",
+      "passed": true
+    },
+    {
+      "name": "200 /@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /@768",
+      "passed": true
+    },
+    {
+      "name": "large type /@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /@768",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /@768",
+      "passed": true
+    },
+    {
+      "name": "native menu open /@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@768",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?q=desemprego@768",
+      "passed": true
+    },
+    {
+      "name": "200 /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "large type /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "native menu open /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /metodologia@768",
+      "passed": true
+    },
+    {
+      "name": "200 /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "large type /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "local fonts /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "punctuation /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "native menu open /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /temas/economy@768",
+      "passed": true
+    },
+    {
+      "name": "200 /@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /@900",
+      "passed": true
+    },
+    {
+      "name": "large type /@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /@900",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /@900",
+      "passed": true
+    },
+    {
+      "name": "native menu open /@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900End",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@900",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "native menu open /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /caderno?q=desemprego@900",
+      "passed": true
+    },
+    {
+      "name": "200 /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "large type /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "native menu open /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /metodologia@900",
+      "passed": true
+    },
+    {
+      "name": "200 /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "large type /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "local fonts /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "punctuation /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "native menu open /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "open menu no overflow /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "visible menu destinations /temas/economy@900",
+      "passed": true
+    },
+    {
+      "name": "200 /@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /@901",
+      "passed": true
+    },
+    {
+      "name": "large type /@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /@901",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /@901",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno@901",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@901End",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@901End",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=bportugal.euribor_3m.EA&s=bportugal.euribor_12m.EA&s=ine.hicp_yoy.PT@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@901End",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.FR&s=eurostat.electricity_price_household.DE&s=eurostat.electricity_price_household.IT@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@901End",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@901",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=ine.hicp_yoy.PT&s=eurostat.electricity_price_household.PT@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "group count /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "complete table /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "payload gated CSP /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901Home",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901ArrowRight",
+      "passed": true
+    },
+    {
+      "name": "keyboard exact /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@901End",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?s=eredes.production_market.PT&s=eredes.production_special.PT@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "large type /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "local fonts /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "joined aligned search /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "punctuation /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "noindex /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "scriptfree /caderno?q=desemprego@901",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?q=desemprego@9010",
+      "passed": true
+    },
+    {
+      "name": "open panel no overflow /caderno?q=desemprego@9011",
+      "passed": true
+    },
+    {
+      "name": "200 /metodologia@901",
+      "passed": true
+    },
+    {
+      "name": "no page overflow /metodologia@901",
+      "passed": false
+    }
+  ],
+  "errors": [],
+  "external": [],
+  "screens": [
+    "home-390.png",
+    "notebook-chart-390.png"
+  ],
+  "sizes": [],
+  "failure": "AssertionError: no page overflow /metodologia@901"
+}

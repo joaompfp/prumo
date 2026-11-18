@@ -1,0 +1,39 @@
+{
+  "scope": "full selected offline population, three isolated module-preserving partitions",
+  "selected": 2835,
+  "deselected": 7,
+  "population_sha256": "6ec295216dd87cbbdb19025d35d36f74b5d286d013ef05a988f15b39a6e365ee",
+  "statuses": [
+    0,
+    0,
+    0
+  ],
+  "workers": [
+    {
+      "index": 0,
+      "nodes": 946,
+      "tests": 946,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "index": 1,
+      "nodes": 944,
+      "tests": 944,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "index": 2,
+      "nodes": 945,
+      "tests": 945,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "passed": 2835,
+  "success": true
+}

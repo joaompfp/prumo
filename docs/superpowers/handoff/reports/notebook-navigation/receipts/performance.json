@@ -1,0 +1,66 @@
+{
+  "base": "http://127.0.0.1:8107",
+  "scope": "isolated production copy, sample groups only, concurrent controller suite",
+  "rows": [
+    {
+      "name": "home",
+      "path": "/",
+      "requests": 20,
+      "median_ms": 93.956,
+      "p95_ms": 117.839,
+      "html_bytes": 19093,
+      "local_gzip_bytes": 4418,
+      "sha256": "4518a9ba8a97b3abd7ed7839d0886d3959147124576be53bc5ee5f7a42038c7c",
+      "series": 0,
+      "points": 0
+    },
+    {
+      "name": "six-default-10y",
+      "path": "/caderno?s=bportugal.euribor_1m.EA&s=bportugal.euribor_3m.EA&s=bportugal.euribor_6m.EA&s=bportugal.euribor_12m.EA&s=bportugal.pt_10y.PT&s=bportugal.de_10y.DE",
+      "requests": 20,
+      "median_ms": 66.507,
+      "p95_ms": 75.522,
+      "html_bytes": 197201,
+      "local_gzip_bytes": 26351,
+      "sha256": "abf62a079d036346e35266f3ced54e35f204cd44d272a16005d97bac5ceff7d3",
+      "series": 6,
+      "points": 121
+    },
+    {
+      "name": "six-max",
+      "path": "/caderno?s=bportugal.euribor_1m.EA&s=bportugal.euribor_3m.EA&s=bportugal.euribor_6m.EA&s=bportugal.euribor_12m.EA&s=bportugal.pt_10y.PT&s=bportugal.de_10y.DE&janela=max",
+      "requests": 20,
+      "median_ms": 106.134,
+      "p95_ms": 171.114,
+      "html_bytes": 471389,
+      "local_gzip_bytes": 57914,
+      "sha256": "e8ff23beabc603746fff5d913fac712ab5de8a7db5e68a7fa736575587aea038",
+      "series": 6,
+      "points": 322
+    },
+    {
+      "name": "two-default",
+      "path": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "requests": 20,
+      "median_ms": 81.825,
+      "p95_ms": 85.042,
+      "html_bytes": 78744,
+      "local_gzip_bytes": 12049,
+      "sha256": "d07b374d55d9c385204ed1186ed08eb2bc398f2d823e25fad82e7e42e85dd378",
+      "series": 2,
+      "points": 121
+    },
+    {
+      "name": "interval-day",
+      "path": "/caderno?s=eredes.production_market.PT&s=eredes.production_special.PT",
+      "requests": 20,
+      "median_ms": 225.456,
+      "p95_ms": 242.297,
+      "html_bytes": 80478,
+      "local_gzip_bytes": 13747,
+      "sha256": "d0d49e3af85cff94cda9c0b36086204e9ce0c9eaff9e0b559136c7a3d8088987",
+      "series": 2,
+      "points": 96
+    }
+  ]
+}

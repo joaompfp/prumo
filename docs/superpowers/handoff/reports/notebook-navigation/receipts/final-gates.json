@@ -1,0 +1,11 @@
+{
+  "runtime": "7baa127",
+  "committed_tests": "a42324b",
+  "original_freeze_changes": [
+    "tests/test_legibility_assets.py"
+  ],
+  "all_610_files_match_committed_checkout": true,
+  "full_gate_passed": 2835,
+  "network_deselected": 7,
+  "browser_checks": 2317
+}

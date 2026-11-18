@@ -1,6 +1,20 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Current resume point: legibility, Caderno and European comparisons INSTALLED (2026-11-17)
+## Current resume point: notebook chart and public navigation candidate (2026-11-18)
+
+Owner requested selected Caderno series on one chart and a more coherent app-like public navigation. Implemented in runtime7baa127 over installed24a3dc7; a42324b only updates the old large-type selector guard. Main and production are unchanged. No merge, deployment, migration, content write, worker restart or shared-edge operation has run. This candidate needs a fresh owner release instruction.
+
+Caderno keeps12 cards and a separate explicit chart group<=6, native-scale/frequency checks, deliberate two-side dual axes, rolling ten/five years or all shared finite history, bounded UTC-day intervals, same-snapshot exact values/table/provenance and local ECharts/SVG fallback. Explicit empty/off state and addressed references survive sharing/eligibility changes. Public navigation is a pure model plus shared header partial, aligned masthead/search and grouped/native destinations. Carmim, plumb-bob and enlarged type remain. CMS multiseries authoring is STILL not implemented; these are reader selections only.
+
+Independent design/specification and quality/integration reviews APPROVED after finite-anchor/daily-calendar and open-panel/padding fixes. Parent139 focused tests passed. Detached committed checkout7baa127 passed123 with actual provider/entrypoint imports. Browser-final plus boundary acceptance passed2317 checks on both mounts at320/390/768/900/901/1024/1440; all23 table hashes unchanged, no page errors or off-origin requests. Actual AX tree and16 immediately focused targets checked separately; human screen-reader acceptance remains open.
+
+The first canonical full suite finished2834 passed,1 failed,7 network deselected,3 warnings in1542.16s: stale `.site-nav a` source assertion, fixed to the actual grouped `.site-nav > a` selector without changing runtime.25 typography/legibility tests then passed. Fresh exhaustive controller gate PASSED2835/2835 selected tests in three isolated module-preserving partitions (946/944/945), zero failures/errors/skips, seven network exclusions. Exact unique population/JUnit/logs archived in reports/notebook-navigation/receipts/. All610 frozen files match the detached committed tree; runtime unchanged. Code pushed to pipeline-rebuild at a42324b and exact remote SHA read back. The earlier failed receipt remains retained, not relabelled.
+
+Evidence, budget exception, deferred non-blocking review notes, reader instructions and final gate receipts: reports/notebook-navigation/README.md and docs/data/notebook.md. Sample six-series initial window197201 HTML bytes, median66.507ms; optional maximum471389 bytes, median106.134ms, p95171.114ms. Complete optional history intentionally exceeds250kB; local gzip is not production transfer evidence. Source data/CMS/rights/operational observation were not modified.
+
+Roadmap: /home/joao/vaults/projects/prumo/roadmap-e-implementacao.md. Future approved release affects web and the backoffice's public preview templates, without a worker/schema/auth change. Read the existing bind-mount-aware prebuild/recovery procedure; preserve published homepage and worker. Earlier sections below describe installed/history checkpoints.
+
+## Previous installed checkpoint: legibility, Caderno and European comparisons (2026-11-17)
 
 Owner approved this release with a further modest type increase. Public body28.05px, Admin body23.1px, fixed chart labels enlarged; local Lato/Schola, Carmim and the approved plumb-bob remain. Long SVG ticks, canvas unit clearance, intermediate header/figure layout and Portuguese title hyphenation corrected. Caderno and all three country comparisons are live under both public prefixes. CMS charts remain single-series/pairs; no gas or N-series CMS editor added.
 

@@ -1,0 +1,338 @@
+{
+  "ax": [
+    {
+      "viewport": 1440,
+      "images": [
+        [
+          {
+            "type": "computedString",
+            "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)",
+            "sources": [
+              {
+                "type": "relatedElement",
+                "attribute": "aria-labelledby"
+              },
+              {
+                "type": "attribute",
+                "value": {
+                  "type": "computedString",
+                  "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)"
+                },
+                "attribute": "aria-label",
+                "attributeValue": {
+                  "type": "string",
+                  "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)"
+                }
+              },
+              {
+                "type": "relatedElement",
+                "value": {
+                  "type": "computedString",
+                  "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)"
+                },
+                "superseded": true,
+                "nativeSource": "title"
+              },
+              {
+                "type": "attribute",
+                "attribute": "title",
+                "superseded": true
+              }
+            ]
+          },
+          {
+            "type": "role",
+            "value": "image"
+          }
+        ]
+      ],
+      "sliders": [
+        [
+          {
+            "type": "computedString",
+            "value": "Período no gráfico",
+            "sources": [
+              {
+                "type": "relatedElement",
+                "attribute": "aria-labelledby"
+              },
+              {
+                "type": "attribute",
+                "attribute": "aria-label"
+              },
+              {
+                "type": "relatedElement",
+                "value": {
+                  "type": "computedString",
+                  "value": "Período no gráfico"
+                },
+                "nativeSource": "labelfor",
+                "nativeSourceValue": {
+                  "type": "nodeList",
+                  "relatedNodes": [
+                    {
+                      "backendDOMNodeId": 710,
+                      "text": "Período no gráfico"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "attribute",
+                "attribute": "title",
+                "superseded": true
+              }
+            ]
+          },
+          {
+            "type": "role",
+            "value": "slider"
+          }
+        ]
+      ]
+    },
+    {
+      "viewport": 390,
+      "images": [
+        [
+          {
+            "type": "computedString",
+            "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)",
+            "sources": [
+              {
+                "type": "relatedElement",
+                "attribute": "aria-labelledby"
+              },
+              {
+                "type": "attribute",
+                "value": {
+                  "type": "computedString",
+                  "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)"
+                },
+                "attribute": "aria-label",
+                "attributeValue": {
+                  "type": "string",
+                  "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)"
+                }
+              },
+              {
+                "type": "relatedElement",
+                "value": {
+                  "type": "computedString",
+                  "value": "Evolução conjunta: Taxa de variação homóloga do IHPC - Portugal (%) e Taxa de desemprego - Portugal (%)"
+                },
+                "superseded": true,
+                "nativeSource": "title"
+              },
+              {
+                "type": "attribute",
+                "attribute": "title",
+                "superseded": true
+              }
+            ]
+          },
+          {
+            "type": "role",
+            "value": "image"
+          }
+        ]
+      ],
+      "sliders": [
+        [
+          {
+            "type": "computedString",
+            "value": "Período no gráfico",
+            "sources": [
+              {
+                "type": "relatedElement",
+                "attribute": "aria-labelledby"
+              },
+              {
+                "type": "attribute",
+                "attribute": "aria-label"
+              },
+              {
+                "type": "relatedElement",
+                "value": {
+                  "type": "computedString",
+                  "value": "Período no gráfico"
+                },
+                "nativeSource": "labelfor",
+                "nativeSourceValue": {
+                  "type": "nodeList",
+                  "relatedNodes": [
+                    {
+                      "backendDOMNodeId": 708,
+                      "text": "Período no gráfico"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "attribute",
+                "attribute": "title",
+                "superseded": true
+              }
+            ]
+          },
+          {
+            "type": "role",
+            "value": "slider"
+          }
+        ]
+      ]
+    }
+  ],
+  "focus": [
+    {
+      "viewport": 1440,
+      "tag": "A",
+      "text": "Saltar para o conteúdo",
+      "font": "28.05px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 1440,
+      "tag": "A",
+      "text": "Prumo",
+      "font": "28.05px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 1440,
+      "tag": "INPUT",
+      "text": "",
+      "font": "25.245px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 1440,
+      "tag": "BUTTON",
+      "text": "Procurar",
+      "font": "23.8425px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 1440,
+      "tag": "A",
+      "text": "Início",
+      "font": "26.6475px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 1440,
+      "tag": "SUMMARY",
+      "text": "Temas",
+      "font": "26.6475px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 1440,
+      "tag": "A",
+      "text": "Comparações",
+      "font": "26.6475px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 1440,
+      "tag": "A",
+      "text": "Caderno",
+      "font": "26.6475px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "A",
+      "text": "Saltar para o conteúdo",
+      "font": "28.05px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "A",
+      "text": "Prumo",
+      "font": "28.05px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "INPUT",
+      "text": "",
+      "font": "25.245px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "BUTTON",
+      "text": "Procurar",
+      "font": "0px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "SUMMARY",
+      "text": "Menu\n        Início",
+      "font": "28.05px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "A",
+      "text": "Explorar os dados",
+      "font": "25.245px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "A",
+      "text": "Como verificamos",
+      "font": "25.245px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    },
+    {
+      "viewport": 390,
+      "tag": "A",
+      "text": "Série e proveniência",
+      "font": "23.8425px",
+      "outline": "rgb(155, 28, 46)",
+      "width": "3px",
+      "style": "solid"
+    }
+  ],
+  "screens": [
+    "home-neutral-1440.png",
+    "notebook-neutral-1440.png",
+    "home-neutral-390.png",
+    "notebook-neutral-390.png"
+  ]
+}
