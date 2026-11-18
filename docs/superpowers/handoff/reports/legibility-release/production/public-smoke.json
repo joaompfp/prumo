@@ -1,0 +1,944 @@
+{
+  "checks": [
+    {
+      "check": "https://cae.joao.date/ 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 320 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 320 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 320 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 320 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 320 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 320 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 320 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 390 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 390 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 768 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 768 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/ 1440 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica 1440 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/healthz HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/fontes HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/metodologia HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/paginas HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/series/ine.hicp_yoy.PT HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/series/ine.hicp_yoy.PT.csv HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/credito-e-taxa HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/eletricidade-domestica HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/pib-por-habitante HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/comparar/paises/divida-publica HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/static/css/prumo.css exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/static/css/fonts.css exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/static/images/prumo/favicon.svg exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date/static/js/prumo-charts.min.js exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date prior two-axis comparison",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date unknown404",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date strict script policy",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 320 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 320 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 320 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 390 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 390 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 390 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 768 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 768 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 768 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 existing twelve cards",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 lightweight summaries",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/ 1440 carmim",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT 1440 two cards scriptfree",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 root/body28.05",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 local fonts",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 no page overflow",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 authored punctuation",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 five countries complete table",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 exact keyboard Home",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica 1440 exact keyboard End",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/healthz HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/fontes HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/metodologia HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/paginas HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/series/ine.hicp_yoy.PT HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/series/ine.hicp_yoy.PT.csv HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/credito-e-taxa HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/eletricidade-domestica HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/pib-por-habitante HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/comparar/paises/divida-publica HTTP200",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/static/css/prumo.css exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/static/css/fonts.css exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/static/images/prumo/favicon.svg exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados/static/js/prumo-charts.min.js exact bytes",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados prior two-axis comparison",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados unknown404",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados strict script policy",
+      "passed": true
+    },
+    {
+      "check": "Admin still challenges through Authelia",
+      "passed": true
+    },
+    {
+      "check": "no off-origin public requests",
+      "passed": true
+    },
+    {
+      "check": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "check": "no unexpected warnings",
+      "passed": true
+    },
+    {
+      "check": "actual edge bundle transfer",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'."
+  ],
+  "external": [],
+  "assets": {
+    "https://cae.joao.date/static/css/prumo.css": {
+      "bytes": 31922,
+      "sha256": "93a0a9610a39d5136fda8f8e9020b03668ce0b7c668cae42447aac98cb6a24e7"
+    },
+    "https://cae.joao.date/static/css/fonts.css": {
+      "bytes": 1093,
+      "sha256": "10f93541576dabee786988f942fc2b61c0307f829cadfd526820f5c2db066947"
+    },
+    "https://cae.joao.date/static/images/prumo/favicon.svg": {
+      "bytes": 319,
+      "sha256": "0654b83780747bd7218a0c5dce9f62d2d120359aea178fb30c75757e94c92db6"
+    },
+    "https://cae.joao.date/static/js/prumo-charts.min.js": {
+      "bytes": 506637,
+      "sha256": "70a45c776a6bf397f75ddd0e22807ec837a7ba3a4b0545b61d2ff79c9a4e3d0a"
+    },
+    "https://joao.date/dados/static/css/prumo.css": {
+      "bytes": 31922,
+      "sha256": "93a0a9610a39d5136fda8f8e9020b03668ce0b7c668cae42447aac98cb6a24e7"
+    },
+    "https://joao.date/dados/static/css/fonts.css": {
+      "bytes": 1093,
+      "sha256": "10f93541576dabee786988f942fc2b61c0307f829cadfd526820f5c2db066947"
+    },
+    "https://joao.date/dados/static/images/prumo/favicon.svg": {
+      "bytes": 319,
+      "sha256": "0654b83780747bd7218a0c5dce9f62d2d120359aea178fb30c75757e94c92db6"
+    },
+    "https://joao.date/dados/static/js/prumo-charts.min.js": {
+      "bytes": 506637,
+      "sha256": "70a45c776a6bf397f75ddd0e22807ec837a7ba3a4b0545b61d2ff79c9a4e3d0a"
+    }
+  },
+  "known_shared_edge_vr_warnings": 26,
+  "transfer": {
+    "content_encoding": "gzip",
+    "wire_body_bytes": 179938,
+    "decoded_bytes": 506637,
+    "sha256": "70a45c776a6bf397f75ddd0e22807ec837a7ba3a4b0545b61d2ff79c9a4e3d0a"
+  },
+  "complete": true
+}

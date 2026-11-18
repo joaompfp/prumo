@@ -1,5 +1,9 @@
 # Legibility and notebook implementation record
 
+This is the pre-release acceptance checkpoint. The combined release is now installed;
+see [final installation](../legibility-release/installed.md). Earlier references to the
+uninstalled candidate and old image below retain the state measured for this report.
+
 Status: implemented and independently reviewed on `pipeline-rebuild`, not installed. Baseline
 checkout `6f851d4`; production public/Admin runtime remains `14f845e`. Controller full suite passed: 2,717 tests, 7 network deselected, 3 warnings in 1,292.46 seconds.
 Code commit: f291ae2b0cc3c36351820da2c2be4b64683f3a06. Implementation approval covers

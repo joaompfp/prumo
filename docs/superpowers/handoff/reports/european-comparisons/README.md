@@ -1,5 +1,10 @@
 # European comparisons: acceptance evidence
 
+This is the pre-release acceptance record. The combined candidate is now installed;
+see [final installation](../legibility-release/installed.md) for the actual current images,
+release gates and recovery points. Earlier not-installed statements below describe this
+report's own checkpoint.
+
 ## Delivered scope
 
 Runtime `0902617` (with review documentation at `b1fca40`) adds three curated five-country comparisons using existing verified Eurostat series. The ordered countries are Portugal, Spain, France, Germany and Italy. Electricity uses actual household retail EUR/kWh with all taxes included for annual consumption 2 500 to 4 999 kWh, not an energy price index. The other comparisons are GDP per inhabitant at current euro prices and general-government gross consolidated debt as percentage of GDP.

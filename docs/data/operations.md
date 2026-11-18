@@ -1,10 +1,16 @@
 # Prumo image and ingestion operations
 
-## Candidate: legibility and indicator notebook
+## Current public interface: legibility, Caderno and country comparisons installed
+
+Owner-authorized release9d122f9 (runtime42c581f) is installed on f0nix from2026-11-17T23:54 UTC. Public body28.05px and Admin body23.1px, local Lato/Schola and Carmim. Caderno and the three five-country comparisons are online under both prefixes. Only web/backoffice recreated; worker identity/image/start/restarts, CMS contents/history and schema0019 match the pre-activation baseline. No migration, source-data/content write, credentials or shared-edge change. Controller2,785 passed/seven network deselected;130 committed-tree tests and hosted CI44201658200 passed. Installed217 public checks plus33 Admin/state checks passed. Real bundle transfer179,938 gzip wire bytes; the pre-existing shared-edge vr warning remains separately recorded.
+
+The public container bind-mounts app/static: do not fast-forward its live checkout while prebuilding. The exercised release used a detached approved-main context via a temporary dc-web build override, then briefly stopped only the public reader before advancing the live checkout and recreating through normal aliases. Never use the build-only override for up. Full installed images/receipts and recovery tags: [legibility release](../superpowers/handoff/reports/legibility-release/installed.md). Rollback code6f851d4 and pinned web/Admin images preserve data/history; no database restore or worker restart. The existing CMS homepage was not republished.
+
+## Historical candidate: legibility and indicator notebook
 
 The new type scale, local licensed fonts, native mobile navigation/editor outline and stateless Caderno are implemented on pipeline-rebuild at code f291ae2, not installed. The full controller suite passed2,717 tests with7 network deselected;783 browser checks and485 type measurements passed, with20 protected tables unchanged. This is a schema-unchanged public-web/backoffice release only. No CMS initialization/publication or worker, authentication, ownership or shared-edge change is required. Use the existing dc-web schema-unchanged procedure and pin both currently installed images first. Rollback changes only those two code/images; retain all data and CMS history. The current installed baseline remains the Tabler/carmim section below. Acceptance: [legibility/notebook report](../superpowers/handoff/reports/legibility-notebook/README.md); reader instructions: [Caderno](notebook.md).
 
-## Current Tabler/carmim interface: installed 2026-11-17
+## Previous Tabler/carmim interface: installed 2026-11-17
 
 Runtime 14f845e is merged, pushed and installed after owner approval and hosted CI 44090471137. Public web was recreated at 13:20:58 UTC and backoffice at 13:21:00; both healthy, zero restarts. Worker identity/image/StartedAt/restarts are exactly unchanged. No migration, source-data/content write, ownership, credentials or shared-edge change. Schema remains 0019, next free 0020.
 

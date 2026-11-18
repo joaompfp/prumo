@@ -78,12 +78,19 @@ Pre-release code is `6f851d4`. Old web and Admin images are pinned with the tag
 subsequent installed receipts live at
 `f0nix:/home/joao/prumo-operations/legibility-release-20261117T224217Z`.
 
-Merge and push only after passed release gates. Verify and fast-forward the clean f0nix
-checkout to the exact approved remote SHA. Prebuild with `bash -lic 'dc-web build prumo
-prumo-backoffice'` while old containers serve; recreate public web and backoffice through
-their `dc-web-up` aliases. Never recreate `prumo-ingest` or change shared routing for this
-release. Commit only the changed application gitlink in f0nix infrastructure, preserving
-pre-existing secrets/compose edits. Read back exact remote refs.
+Merge and push only after passed release gates. Inspect actual live mounts before changing
+the f0nix checkout: this web container bind-mounts app/templates and static assets, so an
+early fast-forward would alter the live page before the new Python image starts. The
+prebuild therefore used a detached worktree at the exact approved remote main SHA, with a
+temporary context-only override supplied to `dc-web -f ... build prumo prumo-backoffice`.
+Filtered Compose output proved both build contexts; other stack services were not built
+or recreated. Old images were pinned first. Keep the live checkout at its old revision
+until activation, then briefly stop only public web, fast-forward the clean checkout to
+the approved SHA and recreate public web then backoffice with their normal `dc-web-up`
+aliases. The image rebuild is cached. Never run up with the temporary build manifest.
+Never recreate `prumo-ingest` or change shared routing for this release. Commit only the
+changed application gitlink in f0nix infrastructure, preserving pre-existing secrets/
+compose edits. Read back exact remote refs.
 
 For recovery, freeze editorial actions, rebuild old code from `6f851d4` in the deployment
 context through the same aliases or recover the pinned image tags using the existing stack
@@ -91,6 +98,7 @@ procedure. Preserve source data, schema and authored history; no database restor
 The restored older public site will simply omit Caderno/country routes and use its earlier
 typography. Do not reset remote main backwards or restart the worker to downgrade this UI.
 
-Installation has not yet run at this documentation checkpoint. The final installed record
-will identify exact images, starts, retained worker/CMS/schema fingerprints, both public
-prefixes, Admin challenge, transfer bytes, logs and genuine manual gates.
+Installation is complete: see [installed.md](installed.md), the exact pre/post activation
+receipts and `production/public-smoke.json`. Hosted CI passed on9d122f9 before activation;
+217 installed public and33 Admin/state checks passed. Worker, CMS and schema fingerprints
+match. Only web/backoffice changed; the human screen-reader gate remains separate.

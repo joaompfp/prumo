@@ -1,0 +1,17 @@
+{
+  "activation.log": {
+    "archive": "receipts/activation.log.gz",
+    "sha256_uncompressed": "5bb85346eed117a11e22bd8e92a51cb8bb7383dd19b778fd20763e8c8eb390a5",
+    "bytes": 6333
+  },
+  "prebuild.log": {
+    "archive": "receipts/prebuild.log.gz",
+    "sha256_uncompressed": "1c5014ebaf44649155f2be5d828fd2c64bb09f62e1e48842776fd25210ed3f9a",
+    "bytes": 3303
+  },
+  "ci-44201658200.log": {
+    "archive": "receipts/ci-44201658200.log.gz",
+    "sha256_uncompressed": "ce6badeee59d72e541cba261dfed7f0b74788335d26906fb9310bc42e2b5c047",
+    "bytes": 32092
+  }
+}

@@ -1,6 +1,20 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Current resume point: European country comparisons, not installed (2026-11-17)
+## Current resume point: legibility, Caderno and European comparisons INSTALLED (2026-11-17)
+
+Owner approved this release with a further modest type increase. Public body28.05px, Admin body23.1px, fixed chart labels enlarged; local Lato/Schola, Carmim and the approved plumb-bob remain. Long SVG ticks, canvas unit clearance, intermediate header/figure layout and Portuguese title hyphenation corrected. Caderno and all three country comparisons are live under both public prefixes. CMS charts remain single-series/pairs; no gas or N-series CMS editor added.
+
+Approved main9d122f90b9307b3a4a3848e5d7b99b92a9b27ca9 is installed; latest runtime change42c581f. Controller full suite2,785 passed, seven network deselected, three warnings in1,432.38s; ruff/JS syntax clean. Detached committed checkout130 passed with real imports/routes/assets. Hosted CI44201658200 passed on exact9d122f9 before activation. Independent spec, quality and scoped follow-up reviews approved. Later documentation commits need no image recreation.
+
+Only prumo and prumo-backoffice recreated at23:54:20/23:54:22 UTC, images9720261d/69f85bab, healthy/zero restarts. Worker39214757/imageff50b981/start01:45:15/zero restarts is EXACTLY unchanged. Schema/migrations and CMS document/revision/event fingerprints match immediate pre-activation; quick_check ok/zero FK errors. No migration, live publication, source-data write, ownership, credentials or shared-edge change. Existing authored homepage preserved.
+
+Final isolated proof783 legibility/CMS checks,485 samples/minimum ratio1.65,410 country checks; protected fingerprints unchanged. Installed217 public browser checks and33 trusted-proxy/Admin/state checks passed, both prefixes/four widths, exact assets/fonts, notebook, five-country table/keyboard, prior dual axes, CSP/404 and Authelia challenge. Actual edge bundle: gzip179,938 wire bytes/506,637 decoded, sha25670a45c776a6bf397f75ddd0e22807ec837a7ba3a4b0545b61d2ff79c9a4e3d0a. Known shared-edge vr warning26 times; zero page/CSP errors or unexpected warnings. Human owner-session/screen-reader acceptance remains separate.
+
+Evidence/recovery: reports/legibility-release/installed.md and receipts. Operator path f0nix:/home/joao/prumo-operations/legibility-release-20261117T224217Z. Old code6f851d4 and web/Admin tags rollback-legibility-20261117T224217Z retained. Because public app/static are live bind mounts, prebuild used a detached approved-main context before stopping only that reader, advancing its clean live checkout and recreating through normal aliases. Never up with the temporary build-only override. UI rollback preserves DB/history/worker.
+
+Roadmap: /home/joao/vaults/projects/prumo/roadmap-e-implementacao.md. Future multiseries CMS, dated analysis and human-approved AI drafts are not started. Rights/DGEG, lag classification and real elapsed worker observation remain separate. Following checkpoints describe earlier states, not a pending permission to install this candidate.
+
+## Previous candidate: European country comparisons, not installed (2026-11-17)
 
 Owner requested more comparisons, including actual European energy prices. Three curated five-country pages are implemented on pipeline-rebuild over the existing larger-type/Caderno candidate: household electricity EUR/kWh (same annual band 2 500 to 4 999 kWh, taxes included), GDP per inhabitant in current euros and general-government gross debt as percentage of GDP. Countries are ordered PT/ES/FR/DE/IT. Routes are /comparar/paises/eletricidade-domestica, /comparar/paises/pib-por-habitante and /comparar/paises/divida-publica, linked from /comparar. This adds no gas source, transformation, registry change, schema or data write. Existing CMS documents remain one-series/pairs; an N-series CMS editor is not included.
 
