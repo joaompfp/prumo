@@ -1,0 +1,61 @@
+<header class="site-header">
+  <div class="wrap masthead">
+    <a class="brand" href="{{ header_nav.home.href }}">
+      <img class="brand-icon" src="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg" alt="" width="40" height="40">
+      <span class="brand-name">Prumo</span>
+    </a>
+    <form class="search" action="{{ header_nav.search_href }}" method="get" role="search">
+      <label class="sr-only" for="q">Pesquisar séries</label>
+      <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
+      <button type="submit">Procurar</button>
+    </form>
+  </div>
+  <div class="wrap destination-rail">
+    <nav class="site-nav" aria-label="Secções">
+      <a href="{{ header_nav.home.href }}"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>{{ header_nav.home.label }}</a>
+      <details class="nav-disclosure"{% if header_nav.themes.state %} data-state="{{ header_nav.themes.state }}"{% endif %}>
+        <summary>
+          {% if header_nav.themes.current_label %}<span class="sr-only">{{ header_nav.themes.label }}: </span><span class="nav-disclosure-current">{{ header_nav.themes.current_label }}</span>{% else %}<span class="nav-disclosure-label">{{ header_nav.themes.label }}</span>{% endif %}
+        </summary>
+        <ul class="nav-disclosure-panel">
+          {% for link in header_nav.themes.links %}
+          <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </details>
+      {% for link in header_nav.sections %}
+      <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
+      {% endfor %}
+      <details class="nav-disclosure"{% if header_nav.support.state %} data-state="{{ header_nav.support.state }}"{% endif %}>
+        <summary>
+          {% if header_nav.support.current_label %}<span class="sr-only">{{ header_nav.support.label }}: </span><span class="nav-disclosure-current">{{ header_nav.support.current_label }}</span>{% else %}<span class="nav-disclosure-label">{{ header_nav.support.label }}</span>{% endif %}
+        </summary>
+        <ul class="nav-disclosure-panel">
+          {% for link in header_nav.support.links %}
+          <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </details>
+    </nav>
+    <details class="nav-menu">
+      <summary{% if header_nav.compact_current_long %} class="nav-menu-summary--long"{% endif %}>
+        <span class="nav-menu-label">Menu</span>
+        {% if header_nav.compact_current %}<span class="nav-menu-current">{{ header_nav.compact_current }}</span>{% endif %}
+      </summary>
+      <nav class="site-nav site-nav-compact" aria-label="Secções no telemóvel">
+        <a href="{{ header_nav.home.href }}"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>{{ header_nav.home.label }}</a>
+        <p class="nav-compact-group">{{ header_nav.themes.label }}</p>
+        {% for link in header_nav.themes.links %}
+        <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
+        {% endfor %}
+        {% for link in header_nav.sections %}
+        <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
+        {% endfor %}
+        <p class="nav-compact-group">{{ header_nav.support.label }}</p>
+        {% for link in header_nav.support.links %}
+        <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
+        {% endfor %}
+      </nav>
+    </details>
+  </div>
+</header>

@@ -22,6 +22,7 @@ from app import (
     cms_routes,
     country_comparisons,
     interactive,
+    navigation,
     notebook,
     notebook_routes,
     reads,
@@ -39,9 +40,8 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR.parent / "static"
 DEFAULT_DB = "/data/prumo.sqlite3"
 PAGE_METHODS = ["GET", "HEAD"]
-NAV = (("/", "Início"), ("/temas/economy", "Economia"), ("/temas/demography", "Demografia"),
-       ("/temas/energy", "Energia"), ("/comparar", "Comparações"), ("/fontes", "Fontes"),
-       ("/metodologia", "Metodologia"))
+# Retained for the backoffice preview context; the public header renders nav_model.
+NAV = navigation.legacy_links()
 SECURITY_HEADERS = {
     "Content-Security-Policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; "
                                "font-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
@@ -65,14 +65,20 @@ def _templates() -> Jinja2Templates:
                        format_value=format_value, format_period=format_period,
                        format_datetime=format_datetime, format_date=format_date,
                        format_count=format_count, notebook_path=notebook.selection_path,
+                       site_navigation=navigation.build_navigation,
                        notebook_copy=notebook_text("pt"))
     return Jinja2Templates(env=env)
 
 
 def _render(templates: Jinja2Templates, request: Request, name: str, context: dict,
             status: int = 200, script: bool = False) -> HTMLResponse:
-    response = templates.TemplateResponse(request, name, {"base": _base(request), "nav": NAV,
-                                                          "path": request.url.path, **context},
+    base = _base(request) or navigation.root_path_base(request)
+    path = navigation.request_path(request)
+    nav_model = navigation.build_navigation(
+        path, base, getattr(request.app.state, "notebook_label", "Caderno"))
+    response = templates.TemplateResponse(request, name, {"base": base, "nav": NAV,
+                                                          "nav_model": nav_model,
+                                                          "path": path, **context},
                                           status_code=status)
     if script:
         # One effective policy: the middleware setdefault leaves this explicit header alone.
@@ -102,6 +108,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
     app = FastAPI(title="Prumo", docs_url=None, redoc_url=None, openapi_url=None)
     app.state.db_path = db_path or os.environ.get("PRUMO_DB_PATH") or DEFAULT_DB
     templates = _templates()
+    app.state.notebook_label = notebook_text("pt").nav_label
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
     @app.middleware("http")

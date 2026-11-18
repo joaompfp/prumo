@@ -22,6 +22,12 @@ release deliberately adds local font links, native mobile navigation and the Cad
 and uses the new shared chart geometry. Its earlier full capture remains unchanged in
 `golden/pre_legibility/home_code_list.html.gz` (lossless archive); the current golden is the reviewed new chrome
 against the unchanged fixture. Source values and publisher precision remain unchanged.
+
+The 2026-11-18 public-shell slice replaces the shared header again (masthead, grouped
+native disclosures and a joined search) while leaving every page below it untouched. The
+goldens stay immutable historical captures: the equality checks here compare the bytes
+from `<main id="conteudo">` onward, so the expected shared-chrome delta is explicit and
+the content/footer contract is still proven byte for byte.
 """
 
 from pathlib import Path
@@ -70,11 +76,22 @@ def _add_extra_series(site_path):
     reads.clear_cache()
 
 
-def test_empty_composition_home_is_byte_identical(site_path):
+def _below_shared_chrome(html: str) -> str:
+    """Everything from the main landmark onward: the page contract below the header."""
+    marker = '<main id="conteudo"'
+    assert marker in html
+    return html[html.index(marker):]
+
+
+def test_empty_composition_home_content_is_unchanged_below_the_new_header(site_path):
     reads.clear_cache()
     with TestClient(create_app(str(site_path))) as c:
         html = c.get("/").text
-    assert html == GOLDEN.read_text(encoding="utf-8")
+    golden = GOLDEN.read_text(encoding="utf-8")
+    # The shared chrome is the one reviewed delta; the old capture keeps the old header.
+    assert 'class="wrap masthead"' in html
+    assert 'class="wrap masthead"' not in golden
+    assert _below_shared_chrome(html) == _below_shared_chrome(golden)
 
 
 def test_empty_composition_renders_the_code_list(site_path):
@@ -151,7 +168,8 @@ def test_a_page_row_for_an_unknown_slug_is_inert(site_path):
     reads.clear_cache()
     with TestClient(create_app(str(site_path))) as c:
         html = c.get("/").text
-    assert html == GOLDEN.read_text(encoding="utf-8")
+    assert _below_shared_chrome(html) == _below_shared_chrome(
+        GOLDEN.read_text(encoding="utf-8"))
 
 
 def test_missing_page_text_is_a_503_not_a_500(site_path, monkeypatch):

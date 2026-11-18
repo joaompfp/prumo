@@ -14,34 +14,9 @@
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
-<header class="site-header">
-  <div class="wrap header-row">
-    <a class="brand" href="{{ base }}/">
-      <img class="brand-icon" src="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg" alt="" width="28" height="28">
-      <span class="brand-name">Prumo</span>
-    </a>
-    <nav class="site-nav site-nav-desktop" aria-label="Secções">
-      {% for href, label in nav %}
-      <a href="{{ base }}{{ href }}"{% if path == href or (href != '/' and path.startswith(href)) %} aria-current="page"{% endif %}>{{ label }}</a>
-      {% endfor %}
-      <a href="{{ base }}/caderno"{% if path == "/caderno" %} aria-current="page"{% endif %}>{{ notebook_copy.nav_label }}</a>
-    </nav>
-    <details class="nav-disclosure">
-      <summary>Menu</summary>
-      <nav class="site-nav" aria-label="Secções no telemóvel">
-{% for href, label in nav %}
-        <a href="{{ base }}{{ href }}"{% if path == href or (href != "/" and path.startswith(href)) %} aria-current="page"{% endif %}>{{ label }}</a>
-{% endfor %}
-        <a href="{{ base }}/caderno"{% if path == "/caderno" %} aria-current="page"{% endif %}>{{ notebook_copy.nav_label }}</a>
-      </nav>
-    </details>
-    <form class="search" action="{{ base }}/pesquisa" method="get" role="search">
-      <label class="sr-only" for="q">Pesquisar séries</label>
-      <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
-      <button type="submit">Procurar</button>
-    </form>
-  </div>
-</header>
+{% set header_nav = nav_model if nav_model is defined else site_navigation(
+     path|default('/'), base|default(''), notebook_copy.nav_label|default('Caderno', true)) %}
+{% include "_site_header.html" %}
 <main id="conteudo" class="wrap">
 {% block content %}{% endblock %}
 </main>

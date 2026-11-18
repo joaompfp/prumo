@@ -392,12 +392,15 @@ def test_prepared_and_published_home_renders_every_current_section(cms, site_pat
     assert 'href="/temas/energy"' in html
     assert html.count('<div class="cards">') == 1
 
-    labels = html.index("Dados oficiais")
-    highlights = html.index("Números em destaque")
-    first_card = html.index("Inflação (IHPC)")
-    themes = html.index(">Temas<")
-    verification = html.index("A cadeia de verificação")
-    sources = html.index("Instituições publicadas")
+    # Scope section order to the rendered page body: the shared chrome repeats
+    # "Temas" in the desktop and compact navigation before the content starts.
+    content = html[html.index('<main id="conteudo"'):html.index("</main>")]
+    labels = content.index("Dados oficiais")
+    highlights = content.index("Números em destaque")
+    first_card = content.index("Inflação (IHPC)")
+    themes = content.index(">Temas<")
+    verification = content.index("A cadeia de verificação")
+    sources = content.index("Instituições publicadas")
     assert labels < highlights < first_card < themes < verification < sources
     assert 'id="cms-hero-1"' in html
     assert response.headers["content-security-policy"] == SECURITY_HEADERS["Content-Security-Policy"]

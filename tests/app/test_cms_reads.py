@@ -267,7 +267,12 @@ def test_page_index_is_reachable_when_empty_and_the_footer_links_both_hosts(clie
     for headers, prefix in (({}, ""), ({"X-Forwarded-Prefix": "/dados"}, "/dados")):
         home = client.get("/", headers=headers).text
         assert f'href="{prefix}/paginas">Páginas</a>' in home
-        assert home.count(f'href="{prefix}/paginas"') == 1  # footer only, NAV unchanged
+        # The destination is intentional shared chrome: once in the desktop rail,
+        # once in the compact menu, and once in the footer.
+        header = home[:home.index('<main id="conteudo"')]
+        footer = home[home.index('<footer class="site-footer">'):]
+        assert header.count(f'href="{prefix}/paginas"') == 2
+        assert footer.count(f'href="{prefix}/paginas"') == 1
         assert client.get("/paginas", headers=headers).status_code == 200
 
 
