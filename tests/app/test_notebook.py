@@ -65,7 +65,14 @@ def card_labels(html: str) -> list[str]:
 
 
 def hidden_selection(html: str) -> list[str]:
-    return re.findall(r'<input type="hidden" name="s" value="([^"]+)">', html)
+    """The `s` inputs of the search form, not the chart settings form.
+
+    The chart form repeats the addressed selection on purpose; parsing every hidden `s` on the
+    page would confuse the two forms and hide a real regression in either.
+    """
+    match = re.search(r'<form id="notebook-search-form".*?</form>', html, re.S)
+    assert match is not None
+    return re.findall(r'<input type="hidden" name="s" value="([^"]+)">', match.group(0))
 
 
 def canonical_href(html: str) -> str:
@@ -141,7 +148,11 @@ def test_notebook_shows_exact_values_sources_flags_and_svg(notebook_client):
     assert "INE - Instituto Nacional de Estatística" in text
     assert "recolhido a 03/11/2026" in text
     assert html.count('class="spark"') == 2
-    assert "<script" not in html.lower()
+    # A drawable chart is the one notebook response allowed the local chart bundle. The payload
+    # is still inert JSON and no reader value is stored anywhere in the browser.
+    assert 'class="chart-data"' in html
+    assert 'src="/static/js/prumo-charts' in html
+    assert "script-src 'self'" in response.headers["content-security-policy"]
     assert "localStorage" not in html and "sessionStorage" not in html
     assert "set-cookie" not in response.headers
 
@@ -212,7 +223,10 @@ def test_unknown_and_ineligible_selections_are_omitted_with_one_count(notebook_c
     assert card_count(html) == 1
     assert "5 séries desta ligação já não podem ser mostradas e foram omitidas." in text
     for series_id in ("ine.unknown.PT", INACTIVE, WITHHELD, XCHECK, DERIVED):
-        assert series_id not in html
+        assert series_id not in text
+    # The canonical link keeps the whole addressed selection, so a series that merely became
+    # ineligible is not silently dropped from the link the reader shares.
+    assert canonical_href(html).count("s=") == 6
     assert "REN" not in text and "Eurostat" not in text
     for reason in ("unknown_series", "inactive", "withheld", "cross_check",
                    "no_served_value", "legacy_only"):
@@ -263,7 +277,8 @@ def test_legacy_only_and_withdrawn_series_are_skipped(tmp_path):
     assert "2 séries desta ligação já não podem ser mostradas e foram omitidas." in text
     assert "1,8" in text
     assert "99,9" not in text and "2,3" not in text
-    assert legacy_id not in html and WORLD not in html
+    assert legacy_id not in text and WORLD not in text
+    assert canonical_href(html).count("s=") == 3
     assert "Nados-vivos" not in text and "Crescimento do PIB" not in text
 
 
@@ -291,7 +306,12 @@ def test_fresh_rights_and_activity_beat_the_warm_catalogue_cache(site_path):
         assert "1,8" not in text
         assert "Taxa de desemprego" not in text
         assert "Sem resultados para «desemprego»." in text
-        assert "/caderno?s=" not in html
+        # The addressed selection survives the rights loss in the canonical and search links;
+        # the card and the chart are the parts that disappear.
+        assert canonical_href(html) == f"/caderno?s={HICP}"
+        assert hidden_selection(html) == [HICP]
+        assert "Nenhuma das séries desta ligação pode ser mostrada no gráfico" in text
+        assert "chart-data" not in html and "prumo-charts" not in html
 
 
 def test_search_keeps_selection_and_offers_add_remove_clear_and_canonical(notebook_client):
@@ -451,5 +471,8 @@ def test_unavailable_database_is_the_generic_503(tmp_path, site_path):
 def test_template_asks_the_base_shell_for_the_noindex_meta():
     source = (Path(__file__).parents[2] / "app" / "templates" / "notebook.html").read_text()
     assert '{% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}' in source
-    assert "<script" not in source.lower()
-    assert "localStorage" not in source
+    # The only script on the page is the guarded local bundle in the scripts block; there is no
+    # unconditional script and no browser storage anywhere in the template.
+    assert "{% block scripts %}" in source
+    assert "page.chart_panel.chart_payload" in source
+    assert "localStorage" not in source and "sessionStorage" not in source

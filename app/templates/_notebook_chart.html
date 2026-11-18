@@ -1,0 +1,127 @@
+{% from "_chart.html" import chart_shell %}
+{% set panel = page.chart_panel %}
+<section class="notebook-chart" aria-labelledby="grafico-caderno">
+  <div class="section-head">
+    <h2 id="grafico-caderno">{{ page.copy.chart_heading }}</h2>
+  </div>
+  <p class="note">{{ page.copy.chart_lede }}</p>
+
+  <details class="notebook-chart-settings"{% if not panel.chart %} open{% endif %}>
+    <summary>{{ page.copy.chart_settings_summary }}</summary>
+    <form id="notebook-chart-form" class="notebook-chart-options" action="{{ base }}/caderno" method="get">
+      {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+      {% if page.query %}<input type="hidden" name="q" value="{{ page.query }}">{% endif %}
+      <input type="hidden" name="grafico" value="on">
+      <fieldset>
+        <legend>{{ page.copy.chart_group_legend }}</legend>
+        <div class="notebook-chart-choices">
+          {% for choice in panel.choices %}
+          <label>
+            <input type="checkbox" name="g" value="{{ choice.series_id }}"{% if choice.checked %} checked{% endif %}>
+            {{ choice.label }}{% if not choice.available %} <span class="note">({{ page.copy.chart_unavailable_mark }})</span>{% endif %}
+          </label>
+          {% endfor %}
+        </div>
+        <p class="note">{{ page.copy.chart_group_note }}</p>
+      </fieldset>
+      <label>{{ page.copy.chart_scale_legend }}
+        <select name="escala">
+          <option value="comum"{% if panel.settings.scale == "comum" %} selected{% endif %}>{{ page.copy.chart_scale_shared }}</option>
+          <option value="dupla"{% if panel.settings.scale == "dupla" %} selected{% endif %}>{{ page.copy.chart_scale_dual }}</option>
+        </select>
+      </label>
+      <label>{{ page.copy.chart_window_legend }}
+        <select name="janela">
+          <option value="10a"{% if panel.settings.window == "10a" %} selected{% endif %}>{{ page.copy.chart_window_10a }}</option>
+          <option value="5a"{% if panel.settings.window == "5a" %} selected{% endif %}>{{ page.copy.chart_window_5a }}</option>
+          <option value="max"{% if panel.settings.window == "max" %} selected{% endif %}>{{ page.copy.chart_window_max }}</option>
+        </select>
+      </label>
+      <label>{{ page.copy.chart_day_label }}
+        <input name="dia" type="date" value="{{ panel.settings.day or '' }}">
+      </label>
+      <button type="submit">{{ page.copy.chart_submit }}</button>
+    </form>
+    <p class="note">{{ page.copy.chart_settings_note }}</p>
+    {% if panel.state == "off" %}
+    <p><a class="button-quiet" href="{{ base }}{{ page.chart_auto_path }}">{{ page.copy.chart_activate }}</a></p>
+    {% else %}
+    <p><a class="button-quiet" href="{{ base }}{{ page.chart_off_path }}">{{ page.copy.chart_deactivate }}</a></p>
+    {% endif %}
+  </details>
+
+  {% if panel.chart %}
+  <figure class="chart-figure chart-figure-interactive">
+    {% if panel.chart_payload %}{{ chart_shell(panel, "notebook") }}{% else %}{{ chart_svg(panel.chart) }}{% endif %}
+  </figure>
+  <p class="note">{{ panel.window_text }}</p>
+  <p class="note">{{ panel.alignment_text }}</p>
+  <p class="note">{{ page.copy.chart_comparison_note }}</p>
+  {% if panel.one_point_note %}<p class="note">{{ panel.one_point_note }}</p>{% endif %}
+
+  <details class="notebook-definitions">
+  <summary>{{ page.copy.chart_definition_summary }}</summary>
+  <div class="chart-series-meta">
+    {% for side in panel.sides %}
+    <div class="chart-series-meta-side">
+      <h3>{{ side.label }}</h3>
+      <dl>
+        <dt>{{ page.copy.chart_meta_unit }}</dt><dd>{{ side.unit_text }}</dd>
+        <dt>{{ page.copy.chart_meta_frequency }}</dt><dd>{{ side.frequency_text }}</dd>
+        <dt>{{ page.copy.chart_meta_geography }}</dt><dd>{{ side.geography_text }}</dd>
+        <dt>{{ page.copy.chart_meta_adjustment }}</dt><dd>{{ side.seasonal_text or page.copy.chart_meta_no_adjustment }}</dd>
+        <dt>{{ page.copy.chart_meta_source }}</dt><dd>{{ side.source_title }}</dd>
+        {% if side.base_year %}<dt>{{ page.copy.chart_meta_base }}</dt><dd>{{ side.base_year }}</dd>{% endif %}
+      </dl>
+    </div>
+    {% endfor %}
+  </div>
+  </details>
+
+  <details class="table-details">
+    <summary>{{ page.copy.chart_table_summary }}</summary>
+    <div class="notebook-table-scroll" role="region" aria-label="{{ page.copy.chart_table_summary }}" tabindex="0">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">{{ page.copy.chart_table_period }}</th>
+          {% for side in panel.sides %}<th scope="col" class="num">{{ side.label }} ({{ side.unit_text }})</th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in panel.table_rows %}
+        <tr>
+          <td>{{ row.period_text }}</td>
+          {% for cell in row.cells %}<td class="num">{{ cell.display }}{% if cell.status_text %} <span class="flag">{{ cell.status_text }}</span>{% endif %}</td>{% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </details>
+
+  <details class="provenance-details">
+    <summary>{{ page.copy.chart_provenance_summary }}</summary>
+    <h3>{{ page.copy.chart_provenance_heading }}: {{ panel.last_period_text }}</h3>
+    {% for side in panel.sides %}
+    <h4>{{ side.label }}</h4>
+    {% if side.provenance %}
+    <dl class="provenance-list">
+      <dt>{{ page.copy.chart_meta_period }}</dt><dd>{{ side.provenance.period_text }}</dd>
+      <dt>{{ page.copy.chart_meta_value }}</dt><dd>{{ side.provenance.value_display }} {{ side.unit_text }}{% if side.last_status_text %} · <span class="flag">{{ side.last_status_text }}</span>{% endif %}</dd>
+      <dt>{{ page.copy.chart_meta_fetched }}</dt><dd>{{ side.provenance.fetched_text }}</dd>
+      <dt>{{ page.copy.chart_meta_run }}</dt><dd>#{{ side.provenance.run_id }}</dd>
+      <dt>{{ page.copy.chart_meta_sha }}</dt><dd>{% if side.provenance.sha256 %}<code title="{{ side.provenance.sha256 }}">{{ side.provenance.sha256[:12] }}…{{ side.provenance.sha256[-6:] }}</code>{% else %}-{% endif %}{% if side.provenance.bytes_text %} · {{ side.provenance.bytes_text }} bytes{% endif %}{% if side.provenance.http_status %} · HTTP {{ side.provenance.http_status }}{% endif %}</dd>
+      <dt>{{ page.copy.chart_meta_source }}</dt><dd>{{ side.source_title }}</dd>
+      <dt>{{ page.copy.chart_meta_attribution }}</dt><dd>{{ side.attribution }}</dd>
+      <dt>{{ page.copy.chart_meta_licence }}</dt><dd>{{ side.provenance.licence }}{% if side.provenance.licence_url and side.provenance.licence_url.startswith('https://') %} · <a href="{{ side.provenance.licence_url }}" rel="noopener noreferrer">{{ page.copy.chart_meta_terms }}</a>{% endif %}</dd>
+    </dl>
+    {% else %}
+    <p class="note">{{ page.copy.chart_provenance_missing }}</p>
+    {% endif %}
+    {% endfor %}
+  </details>
+  {% else %}
+  <p class="empty-state">{{ panel.reason }}</p>
+  {% endif %}
+</section>

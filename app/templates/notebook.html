@@ -2,6 +2,7 @@
 {% block title %}{{ page.copy.title }}{% endblock %}
 {% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}
 {% block content %}
+{% macro chart_hidden(settings) %}{% for name, value in settings.params() %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}{% endmacro %}
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.copy.heading }}
 </nav>
@@ -12,10 +13,19 @@
   <p class="meta"><strong>{{ format_count(page.cards|length) }} de {{ page.max_selection }} séries.</strong> {{ page.copy.public_link_note }} {{ page.copy.not_snapshot_note }}</p>
 </header>
 
+{% if page.addressed %}{% include "_notebook_chart.html" %}{% endif %}
+
+{% if page.addressed %}
+<div class="notebook-toolbar">
+  <a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ page.copy.canonical_label }}</a>
+  {% if page.clear_path %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">{{ page.copy.clear_label }}</a>{% endif %}
+</div>
+<p class="note">{{ page.copy.share_hint }}</p>
+{% endif %}
+
 <section class="notebook-selection" aria-labelledby="selecao">
   <div class="section-head">
     <h2 id="selecao">{{ page.copy.cards_heading }}</h2>
-    {% if page.clear_path %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">{{ page.copy.clear_label }}</a>{% endif %}
   </div>
 
   {% if page.cards %}
@@ -31,42 +41,36 @@
   {% if page.skipped_count %}<p class="note" role="status">{{ page.skipped_notice }}</p>{% endif %}
 </section>
 
-<section class="notebook-links" aria-labelledby="ligacao">
-  <div class="section-head">
-    <h2 id="ligacao">{{ page.copy.canonical_heading }}</h2>
-  </div>
-  <p><a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ page.copy.canonical_label }}</a></p>
-  <p class="note">{{ page.copy.canonical_note }}</p>
-</section>
-
 <section class="notebook-search" aria-labelledby="pesquisa">
   <div class="section-head">
     <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
   </div>
-  <form class="filters" action="{{ base }}/caderno" method="get">
-    {% for series_id in page.selection %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+  <form id="notebook-search-form" class="filters" action="{{ base }}/caderno" method="get">
+    {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+    {{ chart_hidden(page.chart_panel.settings) }}
     <label>{{ page.copy.search_label }}
       <input name="q" type="search" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
     </label>
     <button type="submit">{{ page.copy.search_button }}</button>
   </form>
 
+  <div class="notebook-results">
   {% if page.query %}
     {% if page.results %}
     <p class="meta">{{ page.results_notice }} {{ page.copy.search_note }}</p>
     <table class="data-table">
       <thead>
-        <tr><th scope="col">Série</th><th scope="col" class="num">Último valor</th><th scope="col">Período</th><th scope="col">Fonte</th><th scope="col">Recolhido</th><th scope="col">Caderno</th></tr>
+        <tr><th scope="col">{{ page.copy.results_col_series }}</th><th scope="col" class="num">{{ page.copy.results_col_value }}</th><th scope="col">{{ page.copy.results_col_period }}</th><th scope="col">{{ page.copy.results_col_source }}</th><th scope="col">{{ page.copy.results_col_fetched }}</th><th scope="col">{{ page.copy.results_col_notebook }}</th></tr>
       </thead>
       <tbody>
         {% for result in page.results %}
         <tr>
-          <td>{{ result.row.title }}<span class="row-meta">{{ result.row.geography_text }} · {{ result.row.frequency_text }}</span></td>
-          <td class="num">{{ result.row.value_display }} <span class="unit">{{ result.row.unit_text }}</span>{% if result.row.status_text %}<span class="flag">{{ result.row.status_text }}</span>{% endif %}</td>
-          <td>{{ result.row.period_text }}</td>
-          <td>{{ result.row.source_title }}</td>
-          <td>{{ result.row.fetched_text }}</td>
-          <td>
+          <td data-label="{{ page.copy.results_col_series }}">{{ result.row.title }}<span class="row-meta">{{ result.row.geography_text }} · {{ result.row.frequency_text }}</span></td>
+          <td data-label="{{ page.copy.results_col_value }}" class="num">{{ result.row.value_display }} <span class="unit">{{ result.row.unit_text }}</span>{% if result.row.status_text %}<span class="flag">{{ result.row.status_text }}</span>{% endif %}</td>
+          <td data-label="{{ page.copy.results_col_period }}">{{ result.row.period_text }}</td>
+          <td data-label="{{ page.copy.results_col_source }}">{{ result.row.source_title }}</td>
+          <td data-label="{{ page.copy.results_col_fetched }}">{{ result.row.fetched_text }}</td>
+          <td data-label="{{ page.copy.results_col_notebook }}">
             {% if result.selected %}
             <a href="{{ base }}{{ result.action_path }}">{{ page.copy.remove_label }}</a> <span class="badge badge-quiet">{{ page.copy.in_notebook_label }}</span>
             {% elif result.action_path %}
@@ -86,5 +90,7 @@
   {% else %}
   <p class="note">{{ page.copy.search_prompt }}</p>
   {% endif %}
+  </div>
 </section>
 {% endblock %}
+{% block scripts %}{% if page.chart_panel.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

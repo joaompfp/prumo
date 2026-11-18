@@ -6,11 +6,11 @@ no cache and no write path: `reads.prepare_card` and `reads.search` remain the a
 readers, and `ingest.editorial_rules` stays the authoritative eligibility rule.
 """
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Sequence
 from urllib.parse import urlencode
 
-from app import reads
+from app import notebook_chart, reads
 from ingest.db import Db
 from ingest.editorial_rules import MAX_SLOTS, slot_problem
 from presentation import MissingText
@@ -51,13 +51,18 @@ def parse_query(value: str) -> str | None:
     return value.strip()
 
 
-def selection_path(selection: Sequence[str], query: str | None = None) -> str:
+def selection_path(selection: Sequence[str], query: str | None = None, *,
+                   chart: notebook_chart.ChartSettings | None = None) -> str:
     """A local notebook address carrying `selection` in order, and the search only when asked.
 
     The path never accepts a host or a caller-supplied prefix: the template adds the one
     validated mount prefix. `query=None` is the clean, canonical address a reader bookmarks.
+    Chart settings are appended only when a caller passes them; the old one-argument form used by
+    the series pages keeps its exact `/caderno?s=...` behaviour and defaults.
     """
     params = [("s", series_id) for series_id in selection]
+    if chart is not None:
+        params.extend(chart.params())
     if query:
         params.append(("q", query))
     encoded = urlencode(params)
@@ -83,11 +88,15 @@ class NotebookPage:
     skipped_count: int
     skipped_notice: str
     selection: tuple[str, ...]
+    addressed: tuple[str, ...]
     max_selection: int
     query: str
     results: tuple[NotebookResult, ...]
     canonical_path: str
     clear_path: str | None
+    chart_panel: notebook_chart.NotebookChart
+    chart_off_path: str
+    chart_auto_path: str
     at_limit: bool
     search_empty_text: str
     results_notice: str
@@ -114,21 +123,28 @@ def _eligible_search_rows(db: Db, query: str, lang: str) -> tuple[reads.Row, ...
 
 
 def page(db: Db, selection: tuple[str, ...], query: str = "", *,
-         lang: str = "pt") -> NotebookPage:
+         lang: str = "pt",
+         chart_settings: notebook_chart.ChartSettings | None = None) -> NotebookPage:
     """Compose the notebook from one read-only handle.
 
     `selection` and `query` must already have passed `parse_selection`/`parse_query`; this
     function is deliberately pure composition and does not repeat address parsing. Selected
-    ids that no longer qualify are omitted with a reader-facing count, never with their id or
-    a machine reason.
+    ids that no longer qualify are omitted from the cards and the eligible selection with a
+    reader-facing count, never with their id or a machine reason. `addressed` keeps the whole
+    validated address, so chart settings and action links do not silently drop a series that
+    merely lost eligibility.
     """
     if parse_selection(selection) != tuple(selection):
         raise ValueError("selection must be validated, ordered and deduplicated")
     if parse_query(query) != query:
         raise ValueError("query must be validated and stripped")
+    settings = chart_settings if chart_settings is not None else notebook_chart.ChartSettings()
+    if len(settings.group) > notebook_chart.MAX_GROUP:
+        raise ValueError("chart group must have at most six sides")
+    if any(series_id not in selection for series_id in settings.group):
+        raise ValueError("chart group must belong to the addressed selection")
 
-    cards: list[reads.Card] = []
-    valid_ids: list[str] = []
+    cards_by_id: dict[str, reads.Card] = {}
     for series_id in selection:
         card, reason = reads.prepare_card(db, series_id, lang=lang)
         if card is None:
@@ -137,39 +153,51 @@ def page(db: Db, selection: tuple[str, ...], query: str = "", *,
                 # must not turn a missing built-in catalogue entry into a silent omission.
                 raise MissingText(f"no reader title for selected notebook series {series_id!r}")
             continue
-        valid_ids.append(series_id)
-        cards.append(card)
+        cards_by_id[series_id] = card
+    valid_ids = list(cards_by_id)
 
-    selected = set(valid_ids)
+    addressed_set = set(selection)
     results: list[NotebookResult] = []
     if query:
         for row in _eligible_search_rows(db, query, lang):
-            if row.id in selected:
-                path = selection_path([i for i in valid_ids if i != row.id], query)
-            elif len(valid_ids) >= MAX_SELECTION:
+            if row.id in addressed_set:
+                pruned = notebook_chart.without_side(settings, row.id)
+                path = selection_path([i for i in selection if i != row.id], query, chart=pruned)
+            elif len(selection) >= MAX_SELECTION:
                 path = None
             else:
-                path = selection_path([*valid_ids, row.id], query)
-            results.append(NotebookResult(row=row, selected=row.id in selected,
+                path = selection_path([*selection, row.id], query, chart=settings)
+            results.append(NotebookResult(row=row, selected=row.id in addressed_set,
                                           action_path=path))
 
+    cards = tuple(cards_by_id[series_id] for series_id in valid_ids)
     card_views = tuple(NotebookCard(
         card=card,
-        remove_path=selection_path([i for i in valid_ids if i != card.series_id], query),
+        remove_path=selection_path(
+            [i for i in selection if i != card.series_id], query,
+            chart=notebook_chart.without_side(settings, card.series_id)),
     ) for card in cards)
     copy_text = text(lang)
     skipped = len(selection) - len(valid_ids)
+    chart_panel = notebook_chart.prepare(db, selection, cards_by_id, settings, lang=lang)
+    canonical_path = selection_path(selection, chart=settings) if selection else "/caderno"
     return NotebookPage(
         cards=card_views,
         skipped_count=skipped,
         skipped_notice=skipped_text(lang, skipped) if skipped else "",
         selection=tuple(valid_ids),
+        addressed=selection,
         max_selection=MAX_SELECTION,
         query=query,
         results=tuple(results),
-        canonical_path=selection_path(valid_ids),
-        clear_path=selection_path((), query) if valid_ids else None,
-        at_limit=len(valid_ids) >= MAX_SELECTION,
+        canonical_path=canonical_path,
+        clear_path=selection_path((), query) if selection else None,
+        chart_panel=chart_panel,
+        chart_off_path=(selection_path(selection, query, chart=replace(
+            settings, mode="off", group=())) if selection else ""),
+        chart_auto_path=(selection_path(selection, query, chart=replace(
+            settings, mode="all", group=())) if selection else ""),
+        at_limit=len(selection) >= MAX_SELECTION,
         search_empty_text=search_empty_text(lang, query) if query else "",
         results_notice=results_text(lang, len(results)) if results else "",
         copy=copy_text,

@@ -7,7 +7,7 @@ a malformed or over-limit address is the same generic 404 as an unpublic page.
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 
-from app import notebook
+from app import notebook, notebook_chart
 from ingest.db import ReadOnlyOpenError, read_db_readonly
 
 PAGE_METHODS = ["GET", "HEAD"]
@@ -39,7 +39,18 @@ def add_routes(app, *, templates, render, unavailable) -> None:
         query = notebook.parse_query(request.query_params.get("q", ""))
         if selection is None or query is None:
             return noindex(render(templates, request, "404.html", {}, status=404))
-        data, failure = load(request, lambda db: notebook.page(db, selection, query))
+        # Chart parameters are bounded and validated before the read-only handle is opened:
+        # repeated singleton parameters, a malformed day and an over-limit group are addresses
+        # this page does not serve, not a reason to touch the database.
+        chart_values = {name: request.query_params.getlist(name)
+                        for name in notebook_chart.PARAM_NAMES}
+        settings = notebook_chart.parse_settings(chart_values, selection)
+        if settings is None:
+            return noindex(render(templates, request, "404.html", {}, status=404))
+        data, failure = load(request, lambda db: notebook.page(
+            db, selection, query, chart_settings=settings))
         if failure is not None:
             return noindex(failure)
-        return noindex(render(templates, request, "notebook.html", {"page": data}))
+        assert data is not None  # the only None branch is the failure return above
+        return noindex(render(templates, request, "notebook.html", {"page": data},
+                              script=data.chart_panel.chart_payload is not None))
