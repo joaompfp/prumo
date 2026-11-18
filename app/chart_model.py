@@ -11,7 +11,7 @@ built-in pages do.
 """
 import re
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal
 
 from app.formatting import (
@@ -54,20 +54,35 @@ def _left_gutter(texts: list[str], width: int, right: int) -> int:
 
 
 def calendar_position(period: str, frequency: str) -> float:
-    """A sortable position for a canonical period, so gaps occupy real space on the x axis."""
+    """A sortable position for a canonical period, so gaps occupy real space on the x axis.
+
+    Only the canonical spelling of each published frequency is placed: an annual year, a
+    zero-padded month, a numbered quarter or semester, a Gregorian date, or a canonical UTC
+    interval timestamp. A lenient spelling such as `2026-1`, month 13 or 31 February is NaN,
+    so callers can drop that point instead of inventing a position for it.
+    """
     try:
-        if frequency == "A" and len(period) == 4:
-            return float(period)
-        if frequency == "M" and len(period) == 7:
-            year, month = period.split("-")
-            return int(year) * 12 + int(month) - 1
-        if frequency == "Q" and "-Q" in period:
-            year, quarter = period.split("-Q")
-            return int(year) * 4 + int(quarter) - 1
-        if frequency == "S" and "-S" in period:
-            year, semester = period.split("-S")
-            return int(year) * 2 + int(semester) - 1
-        if "T" in period:
+        shape = _PERIOD_SHAPES.get(frequency)
+        if shape is not None:
+            if shape.fullmatch(period or "") is None:
+                return float("nan")
+            if frequency == "A":
+                return float(period)
+            if frequency == "M":
+                year, month = period.split("-")
+                return int(year) * 12 + int(month) - 1
+            if frequency == "Q":
+                year, quarter = period.split("-Q")
+                return int(year) * 4 + int(quarter) - 1
+            if frequency == "S":
+                year, semester = period.split("-S")
+                return int(year) * 2 + int(semester) - 1
+            return float(date.fromisoformat(period).toordinal())
+        if frequency == "PT15M":
+            if _QUARTER_HOUR.fullmatch(period or "") is None:
+                return float("nan")
+            return datetime.fromisoformat(period).timestamp()
+        if _TIMESTAMP.fullmatch(period or ""):
             return datetime.fromisoformat(period).timestamp()
     except (TypeError, ValueError):
         pass
@@ -180,23 +195,37 @@ def axis_interval(axis_ticks: list[Decimal], lo: Decimal, hi: Decimal) -> Decima
 
 _PERIOD_SHAPES = {
     "A": re.compile(r"\d{4}\Z"),
-    "M": re.compile(r"\d{4}-\d{2}\Z"),
+    "M": re.compile(r"\d{4}-(?:0[1-9]|1[0-2])\Z"),
     "Q": re.compile(r"\d{4}-Q[1-4]\Z"),
     "S": re.compile(r"\d{4}-S[1-2]\Z"),
+    "D": re.compile(r"\d{4}-\d{2}-\d{2}\Z"),
 }
+# The canonical UTC spelling produced by `ingest.models.normalize_period`. A naive timestamp
+# would be read in the server's local zone, so it is not placeable.
+_TIMESTAMP = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?\+00:00\Z")
+_QUARTER_HOUR = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:(?:00|15|30|45):00\+00:00\Z")
 _ISO_STEP = re.compile(r"P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?\Z")
 
 
 def expected_step(periods: list[str], frequency: str) -> float | None:
     """The x distance one period occupies, when its frequency and tokens are parseable.
 
-    Annual, monthly, quarterly and semester tokens are exactly one ordinal apart; no month is
-    ever converted to a fixed 30-day span. An ISO 8601 duration (`PT15M`, `PT1H`, `P1D`) fixes
-    a timestamp step in seconds. An unknown shape returns None and lets the caller fall back.
+    Annual, monthly, quarterly, semester and daily tokens are exactly one ordinal apart; no
+    month is ever converted to a fixed 30-day span and no day is assumed to be a timestamp. An
+    ISO 8601 duration (`PT15M`, `PT1H`, `P1D`) fixes a timestamp step in seconds. An unknown or
+    non-canonical shape returns None and lets the caller fall back.
     """
     shape = _PERIOD_SHAPES.get(frequency)
     if shape is not None:
-        return 1.0 if periods and all(shape.fullmatch(p) for p in periods) else None
+        if not periods or not all(shape.fullmatch(period) for period in periods):
+            return None
+        if frequency == "D":
+            try:
+                for period in periods:
+                    date.fromisoformat(period)
+            except ValueError:
+                return None
+        return 1.0
     duration = _ISO_STEP.fullmatch(frequency or "")
     if duration:
         days, hours, minutes = (int(part or 0) for part in duration.groups())
@@ -231,10 +260,16 @@ def positions(ordinals: list[float], left: float, plot_w: float) -> list[float]:
 
 
 def ordinals_for(periods: list[str], frequency: str) -> list[float]:
+    """Calendar positions, with even spacing only when *no* token can be placed.
+
+    A partly placeable series keeps its real positions and leaves NaN for the token it cannot
+    place; the model builders drop those points. Falling back for the whole series because of
+    one bad spelling would flatten every real gap into equal spacing.
+    """
     out = [calendar_position(p, frequency) for p in periods]
-    if any(o != o for o in out):  # NaN: fall back to even spacing
-        return [float(i) for i in range(len(periods))]
-    return out
+    if any(o == o for o in out):
+        return out
+    return [float(i) for i in range(len(periods))]
 
 
 @dataclass(frozen=True)
@@ -296,11 +331,16 @@ class LineChartModel:
 def line_model(points: list[dict], *, frequency: str, title: str, unit: str = "",
                display_unit: str | None = None,
                width: int = WIDTH, height: int = HEIGHT) -> LineChartModel | None:
-    """Prepare one series; None when there is nothing numeric to draw."""
+    """Prepare one series; None when there is nothing numeric and placeable to draw."""
     values = [(p["period"], decimal_or_none(p["value_text"]), p["value_text"]) for p in points]
     values = [v for v in values if v[1] is not None]
-    if not values:
+    ordinals = ordinals_for([v[0] for v in values], frequency)
+    placed = [(value, ordinal) for value, ordinal in zip(values, ordinals)
+              if ordinal == ordinal]
+    if not placed:
         return None
+    values = [value for value, _ in placed]
+    ordinals = [ordinal for _, ordinal in placed]
     periods = [v[0] for v in values]
     numbers = [v[1] for v in values]
     lo, hi, nice = padded_domain(numbers)
@@ -314,8 +354,8 @@ def line_model(points: list[dict], *, frequency: str, title: str, unit: str = ""
     def y(number: Decimal) -> float:
         return TOP + float((hi - number) / span * plot_h)
 
-    ordinals = ordinals_for(periods, frequency)
     xs = positions(ordinals, left, plot_w)
+
     prepared = tuple(
         LinePoint(period=period, period_text=format_period(period, frequency),
                   value_text=token, value_display=format_value(token), number=number,
@@ -444,6 +484,14 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
     if not rows:
         return None
     periods = [r[0] for r in rows]
+    ordinals = ordinals_for(periods, frequency)
+    if any(ordinal != ordinal for ordinal in ordinals):
+        # One unplaceable period is dropped, never a reason to flatten the whole series.
+        rows = [row for row, ordinal in zip(rows, ordinals) if ordinal == ordinal]
+        if not rows:
+            return None
+        periods = [r[0] for r in rows]
+        ordinals = ordinals_for(periods, frequency)
     if dual:
         lo_a, hi_a, ticks_a = padded_domain([r[1][0][0] for r in rows])
         lo_b, hi_b, ticks_b = padded_domain([r[1][1][0] for r in rows])
@@ -465,7 +513,6 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
     def value_y(index: int, number: Decimal) -> float:
         return y_of(number, lo_b, hi_b) if dual and index == 1 else y_of(number, lo_a, hi_a)
 
-    ordinals = ordinals_for(periods, frequency)
     xs = positions(ordinals, left, plot_w)
     prepared = tuple(
         SeriesPoint(

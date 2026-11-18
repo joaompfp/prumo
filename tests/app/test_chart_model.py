@@ -7,10 +7,13 @@ captures remain in golden/pre_legibility. Every point/title/tick text is identic
 captures and in the versioned golden-deltas receipt.
 """
 import math
+import re
+from datetime import date
 from pathlib import Path
 
 from app import chart_model
 from app.charts import chart_legend, chart_plot, comparison_svg, line_chart, two_series_chart
+from app.interactive import build_payload
 
 GOLDEN = Path(__file__).parent / "golden" / "charts"
 
@@ -151,6 +154,70 @@ def test_expected_step_comes_from_the_frequency_and_token_shape():
     # A month is one ordinal unit, never a fixed 30-day duration.
     assert chart_model.expected_step(["2026-01", "2026-02"], "P1M") is None
     assert chart_model.expected_step(["2026-01", "2026-02"], "custom") is None
+
+
+def test_daily_periods_use_gregorian_ordinals_and_a_one_day_step():
+    jan1, jan2, dec31 = "2025-01-01", "2025-01-02", "2025-12-31"
+    assert chart_model.calendar_position(jan1, "D") == float(date(2025, 1, 1).toordinal())
+    assert chart_model.calendar_position(jan2, "D") == float(date(2025, 1, 2).toordinal())
+    assert (chart_model.calendar_position(dec31, "D")
+            - chart_model.calendar_position(jan2, "D")) == 363
+    assert chart_model.expected_step([jan1, jan2, dec31], "D") == 1.0
+    # A date that does not exist is not placeable and cannot claim a day step.
+    assert math.isnan(chart_model.calendar_position("2025-02-30", "D"))
+    assert chart_model.expected_step(["2025-02-30", "2025-03-01"], "D") is None
+
+    model = chart_model.line_model([{"period": p, "value_text": v} for p, v in
+                                    ((jan1, "1"), (jan2, "2"), (dec31, "3"))],
+                                   frequency="D", title="Diário")
+    assert model is not None
+    xs = [point.x for point in model.points]
+    assert math.isclose((xs[2] - xs[1]) / (xs[1] - xs[0]), 363, rel_tol=1e-9)
+
+
+def test_daily_gap_breaks_on_the_same_point_the_payload_marks():
+    rows = compare([("2025-01-01", "1.0", "2.0"), ("2025-01-02", "1.5", "2.5"),
+                    ("2025-12-31", "1.2", "2.2")])
+    model = chart_model.comparison_model(rows, frequency="D", title="Par", labels=("A", "B"),
+                                         unit_a="%", unit_b="%")
+    assert model is not None
+    assert model.breaks == (2,)
+    data = build_payload(model)
+    assert data is not None
+    assert data["x"] == [point.ordinal for point in model.points]
+    assert data["breaks"] == [2]
+
+    # SVG and payload are two renderings of the same ordinals: same pixel gaps and same break.
+    svg = str(chart_plot(model))
+    match = re.search(r'class="chart-line chart-line-a" d="([^"]+)"', svg)
+    assert match is not None
+    assert match.group(1).count("M") == 2
+    xs = sorted({float(value) for value in
+                 re.findall(r'class="chart-point" cx="([0-9.]+)"', svg)})
+    assert xs == sorted({round(point.x, 1) for point in model.points})
+
+
+def test_non_canonical_calendar_tokens_never_trigger_the_even_spacing_fallback():
+    # Canonical shapes only, for every frequency the catalogue publishes.
+    assert math.isnan(chart_model.calendar_position("2026-1", "M"))
+    assert math.isnan(chart_model.calendar_position("2026-13", "M"))
+    assert math.isnan(chart_model.calendar_position("2026-Q5", "Q"))
+    assert math.isnan(chart_model.calendar_position("2026-S3", "S"))
+    assert math.isnan(chart_model.calendar_position("2026-11-01T00:15:00", "PT15M"))
+    assert math.isnan(chart_model.calendar_position("2026-11-01T00:07:00+00:00", "PT15M"))
+    assert math.isfinite(chart_model.calendar_position("2026-11-01T00:15:00+00:00", "PT15M"))
+    assert chart_model.expected_step(["2026-01", "2026-1", "2026-12"], "M") is None
+
+    # One malformed token is dropped; the canonical points keep their real calendar distance
+    # instead of every point being flattened onto even spacing.
+    model = chart_model.line_model(
+        [{"period": p, "value_text": v} for p, v in
+         (("2026-01", "1"), ("2026-1", "2"), ("2026-02", "3"), ("2026-12", "4"))],
+        frequency="M", title="T")
+    assert model is not None
+    assert [point.period for point in model.points] == ["2026-01", "2026-02", "2026-12"]
+    xs = [point.x for point in model.points]
+    assert math.isclose((xs[2] - xs[1]) / (xs[1] - xs[0]), 10, rel_tol=1e-9)
 
 
 def test_two_annual_points_still_break_across_a_missing_year():
