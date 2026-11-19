@@ -1,0 +1,114 @@
+# Prumo analytical workspace roadmap
+
+Date: 2026-11-19
+Authority: owner request to create an improvements roadmap and begin implementation after the design council. This plan governs the next interface iteration; previous product milestones remain installed history, not unfinished features.
+
+## Goal and baseline
+
+Make the public Prumo an effective statistics tool: chart and composition controls first, readable evidence nearby, editorial prose at its appropriate reading width. Keep the CMS for authored content and preserve the existing data pipeline.
+
+Baseline: clean `pipeline-rebuild` and `main` at `b7f4d09`; public code `7baa127`. The council's controlled 1920x1080 notebook capture put the canvas at Y=917.77, 1176x454.36 CSS pixels. Opening settings at 1440 moved it to Y=1786.83. At 3774px wide it still occupied only 1176px. Those are baseline observations, not targets dictated by an agent's proposed layout.
+
+Council authority: `/home/joao/reports/prumo-design-council-2026-11-18-b7f4d09/REPORT.md`, synthesis through line 153. Individual contradictory/retracted recommendations are not requirements. A read-only designer translation confirmed that composition can improve without a SPA or a permanent sidebar.
+
+## Non-negotiable contracts
+
+- Preserve carmim, the approved plumb-bob icon, local Lato/Schola and enlarged functional type. Body stays 28.05px; existing navigation, label, value and control roles cannot shrink to recover space. Compact display headings and remove repeated prose instead.
+- Keep twelve notebook cards distinct from at most six chart series. Preserve ordered references, explicit empty/off state, unavailable references, ten-year default, five-year/all options and bounded UTC interval day.
+- Do not interpolate, aggregate, rebase, silently remove series or change statistical domains to fill space. Explicit two-axis charts for two series stay supported.
+- Keep native GET/HEAD forms, address-based state, read-only one-snapshot preparation, exact publisher strings, same-snapshot payload/table/provenance and both public mount shapes.
+- SVG remains on summaries and as no-JavaScript, failed-bundle, accessible and print fallback. Local ECharts may enhance analytical pages under the existing strict CSP; no new external dependency, second data request, account, cookie or tracker.
+- No source-data write, migration, worker restart, licence change, proxy/authentication change or live CMS publication belongs to this roadmap's interface phases.
+- No literal or encoded em dashes in authored text/code. Original receipts remain untouched.
+
+## Delivery gates
+
+Each slice must have focused automated checks, a real populated browser pass and a scoped independent review. The controller owns full-suite verification and status. Record implementation, automated verification, human acceptance and installation separately.
+
+The first completed notebook candidate is a product/design checkpoint before its layout is generalized. Obtain the owner's visual acceptance; do not claim usability was proven by overflow tests. Release remains separately authorized. Because public templates/CSS are consumed by static Admin previews, a later UI release must test and update both readers without touching ingestion.
+
+## Phase A: notebook workspace prototype
+
+Status: started. This is the first implementation scope.
+
+### A0. Isolate presentation boundaries
+
+Extract cohesive settings, search and evidence partials before changing their composition. Preserve baseline responses and form contracts.
+
+Acceptance: deterministic empty/populated/search/off/unavailable notebook HTML and relevant headers unchanged, including `/dados`; existing notebook contracts pass. Commit this refactor separately.
+
+### A1. Put the analytical surface first
+
+Use a notebook-scoped layout hook, compact title/status and a fluid working width independent of prose. Put the chart before explanations/settings, with add/select/window actions near the result. Keep native settings/search discoverable and operable; opening settings must not push the desktop chart away. Start with a single full-width stage, not a sidebar deducted from the old 1240px wrap. Give chart height and width a coherent responsive relationship. Keep content order and keyboard order consistent.
+
+Acceptance: the two-real-series notebook at 1440x1000 and 1920x1080 shows the entire plot and principal actions in the initial viewport; no giant introduction before it. At 3774x1870 the chart gains both width and height relative to baseline. At 390x844 actual chart data and the composition entry are visible in the first view without reducing functional type. A six-series layout may need vertical scrolling, but cannot truncate names or hide selection. Opening settings changes desktop chart top by no more than 8 CSS pixels. No page overflow at 320/390/768/1024/1440/1920/2560/3774 or responsive breakpoint neighbours.
+
+Likely files: `app/templates/notebook.html`, notebook partials, `app/templates/base.html` layout hook, `static/css/prumo.css`. Keep notebook-specific rules scoped rather than append a second global control system.
+
+### A2. Make time and composition state explicit
+
+Label last common chart period separately from each card's own latest value; show whether a card is drawn, excluded from the chosen group, disabled or unavailable. Put source/unit/common period next to the chart and in print. Retain exact values and full evidence below. Search/add, chart submit and removals must preserve other address settings and return to the relevant work area.
+
+Acceptance: the IHPC/unemployment case explains common September values versus a later October card; group/off/empty/unavailable/six-of-twelve states remain honest. Native forms survive no JS. Fragments may change navigation position but must not introduce a new statistical URL parameter. No source-table content changes during the complete isolated workflow.
+
+Likely files: `app/notebook.py`, `presentation/notebook.py`, notebook templates and focused route tests. Shared chart enhancements are optional only when needed for this acceptance; otherwise defer them to B.
+
+### A3. Validate prototype and present checkpoint
+
+Compare real populated before/after first views at laptop, desktop, wide monitor and mobile, including opening settings, adding a third series and changing the window. Probe two axes, six long series names, incompatible periods, no selection, explicit empty/off, no JS, blocked bundle, print, touch and keyboard. Keep charts and tables complete. Verify actual fonts, functional role sizes, focus, CSP/requests and both mounts, plus static CMS preview.
+
+Acceptance: independent specification then quality/design review; controller focused tests, full offline suite and ruff; clean committed-checkout entrypoint/assets/tests; record screenshots and exact measurements. Human screen-reader and visual acceptance remain explicit separate gates. Do not mark the whole roadmap done after this prototype.
+
+## Phase B: shared chart reading and analytical pages
+
+Status: planned; depends on the notebook composition checkpoint.
+
+B1. Replace the long point-readout sentence with structured period/series/value rows while preserving exact strings, keyboard announcements and DOM-only tooltip safety. Make the native range target usable and keep series names/patterns adjacent to the plot. Review any canvas label/gutter adjustment together with SVG, touch coordinates, failed init and print; statistical domains do not change.
+
+B2. Apply the accepted analytical composition to curated pairs, five-country comparisons, reusable public chart pages and primary/calculated series detail. Preserve two axes, calculated caveats, UTC-day selection, complete tables and period-specific provenance. Test long names and five/six sides, not just two short labels.
+
+Acceptance: each route family has a populated first-view comparison, exact point/table tests, no-JS/print proof and measured typography. No blanket CSS change that only fixes the notebook while shrinking or clipping other charts.
+
+## Phase C: discovery and entry into the tool
+
+Status: planned; depends on B's shared surface.
+
+C1. Refine global navigation/search at the enlarged scale, emphasizing Explore, Comparisons and Notebook without another tall presentation block. Keep themes, authored pages, sources, methodology and Admin discoverable. Validate expanded rightmost menus and current labels at breakpoint neighbours.
+
+C2. Make homepage/search/theme results effective starting points: visible data, obvious add-to-notebook actions and compact wayfinding. Preserve the authored CMS home and all sections. Preview layout changes on a copy; any new text/order/content publication requires an explicit editorial decision, not a hidden initializer or CSS release.
+
+Acceptance: search to series to notebook and add/change/share journeys are usable on desktop/mobile. Record real task outcomes, not merely passing geometry counts. Human visual acceptance precedes installation.
+
+## Phase D: authoring analytical content
+
+Status: future product work, separate from layout.
+
+Extend the current one/two-series CMS chart contract to explicit comparable groups of at most six. Reuse notebook/model eligibility; add editor validation, reusable references and full revision/audit lifecycle. Assess whether a migration is needed from the actual schema before assigning a number. Existing documents must round-trip unchanged. No arbitrary transformations.
+
+Acceptance: create, preview, publish, edit, stale-form refusal, unpublish and restore a multi-series chart/page on an isolated production copy; verify public/private boundaries and protected data fingerprints. Separate release approval for any migration.
+
+## Phase E: dated analysis and assisted writing
+
+Status: future product work after the analytical/editorial workflow is accepted.
+
+E1. Specify dated analyses versus continuously updating pages. Preserve the actual inputs/vintages used by a published analysis and flag commentary whose referenced data have changed.
+
+E2. Recover useful legacy AI prompts as an optional editor action that generates an editable draft from selected exact values, periods, sources and caveats. Calculations remain in the verified calculation layer. Record generation inputs/version and require deliberate human publication. No live visitor generation or automatic publication.
+
+Acceptance: independently reviewed designs before implementation, explicit rights/input boundaries, audit and rejection/edit/publication tests. No speculative hooks in the layout work.
+
+## Separate operational register
+
+Carry forward source rights for REN/FRED/OECD, DGEG technical blockers, old-period classification, operational audited actions, worker SIGBUS/elapsed observation and human accessibility acceptance. This roadmap does not assert a fresh production audit or close those items. Use current handoff/runbooks for evidence; do not mix ingestion changes into UI commits.
+
+## Progress ledger
+
+| Slice | State | Evidence / next gate |
+|---|---|---|
+| A0 | Implemented; controller verification pending | Refactor `fad24e5`; child reports 11 byte-identical render cases and 50 focused tests; parent must verify |
+| A1-A2 | Next | Implement notebook workspace against the contracts above |
+| A3 | Pending | Real browser, independent reviews, full suite and owner visual checkpoint |
+| B-C | Planned | Generalize only after the notebook composition is reviewed |
+| D-E | Future | Separate specification/product acceptance, not part of this prototype |
+
+Canonical implementation roadmap: this file. User-facing project index: `/home/joao/vaults/projects/prumo/roadmap-e-implementacao.md`. Controller resume state: `../handoff/HANDOFF.md`.
