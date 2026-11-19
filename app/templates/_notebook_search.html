@@ -1,0 +1,51 @@
+<section class="notebook-search" aria-labelledby="pesquisa">
+  <div class="section-head">
+    <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
+  </div>
+  <form id="notebook-search-form" class="filters" action="{{ base }}/caderno" method="get">
+    {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+    {{ chart_hidden(page.chart_panel.settings) }}
+    <label>{{ page.copy.search_label }}
+      <input name="q" type="search" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
+    </label>
+    <button type="submit">{{ page.copy.search_button }}</button>
+  </form>
+
+  <div class="notebook-results">
+  {% if page.query %}
+    {% if page.results %}
+    <p class="meta">{{ page.results_notice }} {{ page.copy.search_note }}</p>
+    <table class="data-table">
+      <thead>
+        <tr><th scope="col">{{ page.copy.results_col_series }}</th><th scope="col" class="num">{{ page.copy.results_col_value }}</th><th scope="col">{{ page.copy.results_col_period }}</th><th scope="col">{{ page.copy.results_col_source }}</th><th scope="col">{{ page.copy.results_col_fetched }}</th><th scope="col">{{ page.copy.results_col_notebook }}</th></tr>
+      </thead>
+      <tbody>
+        {% for result in page.results %}
+        <tr>
+          <td data-label="{{ page.copy.results_col_series }}">{{ result.row.title }}<span class="row-meta">{{ result.row.geography_text }} · {{ result.row.frequency_text }}</span></td>
+          <td data-label="{{ page.copy.results_col_value }}" class="num">{{ result.row.value_display }} <span class="unit">{{ result.row.unit_text }}</span>{% if result.row.status_text %}<span class="flag">{{ result.row.status_text }}</span>{% endif %}</td>
+          <td data-label="{{ page.copy.results_col_period }}">{{ result.row.period_text }}</td>
+          <td data-label="{{ page.copy.results_col_source }}">{{ result.row.source_title }}</td>
+          <td data-label="{{ page.copy.results_col_fetched }}">{{ result.row.fetched_text }}</td>
+          <td data-label="{{ page.copy.results_col_notebook }}">
+            {% if result.selected %}
+            <a href="{{ base }}{{ result.action_path }}">{{ page.copy.remove_label }}</a> <span class="badge badge-quiet">{{ page.copy.in_notebook_label }}</span>
+            {% elif result.action_path %}
+            <a href="{{ base }}{{ result.action_path }}">{{ page.copy.add_label }}</a>
+            {% else %}
+            <span class="note">{{ page.copy.limit_reached }}</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty-state">{{ page.search_empty_text }}</p>
+    {% endif %}
+    {% if page.at_limit %}<p class="note">{{ page.copy.limit_reached }}</p>{% endif %}
+  {% else %}
+  <p class="note">{{ page.copy.search_prompt }}</p>
+  {% endif %}
+  </div>
+</section>
