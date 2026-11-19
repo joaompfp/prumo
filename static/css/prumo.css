@@ -619,6 +619,7 @@ section { margin: 80px 0; }
   .filters button { width: 100%; }
   .figure-block { padding: 20px 18px; }
   .card { padding: 22px 20px 20px; }
+  .notebook-chart-pair { grid-template-columns: 1fr; }
   .chart-controls { flex-wrap: wrap; gap: 8px 12px; }
   .chart-range, .chart-readout { flex: 1 1 100%; }
 }
@@ -768,21 +769,6 @@ section { margin: 80px 0; }
   margin: 0 0 8px; color: var(--accent); font-weight: 600; font-size: .88rem;
 }
 .notebook-chart-form { margin: 0; }
-.notebook-chart-bar {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 16px; align-items: end; margin: 0 0 6px;
-}
-.notebook-chart-bar label {
-  display: flex; flex-direction: column; gap: 4px; min-width: 0;
-  font-weight: 600; font-size: .85rem;
-}
-.notebook-chart-bar select {
-  font: inherit; font-size: .9rem; color: var(--ink); background: var(--surface);
-  border: 1px solid var(--rule-strong); border-radius: 6px;
-  padding: 10px 12px; min-height: 48px; min-width: 0; width: 100%;
-}
-.notebook-chart-bar button { grid-column: 1 / -1; justify-self: start; }
-.notebook-chart-bar button { min-height: 48px; }
 .notebook-chart .chart-figure { margin: 0 0 8px; }
 .notebook-chart .chart-figure figcaption {
   max-width: none; margin: 0 0 8px; color: var(--muted);
@@ -819,6 +805,10 @@ section { margin: 80px 0; }
   margin: 10px 0 0;
 }
 .notebook-toolbar .button-quiet { min-height: 48px; padding: 10px 16px; font-size: .85rem; }
+.notebook-caveat {
+  margin: 14px 0 0; padding: 10px 14px; border-left: 4px solid #d9b45a;
+  background: #fbf6e8; color: #5a4a00; max-width: 78ch;
+}
 .notebook-chart { margin: 4px 0 10px; }
 .notebook-chart .figure-block { grid-template-columns: 1fr; gap: 20px; }
 .notebook-chart .figure-meta {
@@ -863,6 +853,12 @@ section { margin: 80px 0; }
 .notebook-chart-options { display: grid; gap: 16px; padding: 2px 16px 18px; }
 .notebook-chart-options fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
 .notebook-chart-options legend { font-weight: 600; margin-bottom: 8px; }
+.notebook-chart-pair {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;
+}
+.notebook-chart-pair label {
+  display: flex; flex-direction: column; gap: 6px; min-width: 0; font-weight: 600;
+}
 .notebook-chart-options > label {
   display: flex; flex-direction: column; gap: 6px; font-weight: 600;
 }
@@ -871,16 +867,15 @@ section { margin: 80px 0; }
   border: 1px solid var(--rule-strong); border-radius: 6px;
   padding: 10px 12px; min-height: 52px; min-width: 0;
 }
-.notebook-chart-bar button, .notebook-chart-options button {
+.notebook-chart-options button {
   justify-self: start; min-height: 52px; padding: 10px 20px;
   border: 1px solid var(--accent); border-radius: 7px;
   background: var(--accent); color: #fff; font: inherit; font-size: .85rem;
   font-weight: 600; cursor: pointer;
 }
-.notebook-chart-bar button:hover, .notebook-chart-options button:hover {
+.notebook-chart-options button:hover {
   background: var(--accent-hover); border-color: var(--accent-hover);
 }
-.notebook-chart-bar button { min-height: 48px; padding: 6px 18px; }
 .notebook-chart-choices { display: grid; gap: 2px; margin: 0; padding: 0; }
 .notebook-chart-choices label {
   display: flex; align-items: flex-start; gap: 10px;
@@ -939,31 +934,9 @@ section { margin: 80px 0; }
   .notebook-results td:not([data-label])::before { content: none; }
 }
 
-@media (min-width: 900px) {
-  .notebook-chart-bar { display: flex; align-items: flex-end; gap: 10px 20px; }
-  .notebook-chart-bar label {
-    flex: 0 1 auto; flex-direction: row; align-items: center; gap: 8px;
-  }
-  .notebook-chart-bar label select { width: auto; min-width: 10rem; }
-  .notebook-chart-bar button { grid-column: auto; }
-}
-
 @media (max-width: 899px) {
-  /* Below the desktop control row: plot first, then the compact native controls. */
+  /* Below the desktop heading row: the plot stays first, settings follow it. */
   .notebook-chart-head { margin-bottom: 4px; }
-  .notebook-chart-bar { grid-template-columns: 1fr; }
-  .notebook-chart-bar label {
-    flex-direction: row; align-items: center; justify-content: space-between; gap: 8px;
-  }
-  .notebook-chart-bar label select { flex: 0 0 auto; width: auto; max-width: 70%; }
-  /* The settings link stays native and reachable; its shortcut is redundant here. */
-  .notebook-chart-links a:not(:first-child) { display: none; }
-  .notebook-chart .chart-figure { display: flex; flex-direction: column; }
-  .notebook-chart .chart-figure .chart-shell { order: 1; }
-  .notebook-chart .chart-figure .notebook-chart-caption { order: 2; margin: 10px 0 0; }
-  /* The canvas overlay follows the server drawing once enhanced; the 264px floor belongs
-     to the no-JavaScript fixed-label scroller, not to a stretched overlay box. */
-  .notebook-chart .chart-enhanced .chart-wrap { min-height: 0; }
 }
 
 @media (max-width: 760px) {
@@ -980,11 +953,13 @@ section { margin: 80px 0; }
   .notebook-toolbar, .notebook-chart-settings, .notebook-chart-options,
   .notebook-search { display: none; }
   .notebook-workspace { width: 100%; }
-  .notebook-chart-bar, .notebook-chart-links, .notebook-help { display: none; }
+  .notebook-chart-links, .notebook-help { display: none; }
   body { background: #fff; }
   .card, .figure-block, .provenance, .formula { border-color: #999; }
   .chart-scroll { overflow: visible; }
   .chart-wrap { min-width: 0; }
+  /* The snapshot/causality caveat and the plot metadata must survive print. */
+  .notebook-caveat { display: block; }
   /* Print selects the server SVG: the canvas and its controls never reach paper. */
   .chart-enhanced .chart { opacity: 1 !important; }
   .chart-canvas, .chart-controls, .chart-hint { display: none !important; }

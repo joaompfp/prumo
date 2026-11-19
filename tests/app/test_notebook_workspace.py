@@ -131,6 +131,60 @@ def chart_form(root):
     return forms[0]
 
 
+def has_ancestor(node, ancestor):
+    parent = node.parent
+    while parent is not None:
+        if parent is ancestor:
+            return True
+        parent = parent.parent
+    return False
+
+
+def has_form_ancestor(node):
+    parent = node.parent
+    while parent is not None:
+        if parent.tag == "form":
+            return True
+        parent = parent.parent
+    return False
+
+
+def form_fields(form):
+    """The successful controls a browser would submit from this native GET form."""
+    fields = []
+    for node in form.find_all("input"):
+        kind = node.attrs.get("type", "text")
+        if kind in {"submit", "button", "reset"}:
+            continue
+        if kind in {"checkbox", "radio"} and "checked" not in node.attrs:
+            continue
+        name = node.attrs.get("name")
+        if name:
+            fields.append((name, node.attrs.get("value", "")))
+    for select in form.find_all("select"):
+        options = select.find_all("option")
+        assert options
+        chosen = next((option for option in options if "selected" in option.attrs), options[0])
+        fields.append((select.attrs["name"], chosen.attrs.get("value", "")))
+    return fields
+
+
+def submit_fields(site_path, fields, *, replace=None, drop=()):
+    """Submit the form's own controls back to the installed route, as a browser would."""
+    params = []
+    for name, value in fields:
+        if name in drop:
+            continue
+        if replace and name in replace:
+            value = replace[name]
+        if value is not None:
+            params.append((name, value))
+    with client(site_path) as site:
+        response = site.get("/caderno", params=params)
+    assert response.status_code == 200
+    return response.text
+
+
 def test_workspace_is_a_notebook_scoped_fluid_column_not_the_prose_wrap(site_path):
     html = notebook_html(site_path)
     root = dom(html)
@@ -198,15 +252,24 @@ def test_chart_controls_are_visible_and_one_authoritative_get_form(site_path):
     names = [node.attrs.get("name") for node in controls]
     assert names.count("janela") == 1
     assert names.count("escala") == 1
-    # The visible window/scale controls are inside the one form, before the plot.
-    figure = form.find_all("figure")[0]
-    assert html.index('name="janela"') < html.index("<figure")
-    assert html.index('name="escala"') < html.index("<figure")
-    # No second chart form and no JavaScript-only control layer.
+    # The plot and its caption are outside the one settings form; the single form follows it.
+    figure = one(root, "figure", "chart-figure")
+    assert not has_form_ancestor(figure)
+    assert form.find_all("figure") == []
+    assert html.index("</figure>") < html.index('id="notebook-chart-form"')
+    # Window/scale are one settings action away, after the plot, as one native GET form.
+    assert html.index('name="janela"') > html.index("</figure>")
+    assert html.index('name="escala"') > html.index("</figure>")
     assert len([node for node in root.find_all("form")
                 if any(sel.attrs.get("name") == "janela" for sel in node.find_all("select"))]) == 1
+    # The interactive range never sits in a form, so Enter on it cannot navigate.
+    chart_range = one(root, "input", "chart-range")
+    assert chart_range.attrs.get("type") == "range"
+    assert chart_range.attrs.get("form") is None
+    assert not has_form_ancestor(chart_range)
     assert 'onclick=' not in html
-    # The chart form always states the explicit mode, even on the implicit-all default.
+    # The chart form states the explicit mode; all mode still submits on, so clearing every
+    # box is the reader's explicit empty, never an implicit return to all.
     assert 'name="grafico" value="on"' in html
     assert 'name="grafico" value="on"' in form_text(html)
     submit = [node for node in form.find_all("button") if node.attrs.get("type") == "submit"]
@@ -225,17 +288,25 @@ def test_common_period_and_each_side_source_unit_and_fetch_are_beside_the_plot(t
     root = dom(html)
     figure = one(root, "figure", "chart-figure")
     caption = one(figure, "figcaption", "notebook-chart-caption")
-    text = visible(str(caption.all_text()))
-    assert "Período comum" in text
-    assert "setembro de 2026" in text
+    caption_text = visible(caption.all_text()).strip()
+    # The caption carries only the last common period and sits above the drawing.
+    assert caption_text == "Período comum setembro de 2026"
+    assert "Taxa de variação homóloga do IHPC - Portugal" not in caption_text
+    assert html.index('class="notebook-chart-caption"') < html.index('class="chart-scroll"')
+
+    # The legend carries names and exact common values; the adjacent source list carries
+    # source/unit/fetched notes, both before the long range/readout control block.
+    sources = one(figure, "ul", "notebook-chart-sources")
+    text = visible(sources.all_text())
     assert "Taxa de variação homóloga do IHPC - Portugal" in text
     assert "Taxa de desemprego - Portugal" in text
     assert text.count("INE - Instituto Nacional de Estatística") == 2
     assert text.count("%") >= 2
     # Per-side fetch of the plotted period, not the series' own latest fetch.
     assert "01/11/2026" in text and "03/11/2026" in text
-    # The caption precedes the drawing and is not print-hidden.
-    assert html.index('class="notebook-chart-caption"') < html.index('<svg class="chart')
+    assert html.index('class="chart-scroll"') < html.index('class="notebook-chart-sources"')
+    assert html.index('class="notebook-chart-sources"') < html.index('class="legend"')
+    assert html.index('class="notebook-chart-sources"') < html.index('class="chart-controls"')
 
 
 def test_cards_distinguish_their_own_latest_period_from_the_plotted_common_period(tmp_path):
@@ -388,9 +459,98 @@ def test_print_rules_keep_the_caption_and_restore_the_svg(site_path):
     css = CSS.read_text(encoding="utf-8")
     print_block = css[css.index("@media print {"):]
     assert ".notebook-chart-caption" not in print_block
+    assert ".notebook-chart-sources" not in print_block
+    assert ".notebook-caveat { display: block; }" in print_block
     assert ".chart-scroll { overflow: visible; }" in print_block
     assert ".chart-wrap { min-width: 0; }" in print_block
     assert ".chart-canvas, .chart-controls, .chart-hint { display: none !important; }" in print_block
     html = notebook_html(site_path)
     assert 'class="notebook-chart-caption"' in html
+    assert 'class="notebook-chart-sources"' in html
     assert 'src="/static/js/prumo-charts' in html
+
+
+def test_off_survives_a_window_or_scale_submission(site_path):
+    html = notebook_html(site_path, f"?s={HICP}&s={UNEMP}&grafico=off")
+    form = chart_form(dom(html))
+    assert 'name="grafico" value="off"' in form_text(html)
+    fields = form_fields(form)
+    assert ("grafico", "off") in fields
+
+    submitted = submit_fields(site_path, fields, replace={"janela": "5a", "escala": "dupla"})
+    root = dom(submitted)
+    assert one(root, "section", "notebook-chart").attrs["data-chart-state"] == "off"
+    assert 'name="grafico" value="off"' in form_text(submitted)
+    assert "Ativar gráfico" in submitted
+    assert "chart-data" not in submitted
+
+
+def test_explicit_empty_survives_a_settings_submission(site_path):
+    html = notebook_html(site_path, f"?s={HICP}&s={UNEMP}&grafico=on")
+    form = chart_form(dom(html))
+    assert 'name="grafico" value="on"' in form_text(html)
+    fields = form_fields(form)
+    assert not any(name == "g" for name, _ in fields)
+
+    submitted = submit_fields(site_path, fields, replace={"janela": "5a", "escala": "dupla"})
+    root = dom(submitted)
+    assert one(root, "section", "notebook-chart").attrs["data-chart-state"] == "empty"
+    assert "Não há séries escolhidas para o gráfico" in submitted
+
+
+def test_all_mode_clearing_every_box_submits_an_explicit_empty(site_path):
+    html = notebook_html(site_path)
+    form = chart_form(dom(html))
+    assert 'name="grafico" value="on"' in form_text(html)
+    fields = form_fields(form)
+    assert sum(name == "g" for name, _ in fields) == 2
+
+    submitted = submit_fields(site_path, fields, drop={"g"})
+    root = dom(submitted)
+    assert one(root, "section", "notebook-chart").attrs["data-chart-state"] == "empty"
+    assert "Não há séries escolhidas para o gráfico" in submitted
+
+
+def test_blank_chart_states_do_not_render_empty_evidence_disclosures(site_path):
+    blank_queries = (
+        f"?s={HICP}&s={UNEMP}&grafico=off",
+        f"?s={HICP}&s={UNEMP}&grafico=on",
+        f"?s={HICP}&s={INACTIVE}&grafico=on&g={INACTIVE}",
+    )
+    for query in blank_queries:
+        root = dom(notebook_html(site_path, query))
+        assert not root.find_all("details", "notebook-definitions"), query
+        assert not root.find_all("details", "table-details"), query
+        assert not root.find_all("details", "provenance-details"), query
+
+    ready = dom(notebook_html(site_path))
+    assert one(ready, "details", "notebook-definitions")
+    assert one(ready, "details", "table-details")
+    assert one(ready, "details", "provenance-details")
+
+
+def test_redundant_breadcrumb_and_mobile_plot_floor_overrides_are_gone(site_path):
+    html = notebook_html(site_path)
+    root = dom(html)
+    assert not root.find_all("nav", "crumbs")
+    assert ".notebook-chart .chart-enhanced .chart-wrap { min-height: 0; }" not in CSS.read_text(
+        encoding="utf-8")
+    css = CSS.read_text(encoding="utf-8")
+    assert ".notebook-chart .chart-enhanced .chart-wrap" not in css
+    assert "min-width: 660px; min-height: 264px;" in css
+    assert ".chart-enhanced .chart-wrap { min-width: 0; }" in css
+    # The caption's mobile position is its real DOM position, not a CSS order swap.
+    assert ".notebook-chart .chart-figure .chart-shell { order:" not in css
+    assert ".notebook-chart .chart-figure .notebook-chart-caption { order:" not in css
+
+
+def test_snapshot_and_causality_caveats_are_visible_outside_the_print_hidden_help(site_path):
+    html = notebook_html(site_path)
+    root = dom(html)
+    help_panel = one(root, "details", "notebook-help")
+    caveat = one(root, "p", "notebook-caveat")
+    caveat_text = visible(caveat.all_text())
+    assert "A seleção não é um retrato histórico." in caveat_text
+    assert "Comparar curvas no mesmo gráfico não estabelece uma relação de causa." in caveat_text
+    assert not has_ancestor(caveat, help_panel)
+    assert 'class="note notebook-caveat"' in html

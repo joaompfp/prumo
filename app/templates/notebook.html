@@ -6,10 +6,6 @@
 {% macro chart_hidden(settings) %}{% for name, value in settings.params() %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}{% endmacro %}
 {% set panel = page.chart_panel %}
 <div class="notebook-workspace">
-<nav class="crumbs" aria-label="Caminho">
-  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.copy.heading }}
-</nav>
-
 <header class="page-head notebook-head">
   <div class="notebook-head-row">
     <h1>{{ page.copy.heading }}</h1>
@@ -39,7 +35,7 @@
   {% if page.skipped_count %}<p class="note" role="status">{{ page.skipped_notice }}</p>{% endif %}
 </section>
 
-{% if page.addressed %}{% include "_notebook_evidence.html" %}{% endif %}
+{% if page.chart_panel.chart %}{% include "_notebook_evidence.html" %}{% endif %}
 
 <details class="notebook-help" id="ajuda">
   <summary>{{ page.copy.help_summary }}</summary>
