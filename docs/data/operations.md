@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current public interface: notebook charts and grouped navigation installed
+## Current public interface: analytical notebook workspace installed
+
+Owner-authorized main `913eb2f` (runtime `050d69e`) is installed from 2026-11-19 16:55 UTC. Public web `4c3def73` and static-preview Admin `2cd23e48` are healthy/zero restarts. The notebook is plot-first, grows across wide monitors, keeps common/latest periods distinct and exposes nearby native add/configure actions. Only the readers changed. Complete worker baseline, schema/migrations and CMS/history fingerprints match pre-activation; quick_check ok, no FK violations. No data/content writes, migration, ownership, credentials, edge or worker restart.
+
+Exact-main hosted CI `44569621926` passed (2,847 passed, nine skipped, seven live deselected); fresh clean-commit release gate 100 tests, installed public browser 459 checks, state/Admin 33 and private preview ten passed. Human screen-reader acceptance remains separate. The existing shared-edge vr warning is unchanged. Recovery: actual previous checkout `361eca7`, retained reader tags `rollback-analytical-workspace-20261119T164616Z`; restore checkout AND images because app/static are live binds, preserve database/history/worker. Prebuild used a detached context before stopping only public web for activation through the normal dc-web-up aliases.
+
+An initial checker compared outer OCI index ids and failed after healthy activation due to regenerated BuildKit attestations. The archived exporter receipts prove platform runtime manifests and configs are identical to prebuild; actual container/tag/rollback relations were verified separately. No runtime correction or second activation ran. Do not compare attestation-bearing outer indices as proof of executable build equivalence. Full evidence/recovery: [analytical workspace installation](../superpowers/handoff/reports/analytical-workspace-release/installed.md).
+
+## Previous public interface: notebook charts and grouped navigation installed
 
 Owner-authorized main361eca7 (runtime7baa127) is installed on f0nix from2026-11-18T07:51 UTC. Public web660146a8 and Admin09da694b are healthy/zero restarts. Caderno supports up to six selected series on a common or explicit two-side dual scale; up to twelve cards remain. Native grouped navigation/search and the static CMS preview share the new shell. Schema0019/migrations, CMS contents/history and the full worker identity/image/start/restarts match pre-activation. No migration, content/source-data write, credentials or shared-edge change. Exact-main hosted CI44260267298 passed;95 fresh committed-tree checks,2117 public browser checks,33 Admin/state checks and10 preview checks passed. Human screen-reader acceptance remains separate.
 

@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/joao/.hermes/cache/scratch/prumo-workspace-release-committed-913eb2f
+configfile: pytest.ini
+plugins: anyio-4.16.0
+collected 33 items
+
+tests/app/test_notebook_chart.py ..........................              [ 78%]
+tests/app/test_notebook_settings.py .......                              [100%]
+
+======================== 33 passed, 1 warning in 27.03s ========================

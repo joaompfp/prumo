@@ -1,0 +1,2744 @@
+{
+  "checks": [
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@320",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@320",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@320",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@320",
+      "passed": true
+    },
+    {
+      "check": "mobile plot preserved direct@320",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@320",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@320/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@320/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@320/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@320",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@320",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@320",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@320",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@320",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@390",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@390",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@390",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@390",
+      "passed": true
+    },
+    {
+      "check": "complete chart in first view direct@390",
+      "passed": true
+    },
+    {
+      "check": "composition in first view direct@390",
+      "passed": true
+    },
+    {
+      "check": "mobile plot preserved direct@390",
+      "passed": true
+    },
+    {
+      "check": "neutral capture direct@390",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@390",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@390/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@390/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@390/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@390",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@390",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@390",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@390",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@390",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@768",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@768",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@768",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@768",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@768",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@768/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@768/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@768/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@768",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@768",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@768",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@768",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@768",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@899",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@899",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@899",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@899",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@899",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@899/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@899/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@899/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@899",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@899",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@899",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@899",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@899",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@900",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@900",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@900",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@900",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@900",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@900/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@900/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@900/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@900",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@900",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@900",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@900",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@900",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@901",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@901",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@901",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@901",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@901",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@901/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@901/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@901/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@901",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@901",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@901",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@901",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@901",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@1024",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@1024",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@1024",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@1024",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@1024",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1024/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1024/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1024/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@1024",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@1024",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@1024",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@1024",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@1024",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@1440",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@1440",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@1440",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@1440",
+      "passed": true
+    },
+    {
+      "check": "complete chart in first view direct@1440",
+      "passed": true
+    },
+    {
+      "check": "composition in first view direct@1440",
+      "passed": true
+    },
+    {
+      "check": "neutral capture direct@1440",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@1440",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1440/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1440/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1440/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@1440",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@1440",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@1440",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@1440",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@1440",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@1920",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@1920",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@1920",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@1920",
+      "passed": true
+    },
+    {
+      "check": "complete chart in first view direct@1920",
+      "passed": true
+    },
+    {
+      "check": "composition in first view direct@1920",
+      "passed": true
+    },
+    {
+      "check": "neutral capture direct@1920",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@1920",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1920/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1920/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@1920/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@1920",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@1920",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@1920",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@1920",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@1920",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@2560",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@2560",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@2560",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@2560",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@2560",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@2560/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@2560/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@2560/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@2560",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@2560",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@2560",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@2560",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@2560",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow direct@3774",
+      "passed": true
+    },
+    {
+      "check": "large local fonts direct@3774",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot direct@3774",
+      "passed": true
+    },
+    {
+      "check": "sources beside result direct@3774",
+      "passed": true
+    },
+    {
+      "check": "wide plot grows direct@3774",
+      "passed": true
+    },
+    {
+      "check": "neutral capture direct@3774",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot direct@3774",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@3774/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@3774/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard direct@3774/End",
+      "passed": true
+    },
+    {
+      "check": "complete table direct@3774",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form direct@3774",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation direct@3774",
+      "passed": true
+    },
+    {
+      "check": "strict script policy direct@3774",
+      "passed": true
+    },
+    {
+      "check": "authored typography direct@3774",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date native configuration opens",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date native window and return",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date add preserves group/window",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT&grafico=off",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date honest state off",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date scriptfree undrawable",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no blank evidence",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT&grafico=on",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date honest state empty",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date scriptfree undrawable",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no blank evidence",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=bportugal.credit_housing.PT",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date honest state unavailable",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date scriptfree undrawable",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no blank evidence",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT&s=bportugal.euribor_1m.EA&s=bportugal.euribor_3m.EA&s=bportugal.euribor_6m.EA&s=bportugal.euribor_12m.EA",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date honest state ready",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date population 6",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date full table 6",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date honest state ready",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date population 2",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date full table 2",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date deliberate dual axes",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date painted plot",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact painted point 0",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact painted point 60",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact painted point 120",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date print SVG and caveats",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date no print configuration",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/healthz",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/comparar",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/comparar/credito-e-taxa",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/comparar/paises/eletricidade-domestica",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/fontes",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/metodologia",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/paginas",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/pesquisa?q=inflacao",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/series/ine.hicp_yoy.PT",
+      "passed": true
+    },
+    {
+      "check": "public route https://cae.joao.date/series/ine.hicp_yoy.PT.csv",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://cae.joao.date/static/css/prumo.css",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://cae.joao.date/static/css/fonts.css",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://cae.joao.date/static/images/prumo/favicon.svg",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://cae.joao.date/static/js/prumo-charts.min.js",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date unknown scale404",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date SVG fallback no-js",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date fallback table no-js",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date native fallback settings no-js",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date SVG fallback blocked",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date fallback table blocked",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date native fallback settings blocked",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://cae.joao.date/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date touch painted plot",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact touch 0",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact touch 60",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date exact touch 120",
+      "passed": true
+    },
+    {
+      "check": "https://cae.joao.date named range in accessibility tree",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@320",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@320",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@320",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@320",
+      "passed": true
+    },
+    {
+      "check": "mobile plot preserved mounted@320",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@320",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@320/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@320/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@320/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@320",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@320",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@320",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@320",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@320",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@390",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@390",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@390",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@390",
+      "passed": true
+    },
+    {
+      "check": "complete chart in first view mounted@390",
+      "passed": true
+    },
+    {
+      "check": "composition in first view mounted@390",
+      "passed": true
+    },
+    {
+      "check": "mobile plot preserved mounted@390",
+      "passed": true
+    },
+    {
+      "check": "neutral capture mounted@390",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@390",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@390/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@390/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@390/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@390",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@390",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@390",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@390",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@390",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@768",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@768",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@768",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@768",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@768",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@768/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@768/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@768/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@768",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@768",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@768",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@768",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@768",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@899",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@899",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@899",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@899",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@899",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@899/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@899/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@899/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@899",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@899",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@899",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@899",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@899",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@900",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@900",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@900",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@900",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@900",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@900/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@900/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@900/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@900",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@900",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@900",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@900",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@900",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@901",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@901",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@901",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@901",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@901",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@901/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@901/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@901/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@901",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@901",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@901",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@901",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@901",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1024/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1024/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1024/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@1024",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "complete chart in first view mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "composition in first view mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "neutral capture mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1440/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1440/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1440/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@1440",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "complete chart in first view mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "composition in first view mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "neutral capture mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1920/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1920/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@1920/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@1920",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@2560/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@2560/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@2560/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@2560",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "no overflow mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "large local fonts mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "common caption above plot mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "sources beside result mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "wide plot grows mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "neutral capture mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "configuration does not displace plot mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@3774/Home",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@3774/ArrowRight",
+      "passed": true
+    },
+    {
+      "check": "exact keyboard mounted@3774/End",
+      "passed": true
+    },
+    {
+      "check": "complete table mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "range not in settings form mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "range Enter no navigation mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "strict script policy mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "authored typography mounted@3774",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados native configuration opens",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados native window and return",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados add preserves group/window",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT&grafico=off",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados honest state off",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados scriptfree undrawable",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no blank evidence",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT&grafico=on",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados honest state empty",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados scriptfree undrawable",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no blank evidence",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=bportugal.credit_housing.PT",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados honest state unavailable",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados scriptfree undrawable",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no blank evidence",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT&s=bportugal.euribor_1m.EA&s=bportugal.euribor_3m.EA&s=bportugal.euribor_6m.EA&s=bportugal.euribor_12m.EA",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados honest state ready",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados population 6",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados full table 6",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=bportugal.euribor_12m.EA&s=bportugal.credit_housing.PT&escala=dupla",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados honest state ready",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados population 2",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados full table 2",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados deliberate dual axes",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados painted plot",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact painted point 0",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact painted point 60",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact painted point 120",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados print SVG and caveats",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados no print configuration",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/healthz",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/comparar",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/comparar/credito-e-taxa",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/comparar/paises/eletricidade-domestica",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/fontes",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/metodologia",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/paginas",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/pesquisa?q=inflacao",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/series/ine.hicp_yoy.PT",
+      "passed": true
+    },
+    {
+      "check": "public route https://joao.date/dados/series/ine.hicp_yoy.PT.csv",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://joao.date/dados/static/css/prumo.css",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://joao.date/dados/static/css/fonts.css",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://joao.date/dados/static/images/prumo/favicon.svg",
+      "passed": true
+    },
+    {
+      "check": "exact installed asset https://joao.date/dados/static/js/prumo-charts.min.js",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados unknown scale404",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados SVG fallback no-js",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados fallback table no-js",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados native fallback settings no-js",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados SVG fallback blocked",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados fallback table blocked",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados native fallback settings blocked",
+      "passed": true
+    },
+    {
+      "check": "HTTP200 https://joao.date/dados/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados touch painted plot",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact touch 0",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact touch 60",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados exact touch 120",
+      "passed": true
+    },
+    {
+      "check": "https://joao.date/dados named range in accessibility tree",
+      "passed": true
+    },
+    {
+      "check": "Admin still challenges through Authelia",
+      "passed": true
+    },
+    {
+      "check": "no page/CSP errors",
+      "passed": true
+    },
+    {
+      "check": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "check": "only recorded shared-edge warnings",
+      "passed": true
+    },
+    {
+      "check": "actual edge bundle bytes",
+      "passed": true
+    }
+  ],
+  "measurements": [
+    {
+      "viewport": {
+        "width": 320,
+        "height": 844
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 18,
+        "y": 629.40625,
+        "width": 284,
+        "height": 264,
+        "bottom": 893.40625
+      },
+      "caption": {
+        "x": 18,
+        "y": 559.4375,
+        "width": 284,
+        "height": 61.96875,
+        "bottom": 621.40625
+      },
+      "sources": {
+        "x": 18,
+        "y": 893.40625,
+        "width": 284,
+        "height": 621.703125,
+        "bottom": 1515.109375
+      },
+      "add": {
+        "x": 18,
+        "y": 451.4375,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 499.4375
+      },
+      "body": 28.05,
+      "documentWidth": 320,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 18,
+        "y": 573.40625,
+        "width": 354,
+        "height": 264,
+        "bottom": 837.40625
+      },
+      "caption": {
+        "x": 18,
+        "y": 503.4375,
+        "width": 354,
+        "height": 61.96875,
+        "bottom": 565.40625
+      },
+      "sources": {
+        "x": 18,
+        "y": 837.40625,
+        "width": 354,
+        "height": 475.890625,
+        "bottom": 1313.296875
+      },
+      "add": {
+        "x": 18,
+        "y": 451.4375,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 499.4375
+      },
+      "body": 28.05,
+      "documentWidth": 390,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 18.421875,
+        "y": 365.765625,
+        "width": 731.15625,
+        "height": 282.484375,
+        "bottom": 648.25
+      },
+      "caption": {
+        "x": 18.421875,
+        "y": 326.78125,
+        "width": 731.15625,
+        "height": 30.984375,
+        "bottom": 357.765625
+      },
+      "sources": {
+        "x": 18.421875,
+        "y": 648.25,
+        "width": 731.15625,
+        "height": 220.71875,
+        "bottom": 868.96875
+      },
+      "add": {
+        "x": 448.5,
+        "y": 274.78125,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 322.78125
+      },
+      "body": 28.05,
+      "documentWidth": 768,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 899,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 21.5625,
+        "y": 365.765625,
+        "width": 855.875,
+        "height": 330.671875,
+        "bottom": 696.4375
+      },
+      "caption": {
+        "x": 21.5625,
+        "y": 326.78125,
+        "width": 855.875,
+        "height": 30.984375,
+        "bottom": 357.765625
+      },
+      "sources": {
+        "x": 21.5625,
+        "y": 696.4375,
+        "width": 855.875,
+        "height": 220.71875,
+        "bottom": 917.15625
+      },
+      "add": {
+        "x": 576.359375,
+        "y": 274.78125,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 322.78125
+      },
+      "body": 28.05,
+      "documentWidth": 899,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 900,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 21.59375,
+        "y": 369.765625,
+        "width": 856.8125,
+        "height": 331.03125,
+        "bottom": 700.796875
+      },
+      "caption": {
+        "x": 21.59375,
+        "y": 330.78125,
+        "width": 856.8125,
+        "height": 30.984375,
+        "bottom": 361.765625
+      },
+      "sources": {
+        "x": 21.59375,
+        "y": 700.796875,
+        "width": 856.8125,
+        "height": 220.71875,
+        "bottom": 921.515625
+      },
+      "add": {
+        "x": 577.328125,
+        "y": 274.78125,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 322.78125
+      },
+      "body": 28.05,
+      "documentWidth": 900,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 901,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 21.609375,
+        "y": 345.578125,
+        "width": 857.78125,
+        "height": 331.40625,
+        "bottom": 676.984375
+      },
+      "caption": {
+        "x": 21.609375,
+        "y": 306.59375,
+        "width": 857.78125,
+        "height": 30.984375,
+        "bottom": 337.578125
+      },
+      "sources": {
+        "x": 21.609375,
+        "y": 676.984375,
+        "width": 857.78125,
+        "height": 220.71875,
+        "bottom": 897.703125
+      },
+      "add": {
+        "x": 578.3125,
+        "y": 250.59375,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 298.59375
+      },
+      "body": 28.05,
+      "documentWidth": 901,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 24.5625,
+        "y": 309.65625,
+        "width": 974.875,
+        "height": 376.65625,
+        "bottom": 686.3125
+      },
+      "caption": {
+        "x": 24.5625,
+        "y": 270.671875,
+        "width": 974.875,
+        "height": 30.984375,
+        "bottom": 301.65625
+      },
+      "sources": {
+        "x": 24.5625,
+        "y": 686.3125,
+        "width": 974.875,
+        "height": 220.71875,
+        "bottom": 907.03125
+      },
+      "add": {
+        "x": 698.359375,
+        "y": 214.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 262.671875
+      },
+      "body": 28.05,
+      "documentWidth": 1024,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 130.15625,
+        "y": 326.65625,
+        "width": 1179.6875,
+        "height": 455.78125,
+        "bottom": 782.4375
+      },
+      "caption": {
+        "x": 130.15625,
+        "y": 287.671875,
+        "width": 1179.6875,
+        "height": 30.984375,
+        "bottom": 318.65625
+      },
+      "sources": {
+        "x": 130.15625,
+        "y": 782.4375,
+        "width": 1179.6875,
+        "height": 182.265625,
+        "bottom": 964.703125
+      },
+      "add": {
+        "x": 1008.765625,
+        "y": 231.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 279.671875
+      },
+      "body": 28.05,
+      "documentWidth": 1440,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 266.640625,
+        "y": 330.65625,
+        "width": 1386.71875,
+        "height": 535.765625,
+        "bottom": 866.421875
+      },
+      "caption": {
+        "x": 266.640625,
+        "y": 291.671875,
+        "width": 1386.71875,
+        "height": 30.984375,
+        "bottom": 322.65625
+      },
+      "sources": {
+        "x": 266.640625,
+        "y": 866.421875,
+        "width": 1386.71875,
+        "height": 109.359375,
+        "bottom": 975.78125
+      },
+      "add": {
+        "x": 1352.28125,
+        "y": 235.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 283.671875
+      },
+      "body": 28.05,
+      "documentWidth": 1920,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 120.796875,
+        "y": 330.65625,
+        "width": 2318.40625,
+        "height": 895.734375,
+        "bottom": 1226.390625
+      },
+      "caption": {
+        "x": 120.796875,
+        "y": 291.671875,
+        "width": 2318.40625,
+        "height": 30.984375,
+        "bottom": 322.65625
+      },
+      "sources": {
+        "x": 120.796875,
+        "y": 1226.390625,
+        "width": 2318.40625,
+        "height": 72.90625,
+        "bottom": 1299.296875
+      },
+      "add": {
+        "x": 2138.125,
+        "y": 235.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 283.671875
+      },
+      "body": 28.05,
+      "documentWidth": 2560,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 3774,
+        "height": 1870
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 687,
+        "y": 330.65625,
+        "width": 2400,
+        "height": 927.265625,
+        "bottom": 1257.921875
+      },
+      "caption": {
+        "x": 687,
+        "y": 291.671875,
+        "width": 2400,
+        "height": 30.984375,
+        "bottom": 322.65625
+      },
+      "sources": {
+        "x": 687,
+        "y": 1257.921875,
+        "width": 2400,
+        "height": 72.90625,
+        "bottom": 1330.828125
+      },
+      "add": {
+        "x": 2785.921875,
+        "y": 235.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 283.671875
+      },
+      "body": 28.05,
+      "documentWidth": 3774,
+      "base": "https://cae.joao.date"
+    },
+    {
+      "viewport": {
+        "width": 320,
+        "height": 844
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 18,
+        "y": 629.40625,
+        "width": 284,
+        "height": 264,
+        "bottom": 893.40625
+      },
+      "caption": {
+        "x": 18,
+        "y": 559.4375,
+        "width": 284,
+        "height": 61.96875,
+        "bottom": 621.40625
+      },
+      "sources": {
+        "x": 18,
+        "y": 893.40625,
+        "width": 284,
+        "height": 621.703125,
+        "bottom": 1515.109375
+      },
+      "add": {
+        "x": 18,
+        "y": 451.4375,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 499.4375
+      },
+      "body": 28.05,
+      "documentWidth": 320,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 18,
+        "y": 573.40625,
+        "width": 354,
+        "height": 264,
+        "bottom": 837.40625
+      },
+      "caption": {
+        "x": 18,
+        "y": 503.4375,
+        "width": 354,
+        "height": 61.96875,
+        "bottom": 565.40625
+      },
+      "sources": {
+        "x": 18,
+        "y": 837.40625,
+        "width": 354,
+        "height": 475.890625,
+        "bottom": 1313.296875
+      },
+      "add": {
+        "x": 18,
+        "y": 451.4375,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 499.4375
+      },
+      "body": 28.05,
+      "documentWidth": 390,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 18.421875,
+        "y": 365.765625,
+        "width": 731.15625,
+        "height": 282.484375,
+        "bottom": 648.25
+      },
+      "caption": {
+        "x": 18.421875,
+        "y": 326.78125,
+        "width": 731.15625,
+        "height": 30.984375,
+        "bottom": 357.765625
+      },
+      "sources": {
+        "x": 18.421875,
+        "y": 648.25,
+        "width": 731.15625,
+        "height": 220.71875,
+        "bottom": 868.96875
+      },
+      "add": {
+        "x": 448.5,
+        "y": 274.78125,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 322.78125
+      },
+      "body": 28.05,
+      "documentWidth": 768,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 899,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 21.5625,
+        "y": 365.765625,
+        "width": 855.875,
+        "height": 330.671875,
+        "bottom": 696.4375
+      },
+      "caption": {
+        "x": 21.5625,
+        "y": 326.78125,
+        "width": 855.875,
+        "height": 30.984375,
+        "bottom": 357.765625
+      },
+      "sources": {
+        "x": 21.5625,
+        "y": 696.4375,
+        "width": 855.875,
+        "height": 220.71875,
+        "bottom": 917.15625
+      },
+      "add": {
+        "x": 576.359375,
+        "y": 274.78125,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 322.78125
+      },
+      "body": 28.05,
+      "documentWidth": 899,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 900,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 21.59375,
+        "y": 369.765625,
+        "width": 856.8125,
+        "height": 331.03125,
+        "bottom": 700.796875
+      },
+      "caption": {
+        "x": 21.59375,
+        "y": 330.78125,
+        "width": 856.8125,
+        "height": 30.984375,
+        "bottom": 361.765625
+      },
+      "sources": {
+        "x": 21.59375,
+        "y": 700.796875,
+        "width": 856.8125,
+        "height": 220.71875,
+        "bottom": 921.515625
+      },
+      "add": {
+        "x": 577.328125,
+        "y": 274.78125,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 322.78125
+      },
+      "body": 28.05,
+      "documentWidth": 900,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 901,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 21.609375,
+        "y": 345.578125,
+        "width": 857.78125,
+        "height": 331.40625,
+        "bottom": 676.984375
+      },
+      "caption": {
+        "x": 21.609375,
+        "y": 306.59375,
+        "width": 857.78125,
+        "height": 30.984375,
+        "bottom": 337.578125
+      },
+      "sources": {
+        "x": 21.609375,
+        "y": 676.984375,
+        "width": 857.78125,
+        "height": 220.71875,
+        "bottom": 897.703125
+      },
+      "add": {
+        "x": 578.3125,
+        "y": 250.59375,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 298.59375
+      },
+      "body": 28.05,
+      "documentWidth": 901,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 24.5625,
+        "y": 309.65625,
+        "width": 974.875,
+        "height": 376.65625,
+        "bottom": 686.3125
+      },
+      "caption": {
+        "x": 24.5625,
+        "y": 270.671875,
+        "width": 974.875,
+        "height": 30.984375,
+        "bottom": 301.65625
+      },
+      "sources": {
+        "x": 24.5625,
+        "y": 686.3125,
+        "width": 974.875,
+        "height": 220.71875,
+        "bottom": 907.03125
+      },
+      "add": {
+        "x": 698.359375,
+        "y": 214.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 262.671875
+      },
+      "body": 28.05,
+      "documentWidth": 1024,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 130.15625,
+        "y": 326.65625,
+        "width": 1179.6875,
+        "height": 455.78125,
+        "bottom": 782.4375
+      },
+      "caption": {
+        "x": 130.15625,
+        "y": 287.671875,
+        "width": 1179.6875,
+        "height": 30.984375,
+        "bottom": 318.65625
+      },
+      "sources": {
+        "x": 130.15625,
+        "y": 782.4375,
+        "width": 1179.6875,
+        "height": 182.265625,
+        "bottom": 964.703125
+      },
+      "add": {
+        "x": 1008.765625,
+        "y": 231.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 279.671875
+      },
+      "body": 28.05,
+      "documentWidth": 1440,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 266.640625,
+        "y": 330.65625,
+        "width": 1386.71875,
+        "height": 535.765625,
+        "bottom": 866.421875
+      },
+      "caption": {
+        "x": 266.640625,
+        "y": 291.671875,
+        "width": 1386.71875,
+        "height": 30.984375,
+        "bottom": 322.65625
+      },
+      "sources": {
+        "x": 266.640625,
+        "y": 866.421875,
+        "width": 1386.71875,
+        "height": 109.359375,
+        "bottom": 975.78125
+      },
+      "add": {
+        "x": 1352.28125,
+        "y": 235.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 283.671875
+      },
+      "body": 28.05,
+      "documentWidth": 1920,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 120.796875,
+        "y": 330.65625,
+        "width": 2318.40625,
+        "height": 895.734375,
+        "bottom": 1226.390625
+      },
+      "caption": {
+        "x": 120.796875,
+        "y": 291.671875,
+        "width": 2318.40625,
+        "height": 30.984375,
+        "bottom": 322.65625
+      },
+      "sources": {
+        "x": 120.796875,
+        "y": 1226.390625,
+        "width": 2318.40625,
+        "height": 72.90625,
+        "bottom": 1299.296875
+      },
+      "add": {
+        "x": 2138.125,
+        "y": 235.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 283.671875
+      },
+      "body": 28.05,
+      "documentWidth": 2560,
+      "base": "https://joao.date/dados"
+    },
+    {
+      "viewport": {
+        "width": 3774,
+        "height": 1870
+      },
+      "scroll": 0,
+      "canvas": {
+        "x": 687,
+        "y": 330.65625,
+        "width": 2400,
+        "height": 927.265625,
+        "bottom": 1257.921875
+      },
+      "caption": {
+        "x": 687,
+        "y": 291.671875,
+        "width": 2400,
+        "height": 30.984375,
+        "bottom": 322.65625
+      },
+      "sources": {
+        "x": 687,
+        "y": 1257.921875,
+        "width": 2400,
+        "height": 72.90625,
+        "bottom": 1330.828125
+      },
+      "add": {
+        "x": 2785.921875,
+        "y": 235.671875,
+        "width": 151.46875,
+        "height": 48,
+        "bottom": 283.671875
+      },
+      "body": 28.05,
+      "documentWidth": 3774,
+      "base": "https://joao.date/dados"
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'."
+  ],
+  "external": [],
+  "screens": [
+    "notebook-direct-390.png",
+    "notebook-direct-1440.png",
+    "notebook-direct-1920.png",
+    "notebook-direct-3774.png",
+    "notebook-mounted-390.png",
+    "notebook-mounted-1440.png",
+    "notebook-mounted-1920.png",
+    "notebook-mounted-3774.png"
+  ],
+  "known_edge_warnings": 44,
+  "transfer": {
+    "encoding": "gzip",
+    "wire_bytes": 180002,
+    "decoded_bytes": 506637,
+    "sha256": "70a45c776a6bf397f75ddd0e22807ec837a7ba3a4b0545b61d2ff79c9a4e3d0a"
+  },
+  "complete": true
+}

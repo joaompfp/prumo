@@ -29,7 +29,7 @@ The first completed notebook candidate is a product/design checkpoint before its
 
 ## Phase A: notebook workspace prototype
 
-Status: notebook prototype implemented through `050d69e`, verified and ready for owner visual acceptance. Not merged or installed. This remains the first implementation scope.
+Status: owner accepted the prototype for installation and authorized merge/push/deploy. Runtime `050d69e` is installed from main `913eb2f` on 2026-11-19 at 16:55 UTC; only public web and static-preview Admin were recreated. Phase A is the completed installed scope, not the remainder of this roadmap. Human screen-reader and broader usability acceptance remain separate.
 
 ### A0. Isolate presentation boundaries
 
@@ -106,11 +106,11 @@ Carry forward source rights for REN/FRED/OECD, DGEG technical blockers, old-peri
 | Slice | State | Evidence / next gate |
 |---|---|---|
 | A0 | Verified | Refactor `fad24e5`; 11 deterministic equivalence cases and controller repeat of all 50 existing notebook tests |
-| A1-A2 | Implemented, branch only | Runtime `050d69e`: fluid plot-first notebook, native settings after figure, nearby add/configure actions, honest chart/card states and common-period/source labels |
-| A3 | Automated gates passed; human checkpoint open | Full suite on `0a0730e`: 2,856 passed, seven live deselected. Later accessible-name/action-copy changes: final 126 affected tests and the same 126 from clean committed checkout `050d69e`; 332 final browser checks, all 23 table fingerprints unchanged. Independent reviews approved after fixes. Owner visual/screen-reader acceptance and release remain pending |
+| A1-A2 | Installed after owner release approval | Main `913eb2f`, runtime `050d69e`, f0nix 2026-11-19 16:55 UTC. Fluid plot-first notebook, native settings after figure, nearby add/configure actions, honest chart/card states and common-period/source labels |
+| A3 | Automated gates and authorized installation complete; human screen-reader open | Earlier full local suite: 2,856 on `0a0730e`; final development 126 committed-tree and 332 browser checks retain their scope. Exact-main hosted CI 44569621926 passed before activation: 2,847 passed, nine skipped, seven live deselected. Fresh release gate: 100 focused committed-tree tests, 459 installed public browser checks, 33 state/Admin and ten preview checks. Worker, schema and CMS fingerprints unchanged. Installation approval does not replace human screen-reader/usability acceptance |
 | B-C | Planned | Generalize only after the notebook composition is reviewed |
 | D-E | Future | Separate specification/product acceptance, not part of this prototype |
 
-Evidence, exact test scopes and neutral desktop/mobile captures: `../handoff/reports/analytical-workspace/README.md`. The settings form now contains window/scale/group/day AFTER the plot; the nearby Configurar action opens it natively. A1's near-result control requirement is implemented as this single path rather than duplicated forms. Later point-readout consolidation and global masthead alignment stay in B/C.
+Development evidence, exact test scopes and neutral desktop/mobile captures: `../handoff/reports/analytical-workspace/README.md`. Installed acceptance, images, recovery and checker correction: `../handoff/reports/analytical-workspace-release/installed.md`. The settings form now contains window/scale/group/day AFTER the plot; the nearby Configurar action opens it natively. A1's near-result control requirement is implemented as this single path rather than duplicated forms. Later point-readout consolidation and global masthead alignment stay in B/C.
 
 Canonical implementation roadmap: this file. User-facing project index: `/home/joao/vaults/projects/prumo/roadmap-e-implementacao.md`. Controller resume state: `../handoff/HANDOFF.md`.

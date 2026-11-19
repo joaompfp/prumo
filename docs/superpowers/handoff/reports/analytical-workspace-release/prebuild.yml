@@ -1,0 +1,13 @@
+# Build context only. Never use this manifest for activation.
+include: !reset []
+services:
+  prumo:
+    image: prumo:latest
+    build:
+      context: /home/joao/prumo-operations/analytical-workspace-release-20261119T164616Z/code
+      dockerfile: Dockerfile
+  prumo-backoffice:
+    image: prumo-backoffice:latest
+    build:
+      context: /home/joao/prumo-operations/analytical-workspace-release-20261119T164616Z/code
+      dockerfile: Dockerfile

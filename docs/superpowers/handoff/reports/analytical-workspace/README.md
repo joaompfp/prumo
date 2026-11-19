@@ -1,6 +1,6 @@
 # Notebook analytical workspace prototype
 
-Status: implemented and verified on `pipeline-rebuild`; not merged or installed. Runtime candidate: `050d69e`. Owner visual acceptance and human screen-reader acceptance remain open. The rest of the analytical-workspace roadmap is not implemented by this prototype.
+Status: the owner subsequently authorized merge/push/installation, completed 2026-11-19 at 16:55 UTC from main `913eb2f`, runtime `050d69e`. Installed evidence and recovery: [release report](../analytical-workspace-release/installed.md). This document preserves the earlier development proof with its exact scopes. Human screen-reader acceptance remains open; the rest of the analytical-workspace roadmap is not implemented by this prototype.
 
 Authority: [workspace roadmap](../../../plans/2026-11-19-analytical-workspace-roadmap.md), owner request after the design council. Installed baseline code is `b7f4d09` / runtime `7baa127`. No production service, source data, CMS document, migration, authentication or shared-edge configuration was changed.
 

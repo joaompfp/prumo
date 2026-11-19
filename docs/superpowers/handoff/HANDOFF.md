@@ -1,6 +1,18 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Current candidate: analytical notebook workspace (2026-11-19), NOT INSTALLED
+## Current installed checkpoint: analytical notebook workspace (2026-11-19)
+
+Owner authorized merge, commit, push and installation after the prototype. Main `913eb2fff75dbaf3447b58091f69c2bb43e96fda` was pushed and installed on f0nix at 16:55 UTC (runtime `050d69e`). Only public web and the static-preview Admin consumer were recreated. Both are healthy with zero restarts; actual images `4c3def73` and `2cd23e48` match their rebuilt tags and differ from rollback. Worker `39214757` / image `ff50b981` / StartedAt 2026-11-17T01:45:15 / restarts 0 matches the entire pre-activation baseline exactly. No migration, source-data write, live CMS edit/publication, ownership, authentication or shared-edge change ran.
+
+The Caderno plot-first workspace is online on both addresses, preserving carmim, enlarged functional type, exact statistical values, native state and SVG alternatives. Installed first views: at 1920x1080 plot top Y=330.66, 1386.72x535.77; at 390x844 Y=573.41, 354x264, complete plot/time axis inside the viewport. Opening settings does not move the plot. CMS/schema/migration fingerprints match before/after; quick_check ok, zero FK violations. Existing authored homepage/history preserved.
+
+Hosted CI `44569621926` passed on exact main before activation: 2,847 passed, nine skipped, seven live deselected, three warnings, lint passed. Fresh committed-checkout release gate: 100 focused tests, actual local imports and broader ruff clean. Installed browser: 459 passed on both public prefixes and eleven widths, exact pointer/touch/keyboard, native composition/window, off/empty/incompatible, six sides/dual axes, full tables and no-JS/blocked/print. No application/CSP errors or off-origin requests; 44 occurrences of the existing shared-edge vr warning. Read-only installed state/Admin 33 checks and private static-preview ten checks passed. Human screen-reader acceptance remains open.
+
+A post-activation outer-OCI-index equality check failed because BuildKit regenerated attestations, not executable layers. Runtime manifest/config equality and the actual container-to-rebuilt-tag/rollback relation were verified separately without changing or restarting healthy services; original failed checker receipt retained. Prebuild/activation logs and exact equivalence are archived. Recovery is previous checkout `361eca7` and web/Admin tags `rollback-analytical-workspace-20261119T164616Z`, with both live binds and images restored if needed, no DB restore. Infra pointer-only commit `112a2c9` is host-local; unrelated infra edits preserved.
+
+Full installed evidence and recovery: `reports/analytical-workspace-release/installed.md`; operator receipts f0nix:/home/joao/prumo-operations/analytical-workspace-release-20261119T164616Z. Plan and user roadmap updated. Phase A is installed, authorized for trying the prototype; B shared point reading/analytical pages is next, not started by this release. C discovery, D multiseries CMS and E dated analysis/approved AI remain future. Existing rights/DGEG/lag/operational actions/worker observation and human accessibility gates remain separate.
+
+## Previous candidate: analytical notebook workspace (2026-11-19), now installed above
 
 Owner authorized a new improvements roadmap and starting implementation after the design council. Authority: `../plans/2026-11-19-analytical-workspace-roadmap.md`. First prototype is implemented on pipeline-rebuild, runtime `050d69e`; main and production remain the installed notebook/navigation baseline `b7f4d09` / runtime `7baa127`. No merge, deployment, migration, worker restart, source-data write, live CMS publication, authentication or shared-edge change was performed.
 

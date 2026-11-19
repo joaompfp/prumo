@@ -1,0 +1,114 @@
+{
+  "activate.sh": {
+    "bytes": 3280,
+    "sha256": "00f143c6ca4228d2d9a1c0c79cb0d1fc87870de87d9cfa225c81557217b6454d"
+  },
+  "build-equivalence.json": {
+    "bytes": 2703,
+    "sha256": "78770f7d0d0d72d4b30aafbbe2fb67b11e92dab40bff0a8886478bd5ce9122d1"
+  },
+  "ci.json": {
+    "bytes": 2214,
+    "sha256": "8631f645042b2b084a6aaa45a17d4fb4a2da3f570aa0c8271aedcfaedf47f5cb"
+  },
+  "final-state.json": {
+    "bytes": 6192,
+    "sha256": "fd5d0c7da92be950a2358c4e4ad61a3d81b91420b7e7d8fd1808282b5bea1c0e"
+  },
+  "installed.md": {
+    "bytes": 8377,
+    "sha256": "c9c56d2d54fe4ac5feed74af2b5faf08a9f85c0ddc6ef29016053ea9878a8d47"
+  },
+  "post-install.json": {
+    "bytes": 6226,
+    "sha256": "81b8255b71ddc06cd0d822cdc7d0054a1f7ce820f0310bedc58167c04d8526b2"
+  },
+  "post-prebuild.json": {
+    "bytes": 2826,
+    "sha256": "658d9bc984ef6388c7e4d7cb7a8992614bcd1edf59e8600becffd700e2fafe03"
+  },
+  "pre-activation.json": {
+    "bytes": 2826,
+    "sha256": "ac9dc29381be5a650215dda7bb40b7bcf535877adf4ebb5d17a8705dab4972d4"
+  },
+  "pre-install.json": {
+    "bytes": 5508,
+    "sha256": "2d50b2402fdf1e21719bf13e065ff56c3422e645300bb3b5155fdb3c0e55302e"
+  },
+  "prebuild.sh": {
+    "bytes": 2005,
+    "sha256": "d7cc1a656e292d0ada07b27aa86dc65b6d1f2348eb8721803f8fb1c9c397616b"
+  },
+  "prebuild.yml": {
+    "bytes": 447,
+    "sha256": "9e44158d8ddd616c24fb354721c1e59a8b88a17c384e9b37b699e96bc64ca5e4"
+  },
+  "prebuilt-images.json": {
+    "bytes": 185,
+    "sha256": "b26c5b4e467d8ac1308a5d9a10e8bc29ddf9d3b17f0f8f3f2eecb1d0832c0f34"
+  },
+  "preview.json": {
+    "bytes": 387,
+    "sha256": "00eff27a51d24d64cddac01bfa708d3cc0f7a9d08ecbd90aef12ac20f5461b4d"
+  },
+  "production/acceptance.json": {
+    "bytes": 64995,
+    "sha256": "e6eda14b0b8b0b3fd4fa50def3e8ef3eb276f17e8b2bd56a2c9ff12d5be2b8af"
+  },
+  "production/notebook-direct-1440.png": {
+    "bytes": 162924,
+    "sha256": "7db7082a81af9bfdbdd30f6c7a5b1e65ef1c89ffc5a9f062a540e6278f60928b"
+  },
+  "production/notebook-direct-1920.png": {
+    "bytes": 177115,
+    "sha256": "87683054f89e90b08417408bee9e148ce57582f9589c10966beb9cf876bdbf3b"
+  },
+  "production/notebook-direct-3774.png": {
+    "bytes": 301922,
+    "sha256": "b9f6304b396a247192245e973298068f5b7e50b5835b34dddac5345bb1bb2470"
+  },
+  "production/notebook-direct-390.png": {
+    "bytes": 68908,
+    "sha256": "d2d9cdfd172082c2bcf2bd9029ca9c7d344166237c220132e4ccf65d4e4fc0c3"
+  },
+  "production/notebook-mounted-1440.png": {
+    "bytes": 162924,
+    "sha256": "7db7082a81af9bfdbdd30f6c7a5b1e65ef1c89ffc5a9f062a540e6278f60928b"
+  },
+  "production/notebook-mounted-1920.png": {
+    "bytes": 177115,
+    "sha256": "87683054f89e90b08417408bee9e148ce57582f9589c10966beb9cf876bdbf3b"
+  },
+  "production/notebook-mounted-3774.png": {
+    "bytes": 301922,
+    "sha256": "b9f6304b396a247192245e973298068f5b7e50b5835b34dddac5345bb1bb2470"
+  },
+  "production/notebook-mounted-390.png": {
+    "bytes": 68908,
+    "sha256": "d2d9cdfd172082c2bcf2bd9029ca9c7d344166237c220132e4ccf65d4e4fc0c3"
+  },
+  "public_acceptance.py": {
+    "bytes": 15637,
+    "sha256": "0ffc69c8da0136a3504864632e0447c349fd81cf14c25e431df8e105ab1419ac"
+  },
+  "receipts/activation.log.gz": {
+    "bytes": 1925,
+    "sha256": "50cd0c2c7884f335fed31f8997bab54d28ddd87d6b53855fa9e9678718bcdea4"
+  },
+  "receipts/ci-44569621926.log.gz": {
+    "bytes": 77384,
+    "sha256": "9a6e618b127743f790e6d0636cc3bb709d71dcb05d40b042efde2fffaac92a35"
+  },
+  "receipts/prebuild.log.gz": {
+    "bytes": 1984,
+    "sha256": "72fd6514b11730c65e43632cc8722a4c2b26a5ab4c43ec4f1d86adf891e398ca"
+  },
+  "receipts/prumo-workspace-release-focused-extra.log": {
+    "bytes": 532,
+    "sha256": "bfc02e2c360346f335b358e523b5cbb0ad4a46f200d7ee59a44c0d4a9aa7bf40"
+  },
+  "receipts/prumo-workspace-release-focused.log": {
+    "bytes": 772,
+    "sha256": "df2e274d1ad5e5b71a6a9c6ca8233800d3795e37f81522fc7107979a9db50ba8"
+  }
+}

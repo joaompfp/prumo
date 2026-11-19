@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "scope": "Same runtime manifest and config; BuildKit attestation and index change per invocation. Original failed index-equality receipt retained. No activation rerun or runtime changes.",
+  "prebuild": {
+    "prumo-backoffice": {
+      "manifest": "sha256:5725fa33d50275ba693a72b7d181c1ad1da9062ecd4ee234a690d1d64e9ed1ba",
+      "config": "sha256:2aa56e4e85836a43f46cf002711ae367d9355486cef42beb3202368e7fc638e5",
+      "attestation manifest": "sha256:3894ebe96a8cb5d17038f26fe40c89759648be958f6d3f6de6c8bbf423b69ea2",
+      "manifest list": "sha256:555659330881ea3321abedcdd4b6d8b140547e13cc067f6022ce5e8d3f838135"
+    },
+    "prumo": {
+      "manifest": "sha256:3720bab47cfc0c5b8c2a7f892660ec62abf83eec640071c2e6f3e2d5474d43bb",
+      "config": "sha256:7059d458b48da638013b29742c24098f5b36b8bb05fd6d35950a4fd9edbccc31",
+      "attestation manifest": "sha256:38a4ad46a0dd88a9391d4fb18e0482092345d373fd709751e578ffce0a7580ac",
+      "manifest list": "sha256:a42168764d4cc6084d4e2bdd6c8d6c82c8c8d0970a902ae6126f096579619694"
+    }
+  },
+  "activation": {
+    "prumo": {
+      "manifest": "sha256:3720bab47cfc0c5b8c2a7f892660ec62abf83eec640071c2e6f3e2d5474d43bb",
+      "config": "sha256:7059d458b48da638013b29742c24098f5b36b8bb05fd6d35950a4fd9edbccc31",
+      "attestation manifest": "sha256:8b98d9a34b42340852ede57780f9d278a41a178c0235846d27884ca3bb53936d",
+      "manifest list": "sha256:4c3def73053300afddf39cf62679ab9448873afd327d45c3759fa35af2465eb8"
+    },
+    "prumo-backoffice": {
+      "manifest": "sha256:5725fa33d50275ba693a72b7d181c1ad1da9062ecd4ee234a690d1d64e9ed1ba",
+      "config": "sha256:2aa56e4e85836a43f46cf002711ae367d9355486cef42beb3202368e7fc638e5",
+      "attestation manifest": "sha256:5e75977321646034102ba726cc4f8d6afd0dd5ede0d0b6a9358f39957ee64c93",
+      "manifest list": "sha256:2cd23e48e0e7030f94ef5268ce7cc7be75a0e8299738ce50f7eacee06e8a97d5"
+    }
+  },
+  "installed": {
+    "prumo": {
+      "container": "5b1c50f793f6c11109a3fe5b8c1cfd68327115110f08de8209fba6a41c5108c5",
+      "image": "sha256:4c3def73053300afddf39cf62679ab9448873afd327d45c3759fa35af2465eb8",
+      "latest": "sha256:4c3def73053300afddf39cf62679ab9448873afd327d45c3759fa35af2465eb8",
+      "rollback": "sha256:660146a830bd2a786f1d718f4fd7f43f1bc1b05c45e9a6a8a9750cf39bd04b79"
+    },
+    "prumo-backoffice": {
+      "container": "a31c35edd0decc012b93257fbd281bd0c5af58334e912c8016ada3477042ad25",
+      "image": "sha256:2cd23e48e0e7030f94ef5268ce7cc7be75a0e8299738ce50f7eacee06e8a97d5",
+      "latest": "sha256:2cd23e48e0e7030f94ef5268ce7cc7be75a0e8299738ce50f7eacee06e8a97d5",
+      "rollback": "sha256:09da694b39eefb63948571346506bafabc0e62de4226755966a041c79a7739ec"
+    }
+  }
+}
