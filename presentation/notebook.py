@@ -59,6 +59,7 @@ class NotebookCopy:
     chart_state_unavailable: str
     chart_settings_summary: str
     chart_configure_label: str
+    chart_add_label: str
     chart_group_legend: str
     chart_group_note: str
     chart_scale_legend: str
@@ -188,6 +189,7 @@ _PT = NotebookCopy(
     chart_state_unavailable="Gráfico indisponível",
     chart_settings_summary="Definições do gráfico",
     chart_configure_label="Configurar",
+    chart_add_label="Acrescentar",
     chart_group_legend="Séries no gráfico (até seis)",
     chart_group_note="Marque até seis séries. Sem nenhuma marcada, o gráfico fica vazio; não "
                      "escolhemos séries por si.",
