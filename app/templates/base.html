@@ -17,7 +17,7 @@
 {% set header_nav = nav_model if nav_model is defined else site_navigation(
      path|default('/'), base|default(''), notebook_copy.nav_label|default('Caderno', true)) %}
 {% include "_site_header.html" %}
-<main id="conteudo" class="wrap">
+<main id="conteudo" class="wrap{% block main_class %}{% endblock %}">
 {% block content %}{% endblock %}
 </main>
 <footer class="site-footer">

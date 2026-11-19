@@ -735,17 +735,91 @@ section { margin: 80px 0; }
   .country-table { display: table; width: 46rem; overflow: visible; white-space: normal; }
 }
 
-/* Notebook composition ----------------------------------------------------- */
-/* Scoped to the public notebook: the chart is full width, settings are a native
-   disclosure, and the results table becomes labelled stacked records below the
-   desktop table breakpoint. No sticky management bar, so a 320px reader cannot
-   lose content behind it. */
+/* Notebook analytical workspace ------------------------------------------- */
+/* Scoped to the public notebook. The working column is wider than the prose
+   measure and is tied to the viewport height at the chart's own 880:340 aspect
+   ratio: a wide monitor gains both chart width and chart height, while a laptop
+   still fits the whole plot in the first view. Settings stay below the plot so
+   opening them cannot move it. No sticky management bar. */
+.wrap.notebook-main { max-width: none; }
+.notebook-main { padding-inline: clamp(18px, 2.4vw, 48px); }
+.notebook-main .crumbs { padding-top: 6px; }
+.notebook-main .page-head { padding: 6px 0; max-width: none; }
+.notebook-main .page-head h1 { font-size: clamp(1.45rem, 4.2vw, 2.35rem); }
+.notebook-main .page-head .meta { margin: 4px 0 0; }
+.notebook-head-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 4px 24px; flex-wrap: wrap;
+}
+.notebook-main .notebook-head-row .meta { margin: 0; }
+.notebook-main .notebook-search, .notebook-main .notebook-selection { margin: 22px 0; }
+.notebook-workspace {
+  width: min(100%, 2400px, max(calc((100vh - 19.4rem) * 2.588), 40rem));
+  margin-inline: auto;
+}
+.notebook-chart-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px 20px; flex-wrap: wrap; margin: 0 0 8px;
+}
+.notebook-chart-head h2 { font-size: clamp(1.05rem, 2.2vw, 1.3rem); }
+.notebook-chart-links { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+.notebook-chart-links .button-quiet { min-height: 48px; padding: 4px 12px; font-size: .85rem; }
+.notebook-chart-state {
+  margin: 0 0 8px; color: var(--accent); font-weight: 600; font-size: .88rem;
+}
+.notebook-chart-form { margin: 0; }
+.notebook-chart-bar {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px; align-items: end; margin: 0 0 6px;
+}
+.notebook-chart-bar label {
+  display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  font-weight: 600; font-size: .85rem;
+}
+.notebook-chart-bar select {
+  font: inherit; font-size: .9rem; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule-strong); border-radius: 6px;
+  padding: 10px 12px; min-height: 48px; min-width: 0; width: 100%;
+}
+.notebook-chart-bar button { grid-column: 1 / -1; justify-self: start; }
+.notebook-chart-bar button { min-height: 48px; }
+.notebook-chart .chart-figure { margin: 0 0 8px; }
+.notebook-chart .chart-figure figcaption {
+  max-width: none; margin: 0 0 8px; color: var(--muted);
+  font-size: .8rem; line-height: 1.3;
+}
+.notebook-chart-period { margin: 0 0 4px; color: var(--ink); font-size: .85rem; line-height: 1.3; }
+.notebook-chart-period-label {
+  color: var(--accent); font-weight: 600; letter-spacing: 0; margin: 0 4px 0 0;
+}
+.notebook-chart-period .note { font-size: .8rem; }
+.notebook-chart-sources {
+  list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
+  gap: 2px 26px; margin: 0; padding: 0;
+}
+.notebook-chart-sources li { display: grid; gap: 0; min-width: 0; }
+.notebook-chart-sources strong, .notebook-chart-sources span { line-height: 1.3; }
+.notebook-chart-sources strong { color: var(--ink); }
+.notebook-chart-sources .legend-swatch { vertical-align: middle; margin-right: 8px; }
+.notebook-chart-alignment { margin: 10px 0 0; max-width: 78ch; }
+.card-chart {
+  margin: 8px 0 0; color: var(--muted); font-size: .85rem; line-height: 1.35;
+}
+.notebook-help {
+  margin: 28px 0 0; border-top: 1px solid var(--rule); padding-top: 10px;
+}
+.notebook-help > summary {
+  cursor: pointer; color: var(--accent); font-size: .88rem; font-weight: 600;
+  padding: 8px 0;
+}
+.notebook-help-body { max-width: 68ch; }
+.notebook-help-body p { font-size: .9rem; }
 .notebook-toolbar {
   display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
-  margin: 16px 0 0;
+  margin: 10px 0 0;
 }
 .notebook-toolbar .button-quiet { min-height: 48px; padding: 10px 16px; font-size: .85rem; }
-.notebook-chart { margin: 28px 0 6px; }
+.notebook-chart { margin: 4px 0 10px; }
 .notebook-chart .figure-block { grid-template-columns: 1fr; gap: 20px; }
 .notebook-chart .figure-meta {
   border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 18px;
@@ -797,15 +871,16 @@ section { margin: 80px 0; }
   border: 1px solid var(--rule-strong); border-radius: 6px;
   padding: 10px 12px; min-height: 52px; min-width: 0;
 }
-.notebook-chart-options button {
+.notebook-chart-bar button, .notebook-chart-options button {
   justify-self: start; min-height: 52px; padding: 10px 20px;
   border: 1px solid var(--accent); border-radius: 7px;
   background: var(--accent); color: #fff; font: inherit; font-size: .85rem;
   font-weight: 600; cursor: pointer;
 }
-.notebook-chart-options button:hover {
+.notebook-chart-bar button:hover, .notebook-chart-options button:hover {
   background: var(--accent-hover); border-color: var(--accent-hover);
 }
+.notebook-chart-bar button { min-height: 48px; padding: 6px 18px; }
 .notebook-chart-choices { display: grid; gap: 2px; margin: 0; padding: 0; }
 .notebook-chart-choices label {
   display: flex; align-items: flex-start; gap: 10px;
@@ -864,10 +939,48 @@ section { margin: 80px 0; }
   .notebook-results td:not([data-label])::before { content: none; }
 }
 
+@media (min-width: 900px) {
+  .notebook-chart-bar { display: flex; align-items: flex-end; gap: 10px 20px; }
+  .notebook-chart-bar label {
+    flex: 0 1 auto; flex-direction: row; align-items: center; gap: 8px;
+  }
+  .notebook-chart-bar label select { width: auto; min-width: 10rem; }
+  .notebook-chart-bar button { grid-column: auto; }
+}
+
+@media (max-width: 899px) {
+  /* Below the desktop control row: plot first, then the compact native controls. */
+  .notebook-chart-head { margin-bottom: 4px; }
+  .notebook-chart-bar { grid-template-columns: 1fr; }
+  .notebook-chart-bar label {
+    flex-direction: row; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .notebook-chart-bar label select { flex: 0 0 auto; width: auto; max-width: 70%; }
+  /* The settings link stays native and reachable; its shortcut is redundant here. */
+  .notebook-chart-links a:not(:first-child) { display: none; }
+  .notebook-chart .chart-figure { display: flex; flex-direction: column; }
+  .notebook-chart .chart-figure .chart-shell { order: 1; }
+  .notebook-chart .chart-figure .notebook-chart-caption { order: 2; margin: 10px 0 0; }
+  /* The canvas overlay follows the server drawing once enhanced; the 264px floor belongs
+     to the no-JavaScript fixed-label scroller, not to a stretched overlay box. */
+  .notebook-chart .chart-enhanced .chart-wrap { min-height: 0; }
+}
+
+@media (max-width: 760px) {
+  .notebook-main { padding-inline: 18px; }
+  .notebook-head-row { display: block; }
+  .notebook-main .notebook-head-row .meta { margin-top: 4px; }
+  .notebook-chart-caption { font-size: .8rem; }
+  .notebook-chart-period { font-size: .85rem; }
+  .notebook-chart-sources { grid-template-columns: 1fr; }
+}
+
 @media print {
   .site-header, .site-footer, .search, .filters, .windows, .pager, .download { display: none; }
   .notebook-toolbar, .notebook-chart-settings, .notebook-chart-options,
   .notebook-search { display: none; }
+  .notebook-workspace { width: 100%; }
+  .notebook-chart-bar, .notebook-chart-links, .notebook-help { display: none; }
   body { background: #fff; }
   .card, .figure-block, .provenance, .formula { border-color: #999; }
   .chart-scroll { overflow: visible; }

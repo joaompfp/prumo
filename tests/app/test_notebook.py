@@ -191,7 +191,7 @@ def test_selection_is_deduplicated_preserving_the_reader_order(notebook_client):
     assert card_labels(html) == ["Taxa de desemprego - Portugal",
                                  "Taxa de variação homóloga do IHPC - Portugal"]
     assert canonical_href(html) == f"/caderno?s={UNEMP}&s={HICP}"
-    assert card_remove_href(html) == f"/caderno?s={HICP}"
+    assert card_remove_href(html) == f"/caderno?s={HICP}#selecao"
 
 
 def test_limits_and_malformed_values_are_the_generic_404(notebook_client):
@@ -324,17 +324,17 @@ def test_search_keeps_selection_and_offers_add_remove_clear_and_canonical(notebo
     assert "Taxa de desemprego" in text
     assert "1 resultado." in text
     assert "Só aparecem séries que podem ser publicadas neste momento." in text
-    assert f'href="/caderno?s={HICP}&amp;s={UNEMP}&amp;q=desemprego"' in html
+    assert f'href="/caderno?s={HICP}&amp;s={UNEMP}&amp;q=desemprego#grafico"' in html
     assert canonical_href(html) == f"/caderno?s={HICP}"
     assert clear_href(html) == "/caderno?q=desemprego"
-    assert card_remove_href(html) == "/caderno?q=desemprego"
+    assert card_remove_href(html) == "/caderno?q=desemprego#selecao"
 
     selected = notebook_client.get(f"/caderno?s={HICP}&s={UNEMP}&q=desemprego")
     assert selected.status_code == 200
     selected_html = selected.text
     assert hidden_selection(selected_html) == [HICP, UNEMP]
     assert "Já no caderno" in visible(selected_html)
-    assert f'href="/caderno?s={HICP}&amp;q=desemprego"' in selected_html
+    assert f'href="/caderno?s={HICP}&amp;q=desemprego#pesquisa"' in selected_html
     assert f"/caderno?s={HICP}&amp;s={UNEMP}&amp;q=desemprego" not in selected_html
 
 
@@ -405,7 +405,7 @@ def test_same_selection_reopens_under_both_public_prefixes(site_path):
 
     prefixed_html = prefixed.text
     assert 'action="/dados/caderno"' in prefixed_html
-    assert f'href="/dados/caderno?s={HICP}&amp;q=desemprego"' in prefixed_html
+    assert f'href="/dados/caderno?s={HICP}&amp;q=desemprego#pesquisa"' in prefixed_html
     assert canonical_href(prefixed_html) == f"/dados/caderno?s={HICP}&s={UNEMP}"
     assert clear_href(prefixed_html) == "/dados/caderno?q=desemprego"
     assert 'href="/dados/series/' in prefixed_html

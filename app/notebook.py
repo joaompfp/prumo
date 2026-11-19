@@ -73,6 +73,8 @@ def selection_path(selection: Sequence[str], query: str | None = None, *,
 class NotebookCard:
     card: reads.Card
     remove_path: str
+    chart_state: str
+    chart_status: str
 
 
 @dataclass(frozen=True)
@@ -120,6 +122,28 @@ def _eligible_search_rows(db: Db, query: str, lang: str) -> tuple[reads.Row, ...
         if reason is None:
             eligible.append(row)
     return tuple(eligible)
+
+
+def _card_chart_status(panel: notebook_chart.NotebookChart, series_id: str,
+                       copy: NotebookCopy) -> tuple[str, str]:
+    """The card's actual chart role in this response, never just its checkbox intent.
+
+    A requested but undrawable chart reports `unavailable` for every card: no eligible card
+    may claim to be plotted when the reader will not see a line. An explicit subset labels the
+    cards outside the drawn group honestly, and only a ready panel can say "no gráfico".
+    """
+    if panel.state == "ready":
+        if any(side.series_id == series_id for side in panel.sides):
+            return "drawn", copy.card_chart_drawn.format(period=panel.last_period_text)
+        return "excluded", copy.card_chart_excluded.format(period=panel.last_period_text)
+    state = panel.public_state
+    if state == "off":
+        return "off", copy.card_chart_off
+    if state == "empty":
+        return "empty", copy.card_chart_empty
+    if state == "choose":
+        return "choose", copy.card_chart_choose
+    return "unavailable", copy.card_chart_unavailable
 
 
 def page(db: Db, selection: tuple[str, ...], query: str = "", *,
@@ -170,16 +194,22 @@ def page(db: Db, selection: tuple[str, ...], query: str = "", *,
             results.append(NotebookResult(row=row, selected=row.id in addressed_set,
                                           action_path=path))
 
-    cards = tuple(cards_by_id[series_id] for series_id in valid_ids)
-    card_views = tuple(NotebookCard(
-        card=card,
-        remove_path=selection_path(
-            [i for i in selection if i != card.series_id], query,
-            chart=notebook_chart.without_side(settings, card.series_id)),
-    ) for card in cards)
     copy_text = text(lang)
     skipped = len(selection) - len(valid_ids)
     chart_panel = notebook_chart.prepare(db, selection, cards_by_id, settings, lang=lang)
+    cards = tuple(cards_by_id[series_id] for series_id in valid_ids)
+    card_views_list = []
+    for card in cards:
+        chart_state, chart_status = _card_chart_status(chart_panel, card.series_id, copy_text)
+        card_views_list.append(NotebookCard(
+            card=card,
+            remove_path=selection_path(
+                [i for i in selection if i != card.series_id], query,
+                chart=notebook_chart.without_side(settings, card.series_id)),
+            chart_state=chart_state,
+            chart_status=chart_status,
+        ))
+    card_views = tuple(card_views_list)
     canonical_path = selection_path(selection, chart=settings) if selection else "/caderno"
     return NotebookPage(
         cards=card_views,

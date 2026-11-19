@@ -187,6 +187,7 @@ class ChartChoice:
 class ChartSide:
     series_id: str
     label: str
+    style: str
     title: str
     source_title: str
     attribution: str
@@ -218,6 +219,7 @@ class NotebookChart:
     """One chart panel: a prepared chart or a readable unavailable state, never both."""
 
     state: str
+    state_label: str
     reason: str
     chart: LineChartModel | ComparisonModel | None
     chart_payload: dict | None
@@ -236,6 +238,20 @@ class NotebookChart:
     @property
     def drawable(self) -> bool:
         return self.chart is not None
+
+    @property
+    def public_state(self) -> str:
+        """The five reader states the page and the cards distinguish.
+
+        `empty_group` (an explicit empty `g`/`grafico=on`) is the same reader state as an empty
+        selection; `choose` and `unavailable` stay distinct so a requested but undrawable chart
+        is never presented as a plotted one.
+        """
+        if self.state == "ready":
+            return "ready"
+        if self.state in ("empty", "empty_group"):
+            return "empty"
+        return self.state
 
 
 def _choices(addressed: tuple[str, ...], cards: dict[str, reads.Card],
@@ -256,9 +272,16 @@ def _choices(addressed: tuple[str, ...], cards: dict[str, reads.Card],
 
 
 def _empty(state: str, reason: str, settings: ChartSettings,
-           choices: tuple[ChartChoice, ...]) -> NotebookChart:
+           choices: tuple[ChartChoice, ...], copy: NotebookCopy) -> NotebookChart:
+    labels = {
+        "off": copy.chart_state_off,
+        "empty": copy.chart_state_empty,
+        "empty_group": copy.chart_state_empty,
+        "choose": copy.chart_state_choose,
+        "unavailable": copy.chart_state_unavailable,
+    }
     return NotebookChart(
-        state=state, reason=reason, chart=None, chart_payload=None,
+        state=state, state_label=labels[state], reason=reason, chart=None, chart_payload=None,
         chart_range_label="", chart_hint="", choices=choices, sides=(), table_rows=(),
         window_text="", alignment_text="", one_point_note="", settings=settings,
         max_group=MAX_GROUP, last_period_text="")
@@ -411,11 +434,11 @@ def _find_day(db: Db, rows: tuple[dict, ...], day: str | None,
     return None
 
 
-def _side(db: Db, row: dict, card: reads.Card, label: str, period: str, value: dict,
-          lang: str) -> ChartSide:
+def _side(db: Db, row: dict, card: reads.Card, label: str, style: str, period: str,
+          value: dict, lang: str) -> ChartSide:
     provenance = db.public_provenance_at(row["id"], period)
     return ChartSide(
-        series_id=row["id"], label=label, title=card.title,
+        series_id=row["id"], label=label, style=style, title=card.title,
         source_title=source_title(lang, row["source"]),
         attribution=source_text(row["attribution"]),
         unit_text=base_unit_text(lang, row["unit"]),
@@ -489,35 +512,35 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
     copy = text(lang)
     choices = _choices(addressed, cards, settings, copy)
     if not addressed:
-        return _empty("empty", copy.chart_empty_selection, settings, choices)
+        return _empty("empty", copy.chart_empty_selection, settings, choices, copy)
     if settings.mode == "off":
-        return _empty("off", copy.chart_off, settings, choices)
+        return _empty("off", copy.chart_off, settings, choices, copy)
 
     eligible = tuple(series_id for series_id in addressed if series_id in cards)
     if settings.mode == "all":
         if not eligible:
-            return _empty("unavailable", copy.chart_unavailable_no_eligible, settings, choices)
+            return _empty("unavailable", copy.chart_unavailable_no_eligible, settings, choices, copy)
         group = eligible
         if len(group) > MAX_GROUP:
-            return _empty("choose", copy.chart_choose_many, settings, choices)
+            return _empty("choose", copy.chart_choose_many, settings, choices, copy)
     else:
         group = settings.group
         if not group:
-            return _empty("empty_group", copy.chart_empty_group, settings, choices)
+            return _empty("empty_group", copy.chart_empty_group, settings, choices, copy)
         if any(series_id not in cards for series_id in group):
-            return _empty("unavailable", copy.chart_unavailable_ineligible, settings, choices)
+            return _empty("unavailable", copy.chart_unavailable_ineligible, settings, choices, copy)
 
     rows = []
     for series_id in group:
         row = db.public_series(series_id)
         if row is None:
-            return _empty("unavailable", copy.chart_unavailable_side, settings, choices)
+            return _empty("unavailable", copy.chart_unavailable_side, settings, choices, copy)
         rows.append(row)
     rows_tuple = tuple(rows)
 
     frequencies = {row["frequency"] for row in rows_tuple}
     if len(frequencies) != 1:
-        return _empty("unavailable", copy.chart_mixed_frequency, settings, choices)
+        return _empty("unavailable", copy.chart_mixed_frequency, settings, choices, copy)
     frequency = rows_tuple[0]["frequency"]
 
     if settings.scale == "dupla":
@@ -528,24 +551,24 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
             signatures = {(row["unit"], row["multiplier"], row["base_year"])
                           for row in rows_tuple}
             reason = copy.chart_dual_count if len(signatures) == 1 else copy.chart_mixed_scale
-            return _empty("unavailable", reason, settings, choices)
+            return _empty("unavailable", reason, settings, choices, copy)
     else:
         signatures = {(row["unit"], row["multiplier"], row["base_year"])
                       for row in rows_tuple}
         if len(signatures) > 1:
-            return _empty("unavailable", copy.chart_mixed_scale, settings, choices)
+            return _empty("unavailable", copy.chart_mixed_scale, settings, choices, copy)
 
     titles = tuple(cards[series_id].title for series_id in group)
     labels = _labels(rows_tuple, titles, lang, copy)
     if labels is None:
-        return _empty("unavailable", copy.chart_duplicate_labels, settings, choices)
+        return _empty("unavailable", copy.chart_duplicate_labels, settings, choices, copy)
 
     one_point_note = ""
     if frequency == "PT15M":
         found = _find_day(db, rows_tuple, settings.day, frequency)
         if found is None:
             reason = copy.chart_day_unavailable if settings.day else copy.chart_no_day
-            return _empty("unavailable", reason, settings, choices)
+            return _empty("unavailable", reason, settings, choices, copy)
         maps, common, finite, unparsed, chosen_day = found
         window_text = copy.chart_day_note.format(day=format_date(chosen_day))
         if len(finite) == 1:
@@ -553,10 +576,10 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
     else:
         maps, common = _window_maps(db, rows_tuple, settings.window, frequency)
         if not common:
-            return _empty("unavailable", copy.chart_no_common, settings, choices)
+            return _empty("unavailable", copy.chart_no_common, settings, choices, copy)
         finite, unparsed = _finite_rows(common, maps, frequency)
         if not finite:
-            return _empty("unavailable", copy.chart_no_common, settings, choices)
+            return _empty("unavailable", copy.chart_no_common, settings, choices, copy)
         window_label = next(getattr(copy, key) for label, _, key in _WINDOW_CODES
                             if label == settings.window)
         window_text = copy.chart_window_note.format(
@@ -568,12 +591,13 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
                       tuple(base_unit_text(lang, row["unit"]) for row in rows_tuple),
                       settings.scale)
     if prepared.chart is None:
-        return _empty("unavailable", copy.chart_no_draw, settings, choices)
+        return _empty("unavailable", copy.chart_no_draw, settings, choices, copy)
 
     last = finite[-1]
-    sides = tuple(_side(db, row, cards[series_id], label, last["period"], value, lang)
-                  for row, series_id, label, value
-                  in zip(rows_tuple, group, labels, last["values"]))
+    styles = ("a",) if isinstance(prepared.chart, LineChartModel) else prepared.chart.styles
+    sides = tuple(_side(db, row, cards[series_id], label, style, last["period"], value, lang)
+                  for row, series_id, label, style, value
+                  in zip(rows_tuple, group, labels, styles, last["values"]))
     table_rows = tuple(
         ChartTableRow(
             period_text=format_period(row["period"], frequency),
@@ -585,7 +609,7 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
                 for value in row["values"]))
         for row in reversed(finite))
     return NotebookChart(
-        state="ready", reason="", chart=prepared.chart,
+        state="ready", state_label="", reason="", chart=prepared.chart,
         chart_payload=prepared.chart_payload,
         chart_range_label=prepared.chart_range_label, chart_hint=prepared.chart_hint,
         choices=choices, sides=sides, table_rows=table_rows,

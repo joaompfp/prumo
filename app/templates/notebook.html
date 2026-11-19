@@ -1,27 +1,25 @@
 {% extends "base.html" %}
 {% block title %}{{ page.copy.title }}{% endblock %}
 {% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}
+{% block main_class %} notebook-main{% endblock %}
 {% block content %}
 {% macro chart_hidden(settings) %}{% for name, value in settings.params() %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}{% endmacro %}
+{% set panel = page.chart_panel %}
+<div class="notebook-workspace">
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.copy.heading }}
 </nav>
 
-<header class="page-head">
-  <h1>{{ page.copy.heading }}</h1>
-  <p class="lede">{{ page.copy.lede }}</p>
-  <p class="meta"><strong>{{ format_count(page.cards|length) }} de {{ page.max_selection }} séries.</strong> {{ page.copy.public_link_note }} {{ page.copy.not_snapshot_note }}</p>
+<header class="page-head notebook-head">
+  <div class="notebook-head-row">
+    <h1>{{ page.copy.heading }}</h1>
+    <p class="meta"><strong>{{ format_count(page.cards|length) }} de {{ page.max_selection }} séries.</strong> {{ page.copy.status_note }}</p>
+  </div>
 </header>
 
 {% if page.addressed %}{% include "_notebook_chart.html" %}{% endif %}
 
-{% if page.addressed %}
-<div class="notebook-toolbar">
-  <a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ page.copy.canonical_label }}</a>
-  {% if page.clear_path %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">{{ page.copy.clear_label }}</a>{% endif %}
-</div>
-<p class="note">{{ page.copy.share_hint }}</p>
-{% endif %}
+{% include "_notebook_search.html" %}
 
 <section class="notebook-selection" aria-labelledby="selecao">
   <div class="section-head">
@@ -31,7 +29,7 @@
   {% if page.cards %}
   <div class="cards">
     {% for item in page.cards %}
-    {% with card=item.card, card_remove_path=item.remove_path %}{% include "_card.html" %}{% endwith %}
+    {% with card=item.card, card_remove_path=item.remove_path, card_notebook=item %}{% include "_card.html" %}{% endwith %}
     {% endfor %}
   </div>
   {% else %}
@@ -41,6 +39,17 @@
   {% if page.skipped_count %}<p class="note" role="status">{{ page.skipped_notice }}</p>{% endif %}
 </section>
 
-{% include "_notebook_search.html" %}
+{% if page.addressed %}{% include "_notebook_evidence.html" %}{% endif %}
+
+<details class="notebook-help" id="ajuda">
+  <summary>{{ page.copy.help_summary }}</summary>
+  <div class="notebook-help-body">
+    <p>{{ page.copy.lede }}</p>
+    <p>{{ page.copy.public_link_note }} {{ page.copy.not_snapshot_note }}</p>
+    <p>{{ page.copy.chart_lede }} {{ page.copy.chart_comparison_note }}</p>
+    <p>{{ page.copy.canonical_note }} {{ page.copy.share_hint }}</p>
+  </div>
+</details>
+</div>
 {% endblock %}
 {% block scripts %}{% if page.chart_panel.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

@@ -1,24 +1,66 @@
 {% from "_chart.html" import chart_shell %}
 {% set panel = page.chart_panel %}
-<section class="notebook-chart" aria-labelledby="grafico-caderno">
-  <div class="section-head">
+<section class="notebook-chart" id="grafico" data-chart-state="{{ panel.public_state }}" aria-labelledby="grafico-caderno">
+  <div class="notebook-chart-head">
     <h2 id="grafico-caderno">{{ page.copy.chart_heading }}</h2>
+    <div class="notebook-chart-links">
+      <a class="button-quiet" href="#pesquisa">{{ page.copy.search_heading }}</a>
+      <a class="button-quiet" href="#definicoes">{{ page.copy.chart_settings_summary }}</a>
+    </div>
   </div>
-  <p class="note">{{ page.copy.chart_lede }}</p>
+  {% if panel.state_label %}<p class="notebook-chart-state" data-chart-state="{{ panel.public_state }}">{{ panel.state_label }}</p>{% endif %}
+
+  <form id="notebook-chart-form" class="notebook-chart-form" action="{{ base }}/caderno" method="get" aria-label="{{ page.copy.chart_settings_summary }}">
+    {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+    {% if page.query %}<input type="hidden" name="q" value="{{ page.query }}">{% endif %}
+    <input type="hidden" name="grafico" value="on">
+    <div class="notebook-chart-bar" role="group" aria-label="{{ page.copy.chart_settings_summary }}">
+      <label>{{ page.copy.chart_window_legend }}
+        <select name="janela">
+          <option value="10a"{% if panel.settings.window == "10a" %} selected{% endif %}>{{ page.copy.chart_window_10a }}</option>
+          <option value="5a"{% if panel.settings.window == "5a" %} selected{% endif %}>{{ page.copy.chart_window_5a }}</option>
+          <option value="max"{% if panel.settings.window == "max" %} selected{% endif %}>{{ page.copy.chart_window_max }}</option>
+        </select>
+      </label>
+      <label>{{ page.copy.chart_scale_legend }}
+        <select name="escala">
+          <option value="comum"{% if panel.settings.scale == "comum" %} selected{% endif %}>{{ page.copy.chart_scale_shared }}</option>
+          <option value="dupla"{% if panel.settings.scale == "dupla" %} selected{% endif %}>{{ page.copy.chart_scale_dual }}</option>
+        </select>
+      </label>
+      <button type="submit" formaction="{{ base }}/caderno#grafico">{{ page.copy.chart_submit }}</button>
+    </div>
+
+    {% if panel.chart %}
+    <figure class="chart-figure chart-figure-interactive">
+      <figcaption class="notebook-chart-caption">
+        <p class="notebook-chart-period"><span class="notebook-chart-period-label">{{ page.copy.chart_period_label }}</span> <strong>{{ panel.last_period_text }}</strong></p>
+        <ul class="notebook-chart-sources">
+          {% for side in panel.sides %}
+          <li>
+            <strong><span class="legend-swatch swatch-{{ side.style }}" aria-hidden="true"></span>{{ side.label }}</strong>
+            <span>{{ side.source_title }} · {{ page.copy.chart_meta_unit }}: {{ side.unit_text }}{% if side.provenance %} · {{ page.copy.chart_meta_fetched }}: {{ side.provenance.fetched_text }}{% endif %}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </figcaption>
+      {% if panel.chart_payload %}{{ chart_shell(panel, "notebook") }}{% else %}{{ chart_svg(panel.chart) }}{% endif %}
+    </figure>
+    {% else %}
+    <p class="empty-state">{{ panel.reason }}</p>
+    {% endif %}
 
 {% include "_notebook_settings.html" %}
+  </form>
 
   {% if panel.chart %}
-  <figure class="chart-figure chart-figure-interactive">
-    {% if panel.chart_payload %}{{ chart_shell(panel, "notebook") }}{% else %}{{ chart_svg(panel.chart) }}{% endif %}
-  </figure>
-  <p class="note">{{ panel.window_text }}</p>
-  <p class="note">{{ panel.alignment_text }}</p>
-  <p class="note">{{ page.copy.chart_comparison_note }}</p>
+  <p class="note notebook-chart-window">{{ panel.window_text }}</p>
+  <p class="note notebook-chart-alignment">{{ panel.alignment_text }}</p>
   {% if panel.one_point_note %}<p class="note">{{ panel.one_point_note }}</p>{% endif %}
-
-{% include "_notebook_evidence.html" %}
-  {% else %}
-  <p class="empty-state">{{ panel.reason }}</p>
   {% endif %}
+
+  <div class="notebook-toolbar">
+    <a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ page.copy.canonical_label }}</a>
+    {% if page.clear_path %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">{{ page.copy.clear_label }}</a>{% endif %}
+  </div>
 </section>

@@ -1,9 +1,6 @@
-  <details class="notebook-chart-settings"{% if not panel.chart %} open{% endif %}>
+  <details class="notebook-chart-settings" id="definicoes"{% if not panel.chart %} open{% endif %}>
     <summary>{{ page.copy.chart_settings_summary }}</summary>
-    <form id="notebook-chart-form" class="notebook-chart-options" action="{{ base }}/caderno" method="get">
-      {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
-      {% if page.query %}<input type="hidden" name="q" value="{{ page.query }}">{% endif %}
-      <input type="hidden" name="grafico" value="on">
+    <div class="notebook-chart-options">
       <fieldset>
         <legend>{{ page.copy.chart_group_legend }}</legend>
         <div class="notebook-chart-choices">
@@ -16,28 +13,15 @@
         </div>
         <p class="note">{{ page.copy.chart_group_note }}</p>
       </fieldset>
-      <label>{{ page.copy.chart_scale_legend }}
-        <select name="escala">
-          <option value="comum"{% if panel.settings.scale == "comum" %} selected{% endif %}>{{ page.copy.chart_scale_shared }}</option>
-          <option value="dupla"{% if panel.settings.scale == "dupla" %} selected{% endif %}>{{ page.copy.chart_scale_dual }}</option>
-        </select>
-      </label>
-      <label>{{ page.copy.chart_window_legend }}
-        <select name="janela">
-          <option value="10a"{% if panel.settings.window == "10a" %} selected{% endif %}>{{ page.copy.chart_window_10a }}</option>
-          <option value="5a"{% if panel.settings.window == "5a" %} selected{% endif %}>{{ page.copy.chart_window_5a }}</option>
-          <option value="max"{% if panel.settings.window == "max" %} selected{% endif %}>{{ page.copy.chart_window_max }}</option>
-        </select>
-      </label>
       <label>{{ page.copy.chart_day_label }}
         <input name="dia" type="date" value="{{ panel.settings.day or '' }}">
       </label>
-      <button type="submit">{{ page.copy.chart_submit }}</button>
-    </form>
-    <p class="note">{{ page.copy.chart_settings_note }}</p>
-    {% if panel.state == "off" %}
-    <p><a class="button-quiet" href="{{ base }}{{ page.chart_auto_path }}">{{ page.copy.chart_activate }}</a></p>
-    {% else %}
-    <p><a class="button-quiet" href="{{ base }}{{ page.chart_off_path }}">{{ page.copy.chart_deactivate }}</a></p>
-    {% endif %}
+      <button type="submit" formaction="{{ base }}/caderno#grafico">{{ page.copy.chart_submit }}</button>
+      <p class="note">{{ page.copy.chart_settings_note }}</p>
+      {% if panel.state == "off" %}
+      <p><a class="button-quiet" href="{{ base }}{{ page.chart_auto_path }}#grafico">{{ page.copy.chart_activate }}</a></p>
+      {% else %}
+      <p><a class="button-quiet" href="{{ base }}{{ page.chart_off_path }}#grafico">{{ page.copy.chart_deactivate }}</a></p>
+      {% endif %}
+    </div>
   </details>

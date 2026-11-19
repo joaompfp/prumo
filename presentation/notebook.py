@@ -15,6 +15,7 @@ class NotebookCopy:
     nav_label: str
     heading: str
     lede: str
+    status_note: str
     public_link_note: str
     not_snapshot_note: str
     cards_heading: str
@@ -51,6 +52,11 @@ class NotebookCopy:
     results_col_notebook: str
     chart_heading: str
     chart_lede: str
+    chart_period_label: str
+    chart_state_off: str
+    chart_state_empty: str
+    chart_state_choose: str
+    chart_state_unavailable: str
     chart_settings_summary: str
     chart_group_legend: str
     chart_group_note: str
@@ -118,6 +124,13 @@ class NotebookCopy:
     chart_one_point: str
     chart_table_period: str
     chart_provenance_missing: str
+    help_summary: str
+    card_chart_drawn: str
+    card_chart_excluded: str
+    card_chart_off: str
+    card_chart_empty: str
+    card_chart_choose: str
+    card_chart_unavailable: str
 
 
 _PT = NotebookCopy(
@@ -126,6 +139,7 @@ _PT = NotebookCopy(
     heading="Caderno de indicadores",
     lede="Reúna até 12 indicadores numa página. Guarde o endereço para retomar a seleção "
          "ou partilhá-la, sem criar uma conta.",
+    status_note="Ligação atual.",
     public_link_note="Qualquer pessoa com esta ligação pode abrir a seleção.",
     not_snapshot_note="A seleção não é um retrato histórico. Cada abertura mostra os valores atuais.",
     cards_heading="Séries no caderno",
@@ -166,6 +180,11 @@ _PT = NotebookCopy(
     chart_heading="Evolução conjunta",
     chart_lede="Compare as séries escolhidas num só gráfico. A escala e a janela ficam guardadas "
                "nesta ligação.",
+    chart_period_label="Período comum",
+    chart_state_off="Gráfico desativado",
+    chart_state_empty="Sem séries escolhidas para o gráfico",
+    chart_state_choose="Escolha as séries do gráfico",
+    chart_state_unavailable="Gráfico indisponível",
     chart_settings_summary="Definições do gráfico",
     chart_group_legend="Séries no gráfico (até seis)",
     chart_group_note="Marque até seis séries. Sem nenhuma marcada, o gráfico fica vazio; não "
@@ -250,6 +269,13 @@ _PT = NotebookCopy(
     chart_table_period="Período",
     chart_provenance_missing="Sem registo de proveniência para este período.",
     chart_definition_summary="Definições e fontes das séries",
+    help_summary="Sobre este caderno e o gráfico",
+    card_chart_drawn="No gráfico, no período comum: {period}.",
+    card_chart_excluded="Fora do gráfico. O período comum é {period}.",
+    card_chart_off="Fora do gráfico. Gráfico desativado.",
+    card_chart_empty="Fora do gráfico. Sem séries escolhidas.",
+    card_chart_choose="Fora do gráfico. Escolha até seis séries nas definições.",
+    card_chart_unavailable="Fora do gráfico. Gráfico indisponível.",
 )
 
 _COPY: dict[str, NotebookCopy] = {"pt": _PT}
