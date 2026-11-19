@@ -563,5 +563,8 @@ def test_settings_fragment_targets_content_inside_the_native_disclosure(site_pat
     assert target.attrs["id"] == "definicoes"
     assert "id" not in settings.attrs
     assert has_ancestor(target, settings)
+    links = [node for node in root.find_all("a") if node.attrs.get("href") == "#definicoes"]
+    assert len(links) == 1
+    assert visible(links[0].all_text()).strip() in links[0].attrs["aria-label"]
     css = CSS.read_text(encoding="utf-8")
     assert "repeat(auto-fit, minmax(min(14rem, 100%), 1fr))" in css
