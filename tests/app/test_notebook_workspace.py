@@ -290,7 +290,7 @@ def test_common_period_and_each_side_source_unit_and_fetch_are_beside_the_plot(t
     caption = one(figure, "figcaption", "notebook-chart-caption")
     caption_text = visible(caption.all_text()).strip()
     # The caption carries only the last common period and sits above the drawing.
-    assert caption_text == "Período comum setembro de 2026"
+    assert caption_text == "Último período comum setembro de 2026"
     assert "Taxa de variação homóloga do IHPC - Portugal" not in caption_text
     assert html.index('class="notebook-chart-caption"') < html.index('class="chart-scroll"')
 
@@ -554,3 +554,14 @@ def test_snapshot_and_causality_caveats_are_visible_outside_the_print_hidden_hel
     assert "Comparar curvas no mesmo gráfico não estabelece uma relação de causa." in caveat_text
     assert not has_ancestor(caveat, help_panel)
     assert 'class="note notebook-caveat"' in html
+
+
+def test_settings_fragment_targets_content_inside_the_native_disclosure(site_path):
+    root = dom(notebook_html(site_path))
+    settings = one(root, "details", "notebook-chart-settings")
+    target = one(settings, "div", "notebook-chart-options")
+    assert target.attrs["id"] == "definicoes"
+    assert "id" not in settings.attrs
+    assert has_ancestor(target, settings)
+    css = CSS.read_text(encoding="utf-8")
+    assert "repeat(auto-fit, minmax(min(14rem, 100%), 1fr))" in css

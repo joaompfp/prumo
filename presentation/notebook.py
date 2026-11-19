@@ -58,6 +58,7 @@ class NotebookCopy:
     chart_state_choose: str
     chart_state_unavailable: str
     chart_settings_summary: str
+    chart_configure_label: str
     chart_group_legend: str
     chart_group_note: str
     chart_scale_legend: str
@@ -139,7 +140,7 @@ _PT = NotebookCopy(
     heading="Caderno de indicadores",
     lede="Reúna até 12 indicadores numa página. Guarde o endereço para retomar a seleção "
          "ou partilhá-la, sem criar uma conta.",
-    status_note="Ligação atual.",
+    status_note="Seleção partilhável.",
     public_link_note="Qualquer pessoa com esta ligação pode abrir a seleção.",
     not_snapshot_note="A seleção não é um retrato histórico. Cada abertura mostra os valores atuais.",
     cards_heading="Séries no caderno",
@@ -180,12 +181,13 @@ _PT = NotebookCopy(
     chart_heading="Evolução conjunta",
     chart_lede="Compare as séries escolhidas num só gráfico. A escala e a janela ficam guardadas "
                "nesta ligação.",
-    chart_period_label="Período comum",
+    chart_period_label="Último período comum",
     chart_state_off="Gráfico desativado",
     chart_state_empty="Sem séries escolhidas para o gráfico",
     chart_state_choose="Escolha as séries do gráfico",
     chart_state_unavailable="Gráfico indisponível",
     chart_settings_summary="Definições do gráfico",
+    chart_configure_label="Configurar",
     chart_group_legend="Séries no gráfico (até seis)",
     chart_group_note="Marque até seis séries. Sem nenhuma marcada, o gráfico fica vazio; não "
                      "escolhemos séries por si.",

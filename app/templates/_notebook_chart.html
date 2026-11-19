@@ -19,7 +19,7 @@
     <h2 id="grafico-caderno">{{ page.copy.chart_heading }}</h2>
     <div class="notebook-chart-links">
       <a class="button-quiet" href="#pesquisa">{{ page.copy.search_heading }}</a>
-      <a class="button-quiet" href="#definicoes">{{ page.copy.chart_settings_summary }} · {{ active_window }} · {{ active_scale }}</a>
+      <a class="button-quiet" href="#definicoes" aria-label="{{ page.copy.chart_settings_summary }} · {{ active_window }} · {{ active_scale }}">{{ page.copy.chart_configure_label }}</a>
     </div>
   </div>
   {% if panel.state_label %}<p class="notebook-chart-state" data-chart-state="{{ panel.public_state }}">{{ panel.state_label }}</p>{% endif %}

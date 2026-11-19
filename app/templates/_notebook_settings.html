@@ -1,6 +1,6 @@
-  <details class="notebook-chart-settings" id="definicoes"{% if not panel.chart %} open{% endif %}>
+  <details class="notebook-chart-settings"{% if not panel.chart %} open{% endif %}>
     <summary>{{ page.copy.chart_settings_summary }}</summary>
-    <div class="notebook-chart-options">
+    <div class="notebook-chart-options" id="definicoes">
       <div class="notebook-chart-pair" role="group" aria-label="{{ page.copy.chart_settings_summary }}">
         <label>{{ page.copy.chart_window_legend }}
           <select name="janela">
