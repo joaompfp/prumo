@@ -29,7 +29,7 @@ The first completed notebook candidate is a product/design checkpoint before its
 
 ## Phase A: notebook workspace prototype
 
-Status: started. This is the first implementation scope.
+Status: notebook prototype implemented through `050d69e`, verified and ready for owner visual acceptance. Not merged or installed. This remains the first implementation scope.
 
 ### A0. Isolate presentation boundaries
 
@@ -105,10 +105,12 @@ Carry forward source rights for REN/FRED/OECD, DGEG technical blockers, old-peri
 
 | Slice | State | Evidence / next gate |
 |---|---|---|
-| A0 | Implemented; controller verification pending | Refactor `fad24e5`; child reports 11 byte-identical render cases and 50 focused tests; parent must verify |
-| A1-A2 | Next | Implement notebook workspace against the contracts above |
-| A3 | Pending | Real browser, independent reviews, full suite and owner visual checkpoint |
+| A0 | Verified | Refactor `fad24e5`; 11 deterministic equivalence cases and controller repeat of all 50 existing notebook tests |
+| A1-A2 | Implemented, branch only | Runtime `050d69e`: fluid plot-first notebook, native settings after figure, nearby add/configure actions, honest chart/card states and common-period/source labels |
+| A3 | Automated gates passed; human checkpoint open | Full suite on `0a0730e`: 2,856 passed, seven live deselected. Later accessible-name/action-copy changes: final 126 affected tests and the same 126 from clean committed checkout `050d69e`; 332 final browser checks, all 23 table fingerprints unchanged. Independent reviews approved after fixes. Owner visual/screen-reader acceptance and release remain pending |
 | B-C | Planned | Generalize only after the notebook composition is reviewed |
 | D-E | Future | Separate specification/product acceptance, not part of this prototype |
+
+Evidence, exact test scopes and neutral desktop/mobile captures: `../handoff/reports/analytical-workspace/README.md`. The settings form now contains window/scale/group/day AFTER the plot; the nearby Configurar action opens it natively. A1's near-result control requirement is implemented as this single path rather than duplicated forms. Later point-readout consolidation and global masthead alignment stay in B/C.
 
 Canonical implementation roadmap: this file. User-facing project index: `/home/joao/vaults/projects/prumo/roadmap-e-implementacao.md`. Controller resume state: `../handoff/HANDOFF.md`.

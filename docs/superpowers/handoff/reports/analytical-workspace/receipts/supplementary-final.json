@@ -1,0 +1,819 @@
+{
+  "checks": [
+    {
+      "name": "neutral first-view capture 390",
+      "passed": true
+    },
+    {
+      "name": "functional roles unchanged 390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot payload_sha256 390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot svg_sha256 390",
+      "passed": true
+    },
+    {
+      "name": "same snapshot table_sha256 390",
+      "passed": true
+    },
+    {
+      "name": "neutral first-view capture 1440",
+      "passed": true
+    },
+    {
+      "name": "functional roles unchanged 1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot payload_sha256 1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot svg_sha256 1440",
+      "passed": true
+    },
+    {
+      "name": "same snapshot table_sha256 1440",
+      "passed": true
+    },
+    {
+      "name": "neutral first-view capture 1920",
+      "passed": true
+    },
+    {
+      "name": "functional roles unchanged 1920",
+      "passed": true
+    },
+    {
+      "name": "same snapshot payload_sha256 1920",
+      "passed": true
+    },
+    {
+      "name": "same snapshot svg_sha256 1920",
+      "passed": true
+    },
+    {
+      "name": "same snapshot table_sha256 1920",
+      "passed": true
+    },
+    {
+      "name": "neutral first-view capture 3774",
+      "passed": true
+    },
+    {
+      "name": "functional roles unchanged 3774",
+      "passed": true
+    },
+    {
+      "name": "same snapshot payload_sha256 3774",
+      "passed": true
+    },
+    {
+      "name": "same snapshot svg_sha256 3774",
+      "passed": true
+    },
+    {
+      "name": "same snapshot table_sha256 3774",
+      "passed": true
+    },
+    {
+      "name": "six sides 320",
+      "passed": true
+    },
+    {
+      "name": "all names and exact table 320",
+      "passed": true
+    },
+    {
+      "name": "six without page overflow 320",
+      "passed": true
+    },
+    {
+      "name": "six sides 390",
+      "passed": true
+    },
+    {
+      "name": "all names and exact table 390",
+      "passed": true
+    },
+    {
+      "name": "six without page overflow 390",
+      "passed": true
+    },
+    {
+      "name": "six sides 768",
+      "passed": true
+    },
+    {
+      "name": "all names and exact table 768",
+      "passed": true
+    },
+    {
+      "name": "six without page overflow 768",
+      "passed": true
+    },
+    {
+      "name": "six sides 1440",
+      "passed": true
+    },
+    {
+      "name": "all names and exact table 1440",
+      "passed": true
+    },
+    {
+      "name": "six without page overflow 1440",
+      "passed": true
+    },
+    {
+      "name": "six sides 3774",
+      "passed": true
+    },
+    {
+      "name": "all names and exact table 3774",
+      "passed": true
+    },
+    {
+      "name": "six without page overflow 3774",
+      "passed": true
+    },
+    {
+      "name": "painted grid 1440",
+      "passed": true
+    },
+    {
+      "name": "painted exact 1440/0",
+      "passed": true
+    },
+    {
+      "name": "painted exact 1440/60",
+      "passed": true
+    },
+    {
+      "name": "painted exact 1440/120",
+      "passed": true
+    },
+    {
+      "name": "vertical touch scroll preserved 1440",
+      "passed": true
+    },
+    {
+      "name": "painted grid 390",
+      "passed": true
+    },
+    {
+      "name": "painted exact 390/0",
+      "passed": true
+    },
+    {
+      "name": "painted exact 390/60",
+      "passed": true
+    },
+    {
+      "name": "painted exact 390/120",
+      "passed": true
+    },
+    {
+      "name": "vertical touch scroll preserved 390",
+      "passed": true
+    },
+    {
+      "name": "200 percent equivalent reflow",
+      "passed": true
+    },
+    {
+      "name": "no page errors",
+      "passed": true
+    }
+  ],
+  "comparisons": [
+    {
+      "width": 390,
+      "height": 844,
+      "before": {
+        "x": 18,
+        "y": 1444.671875,
+        "width": 354,
+        "height": 264,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      },
+      "after": {
+        "x": 18,
+        "y": 573.40625,
+        "width": 354,
+        "height": 264,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      }
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "before": {
+        "x": 132,
+        "y": 917.765625,
+        "width": 1176,
+        "height": 454.359375,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      },
+      "after": {
+        "x": 130.15625,
+        "y": 326.65625,
+        "width": 1179.6875,
+        "height": 455.78125,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      }
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "before": {
+        "x": 372,
+        "y": 917.765625,
+        "width": 1176,
+        "height": 454.359375,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      },
+      "after": {
+        "x": 266.640625,
+        "y": 330.65625,
+        "width": 1386.71875,
+        "height": 535.765625,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      }
+    },
+    {
+      "width": 3774,
+      "height": 1870,
+      "before": {
+        "x": 1299,
+        "y": 917.765625,
+        "width": 1176,
+        "height": 454.359375,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      },
+      "after": {
+        "x": 687,
+        "y": 330.65625,
+        "width": 2400,
+        "height": 927.265625,
+        "scrollY": 0,
+        "payload_sha256": "44c58d4613cf4f1e795e96dd052ebe528ddf409797a3c02de7a519597f3d26a7",
+        "svg_sha256": "31f642f34bf2e23aba116a1218ae809f75677c3b9363a1943e72bfdc540f06db",
+        "table_sha256": "0de3520cd0eab88849a0e3d1e4a9bb0cbd6a4b0453b36c0d712063af42a1fa68",
+        "type": [
+          {
+            "role": "BODY",
+            "size": "28.05px"
+          },
+          {
+            "role": "INPUT",
+            "size": "25.245px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "A",
+            "size": "26.6475px"
+          },
+          {
+            "role": "chart-readout",
+            "size": "25.245px"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}
