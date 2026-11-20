@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "preview HTTP200": true,
+    "shared new masthead": true,
+    "shared destination rail": true,
+    "shared native mobile menu": true,
+    "public Caderno link": true,
+    "public comparison link": true,
+    "Admin-prefixed public CSS": true,
+    "no executable scripts": true,
+    "static script CSP": true,
+    "preview remains private": true
+  },
+  "passed": true
+}

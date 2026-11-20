@@ -1,0 +1,14 @@
+{
+  "prumo": {
+    "container": "77e0db1d5be10ec82fbd53e80a0404efc9f521cc74f77a7fca39c1044c7d1892",
+    "actual_image": "sha256:31dcfe0b95b315dd9dc9923796bf3e0184893f49243634a1315eec0badb59863",
+    "latest": "sha256:31dcfe0b95b315dd9dc9923796bf3e0184893f49243634a1315eec0badb59863",
+    "rollback": "sha256:3ecad22a1e437138a889f8bc9e69353f4981503a48fc3caf42100394ec47f051"
+  },
+  "prumo-backoffice": {
+    "container": "2612740c1c46aabf7d8d14a734a3c67d7fb7b393d8400be6991f23e9b269d0cb",
+    "actual_image": "sha256:c570979021b21312e2666e64dde26195ccc6d25b8dcaf363818b5bb6f83aca23",
+    "latest": "sha256:c570979021b21312e2666e64dde26195ccc6d25b8dcaf363818b5bb6f83aca23",
+    "rollback": "sha256:6e14cef109d0c9002dbc24b758a4985b47831d07ef25c45e3ce81d39b445deb2"
+  }
+}

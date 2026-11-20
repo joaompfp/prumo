@@ -1,0 +1,238 @@
+{
+  "at": "2026-11-20T22:24:16.214854+00:00",
+  "containers": {
+    "prumo": {
+      "id": "cb06e4c55709154744a35a36b10578b5e05650c5cac99d212d15e85487c7eeed",
+      "image": "sha256:3ecad22a1e437138a889f8bc9e69353f4981503a48fc3caf42100394ec47f051",
+      "started": "2026-11-20T18:15:03.568296677Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    },
+    "prumo-ingest": {
+      "id": "3921475705a35df28b81a7d381e4d388918616c681607a116ac9df69ad334e4b",
+      "image": "sha256:ff50b981e4cdc7923c773fe1f017567340d64e979d6b336553045504806e53a3",
+      "started": "2026-11-20T21:39:41.056796403Z",
+      "restarts": 1,
+      "running": true,
+      "health": null
+    },
+    "prumo-backoffice": {
+      "id": "9f92329d94fe1803b87ead32b862722ec49a3912e1c4fa545b28241ab91fe108",
+      "image": "sha256:6e14cef109d0c9002dbc24b758a4985b47831d07ef25c45e3ce81d39b445deb2",
+      "started": "2026-11-20T18:15:05.217957821Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    }
+  },
+  "checks": [
+    {
+      "check": "all services running",
+      "passed": true
+    },
+    {
+      "check": "web and admin healthy",
+      "passed": true
+    },
+    {
+      "check": "integrity and FK",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms/page/inicio",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms/page/inicio",
+      "passed": true
+    },
+    {
+      "check": "new editor with local toolkit",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms/page/inicio/preview",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms/page/inicio/preview",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /queue",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /queue",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /series",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /series",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /derived",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /derived",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/css/admin.css",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/js/admin.js",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/images/prumo/favicon.svg",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/vendor/tabler/1.7.5/tabler.min.css",
+      "passed": true
+    },
+    {
+      "check": "direct anonymous refused",
+      "passed": true
+    },
+    {
+      "check": "forged identity refused",
+      "passed": true
+    },
+    {
+      "check": "non-owner refused",
+      "passed": true
+    },
+    {
+      "check": "wrong proxy secret refused",
+      "passed": true
+    },
+    {
+      "check": "cross-origin form refused without write",
+      "passed": true
+    }
+  ],
+  "checkout": "68f6799822461c03e96bc9a76e9aa20ad2f6541f",
+  "infra_status": [
+    " M secrets/web.enc.env",
+    " M stacks/web/compose/prumo-backoffice.yml",
+    " M stacks/web/images/ifc-viewer/dist-xeokit/index.html",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/4d/",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/4d",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/data"
+  ],
+  "preexisting_infra_diff": {
+    "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+    "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb"
+  },
+  "schema": "e314abd22f6d1575a620881e1f2e8bc480c67206b3cf53f61d9369a8a145f13a",
+  "migrations": [
+    [
+      "0001_init"
+    ],
+    [
+      "0002_dataset_key"
+    ],
+    [
+      "0003_verification_replay"
+    ],
+    [
+      "0004_verification_audit"
+    ],
+    [
+      "0005_served_licence_gate"
+    ],
+    [
+      "0006_pt15m"
+    ],
+    [
+      "0007_scoped_legacy_serving"
+    ],
+    [
+      "0008_input_origin"
+    ],
+    [
+      "0009_blocked_stale_state"
+    ],
+    [
+      "0010_scheduler_state"
+    ],
+    [
+      "0011_data_time_serving_and_withdrawal"
+    ],
+    [
+      "0012_verification_audit_v2"
+    ],
+    [
+      "0013_run_and_audit_guards"
+    ],
+    [
+      "0014_derived_layer"
+    ],
+    [
+      "0015_observation_run_index"
+    ],
+    [
+      "0016_language_neutral_derived"
+    ],
+    [
+      "0017_derived_caveats"
+    ],
+    [
+      "0018_editorial_composition"
+    ],
+    [
+      "0019_statistics_cms"
+    ]
+  ],
+  "cms": {
+    "cms_document": {
+      "rows": 3,
+      "sha256": "fbb700210bff37310dddc6f1da5a1953c4ffaebf9c9214906676587eddf349ed"
+    },
+    "cms_revision": {
+      "rows": 6,
+      "sha256": "6a81e7c10d62dad959b9f1f098982a65f64405e3a51a9eb2a145d6e067329044"
+    },
+    "cms_event": {
+      "rows": 11,
+      "sha256": "3ad400b945bf819561f707f1ddb75d9a75b715e3a09ad6d4dceec94d12304883"
+    }
+  },
+  "quick_check": "ok",
+  "foreign_keys": [],
+  "assets": {
+    "static/css/admin.css": {
+      "bytes": 29254,
+      "sha256": "611141c6ff0fc2ed64654fe34a667d198cc1bb69ff3c09c7d935f1c1e2d575af"
+    },
+    "static/js/admin.js": {
+      "bytes": 6714,
+      "sha256": "8cb3667a12982b13a113664280e97a82ce32806b4c879ac405eafedcd2f6b17f"
+    },
+    "static/images/prumo/favicon.svg": {
+      "bytes": 319,
+      "sha256": "0654b83780747bd7218a0c5dce9f62d2d120359aea178fb30c75757e94c92db6"
+    },
+    "static/vendor/tabler/1.7.5/tabler.min.css": {
+      "bytes": 683684,
+      "sha256": "4421622c90b17e122517d1f4bcc245be004ef3e353f43481ef07e13a55d32ce3"
+    }
+  }
+}

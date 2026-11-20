@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current public interface: notebook time alignment and analytical transformations installed
+## Current public interface: grouped two-axis notebook and Portugal comparisons
+
+Owner-authorized runtime/main `3aac922` is installed from 2026-11-20 22:33 UTC. Public web `31dcfe0b` and Admin `c5709790` are healthy with zero restarts. The Caderno supports up to six series in two compatible raw scale groups and `/comparar` has reviewed Portugal configurations. Pair links, native/annual views, exact source values and one-axis transformations retain their contracts.
+
+Exact-main CI `44828613494` passed: 3,114 tests, 25 skipped, seven live deselected. Clean committed checkout: 144 tests; installed browser: 38 scenarios / 876 assertions; state/Admin: 33; static preview: ten. Schema0019/migrations and all CMS content/history fingerprints are unchanged. This was reader-only: no source-data write, migration, publication or worker/shared-edge/auth change. The worker baseline already included one autonomous restart at 21:39 UTC; it did not change during deployment. Cause/operational observation and human screen-reader acceptance remain separate.
+
+Recovery checkout `68f6799`, pinned reader tags `rollback-multiscale-20261120`; preserve database and worker. Stop the bind-mounted public reader before restoring its checkout, then restore affected readers using the established aliases. Never activate using the context-only prebuild override. Exact evidence, scripts, images and remaining scope: [installed grouped scales](../superpowers/handoff/reports/multiscale/installed.md).
+
+## Previous public interface: notebook time alignment and analytical transformations installed
 
 Owner-authorized main `7690837` is installed on f0nix from 2026-11-20 18:15 UTC. Public web `3ecad22a` and static-preview Admin `6e14cef1` are healthy with zero restarts. Mixed A/S/Q/M/D originals share an honest native calendar; annual harmonisation, base100 and percentage-point views require explicit valid methods/base. Source data, schema0019/migrations, worker identity/image/start/restarts and authored CMS/history remain unchanged. No migration, publication, worker/edge/authentication change ran.
 
