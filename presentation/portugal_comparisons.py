@@ -59,7 +59,7 @@ class PortugalComparisonsCopy:
 
 _PT = PortugalComparisonsCopy(
     title="Portugal",
-    intro="Comparações de várias séries portuguesas em dois grupos de escala. Cada cartão abre "
+    intro="Comparações centradas em Portugal, em dois grupos de escala. Cada cartão abre "
           "uma configuração revista no Caderno, onde pode mudar a janela, a seleção e as "
           "restantes definições.",
     action="Abrir no Caderno",
@@ -76,7 +76,7 @@ _DEFINITIONS = (
     PortugalComparison(
         slug="taxas-juro-credito-depositos",
         title="Taxas de juro, crédito à habitação e depósitos",
-        summary="Taxas de juro de referência e saldos de crédito e depósitos das famílias em "
+        summary="Taxas de juro nominais de referência e saldos de crédito e depósitos das famílias em "
                 "Portugal. As taxas estão em percentagem; os saldos, em milhões de euros.",
         caveat="A Euribor é uma taxa de referência da área do euro (composição variável), não "
                "uma taxa portuguesa; a taxa a 10 anos é a rendibilidade de obrigações do Tesouro "
@@ -99,7 +99,7 @@ _DEFINITIONS = (
         slug="divida-saldo-pib-per-capita",
         title="Dívida pública, saldo orçamental e PIB per capita",
         summary="O peso da dívida pública bruta e do saldo orçamental no PIB e o PIB per capita "
-                "de Portugal, em valores anuais.",
+                "de Portugal, a preços correntes, em valores anuais.",
         caveat="A dívida é um stock bruto e o saldo orçamental é um fluxo anual; ambos são rácios "
                "do PIB. No saldo, valores positivos indicam capacidade líquida de financiamento "
                "e valores negativos indicam défice. O PIB per capita é uma média por habitante, "
@@ -120,7 +120,7 @@ _DEFINITIONS = (
         slug="comercio-externo-pib-per-capita",
         title="Comércio externo e PIB per capita",
         summary="Exportações e importações de bens e serviços em percentagem do PIB e PIB per "
-                "capita de Portugal.",
+                "capita de Portugal a preços correntes.",
         caveat="As exportações e importações são fluxos brutos de bens e serviços, não valor "
                "acrescentado; ambos usam o PIB como denominador. O PIB per capita é uma média "
                "por habitante e não uma medida de poder de compra. A comparação não estabelece "

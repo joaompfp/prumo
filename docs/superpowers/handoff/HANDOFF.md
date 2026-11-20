@@ -1,5 +1,11 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## Current candidate: grouped two-axis notebook and Portugal comparisons (2026-11-20)
+
+Owner explicitly authorizes implementation through commit, push, merge and live deployment. Core `e6b6ded`, notebook/curation `ecc0e93`, hover tooltip correction `6cf8b9c`; qualified nominal-price/geography copy and release evidence are being finalized. Main/live remain `68f6799` / runtime `7690837`. Authority: `../plans/2026-11-20-multiseries-two-scales.md`; analytical-roadmap phase U. Six series may share two raw unit/multiplier/base-year groups, with authoritative per-series axes and group-wide domains; legacy dual pairs retain independent axes. Native/annual views, transformed common scales, exact values and fail-closed eligibility remain. `/comparar` advertises three Portugal-focused canonical Caderno configurations. No migration, authored CMS write, source-data write, worker or edge/auth change.
+
+Independent spec and quality gates passed; final scoped review also approves the pointer-end tooltip correction and reader-only release scripts. Real-copy browser final pass has 19 passing scenario runs; original receipt is retained separately. The controller full suite started at `ecc0e93` passed 3,136 tests, seven deselected, three warnings in 1,994.88 seconds; it predates the final pointer fix and must not be called an exact-final-tree run. Exact-runtime hosted CI and clean-committed-checkout gate remain release prerequisites. Human screen-reader acceptance remains open. Evidence: `reports/multiscale/`.
+
 ## Current installed checkpoint: notebook time alignment and transformations (2026-11-20)
 
 Owner authorized implementation and explicitly authorized commit, push, merge and deployment. Main `76908372bdc60bfe17da7f6b26ea2f2dd818e32c` was pushed/read back and installed on f0nix at 18:15 UTC. Native A/S/Q/M/D series can now share a sparse calendar without fabricated values; explicit annual views, reviewed base100 levels and p.p. rate differences preserve raw/base evidence and mathematical verification. HICP monthly-rate means are explicitly not official annual inflation. Same-frequency original dense paths, deliberate two axes and bounded PT15M days remain. No source-data, schema, worker, licence, authentication, edge or authored-CMS mutation ran.

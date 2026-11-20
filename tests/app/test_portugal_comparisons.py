@@ -187,3 +187,14 @@ def test_portugal_links_carry_the_mount_prefix(tmp_path):
         html = site.get("/comparar", headers={"X-Forwarded-Prefix": "/dados"}).text
     assert 'href="/dados/caderno?' in html
     assert html.count('href="/dados/caderno?') >= 3
+
+
+def test_curated_copy_distinguishes_nominal_values_and_geography():
+    from presentation.portugal_comparisons import definitions, text
+
+    comparisons = definitions()
+    assert "centradas em Portugal" in text().intro
+    assert "nominais" in comparisons[0].summary
+    assert "área do euro" in comparisons[0].caveat
+    assert "a preços correntes" in comparisons[1].summary
+    assert "a preços correntes" in comparisons[2].summary
