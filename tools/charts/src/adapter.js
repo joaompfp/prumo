@@ -511,8 +511,19 @@ function enhance(root) {
       // previous period after a touch at the other end of the plot.
       const x = chart.convertToPixel({ xAxisIndex: 0 }, payload.x[point]);
       if (!finite(x)) return;
+      // The last period converts to the plot's right edge exactly. ECharts only shows a
+      // programmatic pixel point when its axis finder maps it back inside the grid, and
+      // `toLocalCoord(right edge)` can land a couple of ulps past the axis extent at narrow
+      // widths (390px canvas: 145.49292103160514 against 145.4929210316051). The point is
+      // then treated as outside and the previous tooltip stays. Move at most one hundredth
+      // of a row's pixel spacing inward: enough to clear the rounding error, far too little
+      // to change the union row `nearest` selects.
+      const right = chart.convertToPixel({ xAxisIndex: 0 }, payload.x_max);
+      const rowPixels = chart.getWidth() / Math.max(1, payload.x.length - 1);
+      const inset = Math.min(0.01, rowPixels / 100);
+      const tipX = finite(right) ? Math.min(x, right - inset) : x;
       chart.dispatchAction({ type: 'hideTip' });
-      chart.dispatchAction({ type: 'showTip', x, y: chart.getHeight() / 2 });
+      chart.dispatchAction({ type: 'showTip', x: tipX, y: chart.getHeight() / 2 });
     } catch (ignored) { /* the readout is already correct */ }
   }
 

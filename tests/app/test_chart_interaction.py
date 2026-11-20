@@ -25,6 +25,8 @@ EUR12 = "bportugal.euribor_12m.EA"
 CREDIT = "bportugal.credit_housing.PT"
 PAIR = "/comparar/credito-e-taxa"
 SINGLE = "/calculadas/derived.unemployment_monthly.PT.yoy_change"
+GDP_PC = "worldbank.gdp_per_capita.PT"
+CALENDAR = "/caderno?s=ine.hicp_yoy.PT&s=worldbank.gdp_per_capita.PT&escala=dupla"
 
 
 def _months(count=120):
@@ -66,6 +68,34 @@ def _add_market_pair(path):
         db.close()
 
 
+def _add_calendar_pair(path):
+    """A 121-row native calendar: monthly HICP against annual GDP per capita.
+
+    The rows, units and axis ranges match the production mixed pair, so the last period sits
+    on the same narrow-canvas plot edge the keyboard End key has to cross.
+    """
+    db = open_db(path)
+    try:
+        db.conn.execute(
+            "INSERT INTO series(id, source_id, indicator_key, role, theme, geography, "
+            "frequency, unit, active) VALUES (?, 4, 'worldbank_gdp_per_capita.PT.A', "
+            "'primary', 'economy', 'PT', 'A', 'USD', 1)", (GDP_PC,))
+        db.conn.commit()
+    finally:
+        db.close()
+    periods = _months(121)
+    db = open_db(path)
+    try:
+        fetch(db, "ine.hicp_yoy.PT",
+              {period: f"{-0.8 + (index % 12) * 1.036:.1f}"
+               for index, period in enumerate(periods)}, T2, sha="a" * 64)
+        fetch(db, GDP_PC,
+              {str(year): f"{21442.3842768879 + (year - 2017) * 1300:.6f}"
+               for year in range(2017, 2026)}, T2, source="worldbank", sha="e" * 64)
+    finally:
+        db.close()
+
+
 @pytest.fixture(scope="module")
 def site_url(tmp_path_factory):
     import uvicorn
@@ -73,6 +103,7 @@ def site_url(tmp_path_factory):
     path = tmp_path_factory.mktemp("chart-browser") / "site.db"
     build(path)
     _add_market_pair(path)
+    _add_calendar_pair(path)
     config = uvicorn.Config(create_app(str(path)), host="127.0.0.1", port=0, log_level="error")
     server = uvicorn.Server(config)
     thread = threading.Thread(target=server.run, daemon=True)
@@ -278,6 +309,70 @@ def test_touch_taps_select_the_visible_end_points(browser, site_url):
         assert state["readout"] == readout_text(payload, last)
         assert page.evaluate(TOOLTIP)["rows"] == tooltip_rows(payload, last)
         assert page.evaluate("() => window.scrollY") == scroll_before
+        assert not errors
+    finally:
+        context.close()
+
+
+def calendar_rows(payload, index):
+    rows = [payload["periods"][index]]
+    for side in range(len(payload["series"])):
+        period = payload["cell_periods"][index][side]
+        title = payload["series"][side]["title"]
+        if period is None:
+            rows.append(title + " - " + payload["missing"])
+        else:
+            rows.append(title + " - " + period + ": " + payload["display"][index][side])
+    return rows
+
+
+def calendar_readout(payload, index):
+    rows = calendar_rows(payload, index)
+    return rows[0] + " - " + "; ".join(rows[1:])
+
+
+def test_mobile_keyboard_end_replaces_the_previous_calendar_tooltip(browser, site_url):
+    """121 native-calendar rows at 390 touch: End must repaint every tooltip line.
+
+    The last period converts to the plot's right edge. ECharts rejects a pixel point whose
+    round-trip back to local coordinates lands outside the grid, so the tooltip can keep the
+    previous period even though the native range and readout already moved. This checks the
+    rendered tooltip itself, line by line, not only the readout.
+    """
+    from playwright.sync_api import expect
+
+    context, page, errors = _open(browser, site_url + CALENDAR, 390, touch=True)
+    try:
+        payload = _payload(page)
+        assert payload["version"] == 2 and payload["kind"] == "calendar"
+        assert len(payload["periods"]) == 121
+        last = len(payload["periods"]) - 1
+        assert payload["periods"][last] == "01/10/2026"
+
+        page.locator(".chart-range").focus()
+        page.keyboard.press("Home")
+        expect(page.locator(".chart-readout")).to_have_text(
+            calendar_readout(payload, 0), timeout=3000)
+        page.keyboard.press("ArrowRight")
+        expect(page.locator(".chart-readout")).to_have_text(
+            calendar_readout(payload, 1), timeout=3000)
+        # A visible tooltip for the previous period is the state End has to replace.
+        expect(page.locator(".chart-tooltip")).to_be_visible(timeout=3000)
+        expect(page.locator(".chart-tip-line").first).to_have_text(
+            payload["periods"][1], timeout=3000)
+
+        page.keyboard.press("End")
+        expect(page.locator(".chart-readout")).to_have_text(
+            calendar_readout(payload, last), timeout=3000)
+        expect(page.locator(".chart-tooltip")).to_be_visible(timeout=3000)
+        expected = calendar_rows(payload, last)
+        expect(page.locator(".chart-tip-line")).to_have_count(len(expected), timeout=3000)
+        for index, line in enumerate(expected):
+            expect(page.locator(".chart-tip-line").nth(index)).to_have_text(
+                line, timeout=3000)
+        assert page.evaluate(
+            "() => document.querySelector('.chart-range').getAttribute('aria-valuetext')"
+        ) == payload["periods"][last]
         assert not errors
     finally:
         context.close()
