@@ -20,6 +20,26 @@
   {% endfor %}
 </ul>
 
+{% if portugal.rows %}
+<section class="portugal-comparisons" aria-labelledby="portugal">
+  <div class="section-head">
+    <h2 id="portugal">{{ portugal.title }}</h2>
+    <p class="section-note">{{ portugal.intro }}</p>
+  </div>
+  <ul class="compare-list portugal-list">
+    {% for row in portugal.rows %}
+    <li class="compare-item">
+      <a class="compare-link" href="{{ base }}{{ row.path }}">{{ row.title }}</a>
+      <p class="compare-mechanism">{{ row.summary }}</p>
+      <p class="meta">{{ row.groups_text }} · {{ row.frequency_text }} · {{ row.window_text }} · {{ row.series_text }}</p>
+      <p class="note">{{ row.caveat }}</p>
+      <p><a class="button-quiet" href="{{ base }}{{ row.path }}">{{ row.action }}</a></p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
 {% if countries.rows %}
 <section class="country-comparisons" aria-labelledby="paises">
   <div class="section-head">

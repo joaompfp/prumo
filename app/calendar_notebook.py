@@ -101,7 +101,8 @@ def _calendar_excluded(values: tuple[dict, ...], frequency: str,
 
 
 def _calendar_side(db: Db, row: dict, label: str, style: str, cell, lang: str,
-                   raw_by_period: dict[str, dict]) -> notebook_chart.ChartSide:
+                   raw_by_period: dict[str, dict], *, axis_text: str = ""
+                   ) -> notebook_chart.ChartSide:
     value = raw_by_period[cell.period]
     provenance = db.public_provenance_at(row["id"], cell.period)
     return notebook_chart.ChartSide(
@@ -119,13 +120,15 @@ def _calendar_side(db: Db, row: dict, label: str, style: str, cell, lang: str,
         provenance=(reads.provenance_view(provenance, row["frequency"], lang)
                     if provenance else None),
         period_text=cell.period_text,
+        axis_text=axis_text,
     )
 
 
 def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
                      settings: notebook_chart.ChartSettings,
                      choices: tuple[notebook_chart.ChartChoice, ...],
-                     copy: NotebookCopy, lang: str) -> notebook_chart.NotebookChart:
+                     copy: NotebookCopy, lang: str, *,
+                     axes: tuple[int, ...]) -> notebook_chart.NotebookChart:
     """Sparse calendar for original A/S/Q/M/D selections with more than one frequency.
 
     The window is anchored on the newest finite observation start in the union and rolls back
@@ -170,7 +173,7 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
         model = calendar_model(
             tuple(tuple(history) for history in histories), labels=labels, units=units,
             frequencies=frequencies, title=labels[0] if len(labels) == 1 else copy.chart_heading,
-            dual=settings.scale == "dupla")
+            axes=axes)
     except ValueError:
         log.warning("notebook calendar refused an unusable history")
         model = None
@@ -186,8 +189,10 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
     for index, (row, label, side) in enumerate(zip(rows, labels, model.series)):
         latest = model.rows[side.latest_index].cells[index]
         assert latest is not None  # latest_index names a row where this side is present
+        axis_text = (model.axis_labels[index]
+                     if len(labels) > 2 and model.dual else "")
         sides.append(_calendar_side(db, row, label, side.style, latest, lang,
-                                    raw_maps[index]))
+                                    raw_maps[index], axis_text=axis_text))
 
     def table_cell(index: int, cell) -> notebook_chart.ChartCell:
         if cell is None:
@@ -228,6 +233,7 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
         last_period_text=last_period_text,
         period_label=(copy.chart_period_mixed if len(sides) > 1
                       else copy.chart_period_calendar),
+        axis_groups=notebook_chart.axis_groups(model, labels),
     )
 
 
@@ -264,6 +270,17 @@ def _annual_side(row: dict, values: tuple[dict, ...]) -> _AnnualSide:
     finite = {int(value.period): value for value in series.values
               if decimal_or_none(value.value_text) is not None}
     return _AnnualSide(row=row, raw_by_period=_raw(values), series=series, finite=finite)
+
+
+def _annual_output_signature(side: _AnnualSide) -> tuple[str, int | float | None, int | None]:
+    """The scale identity of an annual output, checked after harmonisation.
+
+    Every reviewed annual method is unit-gated and returns values in the source unit: a mean of
+    monthly percentages stays a percentage, and a December stock stays in millions of euros.
+    Re-reading the signature from the annualised side makes a future method that changes the
+    effective unit fail closed instead of silently joining a mismatched axis group.
+    """
+    return (side.row["unit"], side.row["multiplier"], side.row["base_year"])
 
 
 def _common_years(sides: tuple[_AnnualSide, ...]) -> list[int]:
@@ -375,7 +392,8 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
                    labels: tuple[str, ...],
                    settings: notebook_chart.ChartSettings,
                    choices: tuple[notebook_chart.ChartChoice, ...],
-                   copy: NotebookCopy, lang: str) -> notebook_chart.NotebookChart:
+                   copy: NotebookCopy, lang: str, *,
+                   axes: tuple[int, ...]) -> notebook_chart.NotebookChart:
     """Annual harmonisation and optional base100/pp view over full histories.
 
     Annualise first, find the common complete years, choose the base (an explicit base may sit
@@ -406,6 +424,15 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
             "unavailable", copy.chart_no_common, settings, choices, copy)
 
     transform = settings.transform
+    if transform == "original":
+        # The source signatures selected the axes. Annualisation must preserve that allocation;
+        # a future method with a different output unit is refused instead of mis-grouped.
+        output_plan = notebook_chart.allocate_axes(
+            tuple(_annual_output_signature(side) for side in side_tuple), settings.scale)
+        if output_plan.axes != axes:
+            log.warning("annual output scales changed the notebook axis allocation")
+            return notebook_chart._empty(
+                "unavailable", copy.chart_no_draw, settings, choices, copy)
     base_year = None
     auto_base = False
     if transform != "original":
@@ -470,7 +497,8 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
               "values": tuple(selected[index][year].value_text
                               for index in range(len(labels)))}
              for point, year in zip(points, window_years)],
-            frequency="A", title=title, labels=chart_labels, unit=chart_units[0])
+            frequency="A", title=title, labels=chart_labels,
+            units=tuple(chart_units), axes=axes)
     if prepared.chart is None:
         return notebook_chart._empty(
             "unavailable", copy.chart_no_draw, settings, choices, copy)
@@ -480,6 +508,10 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
     chart_sides = []
     evidence = []
     any_calculated = any(calculated_flags)
+    axis_texts = (("",) if len(labels) == 1 else
+                  tuple(getattr(prepared.chart, "axis_labels", ()))
+                  if len(labels) > 2 and getattr(prepared.chart, "dual", False)
+                  else ("",) * len(labels))
     for index, (side, label) in enumerate(zip(side_tuple, labels)):
         latest = selected[index][latest_year]
         calculated = calculated_flags[index]
@@ -515,6 +547,7 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
             period_text=format_period(f"{latest_year:04d}", "A"),
             method_text=(_method_text(copy, latest) if calculated else ""),
             calculated=calculated,
+            axis_text=axis_texts[index],
         ))
         if calculated:
             outputs = tuple(
@@ -598,6 +631,7 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
         analysis_note=_analysis_note(copy, side_tuple, transform, base_year, auto_base,
                                      labels),
         evidence=tuple(evidence),
+        axis_groups=notebook_chart.axis_groups(prepared.chart, chart_labels),
     )
 
 

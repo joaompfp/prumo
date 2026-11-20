@@ -8,6 +8,7 @@ import hashlib
 import json
 import re
 from datetime import date
+from html import unescape
 
 from fastapi.testclient import TestClient
 
@@ -69,7 +70,9 @@ def build_site(tmp_path, rows, name="notebook-chart.db"):
     try:
         specs = [make_spec(row["id"], key=row["key"], source=row.get("source", INE),
                            unit=row.get("unit", "%"), frequency=row.get("frequency", "M"),
-                           geography=row.get("geography", "PT")) for row in rows]
+                           geography=row.get("geography", "PT"),
+                           multiplier=row.get("multiplier"),
+                           base_year=row.get("base_year")) for row in rows]
         sync_registry(db, specs)
         for row in rows:
             fetch(db, row["id"], row["periods"], row.get("at", T1), flag=row.get("flag"),
@@ -174,7 +177,7 @@ def test_shared_scale_mismatch_is_readable_and_dual_axes_show_both_units(tmp_pat
     assert "chart-data" in dual.text
 
 
-def test_dual_scale_with_three_sides_is_unavailable_not_404(tmp_path):
+def test_dual_scale_with_one_compatible_group_asks_for_the_common_scale(tmp_path):
     ids = [f"ine.dual_{position}.PT" for position in range(3)]
     path = build_site(tmp_path, [
         {"id": series_id, "key": f"{FAMILIES[position]}.PT.M",
@@ -185,9 +188,14 @@ def test_dual_scale_with_three_sides_is_unavailable_not_404(tmp_path):
             [*(f"s={series_id}" for series_id in ids), "escala=dupla"]))
     assert response.status_code == 200
     text = visible(response.text)
-    assert "A escala de dois eixos exige exactamente duas séries" in text
+    assert "Todas as séries escolhidas partilham a mesma unidade" in text
+    assert "Use a escala comum" in text
+    assert "exactamente duas séries" not in text
     assert "chart-data" not in response.text
     assert response.text.count('<article class="card">') == 3
+    form = chart_form(response.text)
+    assert 'value="dupla" selected' in form
+    assert form.count('name="g"') == 3 and form.count(" checked") == 3
 
 
 def test_dual_scale_after_a_deliberate_removal_is_a_state_not_a_404(tmp_path):
@@ -202,9 +210,120 @@ def test_dual_scale_after_a_deliberate_removal_is_a_state_not_a_404(tmp_path):
         removed = site.get("/caderno?s=ine.dual_b.PT&grafico=on&g=ine.dual_b.PT&escala=dupla")
     assert ready.status_code == 200 and "chart-data" in ready.text
     assert removed.status_code == 200
-    assert "A escala de dois eixos exige exactamente duas séries" in visible(removed.text)
+    assert "Todas as séries escolhidas partilham a mesma unidade" in visible(removed.text)
+    assert "exactamente duas séries" not in visible(removed.text)
     assert removed.text.count('<article class="card">') == 1
     assert "chart-data" not in removed.text
+
+
+def test_three_series_in_two_scale_groups_get_grouped_axes_and_reader_labels(tmp_path):
+    path = build_site(tmp_path, [
+        {"id": "ine.group_a.PT", "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": {"2026-08": "2.0", "2026-09": "2.1"}},
+        {"id": "ine.group_b.PT", "key": "unemployment_rate.PT.M", "unit": "%",
+         "periods": {"2026-08": "6.0", "2026-09": "6.1"}},
+        {"id": "ine.group_c.PT", "key": "credit_housing.PT.M", "unit": "MEUR",
+         "periods": {"2026-08": "100000", "2026-09": "101000"}},
+    ])
+    query = ("/caderno?s=ine.group_a.PT&s=ine.group_b.PT&s=ine.group_c.PT"
+             "&grafico=on&g=ine.group_a.PT&g=ine.group_b.PT&g=ine.group_c.PT&escala=dupla")
+    with client(path) as site:
+        response = site.get(query)
+    assert response.status_code == 200
+    html = response.text
+    data = payload(html)
+    assert data["kind"] == "group" and len(data["axes"]) == 2
+    assert [axis["unit"] for axis in data["axes"]] == ["%", "milhões de euros"]
+    assert [series["axis"] for series in data["series"]] == [0, 0, 1]
+    assert html.count('<article class="card">') == 3
+
+    # The legend and the Caderno metadata state the membership in words.
+    assert "Eixo esquerdo" in visible(html) and "Eixo direito" in visible(html)
+    assert 'data-axis="0"' in html and 'data-axis="1"' in html
+    sources = re.search(r'<ul class="notebook-chart-sources">.*?</ul>', html, re.S).group(0)
+    assert sources.count("Eixo esquerdo") == 2
+    assert sources.count("Eixo direito") == 1
+    assert "milhões de euros" in sources and " %" in sources
+    assert "segunda série" not in visible(html)
+
+    # The settings expose the same groups and keep every chosen side.
+    form = chart_form(html)
+    assert "Eixos deste gráfico" in visible(form)
+    assert form.count('name="g"') == 3 and form.count(" checked") == 3
+    assert 'value="dupla" selected' in form
+    canonical_match = re.search(r'id="ligacao-limpa" href="([^"]+)"', html)
+    assert canonical_match is not None
+    assert unescape(canonical_match.group(1)) == query
+
+
+def test_group_axis_domains_include_a_later_members_extreme(tmp_path):
+    path = build_site(tmp_path, [
+        {"id": "ine.ext_a.PT", "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": {"2026-08": "1.0", "2026-09": "2.0"}},
+        {"id": "ine.ext_b.PT", "key": "unemployment_rate.PT.M", "unit": "%",
+         "periods": {"2026-08": "100.0", "2026-09": "200.0"}},
+        {"id": "ine.ext_c.PT", "key": "credit_housing.PT.M", "unit": "MEUR",
+         "periods": {"2026-08": "1000", "2026-09": "2000"}},
+        {"id": "ine.ext_d.PT", "key": "deposits_households.PT.M", "unit": "MEUR",
+         "periods": {"2026-08": "100000", "2026-09": "200000"}},
+    ])
+    with client(path) as site:
+        response = site.get(
+            "/caderno?s=ine.ext_a.PT&s=ine.ext_b.PT&s=ine.ext_c.PT&s=ine.ext_d.PT"
+            "&grafico=on&g=ine.ext_a.PT&g=ine.ext_b.PT&g=ine.ext_c.PT&g=ine.ext_d.PT"
+            "&escala=dupla")
+    assert response.status_code == 200
+    data = payload(response.text)
+    assert [series["axis"] for series in data["series"]] == [0, 0, 1, 1]
+    left, right = data["axes"]
+    assert left["min"] <= 1 and left["max"] >= 200
+    assert right["min"] <= 1000 and right["max"] >= 200000
+
+
+def test_dual_scale_with_three_groups_explains_the_limit_and_keeps_settings(tmp_path):
+    path = build_site(tmp_path, [
+        {"id": "ine.limit_a.PT", "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": {"2026-09": "1.0"}},
+        {"id": "ine.limit_b.PT", "key": "credit_housing.PT.M", "unit": "MEUR",
+         "periods": {"2026-09": "10.0"}},
+        {"id": "ine.limit_c.PT", "key": "ipi_total.PT.M", "unit": "index_2021=100",
+         "periods": {"2026-09": "100.0"}},
+    ])
+    with client(path) as site:
+        response = site.get(
+            "/caderno?s=ine.limit_a.PT&s=ine.limit_b.PT&s=ine.limit_c.PT"
+            "&grafico=on&g=ine.limit_a.PT&g=ine.limit_b.PT&g=ine.limit_c.PT"
+            "&escala=dupla&janela=5a")
+    assert response.status_code == 200
+    html = response.text
+    text = visible(html)
+    assert "no máximo dois grupos de unidade, multiplicador e base" in text
+    assert "exactamente duas séries" not in text
+    assert "chart-data" not in html
+    assert html.count('<article class="card">') == 3
+    form = chart_form(html)
+    assert 'value="dupla" selected' in form
+    assert 'value="5a" selected' in form
+    assert form.count('name="g"') == 3 and form.count(" checked") == 3
+    assert "g=ine.limit_a.PT" in html and "escala=dupla" in html and "janela=5a" in html
+
+
+def test_two_series_dual_keeps_independent_axes_even_with_the_same_unit(tmp_path):
+    path = build_site(tmp_path, [
+        {"id": "ine.pair_a.PT", "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": {"2026-08": "1.0", "2026-09": "2.0"}},
+        {"id": "ine.pair_b.PT", "key": "unemployment_rate.PT.M", "unit": "%",
+         "periods": {"2026-08": "100.0", "2026-09": "200.0"}},
+    ])
+    with client(path) as site:
+        response = site.get("/caderno?s=ine.pair_a.PT&s=ine.pair_b.PT&escala=dupla")
+    assert response.status_code == 200
+    data = payload(response.text)
+    assert data["kind"] == "comparison" and len(data["axes"]) == 2
+    assert [axis["unit"] for axis in data["axes"]] == ["%", "%"]
+    assert all("axis" not in series for series in data["series"])
+    # The old pair legend stays byte-stable: two sides do not add grouped axis words.
+    assert 'data-axis=' not in response.text
 
 
 def test_mixed_frequency_uses_a_sparse_calendar_without_dropping_cards(tmp_path):

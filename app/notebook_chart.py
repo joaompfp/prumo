@@ -46,6 +46,64 @@ _BASE_YEAR = re.compile(r"[0-9]{4}\Z")
 
 
 @dataclass(frozen=True)
+class AxisPlan:
+    """The one compatibility allocation for a chart's series.
+
+    `axes` is the authoritative 0/1 membership per series; `problem` names the reader-facing
+    refusal when the selection cannot be drawn as requested. The legacy two-side dual chart maps
+    to (0, 1) even when both sides share a unit, so old links keep their independent axes.
+    """
+
+    axes: tuple[int, ...] = ()
+    problem: str = ""
+
+
+def axis_signature(row: dict) -> tuple[str, int | float | None, int | None]:
+    """The raw scale identity of one series: unit, multiplier and base year.
+
+    The stored tokens are compared together. A translated unit label is not evidence that two
+    series share a scale: `% GDP` and `% PIB` render alike but are different published tokens.
+    """
+    return (row["unit"], row["multiplier"], row["base_year"])
+
+
+def allocate_axes(signatures: tuple[tuple, ...], scale: str) -> AxisPlan:
+    """Assign compatible raw scales to the left then right axis, in stable first-seen order.
+
+    Three to six sides on `dupla` may share an axis when their unit, multiplier and base year
+    match. Exactly two first-seen groups are required: one group asks for the common scale instead
+    of silently splitting it, and more than two groups names the limit. `comum` requires one group.
+    """
+    two_side_dual = scale == "dupla" and len(signatures) == 2
+    if two_side_dual:
+        return AxisPlan(axes=(0, 1))
+    groups: list[tuple] = []
+    members: list[int] = []
+    for signature in signatures:
+        if signature not in groups:
+            groups.append(signature)
+        members.append(groups.index(signature))
+    if scale == "dupla":
+        if len(groups) == 1:
+            return AxisPlan(problem="one_group")
+        if len(groups) > 2:
+            return AxisPlan(problem="too_many_groups")
+        return AxisPlan(axes=tuple(members))
+    if len(groups) > 1:
+        return AxisPlan(problem="mixed_scale")
+    return AxisPlan(axes=(0,) * len(signatures))
+
+
+def _plan_reason(copy: NotebookCopy, plan: AxisPlan) -> str:
+    reasons = {
+        "one_group": copy.chart_dual_one_group,
+        "too_many_groups": copy.chart_dual_many_groups,
+        "mixed_scale": copy.chart_mixed_scale,
+    }
+    return reasons[plan.problem]
+
+
+@dataclass(frozen=True)
 class ChartSettings:
     """The chart settings a notebook address can carry, with its defaults made explicit.
 
@@ -229,6 +287,17 @@ class ChartChoice:
     label: str
     checked: bool
     available: bool
+    unit_text: str = ""
+
+
+@dataclass(frozen=True)
+class ChartAxisGroup:
+    """One visible axis group: its reader name, shared unit and member labels."""
+
+    index: int
+    label: str
+    unit_text: str
+    labels: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -253,6 +322,7 @@ class ChartSide:
     display_frequency_text: str = ""
     method_text: str = ""
     calculated: bool = False
+    axis_text: str = ""
 
 
 @dataclass(frozen=True)
@@ -335,6 +405,7 @@ class NotebookChart:
     period_label: str = ""
     analysis_note: str = ""
     evidence: tuple[SideEvidence, ...] = ()
+    axis_groups: tuple[ChartAxisGroup, ...] = ()
 
     @property
     def drawable(self) -> bool:
@@ -375,7 +446,8 @@ def _choices(addressed: tuple[str, ...], cards: dict[str, reads.Card],
             checked = (settings.mode == "all" and len(cards) <= MAX_GROUP
                        and card is not None)
         out.append(ChartChoice(series_id=series_id, label=label, checked=checked,
-                               available=card is not None))
+                               available=card is not None,
+                               unit_text=(card.unit_text if card is not None else "")))
     return tuple(out)
 
 
@@ -543,7 +615,7 @@ def _find_day(db: Db, rows: tuple[dict, ...], day: str | None,
 
 
 def _side(db: Db, row: dict, card: reads.Card, label: str, style: str, period: str,
-          value: dict, lang: str) -> ChartSide:
+          value: dict, lang: str, *, axis_text: str = "") -> ChartSide:
     provenance = db.public_provenance_at(row["id"], period)
     return ChartSide(
         series_id=row["id"], label=label, style=style, title=card.title,
@@ -560,7 +632,8 @@ def _side(db: Db, row: dict, card: reads.Card, label: str, style: str, period: s
                           if value["status_flag"] else ""),
         provenance=(reads.provenance_view(provenance, row["frequency"], lang)
                     if provenance else None),
-        period_text=format_period(period, row["frequency"]))
+        period_text=format_period(period, row["frequency"]),
+        axis_text=axis_text)
 
 
 def _alignment_text(copy: NotebookCopy, finite: list[dict], common: list[str],
@@ -589,8 +662,31 @@ def _alignment_text(copy: NotebookCopy, finite: list[dict], common: list[str],
     return " ".join(parts)
 
 
+def axis_groups(chart, labels: tuple[str, ...]) -> tuple[ChartAxisGroup, ...]:
+    """The visible left/right groups of a grouped or sparse dual chart, never a pair.
+
+    The prepared model owns membership and names; this only assembles the small settings list.
+    Two-side dual charts keep their reviewed metadata without an extra group block.
+    """
+    if chart is None or isinstance(chart, LineChartModel) or not chart.dual:
+        return ()
+    if len(labels) <= 2:
+        return ()
+    groups = []
+    for axis in (0, 1):
+        members = [index for index, assigned in enumerate(chart.axes) if assigned == axis]
+        if not members:
+            continue
+        groups.append(ChartAxisGroup(
+            index=axis, label=chart.axis_labels[members[0]],
+            unit_text=chart.units[members[0]],
+            labels=tuple(labels[index] for index in members)))
+    return tuple(groups)
+
+
 def _model(copy: NotebookCopy, finite: list[dict], frequency: str,
-           labels: tuple[str, ...], units: tuple[str, ...], scale: str):
+           labels: tuple[str, ...], units: tuple[str, ...], axes: tuple[int, ...],
+           scale: str):
     if len(labels) == 1:
         points = [{"period": row["period"], "value_text": row["values"][0]["value_text"]}
                   for row in finite]
@@ -607,7 +703,7 @@ def _model(copy: NotebookCopy, finite: list[dict], frequency: str,
                "values": tuple(value["value_text"] for value in row["values"])}
               for row in finite]
     return reads.prepare_group_chart(points, frequency=frequency, title=copy.chart_heading,
-                                     labels=labels, unit=units[0])
+                                     labels=labels, units=units, axes=axes)
 
 
 def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
@@ -665,21 +761,12 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
             # Every transformed side shares one index or p.p. unit; two axes would claim two
             # scales where there is one. Refuse explicitly instead of silently flattening.
             return _empty("unavailable", copy.chart_transform_shared, settings, choices, copy)
+        plan = AxisPlan(axes=(0,) * len(group))
     else:
-        if settings.scale == "dupla":
-            if len(group) != 2:
-                # Three sides on two axes cannot be drawn. When their units also differ, pointing
-                # at the common scale alone would be misleading, so use the instruction that names
-                # both ways out: exactly two sides, or a comparable shared set.
-                signatures = {(row["unit"], row["multiplier"], row["base_year"])
-                              for row in rows_tuple}
-                reason = copy.chart_dual_count if len(signatures) == 1 else copy.chart_mixed_scale
-                return _empty("unavailable", reason, settings, choices, copy)
-        else:
-            signatures = {(row["unit"], row["multiplier"], row["base_year"])
-                          for row in rows_tuple}
-            if len(signatures) > 1:
-                return _empty("unavailable", copy.chart_mixed_scale, settings, choices, copy)
+        plan = allocate_axes(tuple(axis_signature(row) for row in rows_tuple), settings.scale)
+        if plan.problem:
+            return _empty("unavailable", _plan_reason(copy, plan), settings, choices, copy)
+    axes = plan.axes
 
     titles = tuple(cards[series_id].title for series_id in group)
     labels = _labels(rows_tuple, titles, lang, copy)
@@ -689,7 +776,7 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
     if transform_request or (annual_request and (mixed or frequency != "A")):
         from app import calendar_notebook
         return calendar_notebook.prepare_annual(
-            db, rows_tuple, cards, labels, settings, choices, copy, lang)
+            db, rows_tuple, cards, labels, settings, choices, copy, lang, axes=axes)
 
     if mixed and not frequencies <= {"A", "S", "Q", "M", "D"}:
         return _empty("unavailable", copy.chart_method_unavailable, settings, choices, copy)
@@ -697,7 +784,7 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
     if mixed:
         from app import calendar_notebook
         return calendar_notebook.prepare_calendar(
-            db, rows_tuple, labels, settings, choices, copy, lang)
+            db, rows_tuple, labels, settings, choices, copy, lang, axes=axes)
 
     assert frequency is not None  # a single original frequency was checked above
 
@@ -727,15 +814,19 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
 
     prepared = _model(copy, finite, frequency, labels,
                       tuple(base_unit_text(lang, row["unit"]) for row in rows_tuple),
-                      settings.scale)
+                      axes, settings.scale)
     if prepared.chart is None:
         return _empty("unavailable", copy.chart_no_draw, settings, choices, copy)
 
     last = finite[-1]
-    styles = ("a",) if isinstance(prepared.chart, LineChartModel) else prepared.chart.styles
-    sides = tuple(_side(db, row, cards[series_id], label, style, last["period"], value, lang)
-                  for row, series_id, label, style, value
-                  in zip(rows_tuple, group, labels, styles, last["values"]))
+    styles = (("a",) if isinstance(prepared.chart, LineChartModel) else prepared.chart.styles)
+    axis_texts = (tuple(prepared.chart.axis_labels)
+                  if len(labels) > 2 and not isinstance(prepared.chart, LineChartModel)
+                  and prepared.chart.dual else ("",) * len(labels))
+    sides = tuple(_side(db, row, cards[series_id], label, style, last["period"], value, lang,
+                        axis_text=axis_text)
+                  for row, series_id, label, style, value, axis_text
+                  in zip(rows_tuple, group, labels, styles, last["values"], axis_texts))
     table_rows = tuple(
         ChartTableRow(
             period_text=format_period(row["period"], frequency),
@@ -754,10 +845,13 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
         window_text=window_text,
         alignment_text=_alignment_text(copy, finite, common, maps, labels, frequency, unparsed),
         one_point_note=one_point_note, settings=settings, max_group=MAX_GROUP,
-        last_period_text=format_period(last["period"], frequency))
+        last_period_text=format_period(last["period"], frequency),
+        axis_groups=axis_groups(prepared.chart, labels))
 
 
 __all__ = [
+    "AxisPlan",
+    "ChartAxisGroup",
     "ChartChoice",
     "ChartSettings",
     "ChartSide",
@@ -769,6 +863,9 @@ __all__ = [
     "MAX_GROUP",
     "NotebookChart",
     "PARAM_NAMES",
+    "allocate_axes",
+    "axis_groups",
+    "axis_signature",
     "parse_settings",
     "prepare",
     "without_side",

@@ -705,7 +705,18 @@ section { margin: 80px 0; }
 .swatch-g4 { background: repeating-linear-gradient(90deg, var(--chart-series-5) 0 12px, transparent 12px 16px); }
 .swatch-g5 { background: repeating-linear-gradient(90deg, var(--chart-series-6) 0 1px, transparent 1px 5px); }
 .legend-value { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+.legend-axis { color: var(--accent); font-size: .78em; font-weight: 600; letter-spacing: 0; }
 .compare-provenance { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+/* Multiseries notebook: the reader sees which group each side belongs to, in words. */
+.notebook-axis-groups { margin: 10px 0 0; }
+.notebook-axis-groups ul {
+  list-style: none; display: grid; gap: 2px; margin: 4px 0 0; padding: 0;
+}
+.notebook-axis-groups li { font-size: .86rem; line-height: 1.35; }
+
+/* Curated Portugal comparisons: three reviewed Caderno configurations. */
+.portugal-comparisons { margin-top: 56px; }
 
 /* Country groups: one shared scale, five short labels, a complete table. */
 .country-comparisons { margin-top: 56px; }

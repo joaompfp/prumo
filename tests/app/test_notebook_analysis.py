@@ -222,7 +222,7 @@ def test_quarter_semester_and_annual_originals_share_only_real_start_rows(tmp_pa
     assert "Últimos períodos por série" in visible(response.text)
 
 
-def test_mixed_shared_scale_uses_the_original_unit_signature_and_dual_needs_two(tmp_path):
+def test_mixed_shared_scale_uses_the_original_unit_signature_and_dual_names_the_limit(tmp_path):
     path = build_site(tmp_path, [
         {"id": "ine.mixed_pct.PT", "key": "credit_consumer.PT.M", "unit": "%",
          "periods": {"2026-01": "1.0"}},
@@ -241,8 +241,92 @@ def test_mixed_shared_scale_uses_the_original_unit_signature_and_dual_needs_two(
     assert "chart-data" not in shared.text
     assert shared.text.count('<article class="card">') == 3
     assert dual.status_code == 200
-    assert "exactamente duas séries" in visible(dual.text)
+    assert "no máximo dois grupos de unidade, multiplicador e base" in visible(dual.text)
+    assert "exactamente duas séries" not in visible(dual.text)
     assert "chart-data" not in dual.text
+
+
+def test_six_mixed_frequency_sides_on_two_scale_groups_use_the_calendar(tmp_path):
+    path = build_site(tmp_path, [
+        {"id": "ine.mix_a.PT", "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": {"2025-01": "2.0", "2025-02": "2.1"}},
+        {"id": "ine.mix_b.PT", "key": "unemployment_rate.PT.M", "unit": "%",
+         "periods": {"2025-01": "6.0"}},
+        {"id": "ine.mix_c.PT", "key": "euribor_3m.PT.Q", "unit": "%", "frequency": "Q",
+         "periods": {"2025-Q1": "2.5"}},
+        {"id": "ine.mix_d.PT", "key": "credit_housing.PT.M", "unit": "MEUR",
+         "periods": {"2025-01": "100000"}},
+        {"id": "ine.mix_e.PT", "key": "credit_consumer.PT.Q", "unit": "MEUR", "frequency": "Q",
+         "periods": {"2025-Q1": "20000"}},
+        {"id": "ine.mix_f.PT", "key": "deposits_households.PT.A", "unit": "MEUR",
+         "frequency": "A", "periods": {"2024": "190000", "2025": "200000"}},
+    ])
+    ids = ("ine.mix_a.PT", "ine.mix_b.PT", "ine.mix_c.PT",
+           "ine.mix_d.PT", "ine.mix_e.PT", "ine.mix_f.PT")
+    query = "&".join(f"s={series_id}" for series_id in ids) + "&escala=dupla"
+    with client(path) as site:
+        response = site.get(f"/caderno?{query}")
+    assert response.status_code == 200
+    html = response.text
+    data = payload(html)
+    assert data["version"] == 2 and data["kind"] == "calendar"
+    assert len(data["axes"]) == 2
+    assert [axis["unit"] for axis in data["axes"]] == ["%", "milhões de euros"]
+    assert [series["axis"] for series in data["series"]] == [0, 0, 0, 1, 1, 1]
+    assert html.count('<article class="card">') == 6
+    assert html.count('data-axis="0"') == 3 and html.count('data-axis="1"') == 3
+    assert "Eixo esquerdo" in visible(html) and "Eixo direito" in visible(html)
+
+
+def test_annualised_sides_are_grouped_by_their_output_scale(tmp_path):
+    path = build_site(tmp_path, [
+        {"id": "ine.cred_1.PT", "key": "credit_housing.PT.M", "unit": "MEUR",
+         "periods": complete_months(2023, 2024, "100000")},
+        {"id": "ine.cred_2.PT", "key": "deposits_households.PT.M", "unit": "MEUR",
+         "periods": complete_months(2023, 2024, "200000")},
+        gdp_row("eurostat.gdp_ann.PT", "eurostat_gdp_per_capita_eur.PT.A", "PT",
+                {"2023": "25000", "2024": "26000"}),
+    ])
+    with client(path) as site:
+        response = site.get(
+            "/caderno?s=ine.cred_1.PT&s=ine.cred_2.PT&s=eurostat.gdp_ann.PT"
+            "&frequencia=anual&escala=dupla")
+    assert response.status_code == 200
+    data = payload(response.text)
+    assert data["kind"] == "group" and len(data["axes"]) == 2
+    assert [axis["unit"] for axis in data["axes"]] == ["milhões de euros",
+                                                       "euros por habitante"]
+    assert [series["axis"] for series in data["series"]] == [0, 0, 1]
+    assert response.text.count('<article class="card">') == 3
+
+
+def test_annual_output_scale_drift_fails_closed(tmp_path, monkeypatch):
+    path = build_site(tmp_path, [
+        {"id": "ine.cred_1.PT", "key": "credit_housing.PT.M", "unit": "MEUR",
+         "periods": complete_months(2023, 2024, "100000")},
+        {"id": "ine.cred_2.PT", "key": "deposits_households.PT.M", "unit": "MEUR",
+         "periods": complete_months(2023, 2024, "200000")},
+        gdp_row("eurostat.gdp_ann.PT", "eurostat_gdp_per_capita_eur.PT.A", "PT",
+                {"2023": "25000", "2024": "26000"}),
+    ])
+    from app import calendar_notebook
+
+    original = calendar_notebook._annual_output_signature
+
+    def drifted(side):
+        if side.row["id"] == "ine.cred_2.PT":
+            return ("OUTRA", side.row["multiplier"], side.row["base_year"])
+        return original(side)
+
+    monkeypatch.setattr(calendar_notebook, "_annual_output_signature", drifted)
+    with client(path) as site:
+        response = site.get(
+            "/caderno?s=ine.cred_1.PT&s=ine.cred_2.PT&s=eurostat.gdp_ann.PT"
+            "&frequencia=anual&escala=dupla")
+    assert response.status_code == 200
+    assert "chart-data" not in response.text
+    assert "Não foi possível preparar o gráfico" in visible(response.text)
+    assert response.text.count('<article class="card">') == 3
 
 
 def test_annual_pp_rates_disclose_calculated_method_base_and_raw_inputs(tmp_path):

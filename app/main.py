@@ -25,6 +25,7 @@ from app import (
     navigation,
     notebook,
     notebook_routes,
+    portugal_comparisons,
     reads,
 )
 from app import home as home_page
@@ -241,12 +242,13 @@ def create_app(db_path: str | None = None) -> FastAPI:
     @app.api_route("/comparar", methods=PAGE_METHODS, response_class=HTMLResponse)
     def comparisons_index(request: Request):
         try:
-            data, countries = _read(request, lambda db: (
-                reads.comparisons_index(db), country_comparisons.index(db)))
+            data, countries, portugal = _read(request, lambda db: (
+                reads.comparisons_index(db), country_comparisons.index(db),
+                portugal_comparisons.index(db)))
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
         return _render(templates, request, "compare_index.html",
-                       {"page": data, "countries": countries})
+                       {"page": data, "countries": countries, "portugal": portugal})
 
     # The country route must be registered before `/comparar/{slug}`, otherwise the pair route
     # would treat "paises" as a pair slug and swallow the path.

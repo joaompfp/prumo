@@ -81,7 +81,9 @@ class NotebookCopy:
     chart_unavailable_ineligible: str
     chart_unavailable_side: str
     chart_unavailable_no_eligible: str
-    chart_dual_count: str
+    chart_dual_one_group: str
+    chart_dual_many_groups: str
+    chart_axis_groups_note: str
     chart_mixed_frequency: str
     chart_mixed_scale: str
     chart_duplicate_labels: str
@@ -291,13 +293,16 @@ _PT = NotebookCopy(
                            "gráfico fica indisponível; as séries elegíveis continuam no caderno.",
     chart_unavailable_no_eligible="Nenhuma das séries desta ligação pode ser mostrada no gráfico "
                                   "neste momento.",
-    chart_dual_count="A escala de dois eixos exige exactamente duas séries. Escolha duas séries "
-                     "ou use a escala comum.",
+    chart_dual_one_group="Todas as séries escolhidas partilham a mesma unidade, multiplicador e "
+                         "base. Use a escala comum para as desenhar num só eixo.",
+    chart_dual_many_groups="A escala de dois eixos admite no máximo dois grupos de unidade, "
+                           "multiplicador e base. Escolha um subconjunto que forme dois grupos "
+                           "ou aplique uma transformação com escala comum.",
+    chart_axis_groups_note="Eixos deste gráfico, na ordem da primeira série de cada grupo:",
     chart_mixed_frequency="As séries escolhidas têm frequências diferentes. Um gráfico conjunto "
                           "exige a mesma frequência.",
     chart_mixed_scale="As séries escolhidas não partilham a mesma unidade, multiplicador e base. "
-                      "Use a escala de dois eixos com exactamente duas séries ou escolha séries "
-                      "comparáveis.",
+                      "Use a escala de dois eixos ou escolha séries comparáveis.",
     chart_duplicate_labels="As séries escolhidas não se distinguem pelo título e pela fonte. "
                            "Escolha um conjunto diferente.",
     chart_no_common="As séries escolhidas não têm períodos comuns com valores numéricos.",

@@ -41,12 +41,22 @@
           {% for choice in panel.choices %}
           <label>
             <input type="checkbox" name="g" value="{{ choice.series_id }}"{% if choice.checked %} checked{% endif %}>
-            {{ choice.label }}{% if not choice.available %} <span class="note">({{ page.copy.chart_unavailable_mark }})</span>{% endif %}
+            {{ choice.label }}{% if choice.unit_text %} <span class="note">({{ choice.unit_text }})</span>{% endif %}{% if not choice.available %} <span class="note">({{ page.copy.chart_unavailable_mark }})</span>{% endif %}
           </label>
           {% endfor %}
         </div>
         <p class="note">{{ page.copy.chart_group_note }}</p>
       </fieldset>
+      {% if panel.axis_groups %}
+      <div class="notebook-axis-groups">
+        <p class="note">{{ page.copy.chart_axis_groups_note }}</p>
+        <ul>
+          {% for group in panel.axis_groups %}
+          <li><strong>{{ group.label }}</strong> · {{ group.unit_text }}: {{ group.labels|join(', ') }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
       <label>{{ page.copy.chart_day_label }}
         <input name="dia" type="date" value="{{ panel.settings.day or '' }}">
       </label>

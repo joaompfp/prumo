@@ -10,6 +10,7 @@ from app.notebook_chart import (
     MAX_GROUP,
     PARAM_NAMES,
     ChartSettings,
+    allocate_axes,
     parse_settings,
     without_side,
 )
@@ -87,6 +88,43 @@ def test_deliberate_removal_prunes_only_the_explicit_group():
     assert without_side(settings, "c") == settings
     assert without_side(ChartSettings(), "a") == ChartSettings()
     assert without_side(ChartSettings(mode="off"), "a") == ChartSettings(mode="off")
+
+
+def test_axis_allocation_uses_the_full_raw_signature_and_stable_order():
+    # A repeated first-seen group keeps left; the second distinct signature becomes right.
+    plan = allocate_axes((("%", None, None), ("MEUR", None, None),
+                          ("%", None, None), ("MEUR", None, None)), "dupla")
+    assert plan.axes == (0, 1, 0, 1) and plan.problem == ""
+
+    # Unit, multiplier and base year all participate; a translated label is not enough.
+    assert allocate_axes((("index_2021=100", None, 2021),
+                          ("index_2021=100", None, 2021),
+                          ("index_2021=100", None, 2022)), "dupla").axes == (0, 0, 1)
+    assert allocate_axes((("EUR", None, None), ("EUR", None, None),
+                          ("EUR", 1000, None)), "dupla").axes == (0, 0, 1)
+
+    # One group asks for the common scale; three groups name the two-group limit.
+    assert allocate_axes((("%", None, None),) * 3, "dupla").problem == "one_group"
+    assert allocate_axes((("%", None, None), ("MEUR", None, None),
+                          ("index_2021=100", None, None)), "dupla").problem == "too_many_groups"
+    assert allocate_axes((("%", None, None), ("MEUR", None, None)), "comum").problem == \
+        "mixed_scale"
+
+    # The old two-side dual chart keeps one axis per side even when the unit matches.
+    assert allocate_axes((("%", None, None), ("%", None, None)), "dupla").axes == (0, 1)
+
+
+def test_dual_scale_copy_never_claims_the_setting_means_two_series():
+    from presentation.notebook import text
+
+    copy = text("pt")
+    for value in (copy.chart_scale_dual, copy.chart_dual_one_group,
+                  copy.chart_dual_many_groups, copy.chart_mixed_scale,
+                  copy.chart_transform_shared):
+        assert "exactamente duas séries" not in value
+        assert "duas séries" not in value
+    assert "dois grupos" in copy.chart_dual_many_groups
+    assert "escala comum" in copy.chart_dual_one_group
 
 
 def test_links_carry_chart_settings_in_a_stable_order_and_omit_defaults():

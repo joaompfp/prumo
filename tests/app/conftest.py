@@ -42,9 +42,11 @@ SHA = "b" * 64
 
 
 def make_spec(sid, *, source=INE, key="hicp_yoy.PT.M", role="primary", active=True,
-              theme="economy", geography="PT", frequency="M", unit="%"):
+              theme="economy", geography="PT", frequency="M", unit="%",
+              multiplier=None, base_year=None):
     return SeriesSpec(id=sid, source=source, indicator_key=key, role=role, theme=theme,
-                      geography=geography, frequency=frequency, unit=unit, active=active)
+                      geography=geography, frequency=frequency, unit=unit, active=active,
+                      multiplier=multiplier, base_year=base_year)
 
 
 def fetch(db, sid, values, fetched_at, *, source=INE.name, flag=None, sha=SHA):
