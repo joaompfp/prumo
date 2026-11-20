@@ -9,6 +9,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -39,6 +40,7 @@ def test_image_copies_only_runtime_inputs_including_registry_and_migrations(inst
     assert copies == [
         ["requirements.txt", "."],
         ["app/", "./app/"],
+        ["analysis/", "./analysis/"],
         ["static/", "./static/"],
         ["ingest/", "./ingest/"],
         ["backoffice/", "./backoffice/"],
@@ -49,6 +51,37 @@ def test_image_copies_only_runtime_inputs_including_registry_and_migrations(inst
     assert "ADD" not in instructions
     assert (REPO / "ingest/migrations/0001_init.sql").is_file()
     assert (REPO / "registry/core.yaml").is_file()
+
+
+def test_the_sparse_calendar_analysis_dependency_is_packaged_and_pure(instructions, tmp_path):
+    """The image must carry `analysis/` on its own, not rely on the build checkout.
+
+    `app.calendar_model` imports `analysis.periods`; without the copy, the web and Admin images
+    would fail only when a calendar chart is prepared. Copy exactly the runtime package into a
+    clean directory and import the model there, so the test also proves the package is self
+    contained and has no undeclared repository dependency.
+    """
+    copies = [shlex.split(value) for value in instructions["COPY"]]
+    assert ["analysis/", "./analysis/"] in copies
+    for name in ("__init__.py", "periods.py"):
+        assert (REPO / "analysis" / name).is_file()
+    shutil.copytree(REPO / "app", tmp_path / "app",
+                    ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    shutil.copytree(REPO / "analysis", tmp_path / "analysis",
+                    ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    code = (
+        "from app.calendar_model import calendar_model\n"
+        "model = calendar_model((({'period': '2026-01', 'value_text': '1.0'},),), "
+        "labels=('Mensal',), units=('%',), frequencies=('M',), title='x')\n"
+        "assert model is not None\n"
+        "assert model.rows[0].cells[0].period_text == 'janeiro de 2026'\n"
+    )
+    result = subprocess.run(
+        [sys.executable, "-c", code], cwd=tmp_path,
+        env={**os.environ, "PYTHONPATH": str(tmp_path)},
+        capture_output=True, text=True, timeout=30,
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_image_defaults_are_sqlite_and_raw_evidence_not_legacy_or_secrets(instructions):
@@ -86,7 +119,7 @@ def test_build_context_is_deny_by_default_with_only_runtime_reinclusions():
     assert rules[0] == "**"
     allowed = {
         "!Dockerfile", "!.dockerignore", "!requirements.txt", "!entrypoint.sh",
-        "!app/", "!app/**", "!static/", "!static/**",
+        "!app/", "!app/**", "!analysis/", "!analysis/**", "!static/", "!static/**",
         "!ingest/", "!ingest/**", "!backoffice/", "!backoffice/**",
         "!presentation/", "!presentation/**", "!registry/", "!registry/**",
     }

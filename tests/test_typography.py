@@ -36,7 +36,7 @@ ORIGINAL_RECEIPT_SHA256 = "551b749b9d8f35c87248ec3445b6f4ec852e76dfd08502d26c722
 # em dash inside library code. It is vendored evidence, not authored copy: exempt only while the
 # exact rebuilt bytes match this hash, so any rebuild is an explicit reviewed change.
 VENDORED_BUNDLE = "static/js/prumo-charts.min.js"
-VENDORED_BUNDLE_SHA256 = "70a45c776a6bf397f75ddd0e22807ec837a7ba3a4b0545b61d2ff79c9a4e3d0a"
+VENDORED_BUNDLE_SHA256 = "d1bd4b27a97fc8b0195442c7cb50cfd2e1309a5943ce0158a920539936b2107c"
 
 
 @pytest.mark.parametrize("text", [

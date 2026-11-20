@@ -6,6 +6,8 @@
 !entrypoint.sh
 !app/
 !app/**
+!analysis/
+!analysis/**
 !static/
 !static/**
 !ingest/

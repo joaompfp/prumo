@@ -170,6 +170,7 @@ def test_payload_v2_has_null_cells_per_side_and_two_axes():
     assert len(payload["axes"]) == 2
     assert [axis["unit"] for axis in payload["axes"]] == ["milhões de euros", "%"]
     assert [item["axis"] for item in payload["series"]] == [0, 1]
+    assert [item["style"] for item in payload["series"]] == ["a", "b"]
     assert [item["frequency"] for item in payload["series"]] == ["A", "M"]
     assert [item["badge"] for item in payload["series"]] == ["Calculado pelo Prumo"] * 2
 
@@ -183,12 +184,12 @@ def test_payload_v2_has_null_cells_per_side_and_two_axes():
                 assert payload["y"][row_index][side] == float(cell.number)
                 assert payload["display"][row_index][side] == (
                     f"{cell.value_display} {model.units[side]}")
-                assert payload["cell_periods"][row_index][side] == cell.period
+                assert payload["cell_periods"][row_index][side] == cell.period_text
     # The month where only the monthly side observed is a real null, not zero and not a repeat.
     february = next(i for i, row in enumerate(model.rows) if row.period_text == "01/02/2024")
     assert payload["y"][february] == [None, 1.5]
     assert payload["display"][february] == [None, "1,5 %"]
-    assert payload["cell_periods"][february] == [None, "2024-02"]
+    assert payload["cell_periods"][february] == [None, "fevereiro de 2024"]
 
     encoded = json.dumps(payload, ensure_ascii=False)
     assert "value_text" not in encoded and "series_id" not in encoded

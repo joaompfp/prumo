@@ -85,8 +85,9 @@ def _calendar_payload(model: CalendarModel, *, badge: str, missing: str) -> dict
 
     `y`, `display` and `cell_periods` keep one column per side and one row per real calendar
     date. A missing observation is `None` in all three arrays: not zero, not the previous
-    value, and not an inspectable cell. Breaks are per side and address row indices where that
-    side skips its own native period.
+    value, and not an inspectable cell. `cell_periods` carries each side's reader-facing native
+    period (never the raw canonical token), and breaks are per side and address row indices
+    where that side skips its own native period.
     """
     xs = [_finite(row.ordinal) for row in model.rows]
     if not xs or any(x is None for x in xs):
@@ -115,7 +116,7 @@ def _calendar_payload(model: CalendarModel, *, badge: str, missing: str) -> dict
                 return None
             y_row.append(value)
             display_row.append(_display(cell.value_display, model.units[index]))
-            period_row.append(cell.period)
+            period_row.append(cell.period_text)
         ys.append(y_row)
         display.append(display_row)
         cell_periods.append(period_row)
