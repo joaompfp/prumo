@@ -22,6 +22,7 @@ from decimal import Decimal
 
 from analysis.periods import period_index, period_start
 from app.chart_model import (
+    AXIS_NAMES,
     BOTTOM,
     GROUP_STYLES,
     HEIGHT,
@@ -32,6 +33,7 @@ from app.chart_model import (
     XTick,
     YTick,
     _left_gutter,
+    _validate_axis_assignments,
     axis_interval,
     padded_domain,
     positions,
@@ -71,11 +73,12 @@ class CalendarRow:
 
 @dataclass(frozen=True)
 class CalendarSeries:
-    """Per-side metadata: native frequency, own gap boundaries and last plotted row."""
+    """Per-side metadata: native frequency, explicit axis, own gaps and last plotted row."""
 
     label: str
     unit: str
     style: str
+    axis: int
     frequency: str
     breaks: tuple[int, ...]
     latest_index: int
@@ -87,8 +90,9 @@ class CalendarModel:
 
     Axis fields mirror `ComparisonModel` so readers and the v2 adapter can handle both without a
     second shape: `ticks_a`/`lo_a`/`hi_a`/`interval_a`/`unit_a` describe the left axis and the
-    `_b` fields the deliberate right axis of a two-side dual chart. `rows` is the authoritative
-    representation; `points` is an alias for templates that iterate points.
+    `_b` fields the deliberate right axis of a dual chart. `axes` is the authoritative 0/1
+    membership for every side, and `rows` is the authoritative representation; `points` is an
+    alias for templates that iterate points.
     """
 
     kind: str
@@ -96,6 +100,7 @@ class CalendarModel:
     labels: tuple[str, ...]
     units: tuple[str, ...]
     styles: tuple[str, ...]
+    axes: tuple[int, ...]
     frequencies: tuple[str, ...]
     dual: bool
     name: str
@@ -123,18 +128,34 @@ class CalendarModel:
     def points(self) -> tuple[CalendarRow, ...]:
         return self.rows
 
+    @property
+    def axis_labels(self) -> tuple[str, ...]:
+        """The visible axis name for each side, empty on a single shared axis."""
+        if not self.dual:
+            return ("",) * len(self.axes)
+        return tuple(AXIS_NAMES[axis] for axis in self.axes)
+
 
 def _series_name(title: str, labels: tuple[str, ...], units: tuple[str, ...],
                  dual: bool) -> str:
+    """Name every side, not only the two sides of the old dual pair.
+
+    The two-side dual string keeps its exact reviewed shape. A longer dual selection enumerates
+    every label; mixed units are named per side rather than collapsed into the first unit.
+    """
     if len(labels) == 1:
         return title + (f" ({units[0]})" if units[0] else "")
-    if dual:
+    if dual and len(labels) == 2:
         return f"{title}: {labels[0]} ({units[0]}) e {labels[1]} ({units[1]})"
     joined = ", ".join(labels[:-1]) + " e " + labels[-1]
-    return f"{title}: {joined}" + (f" ({units[0]})" if units[0] else "")
+    if len(set(units)) <= 1:
+        return f"{title}: {joined}" + (f" ({units[0]})" if units[0] else "")
+    parts = [f"{label} ({unit})" if unit else label
+             for label, unit in zip(labels, units)]
+    return f"{title}: " + ", ".join(parts[:-1]) + " e " + parts[-1]
 
 
-def _metadata(histories, labels, units, frequencies, dual, title):
+def _metadata(histories, labels, units, frequencies, dual, axes, title):
     """Validate the authored definition; data cells are filtered separately."""
     if not isinstance(title, str) or not title:
         raise ValueError("calendar charts need a title")
@@ -159,9 +180,21 @@ def _metadata(histories, labels, units, frequencies, dual, title):
         raise ValueError("calendar units must be text")
     if any(not isinstance(frequency, str) or not frequency for frequency in frequencies):
         raise ValueError("every calendar side needs a frequency")
-    if dual and count != 2:
-        raise ValueError("a dual calendar chart needs exactly two sides")
-    return labels, units, frequencies
+    if axes is not None:
+        series_axes = _validate_axis_assignments(axes, count, subject="calendar")
+        derived = 1 in series_axes
+        if dual is not None and bool(dual) != derived:
+            raise ValueError("calendar dual must match the axis assignments")
+        dual = derived
+    elif dual:
+        if count != 2:
+            raise ValueError(
+                "a dual calendar chart needs explicit axis assignments for three to six sides")
+        series_axes = (0, 1)
+    else:
+        series_axes = (0,) * count
+        dual = False
+    return labels, units, frequencies, series_axes, bool(dual)
 
 
 def _side_cells(history, frequency: str) -> dict[int, tuple[str, str, Decimal, int, date]]:
@@ -223,7 +256,8 @@ def _x_labels(row_dates: list[str]) -> list[tuple[int, str]]:
 
 def calendar_model(histories: tuple[tuple[dict, ...], ...], *, labels: tuple[str, ...],
                    units: tuple[str, ...], frequencies: tuple[str, ...], title: str,
-                   dual: bool = False,
+                   dual: bool | None = None,
+                   axes: tuple[int, ...] | None = None,
                    width: int = WIDTH, height: int = HEIGHT) -> CalendarModel | None:
     """Prepare one sparse calendar chart, or None when any side has nothing drawable.
 
@@ -232,11 +266,16 @@ def calendar_model(histories: tuple[tuple[dict, ...], ...], *, labels: tuple[str
     raise `ValueError`: two observations on one side for the same token cannot be silently
     resolved. Non-canonical periods and non-finite values are excluded, and a side left with no
     drawable value makes the whole chart unavailable rather than silently dropping that side.
+
+    `axes` is the authoritative 0/1 axis membership per side. Omitting it keeps the old
+    behaviour: `dual=True` with two sides means independent left/right axes, and every other
+    selection shares the left axis. A dual chart with three to six sides must name its axes; the
+    model never splits a side by position or unit text.
     """
-    metadata = _metadata(histories, labels, units, frequencies, dual, title)
+    metadata = _metadata(histories, labels, units, frequencies, dual, axes, title)
     if metadata is None:
         return None
-    labels, units, frequencies = metadata
+    labels, units, frequencies, axes, dual = metadata
 
     per_side: list[dict[int, tuple[str, str, Decimal, int, date]]] = []
     for history, frequency in zip(histories, frequencies):
@@ -249,15 +288,13 @@ def calendar_model(histories: tuple[tuple[dict, ...], ...], *, labels: tuple[str
     if not ordinals:
         return None
 
-    numbers = [number for side_cells in per_side
-               for (_, _, number, _, _) in side_cells.values()]
+    groups: list[list[Decimal]] = [[], []]
+    for index, side_cells in enumerate(per_side):
+        groups[axes[index]].extend(number for (_, _, number, _, _) in side_cells.values())
+    lo_a, hi_a, ticks_a = padded_domain(groups[0])
     if dual:
-        lo_a, hi_a, ticks_a = padded_domain(
-            [number for (_, _, number, _, _) in per_side[0].values()])
-        lo_b, hi_b, ticks_b = padded_domain(
-            [number for (_, _, number, _, _) in per_side[1].values()])
+        lo_b, hi_b, ticks_b = padded_domain(groups[1])
     else:
-        lo_a, hi_a, ticks_a = padded_domain(numbers)
         lo_b, hi_b, ticks_b = lo_a, hi_a, ticks_a
 
     right = RIGHT_DUAL if dual else RIGHT
@@ -271,7 +308,7 @@ def calendar_model(histories: tuple[tuple[dict, ...], ...], *, labels: tuple[str
         return TOP + float((hi - number) / side_span * plot_h)
 
     def y_for(index: int, number: Decimal) -> float:
-        return y_of(number, lo_b, hi_b) if dual and index == 1 else y_of(number, lo_a, hi_a)
+        return y_of(number, lo_b, hi_b) if axes[index] == 1 else y_of(number, lo_a, hi_a)
 
     ordinals_f = [float(ordinal) for ordinal in ordinals]
     xs = positions(ordinals_f, left, plot_w)
@@ -314,14 +351,18 @@ def calendar_model(histories: tuple[tuple[dict, ...], ...], *, labels: tuple[str
         latest_index = present[-1][0]
         style = ("a", "b")[index] if len(labels) == 2 else GROUP_STYLES[index]
         series.append(CalendarSeries(
-            label=labels[index], unit=units[index], style=style,
+            label=labels[index], unit=units[index], style=style, axis=axes[index],
             frequency=frequencies[index], breaks=tuple(breaks),
             latest_index=latest_index))
 
+    unit_a = units[next(index for index, axis in enumerate(axes) if axis == 0)]
+    unit_b = (units[next(index for index, axis in enumerate(axes) if axis == 1)]
+              if dual else unit_a)
     row_dates = [date.fromordinal(ordinal).isoformat() for ordinal in ordinals]
     return CalendarModel(
         kind="calendar", title=title, labels=labels, units=units,
-        styles=tuple(item.style for item in series), frequencies=frequencies, dual=dual,
+        styles=tuple(item.style for item in series), axes=axes,
+        frequencies=frequencies, dual=dual,
         name=_series_name(title, labels, units, dual),
         width=width, height=height, left=left, right=right, top=TOP, bottom=BOTTOM,
         rows=tuple(rows), series=tuple(series),
@@ -332,7 +373,7 @@ def calendar_model(histories: tuple[tuple[dict, ...], ...], *, labels: tuple[str
         lo_a=lo_a, hi_a=hi_a, lo_b=lo_b, hi_b=hi_b,
         interval_a=axis_interval(ticks_a, lo_a, hi_a),
         interval_b=axis_interval(ticks_b, lo_b, hi_b),
-        unit_a=units[0], unit_b=units[1] if dual else units[0],
+        unit_a=unit_a, unit_b=unit_b,
         x_ticks=tuple(XTick(index=i, ordinal=float(ordinals[i]), x=xs[i], text=text)
                       for i, text in _x_labels(row_dates)),
     )

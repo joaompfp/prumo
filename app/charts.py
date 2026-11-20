@@ -101,16 +101,21 @@ def two_series_chart(points: list[dict], *, frequency: str, title: str, labels: 
 
 
 def group_chart(points: list[dict], *, frequency: str, title: str,
-                labels: tuple[str, ...], unit: str = "", width: int = WIDTH,
-                height: int = HEIGHT) -> Markup:
-    """Three to six same-unit series on one shared axis, with the same legend and geometry.
+                labels: tuple[str, ...], unit: str = "",
+                units: tuple[str, ...] | None = None,
+                axes: tuple[int, ...] | None = None,
+                width: int = WIDTH, height: int = HEIGHT) -> Markup:
+    """Three to six series on explicit axes, with the same legend and geometry.
 
-    `points` are dicts with `period` and `values`, the exact stored tokens in label order. The
-    first series uses the Carmim style; every other series keeps a distinct colour and dash. A
-    missing or non-finite token drops the whole period, never one country.
+    `points` are dicts with `period` and `values`, the exact stored tokens in label order.
+    `units` gives one display unit per series and `axes` its explicit 0/1 axis membership;
+    omitting both keeps the reviewed same-unit, single-axis chart. The first series uses the
+    Carmim style; every other series keeps a distinct colour and dash. A missing or non-finite
+    token drops the whole period, never one country.
     """
     return comparison_svg(group_model(points, frequency=frequency, title=title, labels=labels,
-                                      unit=unit, width=width, height=height))
+                                      unit=unit, units=units, axes=axes,
+                                      width=width, height=height))
 
 
 def _comparison_plot(model) -> Markup:
@@ -185,13 +190,21 @@ def _comparison_legend(model) -> Markup:
     if model is None:
         return Markup("")
     last = model.points[-1]
-    items = "".join(
-        f'<li><span class="legend-swatch swatch-{style}" aria-hidden="true"></span>'
-        f'{escape(model.labels[index])}'
-        f'<span class="legend-value">{escape(value.value_display)} '
-        f'{escape(model.units[index])}</span></li>'
-        for index, (style, value) in enumerate(zip(model.styles, last.values)))
-    return Markup(f'<ul class="legend">{items}</ul>')
+    # The old two-series legend is a reviewed byte contract. A grouped chart on two axes is new,
+    # so it states the explicit membership in words instead of leaving the reader to infer it.
+    show_axes = model.dual and len(model.labels) > 2
+    items = []
+    for index, (style, value) in enumerate(zip(model.styles, last.values)):
+        axis_attr = f' data-axis="{model.axes[index]}"' if show_axes else ""
+        axis_text = (f'<span class="legend-axis">{escape(model.axis_labels[index])}</span>'
+                     if show_axes else "")
+        items.append(
+            f'<li{axis_attr}>'
+            f'<span class="legend-swatch swatch-{style}" aria-hidden="true"></span>'
+            f'{escape(model.labels[index])}{axis_text}'
+            f'<span class="legend-value">{escape(value.value_display)} '
+            f'{escape(model.units[index])}</span></li>')
+    return Markup(f'<ul class="legend">{"".join(items)}</ul>')
 
 
 def comparison_svg(model) -> Markup:

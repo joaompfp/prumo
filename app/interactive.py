@@ -70,14 +70,16 @@ def _x_ticks(model) -> list[dict] | None:
 def _comparison_series(model: ComparisonModel) -> list[dict]:
     """Series metadata in label order.
 
-    Existing pairs keep their ink/red contract without an axis field. A bounded group declares
-    its style key and its single explicit axis so the adapter never infers a second scale.
+    Existing pairs keep their ink/red contract without an axis field. A grouped model declares
+    its style key and its explicit axis membership so the adapter never infers a scale from the
+    series position.
     """
     if model.kind == "comparison":
         return [{"title": model.labels[0], "unit": model.unit_a, "style": "ink", "badge": ""},
                 {"title": model.labels[1], "unit": model.unit_b, "style": "red", "badge": ""}]
-    return [{"title": label, "unit": unit, "style": style, "badge": "", "axis": 0}
-            for label, unit, style in zip(model.labels, model.units, model.styles)]
+    return [{"title": label, "unit": unit, "style": style, "badge": "", "axis": axis}
+            for label, unit, style, axis
+            in zip(model.labels, model.units, model.styles, model.axes)]
 
 
 def _calendar_payload(model: CalendarModel, *, badge: str, missing: str) -> dict | None:
@@ -130,9 +132,8 @@ def _calendar_payload(model: CalendarModel, *, badge: str, missing: str) -> dict
 
     series = [
         {"title": item.label, "unit": item.unit, "style": item.style, "badge": badge,
-         "axis": 1 if model.dual and index == 1 else 0, "frequency": item.frequency,
-         "breaks": list(item.breaks)}
-        for index, item in enumerate(model.series)
+         "axis": item.axis, "frequency": item.frequency, "breaks": list(item.breaks)}
+        for item in model.series
     ]
     return {
         "version": 2,

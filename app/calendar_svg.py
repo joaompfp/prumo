@@ -97,18 +97,23 @@ def calendar_plot(model: CalendarModel | None) -> Markup:
 
 
 def calendar_legend(model: CalendarModel | None) -> Markup:
-    """The side key: label, last exact value and that side's own last native period."""
+    """The side key: label, axis membership when dual, last exact value and native period."""
     if model is None:
         return Markup("")
+    show_axes = model.dual and len(model.series) > 2
     items = []
     for index, series in enumerate(model.series):
         row = model.rows[series.latest_index]
         cell = row.cells[index]
         if cell is None:
             continue
+        axis_attr = f' data-axis="{series.axis}"' if show_axes else ""
+        axis_text = (f'<span class="legend-axis">{escape(model.axis_labels[index])}</span>'
+                     if show_axes else "")
         items.append(
-            f'<li><span class="legend-swatch swatch-{series.style}" aria-hidden="true"></span>'
-            f'{escape(series.label)}'
+            f'<li{axis_attr}>'
+            f'<span class="legend-swatch swatch-{series.style}" aria-hidden="true"></span>'
+            f'{escape(series.label)}{axis_text}'
             f'<span class="legend-value">{escape(_display(cell.value_display, series.unit))} '
             f'({escape(cell.period_text)})</span></li>')
     return Markup(f'<ul class="legend">{"".join(items)}</ul>')

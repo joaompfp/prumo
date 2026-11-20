@@ -28,6 +28,9 @@ WIDTH, HEIGHT = 880, 340
 # adapter draws its 19.8px axis name in the same top gutter. These values match its grid.
 LEFT, RIGHT, TOP, BOTTOM = 97, 33, 31, 68
 RIGHT_DUAL = 172
+# The stable, reader-facing names of the two explicit axis groups. Renderers print these
+# beside each series only when the chart actually uses both axes.
+AXIS_NAMES = ("Eixo esquerdo", "Eixo direito")
 
 
 def _text_width(text: str) -> float:
@@ -429,14 +432,18 @@ class ComparisonModel:
     """One or two axes over an ordered set of two-to-six series.
 
     Pair consumers keep their named fields (`labels`, `unit_a`, `unit_b`, `ticks_a`, `ticks_b`,
-    `lo_a`, `hi_a`, and the `a`/`b` values on each point). The ordered `values` and `styles`
-    tuples are the authoritative representation every renderer loops over.
+    `lo_a`, `hi_a`, and the `a`/`b` values on each point). The ordered `values`, `styles` and
+    `axes` tuples are the authoritative representation every renderer loops over. `axes` names
+    the axis membership of each series by position; renderers never infer it from series order,
+    colour or unit text.
     """
     kind: str
     title: str
     labels: tuple[str, ...]
+    units: tuple[str, ...]
     unit_a: str
     unit_b: str
+    axes: tuple[int, ...]
     dual: bool
     name: str
     frequency: str
@@ -464,25 +471,60 @@ class ComparisonModel:
     styles: tuple[str, ...]
 
     @property
-    def units(self) -> tuple[str, ...]:
-        """The display unit for each series, in label order."""
-        if len(self.labels) == 2:
-            return (self.unit_a, self.unit_b)
-        return (self.unit_a,) * len(self.labels)
+    def axis_labels(self) -> tuple[str, ...]:
+        """The visible axis name for each series, empty on a single shared axis.
+
+        The legend renderer uses this one contract instead of re-deriving membership from a
+        series position. A future template can print the same labels without touching geometry.
+        """
+        if not self.dual:
+            return ("",) * len(self.axes)
+        return tuple(AXIS_NAMES[axis] for axis in self.axes)
+
+
+def _validate_axis_assignments(axes, count: int, *, subject: str) -> tuple[int, ...]:
+    """Check one explicit 0/1 axis assignment per series, with no empty group."""
+    if not isinstance(axes, (list, tuple)) or len(axes) != count:
+        raise ValueError(f"{subject} charts need one axis assignment per series")
+    out: list[int] = []
+    for axis in axes:
+        if isinstance(axis, bool) or not isinstance(axis, int) or axis not in (0, 1):
+            raise ValueError(f"{subject} axis assignments must be 0 or 1")
+        out.append(axis)
+    if 1 in out and 0 not in out:
+        raise ValueError("each axis needs at least one series")
+    return tuple(out)
+
+
+def _series_units(units, count: int, unit: str, *, subject: str) -> tuple[str, ...]:
+    """Resolve per-series display units, with the old single `unit` argument as the default."""
+    if units is None:
+        return (unit,) * count
+    if not isinstance(units, (list, tuple)) or len(units) != count:
+        raise ValueError(f"{subject} charts need one unit per series")
+    if any(not isinstance(value, str) for value in units):
+        raise ValueError(f"{subject} units must be text")
+    return tuple(units)
 
 
 def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *,
                       kind: str, title: str, name: str, labels: tuple[str, ...],
-                      unit_a: str, unit_b: str, styles: tuple[str, ...], dual: bool,
+                      units: tuple[str, ...], unit_a: str, unit_b: str,
+                      styles: tuple[str, ...], axes: tuple[int, ...],
                       frequency: str, width: int = WIDTH,
                       height: int = HEIGHT) -> ComparisonModel | None:
     """Prepare ordered rows, one value tuple per series, for one or two axes.
 
     Every renderer loops over `SeriesPoint.values`; pair fields are assembled from the same
-    tuples so the SVG and the interactive payload cannot describe different points.
+    tuples so the SVG and the interactive payload cannot describe different points. Domains and
+    ticks are computed per explicit axis group, so every member of a group bounds that axis.
     """
     if not rows:
         return None
+    count = len(labels)
+    if not (len(units) == len(styles) == len(axes) == count):
+        raise ValueError("comparison charts need one unit, style and axis per series")
+    dual = 1 in axes
     periods = [r[0] for r in rows]
     ordinals = ordinals_for(periods, frequency)
     if any(ordinal != ordinal for ordinal in ordinals):
@@ -492,12 +534,14 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
             return None
         periods = [r[0] for r in rows]
         ordinals = ordinals_for(periods, frequency)
+    groups: list[list[Decimal]] = [[], []]
+    for row in rows:
+        for index, (number, _token) in enumerate(row[1]):
+            groups[axes[index]].append(number)
+    lo_a, hi_a, ticks_a = padded_domain(groups[0])
     if dual:
-        lo_a, hi_a, ticks_a = padded_domain([r[1][0][0] for r in rows])
-        lo_b, hi_b, ticks_b = padded_domain([r[1][1][0] for r in rows])
+        lo_b, hi_b, ticks_b = padded_domain(groups[1])
     else:
-        numbers = [value[0] for row in rows for value in row[1]]
-        lo_a, hi_a, ticks_a = padded_domain(numbers)
         lo_b, hi_b, ticks_b = lo_a, hi_a, ticks_a
 
     right = RIGHT_DUAL if dual else RIGHT
@@ -511,7 +555,7 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
         return TOP + float((hi - number) / span * plot_h)
 
     def value_y(index: int, number: Decimal) -> float:
-        return y_of(number, lo_b, hi_b) if dual and index == 1 else y_of(number, lo_a, hi_a)
+        return y_of(number, lo_b, hi_b) if axes[index] == 1 else y_of(number, lo_a, hi_a)
 
     xs = positions(ordinals, left, plot_w)
     prepared = tuple(
@@ -548,7 +592,8 @@ def _comparison_model(rows: list[tuple[str, tuple[tuple[Decimal, str], ...]]], *
                               label_y=label_y(candidate.y)))
     prepared_marks = tuple(marks)
     return ComparisonModel(
-        kind=kind, title=title, labels=labels, unit_a=unit_a, unit_b=unit_b, dual=dual,
+        kind=kind, title=title, labels=labels, units=units, unit_a=unit_a, unit_b=unit_b,
+        axes=axes, dual=dual,
         name=name, frequency=frequency, width=width, height=height, left=left, right=right,
         top=TOP, bottom=BOTTOM, points=prepared,
         ticks_a=tuple(YTick(value=t, text=text, y=y_of(t, lo_a, hi_a),
@@ -591,7 +636,8 @@ def comparison_model(points: list[dict], *, frequency: str, title: str,
     name = f"{title}: {labels[0]} ({unit_a}) e {labels[1]} ({second_unit})"
     return _comparison_model(
         rows, kind="comparison", title=title, name=name, labels=labels,
-        unit_a=unit_a, unit_b=second_unit, styles=("a", "b"), dual=bool(dual),
+        units=(unit_a, second_unit), unit_a=unit_a, unit_b=second_unit,
+        styles=("a", "b"), axes=(0, 1) if dual else (0, 0),
         frequency=frequency, width=width, height=height)
 
 
@@ -605,17 +651,38 @@ def _label_series(labels: tuple[str, ...]) -> str:
     return ", ".join(labels[:-1]) + " e " + labels[-1]
 
 
+def _named_series(title: str, labels: tuple[str, ...], units: tuple[str, ...]) -> str:
+    """Enumerate every side when the sides do not share one unit.
+
+    A single-unit group keeps the reviewed `A, B e C (unit)` name byte for byte. Mixed units
+    cannot honestly collapse into one suffix, so each side carries its own unit inside the
+    accessible SVG name.
+    """
+    if len(set(units)) <= 1:
+        unit = units[0] if units else ""
+        return f"{title}: {_label_series(labels)}" + (f" ({unit})" if unit else "")
+    parts = [f"{label} ({unit})" if unit else label
+             for label, unit in zip(labels, units)]
+    return f"{title}: " + ", ".join(parts[:-1]) + " e " + parts[-1]
+
+
 def group_model(points: list[dict], *, frequency: str, title: str,
-                labels: tuple[str, ...], unit: str = "", width: int = WIDTH,
+                labels: tuple[str, ...], unit: str = "",
+                units: tuple[str, ...] | None = None,
+                axes: tuple[int, ...] | None = None,
+                width: int = WIDTH,
                 height: int = HEIGHT) -> ComparisonModel | None:
-    """Prepare three to six same-unit series on one shared axis.
+    """Prepare three to six series on explicit axes.
 
     `points` are ordered oldest first; each dict carries `period` and `values`, a list of exact
-    stored tokens in `labels` order. A row with any missing or non-finite token is dropped whole,
-    exactly like a pair: no country is silently drawn on a partial period. The shared factory
-    reuses the same Decimal domains, ticks, calendar positions and gap helper as the pair model.
-    Counts outside 3 to 6, duplicate labels and malformed row shapes raise `ValueError` because
-    they are authored-definition faults rather than absent data.
+    stored tokens in `labels` order. `units` gives one display unit per series; the old `unit`
+    argument remains the default for every series. `axes` gives the authoritative 0/1 axis
+    membership per series; omitting it keeps the existing single shared axis. A row with any
+    missing or non-finite token is dropped whole, exactly like a pair: no country is silently
+    drawn on a partial period. The shared factory reuses the same Decimal domains, ticks,
+    calendar positions and gap helper as the pair model, with one domain per axis group.
+    Counts outside 3 to 6, duplicate labels, malformed row shapes and invalid axis assignments
+    raise `ValueError` because they are authored-definition faults rather than absent data.
     """
     labels = tuple(labels)
     if not GROUP_MIN_SERIES <= len(labels) <= GROUP_MAX_SERIES:
@@ -624,6 +691,10 @@ def group_model(points: list[dict], *, frequency: str, title: str,
         raise ValueError("every group series needs a short non-empty label")
     if len(set(labels)) != len(labels):
         raise ValueError("group series labels must be unique")
+    series_units = _series_units(units, len(labels), unit, subject="group")
+    series_axes = ((0,) * len(labels) if axes is None
+                   else _validate_axis_assignments(axes, len(labels), subject="group"))
+    dual = 1 in series_axes
 
     rows = []
     for point in points:
@@ -642,8 +713,12 @@ def group_model(points: list[dict], *, frequency: str, title: str,
     if not rows:
         return None
 
-    name = f"{title}: {_label_series(labels)}" + (f" ({unit})" if unit else "")
+    unit_a = next(series_units[index] for index, axis in enumerate(series_axes) if axis == 0)
+    unit_b = next((series_units[index] for index, axis in enumerate(series_axes)
+                   if axis == 1), unit_a)
+    name = _named_series(title, labels, series_units)
     return _comparison_model(
         rows, kind="group", title=title, name=name, labels=labels,
-        unit_a=unit, unit_b=unit, styles=GROUP_STYLES[:len(labels)], dual=False,
+        units=series_units, unit_a=unit_a, unit_b=unit_b,
+        styles=GROUP_STYLES[:len(labels)], axes=series_axes,
         frequency=frequency, width=width, height=height)

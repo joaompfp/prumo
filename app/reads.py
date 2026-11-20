@@ -351,15 +351,18 @@ def prepare_comparison_chart(points, *, frequency: str, title: str,
 
 
 def prepare_group_chart(points, *, frequency: str, title: str, labels: tuple[str, ...],
-                        unit: str = "", badge: str = "",
+                        unit: str = "", units: tuple[str, ...] | None = None,
+                        axes: tuple[int, ...] | None = None, badge: str = "",
                         lang: str = "pt") -> PreparedChart[ComparisonModel]:
-    """Prepare three to six same-unit series from already aligned points (`values` tokens).
+    """Prepare three to six series from already aligned points (`values` tokens).
 
-    This is the same preparation boundary as the pair wrapper: one model feeds the SVG, the
-    interactive payload and the page table, so geometry and exact reader strings cannot diverge.
+    `units` and `axes` carry the explicit per-series units and 0/1 axis membership; omitting
+    them keeps the existing same-unit, single-axis preparation. This is the same preparation
+    boundary as the pair wrapper: one model feeds the SVG, the interactive payload and the page
+    table, so geometry and exact reader strings cannot diverge.
     """
     chart = chart_model.group_model(list(points), frequency=frequency, title=title,
-                                    labels=labels, unit=unit)
+                                    labels=labels, unit=unit, units=units, axes=axes)
     return PreparedChart(
         chart=chart,
         chart_payload=interactive.build_payload(chart, badge=badge) if chart is not None else None,

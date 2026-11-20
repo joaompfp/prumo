@@ -68,9 +68,8 @@ function validV1(payload) {
   if (!Array.isArray(payload.y) || !Array.isArray(payload.display)) return false;
   if (!Array.isArray(payload.series) || !Array.isArray(payload.axes)) return false;
   if (!payload.series.length || !payload.axes.length) return false;
-  // A pair may use at most two scales; a country group declares exactly one shared axis.
+  // A chart may use at most two scales: the left and right axes.
   if (payload.axes.length > 2) return false;
-  if (payload.kind === 'group' && payload.axes.length !== 1) return false;
   if (payload.x.length !== payload.periods.length || payload.x.length !== payload.y.length) {
     return false;
   }
@@ -78,14 +77,24 @@ function validV1(payload) {
   for (let i = 0; i < payload.axes.length; i += 1) {
     if (!validAxis(payload.axes[i])) return false;
   }
+  const usedAxes = new Set();
   for (let i = 0; i < payload.series.length; i += 1) {
     const entry = payload.series[i];
     if (!entry || typeof entry.title !== 'string' || typeof entry.style !== 'string') return false;
-    if (entry.axis !== undefined
-        && (!Number.isInteger(entry.axis) || entry.axis < 0 || entry.axis >= payload.axes.length)) {
-      return false;
+    let axis;
+    if (entry.axis === undefined) {
+      // Legacy line/pair payloads predate the explicit field. Only those one-or-two-series
+      // consumers may keep their positional contract; every grouped payload declares `axis`.
+      if (payload.kind === 'group' || payload.series.length > 2) return false;
+      axis = i < payload.axes.length ? i : 0;
+    } else {
+      axis = entry.axis;
     }
+    if (!Number.isInteger(axis) || axis < 0 || axis >= payload.axes.length) return false;
+    usedAxes.add(axis);
   }
+  // Every declared axis must own at least one series; no empty axis group.
+  if (usedAxes.size !== payload.axes.length) return false;
   if (payload.breaks !== undefined && !validBreaks(payload.breaks, payload.x.length)) return false;
   if (!Array.isArray(payload.display) || payload.display.length !== payload.x.length) return false;
   for (let i = 0; i < payload.x.length; i += 1) {
@@ -131,6 +140,7 @@ function validV2(payload) {
   for (let i = 0; i < payload.axes.length; i += 1) {
     if (!validAxis(payload.axes[i])) return false;
   }
+  const usedAxes = new Set();
   for (let i = 0; i < payload.series.length; i += 1) {
     const entry = payload.series[i];
     if (!entry || typeof entry !== 'object') return false;
@@ -140,8 +150,11 @@ function validV2(payload) {
     if (!Number.isInteger(entry.axis) || entry.axis < 0 || entry.axis >= payload.axes.length) {
       return false;
     }
+    usedAxes.add(entry.axis);
     if (!validBreaks(entry.breaks, payload.x.length)) return false;
   }
+  // Every declared axis must own at least one side; no empty axis group.
+  if (usedAxes.size !== payload.axes.length) return false;
 
   for (let i = 0; i < payload.x.length; i += 1) {
     if (!Array.isArray(payload.y[i]) || payload.y[i].length !== payload.series.length) return false;
@@ -361,7 +374,8 @@ function optionFor(payload, width, activePoint) {
   const many = payload.x.length > 200;
   const series = payload.series.map((entry, index) => {
     const style = seriesStyles[entry.style] || seriesStyles.ink;
-    // A pair infers its axis from the series order; a group declares axis 0 explicitly.
+    // Grouped and calendar payloads declare axis membership explicitly. Only the legacy
+    // line/pair payload without the field keeps its reviewed positional contract.
     const axis = Number.isInteger(entry.axis) ? entry.axis
       : (index < payload.axes.length ? index : 0);
     return {

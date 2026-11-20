@@ -167,6 +167,140 @@ def test_exact_native_tokens_survive_and_hostile_labels_are_xml_escaped():
     assert "janeiro de 2026" in svg and "1,10 %" in svg
 
 
+def expected_axis_y(model, number, axis):
+    lo, hi = (model.lo_b, model.hi_b) if axis else (model.lo_a, model.hi_a)
+    span = hi - lo or 1
+    return chart_model.TOP + float((hi - number) / span
+                                   * (chart_model.HEIGHT - chart_model.TOP
+                                      - chart_model.BOTTOM))
+
+
+def test_dual_calendar_axes_name_every_side_and_bound_each_member():
+    model = calendar_model(
+        (annual((2023, "100"), (2025, "110")),
+         observations([("2023-01", "1.0"), ("2024-01", "1.5"), ("2024-02", "1.6"),
+                       ("2025-01", "2.0")]),
+         observations([("2023-Q1", "20"), ("2024-Q1", "30"), ("2025-Q1", "40")])),
+        labels=("Nível", "Taxa", "Taxa trimestral"),
+        units=("milhões de euros", "%", "%"),
+        frequencies=("A", "M", "Q"),
+        title="Três escalas",
+        axes=(0, 1, 1),
+    )
+    assert model is not None
+    assert model.axes == (0, 1, 1) and model.dual is True
+    assert model.axis_labels == ("Eixo esquerdo", "Eixo direito", "Eixo direito")
+    assert (model.unit_a, model.unit_b) == ("milhões de euros", "%")
+    assert [item.axis for item in model.series] == [0, 1, 1]
+    assert model.lo_a <= 100 and model.hi_a >= 110
+    # The later quarterly side bounds the right axis with the monthly side.
+    assert model.lo_b <= 1.0 and model.hi_b >= 40 and model.hi_b < 1000
+
+    for row in model.rows:
+        for index, cell in enumerate(row.cells):
+            if cell is None:
+                continue
+            assert cell.y == expected_axis_y(model, cell.number, model.axes[index])
+
+    february = next(row for row in model.rows if row.period_text == "01/02/2024")
+    assert february.cells[0] is None and february.cells[2] is None
+    assert february.cells[1] is not None and february.cells[1].period == "2024-02"
+
+    latest = next(row for row in model.rows if row.period_text == "01/01/2025")
+    assert [cell.period for cell in latest.cells] == ["2025", "2025-01", "2025-Q1"]
+    assert [cell.period_text for cell in latest.cells] == [
+        "2025", "janeiro de 2025", "1.º trimestre de 2025"]
+
+    payload = build_payload(model)
+    assert payload is not None
+    assert [axis["unit"] for axis in payload["axes"]] == ["milhões de euros", "%"]
+    assert payload["axes"][1]["max"] >= 40
+    assert [entry["axis"] for entry in payload["series"]] == [0, 1, 1]
+    assert [entry["frequency"] for entry in payload["series"]] == ["A", "M", "Q"]
+    february_index = next(i for i, row in enumerate(model.rows)
+                          if row.period_text == "01/02/2024")
+    assert payload["y"][february_index] == [None, 1.6, None]
+    assert payload["display"][february_index] == [None, "1,6 %", None]
+    assert payload["cell_periods"][february_index] == [None, "fevereiro de 2024", None]
+
+    svg = str(calendar_svg(model))
+    assert "Três escalas: Nível (milhões de euros), Taxa (%) e Taxa trimestral (%)" in svg
+    for label in model.labels:
+        assert label in svg
+    assert svg.count("chart-axis-label") == 2
+    assert svg.count('class="legend-axis"') == 3
+    assert svg.count("Eixo esquerdo") == 1 and svg.count("Eixo direito") == 2
+
+
+def test_calendar_reversed_axis_members_keep_their_own_scale():
+    model = calendar_model(
+        (annual((2023, "100"), (2025, "110")),
+         observations([("2023-01", "1.0"), ("2025-01", "2.0")]),
+         observations([("2023-Q1", "200000"), ("2025-Q1", "210000")])),
+        labels=("Nível", "Taxa", "Nível trimestral"),
+        units=("milhões de euros", "%", "milhões de euros"),
+        frequencies=("A", "M", "Q"),
+        title="Invertido",
+        axes=(1, 0, 1),
+    )
+    assert model is not None
+    assert model.axes == (1, 0, 1) and model.dual is True
+    assert (model.unit_a, model.unit_b) == ("%", "milhões de euros")
+    assert model.axis_labels == ("Eixo direito", "Eixo esquerdo", "Eixo direito")
+    assert model.lo_b <= 100000 and model.hi_b >= 210000
+    assert model.lo_a <= 1.0 and model.hi_a >= 2.0
+    for row in model.rows:
+        for index, cell in enumerate(row.cells):
+            if cell is None:
+                continue
+            assert cell.y == expected_axis_y(model, cell.number, model.axes[index])
+    payload = build_payload(model)
+    assert payload is not None
+    assert [axis["unit"] for axis in payload["axes"]] == ["%", "milhões de euros"]
+    assert [entry["axis"] for entry in payload["series"]] == [1, 0, 1]
+
+
+@pytest.mark.parametrize("axes, message", [
+    ((), "one axis assignment"),
+    ((0, 1), "one axis assignment"),
+    ("010", "one axis assignment"),
+    ((0, 1, 2), "0 or 1"),
+    ((0, 1, "1"), "0 or 1"),
+    ((True, 0, 0), "0 or 1"),
+    ((1, 1, 1), "at least one series"),
+])
+def test_calendar_rejects_invalid_axis_assignments(axes, message):
+    histories = (observations([("2026-01", "1")]),) * 3
+    with pytest.raises(ValueError, match=message):
+        calendar_model(histories, labels=("A", "B", "C"), units=("%",) * 3,
+                       frequencies=("M",) * 3, title="x", axes=axes)
+
+
+def test_calendar_rejects_a_dual_flag_that_contradicts_the_axis_assignments():
+    histories = (observations([("2026-01", "1")]),) * 3
+    with pytest.raises(ValueError, match="dual must match"):
+        calendar_model(histories, labels=("A", "B", "C"), units=("%",) * 3,
+                       frequencies=("M",) * 3, title="x", axes=(0, 1, 1), dual=False)
+    with pytest.raises(ValueError, match="dual must match"):
+        calendar_model(histories, labels=("A", "B", "C"), units=("%",) * 3,
+                       frequencies=("M",) * 3, title="x", axes=(0, 0, 0), dual=True)
+
+
+def test_calendar_six_sides_share_one_axis_without_positional_splitting():
+    histories = tuple(monthly(2026, (index, index + 1, index + 2)) for index in range(6))
+    model = calendar_model(
+        histories,
+        labels=tuple(f"Série {index}" for index in range(6)),
+        units=("%",) * 6,
+        frequencies=("M",) * 6,
+        title="Seis lados",
+    )
+    assert model is not None
+    assert model.axes == (0,) * 6 and model.dual is False
+    assert model.axis_labels == ("",) * 6
+    assert all(item.axis == 0 for item in model.series)
+
+
 def test_payload_v2_has_null_cells_per_side_and_two_axes():
     model = calendar_model(
         (annual((2023, "100"), (2025, "110")),
@@ -178,6 +312,7 @@ def test_payload_v2_has_null_cells_per_side_and_two_axes():
         dual=True,
     )
     assert model is not None
+    assert model.axes == (0, 1) and model.axis_labels == ("Eixo esquerdo", "Eixo direito")
     payload = build_payload(model, badge="Calculado pelo Prumo")
     assert payload is not None
     assert payload["version"] == 2 and payload["kind"] == "calendar"

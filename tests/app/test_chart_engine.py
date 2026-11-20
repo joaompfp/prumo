@@ -87,6 +87,34 @@ def test_pair_payload_stays_byte_shaped_for_existing_readers():
         '{"version": 1, "kind": "comparison", "name": "Par: A (%) e B (milhões de euros)"')
 
 
+def test_pair_axes_are_explicit_and_keep_the_same_unit_dual_semantics():
+    common = pair_model(dual=False)
+    assert common is not None
+    assert common.axes == (0, 0) and common.dual is False
+    assert common.axis_labels == ("", "")
+
+    # A deliberate same-unit pair still gets two independent scales; the unit text never decides
+    # the axes, and the series position never decides the y geometry.
+    same_unit = chart_model.comparison_model(
+        PAIR_ROWS, frequency="M", title="Par", labels=("A", "B"), unit_a="%", unit_b="%",
+        dual=True)
+    assert same_unit is not None
+    assert same_unit.axes == (0, 1) and same_unit.dual is True
+    assert same_unit.axis_labels == ("Eixo esquerdo", "Eixo direito")
+    assert same_unit.hi_a < 10 and same_unit.lo_b > 90000
+    for point in same_unit.points:
+        assert point.values[0].y == pytest.approx(
+            chart_model.TOP + float((same_unit.hi_a - point.values[0].number)
+                                    / (same_unit.hi_a - same_unit.lo_a)
+                                    * (chart_model.HEIGHT - chart_model.TOP
+                                       - chart_model.BOTTOM)))
+        assert point.values[1].y == pytest.approx(
+            chart_model.TOP + float((same_unit.hi_b - point.values[1].number)
+                                    / (same_unit.hi_b - same_unit.lo_b)
+                                    * (chart_model.HEIGHT - chart_model.TOP
+                                       - chart_model.BOTTOM)))
+
+
 def group_rows(labels, periods=("2024-S1", "2024-S2", "2025-S1")):
     rows = []
     for step, period in enumerate(periods):
@@ -103,6 +131,8 @@ def test_group_accepts_the_bounded_counts_on_one_shared_axis(count):
                                     labels=labels, unit="EUR/kWh")
     assert model is not None
     assert model.kind == "group" and model.dual is False
+    assert model.axes == (0,) * count
+    assert model.axis_labels == ("",) * count
     assert len(model.labels) == count
     assert all(len(point.values) == count for point in model.points)
     assert model.styles == chart_model.GROUP_STYLES[:count]
@@ -266,3 +296,139 @@ def test_group_styles_are_defined_once_in_css_and_honoured_by_the_adapter():
     assert "const style = seriesStyles[entry.style] || seriesStyles.ink;" in adapter
     assert "const axis = Number.isInteger(entry.axis) ? entry.axis" in adapter
     assert "if (payload.axes.length > 2) return false;" in adapter
+    # A grouped payload must declare every series axis, and neither validator accepts an axis
+    # without a member: no renderer may fall back to the series position for a group.
+    assert "if (payload.kind === 'group' || payload.series.length > 2) return false;" in adapter
+    assert "if (usedAxes.size !== payload.axes.length) return false;" in adapter
+
+
+def expected_axis_y(model, number, axis):
+    lo, hi = (model.lo_b, model.hi_b) if axis else (model.lo_a, model.hi_a)
+    span = hi - lo or 1
+    return chart_model.TOP + float((hi - number) / span
+                                   * (chart_model.HEIGHT - chart_model.TOP
+                                      - chart_model.BOTTOM))
+
+
+MIXED_UNITS = ("milhões de euros", "%", "%")
+
+
+def test_group_axes_bind_domains_and_geometry_to_every_member():
+    labels = GROUPS[3]
+    rows = [{"period": "2024-S1", "values": ["100000", "1.0", "2.0"]},
+            {"period": "2024-S2", "values": ["101000", "1.5", "3.0"]},
+            {"period": "2025-S1", "values": ["102500", "1.2", "2.5"]}]
+    model = chart_model.group_model(rows, frequency="S", title="Preço", labels=labels,
+                                    units=MIXED_UNITS, axes=(0, 1, 1))
+    assert model is not None
+    assert model.axes == (0, 1, 1) and model.dual is True
+    assert model.units == MIXED_UNITS
+    assert (model.unit_a, model.unit_b) == ("milhões de euros", "%")
+    assert model.axis_labels == ("Eixo esquerdo", "Eixo direito", "Eixo direito")
+
+    # Axis 0 contains only the first series; axis 1 is bounded by both later members.
+    assert model.lo_a <= 100000 and model.hi_a >= 102500
+    assert model.lo_b <= 1.0 and model.hi_b >= 3.0 and model.hi_b < 1000
+    assert model.ticks_a[0].value == model.lo_a and model.ticks_a[-1].value == model.hi_a
+    assert model.ticks_b[0].value == model.lo_b and model.ticks_b[-1].value == model.hi_b
+
+    for point in model.points:
+        for index, value in enumerate(point.values):
+            assert value.y == expected_axis_y(model, value.number, model.axes[index])
+    assert model.name == "Preço: Portugal (milhões de euros), Espanha (%) e França (%)"
+
+    payload = build_payload(model)
+    assert payload is not None
+    assert [axis["unit"] for axis in payload["axes"]] == ["milhões de euros", "%"]
+    assert [entry["axis"] for entry in payload["series"]] == [0, 1, 1]
+    assert payload["y"] == [[100000.0, 1.0, 2.0], [101000.0, 1.5, 3.0],
+                            [102500.0, 1.2, 2.5]]
+    assert payload["display"][0] == [f"{format_value('100000')} milhões de euros",
+                                     "1,0 %", "2,0 %"]
+
+    svg = str(group_chart(rows, frequency="S", title="Preço", labels=labels,
+                          units=MIXED_UNITS, axes=(0, 1, 1)))
+    assert svg.count("chart-axis-label") == 2
+    assert svg.count('class="chart-line chart-line-g') == 3
+    assert svg.count('class="legend-axis"') == 3
+    assert svg.count("Eixo esquerdo") == 1 and svg.count("Eixo direito") == 2
+    for label in labels:
+        assert label in svg
+
+
+def test_group_six_series_use_both_explicit_axis_groups():
+    labels = GROUPS[6]
+    units = ("%", "%", "milhões de euros", "milhões de euros", "%", "milhões de euros")
+    axes = (0, 0, 1, 1, 0, 1)
+    rows = [{"period": "2024-S1", "values": ["1.0", "2.0", "100000", "200000", "5.0",
+                                             "500000"]},
+            {"period": "2024-S2", "values": ["1.5", "2.5", "101000", "201000", "5.5",
+                                             "510000"]}]
+    model = chart_model.group_model(rows, frequency="S", title="Preço", labels=labels,
+                                    units=units, axes=axes)
+    assert model is not None
+    assert model.axes == axes and model.dual is True
+    assert model.styles == chart_model.GROUP_STYLES
+    # The later axis-1 member sets the domain; the old index == 1 inference would have used
+    # only series 1 (a percentage) and clipped every million-euro series.
+    assert model.lo_b <= 100000 and model.hi_b >= 510000
+    assert model.lo_a <= 1.0 and model.hi_a >= 5.5
+    payload = build_payload(model)
+    assert payload is not None
+    assert len(payload["axes"]) == 2
+    assert [entry["axis"] for entry in payload["series"]] == list(axes)
+    svg = str(group_chart(rows, frequency="S", title="Preço", labels=labels, units=units,
+                          axes=axes))
+    assert svg.count("chart-axis-label") == 2
+    assert svg.count('class="legend-axis"') == 6
+    assert svg.count("Eixo esquerdo") == 3 and svg.count("Eixo direito") == 3
+    for label in labels:
+        assert label in svg
+
+
+def test_group_reversed_axis_members_keep_their_own_scale():
+    labels = GROUPS[3]
+    rows = [{"period": "2024-S1", "values": ["100000", "1.0", "200000"]},
+            {"period": "2024-S2", "values": ["101000", "1.5", "201000"]}]
+    model = chart_model.group_model(rows, frequency="S", title="Preço", labels=labels,
+                                    units=("milhões de euros", "%", "milhões de euros"),
+                                    axes=(1, 0, 1))
+    assert model is not None
+    assert model.axes == (1, 0, 1) and model.dual is True
+    assert (model.unit_a, model.unit_b) == ("%", "milhões de euros")
+    assert model.axis_labels == ("Eixo direito", "Eixo esquerdo", "Eixo direito")
+    assert model.lo_b <= 100000 and model.hi_b >= 201000
+    assert model.lo_a <= 1.0 and model.hi_a >= 1.5
+    for point in model.points:
+        for index, value in enumerate(point.values):
+            assert value.y == expected_axis_y(model, value.number, model.axes[index])
+    payload = build_payload(model)
+    assert payload is not None
+    assert [axis["unit"] for axis in payload["axes"]] == ["%", "milhões de euros"]
+    assert [entry["axis"] for entry in payload["series"]] == [1, 0, 1]
+
+
+@pytest.mark.parametrize("axes, message", [
+    ((), "one axis assignment"),
+    ((0, 1), "one axis assignment"),
+    ("010", "one axis assignment"),
+    (1, "one axis assignment"),
+    ((0, 1, 2), "0 or 1"),
+    ((0, 1, "1"), "0 or 1"),
+    ((True, 0, 0), "0 or 1"),
+    ((1, 1, 1), "at least one series"),
+])
+def test_group_rejects_invalid_axis_assignments(axes, message):
+    with pytest.raises(ValueError, match=message):
+        chart_model.group_model([], frequency="S", title="Preço", labels=GROUPS[3],
+                                axes=axes)
+
+
+def test_group_rejects_per_series_unit_shape_faults():
+    with pytest.raises(ValueError, match="one unit per series"):
+        chart_model.group_model([], frequency="S", title="Preço", labels=GROUPS[3],
+                                units=("%", "%"))
+    bad_units: tuple = ("%", "%", 1)
+    with pytest.raises(ValueError, match="units must be text"):
+        chart_model.group_model([], frequency="S", title="Preço", labels=GROUPS[3],
+                                units=bad_units)
