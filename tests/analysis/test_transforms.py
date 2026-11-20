@@ -149,6 +149,68 @@ def test_native_annual_nonfinite_or_huge_value_drops_year():
     assert [value.period for value in series.values] == ["2024"]
 
 
+def test_native_annual_break_status_drops_the_year_and_reports_it():
+    raw = (
+        InputValue("s", "2022", "100"),
+        InputValue("s", "2023", "50", "break"),
+        InputValue("s", "2024", "200"),
+    )
+    series = annualise("worldbank_gdp_usd.PT.A", "A", "USD", raw)
+    assert series.method == "native"
+    assert [value.period for value in series.values] == ["2022", "2024"]
+    assert series.dropped_years == ("2023",)
+    assert series.values[1].inputs[0] is raw[2]
+
+
+def test_native_break_year_is_absent_from_base100_and_pp_output():
+    levels = annualise(
+        "worldbank_gdp_usd.PT.A", "A", "USD",
+        (InputValue("s", "2022", "100"),
+         InputValue("s", "2023", "50", "break"),
+         InputValue("s", "2024", "200")))
+    base100 = normalise(
+        levels.values, indicator_key="worldbank_gdp_usd.PT.A", unit="USD",
+        mode="base100", base_year="2022")
+    assert [(value.period, value.value_text) for value in base100] == [
+        ("2022", "100.000000"), ("2024", "200.000000")]
+
+    rates = annualise(
+        "unemployment_rate.PT.A", "A", "%",
+        (InputValue("s", "2022", "2"),
+         InputValue("s", "2023", "9", "break"),
+         InputValue("s", "2024", "4")))
+    pp = normalise(
+        rates.values, indicator_key="unemployment_rate.PT.A", unit="%",
+        mode="pp", base_year="2022")
+    assert [(value.period, value.value_text) for value in pp] == [
+        ("2022", "0.000000"), ("2024", "2.000000")]
+
+
+def test_native_break_as_explicit_base_is_missing_base():
+    series = annualise(
+        "worldbank_gdp_usd.PT.A", "A", "USD",
+        (InputValue("s", "2022", "100"),
+         InputValue("s", "2023", "50", "break"),
+         InputValue("s", "2024", "200")))
+    with pytest.raises(AnalysisUnavailable) as info:
+        normalise(series.values, indicator_key="worldbank_gdp_usd.PT.A", unit="USD",
+                  mode="base100", base_year="2023")
+    assert info.value.code == "missing_base"
+
+
+def test_native_annual_non_break_status_keeps_exact_token():
+    raw = (
+        InputValue("s", "2022", "100"),
+        InputValue("s", "2023", "50.5000", "provisional"),
+        InputValue("s", "2024", "200"),
+    )
+    series = annualise("worldbank_gdp_usd.PT.A", "A", "USD", raw)
+    assert [(value.period, value.value_text) for value in series.values] == [
+        ("2022", "100"), ("2023", "50.5000"), ("2024", "200")]
+    assert series.dropped_years == ()
+    assert series.values[1].inputs[0].status_flag == "provisional"
+
+
 def test_year_end_keeps_december_token_and_requires_twelve_months():
     values = year_values(2024, range(1, 12)) + (
         InputValue("credit", "2024-12", "-12.3450"),)

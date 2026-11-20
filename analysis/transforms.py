@@ -253,6 +253,9 @@ def _annual_native(values: tuple[InputValue, ...]) -> AnnualSeries:
             dropped.append(_year_token(year))
             continue
         item = entries[0]
+        if item.status_flag == "break":
+            dropped.append(_year_token(year))
+            continue
         try:
             _parse_decimal(item.value_text)
         except AnalysisUnavailable:
