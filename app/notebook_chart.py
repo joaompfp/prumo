@@ -335,7 +335,6 @@ class NotebookChart:
     period_label: str = ""
     analysis_note: str = ""
     evidence: tuple[SideEvidence, ...] = ()
-    missing_text: str = ""
 
     @property
     def drawable(self) -> bool:

@@ -149,6 +149,8 @@ class NotebookCopy:
     chart_missing_cell: str
     chart_calendar_alignment: str
     chart_calendar_window: str
+    chart_calendar_excluded_one: str
+    chart_calendar_excluded_many: str
     chart_interval_analysis: str
     chart_transform_annual: str
     chart_transform_shared: str
@@ -182,11 +184,14 @@ class NotebookCopy:
     chart_evidence_source_unit: str
     chart_evidence_chart_unit: str
     chart_evidence_output: str
+    chart_evidence_output_original: str
     chart_evidence_inputs: str
     chart_evidence_latest: str
+    chart_evidence_latest_native: str
     chart_evidence_base_output: str
     chart_evidence_calculated: str
     chart_evidence_note: str
+    chart_evidence_note_native: str
     chart_evidence_series_link: str
     chart_provenance_summary_own: str
     chart_provenance_heading_own: str
@@ -362,11 +367,17 @@ _PT = NotebookCopy(
     chart_period_calendar="Última posição no calendário",
     chart_period_annual="Último período anual",
     chart_missing_cell="sem observação nesta posição temporal",
-    chart_calendar_alignment="Cada linha é um dia de início real no calendário. Cada série "
-                             "mantém o seu período nativo; uma célula sem observação não é "
-                             "zero nem uma interpolação.",
+    chart_calendar_alignment="A posição de cada linha é um dia de início real no calendário, "
+                             "uma convenção de apresentação e não a data de publicação nem de "
+                             "medição. Cada série mantém o seu período nativo; uma célula sem "
+                             "observação não é zero nem uma interpolação. Totais anuais e "
+                             "trimestrais não são diretamente equivalentes.",
     chart_calendar_window="Janela: {window}, de {first} a {last}, medida pelo calendário real e "
                           "ancorada na observação finita mais recente.",
+    chart_calendar_excluded_one="1 observação de {label} sem valor numérico ou data reconhecida "
+                                "fica fora do calendário e da tabela.",
+    chart_calendar_excluded_many="{count} observações de {label} sem valor numérico ou data "
+                                  "reconhecida ficam fora do calendário e da tabela.",
     chart_interval_analysis="As séries de intervalos de 15 minutos só podem ser comparadas entre "
                             "si, no mesmo dia UTC, e não podem ser anuais nem transformadas.",
     chart_transform_annual="As transformações exigem a frequência anual. Mude a frequência para "
@@ -393,10 +404,10 @@ _PT = NotebookCopy(
                             "arredondados.",
     chart_analysis_calculated="Os valores assinalados como calculados são vistas analíticas do "
                               "Prumo, não observações verificadas pela fonte.",
-    chart_analysis_hicp="A média calculada de doze taxas homólogas mensais não é a taxa de "
-                        "inflação anual oficial.",
-    chart_analysis_unemployment="A média calculada de doze taxas mensais de desemprego é não "
-                                "ponderada e não é a estimativa anual oficial.",
+    chart_analysis_hicp="A média anual calculada de doze taxas homólogas mensais não é a taxa "
+                        "de inflação anual oficial.",
+    chart_analysis_unemployment="A média anual calculada de doze taxas mensais de desemprego é "
+                                "não ponderada e não é a estimativa anual oficial.",
     chart_analysis_year_end="O valor de dezembro é uma vista calculada e exige um ano mensal "
                             "completo.",
     chart_analysis_native="Os valores anuais nativos mantêm-se observações originais.",
@@ -408,7 +419,7 @@ _PT = NotebookCopy(
     chart_formula_pp="valor − valor do ano de base",
     chart_base_auto="automático, primeiro ano comum na janela",
     chart_base_explicit="explícito",
-    chart_evidence_summary="Ver entradas originais dos valores calculados",
+    chart_evidence_summary="Ver entradas originais e proveniência",
     chart_evidence_heading="Entradas originais",
     chart_evidence_method="Método",
     chart_evidence_formula="Fórmula",
@@ -417,12 +428,16 @@ _PT = NotebookCopy(
     chart_evidence_source_unit="Unidade da fonte",
     chart_evidence_chart_unit="Unidade do gráfico",
     chart_evidence_output="Valor calculado",
+    chart_evidence_output_original="Valor original",
     chart_evidence_inputs="Entradas originais",
     chart_evidence_latest="Último valor calculado",
+    chart_evidence_latest_native="Último valor original",
     chart_evidence_base_output="Valor de base",
     chart_evidence_calculated="calculado",
     chart_evidence_note="A verificação matemática do valor calculado é independente da "
                         "verificação da fonte dos valores originais.",
+    chart_evidence_note_native="Esta linha mantém o valor anual original da fonte; o Prumo "
+                              "não o transformou.",
     chart_evidence_series_link="Abrir série original",
     chart_provenance_summary_own="Ver proveniência dos períodos originais",
     chart_provenance_heading_own="Períodos originais por série",

@@ -79,6 +79,26 @@ def _raw(values: tuple[dict, ...]) -> dict[str, dict]:
     return {value["period"]: value for value in values}
 
 
+def _calendar_excluded(values: tuple[dict, ...], frequency: str,
+                       bound: date | None) -> int:
+    """Native observations the sparse calendar cannot place inside the shown window.
+
+    A non-canonical period cannot be compared with the window bound, so it is counted
+    unconditionally; a canonical period outside the window is not a display exclusion.
+    """
+    count = 0
+    for value in values:
+        start = period_start(value["period"], frequency)
+        if start is None:
+            count += 1
+            continue
+        if bound is not None and start < bound:
+            continue
+        if decimal_or_none(value["value_text"]) is None:
+            count += 1
+    return count
+
+
 def _calendar_side(db: Db, row: dict, label: str, style: str, cell, lang: str,
                    raw_by_period: dict[str, dict]) -> notebook_chart.ChartSide:
     value = raw_by_period[cell.period]
@@ -156,9 +176,11 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
     if model is None:
         return notebook_chart._empty(
             "unavailable", copy.chart_no_draw, settings, choices, copy)
-    payload = interactive.build_payload(model)
+    payload = interactive.build_payload(model, missing=copy.chart_missing_cell)
 
     raw_maps = [_raw(values) for values in full]
+    exclusions = [_calendar_excluded(values, row["frequency"], bound)
+                  for row, values in zip(rows, full)]
     sides = []
     for index, (row, label, side) in enumerate(zip(rows, labels, model.series)):
         latest = model.rows[side.latest_index].cells[index]
@@ -185,6 +207,14 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
     last_texts = tuple(side.period_text for side in sides)
     last_period_text = " · ".join(last_texts) if len(last_texts) > 1 else (
         last_texts[0] if last_texts else "")
+    excluded_parts = []
+    for label, count in zip(labels, exclusions):
+        if not count:
+            continue
+        template = (copy.chart_calendar_excluded_one if count == 1
+                    else copy.chart_calendar_excluded_many)
+        excluded_parts.append(template.format(count=format_count(count), label=label))
+    alignment_text = " ".join((copy.chart_calendar_alignment, *excluded_parts))
     return notebook_chart.NotebookChart(
         state="ready", state_label="", reason="", chart=model, chart_payload=payload,
         chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"),
@@ -192,12 +222,11 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
         window_text=copy.chart_calendar_window.format(
             window=_window_label(copy, settings.window),
             first=model.rows[0].period_text, last=model.rows[-1].period_text),
-        alignment_text=copy.chart_calendar_alignment,
+        alignment_text=alignment_text,
         one_point_note="", settings=settings, max_group=notebook_chart.MAX_GROUP,
         last_period_text=last_period_text,
         period_label=(copy.chart_period_mixed if len(sides) > 1
                       else copy.chart_period_calendar),
-        missing_text=copy.chart_missing_cell,
     )
 
 
@@ -324,6 +353,23 @@ def _analysis_note(copy: NotebookCopy, sides: tuple[_AnnualSide, ...],
     return " ".join(parts)
 
 
+def _mark_payload_badges(payload: dict | None, calculated_flags: list[bool],
+                         badge: str) -> None:
+    """Mark computed sides only in the browser payload, leaving native sides unmarked.
+
+    The shared payload builder has one badge argument; the notebook has an independent method
+    per side. Annotating the returned series metadata keeps the adapter contract unchanged.
+    """
+    if not payload:
+        return
+    series = payload.get("series")
+    if not isinstance(series, list):
+        return
+    for item, calculated in zip(series, calculated_flags):
+        if isinstance(item, dict):
+            item["badge"] = badge if calculated else ""
+
+
 def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
                    labels: tuple[str, ...],
                    settings: notebook_chart.ChartSettings,
@@ -398,7 +444,13 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
 
     points = [{"period": f"{year:04d}",
                "value_text": selected[0][year].value_text} for year in window_years]
-    title = labels[0] if len(labels) == 1 else copy.chart_heading
+    latest_year = window_years[-1]
+    calculated_flags = [transform != "original" or side.series.method != "native"
+                        for side in side_tuple]
+    chart_labels = tuple(
+        f"{label} ({copy.chart_calculated_badge})" if calculated else label
+        for label, calculated in zip(labels, calculated_flags))
+    title = chart_labels[0] if len(labels) == 1 else copy.chart_heading
     if len(labels) == 1:
         prepared = reads.prepare_line_chart(
             points, frequency="A", title=title, unit=chart_units[0])
@@ -408,7 +460,7 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
               "a": selected[0][year].value_text,
               "b": selected[1][year].value_text}
              for point, year in zip(points, window_years)],
-            frequency="A", title=title, labels=labels,
+            frequency="A", title=title, labels=(chart_labels[0], chart_labels[1]),
             unit_a=chart_units[0], unit_b=chart_units[1],
             dual=settings.scale == "dupla")
     else:
@@ -417,16 +469,16 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
               "values": tuple(selected[index][year].value_text
                               for index in range(len(labels)))}
              for point, year in zip(points, window_years)],
-            frequency="A", title=title, labels=labels, unit=chart_units[0])
+            frequency="A", title=title, labels=chart_labels, unit=chart_units[0])
     if prepared.chart is None:
         return notebook_chart._empty(
             "unavailable", copy.chart_no_draw, settings, choices, copy)
+    _mark_payload_badges(prepared.chart_payload, calculated_flags,
+                         copy.chart_calculated_badge)
 
-    latest_year = window_years[-1]
-    calculated_flags = [transform != "original" or side.series.method != "native"
-                        for side in side_tuple]
     chart_sides = []
     evidence = []
+    any_calculated = any(calculated_flags)
     for index, (side, label) in enumerate(zip(side_tuple, labels)):
         latest = selected[index][latest_year]
         calculated = calculated_flags[index]
@@ -488,6 +540,26 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
                 outputs=outputs,
                 note=_dropped_text(copy, label, side.series.dropped_years),
             ))
+        elif any_calculated:
+            # A native annual side shares the panel with calculated sides. Its own provenance
+            # must survive in the same evidence disclosure; dropping it would hide the source
+            # run, fetched time, archived file and unit behind the other side's calculation.
+            evidence.append(notebook_chart.SideEvidence(
+                label=label,
+                series_path=f"/series/{side.row['id']}",
+                method_text=copy.chart_method_native,
+                formula_text="",
+                base_text="",
+                rounding_text="",
+                source_unit_text=base_unit_text(lang, side.row["unit"]),
+                chart_unit_text=chart_units[index],
+                calculated=False,
+                latest=_evidence_output(copy, latest, side.raw_by_period,
+                                        side.row["frequency"], lang),
+                base=None,
+                outputs=(),
+                note="",
+            ))
 
     table_rows = tuple(
         notebook_chart.ChartTableRow(
@@ -495,7 +567,12 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
             cells=tuple(
                 notebook_chart.ChartCell(
                     display=format_value(selected[index][year].value_text),
-                    status_text="",
+                    status_text=(
+                        flag_text(lang, selected[index][year].inputs[0].status_flag or "")
+                        if selected[index][year].method == "native"
+                        and selected[index][year].transformation == "original"
+                        and selected[index][year].inputs
+                        and selected[index][year].inputs[0].status_flag else ""),
                     period_text=format_period(f"{year:04d}", "A"),
                     calculated=(selected[index][year].method != "native"
                                 or selected[index][year].transformation != "original"),
@@ -520,7 +597,6 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
         analysis_note=_analysis_note(copy, side_tuple, transform, base_year, auto_base,
                                      labels),
         evidence=tuple(evidence),
-        missing_text=copy.chart_missing_cell,
     )
 
 

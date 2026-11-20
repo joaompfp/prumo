@@ -6,8 +6,13 @@ the per-side provenance/evidence and the address controls that must survive ever
 """
 import hashlib
 import re
+import threading
+import time
+from contextlib import contextmanager
+from dataclasses import replace
 from html import unescape
 
+import pytest
 from starlette.datastructures import QueryParams
 
 from app import notebook
@@ -18,12 +23,14 @@ from app.notebook_chart import (
     without_all_sides,
     without_side,
 )
+from presentation import notebook as notebook_copy
 from tests.app.conftest import EUROSTAT, T1, T2
 from tests.app.test_notebook_chart import (
     build_site,
     chart_block,
     chart_form,
     client,
+    insert_served,
     payload,
     visible,
 )
@@ -53,6 +60,60 @@ def complete_months(start_year, end_year, value="2.0"):
 def gdp_row(series_id, key, geography, periods, at=T1):
     return {"id": series_id, "key": key, "source": EUROSTAT, "unit": "EUR per capita",
             "frequency": "A", "geography": geography, "periods": periods, "at": at}
+
+
+@contextmanager
+def live_site(path):
+    """One real uvicorn server for browser-level print and control checks."""
+    import uvicorn
+
+    from app.main import create_app
+
+    config = uvicorn.Config(create_app(str(path)), host="127.0.0.1", port=0,
+                            log_level="error")
+    server = uvicorn.Server(config)
+    thread = threading.Thread(target=server.run, daemon=True)
+    thread.start()
+    deadline = time.monotonic() + 10
+    while not server.started and time.monotonic() < deadline:
+        time.sleep(0.02)
+    if not server.started:
+        pytest.skip("uvicorn did not start the notebook site")
+    port = server.servers[0].sockets[0].getsockname()[1]
+    try:
+        yield f"http://127.0.0.1:{port}"
+    finally:
+        server.should_exit = True
+        thread.join(timeout=5)
+
+
+@contextmanager
+def _chromium_browser():
+    sync_api = pytest.importorskip("playwright.sync_api")
+    from tests.app.test_chart_layout import _chromium
+
+    options = {"headless": True, "args": ["--no-sandbox"]}
+    executable = _chromium()
+    if executable:
+        options["executable_path"] = executable
+    playwright = None
+    try:
+        playwright = sync_api.sync_playwright().start()
+    except Exception as exc:
+        pytest.skip(f"Playwright unavailable: {exc}")
+    assert playwright is not None
+    browser = None
+    try:
+        browser = playwright.chromium.launch(**options)
+    except Exception as exc:
+        playwright.stop()
+        pytest.skip(f"Chromium unavailable: {exc}")
+    assert browser is not None
+    try:
+        yield browser
+    finally:
+        browser.close()
+        playwright.stop()
 
 
 def test_mixed_hicp_and_gdp_uses_calendar_rows_cards_and_side_provenance(tmp_path):
@@ -97,6 +158,41 @@ def test_mixed_hicp_and_gdp_uses_calendar_rows_cards_and_side_provenance(tmp_pat
     assert "sem observação nesta posição temporal" in table
     assert "janeiro de 2023" in table and "2023" in table
     assert "<td class=\"num cell-missing\">" in table
+    # Calendar placement is a display convention, not a publication or measurement date.
+    assert "uma convenção de apresentação e não a data de publicação nem de medição" in text
+    assert "Totais anuais e trimestrais não são diretamente equivalentes." in text
+    sources = re.search(r'<ul class="notebook-chart-sources">.*?</ul>', html, re.S).group(0)
+    assert "Frequência: Mensal" in sources and "Frequência: Anual" in sources
+
+
+def test_calendar_reports_invalid_native_records_and_uses_presentation_missing_copy(
+        tmp_path, monkeypatch):
+    path = build_site(tmp_path, [
+        {"id": HICP, "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": {"2023-12": "2.0"}},
+        gdp_row(GDP_PT, "eurostat_gdp_per_capita_eur.PT.A", "PT", {"2024": "21000"}),
+    ])
+    insert_served(path, HICP, "2024-01", "n.d.")
+    monkeypatch.setitem(
+        notebook_copy._COPY, "pt",
+        replace(notebook_copy._PT, chart_missing_cell="sem célula nesta data"))
+    with client(path) as site:
+        response = site.get(f"/caderno?s={HICP}&s={GDP_PT}&escala=dupla")
+    assert response.status_code == 200
+    html = response.text
+    data = payload(html)
+    text = visible(html)
+
+    # The invalid native record is never drawn or turned into a missing cell of its own, and
+    # the alignment note names its side and count instead of filtering it silently.
+    assert data["missing"] == "sem célula nesta data"
+    assert data["periods"] == ["01/12/2023", "01/01/2024"]
+    assert data["display"][1] == [None, "21\u00a0000 euros por habitante"]
+    assert "1 observação de Taxa de variação homóloga do IHPC - Portugal sem valor " \
+           "numérico ou data reconhecida fica fora do calendário e da tabela." in text
+    table = chart_block(html)
+    assert "sem célula nesta data" in table
+    assert "n.d." not in table
 
 
 def test_quarter_semester_and_annual_originals_share_only_real_start_rows(tmp_path):
@@ -172,9 +268,9 @@ def test_annual_pp_rates_disclose_calculated_method_base_and_raw_inputs(tmp_path
     assert [axis["unit"] for axis in data["axes"]] == ["p.p."]
     assert data["display"] == [["0,000000 p.p.", "0,000000 p.p."],
                                ["1,000000 p.p.", "1,000000 p.p."]]
-    assert "A média calculada de doze taxas homólogas mensais não é a taxa de inflação " \
-           "anual oficial." in text
-    assert "não é a estimativa anual oficial" in text
+    assert "A média anual calculada de doze taxas homólogas mensais não é a taxa de " \
+           "inflação anual oficial." in text
+    assert "A média anual calculada de doze taxas mensais de desemprego é não ponderada" in text
     assert "Ano de base: 2023 (explícito)" in text
     assert "100 × valor ÷ valor do ano de base" not in text
     assert "valor − valor do ano de base" in text
@@ -273,6 +369,61 @@ def test_native_annual_original_remains_an_original_observation(tmp_path):
     assert 'badge badge-quiet">calculado' not in chart_block(response.text)
     assert "Entradas originais" not in visible(response.text)
     assert "01/11/2026, 09:00 UTC" in visible(response.text)
+
+
+def test_mixed_annual_keeps_native_status_and_native_provenance_evidence(tmp_path):
+    gdp = gdp_row(GDP_PT, "eurostat_gdp_per_capita_eur.PT.A", "PT",
+                  {"2023": "20000", "2024": "21000"}, at=T2)
+    gdp["flag"] = "provisional"
+    path = build_site(tmp_path, [
+        {"id": HICP, "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": complete_months(2023, 2024, "2.0"), "at": T1},
+        gdp,
+    ])
+    with client(path) as site:
+        response = site.get(
+            f"/caderno?s={HICP}&s={GDP_PT}&frequencia=anual&escala=dupla")
+    assert response.status_code == 200
+    html = response.text
+    data = payload(html)
+    table = chart_block(html)
+
+    # The native annual side keeps its publisher status; the calculated side is marked only
+    # as calculated. A provisional native value must never look like a verified calculation.
+    assert table.count("provisório") == 2
+    rows = re.findall(r"<tr>(.*?)</tr>", table, re.S)
+    row_2024 = next(row for row in rows if "<td>2024</td>" in row)
+    cells = re.findall(r"<td[^>]*>(.*?)</td>", row_2024, re.S)
+    assert "calculado" in cells[1] and "provisório" not in cells[1]
+    assert "provisório" in cells[2] and "calculado" not in cells[2]
+
+    # Per-side payload badge and SVG/legend title carry the calculated mark only on the
+    # computed side. The native side stays unmarked.
+    assert data["series"][0]["badge"] == "calculado"
+    assert data["series"][1]["badge"] == ""
+    assert "calculado" in data["series"][0]["title"]
+    assert "calculado" not in data["series"][1]["title"]
+    assert f'{data["series"][0]["title"]} - 2023' in html
+    assert f'{data["series"][1]["title"]} - 2023' in html
+
+    # The evidence section now carries both sides: the calculated HICP inputs and the native
+    # GDP observation with its own run, fetched time, archived file, unit and series link.
+    sections = re.findall(
+        r'<section class="notebook-calculation-side">(.*?)</section>', html, re.S)
+    assert len(sections) == 2
+    hicp_side = next(section for section in sections if f"/series/{HICP}" in section)
+    gdp_side = next(section for section in sections if f"/series/{GDP_PT}" in section)
+    assert 'badge badge-quiet">calculado' in hicp_side
+    assert "média aritmética de doze valores mensais" in hicp_side
+    assert "calculado" not in gdp_side
+    assert "valor anual original" in gdp_side
+    assert "Último valor original" in gdp_side
+    assert "02/11/2026, 09:00 UTC" in gdp_side
+    assert re.search(r"#\d+", gdp_side)
+    assert "euros por habitante" in gdp_side
+    assert "provisório" in gdp_side
+    assert "Ficheiro arquivado" in gdp_side
+    assert "Entradas originais" in visible(html)
 
 
 def test_annualised_mixed_units_need_the_deliberate_dual_scale(tmp_path):
@@ -565,6 +716,99 @@ def test_mixed_side_without_a_drawable_window_makes_the_chart_unavailable(tmp_pa
     assert "não têm períodos comuns com valores numéricos" in visible(response.text)
     assert "chart-data" not in response.text
     assert response.text.count('<article class="card">') == 2
+
+
+def test_print_opens_evidence_disclosure_with_real_inputs_and_links(tmp_path):
+    path = build_site(tmp_path, [
+        gdp_row(GDP_PT, "eurostat_gdp_per_capita_eur.PT.A", "PT",
+                {"2010": "10000", "2019": "20000", "2024": "25000"}, at=T2),
+    ])
+    query = (f"/caderno?s={GDP_PT}&frequencia=anual&transformacao=base100"
+             "&base=2019&janela=5a")
+    probe = """() => {
+      const details = document.querySelector('details.notebook-calculation');
+      const link = details.querySelector('a[href*="/series/"]');
+      const list = details.querySelector('.provenance-list');
+      const nested = details.querySelector('details.table-details');
+      const direct = [...details.querySelectorAll('.notebook-calculation-side')]
+        .flatMap(side => [...side.querySelectorAll(':scope > table.analysis-inputs')]);
+      return {
+        open: details.open,
+        linkVisible: link ? link.checkVisibility() : null,
+        listHeight: list ? list.getBoundingClientRect().height : 0,
+        directTables: direct.map(t => ({visible: t.checkVisibility(),
+                                        height: t.getBoundingClientRect().height})),
+        nestedOpen: nested ? nested.open : null,
+        nestedVisible: nested ? nested.querySelector('table').checkVisibility() : null,
+        svgHeight: document.querySelector('svg.chart')
+          ? document.querySelector('svg.chart').getBoundingClientRect().height : 0,
+        canvasDisplay: getComputedStyle(document.querySelector('.chart-canvas')).display,
+      };
+    }"""
+    with live_site(path) as base_url, _chromium_browser() as browser:
+        context = browser.new_context(viewport={"width": 1280, "height": 900},
+                                      java_script_enabled=False)
+        page = context.new_page()
+        page.goto(f"{base_url}{query}", wait_until="networkidle")
+        screen = page.evaluate(probe)
+        # The disclosure is genuinely closed on screen and needs no JavaScript to render.
+        assert screen["open"] is False
+        assert screen["linkVisible"] is False
+
+        page.emulate_media(media="print")
+        printed = page.evaluate(probe)
+        assert printed["open"] is False  # the open attribute did not change
+        assert printed["linkVisible"] is True
+        assert printed["listHeight"] > 0
+        assert len(printed["directTables"]) == 2
+        assert all(row["visible"] and row["height"] > 0
+                   for row in printed["directTables"])
+        assert printed["nestedOpen"] is False
+        assert printed["nestedVisible"] is True
+        assert printed["svgHeight"] > 0
+        assert printed["canvasDisplay"] == "none"
+        body = page.locator("details.notebook-calculation").inner_text()
+        assert "Fórmula" in body and "100 × valor ÷ valor do ano de base" in body
+        assert "Ano de base" in body and "2019 (explícito)" in body
+        assert "Último valor calculado" in body and "Valor de base" in body
+        assert "Abrir série original" in body
+        assert "Entradas originais" in body
+        context.close()
+
+
+def test_base_control_matches_enlarged_controls_at_mobile_widths(tmp_path):
+    path = build_site(tmp_path, [
+        gdp_row(GDP_PT, "eurostat_gdp_per_capita_eur.PT.A", "PT", {"2024": "25000"}, at=T2),
+    ])
+    probe = """() => {
+      const read = (el) => {
+        const style = getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return {font: parseFloat(style.fontSize), minHeight: parseFloat(style.minHeight),
+                height: rect.height, left: rect.left, right: rect.right};
+      };
+      return {
+        base: read(document.querySelector('input[name="base"]')),
+        select: read(document.querySelector('select[name="transformacao"]')),
+        scrollWidth: document.documentElement.scrollWidth,
+        innerWidth: window.innerWidth,
+      };
+    }"""
+    with live_site(path) as base_url, _chromium_browser() as browser:
+        page = browser.new_page(viewport={"width": 320, "height": 900})
+        page.goto(f"{base_url}/caderno?s={GDP_PT}&grafico=off&base=2019",
+                  wait_until="networkidle")
+        for width in (320, 390):
+            page.set_viewport_size({"width": width, "height": 900})
+            boxes = page.evaluate(probe)
+            for control in (boxes["base"], boxes["select"]):
+                assert control["font"] >= 25.2
+                assert control["minHeight"] >= 52
+                assert control["height"] >= 52
+            assert boxes["base"]["left"] >= 0
+            assert boxes["base"]["right"] <= boxes["innerWidth"] + 0.5
+            assert boxes["scrollWidth"] <= boxes["innerWidth"] + 1
+        page.close()
 
 
 def test_analysis_settings_parse_only_valid_combinations_and_keep_the_old_order():

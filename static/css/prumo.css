@@ -870,7 +870,9 @@ section { margin: 80px 0; }
 .notebook-chart-options > label {
   display: flex; flex-direction: column; gap: 6px; font-weight: 600;
 }
-.notebook-chart-options select, .notebook-chart-options input[type="date"] {
+.notebook-chart-options select, .notebook-chart-options input[type="date"],
+.notebook-chart-options input[name="base"] {
+  width: 100%; max-width: 100%;
   font: inherit; font-size: .9rem; color: var(--ink); background: var(--surface);
   border: 1px solid var(--rule-strong); border-radius: 6px;
   padding: 10px 12px; min-height: 52px; min-width: 0;
@@ -971,4 +973,30 @@ section { margin: 80px 0; }
   /* Print selects the server SVG: the canvas and its controls never reach paper. */
   .chart-enhanced .chart { opacity: 1 !important; }
   .chart-canvas, .chart-controls, .chart-hint { display: none !important; }
+  /* Evidence must reach paper even when its native disclosure is closed on screen. The
+     ::details-content rule opens the browser's content wrapper; the child rule is the
+     fallback for engines that still hide closed details with display:none. */
+  .notebook-workspace details.notebook-definitions,
+  .notebook-workspace details.provenance-details,
+  .notebook-workspace details.table-details { display: block; }
+  .notebook-workspace details.notebook-definitions > summary,
+  .notebook-workspace details.provenance-details > summary,
+  .notebook-workspace details.table-details > summary { display: none; }
+  .notebook-workspace details.notebook-definitions::details-content,
+  .notebook-workspace details.provenance-details::details-content,
+  .notebook-workspace details.table-details::details-content {
+    content-visibility: visible !important;
+    display: block !important;
+  }
+  .notebook-workspace details.notebook-definitions > *:not(summary),
+  .notebook-workspace details.provenance-details > *:not(summary),
+  .notebook-workspace details.table-details > *:not(summary) {
+    display: block !important;
+  }
+  .notebook-workspace details.notebook-definitions > table,
+  .notebook-workspace details.provenance-details > table,
+  .notebook-workspace details.table-details > table {
+    display: table !important;
+  }
+  .notebook-table-scroll { overflow: visible; }
 }

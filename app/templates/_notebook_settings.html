@@ -31,7 +31,7 @@
           </select>
         </label>
         <label>{{ page.copy.chart_base_label }}
-          <input name="base" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" value="{{ panel.settings.base or '' }}" placeholder="{{ page.copy.chart_base_placeholder }}">
+          <input type="text" name="base" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" value="{{ panel.settings.base or '' }}" placeholder="{{ page.copy.chart_base_placeholder }}">
         </label>
       </div>
       <p class="note">{{ page.copy.chart_analysis_note }}</p>

@@ -9,7 +9,7 @@
           {% for side in panel.sides %}
           <li>
             <strong><span class="legend-swatch swatch-{{ side.style }}" aria-hidden="true"></span>{{ side.label }}</strong>
-            <span>{{ side.source_title }} · {{ page.copy.chart_meta_unit }}: {{ side.source_unit_text or side.unit_text }}{% if side.provenance %} · {{ page.copy.chart_meta_fetched }}: {{ side.provenance.fetched_text }}{% endif %}</span>
+            <span>{{ side.source_title }} · {{ page.copy.chart_meta_frequency }}: {{ side.frequency_text }}{% if side.display_frequency_text %} ({{ side.display_frequency_text }}){% endif %} · {{ page.copy.chart_meta_unit }}: {{ side.source_unit_text or side.unit_text }}{% if side.provenance %} · {{ page.copy.chart_meta_fetched }}: {{ side.provenance.fetched_text }}{% endif %}</span>
           </li>
           {% endfor %}
         </ul>
