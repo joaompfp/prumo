@@ -517,6 +517,13 @@ function enhance(root) {
   const low = Math.min(xs[0], xs[xs.length - 1]);
   const high = Math.max(xs[0], xs[xs.length - 1]);
   let current = xs.length - 1;
+  // Dispatching showTip from the pointer handler keeps the visible tooltip on the same row as
+  // the readout. Native axis hover does not always invoke the formatter at the final symbol:
+  // the readout moved to the last period while the tooltip stayed on the previous one. Guard
+  // the axis event so the action that shows the tooltip cannot feed a new point back through
+  // updateAxisPointer and rewrite the row that was just chosen.
+  let syncingTip = false;
+  let tipTimer = 0;
 
   function showTip(point) {
     try {
@@ -553,6 +560,26 @@ function enhance(root) {
     }
   }
 
+  function syncTip(point) {
+    if (syncingTip) return;
+    // Native pointer handling runs in the same dispatch before this deferred task. At the plot
+    // edges it hides the axis tooltip even though its content was just rendered; reassert the
+    // chosen point after that handler, coalescing a burst of moves into one showTip.
+    if (tipTimer) clearTimeout(tipTimer);
+    tipTimer = setTimeout(() => {
+      tipTimer = 0;
+      if (current !== point) return;
+      syncingTip = true;
+      try { showTip(point); } finally { syncingTip = false; }
+    }, 0);
+  }
+
+  function cancelTip() {
+    if (!tipTimer) return;
+    clearTimeout(tipTimer);
+    tipTimer = 0;
+  }
+
   root.classList.add('chart-enhanced');
   if (xs.length > 1) {
     range.hidden = false;
@@ -565,6 +592,7 @@ function enhance(root) {
   show(xs.length - 1, false);
 
   chart.on('updateAxisPointer', (event) => {
+    if (syncingTip) return;
     const info = event.axesInfo && event.axesInfo[0];
     if (!info || !finite(info.value)) return;
     show(nearest(xs, info.value), false);
@@ -579,16 +607,18 @@ function enhance(root) {
     const rect = stage.getBoundingClientRect();
     const px = event.clientX - rect.left;
     const py = event.clientY - rect.top;
-    if (px < 0 || py < 0 || px > rect.width || py > rect.height) return;
+    if (px < 0 || py < 0 || px > rect.width || py > rect.height) return null;
     let value;
     try {
       const converted = chart.convertFromPixel({ gridIndex: 0 }, [px, py]);
       value = Array.isArray(converted) ? converted[0] : converted;
     } catch (ignored) {
-      return;
+      return null;
     }
-    if (!finite(value)) return;
-    show(nearest(xs, Math.min(Math.max(value, low), high)), false);
+    if (!finite(value)) return null;
+    const point = nearest(xs, Math.min(Math.max(value, low), high));
+    show(point, false);
+    return point;
   };
 
   // Capture phase: zrender may stop propagation at the canvas, and the readout must still
@@ -596,13 +626,17 @@ function enhance(root) {
   // and only when it did not turn into a scroll, so panning the page over the chart stays inert.
   let touchStart = null;
   stage.addEventListener('pointermove', (event) => {
-    if (event.pointerType !== 'touch') locate(event);
+    if (event.pointerType !== 'touch') {
+      const point = locate(event);
+      if (point !== null) syncTip(point);
+    }
   }, true);
   stage.addEventListener('pointerdown', (event) => {
     if (event.pointerType === 'touch') {
       touchStart = [event.clientX, event.clientY];
     } else {
-      locate(event);
+      const point = locate(event);
+      if (point !== null) syncTip(point);
     }
   }, true);
   stage.addEventListener('pointerup', (event) => {
@@ -616,6 +650,7 @@ function enhance(root) {
   }, true);
   stage.addEventListener('pointercancel', () => { touchStart = null; }, true);
   stage.addEventListener('pointerleave', () => {
+    cancelTip();
     try { chart.dispatchAction({ type: 'hideTip' }); } catch (ignored) { /* nothing shown */ }
   }, true);
 

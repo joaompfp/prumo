@@ -28,7 +28,11 @@ LABELS = ("Nível", "Taxa A", "Taxa B")
 UNITS = ("milhões de euros", "%", "%")
 AXES = (0, 1, 1)
 ROWS = [{"period": "2024-S1", "values": ["100000", "1.0", "2.0"]},
-        {"period": "2024-S2", "values": ["101000", "1.5", "3.0"]}]
+        {"period": "2024-S2", "values": ["101000", "1.5", "3.0"]},
+        {"period": "2025-S1", "values": ["102500", "2.0", "2.5"]},
+        {"period": "2025-S2", "values": ["103000", "2.5", "3.5"]},
+        {"period": "2026-S1", "values": ["104000", "3.0", "4.0"]},
+        {"period": "2026-S2", "values": ["105000", "3.5", "4.5"]}]
 
 
 def grouped_model():
@@ -55,13 +59,13 @@ def page_html(model, payload):
 }}
 * {{ box-sizing: border-box; }}
 body {{ margin: 0; font-family: var(--sans); background: #faf8f5; color: var(--ink); }}
-.chart-shell {{ width: 880px; }}
-.chart-wrap {{ position: relative; width: 880px; height: 340px; }}
+.chart-shell {{ width: min(880px, 100%); }}
+.chart-wrap {{ position: relative; width: 100%; height: 340px; }}
 .chart-wrap .chart {{ width: 100%; height: 100%; }}
 .chart-canvas {{ position: absolute; inset: 0; opacity: 0; pointer-events: none; }}
 .chart-enhanced .chart-canvas {{ opacity: 1; pointer-events: auto; }}
 .chart-enhanced .chart {{ opacity: 0; pointer-events: none; }}
-.chart-controls {{ width: 880px; }}
+.chart-controls {{ width: 100%; }}
 .chart-range {{ width: 100%; }}
 .chart-tooltip {{ font-size: 19.8px; line-height: 29.7px; }}
 .sr-only {{ position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -172,6 +176,82 @@ SCAN = """() => {
 def _payload(page):
     return json.loads(page.evaluate(
         "() => document.querySelector('script.chart-data').textContent"))
+
+
+# The core interaction tests locate the drawn series by saturated pixels: axis text, grid rules
+# and the background stay low-saturation, so this span is the first and last plotted symbol.
+INK = """() => {
+  const stage = document.querySelector('.chart-canvas');
+  const canvas = stage.querySelector('canvas');
+  const ctx = canvas.getContext('2d', {willReadFrequently: true});
+  const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  let min = null, max = null;
+  for (let x = 0; x < canvas.width; x += 1) {
+    for (let y = 0; y < canvas.height; y += 1) {
+      const i = (y * canvas.width + x) * 4;
+      const r = data[i], g = data[i + 1], b = data[i + 2];
+      if (data[i + 3] > 128 && Math.max(r, g, b) - Math.min(r, g, b) > 30) {
+        if (min === null) min = x;
+        max = x;
+        break;
+      }
+    }
+  }
+  const rect = stage.getBoundingClientRect();
+  return {dpr: window.devicePixelRatio, min: min, max: max,
+          box: {left: rect.left, top: rect.top,
+                width: rect.width, height: rect.height}};
+}"""
+
+
+def _tip_lines(page):
+    return page.eval_on_selector_all(
+        ".chart-tip-line", "els => els.map(el => el.textContent)")
+
+
+def _tip_rows(payload, index):
+    return [payload["periods"][index]] + [
+        payload["series"][side]["title"] + ": " + payload["display"][index][side]
+        for side in range(len(payload["series"]))]
+
+
+@pytest.mark.parametrize("width", [390, 1440])
+def test_pointer_tooltip_matches_the_selected_row_at_first_mid_and_last(
+        grouped_site, browser, width):
+    context = browser.new_context(viewport={"width": width, "height": 900},
+                                  device_scale_factor=1)
+    page = context.new_page()
+    errors = []
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    page.on("console", lambda msg: errors.append(msg.text) if msg.type == "error" else None)
+    try:
+        page.goto(grouped_site + "/valid.html", wait_until="networkidle")
+        page.wait_for_selector(".chart-enhanced canvas", timeout=10000)
+        page.wait_for_timeout(120)
+        payload = _payload(page)
+        ink = page.evaluate(INK)
+        assert ink["dpr"] == 1
+        assert ink["min"] is not None and ink["max"] - ink["min"] > 100, ink
+        box = ink["box"]
+        last = len(payload["periods"]) - 1
+        moves = [("first", ink["min"] + 1, 0),
+                 ("mid", (ink["min"] + ink["max"]) / 2, None),
+                 ("last", ink["max"] - 1, last)]
+        for name, x, expected in moves:
+            page.mouse.move(box["left"] + x, box["top"] + box["height"] / 2)
+            page.locator(".chart-tooltip .chart-tip-line").first.wait_for(
+                state="visible", timeout=5000)
+            page.wait_for_timeout(240)
+            index = int(page.locator(".chart-range").input_value())
+            if expected is None:
+                assert abs(index - last / 2) <= 1, (width, name, index)
+            else:
+                assert index == expected, (width, name, index)
+            rows = _tip_rows(payload, index)
+            assert _tip_lines(page) == rows, (width, name, index, rows)
+        assert not errors
+    finally:
+        context.close()
 
 
 def test_grouped_payload_carries_explicit_axes_and_names_every_side(grouped_site, browser):
