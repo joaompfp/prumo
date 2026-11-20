@@ -7,6 +7,8 @@ into SVG, so the interactive canvas and the fallback cannot describe different c
 """
 from markupsafe import Markup, escape
 
+from app.calendar_model import CalendarModel
+from app.calendar_svg import calendar_legend, calendar_plot, calendar_svg
 from app.chart_model import (  # noqa: F401 - WIDTH/HEIGHT kept as the module's documented size
     BOTTOM,
     HEIGHT,
@@ -201,20 +203,28 @@ def chart_plot(model) -> Markup:
     """The drawing alone: SVG for a prepared model, empty state for no model."""
     if model is None:
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
+    if isinstance(model, CalendarModel):
+        return calendar_plot(model)
     return line_svg(model) if model.kind == "line" else _comparison_plot(model)
 
 
 def chart_legend(model) -> Markup:
-    """The comparison key, rendered outside the canvas overlay; empty for a line."""
-    if model is None or model.kind == "line":
+    """The comparison or calendar key, rendered outside the canvas overlay; empty for a line."""
+    if model is None:
+        return Markup("")
+    if isinstance(model, CalendarModel):
+        return calendar_legend(model)
+    if model.kind == "line":
         return Markup("")
     return _comparison_legend(model)
 
 
 def chart_svg(model) -> Markup:
-    """Render a prepared model of either kind; used by the fallback templates."""
+    """Render a prepared model of any kind; used by the fallback templates."""
     if model is None:
         return Markup('<p class="chart-empty">Sem valores para representar.</p>')
+    if isinstance(model, CalendarModel):
+        return calendar_svg(model)
     return line_svg(model) if model.kind == "line" else comparison_svg(model)
 
 

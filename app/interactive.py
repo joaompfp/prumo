@@ -12,6 +12,7 @@ import json
 import math
 from pathlib import Path
 
+from app.calendar_model import MISSING_TEXT, CalendarModel
 from app.chart_model import ComparisonModel, LineChartModel
 
 MANIFEST = Path(__file__).resolve().parent.parent / "static" / "js" / "prumo-charts.manifest.json"
@@ -79,10 +80,83 @@ def _comparison_series(model: ComparisonModel) -> list[dict]:
             for label, unit, style in zip(model.labels, model.units, model.styles)]
 
 
-def build_payload(model: LineChartModel | ComparisonModel, *, badge: str = "",
-                  lang: str = "pt") -> dict | None:
+def _calendar_payload(model: CalendarModel, *, badge: str, missing: str) -> dict | None:
+    """Payload v2 for sparse calendar rows.
+
+    `y`, `display` and `cell_periods` keep one column per side and one row per real calendar
+    date. A missing observation is `None` in all three arrays: not zero, not the previous
+    value, and not an inspectable cell. Breaks are per side and address row indices where that
+    side skips its own native period.
+    """
+    xs = [_finite(row.ordinal) for row in model.rows]
+    if not xs or any(x is None for x in xs):
+        return None
+    xs_clean: list[float] = [x for x in xs if x is not None]
+    x_ticks = _x_ticks(model)
+    if x_ticks is None:
+        return None
+    x_min, x_max = _bounds(xs_clean)
+
+    ys: list[list[float | None]] = []
+    display: list[list[str | None]] = []
+    cell_periods: list[list[str | None]] = []
+    for row in model.rows:
+        y_row: list[float | None] = []
+        display_row: list[str | None] = []
+        period_row: list[str | None] = []
+        for index, cell in enumerate(row.cells):
+            if cell is None:
+                y_row.append(None)
+                display_row.append(None)
+                period_row.append(None)
+                continue
+            value = _finite(cell.number)
+            if value is None:
+                return None
+            y_row.append(value)
+            display_row.append(_display(cell.value_display, model.units[index]))
+            period_row.append(cell.period)
+        ys.append(y_row)
+        display.append(display_row)
+        cell_periods.append(period_row)
+
+    axes = [_axis(model.lo_a, model.hi_a, model.interval_a, model.ticks_a, model.unit_a)]
+    if model.dual:
+        axes.append(_axis(model.lo_b, model.hi_b, model.interval_b, model.ticks_b,
+                          model.unit_b))
+    if any(axis is None for axis in axes):
+        return None
+
+    series = [
+        {"title": item.label, "unit": item.unit, "style": item.style, "badge": badge,
+         "axis": 1 if model.dual and index == 1 else 0, "frequency": item.frequency,
+         "breaks": list(item.breaks)}
+        for index, item in enumerate(model.series)
+    ]
+    return {
+        "version": 2,
+        "kind": "calendar",
+        "name": model.name,
+        "x": xs_clean,
+        "x_min": x_min,
+        "x_max": x_max,
+        "x_ticks": x_ticks,
+        "periods": [row.period_text for row in model.rows],
+        "y": ys,
+        "display": display,
+        "cell_periods": cell_periods,
+        "axes": axes,
+        "series": series,
+        "missing": missing,
+    }
+
+
+def build_payload(model: LineChartModel | ComparisonModel | CalendarModel, *, badge: str = "",
+                  lang: str = "pt", missing: str = MISSING_TEXT) -> dict | None:
     """The browser model for one prepared chart, or None to decline enhancement safely."""
     del lang  # text arrives prepared from the catalogue by the caller
+    if isinstance(model, CalendarModel):
+        return _calendar_payload(model, badge=badge, missing=missing)
     xs = [x for x in (_finite(point.ordinal) for point in model.points) if x is not None]
     if not xs or len(xs) != len(model.points):
         return None
