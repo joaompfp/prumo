@@ -788,6 +788,12 @@ section { margin: 80px 0; }
 .notebook-chart-sources strong { color: var(--ink); }
 .notebook-chart-sources .legend-swatch { vertical-align: middle; margin-right: 8px; }
 .notebook-chart-alignment { margin: 10px 0 0; max-width: 78ch; }
+.notebook-analysis-note { margin: 10px 0 0; max-width: 78ch; color: var(--ink); }
+.cell-period { display: block; color: var(--muted); font-size: .78em; font-weight: 400; }
+.cell-missing { color: var(--muted); font-style: italic; }
+.notebook-calculation-side { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--rule); }
+.notebook-calculation-side h4, .notebook-calculation-side h5 { margin: 8px 0 4px; }
+.notebook-calculation-side .analysis-inputs { margin-top: 6px; }
 .card-chart {
   margin: 8px 0 0; color: var(--muted); font-size: .85rem; line-height: 1.35;
 }

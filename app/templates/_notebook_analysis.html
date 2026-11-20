@@ -1,0 +1,64 @@
+{% macro evidence_output(output, page) %}
+    <table class="data-table analysis-inputs">
+      <thead>
+        <tr>
+          <th scope="col">{{ page.copy.chart_evidence_output }}</th>
+          <th scope="col">{{ page.copy.chart_cell_period }}</th>
+          <th scope="col">{{ page.copy.chart_meta_value }}</th>
+          <th scope="col">{{ page.copy.chart_meta_status }}</th>
+          <th scope="col">{{ page.copy.chart_meta_fetched }}</th>
+          <th scope="col">{{ page.copy.chart_meta_run }}</th>
+          <th scope="col">{{ page.copy.chart_meta_sha }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for input in output.inputs %}
+        <tr>
+          <td>{{ output.period_text }} · {{ output.value_display }}</td>
+          <td>{{ input.period_text }}</td>
+          <td class="num">{{ input.value_display }}</td>
+          <td>{% if input.status_text %}<span class="flag">{{ input.status_text }}</span>{% endif %}</td>
+          <td>{{ input.fetched_text }}</td>
+          <td>{% if input.run_id %}#{{ input.run_id }}{% endif %}</td>
+          <td>{% if input.sha256 %}<code title="{{ input.sha256 }}">{{ input.sha256[:12] }}…{{ input.sha256[-6:] }}</code>{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endmacro %}
+
+{% macro analysis_evidence(panel, page) %}
+  {% if panel.evidence %}
+  <details class="provenance-details notebook-calculation">
+    <summary>{{ page.copy.chart_evidence_summary }}</summary>
+    <h3>{{ page.copy.chart_evidence_heading }}</h3>
+    {% for side in panel.evidence %}
+    <section class="notebook-calculation-side">
+      <h4>{{ side.label }} · <a href="{{ base }}{{ side.series_path }}">{{ page.copy.chart_evidence_series_link }}</a></h4>
+      <dl class="provenance-list">
+        <dt>{{ page.copy.chart_evidence_method }}</dt><dd>{{ side.method_text }}</dd>
+        {% if side.formula_text %}<dt>{{ page.copy.chart_evidence_formula }}</dt><dd>{{ side.formula_text }}</dd>{% endif %}
+        {% if side.base_text %}<dt>{{ page.copy.chart_evidence_base }}</dt><dd>{{ side.base_text }}</dd>{% endif %}
+        <dt>{{ page.copy.chart_evidence_rounding }}</dt><dd>{{ side.rounding_text }}</dd>
+        <dt>{{ page.copy.chart_evidence_source_unit }}</dt><dd>{{ side.source_unit_text }}</dd>
+        <dt>{{ page.copy.chart_evidence_chart_unit }}</dt><dd>{{ side.chart_unit_text }}</dd>
+      </dl>
+      <p class="note">{{ page.copy.chart_evidence_note }}{% if side.note %} {{ side.note }}{% endif %}</p>
+      <h5>{{ page.copy.chart_evidence_latest }}</h5>
+      {{ evidence_output(side.latest, page) }}
+      {% if side.base and side.base.period_text != side.latest.period_text %}
+      <h5>{{ page.copy.chart_evidence_base_output }}</h5>
+      {{ evidence_output(side.base, page) }}
+      {% endif %}
+      <details class="table-details">
+        <summary>{{ page.copy.chart_evidence_inputs }}</summary>
+        {% for output in side.outputs %}
+        <h5>{{ output.period_text }} · {{ output.value_display }} <span class="badge badge-quiet">{{ page.copy.chart_calculated_badge }}</span></h5>
+        {{ evidence_output(output, page) }}
+        {% endfor %}
+      </details>
+    </section>
+    {% endfor %}
+  </details>
+  {% endif %}
+{% endmacro %}

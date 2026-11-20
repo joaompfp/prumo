@@ -16,6 +16,25 @@
           </select>
         </label>
       </div>
+      <div class="notebook-chart-pair" role="group" aria-label="{{ page.copy.chart_analysis_note }}">
+        <label>{{ page.copy.chart_frequency_legend }}
+          <select name="frequencia">
+            <option value="original"{% if panel.settings.frequency == "original" %} selected{% endif %}>{{ page.copy.chart_frequency_original }}</option>
+            <option value="anual"{% if panel.settings.frequency == "anual" %} selected{% endif %}>{{ page.copy.chart_frequency_annual }}</option>
+          </select>
+        </label>
+        <label>{{ page.copy.chart_transform_legend }}
+          <select name="transformacao">
+            <option value="original"{% if panel.settings.transform == "original" %} selected{% endif %}>{{ page.copy.chart_transform_original }}</option>
+            <option value="base100"{% if panel.settings.transform == "base100" %} selected{% endif %}>{{ page.copy.chart_transform_base100 }}</option>
+            <option value="pp"{% if panel.settings.transform == "pp" %} selected{% endif %}>{{ page.copy.chart_transform_pp }}</option>
+          </select>
+        </label>
+        <label>{{ page.copy.chart_base_label }}
+          <input name="base" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" value="{{ panel.settings.base or '' }}" placeholder="{{ page.copy.chart_base_placeholder }}">
+        </label>
+      </div>
+      <p class="note">{{ page.copy.chart_analysis_note }}</p>
       <fieldset>
         <legend>{{ page.copy.chart_group_legend }}</legend>
         <div class="notebook-chart-choices">

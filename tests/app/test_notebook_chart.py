@@ -207,7 +207,7 @@ def test_dual_scale_after_a_deliberate_removal_is_a_state_not_a_404(tmp_path):
     assert "chart-data" not in removed.text
 
 
-def test_mixed_frequency_is_unavailable_without_dropping_cards(tmp_path):
+def test_mixed_frequency_uses_a_sparse_calendar_without_dropping_cards(tmp_path):
     path = build_site(tmp_path, [
         {"id": "ine.freq_m.PT", "key": "credit_consumer.PT.M",
          "periods": {"2026-09": "1.0", "2026-10": "2.0"}},
@@ -217,9 +217,21 @@ def test_mixed_frequency_is_unavailable_without_dropping_cards(tmp_path):
     with client(path) as site:
         response = site.get("/caderno?s=ine.freq_m.PT&s=ine.freq_a.PT")
     assert response.status_code == 200
-    assert "têm frequências diferentes" in visible(response.text)
-    assert "chart-data" not in response.text
-    assert response.text.count('<article class="card">') == 2
+    html = response.text
+    data = payload(html)
+    assert data["version"] == 2 and data["kind"] == "calendar"
+    assert data["periods"] == ["01/01/2026", "01/09/2026", "01/10/2026"]
+    # The annual side is present only on its own real start day; missing cells stay null.
+    assert data["display"] == [[None, "10,0 %"],
+                               ["1,0 %", None],
+                               ["2,0 %", None]]
+    assert data["cell_periods"] == [[None, "2026"],
+                                    ["setembro de 2026", None],
+                                    ["outubro de 2026", None]]
+    assert "Últimos períodos por série" in visible(html)
+    assert "último período comum" not in visible(html).lower()
+    assert html.count('<article class="card">') == 2
+    assert "sem observação nesta posição temporal" in chart_block(html)
 
 
 def test_no_common_period_is_unavailable_and_cards_stay(tmp_path):

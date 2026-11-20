@@ -134,7 +134,12 @@ def _card_chart_status(panel: notebook_chart.NotebookChart, series_id: str,
     """
     if panel.state == "ready":
         if any(side.series_id == series_id for side in panel.sides):
+            if panel.period_label:
+                return "drawn", copy.card_chart_drawn_own.format(
+                    period=panel.side_period_text(series_id))
             return "drawn", copy.card_chart_drawn.format(period=panel.last_period_text)
+        if panel.period_label:
+            return "excluded", copy.card_chart_excluded_own
         return "excluded", copy.card_chart_excluded.format(period=panel.last_period_text)
     state = panel.public_state
     if state == "off":
@@ -221,7 +226,9 @@ def page(db: Db, selection: tuple[str, ...], query: str = "", *,
         query=query,
         results=tuple(results),
         canonical_path=canonical_path,
-        clear_path=selection_path((), query) if selection else None,
+        clear_path=(selection_path((), query,
+                                   chart=notebook_chart.without_all_sides(settings))
+                    if selection else None),
         chart_panel=chart_panel,
         chart_off_path=(selection_path(selection, query, chart=replace(
             settings, mode="off", group=())) if selection else ""),

@@ -16,6 +16,7 @@ from dataclasses import dataclass, replace
 from datetime import date
 
 from app import reads
+from app.calendar_model import CalendarModel
 from app.chart_model import (
     GROUP_MAX_SERIES,
     ComparisonModel,
@@ -35,11 +36,13 @@ from presentation import (
 )
 from presentation.notebook import NotebookCopy, text
 
-PARAM_NAMES = ("g", "grafico", "escala", "janela", "dia")
+PARAM_NAMES = ("g", "grafico", "escala", "janela", "dia",
+               "frequencia", "transformacao", "base")
 MAX_GROUP = GROUP_MAX_SERIES
 _WINDOW_CODES = (("10a", "10y", "chart_window_10a"), ("5a", "5y", "chart_window_5a"),
                  ("max", "max", "chart_window_max"))
 _ISO_DAY = re.compile(r"\d{4}-\d{2}-\d{2}\Z")
+_BASE_YEAR = re.compile(r"[0-9]{4}\Z")
 
 
 @dataclass(frozen=True)
@@ -56,9 +59,16 @@ class ChartSettings:
     scale: str = "comum"
     window: str = "10a"
     day: str | None = None
+    frequency: str = "original"
+    transform: str = "original"
+    base: str | None = None
 
     def params(self) -> list[tuple[str, str]]:
-        """The address parameters, defaults omitted, in one stable order."""
+        """The address parameters, defaults omitted, in one stable order.
+
+        The five original parameters keep their exact order so an old address is byte-identical.
+        The analytical controls are appended last and only when they leave their defaults.
+        """
         out: list[tuple[str, str]] = []
         if self.mode == "off":
             out.append(("grafico", "off"))
@@ -71,6 +81,12 @@ class ChartSettings:
             out.append(("janela", self.window))
         if self.day:
             out.append(("dia", self.day))
+        if self.frequency != "original":
+            out.append(("frequencia", self.frequency))
+        if self.transform != "original":
+            out.append(("transformacao", self.transform))
+        if self.base:
+            out.append(("base", self.base))
         return out
 
 
@@ -158,7 +174,28 @@ def _parse_settings(values, selection: tuple[str, ...]) -> ChartSettings:
         except ValueError:
             raise _BadAddress("dia") from None
         day_value = day
-    return ChartSettings(mode=mode, group=tuple(group), scale=scale, window=window, day=day_value)
+    frequency = _single(values, "frequencia")
+    if frequency is None:
+        frequency = "original"
+    if frequency not in ("original", "anual"):
+        raise _BadAddress("frequencia")
+
+    transform = _single(values, "transformacao")
+    if transform is None:
+        transform = "original"
+    if transform not in ("original", "base100", "pp"):
+        raise _BadAddress("transformacao")
+
+    base = _single(values, "base")
+    if base in (None, ""):
+        base_value = None
+    else:
+        if _BASE_YEAR.fullmatch(base) is None or not 1 <= int(base) <= 9999:
+            raise _BadAddress("base")
+        base_value = base
+    return ChartSettings(mode=mode, group=tuple(group), scale=scale, window=window,
+                          day=day_value, frequency=frequency, transform=transform,
+                          base=base_value)
 
 
 def without_side(settings: ChartSettings, series_id: str) -> ChartSettings:
@@ -173,6 +210,17 @@ def without_side(settings: ChartSettings, series_id: str) -> ChartSettings:
     if not group:
         return replace(settings, mode="off", group=())
     return replace(settings, group=group)
+
+
+def without_all_sides(settings: ChartSettings) -> ChartSettings:
+    """Clear every card while keeping the analytical controls a reader chose.
+
+    An explicit group cannot survive an empty selection (a `g` must belong to `s`), so it becomes
+    the honest off state. Frequency, transformation, base, scale and window are preserved.
+    """
+    if settings.mode == "explicit" and settings.group:
+        return replace(settings, mode="off", group=())
+    return settings
 
 
 @dataclass(frozen=True)
@@ -200,12 +248,62 @@ class ChartSide:
     last_display: str
     last_status_text: str
     provenance: reads.ProvenanceView | None
+    period_text: str = ""
+    source_unit_text: str = ""
+    display_frequency_text: str = ""
+    method_text: str = ""
+    calculated: bool = False
+
+
+@dataclass(frozen=True)
+class EvidenceInput:
+    """One exact original input behind a calculated output, with its stored receipt."""
+
+    period_text: str
+    value_display: str
+    status_text: str
+    fetched_text: str
+    run_id: int | None
+    sha256: str | None
+
+
+@dataclass(frozen=True)
+class EvidenceOutput:
+    """One calculated annual output and every raw observation that entered it."""
+
+    period_text: str
+    value_display: str
+    method_text: str
+    calculated: bool
+    inputs: tuple[EvidenceInput, ...]
+
+
+@dataclass(frozen=True)
+class SideEvidence:
+    """Reader-facing calculation disclosure for one side, rendered after the plot."""
+
+    label: str
+    series_path: str
+    method_text: str
+    formula_text: str
+    base_text: str
+    rounding_text: str
+    source_unit_text: str
+    chart_unit_text: str
+    calculated: bool
+    latest: EvidenceOutput
+    base: EvidenceOutput | None
+    outputs: tuple[EvidenceOutput, ...]
+    note: str
 
 
 @dataclass(frozen=True)
 class ChartCell:
     display: str
     status_text: str
+    period_text: str = ""
+    missing: bool = False
+    calculated: bool = False
 
 
 @dataclass(frozen=True)
@@ -221,7 +319,7 @@ class NotebookChart:
     state: str
     state_label: str
     reason: str
-    chart: LineChartModel | ComparisonModel | None
+    chart: LineChartModel | ComparisonModel | CalendarModel | None
     chart_payload: dict | None
     chart_range_label: str
     chart_hint: str
@@ -234,10 +332,21 @@ class NotebookChart:
     settings: ChartSettings
     max_group: int
     last_period_text: str
+    period_label: str = ""
+    analysis_note: str = ""
+    evidence: tuple[SideEvidence, ...] = ()
+    missing_text: str = ""
 
     @property
     def drawable(self) -> bool:
         return self.chart is not None
+
+    def side_period_text(self, series_id: str) -> str:
+        """This side's own last native or calculated period, never a fictitious common one."""
+        for side in self.sides:
+            if side.series_id == series_id:
+                return side.period_text or self.last_period_text
+        return self.last_period_text
 
     @property
     def public_state(self) -> str:
@@ -451,7 +560,8 @@ def _side(db: Db, row: dict, card: reads.Card, label: str, style: str, period: s
         last_status_text=(flag_text(lang, value["status_flag"])
                           if value["status_flag"] else ""),
         provenance=(reads.provenance_view(provenance, row["frequency"], lang)
-                    if provenance else None))
+                    if provenance else None),
+        period_text=format_period(period, row["frequency"]))
 
 
 def _alignment_text(copy: NotebookCopy, finite: list[dict], common: list[str],
@@ -539,29 +649,58 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
     rows_tuple = tuple(rows)
 
     frequencies = {row["frequency"] for row in rows_tuple}
-    if len(frequencies) != 1:
-        return _empty("unavailable", copy.chart_mixed_frequency, settings, choices, copy)
-    frequency = rows_tuple[0]["frequency"]
+    mixed = len(frequencies) != 1
+    frequency = None if mixed else rows_tuple[0]["frequency"]
+    annual_request = settings.frequency == "anual"
+    transform_request = settings.transform != "original"
 
-    if settings.scale == "dupla":
-        if len(group) != 2:
-            # Three sides on two axes cannot be drawn. When their units also differ, pointing at
-            # the common scale alone would be misleading, so use the instruction that names both
-            # ways out: exactly two sides, or a comparable shared set.
+    if "PT15M" in frequencies and (mixed or annual_request or transform_request):
+        # Interval history has one valid view: the bounded shared UTC day. It never enters the
+        # calendar union, an annualisation or a scale transformation.
+        return _empty("unavailable", copy.chart_interval_analysis, settings, choices, copy)
+
+    if transform_request:
+        if not annual_request:
+            return _empty("unavailable", copy.chart_transform_annual, settings, choices, copy)
+        if settings.scale == "dupla":
+            # Every transformed side shares one index or p.p. unit; two axes would claim two
+            # scales where there is one. Refuse explicitly instead of silently flattening.
+            return _empty("unavailable", copy.chart_transform_shared, settings, choices, copy)
+    else:
+        if settings.scale == "dupla":
+            if len(group) != 2:
+                # Three sides on two axes cannot be drawn. When their units also differ, pointing
+                # at the common scale alone would be misleading, so use the instruction that names
+                # both ways out: exactly two sides, or a comparable shared set.
+                signatures = {(row["unit"], row["multiplier"], row["base_year"])
+                              for row in rows_tuple}
+                reason = copy.chart_dual_count if len(signatures) == 1 else copy.chart_mixed_scale
+                return _empty("unavailable", reason, settings, choices, copy)
+        else:
             signatures = {(row["unit"], row["multiplier"], row["base_year"])
                           for row in rows_tuple}
-            reason = copy.chart_dual_count if len(signatures) == 1 else copy.chart_mixed_scale
-            return _empty("unavailable", reason, settings, choices, copy)
-    else:
-        signatures = {(row["unit"], row["multiplier"], row["base_year"])
-                      for row in rows_tuple}
-        if len(signatures) > 1:
-            return _empty("unavailable", copy.chart_mixed_scale, settings, choices, copy)
+            if len(signatures) > 1:
+                return _empty("unavailable", copy.chart_mixed_scale, settings, choices, copy)
 
     titles = tuple(cards[series_id].title for series_id in group)
     labels = _labels(rows_tuple, titles, lang, copy)
     if labels is None:
         return _empty("unavailable", copy.chart_duplicate_labels, settings, choices, copy)
+
+    if transform_request or (annual_request and (mixed or frequency != "A")):
+        from app import calendar_notebook
+        return calendar_notebook.prepare_annual(
+            db, rows_tuple, cards, labels, settings, choices, copy, lang)
+
+    if mixed and not frequencies <= {"A", "S", "Q", "M", "D"}:
+        return _empty("unavailable", copy.chart_method_unavailable, settings, choices, copy)
+
+    if mixed:
+        from app import calendar_notebook
+        return calendar_notebook.prepare_calendar(
+            db, rows_tuple, labels, settings, choices, copy, lang)
+
+    assert frequency is not None  # a single original frequency was checked above
 
     one_point_note = ""
     if frequency == "PT15M":
@@ -625,6 +764,9 @@ __all__ = [
     "ChartSide",
     "ChartCell",
     "ChartTableRow",
+    "EvidenceInput",
+    "EvidenceOutput",
+    "SideEvidence",
     "MAX_GROUP",
     "NotebookChart",
     "PARAM_NAMES",

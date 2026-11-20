@@ -133,6 +133,73 @@ class NotebookCopy:
     card_chart_empty: str
     card_chart_choose: str
     card_chart_unavailable: str
+    chart_frequency_legend: str
+    chart_frequency_original: str
+    chart_frequency_annual: str
+    chart_transform_legend: str
+    chart_transform_original: str
+    chart_transform_base100: str
+    chart_transform_pp: str
+    chart_base_label: str
+    chart_base_placeholder: str
+    chart_analysis_note: str
+    chart_period_mixed: str
+    chart_period_calendar: str
+    chart_period_annual: str
+    chart_missing_cell: str
+    chart_calendar_alignment: str
+    chart_calendar_window: str
+    chart_interval_analysis: str
+    chart_transform_annual: str
+    chart_transform_shared: str
+    chart_annual_unsupported: str
+    chart_base100_unsupported: str
+    chart_pp_unsupported: str
+    chart_base_missing: str
+    chart_base_not_positive: str
+    chart_method_unavailable: str
+    chart_analysis_annual: str
+    chart_analysis_rounding: str
+    chart_analysis_calculated: str
+    chart_analysis_hicp: str
+    chart_analysis_unemployment: str
+    chart_analysis_year_end: str
+    chart_analysis_native: str
+    chart_analysis_methods: str
+    chart_analysis_dropped: str
+    chart_analysis_dropped_one: str
+    chart_annual_alignment: str
+    chart_formula_base100: str
+    chart_formula_pp: str
+    chart_base_auto: str
+    chart_base_explicit: str
+    chart_evidence_summary: str
+    chart_evidence_heading: str
+    chart_evidence_method: str
+    chart_evidence_formula: str
+    chart_evidence_base: str
+    chart_evidence_rounding: str
+    chart_evidence_source_unit: str
+    chart_evidence_chart_unit: str
+    chart_evidence_output: str
+    chart_evidence_inputs: str
+    chart_evidence_latest: str
+    chart_evidence_base_output: str
+    chart_evidence_calculated: str
+    chart_evidence_note: str
+    chart_evidence_series_link: str
+    chart_provenance_summary_own: str
+    chart_provenance_heading_own: str
+    card_chart_drawn_own: str
+    card_chart_excluded_own: str
+    chart_cell_period: str
+    chart_calculated_badge: str
+    chart_method_native: str
+    chart_method_mean: str
+    chart_method_year_end: str
+    chart_frequency_annual_computed: str
+    chart_unit_base100: str
+    chart_unit_pp: str
 
 
 _PT = NotebookCopy(
@@ -180,8 +247,8 @@ _PT = NotebookCopy(
     results_col_fetched="Recolhido",
     results_col_notebook="Caderno",
     chart_heading="Evolução conjunta",
-    chart_lede="Compare as séries escolhidas num só gráfico. A escala e a janela ficam guardadas "
-               "nesta ligação.",
+    chart_lede="Compare as séries escolhidas num só gráfico. A escala, a janela, a frequência, a "
+               "transformação e a base ficam guardadas nesta ligação.",
     chart_period_label="Último período comum",
     chart_state_off="Gráfico desativado",
     chart_state_empty="Sem séries escolhidas para o gráfico",
@@ -202,8 +269,9 @@ _PT = NotebookCopy(
     chart_window_max="Máximo",
     chart_day_label="Dia UTC (apenas para séries de intervalos)",
     chart_submit="Atualizar gráfico",
-    chart_settings_note="O gráfico usa os valores publicados. Não há interpolação, "
-                        "reagrupamento, normalização nem valores inventados.",
+    chart_settings_note="O gráfico usa os valores publicados. Quando escolhe uma vista anual ou "
+                        "uma transformação, os valores calculados são assinalados e explicados. "
+                        "Não há interpolação nem valores inventados.",
     chart_off="O gráfico está desativado nesta ligação.",
     chart_activate="Ativar gráfico",
     chart_deactivate="Desativar gráfico",
@@ -280,6 +348,94 @@ _PT = NotebookCopy(
     card_chart_empty="Fora do gráfico. Sem séries escolhidas.",
     card_chart_choose="Fora do gráfico. Escolha até seis séries nas definições.",
     card_chart_unavailable="Fora do gráfico. Gráfico indisponível.",
+    chart_frequency_legend="Frequência",
+    chart_frequency_original="Original",
+    chart_frequency_annual="Anual",
+    chart_transform_legend="Transformação",
+    chart_transform_original="Original",
+    chart_transform_base100="Índice base 100",
+    chart_transform_pp="Pontos percentuais",
+    chart_base_label="Ano de base (opcional, automático)",
+    chart_base_placeholder="automático",
+    chart_analysis_note="As transformações exigem frequência anual e escala comum.",
+    chart_period_mixed="Últimos períodos por série",
+    chart_period_calendar="Última posição no calendário",
+    chart_period_annual="Último período anual",
+    chart_missing_cell="sem observação nesta posição temporal",
+    chart_calendar_alignment="Cada linha é um dia de início real no calendário. Cada série "
+                             "mantém o seu período nativo; uma célula sem observação não é "
+                             "zero nem uma interpolação.",
+    chart_calendar_window="Janela: {window}, de {first} a {last}, medida pelo calendário real e "
+                          "ancorada na observação finita mais recente.",
+    chart_interval_analysis="As séries de intervalos de 15 minutos só podem ser comparadas entre "
+                            "si, no mesmo dia UTC, e não podem ser anuais nem transformadas.",
+    chart_transform_annual="As transformações exigem a frequência anual. Mude a frequência para "
+                           "Anual ou volte à transformação original.",
+    chart_transform_shared="As transformações usam uma escala comum, porque todas as séries "
+                           "passam a partilhar a mesma unidade. Não é possível usar dois eixos.",
+    chart_annual_unsupported="Não há um método anual revisto para uma das séries escolhidas. "
+                             "Mantenha a frequência original ou escolha outra série.",
+    chart_base100_unsupported="O índice base 100 só está definido para séries de nível revistas, "
+                              "como o PIB por habitante. Não se aplica a taxas nem a "
+                              "percentagens.",
+    chart_pp_unsupported="Os pontos percentuais só estão definidos para séries de taxa revistas, "
+                         "como a inflação homóloga, o desemprego e a Euribor.",
+    chart_base_missing="O ano de base escolhido não existe em todas as séries escolhidas. "
+                       "Escolha outro ano ou deixe o campo vazio para a escolha automática.",
+    chart_base_not_positive="O índice base 100 exige um valor de base positivo em todas as "
+                            "séries.",
+    chart_method_unavailable="Não foi possível aplicar o método anual a uma das séries "
+                             "escolhidas. O gráfico fica indisponível; as séries elegíveis "
+                             "continuam no caderno.",
+    chart_analysis_annual="Vista anual calculada a partir do histórico completo.",
+    chart_analysis_rounding="Os valores calculados usam aritmética decimal e arredondamento "
+                            "half-even a seis casas decimais; os valores originais não são "
+                            "arredondados.",
+    chart_analysis_calculated="Os valores assinalados como calculados são vistas analíticas do "
+                              "Prumo, não observações verificadas pela fonte.",
+    chart_analysis_hicp="A média calculada de doze taxas homólogas mensais não é a taxa de "
+                        "inflação anual oficial.",
+    chart_analysis_unemployment="A média calculada de doze taxas mensais de desemprego é não "
+                                "ponderada e não é a estimativa anual oficial.",
+    chart_analysis_year_end="O valor de dezembro é uma vista calculada e exige um ano mensal "
+                            "completo.",
+    chart_analysis_native="Os valores anuais nativos mantêm-se observações originais.",
+    chart_analysis_methods="Métodos por série: {parts}.",
+    chart_analysis_dropped="{label}: {count} anos incompletos excluídos ({years}).",
+    chart_analysis_dropped_one="{label}: 1 ano incompleto excluído ({years}).",
+    chart_annual_alignment="Anos comuns completos: {count}, de {first} a {last}.",
+    chart_formula_base100="100 × valor ÷ valor do ano de base",
+    chart_formula_pp="valor − valor do ano de base",
+    chart_base_auto="automático, primeiro ano comum na janela",
+    chart_base_explicit="explícito",
+    chart_evidence_summary="Ver entradas originais dos valores calculados",
+    chart_evidence_heading="Entradas originais",
+    chart_evidence_method="Método",
+    chart_evidence_formula="Fórmula",
+    chart_evidence_base="Ano de base",
+    chart_evidence_rounding="Arredondamento",
+    chart_evidence_source_unit="Unidade da fonte",
+    chart_evidence_chart_unit="Unidade do gráfico",
+    chart_evidence_output="Valor calculado",
+    chart_evidence_inputs="Entradas originais",
+    chart_evidence_latest="Último valor calculado",
+    chart_evidence_base_output="Valor de base",
+    chart_evidence_calculated="calculado",
+    chart_evidence_note="A verificação matemática do valor calculado é independente da "
+                        "verificação da fonte dos valores originais.",
+    chart_evidence_series_link="Abrir série original",
+    chart_provenance_summary_own="Ver proveniência dos períodos originais",
+    chart_provenance_heading_own="Períodos originais por série",
+    card_chart_drawn_own="No gráfico, último período da série: {period}.",
+    card_chart_excluded_own="Fora do gráfico.",
+    chart_cell_period="Período original",
+    chart_calculated_badge="calculado",
+    chart_method_native="valor anual original",
+    chart_method_mean="média aritmética de doze valores mensais",
+    chart_method_year_end="valor de dezembro, com ano mensal completo",
+    chart_frequency_annual_computed="anual calculado a partir de valores mensais",
+    chart_unit_base100="índice (base {base}=100)",
+    chart_unit_pp="p.p.",
 )
 
 _COPY: dict[str, NotebookCopy] = {"pt": _PT}

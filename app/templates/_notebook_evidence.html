@@ -1,4 +1,6 @@
-  <details class="notebook-definitions">
+  {% from "_notebook_analysis.html" import analysis_evidence with context %}
+{% set panel = page.chart_panel %}
+<details class="notebook-definitions">
   <summary>{{ page.copy.chart_definition_summary }}</summary>
   <div class="chart-series-meta">
     {% for side in panel.sides %}
@@ -6,7 +8,10 @@
       <h3>{{ side.label }}</h3>
       <dl>
         <dt>{{ page.copy.chart_meta_unit }}</dt><dd>{{ side.unit_text }}</dd>
-        <dt>{{ page.copy.chart_meta_frequency }}</dt><dd>{{ side.frequency_text }}</dd>
+        {% if side.source_unit_text and side.source_unit_text != side.unit_text %}<dt>{{ page.copy.chart_evidence_source_unit }}</dt><dd>{{ side.source_unit_text }}</dd>{% endif %}
+        <dt>{{ page.copy.chart_meta_frequency }}</dt><dd>{{ side.frequency_text }}{% if side.display_frequency_text %} · {{ side.display_frequency_text }}{% endif %}</dd>
+        {% if side.method_text %}<dt>{{ page.copy.chart_evidence_method }}</dt><dd>{{ side.method_text }}</dd>{% endif %}
+        {% if side.calculated %}<dt>{{ page.copy.chart_calculated_badge }}</dt><dd>{{ page.copy.chart_analysis_calculated }}</dd>{% endif %}
         <dt>{{ page.copy.chart_meta_geography }}</dt><dd>{{ side.geography_text }}</dd>
         <dt>{{ page.copy.chart_meta_adjustment }}</dt><dd>{{ side.seasonal_text or page.copy.chart_meta_no_adjustment }}</dd>
         <dt>{{ page.copy.chart_meta_source }}</dt><dd>{{ side.source_title }}</dd>
@@ -31,7 +36,7 @@
         {% for row in panel.table_rows %}
         <tr>
           <td>{{ row.period_text }}</td>
-          {% for cell in row.cells %}<td class="num">{{ cell.display }}{% if cell.status_text %} <span class="flag">{{ cell.status_text }}</span>{% endif %}</td>{% endfor %}
+          {% for cell in row.cells %}<td class="num{% if cell.missing %} cell-missing{% endif %}">{% if cell.missing %}<span class="note">{{ cell.display }}</span>{% else %}{{ cell.display }}{% if cell.status_text %} <span class="flag">{{ cell.status_text }}</span>{% endif %}{% if cell.period_text and cell.period_text != row.period_text %} <span class="cell-period">{{ cell.period_text }}</span>{% endif %}{% if cell.calculated %} <span class="badge badge-quiet">{{ page.copy.chart_calculated_badge }}</span>{% endif %}{% endif %}</td>{% endfor %}
         </tr>
         {% endfor %}
       </tbody>
@@ -39,15 +44,18 @@
     </div>
   </details>
 
+  {% if panel.evidence %}
+  {{ analysis_evidence(panel, page) }}
+  {% else %}
   <details class="provenance-details">
-    <summary>{{ page.copy.chart_provenance_summary }}</summary>
-    <h3>{{ page.copy.chart_provenance_heading }}: {{ panel.last_period_text }}</h3>
+    <summary>{% if panel.period_label %}{{ page.copy.chart_provenance_summary_own }}{% else %}{{ page.copy.chart_provenance_summary }}{% endif %}</summary>
+    <h3>{% if panel.period_label %}{{ page.copy.chart_provenance_heading_own }}{% else %}{{ page.copy.chart_provenance_heading }}{% endif %}: {{ panel.last_period_text }}</h3>
     {% for side in panel.sides %}
     <h4>{{ side.label }}</h4>
     {% if side.provenance %}
     <dl class="provenance-list">
       <dt>{{ page.copy.chart_meta_period }}</dt><dd>{{ side.provenance.period_text }}</dd>
-      <dt>{{ page.copy.chart_meta_value }}</dt><dd>{{ side.provenance.value_display }} {{ side.unit_text }}{% if side.last_status_text %} · <span class="flag">{{ side.last_status_text }}</span>{% endif %}</dd>
+      <dt>{{ page.copy.chart_meta_value }}</dt><dd>{{ side.provenance.value_display }} {{ side.source_unit_text or side.unit_text }}{% if side.last_status_text %} · <span class="flag">{{ side.last_status_text }}</span>{% endif %}</dd>
       <dt>{{ page.copy.chart_meta_fetched }}</dt><dd>{{ side.provenance.fetched_text }}</dd>
       <dt>{{ page.copy.chart_meta_run }}</dt><dd>#{{ side.provenance.run_id }}</dd>
       <dt>{{ page.copy.chart_meta_sha }}</dt><dd>{% if side.provenance.sha256 %}<code title="{{ side.provenance.sha256 }}">{{ side.provenance.sha256[:12] }}…{{ side.provenance.sha256[-6:] }}</code>{% else %}-{% endif %}{% if side.provenance.bytes_text %} · {{ side.provenance.bytes_text }} bytes{% endif %}{% if side.provenance.http_status %} · HTTP {{ side.provenance.http_status }}{% endif %}</dd>
@@ -60,3 +68,4 @@
     {% endif %}
     {% endfor %}
   </details>
+  {% endif %}
