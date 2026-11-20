@@ -1,0 +1,22 @@
+[
+  {
+    "width": 390,
+    "tooltip_hidden": true,
+    "no_horizontal_overflow": true,
+    "series_titles": [
+      "Taxa de variação homóloga do IHPC - Portugal",
+      "PIB per capita - Portugal"
+    ],
+    "screenshot": "installed-joao-390-neutral.png"
+  },
+  {
+    "width": 1440,
+    "tooltip_hidden": true,
+    "no_horizontal_overflow": true,
+    "series_titles": [
+      "Taxa de variação homóloga do IHPC - Portugal",
+      "PIB per capita - Portugal"
+    ],
+    "screenshot": "installed-joao-1440-neutral.png"
+  }
+]

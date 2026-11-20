@@ -59,6 +59,13 @@ Compare real populated before/after first views at laptop, desktop, wide monitor
 
 Acceptance: independent specification then quality/design review; controller focused tests, full offline suite and ruff; clean committed-checkout entrypoint/assets/tests; record screenshots and exact measurements. Human screen-reader and visual acceptance remain explicit separate gates. Do not mark the whole roadmap done after this prototype.
 
+## Owner amendment: time alignment and analytical views (2026-11-20)
+
+The owner prioritized mixed-frequency comparison and explicit normalisation before phase B, then authorized commit/push/merge/deployment. The original no-transformation restriction above remains the layout-phase boundary; this amendment permits only the separately reviewed analytical methods in `2026-11-20-notebook-time-transformations.md` and its specification. No source values, schema, worker or authored CMS content change.
+
+Phase T is implemented and reviewed: native A/S/Q/M/D calendar overlay; complete-year annual means/year-end for reviewed families; annual base100 for levels and percentage-point differences for rates; original input/base evidence and exact native periods. Methods are explicit address state, never default hidden aggregation. HICP monthly-rate means are not official annual inflation. Native same-frequency/dense, two-axis and PT15M-day paths remain.
+
+Installed main `7690837` includes corrected captions/methodology; implementation through `b17901f`. Clean committed-checkout gate: 287 passed, imports resolved in that checkout, ruff clean. Real-copy acceptance: 110 matrix cells / 2,605 assertions plus 223 functional checks, both local mount shapes, all 23 table fingerprints preserved. Exact-main CI44789496972 passed: 3,075 passed, 19 skipped, seven live deselected, three warnings. Reader-only activation on f0nix at 2026-11-20 18:15 UTC succeeded: web3ecad22a / Admin6e14cef1 healthy; worker identity/start/image/restarts, schema and CMS fingerprints unchanged. Installed checks: 115 public browser checks on both addresses, 33 state/Admin and ten static-preview checks. Human screen-reader acceptance remains separate. Evidence and rollback: `../handoff/reports/time-transformations/installed.md`.
 ## Phase B: shared chart reading and analytical pages
 
 Status: planned; depends on the notebook composition checkpoint.

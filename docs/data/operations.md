@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current public interface: analytical notebook workspace installed
+## Current public interface: notebook time alignment and analytical transformations installed
+
+Owner-authorized main `7690837` is installed on f0nix from 2026-11-20 18:15 UTC. Public web `3ecad22a` and static-preview Admin `6e14cef1` are healthy with zero restarts. Mixed A/S/Q/M/D originals share an honest native calendar; annual harmonisation, base100 and percentage-point views require explicit valid methods/base. Source data, schema0019/migrations, worker identity/image/start/restarts and authored CMS/history remain unchanged. No migration, publication, worker/edge/authentication change ran.
+
+Exact-main CI `44789496972` passed (3,075 passed, 19 skipped, seven live deselected); 287 clean committed-checkout tests, 115 installed public browser checks, 33 state/Admin and ten preview checks passed. Human screen-reader acceptance remains separate. Reader methods and safe limitations: [Caderno](notebook.md). Full deployment, checks, retained failures and recovery: [installed transformations](../superpowers/handoff/reports/time-transformations/installed.md).
+
+Retained recovery: actual previous checkout913eb2f; images prumo:rollback-time-transformations-20261120 and prumo-backoffice:rollback-time-transformations-20261120. Public app/static are live read-only binds: stop only the affected public reader before changing runtime checkout, restore code and readers through existing aliases; do not restore the database or restart ingestion for a UI rollback. Prebuild used a detached approved-main context and a build-only dc-web override; activation used normal dc-web-up aliases. Only actual new image/tag/rollback relations are acceptance checks; regenerated outer OCI attestation ids are not executable equality. Subsequent documentation commits do not require rebuilding working images.
+
+## Previous public interface: analytical notebook workspace installed
 
 Owner-authorized main `913eb2f` (runtime `050d69e`) is installed from 2026-11-19 16:55 UTC. Public web `4c3def73` and static-preview Admin `2cd23e48` are healthy/zero restarts. The notebook is plot-first, grows across wide monitors, keeps common/latest periods distinct and exposes nearby native add/configure actions. Only the readers changed. Complete worker baseline, schema/migrations and CMS/history fingerprints match pre-activation; quick_check ok, no FK violations. No data/content writes, migration, ownership, credentials, edge or worker restart.
 

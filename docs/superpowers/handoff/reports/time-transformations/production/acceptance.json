@@ -1,0 +1,609 @@
+{
+  "checks": [
+    {
+      "name": "https://cae.joao.date health",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date compiled bytes",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 390 native status",
+      "passed": true
+    },
+    {
+      "name": "native version",
+      "passed": true
+    },
+    {
+      "name": "native full table",
+      "passed": true
+    },
+    {
+      "name": "native Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 390 annual status",
+      "passed": true
+    },
+    {
+      "name": "annual version",
+      "passed": true
+    },
+    {
+      "name": "annual full table",
+      "passed": true
+    },
+    {
+      "name": "annual Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 390 base100 status",
+      "passed": true
+    },
+    {
+      "name": "base100 version",
+      "passed": true
+    },
+    {
+      "name": "base100 full table",
+      "passed": true
+    },
+    {
+      "name": "base100 Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 390 pp status",
+      "passed": true
+    },
+    {
+      "name": "pp version",
+      "passed": true
+    },
+    {
+      "name": "pp full table",
+      "passed": true
+    },
+    {
+      "name": "pp Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp overflow",
+      "passed": true
+    },
+    {
+      "name": "browser errors absent",
+      "passed": true
+    },
+    {
+      "name": "no external requests",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 1440 native status",
+      "passed": true
+    },
+    {
+      "name": "native version",
+      "passed": true
+    },
+    {
+      "name": "native full table",
+      "passed": true
+    },
+    {
+      "name": "native Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 1440 annual status",
+      "passed": true
+    },
+    {
+      "name": "annual version",
+      "passed": true
+    },
+    {
+      "name": "annual full table",
+      "passed": true
+    },
+    {
+      "name": "annual Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 1440 base100 status",
+      "passed": true
+    },
+    {
+      "name": "base100 version",
+      "passed": true
+    },
+    {
+      "name": "base100 full table",
+      "passed": true
+    },
+    {
+      "name": "base100 Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date 1440 pp status",
+      "passed": true
+    },
+    {
+      "name": "pp version",
+      "passed": true
+    },
+    {
+      "name": "pp full table",
+      "passed": true
+    },
+    {
+      "name": "pp Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp overflow",
+      "passed": true
+    },
+    {
+      "name": "browser errors absent",
+      "passed": true
+    },
+    {
+      "name": "no external requests",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date methodology",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date no em dashes",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date unknown series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados health",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados compiled bytes",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 390 native status",
+      "passed": true
+    },
+    {
+      "name": "native version",
+      "passed": true
+    },
+    {
+      "name": "native full table",
+      "passed": true
+    },
+    {
+      "name": "native Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 390 annual status",
+      "passed": true
+    },
+    {
+      "name": "annual version",
+      "passed": true
+    },
+    {
+      "name": "annual full table",
+      "passed": true
+    },
+    {
+      "name": "annual Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 390 base100 status",
+      "passed": true
+    },
+    {
+      "name": "base100 version",
+      "passed": true
+    },
+    {
+      "name": "base100 full table",
+      "passed": true
+    },
+    {
+      "name": "base100 Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 390 pp status",
+      "passed": true
+    },
+    {
+      "name": "pp version",
+      "passed": true
+    },
+    {
+      "name": "pp full table",
+      "passed": true
+    },
+    {
+      "name": "pp Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp overflow",
+      "passed": true
+    },
+    {
+      "name": "browser errors absent",
+      "passed": true
+    },
+    {
+      "name": "no external requests",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 1440 native status",
+      "passed": true
+    },
+    {
+      "name": "native version",
+      "passed": true
+    },
+    {
+      "name": "native full table",
+      "passed": true
+    },
+    {
+      "name": "native Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "native overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 1440 annual status",
+      "passed": true
+    },
+    {
+      "name": "annual version",
+      "passed": true
+    },
+    {
+      "name": "annual full table",
+      "passed": true
+    },
+    {
+      "name": "annual Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "annual overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 1440 base100 status",
+      "passed": true
+    },
+    {
+      "name": "base100 version",
+      "passed": true
+    },
+    {
+      "name": "base100 full table",
+      "passed": true
+    },
+    {
+      "name": "base100 Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "base100 overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados 1440 pp status",
+      "passed": true
+    },
+    {
+      "name": "pp version",
+      "passed": true
+    },
+    {
+      "name": "pp full table",
+      "passed": true
+    },
+    {
+      "name": "pp Home exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp End exact tooltip",
+      "passed": true
+    },
+    {
+      "name": "pp overflow",
+      "passed": true
+    },
+    {
+      "name": "browser errors absent",
+      "passed": true
+    },
+    {
+      "name": "no external requests",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados methodology",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados no em dashes",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados unknown series",
+      "passed": true
+    },
+    {
+      "name": "Admin challenges through Authelia",
+      "passed": true
+    }
+  ],
+  "pages": [
+    {
+      "base": "https://cae.joao.date",
+      "asset_wire_bytes": 180999,
+      "asset_decoded_bytes": 510109,
+      "encoding": "gzip"
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 390,
+      "case": "native",
+      "rows": 121,
+      "version": 2
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 390,
+      "case": "annual",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 390,
+      "case": "base100",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 390,
+      "case": "pp",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 1440,
+      "case": "native",
+      "rows": 121,
+      "version": 2
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 1440,
+      "case": "annual",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 1440,
+      "case": "base100",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://cae.joao.date",
+      "width": 1440,
+      "case": "pp",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://joao.date/dados",
+      "asset_wire_bytes": 180908,
+      "asset_decoded_bytes": 510109,
+      "encoding": "gzip"
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 390,
+      "case": "native",
+      "rows": 121,
+      "version": 2
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 390,
+      "case": "annual",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 390,
+      "case": "base100",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 390,
+      "case": "pp",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 1440,
+      "case": "native",
+      "rows": 121,
+      "version": 2
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 1440,
+      "case": "annual",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 1440,
+      "case": "base100",
+      "rows": 11,
+      "version": 1
+    },
+    {
+      "base": "https://joao.date/dados",
+      "width": 1440,
+      "case": "pp",
+      "rows": 11,
+      "version": 1
+    }
+  ],
+  "warnings": [
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'."
+  ],
+  "bundle_sha256": "5ec098d90cb667f8f2486828a18274861e52a782a48319d457c0baf6e8eaec4b"
+}
