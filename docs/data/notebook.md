@@ -1,102 +1,55 @@
 # Caderno de indicadores
 
-Estado: cartões e gráfico conjunto instalados a 18/11/2026 às 07:51 UTC, após merge e push de `361eca7`. Ver [registo da instalação](../superpowers/handoff/reports/notebook-navigation-release/installed.md).
+O Caderno reúne até doze séries publicadas e permite escolher até seis para o mesmo gráfico. A ligação guarda a seleção e as definições; cada abertura usa os dados publicados nesse momento. Não é uma análise congelada, não exige conta nem grava escolhas na base de dados.
 
-O Caderno reúne até doze séries publicadas numa página. Cada cartão mantém o valor, unidade,
-período, fonte, data de recolha, estado e ligação à proveniência da série. A extensão permite
-escolher até seis dessas séries para o mesmo gráfico, sem editar observações ou calcular
-transformações estatísticas.
+## Escolher e partilhar
 
-## Utilização
+Pesquise pelo indicador, país ou instituição e use "Acrescentar ao caderno". Os cartões mantêm os valores originais com período, unidade, estado, fonte, recolha e ligação à proveniência. Remover uma série conserva as outras definições. "Ligação limpa para guardar ou partilhar" retira apenas o termo de pesquisa.
 
-A entrada Caderno fica na navegação e no rodapé do site. Numa página de série, a ação
-"Criar caderno com esta série" abre uma seleção inicial. Nas comparações, a ação equivalente
-começa com as séries já mostradas.
+O gráfico vem antes das definições e dos cartões. "Configurar" abre as opções sem o empurrar para baixo. As formas nativas de adicionar, remover, configurar, desativar e partilhar funcionam sem JavaScript. Seleção explicitamente vazia e gráfico desativado são estados diferentes; nunca escolhemos outras séries por si.
 
-Dentro do Caderno, pesquise pelo nome do indicador, país ou instituição. "Acrescentar ao
-caderno" conserva os cartões e a configuração já escolhida. Cada cartão tem "Remover do
-caderno"; "Limpar seleção" regressa ao caderno vazio. Tudo isto funciona sem JavaScript.
+## Frequências originais
 
-"Ligação limpa para guardar ou partilhar" abre o endereço com as séries e a configuração do
-gráfico, sem o termo de pesquisa. Guarde-o nos favoritos ou copie o endereço do navegador.
-Quem abrir a ligação recebe a mesma seleção. Não há conta, cookie, armazenamento local ou
-registo da escolha na base de dados. As referências são públicas, não conteúdo privado.
+As séries anuais, semestrais, trimestrais, mensais e diárias podem partilhar um calendário. Cada observação conserva o seu período nativo. Posicioná-la no início do período é uma convenção de desenho, não uma data de publicação ou medição. Não repetimos PIB anual em todos os meses, não interpolamos e não substituímos ausências por zero.
 
-O endereço guarda a escolha das séries, não os seus valores. Cada abertura mostra os dados
-publicados nesse momento. Não é uma análise histórica congelada.
+Uma linha liga observações consecutivas da sua própria frequência; períodos nativos em falta interrompem essa linha. A tabela completa e a leitura do ponto indicam o período de cada valor ou "sem observação nesta posição temporal". As últimas datas e a proveniência são próprias de cada série, sem inventar um período comum. Totais anuais e trimestrais não são diretamente equivalentes.
 
-## Gráfico conjunto
+Nas seleções da mesma frequência, os valores originais conservam o alinhamento anterior: apenas os períodos finitos comuns a todas as séries, com indicação das exclusões. A escala comum exige unidade, multiplicador e base compatíveis. Dois eixos exigem exatamente duas séries e uma escolha explícita. As unidades de cada eixo estão identificadas. Sobrepor curvas não demonstra causalidade.
 
-O painel "Evolução conjunta" aparece antes dos cartões. Com até seis séries elegíveis, tenta
-mostrar todas num eixo comum. Com sete a doze séries, pede uma escolha explícita de até seis;
-não seleciona automaticamente um grupo nem descarta as incompatíveis.
+A janela pode ser de dez anos, cinco anos ou todo o histórico. No calendário misto, ancora-se na observação finita mais recente da união; no alinhamento comum, no último período comum finito. Uma série escolhida sem observação na janela torna o gráfico indisponível com explicação, em vez de desaparecer silenciosamente.
 
-Abra "Definições do gráfico", marque as séries e escolha a escala e a janela. O eixo comum
-exige a mesma periodicidade, unidade nativa, multiplicador e base de índice. Os dois eixos
-exigem exatamente duas séries com a mesma periodicidade e uma escolha explícita. As unidades
-ficam identificadas. Sobrepor curvas não demonstra causalidade; o Caderno conserva as
-geografias e definições de cada série e não decide por si se a relação tem significado.
+As séries de quinze minutos continuam limitadas a um dia UTC comum. Não podem ser misturadas com frequências mais baixas nem anualizadas nesta versão. Um dia explicitamente pedido nunca é substituído por outro.
 
-A janela inicial é de dez anos a partir do último período comum com valores finitos. Há
-opções de cinco anos e de todo o histórico. Os períodos sem correspondência nas outras
-séries, sem número finito ou sem data válida ficam fora de todas as linhas e da tabela, com
-uma nota de exclusão. Não há interpolação, normalização, alteração de base ou preenchimento
-com zeros. A tabela inclui todos os períodos realmente desenhados, com os valores exatos e
-os estados publicados. A proveniência refere-se ao último período comum mostrado.
+## Vista anual calculada
 
-Nas séries de quinze minutos, o gráfico usa um só dia UTC: o mais recente partilhado com
-pelo menos dois pontos comuns, ou o dia escolhido no campo respetivo. Um dia sem dados
-comuns dá uma explicação sem substituir a escolha por outro dia. Não existe agregação
-implícita. O campo de dia só afeta estas séries; a janela de anos só afeta as restantes.
+Selecione "Frequência: Anual". As séries originalmente anuais conservam os seus valores. Só existem métodos anuais para as famílias explicitamente revistas: médias simples de taxas mensais do IHPC/IPC, desemprego, Euribor e rendimentos abrangidos; médias dos índices de produção industrial abrangidos; dezembro para saldos de crédito e depósitos.
 
-O gráfico permite leitura por rato, toque e teclado. As setas, Início e Fim percorrem os
-períodos no controlo inferior. Sem JavaScript, se o pacote falhar, ou na impressão, o SVG e
-a tabela continuam disponíveis. Os cartões e as listagens conservam os SVG pequenos. A
-biblioteca é local e não desencadeia pedidos a serviços externos.
+São exigidos os doze meses finitos, canónicos e sem quebra de série. Duplicados, meses em falta ou anos incompletos excluem esse ano, com indicação explícita. Não se calcula uma média parcial nem se anualiza um ano incompleto. Outros conceitos ou frequências sem método revisto recebem uma explicação, não uma agregação presumida.
 
-Para deixar de mostrar o gráfico, use "Desativar gráfico" ou desmarque todas as séries e
-aplique a configuração. A seleção vazia do gráfico é distinta de usar todas as séries.
-Remover o último membro de um grupo explícito não seleciona automaticamente outros cartões.
+A média anual calculada de doze taxas homólogas mensais do IHPC NÃO é a inflação anual oficial. A média simples das taxas mensais de desemprego também não é a estimativa anual oficial. Estas qualificações acompanham a vista; não se inventa uma série oficial que não existe no catálogo.
 
-## Disponibilidade e limites
+## Base 100 e pontos percentuais
 
-Uma série sem valores publicados, retirada ou sem permissão de redistribuição deixa de
-aparecer nos cartões, com um aviso de quantas séries foram omitidas. Os dados e histórico
-originais não são apagados. As referências do endereço são conservadas, incluindo na
-ligação limpa, para não transformar silenciosamente uma comparação noutra.
+As transformações desta versão exigem frequência anual e escala comum, com o mesmo ano de base para todas as séries. Um ano explícito deve existir em todas as séries, mesmo que esteja fora da janela visível. Sem ano escolhido, usa-se o primeiro ano completo comum na janela, e essa escolha automática é identificada.
 
-Se uma série escolhida explicitamente para o gráfico perder elegibilidade, o gráfico todo
-fica indisponível; os restantes cartões continuam visíveis. Uma seleção com periodicidades
-ou escalas incompatíveis conserva os cartões e apresenta uma explicação no painel, com os
-controlos disponíveis para corrigir a escolha.
+Base 100: `100 * valor / valor_base`. Apenas níveis de famílias revistas, como PIB por habitante, população, crédito/depósitos e índices abrangidos; a base tem de ser estritamente positiva. Taxas de crescimento, percentagens e saldos de confiança não são rebaseados indiscriminadamente.
 
-O máximo do endereço é doze parâmetros `s`; o grupo explícito aceita até seis parâmetros
-`g`, antes da desduplicação. Valores malformados, referências do gráfico fora do Caderno e
-parâmetros únicos repetidos dão a página genérica de endereço inexistente. Não há truncagem
-silenciosa. Uma falha do catálogo ou da base dá a indisponibilidade genérica, sem códigos
-operacionais no texto.
+Pontos percentuais: `taxa - taxa_base`. Apenas taxas percentuais abrangidas. A base pode ser nula ou negativa; não há divisão. Não é uma variação percentual de níveis.
 
-As páginas funcionam em `/caderno` no domínio direto e em `/dados/caderno` no endereço
-montado. `s` é a seleção ordenada, `g` o grupo explícito do gráfico, `grafico=on` distingue
-uma escolha explícita vazia de usar todas, `grafico=off` oculta o gráfico, `escala` aceita
-`comum` ou `dupla`, `janela` aceita `10a`, `5a` ou `max`, `dia` é uma data ISO e `q` uma
-pesquisa transitória. Os parâmetros não indicados usam os valores iniciais. Todas as
-respostas diretas da aplicação mantêm `noindex, follow` nos metadados e no cabeçalho `X-Robots-Tag`. O encaminhamento público existente substitui o cabeçalho por uma política mais restritiva que inclui `none` (sem indexação nem seguimento); os metadados HTML mantêm a política da aplicação. Esta instalação não alterou essa configuração partilhada.
+Os cálculos são vistas temporárias do leitor, não novas observações do editor nem séries guardadas pelo worker. A aritmética Decimal é comparada com uma recomputação racional independente antes de mostrar o resultado. Médias e normalizações são apresentadas com seis casas decimais e arredondamento para o par mais próximo. Uma normalização usa os inputs originais, nunca uma média já arredondada. Os tokens publicados e o valor exato de dezembro permanecem intactos.
 
-## Operação e custo
+Cada vista calculada identifica o método, a fórmula e a base; permite consultar os valores e períodos originais usados, incluindo os da base. Os inputs conservam estados e referências de recolha/execução/arquivo. A impressão mantém SVG, qualificações e ligações aos originais. Os CSV das páginas das séries continuam a exportar os originais; esta entrega não oferece um CSV transformado.
 
-Não existe migração nem estado do Caderno para recuperar. A instalação autorizada desta
-extensão atualiza o site e a pré-visualização pública incluída no backoffice, sem tocar na
-ingestão, conteúdo do CMS, credenciais ou encaminhamento. Um recuo de código não apaga
-conteúdo editorial nem observações estatísticas. Endereços antigos do Caderno continuam
-válidos; endereços com opções do novo gráfico precisam de uma versão que as compreenda.
+## Interação e disponibilidade
 
-Para encontrar corretamente a janela, as séries não intervalares são lidas com o seu
-histórico completo na mesma transação de leitura; a janela limita o que é desenhado e
-publicado na tabela. As séries intervalares mantêm leituras de valores limitadas a um dia.
-O histórico máximo pode produzir mais HTML do que o objetivo de 250 kB. A aceitação desta
-extensão conserva o histórico completo em vez de truncar observações; o resultado medido,
-condições de carga e exceção de orçamento estão no relatório de entrega. Compressão local
-não é uma medição da transferência em produção.
+Rato, toque e teclado percorrem os pontos reais. As setas, Início e Fim usam o controlo inferior. Sem JavaScript, com o pacote bloqueado ou na impressão, SVG e tabela permanecem. Não há CDN nem pedidos externos.
 
-Relatório: [notebook-navigation](../superpowers/handoff/reports/notebook-navigation/README.md).
+Licenças e elegibilidade são reavaliadas em cada abertura. A perda de uma série explicitamente escolhida bloqueia o gráfico inteiro, mantendo os cartões elegíveis e as referências da ligação. Incompatibilidades estatísticas são explicadas; nunca mudamos silenciosamente a frequência, a escala, a base ou as séries escolhidas.
+
+## Contrato do endereço e operação
+
+`s`: até doze referências ordenadas; `g`: grupo explícito até seis; `grafico=on|off`; `escala=comum|dupla`; `janela=10a|5a|max`; `dia=YYYY-MM-DD` para intervalos; `frequencia=original|anual`; `transformacao=original|base100|pp`; `base=YYYY` opcional; `q`: pesquisa transitória. Valores iniciais omitidos conservam os endereços antigos. Parâmetros únicos repetidos ou malformados dão 404 antes de abrir a base; uma configuração válida mas estatisticamente indisponível dá 200 com explicação e cartões.
+
+A app pública continua apenas GET/HEAD, com uma transação só de leitura por resposta. Não há migração, escrita estatística, publicação do CMS nem reinício da ingestão. A instalação atualiza site e backoffice, que partilha os modelos na pré-visualização estática. O recuo restaura código e imagens desses leitores, conservando dados e histórico.
+
+Desenho/métodos: [spec](../superpowers/specs/2026-11-20-notebook-time-transformations-design.md). Provas e limitações: [relatório](../superpowers/handoff/reports/time-transformations/README.md). A aceitação humana com leitor de ecrã permanece separada dos testes automáticos.

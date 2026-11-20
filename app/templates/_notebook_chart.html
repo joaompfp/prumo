@@ -8,8 +8,8 @@
         <ul class="notebook-chart-sources">
           {% for side in panel.sides %}
           <li>
-            <strong><span class="legend-swatch swatch-{{ side.style }}" aria-hidden="true"></span>{{ side.label }}</strong>
-            <span>{{ side.source_title }} · {{ page.copy.chart_meta_frequency }}: {{ side.frequency_text }}{% if side.display_frequency_text %} ({{ side.display_frequency_text }}){% endif %} · {{ page.copy.chart_meta_unit }}: {{ side.source_unit_text or side.unit_text }}{% if side.provenance %} · {{ page.copy.chart_meta_fetched }}: {{ side.provenance.fetched_text }}{% endif %}</span>
+            <strong><span class="legend-swatch swatch-{{ side.style }}" aria-hidden="true"></span>{{ side.label }}{% if side.calculated %} <span class="flag">{{ page.copy.chart_calculated_badge }}</span>{% endif %}</strong>
+            <span>{{ side.source_title }} · {{ page.copy.chart_meta_frequency }}: {{ side.frequency_text }}{% if side.display_frequency_text %} ({{ side.display_frequency_text }}){% endif %} · {% if side.source_unit_text and side.source_unit_text != side.unit_text %}{{ page.copy.chart_evidence_chart_unit }}: {{ side.unit_text }} · {{ page.copy.chart_evidence_source_unit }}: {{ side.source_unit_text }}{% else %}{{ page.copy.chart_meta_unit }}: {{ side.unit_text }}{% endif %}{% if side.provenance %} · {{ page.copy.chart_meta_fetched }}: {{ side.provenance.fetched_text }}{% endif %}</span>
           </li>
           {% endfor %}
         </ul>

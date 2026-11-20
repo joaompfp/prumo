@@ -41,7 +41,8 @@
 
 <section aria-labelledby="precisao">
   <h2 id="precisao">Precisão, unidades e arredondamento</h2>
-  <p>O Prumo guarda e mostra o número tal como o editor o publicou, com a mesma precisão e a mesma unidade. Não há arredondamento, conversão de unidades nem mudança de escala. Nos gráficos, apenas as marcas do eixo são arredondadas para leitura; os valores em texto e nas tabelas mantêm a precisão original.</p>
+  <p>Nas séries originais, o Prumo guarda e mostra o número tal como o editor o publicou, com a mesma precisão e unidade. Apenas as marcas dos eixos são arredondadas para leitura. Os valores originais nas tabelas e nos ficheiros CSV mantêm a precisão publicada.</p>
+  <p>No Caderno, o leitor pode escolher uma vista anual calculada, um índice de base 100 ou uma diferença em pontos percentuais. Estas vistas estão identificadas como calculadas, mostram a fórmula, o ano de base e os valores originais usados, sem alterar a base de dados. Os resultados são apresentados com seis casas decimais, com arredondamento para o par mais próximo e recomputação independente por aritmética racional.</p>
 </section>
 
 <section aria-labelledby="estados">
@@ -52,6 +53,13 @@
 <section aria-labelledby="calculados">
   <h2 id="calculados">Valores calculados</h2>
   <p>As variações homólogas, as variações face ao período anterior e os índices rebaseados são calculados com aritmética decimal exata a partir de valores já publicados e verificados. Cada valor calculado leva a marca «Calculado pelo Prumo», indica a fórmula, a série base e os valores exatos usados, e é recalculado por uma segunda implementação independente. Se as duas não coincidirem, o valor não é publicado.</p>
+</section>
+
+<section aria-labelledby="comparacao-temporal">
+  <h2 id="comparacao-temporal">Comparação temporal no Caderno</h2>
+  <p>Séries anuais, semestrais, trimestrais, mensais e diárias podem partilhar um calendário sem criar observações. Cada ponto conserva o seu período nativo; a posição no início do período é uma convenção de desenho, não a data de publicação ou medição. Um valor anual não é repetido em cada mês. Uma célula sem observação nunca equivale a zero, e totais anuais e trimestrais não são diretamente equivalentes.</p>
+  <p>A vista anual usa apenas métodos definidos para o indicador e exige os doze meses completos: média aritmética para as taxas e índices abrangidos, ou dezembro para os saldos de crédito e depósitos. A média anual calculada das taxas homólogas mensais do IHPC não é a inflação anual oficial; a média simples das taxas mensais de desemprego não é a estimativa anual oficial. Anos incompletos ou com quebra de série ficam de fora, com indicação explícita.</p>
+  <p>A base 100 compara a evolução relativa de níveis e exige uma base positiva comum. Nas taxas abrangidas, a diferença em pontos percentuais subtrai a taxa do ano de base e admite bases nulas ou negativas. Estas transformações exigem a vista anual e uma escala comum. A fórmula e os originais permanecem acessíveis, também na impressão. Sobrepor curvas não demonstra causalidade.</p>
 </section>
 
 <section aria-labelledby="licencas">

@@ -1,8 +1,8 @@
 # Base-data methodology
 
 This document describes the implemented `ingest/` pipeline, not the retired dashboard.
-SQLite is the system of record. The deployed HTTP app remains in maintenance mode and
-does not expose the data store as a public data API. [Operations](operations.md) owns
+SQLite is the system of record. The public read-only site and editorial CMS are installed;
+there is no general public data API. [Operations](operations.md) owns
 runtime procedures and the open observation gate; the [handoff](../superpowers/handoff/HANDOFF.md)
 and its decision ledger own acceptance and later rulings.
 
@@ -11,6 +11,14 @@ CSV is comma-separated values; SQL is Structured Query Language; UTC is Coordina
 Universal Time. INE is Portugal's Instituto Nacional de Estatística; BPstat is Banco
 de Portugal's statistical service. Other publisher names and exact source identifiers
 are recorded in the [source catalogue](sources.md).
+
+## Read-only notebook analytical views
+
+The notebook can overlay native A/S/Q/M/D observations on real Gregorian period-start coordinates without interpolation or filling. This is a display convention, not publication time. Original same-frequency comparisons retain their complete finite-period intersection. PT15M remains limited to one UTC day.
+
+Explicit annual views use reviewed family rules and complete years only. The arithmetic mean of twelve monthly year-on-year HICP rates is identified as a calculated annual mean, not official annual inflation; the unweighted monthly unemployment mean is not the official annual estimate. Credit/deposit year-end views use December after requiring a complete year. Unknown concepts and incomplete/break years do not receive invented aggregates.
+
+Optional base100 and percentage-point transformations require a common annual base and a common scale. Level bases must be positive; rate differences can use zero or negative bases. Raw input tokens, periods, flags and base evidence remain available, separate from chart units. Decimal results are independently recomputed using Fraction and integer half-even rounding to six decimal places. These are ephemeral analytical view results, not stored publisher observations or new worker-derived series; original series/CSV/source evidence remain unchanged. See [reader methods](notebook.md) and the [reviewed specification](../superpowers/specs/2026-11-20-notebook-time-transformations-design.md).
 
 ## Registry and scope
 

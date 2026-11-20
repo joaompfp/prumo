@@ -1,0 +1,4097 @@
+{
+  "kind": "prumo-notebook-time-transformations-browser-acceptance",
+  "generated_at": "2026-11-20T17:23:42.094878+00:00",
+  "base": "http://127.0.0.1:8197",
+  "proxy": "http://127.0.0.1:35411/dados",
+  "db_path": "/home/joao/.hermes/cache/scratch/prumo-time-transformations/acceptance.sqlite3",
+  "head": "bb4b0261048cfdef7d9cc1818a602fe13e82e91a",
+  "dirty": [
+    "M app/templates/methodology.html",
+    "?? docs/superpowers/handoff/reports/time-transformations/",
+    "?? docs/superpowers/plans/2026-11-20-notebook-time-transformations.md",
+    "?? docs/superpowers/specs/2026-11-20-notebook-time-transformations-design.md"
+  ],
+  "result": "FAIL",
+  "fatal": null,
+  "counts": {
+    "pages_loaded": 136,
+    "matrix_cells": 110,
+    "matrix_assertions": 2605,
+    "matrix_cells_failed": 0,
+    "functional_checks": 223,
+    "functional_assertions": 223,
+    "functional_failures": 1,
+    "screenshots": 9,
+    "db_tables": 23,
+    "db_rows": 777854
+  },
+  "failures": [
+    {
+      "name": "mixed_touch:keyboard_tooltips",
+      "ok": false,
+      "detail": [
+        {
+          "key": "End",
+          "point": 120,
+          "readout": "01/10/2026 - Taxa de variação homóloga do IHPC - Portugal - outubro de 2026: 3,9 %; PIB per capita - Portugal - sem observação nesta posição temporal",
+          "aria": "01/10/2026",
+          "tip": "01/11/2016 Taxa de variação homóloga do IHPC - Portugal - novembro de 2016: 0,5 % PIB per capita - Portugal - sem observação nesta posição temporal"
+        }
+      ]
+    }
+  ],
+  "cases": [],
+  "matrix": [
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 320,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            64,
+            78
+          ]
+        ],
+        "first_start": 64,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 320,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            64,
+            78
+          ]
+        ],
+        "first_start": 64,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 320,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            64,
+            78
+          ]
+        ],
+        "first_start": 64,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 320,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            75,
+            124
+          ],
+          [
+            131,
+            174
+          ],
+          [
+            181,
+            276
+          ]
+        ],
+        "first_start": 75,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 320,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            75,
+            124
+          ],
+          [
+            131,
+            174
+          ],
+          [
+            181,
+            276
+          ]
+        ],
+        "first_start": 75,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 320,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            71,
+            100
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 320,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 320,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 320,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 320,
+      "prefix": "direct",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 320,
+      "prefix": "direct",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 390,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 573.40625,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            71,
+            85
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 390,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 573.40625,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            71,
+            85
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 390,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            71,
+            85
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 390,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            83,
+            182
+          ],
+          [
+            189,
+            284
+          ]
+        ],
+        "first_start": 83,
+        "first_width": 100
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 390,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            83,
+            182
+          ],
+          [
+            189,
+            284
+          ]
+        ],
+        "first_start": 83,
+        "first_width": 100
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 390,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            79,
+            108
+          ]
+        ],
+        "first_start": 79,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 390,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 390,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 390,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 390,
+      "prefix": "direct",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 390,
+      "prefix": "direct",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 768,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            113,
+            127
+          ]
+        ],
+        "first_start": 113,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 768,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            113,
+            127
+          ]
+        ],
+        "first_start": 113,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 768,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            113,
+            127
+          ]
+        ],
+        "first_start": 113,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 768,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            124,
+            173
+          ],
+          [
+            180,
+            223
+          ],
+          [
+            230,
+            325
+          ]
+        ],
+        "first_start": 124,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 768,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            124,
+            173
+          ],
+          [
+            180,
+            223
+          ],
+          [
+            230,
+            325
+          ]
+        ],
+        "first_start": 124,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 768,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            120,
+            149
+          ]
+        ],
+        "first_start": 120,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 768,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 768,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 768,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 768,
+      "prefix": "direct",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 768,
+      "prefix": "direct",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            163,
+            192
+          ]
+        ],
+        "first_start": 163,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 1440,
+      "prefix": "direct",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            163,
+            192
+          ]
+        ],
+        "first_start": 163,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 1920,
+      "prefix": "direct",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            64,
+            78
+          ]
+        ],
+        "first_start": 64,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            64,
+            78
+          ]
+        ],
+        "first_start": 64,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            64,
+            78
+          ]
+        ],
+        "first_start": 64,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            75,
+            124
+          ],
+          [
+            131,
+            174
+          ],
+          [
+            181,
+            276
+          ]
+        ],
+        "first_start": 75,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            75,
+            124
+          ],
+          [
+            131,
+            174
+          ],
+          [
+            181,
+            276
+          ]
+        ],
+        "first_start": 75,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 629.40625,
+      "plot_height": 264,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 284,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            71,
+            100
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 320,
+      "prefix": "proxy",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 320,
+      "inner_width": 320,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 573.40625,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            71,
+            85
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 573.40625,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            71,
+            85
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            71,
+            85
+          ]
+        ],
+        "first_start": 71,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            83,
+            182
+          ],
+          [
+            189,
+            284
+          ]
+        ],
+        "first_start": 83,
+        "first_width": 100
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            83,
+            182
+          ],
+          [
+            189,
+            284
+          ]
+        ],
+        "first_start": 83,
+        "first_width": 100
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 542.421875,
+      "plot_height": 264,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 354,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            79,
+            108
+          ]
+        ],
+        "first_start": 79,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 390,
+      "prefix": "proxy",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 390,
+      "inner_width": 390,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            113,
+            127
+          ]
+        ],
+        "first_start": 113,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            113,
+            127
+          ]
+        ],
+        "first_start": 113,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            113,
+            127
+          ]
+        ],
+        "first_start": 113,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            124,
+            173
+          ],
+          [
+            180,
+            223
+          ],
+          [
+            230,
+            325
+          ]
+        ],
+        "first_start": 124,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            124,
+            173
+          ],
+          [
+            180,
+            223
+          ],
+          [
+            230,
+            325
+          ]
+        ],
+        "first_start": 124,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 365.765625,
+      "plot_height": 282.484375,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 731,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            120,
+            149
+          ]
+        ],
+        "first_start": 120,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 768,
+      "prefix": "proxy",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 768,
+      "inner_width": 768,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 366.96875,
+      "plot_height": 433.5,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            163,
+            192
+          ]
+        ],
+        "first_start": 163,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 1440,
+      "prefix": "proxy",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1440,
+      "inner_width": 1440,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_worldbank",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "dólares dos EUA"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "mixed_ihpc_eurostat",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 2,
+        "kind": "calendar",
+        "periods": 121,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "annual_ihpc_eurostat",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "%",
+          "euros por habitante"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 15.854568481445312,
+        "runs": [
+          [
+            156,
+            170
+          ]
+        ],
+        "first_start": 156,
+        "first_width": 15
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_gdp_pt_es",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "base100_six_gdp",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "group",
+        "periods": 11,
+        "series": 6,
+        "axes": [
+          "índice (base 2015=100)"
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 203.7157440185547,
+        "runs": [
+          [
+            167,
+            216
+          ],
+          [
+            223,
+            267
+          ],
+          [
+            274,
+            369
+          ]
+        ],
+        "first_start": 167,
+        "first_width": 50
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "pp_ihpc_unemployment",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "ready",
+      "payload": {
+        "version": 1,
+        "kind": "comparison",
+        "periods": 11,
+        "series": 2,
+        "axes": [
+          "p.p."
+        ]
+      },
+      "plot_top": 372.84375,
+      "plot_height": 433.5,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": "25.245px",
+      "tick_font": "18.15px",
+      "base_font": "25.245px",
+      "axis_title": {
+        "canvas_width": 1122,
+        "left_unit_width": 31.511322021484375,
+        "runs": [
+          [
+            163,
+            192
+          ]
+        ],
+        "first_start": 163,
+        "first_width": 30
+      },
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "wrong_base",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "rate_base100",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "interval_mix",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "unavailable",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "empty_group",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "empty",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    },
+    {
+      "id": "off",
+      "width": 1920,
+      "prefix": "proxy",
+      "state": "off",
+      "payload": null,
+      "plot_top": null,
+      "plot_height": null,
+      "doc_width": 1920,
+      "inner_width": 1920,
+      "readout_font": null,
+      "tick_font": null,
+      "base_font": "25.245px",
+      "axis_title": null,
+      "csp": true,
+      "external": [],
+      "page_errors": [],
+      "console_errors": [],
+      "issues": []
+    }
+  ],
+  "matrix_summary": {
+    "min_plot_height": 264,
+    "min_plot_top": 365.765625,
+    "max_plot_top": 629.40625,
+    "max_horizontal_overflow": 0,
+    "min_readout_font": 25.245,
+    "min_tick_font": 18.15,
+    "min_base_font": 25.245
+  },
+  "observations": [
+    {
+      "kind": "touch_tooltip",
+      "point": 120,
+      "visible_immediately": true,
+      "hidden_after_ms": null
+    },
+    {
+      "kind": "touch_tooltip",
+      "point": 0,
+      "visible_immediately": true,
+      "hidden_after_ms": 200
+    }
+  ],
+  "fallbacks": [
+    {
+      "id": "nojs",
+      "ok": true,
+      "failures": []
+    },
+    {
+      "id": "blocked_bundle",
+      "ok": true,
+      "failures": []
+    }
+  ],
+  "screenshots": [
+    "pib-per-capita-mixed-1440.png",
+    "pib-per-capita-mixed-390.png",
+    "annual-hicp-gdp-1440.png",
+    "annual-hicp-gdp-390.png",
+    "base100-gdp-pt-es-1440.png",
+    "base100-gdp-pt-es-390.png",
+    "pp-hicp-unemployment-1440.png",
+    "pp-hicp-unemployment-390.png",
+    "base100-six-sides-1440.png"
+  ],
+  "assets": {
+    "manifest_path": "/home/joao/projects/prumo-pipeline/static/js/prumo-charts.manifest.json",
+    "manifest_sha256": "cdad76dba58f2b2122d17200a081b589e3f484a01a8efe5af947cfa7775d0697",
+    "manifest_bytes": 489,
+    "declared_asset": "js/prumo-charts.min.js",
+    "declared_sha256": "b7a4f50dbb09ad926d071d0264e2f16de19606807e96e418b407e3dcac4377b8",
+    "declared_bytes": 509974,
+    "actual_sha256": "b7a4f50dbb09ad926d071d0264e2f16de19606807e96e418b407e3dcac4377b8",
+    "actual_bytes": 509974,
+    "match": true,
+    "served": {
+      "direct": {
+        "status": 200,
+        "sha256": "b7a4f50dbb09ad926d071d0264e2f16de19606807e96e418b407e3dcac4377b8",
+        "bytes": 509974,
+        "content_type": "text/javascript; charset=utf-8",
+        "match": true
+      },
+      "proxy": {
+        "status": 200,
+        "sha256": "b7a4f50dbb09ad926d071d0264e2f16de19606807e96e418b407e3dcac4377b8",
+        "bytes": 509974,
+        "content_type": "text/javascript; charset=utf-8",
+        "match": true
+      }
+    }
+  },
+  "db": {
+    "before": {
+      "schema_sha256": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7",
+      "tables": [
+        {
+          "name": "cms_document",
+          "rows": 3,
+          "sha256": "ab21d5d642cbc055fe997f040734e99723c1c2364ee8ef271ef01c1c05cf144f"
+        },
+        {
+          "name": "cms_event",
+          "rows": 11,
+          "sha256": "6a2cafe31e9cfd9aa68b7db2091f7e74f453f9ae1345db8bb1295b6b19c6ca78"
+        },
+        {
+          "name": "cms_revision",
+          "rows": 6,
+          "sha256": "6bb8a6f32b2e64e850a6d0dc9f5780429d09f9e646970c13251bf70d168cd736"
+        },
+        {
+          "name": "dataset_run",
+          "rows": 113,
+          "sha256": "9319d3344d5ecda65c58ea7488a62a03c1625ac95450bb3deced64fb5b27b500"
+        },
+        {
+          "name": "derived_event",
+          "rows": 0,
+          "sha256": "df0ecd68f7ee9db219755cb4ce144d5cff381226d34c3ec52088871c2fc22fc2"
+        },
+        {
+          "name": "derived_observation",
+          "rows": 8985,
+          "sha256": "a4beffe9cb08525e34a1c5aef62e569e099497e96d00a9b0839102815933ad31"
+        },
+        {
+          "name": "derived_run",
+          "rows": 17,
+          "sha256": "784f60e2e8fcbc2dcced61a8931247ab81ac2aae97057bd21f1e93ae1a27d4d9"
+        },
+        {
+          "name": "derived_series",
+          "rows": 23,
+          "sha256": "653f25816d74e089cd88bf1a82c2b7bb82b509e502b0963bc611c4ac9aa48845"
+        },
+        {
+          "name": "editorial_event",
+          "rows": 4,
+          "sha256": "3349ba2274263f342d98a652cdf19f122f64c6ab9d87970e0c92508dd640792a"
+        },
+        {
+          "name": "editorial_page",
+          "rows": 1,
+          "sha256": "f84bfd27be406563e6d45d045ec67e212f57e7dc9f30e52e6466b84664b6ffb1"
+        },
+        {
+          "name": "editorial_slot",
+          "rows": 0,
+          "sha256": "364a6a0aeb43452067c5745f6b71e8c239b1ae298f0b7914359cc650f3c53e8f"
+        },
+        {
+          "name": "event",
+          "rows": 383,
+          "sha256": "f8e4c8885fdcb86a8219ff88aa1f565d1d48f5f603b17ac530bc376e343c8d28"
+        },
+        {
+          "name": "observation",
+          "rows": 589362,
+          "sha256": "3e559e26c610f59fca1bfa45ca25f094a39546118a12d412cf2aaba3f390b69e"
+        },
+        {
+          "name": "quarantine",
+          "rows": 34281,
+          "sha256": "97cc2c6304602222913d62f8dcf40680aa2a6d174db6e5206d0b16caed9d6629"
+        },
+        {
+          "name": "raw_fetch",
+          "rows": 1051,
+          "sha256": "5e3db75a1db54208ea1138c31deafeff61cc4227089c7d496942624fa80374cd"
+        },
+        {
+          "name": "scheduler_state",
+          "rows": 26,
+          "sha256": "33f84fa35c4fe8481a4bedf8e8df6dee9cc1d80f4be30b5bfa866c305af028a5"
+        },
+        {
+          "name": "schema_migration",
+          "rows": 19,
+          "sha256": "eecdd88c314ca35f6861de9918b24d65b289f006e242197d7d386c52748da9f5"
+        },
+        {
+          "name": "series",
+          "rows": 1791,
+          "sha256": "bb04bf2c7c89dd43bf444ad383021ce5edf43caa42279c22a21d48b5035fcd53"
+        },
+        {
+          "name": "setting",
+          "rows": 2,
+          "sha256": "550d7d73b42ffc5e0080b186e7393a37da5ebfc95743a7f2d2cb37ece128982a"
+        },
+        {
+          "name": "source",
+          "rows": 9,
+          "sha256": "d5f353837ca38b6bb69d50ce9a993a11f0f5af7e89c818d496c5efb28d018e48"
+        },
+        {
+          "name": "verification",
+          "rows": 53,
+          "sha256": "d5991788416e0e7e621f98aef44e9d08235185d4474537f790ae0291e769ed03"
+        },
+        {
+          "name": "verification_item",
+          "rows": 140657,
+          "sha256": "cb45649e22db79ec49415be25478154aae9706846cfd2d4ffc24d112dd53ee51"
+        },
+        {
+          "name": "verification_spec",
+          "rows": 1057,
+          "sha256": "2c175cca08ad8d55a8bba9e1f40d4e1e8c88de089bb2be7a271cedc4948ecfcf"
+        }
+      ],
+      "table_count": 23,
+      "row_count": 777854,
+      "overall_sha256": "7beefa8211215ac1b9ae1beaf912d7ab031657972c0069eb5f84b9646f729b7c",
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": [],
+      "schema_migrations": [
+        [
+          "0001_init",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0002_dataset_key",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0003_verification_replay",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0004_verification_audit",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0005_served_licence_gate",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0006_pt15m",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0007_scoped_legacy_serving",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0008_input_origin",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0009_blocked_stale_state",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0010_scheduler_state",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0011_data_time_serving_and_withdrawal",
+          "2026-11-14 10:24:32"
+        ],
+        [
+          "0012_verification_audit_v2",
+          "2026-11-14 10:24:32"
+        ],
+        [
+          "0013_run_and_audit_guards",
+          "2026-11-14 10:24:32"
+        ],
+        [
+          "0014_derived_layer",
+          "2026-11-15 11:39:45"
+        ],
+        [
+          "0015_observation_run_index",
+          "2026-11-15 19:14:41"
+        ],
+        [
+          "0016_language_neutral_derived",
+          "2026-11-15 19:14:41"
+        ],
+        [
+          "0017_derived_caveats",
+          "2026-11-15 19:14:41"
+        ],
+        [
+          "0018_editorial_composition",
+          "2026-11-16 12:21:07"
+        ],
+        [
+          "0019_statistics_cms",
+          "2026-11-17 01:45:17"
+        ]
+      ]
+    },
+    "after": {
+      "schema_sha256": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7",
+      "tables": [
+        {
+          "name": "cms_document",
+          "rows": 3,
+          "sha256": "ab21d5d642cbc055fe997f040734e99723c1c2364ee8ef271ef01c1c05cf144f"
+        },
+        {
+          "name": "cms_event",
+          "rows": 11,
+          "sha256": "6a2cafe31e9cfd9aa68b7db2091f7e74f453f9ae1345db8bb1295b6b19c6ca78"
+        },
+        {
+          "name": "cms_revision",
+          "rows": 6,
+          "sha256": "6bb8a6f32b2e64e850a6d0dc9f5780429d09f9e646970c13251bf70d168cd736"
+        },
+        {
+          "name": "dataset_run",
+          "rows": 113,
+          "sha256": "9319d3344d5ecda65c58ea7488a62a03c1625ac95450bb3deced64fb5b27b500"
+        },
+        {
+          "name": "derived_event",
+          "rows": 0,
+          "sha256": "df0ecd68f7ee9db219755cb4ce144d5cff381226d34c3ec52088871c2fc22fc2"
+        },
+        {
+          "name": "derived_observation",
+          "rows": 8985,
+          "sha256": "a4beffe9cb08525e34a1c5aef62e569e099497e96d00a9b0839102815933ad31"
+        },
+        {
+          "name": "derived_run",
+          "rows": 17,
+          "sha256": "784f60e2e8fcbc2dcced61a8931247ab81ac2aae97057bd21f1e93ae1a27d4d9"
+        },
+        {
+          "name": "derived_series",
+          "rows": 23,
+          "sha256": "653f25816d74e089cd88bf1a82c2b7bb82b509e502b0963bc611c4ac9aa48845"
+        },
+        {
+          "name": "editorial_event",
+          "rows": 4,
+          "sha256": "3349ba2274263f342d98a652cdf19f122f64c6ab9d87970e0c92508dd640792a"
+        },
+        {
+          "name": "editorial_page",
+          "rows": 1,
+          "sha256": "f84bfd27be406563e6d45d045ec67e212f57e7dc9f30e52e6466b84664b6ffb1"
+        },
+        {
+          "name": "editorial_slot",
+          "rows": 0,
+          "sha256": "364a6a0aeb43452067c5745f6b71e8c239b1ae298f0b7914359cc650f3c53e8f"
+        },
+        {
+          "name": "event",
+          "rows": 383,
+          "sha256": "f8e4c8885fdcb86a8219ff88aa1f565d1d48f5f603b17ac530bc376e343c8d28"
+        },
+        {
+          "name": "observation",
+          "rows": 589362,
+          "sha256": "3e559e26c610f59fca1bfa45ca25f094a39546118a12d412cf2aaba3f390b69e"
+        },
+        {
+          "name": "quarantine",
+          "rows": 34281,
+          "sha256": "97cc2c6304602222913d62f8dcf40680aa2a6d174db6e5206d0b16caed9d6629"
+        },
+        {
+          "name": "raw_fetch",
+          "rows": 1051,
+          "sha256": "5e3db75a1db54208ea1138c31deafeff61cc4227089c7d496942624fa80374cd"
+        },
+        {
+          "name": "scheduler_state",
+          "rows": 26,
+          "sha256": "33f84fa35c4fe8481a4bedf8e8df6dee9cc1d80f4be30b5bfa866c305af028a5"
+        },
+        {
+          "name": "schema_migration",
+          "rows": 19,
+          "sha256": "eecdd88c314ca35f6861de9918b24d65b289f006e242197d7d386c52748da9f5"
+        },
+        {
+          "name": "series",
+          "rows": 1791,
+          "sha256": "bb04bf2c7c89dd43bf444ad383021ce5edf43caa42279c22a21d48b5035fcd53"
+        },
+        {
+          "name": "setting",
+          "rows": 2,
+          "sha256": "550d7d73b42ffc5e0080b186e7393a37da5ebfc95743a7f2d2cb37ece128982a"
+        },
+        {
+          "name": "source",
+          "rows": 9,
+          "sha256": "d5f353837ca38b6bb69d50ce9a993a11f0f5af7e89c818d496c5efb28d018e48"
+        },
+        {
+          "name": "verification",
+          "rows": 53,
+          "sha256": "d5991788416e0e7e621f98aef44e9d08235185d4474537f790ae0291e769ed03"
+        },
+        {
+          "name": "verification_item",
+          "rows": 140657,
+          "sha256": "cb45649e22db79ec49415be25478154aae9706846cfd2d4ffc24d112dd53ee51"
+        },
+        {
+          "name": "verification_spec",
+          "rows": 1057,
+          "sha256": "2c175cca08ad8d55a8bba9e1f40d4e1e8c88de089bb2be7a271cedc4948ecfcf"
+        }
+      ],
+      "table_count": 23,
+      "row_count": 777854,
+      "overall_sha256": "7beefa8211215ac1b9ae1beaf912d7ab031657972c0069eb5f84b9646f729b7c",
+      "integrity_check": [
+        "ok"
+      ],
+      "foreign_key_violations": [],
+      "schema_migrations": [
+        [
+          "0001_init",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0002_dataset_key",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0003_verification_replay",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0004_verification_audit",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0005_served_licence_gate",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0006_pt15m",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0007_scoped_legacy_serving",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0008_input_origin",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0009_blocked_stale_state",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0010_scheduler_state",
+          "2026-11-13 01:15:36"
+        ],
+        [
+          "0011_data_time_serving_and_withdrawal",
+          "2026-11-14 10:24:32"
+        ],
+        [
+          "0012_verification_audit_v2",
+          "2026-11-14 10:24:32"
+        ],
+        [
+          "0013_run_and_audit_guards",
+          "2026-11-14 10:24:32"
+        ],
+        [
+          "0014_derived_layer",
+          "2026-11-15 11:39:45"
+        ],
+        [
+          "0015_observation_run_index",
+          "2026-11-15 19:14:41"
+        ],
+        [
+          "0016_language_neutral_derived",
+          "2026-11-15 19:14:41"
+        ],
+        [
+          "0017_derived_caveats",
+          "2026-11-15 19:14:41"
+        ],
+        [
+          "0018_editorial_composition",
+          "2026-11-16 12:21:07"
+        ],
+        [
+          "0019_statistics_cms",
+          "2026-11-17 01:45:17"
+        ]
+      ]
+    },
+    "equal": true,
+    "tables_equal": {
+      "cms_document": true,
+      "cms_event": true,
+      "cms_revision": true,
+      "dataset_run": true,
+      "derived_event": true,
+      "derived_observation": true,
+      "derived_run": true,
+      "derived_series": true,
+      "editorial_event": true,
+      "editorial_page": true,
+      "editorial_slot": true,
+      "event": true,
+      "observation": true,
+      "quarantine": true,
+      "raw_fetch": true,
+      "scheduler_state": true,
+      "schema_migration": true,
+      "series": true,
+      "setting": true,
+      "source": true,
+      "verification": true,
+      "verification_item": true,
+      "verification_spec": true
+    }
+  },
+  "environment": {
+    "python": "3.12.3",
+    "playwright": "unknown",
+    "chromium": "/home/joao/.cache/ms-playwright/chromium-1248/chrome-linux64/chrome",
+    "head": "bb4b0261048cfdef7d9cc1818a602fe13e82e91a",
+    "dirty": [
+      "M app/templates/methodology.html",
+      "?? docs/superpowers/handoff/reports/time-transformations/",
+      "?? docs/superpowers/plans/2026-11-20-notebook-time-transformations.md",
+      "?? docs/superpowers/specs/2026-11-20-notebook-time-transformations-design.md"
+    ],
+    "viewport_height": 900,
+    "widths": [
+      320,
+      390,
+      768,
+      1440,
+      1920
+    ],
+    "proxy": "http://127.0.0.1:35411/dados"
+  },
+  "limitations": [
+    "Shared edge, Authelia and production host configuration were not exercised locally.",
+    "Human screen-reader acceptance remains a separate manual gate.",
+    "The visual clipping review is recorded in visual-review.md."
+  ]
+}
