@@ -59,10 +59,11 @@ def _window_code(window: str) -> str:
 
 
 def _rollback(anchor: date, years: int) -> date:
+    target_year = max(1, anchor.year - years)
     try:
-        return anchor.replace(year=anchor.year - years)
+        return anchor.replace(year=target_year)
     except ValueError:  # 29 February in a non-leap target year
-        return date(anchor.year - years, 2, 28)
+        return date(target_year, 2, 28)
 
 
 def _drawable(values: tuple[dict, ...], frequency: str) -> list[date]:

@@ -704,6 +704,29 @@ def test_mixed_window_uses_real_calendar_years_not_lexicographic_tokens(tmp_path
     assert "01/01/2015" in payload(maximum.text)["periods"]
 
 
+def test_rollback_clamps_target_before_year_one_and_leaves_modern_dates_alone(tmp_path):
+    from datetime import date
+
+    from app.calendar_notebook import _rollback
+
+    assert _rollback(date(5, 1, 1), 10) == date(1, 1, 1)
+    assert _rollback(date(2026, 5, 20), 10) == date(2016, 5, 20)
+    assert _rollback(date(2024, 2, 29), 5) == date(2019, 2, 28)
+
+    path = build_site(tmp_path, [
+        {"id": HICP, "key": "hicp_yoy.PT.M", "unit": "%",
+         "periods": {f"0005-{month:02d}": "2.0" for month in range(1, 13)}},
+        gdp_row(GDP_PT, "eurostat_gdp_per_capita_eur.PT.A", "PT", {"0005": "10000"}),
+    ])
+    query = f"s={HICP}&s={GDP_PT}&escala=dupla&janela=10a"
+    with client(path) as site:
+        response = site.get(f"/caderno?{query}")
+    assert response.status_code == 200
+    periods = payload(response.text)["periods"]
+    assert len(periods) == 12
+    assert periods[0].startswith("01/01/") and periods[-1].startswith("01/12/")
+
+
 def test_mixed_side_without_a_drawable_window_makes_the_chart_unavailable(tmp_path):
     path = build_site(tmp_path, [
         {"id": HICP, "key": "hicp_yoy.PT.M", "unit": "%",

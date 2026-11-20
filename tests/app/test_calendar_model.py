@@ -122,6 +122,26 @@ def test_intervening_months_do_not_break_a_complete_annual_line():
     assert model.series[1].breaks == ()
 
 
+def test_long_mixed_window_samples_ticks_from_distinct_year_first_rows():
+    monthly_rows = [item for year in range(2016, 2026)
+                    for item in monthly(year, [1] * 12)]
+    annual_rows = annual(*[(str(year), "1") for year in range(2016, 2026)])
+    model = calendar_model(
+        (monthly_rows, annual_rows),
+        labels=("Mensal", "Anual"), units=("%", "%"),
+        frequencies=("M", "A"), title="Dez anos",
+    )
+    assert model is not None
+    assert len(model.rows) == 120
+    ticks = model.x_ticks
+    texts = [tick.text for tick in ticks]
+    assert len(texts) == 6 and len(set(texts)) == 6
+    assert texts[0] == "2016" and texts[-1] == "2025"
+    # A label points at the first row of the year it prints, not at a position sampled
+    # inside the list of year-first row indexes.
+    assert [model.rows[tick.index].period_text[-4:] for tick in ticks] == texts
+
+
 def test_exact_native_tokens_survive_and_hostile_labels_are_xml_escaped():
     hostile = '</title><script>alert(1)</script> & "x"'
     model = calendar_model(

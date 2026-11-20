@@ -212,7 +212,7 @@ def _x_labels(row_dates: list[str]) -> list[tuple[int, str]]:
     if len(distinct) >= 3:
         indices = [years.index(year) for year in distinct]
         if len(indices) > 6:
-            indices = sorted({round(i * (len(indices) - 1) / 5) for i in range(6)})
+            indices = sorted({indices[round(i * (len(indices) - 1) / 5)] for i in range(6)})
         return [(index, row_dates[index][:4]) for index in indices]
     if len(row_dates) <= 6:
         indices = list(range(len(row_dates)))
