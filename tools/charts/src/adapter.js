@@ -24,6 +24,13 @@ function finite(value) {
   return typeof value === 'number' && isFinite(value);
 }
 
+let measure = null;
+function textWidth(text, size, family) {
+  if (!measure) measure = document.createElement('canvas').getContext('2d');
+  measure.font = size + 'px ' + family;
+  return measure.measureText(text).width;
+}
+
 function validBreaks(breaks, length) {
   if (!Array.isArray(breaks)) return false;
   let previous = -1;
@@ -294,6 +301,10 @@ function optionFor(payload, width, activePoint) {
   // canvas. The floor preserves the designed gutter from the full 880px view.
   const top = Math.max(31 * scale, 31);
   const nameGap = Math.max(13 * scale, 13);
+  // Two unit names on one row collide once the left name grows into the plot. The top gutter
+  // grows by one 29.7px text row and the left name follows it, so the left name keeps the top
+  // row and the right name moves one row down. Both keep the 19.8px role.
+  const nameStagger = payload.axes.length > 1 ? 29.7 : 0;
 
   const yAxis = payload.axes.map((axis, index) => ({
     type: 'value',
@@ -308,11 +319,10 @@ function optionFor(payload, width, activePoint) {
       color: muted,
       fontFamily: sans,
       fontSize: 19.8,
-      // Both names end on their axis. A name that starts at the right axis has to fit inside
-      // `grid.right`, and ECharts 6 shrinks the whole plot when it cannot: at 390px the long
-      // "milhões de euros" would take a quarter of the canvas and move every point under the
-      // cursor. Ending the name at the axis keeps the plot at its designed width.
-      align: 'right',
+      // The left name grows into the plot from its axis; the right name still ends on its
+      // axis. Ending the left name on the axis clipped it at the left edge on every narrow
+      // canvas, and starting the right name at the axis would push the plot inward.
+      align: index === 0 ? 'left' : 'right',
     },
     axisLine: { show: false },
     axisTick: { show: false },
@@ -328,6 +338,7 @@ function optionFor(payload, width, activePoint) {
       formatter: (value) => tickText(axis.ticks, value),
     },
   }));
+  if (nameStagger) yAxis[0].nameGap += nameStagger;
 
   const xAxis = {
     type: 'value',
@@ -392,15 +403,28 @@ function optionFor(payload, width, activePoint) {
     return tooltipNode(payload, point);
   };
 
+  const grid = {
+    left: 97 * scale,
+    right: right * scale,
+    top,
+    bottom: 68 * scale,
+    containLabel: true,
+  };
+  if (nameStagger) {
+    grid.top += nameStagger;
+    // ECharts anchors a right-axis name to the plot's right edge and lays it out leftwards.
+    // On a 320px canvas the scaled dual gutter plus the fixed-width tick labels left less
+    // room than the 19.8px name, so it started off-canvas. Give the plot edge back only the
+    // room the measured name and labels need; wider canvases keep the designed gutter.
+    const labelWidth = Math.max(...payload.axes[1].ticks.map(
+      (tick) => textWidth(tick.text, 18.15, sans)));
+    const nameWidth = textWidth(payload.axes[1].unit, 19.8, sans);
+    grid.right = Math.max(0, Math.min(grid.right, width - nameWidth - labelWidth - 20));
+  }
+
   return {
     animation: false,
-    grid: {
-      left: 97 * scale,
-      right: right * scale,
-      top,
-      bottom: 68 * scale,
-      containLabel: true,
-    },
+    grid,
     xAxis,
     yAxis,
     series,
