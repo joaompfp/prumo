@@ -238,8 +238,15 @@ def test_worker_shares_persistent_data_dns_and_only_source_secret(worker):
         "PRUMO_DB_PATH": "/data/prumo.sqlite3",
         "PRUMO_RAW_DIR": "/data/raw",
         "PYTHONUNBUFFERED": "1",
+        "PYTHONFAULTHANDLER": "1",
         "FRED_API_KEY": "${FRED_API_KEY:-}",
     }
+
+
+def test_worker_keeps_python_faulthandler_on_for_native_crashes(worker):
+    """A native fault (SIGBUS) has no Python traceback. faulthandler prints the Python
+    stack to stderr on the next one; it is diagnostics only and sets no scheduler policy."""
+    assert worker["environment"]["PYTHONFAULTHANDLER"] == "1"
 
 
 def test_operator_runbook_links_authoritative_manual_refresh_and_has_valid_shell():

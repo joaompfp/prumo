@@ -2272,12 +2272,16 @@ def _wal(p: Path) -> Path:
     return Path(str(p) + "-wal")
 
 
+def _shm(p: Path) -> Path:
+    return Path(str(p) + "-shm")
+
+
 def _open_refusal(p: Path, e: sqlite3.DatabaseError) -> ReadOnlyOpenError:
     """The refusal for a failed schema read, naming the real cause (review Minor 3)."""
     if "no such table" in str(e):
         return ReadOnlyOpenError(f"{p}: no schema_migration table, not a Prumo database ({e})")
     hint = ""
-    if _wal(p).exists() and not Path(str(p) + "-shm").exists():
+    if _wal(p).exists() and not _shm(p).exists():
         hint = ("; a -wal file without its -shm cannot be read from a read-only mount: the "
                 "writer (scheduler) recovers it on its next start")
     return ReadOnlyOpenError(f"{p}: cannot open the database read-only "
@@ -2299,7 +2303,20 @@ def open_db_readonly(path: str | Path, *, immutable: bool | None = None) -> Db:
     the normal `mode=ro` open reads its committed state. The -wal test is not atomic: a
     writer that starts meanwhile can make an immutable read fail with sqlite3.DatabaseError
     (the schema read here then retries once with plain `mode=ro`) or silently return wrong
-    results; `read_db_readonly` detects the writer afterwards and redoes the read."""
+    results; `read_db_readonly` detects the writer afterwards and redoes the read.
+
+    A read-only database handle is not a read-only shared-memory handle: with plain
+    `mode=ro` SQLite opens `-shm` for writing and, when the shared-memory lock looks free (no
+    live writer, a stale WAL index left by a dead process), it truncates the file to its 3
+    byte header before recovering it. A process that already mapped that shm then faults with
+    SIGBUS on its next access. Every open that has a `-shm` sidecar therefore adds
+    `readonly_shm=1`, and so does every immutable open; the reader opens the sidecar
+    read-only and can never truncate or rewrite it. A sidecar it cannot read safely is
+    refused (ReadOnlyOpenError) instead. With no `-shm` file there is no mapping another
+    process can hold, so a plain open omits the flag and can still create the sidecar a WAL
+    left by an exited writer needs. A live writer holding the shm lock is read normally, and
+    the immutable path does not use the sidecar at all.
+    """
     p = Path(path)
     if not p.is_file():
         raise ReadOnlyOpenError(f"database not found: {p} (read-only reports never create one;"
@@ -2307,7 +2324,10 @@ def open_db_readonly(path: str | Path, *, immutable: bool | None = None) -> Db:
     if immutable is None:
         immutable = not _wal(p).exists()
     stamp = _file_stamp(p) if immutable else None  # taken BEFORE the immutable open
-    uri = p.resolve().as_uri() + "?mode=ro" + ("&immutable=1" if immutable else "")
+    readonly_shm = immutable or _shm(p).exists()
+    uri = (p.resolve().as_uri() + "?mode=ro"
+           + ("&readonly_shm=1" if readonly_shm else "")
+           + ("&immutable=1" if immutable else ""))
     conn = sqlite3.connect(uri, uri=True, isolation_level=None, timeout=BUSY_TIMEOUT_S)
     try:
         try:
@@ -2377,13 +2397,12 @@ def read_db_readonly(path: str | Path, read: Callable[[Db], T]) -> T:
             db.close()
     try:
         result = _read_snapshot(db, read)
-        trusted = not _writer_appeared(db, p)
+        if not _writer_appeared(db, p):
+            return result
     except sqlite3.DatabaseError:
-        trusted = False
+        pass  # possibly an immutable read torn by a writer: redo plain
     finally:
         db.close()
-    if trusted:
-        return result
     db = open_db_readonly(p, immutable=False)
     try:
         return _read_snapshot(db, read)

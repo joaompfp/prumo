@@ -24,6 +24,8 @@ services:
       PRUMO_DB_PATH: /data/prumo.sqlite3
       PRUMO_RAW_DIR: /data/raw
       PYTHONUNBUFFERED: "1"
+      # SIGBUS has no Python traceback. This prints the Python stack on a native fault.
+      PYTHONFAULTHANDLER: "1"
       FRED_API_KEY: ${FRED_API_KEY:-}
     volumes:
       - ${DOCKER_DIR}/stacks/web/appdata/prumo:/data:rw
