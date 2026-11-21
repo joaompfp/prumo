@@ -5,7 +5,7 @@ Authority: owner request to create an improvements roadmap and begin implementat
 
 ## Owner correction: CMS owns editorial comparisons (2026-11-21)
 
-Phase D is prioritized ahead of further public configuration. Author series selection, axes, time transformations and copy in the authenticated CMS; the public comparison displays only its published revision. The Caderno remains a separate exploratory tool. Real existing comparisons, not installation trials, are converted into editable CMS documents. This owner-authorized content conversion amends the earlier no-live-publication boundary only for that explicit import, preserving authored home, source data, schema, worker and edge. Implementation plan: `2026-11-21-cms-owned-comparisons.md`. Scope is implemented and independently reviewed; release gates remain pending until the installed record is written.
+Phase D is prioritized ahead of further public configuration. Author series selection, axes, time transformations and copy in the authenticated CMS; the public comparison displays only its published revision. The Caderno remains a separate exploratory tool. Real existing comparisons, not installation trials, are converted into editable CMS documents. This owner-authorized content conversion amends the earlier no-live-publication boundary only for that explicit import, preserving authored home, source data, schema, worker and edge. Implementation plan: `2026-11-21-cms-owned-comparisons.md`. Phase D is installed at 2026-11-21 15:33 UTC from runtime/main `a9add13`, with all nine real compositions published as CMS content. Exact-main CI passed 3,183 tests; installed public acceptance passed 348 checks and all nine exact Admin editors were read back. Schema, protected source tables, authored home and immediate worker baseline are unchanged. See `../handoff/reports/cms-comparisons/installed.md`.
 
 ## Goal and baseline
 
@@ -96,7 +96,7 @@ Acceptance: search to series to notebook and add/change/share journeys are usabl
 
 ## Phase D: authoring analytical content
 
-Status: future product work, separate from layout.
+Status: INSTALLED by the owner-corrected CMS scope on 2026-11-21. See `2026-11-21-cms-owned-comparisons.md` and `../handoff/reports/cms-comparisons/installed.md`; remaining dated analysis and AI work belongs to phase E.
 
 Extend the current one/two-series CMS chart contract to explicit comparable groups of at most six. Reuse notebook/model eligibility; add editor validation, reusable references and full revision/audit lifecycle. Assess whether a migration is needed from the actual schema before assigning a number. Existing documents must round-trip unchanged. No arbitrary transformations.
 

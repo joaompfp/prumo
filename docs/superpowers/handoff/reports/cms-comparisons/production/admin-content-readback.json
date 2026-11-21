@@ -1,0 +1,170 @@
+{
+  "editors": [
+    {
+      "slug": "inflacao-e-desemprego",
+      "selected_series": [
+        "ine.hicp_yoy.PT",
+        "ine.unemployment_monthly.PT",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0"
+      ],
+      "category": "portugal",
+      "status": 200
+    },
+    {
+      "slug": "euribor-e-inflacao",
+      "selected_series": [
+        "bportugal.euribor_3m.EA",
+        "ine.hicp_yoy.PT",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0"
+      ],
+      "category": "portugal",
+      "status": 200
+    },
+    {
+      "slug": "credito-e-taxa",
+      "selected_series": [
+        "bportugal.euribor_12m.EA",
+        "bportugal.credit_housing.PT",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "1"
+      ],
+      "category": "portugal",
+      "status": 200
+    },
+    {
+      "slug": "taxas-juro-credito-depositos",
+      "selected_series": [
+        "bportugal.euribor_12m.EA",
+        "bportugal.pt_10y.PT",
+        "bportugal.credit_housing.PT",
+        "bportugal.deposits_households.PT",
+        "",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0",
+        "1",
+        "1"
+      ],
+      "category": "portugal",
+      "status": 200
+    },
+    {
+      "slug": "divida-saldo-pib-per-capita",
+      "selected_series": [
+        "eurostat.gov_debt_pct_gdp.PT",
+        "eurostat.gov_deficit_pct_gdp.PT",
+        "eurostat.gdp_per_capita_eur.PT",
+        "",
+        "",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0",
+        "1"
+      ],
+      "category": "portugal",
+      "status": 200
+    },
+    {
+      "slug": "comercio-externo-pib-per-capita",
+      "selected_series": [
+        "worldbank.exports_pct_gdp.PT",
+        "worldbank.imports_pct_gdp.PT",
+        "eurostat.gdp_per_capita_eur.PT",
+        "",
+        "",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0",
+        "1"
+      ],
+      "category": "portugal",
+      "status": 200
+    },
+    {
+      "slug": "eletricidade-domestica",
+      "selected_series": [
+        "eurostat.electricity_price_household.PT",
+        "eurostat.electricity_price_household.ES",
+        "eurostat.electricity_price_household.FR",
+        "eurostat.electricity_price_household.DE",
+        "eurostat.electricity_price_household.IT",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "category": "countries",
+      "status": 200
+    },
+    {
+      "slug": "pib-por-habitante",
+      "selected_series": [
+        "eurostat.gdp_per_capita_eur.PT",
+        "eurostat.gdp_per_capita_eur.ES",
+        "eurostat.gdp_per_capita_eur.FR",
+        "eurostat.gdp_per_capita_eur.DE",
+        "eurostat.gdp_per_capita_eur.IT",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "category": "countries",
+      "status": 200
+    },
+    {
+      "slug": "divida-publica",
+      "selected_series": [
+        "eurostat.gov_debt_pct_gdp.PT",
+        "eurostat.gov_debt_pct_gdp.ES",
+        "eurostat.gov_debt_pct_gdp.FR",
+        "eurostat.gov_debt_pct_gdp.DE",
+        "eurostat.gov_debt_pct_gdp.IT",
+        ""
+      ],
+      "selected_axes": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "category": "countries",
+      "status": 200
+    }
+  ]
+}

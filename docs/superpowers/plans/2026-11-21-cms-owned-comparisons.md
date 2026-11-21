@@ -1,5 +1,7 @@
 # CMS-owned comparisons implementation plan
 
+Installed checkpoint: runtime/main `a9add13`, 2026-11-21 15:33 UTC. All five tasks below are implemented, independently reviewed, verified and installed, including publication of the nine real editable CMS comparisons. Exact-main CI 44918693857 passed 3,183 tests; clean committed checkout 91 focused tests; installed public 348 checks and all nine populated Admin editors. Human screen-reader acceptance and the independent worker observation remain open. Full installation, content readback and recovery: `../handoff/reports/cms-comparisons/installed.md`.
+
 > For Hermes: use subagent-driven-development for bounded implementation slices and sequential specification/quality reviews.
 
 Goal: make the real comparisons already requested by the owner editable and publishable in the backoffice, with a read-only public presentation. A technical trial document is not the deliverable.
