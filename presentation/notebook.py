@@ -66,6 +66,7 @@ class NotebookCopy:
     chart_scale_shared: str
     chart_scale_dual: str
     chart_window_legend: str
+    chart_window_1a: str
     chart_window_10a: str
     chart_window_5a: str
     chart_window_max: str
@@ -271,6 +272,7 @@ _PT = NotebookCopy(
     chart_scale_shared="Escala comum",
     chart_scale_dual="Dois eixos",
     chart_window_legend="Janela temporal",
+    chart_window_1a="1 ano",
     chart_window_10a="10 anos",
     chart_window_5a="5 anos",
     chart_window_max="Máximo",

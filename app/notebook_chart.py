@@ -15,7 +15,7 @@ import re
 from dataclasses import dataclass, replace
 from datetime import date
 
-from app import reads
+from app import chart_model, interactive, reads
 from app.calendar_model import CalendarModel
 from app.chart_model import (
     GROUP_MAX_SERIES,
@@ -27,6 +27,7 @@ from app.formatting import decimal_or_none, format_count, format_date, format_pe
 from ingest.db import Db
 from presentation import (
     base_unit_text,
+    chart_ui,
     flag_text,
     frequency_text,
     geography_name,
@@ -39,8 +40,14 @@ from presentation.notebook import NotebookCopy, text
 PARAM_NAMES = ("g", "grafico", "escala", "janela", "dia",
                "frequencia", "transformacao", "base")
 MAX_GROUP = GROUP_MAX_SERIES
-_WINDOW_CODES = (("10a", "10y", "chart_window_10a"), ("5a", "5y", "chart_window_5a"),
+_WINDOW_CODES = (("1a", "1y", "chart_window_1a"),
+                 ("10a", "10y", "chart_window_10a"),
+                 ("5a", "5y", "chart_window_5a"),
                  ("max", "max", "chart_window_max"))
+# Reader addresses keep their reviewed three windows. The 1a code is internal to the authored
+# CMS adapter: an authored document may ask for one year, but a reader link never gains it.
+_READER_WINDOWS = frozenset({"10a", "5a", "max"})
+_WINDOW_YEARS = {"1y": 1, "5y": 5, "10y": 10}
 _ISO_DAY = re.compile(r"\d{4}-\d{2}-\d{2}\Z")
 _BASE_YEAR = re.compile(r"[0-9]{4}\Z")
 
@@ -99,8 +106,51 @@ def _plan_reason(copy: NotebookCopy, plan: AxisPlan) -> str:
         "one_group": copy.chart_dual_one_group,
         "too_many_groups": copy.chart_dual_many_groups,
         "mixed_scale": copy.chart_mixed_scale,
+        "invalid_axes": copy.chart_mixed_scale,
     }
     return reasons[plan.problem]
+
+
+def axes_shape_problem(axes: tuple[int, ...], count: int) -> str:
+    """Structural refusal for an explicit assignment, independent of any data.
+
+    Every selected series carries exactly one 0/1 axis and the left axis is never empty. The
+    authored chart contract enforces the same shape before storage; this keeps a caller that
+    builds settings directly from reaching the model with a malformed assignment.
+    """
+    if len(axes) != count or not axes:
+        return "invalid_axes"
+    if any(axis not in (0, 1) for axis in axes):
+        return "invalid_axes"
+    if 0 not in axes:
+        return "one_group"
+    return ""
+
+
+def axis_membership_problem(signatures: tuple[tuple, ...], axes: tuple[int, ...],
+                            scale: str) -> str:
+    """Check one authoritative 0/1 membership against raw or annual output signatures.
+
+    Each used axis must contain one scale signature: unit, multiplier and base year together.
+    A common scale uses the left axis only, and a dual chart must genuinely use both. Series
+    order never decides membership: the same rule accepts (1, 0), so the first authored series
+    can sit on the right axis.
+    """
+    problem = axes_shape_problem(tuple(axes), len(signatures))
+    if problem:
+        return problem
+    used = set(axes)
+    if scale == "comum":
+        if used != {0}:
+            return "mixed_scale"
+        return "" if len(set(signatures)) == 1 else "mixed_scale"
+    if used != {0, 1}:
+        return "one_group"
+    for axis in (0, 1):
+        group = {signature for signature, assigned in zip(signatures, axes) if assigned == axis}
+        if len(group) > 1:
+            return "mixed_scale"
+    return ""
 
 
 @dataclass(frozen=True)
@@ -120,12 +170,15 @@ class ChartSettings:
     frequency: str = "original"
     transform: str = "original"
     base: str | None = None
+    axes: tuple[int, ...] = ()
 
     def params(self) -> list[tuple[str, str]]:
         """The address parameters, defaults omitted, in one stable order.
 
         The five original parameters keep their exact order so an old address is byte-identical.
-        The analytical controls are appended last and only when they leave their defaults.
+        The analytical controls are appended last and only when they leave their defaults. The
+        internal `axes` membership is never a reader address parameter: it is authored in the
+        CMS document and passed directly to `prepare`.
         """
         out: list[tuple[str, str]] = []
         if self.mode == "off":
@@ -218,7 +271,7 @@ def _parse_settings(values, selection: tuple[str, ...]) -> ChartSettings:
     window = _single(values, "janela")
     if window is None:
         window = "10a"
-    if window not in {code for code, _, _ in _WINDOW_CODES}:
+    if window not in _READER_WINDOWS:
         raise _BadAddress("janela")
 
     day = _single(values, "dia")
@@ -532,15 +585,15 @@ def _window_start(latest: str, frequency: str, code: str) -> str | None:
     """A bounded start for this chart, including daily dates the shared helper leaves open.
 
     `reads.window_start` knows the year-shaped calendar and deliberately returns None for a
-    daily token. A daily series still has a bounded rolling ten or five year default, measured
-    from its newest data date, never the server clock.
+    daily token. A daily series still has a bounded rolling default, measured from its newest
+    data date, never the server clock. The authored 1y window uses the same real-date rule.
     """
-    if frequency == "D" and code in ("10y", "5y"):
+    if frequency == "D" and code in _WINDOW_YEARS:
         try:
             anchor = date.fromisoformat(latest[:10])
         except (TypeError, ValueError):
             return None
-        years = 10 if code == "10y" else 5
+        years = _WINDOW_YEARS[code]
         try:
             return anchor.replace(year=anchor.year - years).isoformat()
         except ValueError:  # 29 February in a non-leap target year
@@ -684,35 +737,80 @@ def axis_groups(chart, labels: tuple[str, ...]) -> tuple[ChartAxisGroup, ...]:
     return tuple(groups)
 
 
+def _pair_axes_prepared(points, *, frequency: str, title: str, labels: tuple[str, ...],
+                        units: tuple[str, ...], axes: tuple[int, ...],
+                        lang: str) -> reads.PreparedChart:
+    """A two-series chart with explicit membership, including a first series on the right.
+
+    The reviewed pair wrapper only knows `dual=True` and therefore always assigns (0, 1). An
+    authored document may put its first series on the right, so this path uses the same shared
+    comparison factory with the group payload contract: `series[].axis` then states the authored
+    membership to the browser instead of letting the adapter infer it from series position.
+    """
+    assert set(axes) == {0, 1}, "a reordered pair needs both axes"
+    rows = []
+    for point in points:
+        a, b = decimal_or_none(point["a"]), decimal_or_none(point["b"])
+        if a is None or b is None:
+            continue
+        rows.append((point["period"], ((a, point["a"]), (b, point["b"]))))
+    chart = chart_model._comparison_model(
+        rows, kind="group", title=title,
+        name=f"{title}: {labels[0]} ({units[0]}) e {labels[1]} ({units[1]})",
+        labels=labels, units=units,
+        unit_a=next(units[index] for index, axis in enumerate(axes) if axis == 0),
+        unit_b=next(units[index] for index, axis in enumerate(axes) if axis == 1),
+        styles=chart_model.GROUP_STYLES[:2], axes=axes, frequency=frequency)
+    return reads.PreparedChart(
+        chart=chart,
+        chart_payload=(interactive.build_payload(chart, lang=lang)
+                       if chart is not None else None),
+        chart_range_label=chart_ui(lang, "range"), chart_hint=chart_ui(lang, "hint"))
+
+
 def _model(copy: NotebookCopy, finite: list[dict], frequency: str,
            labels: tuple[str, ...], units: tuple[str, ...], axes: tuple[int, ...],
-           scale: str):
+           *, title: str | None = None, lang: str = "pt"):
+    """Prepare the one model every surface reads, with authoritative axis membership.
+
+    `title` lets an authored CMS document keep its own title; the notebook keeps the shared
+    heading. A single series stays a line, two series keep the reviewed pair wrapper when their
+    membership is the legacy (0, 1)/(0, 0), and every other count or assignment goes through the
+    explicit group factory.
+    """
+    chart_title = title or (labels[0] if len(labels) == 1 else copy.chart_heading)
     if len(labels) == 1:
         points = [{"period": row["period"], "value_text": row["values"][0]["value_text"]}
                   for row in finite]
-        return reads.prepare_line_chart(points, frequency=frequency, title=labels[0],
-                                        unit=units[0])
+        return reads.prepare_line_chart(points, frequency=frequency, title=chart_title,
+                                        unit=units[0], lang=lang)
     if len(labels) == 2:
         points = [{"period": row["period"],
                    "a": row["values"][0]["value_text"],
                    "b": row["values"][1]["value_text"]} for row in finite]
-        return reads.prepare_comparison_chart(
-            points, frequency=frequency, title=copy.chart_heading, labels=labels,
-            unit_a=units[0], unit_b=units[1], dual=(scale == "dupla"))
+        if tuple(axes) in ((0, 1), (0, 0)):
+            return reads.prepare_comparison_chart(
+                points, frequency=frequency, title=chart_title, labels=labels,
+                unit_a=units[0], unit_b=units[1], dual=tuple(axes) == (0, 1), lang=lang)
+        return _pair_axes_prepared(points, frequency=frequency, title=chart_title,
+                                   labels=labels, units=units, axes=tuple(axes), lang=lang)
     points = [{"period": row["period"],
                "values": tuple(value["value_text"] for value in row["values"])}
               for row in finite]
-    return reads.prepare_group_chart(points, frequency=frequency, title=copy.chart_heading,
-                                     labels=labels, units=units, axes=axes)
+    return reads.prepare_group_chart(points, frequency=frequency, title=chart_title,
+                                     labels=labels, units=units, axes=axes, lang=lang)
 
 
 def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
-            settings: ChartSettings, *, lang: str = "pt") -> NotebookChart:
+            settings: ChartSettings, *, lang: str = "pt",
+            title: str | None = None) -> NotebookChart:
     """Prepare the chart for one validated address from the current read-only snapshot.
 
     `cards` are the eligible cards `notebook.page` just composed, by series id. Only they can be
     chart sides. A `g` reference without a card makes the chart unavailable, while every eligible
-    card stays on the page.
+    card stays on the page. `title` is the authored CMS title; without it the notebook's shared
+    heading is used. An internal `settings.axes` tuple is the authoritative membership from an
+    authored document and is validated here, never inferred from series order.
     """
     copy = text(lang)
     choices = _choices(addressed, cards, settings, copy)
@@ -761,9 +859,25 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
             # Every transformed side shares one index or p.p. unit; two axes would claim two
             # scales where there is one. Refuse explicitly instead of silently flattening.
             return _empty("unavailable", copy.chart_transform_shared, settings, choices, copy)
+
+    signatures = tuple(axis_signature(row) for row in rows_tuple)
+    if settings.axes:
+        if transform_request:
+            if axes_shape_problem(settings.axes, len(group)) \
+                    or any(axis != 0 for axis in settings.axes):
+                return _empty("unavailable", copy.chart_transform_shared,
+                              settings, choices, copy)
+            plan = AxisPlan(axes=settings.axes)
+        else:
+            problem = axis_membership_problem(signatures, settings.axes, settings.scale)
+            if problem:
+                return _empty("unavailable", _plan_reason(copy, AxisPlan(problem=problem)),
+                              settings, choices, copy)
+            plan = AxisPlan(axes=settings.axes)
+    elif transform_request:
         plan = AxisPlan(axes=(0,) * len(group))
     else:
-        plan = allocate_axes(tuple(axis_signature(row) for row in rows_tuple), settings.scale)
+        plan = allocate_axes(signatures, settings.scale)
         if plan.problem:
             return _empty("unavailable", _plan_reason(copy, plan), settings, choices, copy)
     axes = plan.axes
@@ -776,7 +890,8 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
     if transform_request or (annual_request and (mixed or frequency != "A")):
         from app import calendar_notebook
         return calendar_notebook.prepare_annual(
-            db, rows_tuple, cards, labels, settings, choices, copy, lang, axes=axes)
+            db, rows_tuple, cards, labels, settings, choices, copy, lang, axes=axes,
+            title=title)
 
     if mixed and not frequencies <= {"A", "S", "Q", "M", "D"}:
         return _empty("unavailable", copy.chart_method_unavailable, settings, choices, copy)
@@ -784,7 +899,7 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
     if mixed:
         from app import calendar_notebook
         return calendar_notebook.prepare_calendar(
-            db, rows_tuple, labels, settings, choices, copy, lang, axes=axes)
+            db, rows_tuple, labels, settings, choices, copy, lang, axes=axes, title=title)
 
     assert frequency is not None  # a single original frequency was checked above
 
@@ -814,7 +929,7 @@ def prepare(db: Db, addressed: tuple[str, ...], cards: dict[str, reads.Card],
 
     prepared = _model(copy, finite, frequency, labels,
                       tuple(base_unit_text(lang, row["unit"]) for row in rows_tuple),
-                      axes, settings.scale)
+                      axes, title=title, lang=lang)
     if prepared.chart is None:
         return _empty("unavailable", copy.chart_no_draw, settings, choices, copy)
 
@@ -865,7 +980,9 @@ __all__ = [
     "PARAM_NAMES",
     "allocate_axes",
     "axis_groups",
+    "axis_membership_problem",
     "axis_signature",
+    "axes_shape_problem",
     "parse_settings",
     "prepare",
     "without_side",

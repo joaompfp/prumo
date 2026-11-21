@@ -22,6 +22,9 @@ Section = Literal["economy", "demography", "energy", "general"]
 # choices; the service layer maps these four values onto the shared chart preparation.
 Window = Literal["max", "1y", "5y", "10y"]
 Scale = Literal["single", "dual"]
+Frequency = Literal["original", "annual"]
+Transform = Literal["original", "base100", "pp"]
+ComparisonGroup = Literal["portugal", "countries", "general"]
 
 KINDS = ("page", "chart")
 MAX_SLUG = 60
@@ -32,10 +35,13 @@ MAX_REFERENCE = 200
 MAX_ACTIONS = 4
 MAX_THEME_REFS = 6
 MAX_STEPS = 6
+MAX_SERIES = 6
+MAX_EXTRA_SERIES = MAX_SERIES - 2
 
 _SLUG_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*\Z")
 _REFERENCE_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,199}\Z")
 _DAY_RE = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}\Z")
+_BASE_YEAR_RE = re.compile(r"[0-9]{4}\Z")
 
 # The project forbids U+2014 in authored copy in every spelling. Detection only: the bytes the
 # author typed are preserved, or the document is refused. The patterns are assembled so this
@@ -323,14 +329,37 @@ class PageDocument(_CmsModel):
 
 
 class ChartDocument(_CmsModel):
+    """One authored chart definition: ordered references plus an optional analytical view.
+
+    `series_a` and the optional `series_b` keep every older revision canonical. `series_extra`
+    extends the same ordered selection to at most six distinct references; `derived_key` stays a
+    single-series library chart. `axes` is null for validated automatic allocation, otherwise one
+    explicit 0/1 assignment per selected series (left/right), never inferred from series order.
+    """
+
     title: str = Field(min_length=1, max_length=MAX_TITLE)
     note: str = Field(max_length=MAX_TEXT)
     series_a: str = Field(min_length=1, max_length=MAX_REFERENCE)
     series_b: str | None = Field(default=None, max_length=MAX_REFERENCE)
+    series_extra: list[str] = Field(default_factory=list, max_length=MAX_EXTRA_SERIES)
     derived_key: str | None = Field(default=None, max_length=MAX_REFERENCE)
     window: Window
     scale: Scale
     day: str | None = None
+    axes: list[int] | None = None
+    frequency: Frequency = "original"
+    transform: Transform = "original"
+    base: str | None = None
+    comparison_group: ComparisonGroup | None = None
+
+    @property
+    def series_ids(self) -> tuple[str, ...]:
+        """The ordered selected series references, never the derived companion key."""
+        ids = [self.series_a]
+        if self.series_b is not None:
+            ids.append(self.series_b)
+        ids.extend(self.series_extra)
+        return tuple(ids)
 
     @field_validator("title")
     @classmethod
@@ -352,6 +381,11 @@ class ChartDocument(_CmsModel):
     def _series_b(cls, value: str | None) -> str | None:
         return None if value is None else _validate_reference(value, "series_b")
 
+    @field_validator("series_extra")
+    @classmethod
+    def _series_extra(cls, value: list[str]) -> list[str]:
+        return [_validate_reference(item, "series_extra") for item in value]
+
     @field_validator("derived_key")
     @classmethod
     def _derived(cls, value: str | None) -> str | None:
@@ -370,14 +404,56 @@ class ChartDocument(_CmsModel):
             raise ValueError(f"day {value!r} is not a real calendar date") from None
         return value
 
+    @field_validator("axes")
+    @classmethod
+    def _axes(cls, value: list[int] | None) -> list[int] | None:
+        if value is None:
+            return None
+        if any(axis not in (0, 1) for axis in value):
+            raise ValueError("axes must assign 0 (left) or 1 (right) to every selected series")
+        return value
+
+    @field_validator("base")
+    @classmethod
+    def _base(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not _BASE_YEAR_RE.fullmatch(value) or not 1 <= int(value) <= 9999:
+            raise ValueError("base must be a four-digit reference year")
+        return value
+
     @model_validator(mode="after")
     def _coherent(self) -> "ChartDocument":
-        if self.series_b is not None and self.series_b == self.series_a:
-            raise ValueError("series_b must differ from series_a")
-        if self.derived_key is not None and self.series_b is not None:
+        series = self.series_ids
+        if len(series) > MAX_SERIES:
+            raise ValueError(f"a chart selects at most {MAX_SERIES} distinct series")
+        if len(set(series)) != len(series):
+            raise ValueError("every selected series reference must be distinct")
+        if self.derived_key is not None and len(series) != 1:
             raise ValueError("derived_key is only allowed on a single-series chart")
-        if self.series_b is None and self.scale != "single":
+        if len(series) == 1 and self.scale != "single":
             raise ValueError("a single-series chart uses the single scale")
+        if self.axes is not None:
+            if len(self.axes) != len(series):
+                raise ValueError("axes must assign one axis to every selected series")
+            if self.scale == "single" and any(axis != 0 for axis in self.axes):
+                raise ValueError("a single-scale chart uses only the left axis")
+            if self.scale == "dual" and (0 not in self.axes or 1 not in self.axes):
+                raise ValueError("a dual chart needs at least one series on each axis")
+        if self.transform != "original" and self.frequency != "annual":
+            raise ValueError("a transformation requires the annual frequency")
+        if self.transform != "original" and self.axes is not None \
+                and any(axis != 0 for axis in self.axes):
+            raise ValueError("a transformed view shares one left axis")
+        if self.base is not None and self.transform == "original":
+            raise ValueError("base only accompanies a base100 or pp transformation")
+        if self.day is not None and (self.frequency == "annual"
+                                     or self.transform != "original"):
+            raise ValueError("an annual or transformed view does not select a UTC day")
+        if self.derived_key is not None and (
+                self.series_extra or self.axes is not None or self.frequency != "original"
+                or self.transform != "original" or self.comparison_group is not None):
+            raise ValueError("a derived chart keeps its single-series library definition")
         return self
 
 

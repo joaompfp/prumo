@@ -14,7 +14,8 @@ import logging
 import re
 from dataclasses import dataclass
 
-from app import reads
+from app import notebook_chart, reads
+from app.calendar_model import CalendarModel
 from app.chart_model import ComparisonModel, LineChartModel
 from app.formatting import format_count, format_datetime, format_period, format_value
 from ingest import cms as documents
@@ -107,7 +108,7 @@ class CmsChartView:
     frequency: str
     frequency_text: str
     is_pair: bool
-    chart: LineChartModel | ComparisonModel | None
+    chart: LineChartModel | ComparisonModel | CalendarModel | None
     chart_payload: dict | None
     chart_range_label: str
     chart_hint: str
@@ -115,6 +116,8 @@ class CmsChartView:
     table: tuple[ChartTableRow, ...]
     table_note: str
     calculated: CalculatedNote | None
+    comparison_group: documents.ComparisonGroup | None = None
+    analysis: notebook_chart.NotebookChart | None = None
 
     @property
     def unit_text(self) -> str:
@@ -328,14 +331,16 @@ def _primary_line(db: Db, row: dict, period: str, token: str, frequency: str,
 def _prepared_view(slug: str, doc: documents.ChartDocument, prepared: reads.PreparedChart,
                    *, frequency: str, lang: str, lines: tuple[ChartLine, ...],
                    table: tuple[ChartTableRow, ...], table_note: str,
-                   calculated: CalculatedNote | None) -> CmsChartView:
+                   calculated: CalculatedNote | None,
+                   analysis: notebook_chart.NotebookChart | None = None) -> CmsChartView:
     return CmsChartView(
         slug=slug, title=doc.title, note=doc.note, scale=doc.scale, window=doc.window,
         window_text=WINDOW_TEXT.get(doc.window, doc.window), day=doc.day, frequency=frequency,
         frequency_text=_frequency_text(lang, frequency), is_pair=len(lines) == 2,
         chart=prepared.chart, chart_payload=prepared.chart_payload,
         chart_range_label=prepared.chart_range_label, chart_hint=prepared.chart_hint,
-        provenance=lines, table=table, table_note=table_note, calculated=calculated)
+        provenance=lines, table=table, table_note=table_note, calculated=calculated,
+        comparison_group=doc.comparison_group, analysis=analysis)
 
 
 # --- the one chart preparation used by the public site, the preview and publish -------------
@@ -362,10 +367,116 @@ def chart_problem(db: Db, doc: documents.ChartDocument, lang: str = "pt") -> str
     return None if view is not None else (reason or "unavailable")
 
 
+# Authored CMS window vocabulary to the shared chart settings. 1y is a real one-year rolling
+# window, never a silent alias for five years.
+_CMS_WINDOWS = {"1y": "1a", "5y": "5a", "10y": "10a", "max": "max"}
+
+
+def _needs_shared_preparation(doc: documents.ChartDocument) -> bool:
+    """True when the older single/pair preparation cannot express this document.
+
+    An untouched single or pair keeps its exact reviewed payload and table. Any additional
+    series, authored axis, comparison group or analytical view goes through the Caderno's one
+    preparation, so public CMS charts and the reader's notebook share eligibility and geometry.
+    """
+    return (doc.comparison_group is not None or bool(doc.series_extra)
+            or doc.axes is not None or doc.frequency != "original"
+            or doc.transform != "original" or len(doc.series_ids) > 2)
+
+
+def _shared_chart_view(db: Db, slug: str, doc: documents.ChartDocument,
+                       lang: str) -> CmsChartView | None:
+    """Prepare an authored multiseries/analytical chart from the shared read service.
+
+    Every selected side goes through `reads.prepare_card` on the same handle, the one rule the
+    public cards use. A missing, inactive, withheld or non-redistributable side refuses the whole
+    document: an authored comparison is never silently shortened. The resulting `NotebookChart`
+    is carried on the view so the public template can render the same table, axes and evidence
+    the Caderno would.
+    """
+    series_ids = doc.series_ids
+    rows: dict[str, dict] = {}
+    cards: dict[str, reads.Card] = {}
+    for series_id in series_ids:
+        row = db.public_series(series_id)
+        if row is None:
+            log.warning("cms chart %s: selected series %s is not published", slug, series_id)
+            return None
+        card, reason = reads.prepare_card(db, series_id, lang=lang)
+        if card is None:
+            log.warning("cms chart %s: selected series %s is not eligible: %s",
+                        slug, series_id, reason)
+            return None
+        rows[series_id] = row
+        cards[series_id] = card
+
+    if doc.day is not None and any(row["frequency"] != "PT15M" for row in rows.values()):
+        raise ValueError("o dia UTC só é válido para séries de 15 minutos")
+    input_frequencies = {row["frequency"] for row in rows.values()}
+    if "PT15M" in input_frequencies and doc.day is None:
+        raise ValueError("um gráfico de intervalos exige um dia UTC")
+
+    scale = "dupla" if doc.scale == "dual" else "comum"
+    if doc.axes is not None and doc.transform == "original":
+        problem = notebook_chart.axis_membership_problem(
+            tuple(notebook_chart.axis_signature(rows[series_id]) for series_id in series_ids),
+            tuple(doc.axes), scale)
+        if problem:
+            log.warning("cms chart %s: explicit axes are not compatible: %s", slug, problem)
+            return None
+
+    settings = notebook_chart.ChartSettings(
+        mode="explicit", group=series_ids, scale=scale,
+        window=_CMS_WINDOWS[doc.window], day=doc.day,
+        frequency="anual" if doc.frequency == "annual" else "original",
+        transform=doc.transform, base=doc.base, axes=tuple(doc.axes or ()))
+    panel = notebook_chart.prepare(db, series_ids, cards, settings, lang=lang, title=doc.title)
+    if not panel.drawable:
+        log.warning("cms chart %s: shared preparation unavailable in state %s",
+                    slug, panel.state)
+        return None
+
+    if doc.frequency == "annual" or doc.transform != "original":
+        frequency = "A"
+    elif len(input_frequencies) == 1:
+        frequency = next(iter(input_frequencies))
+    else:
+        frequency = ""
+
+    lines = []
+    for side in panel.sides:
+        row = rows[side.series_id]
+        lines.append(ChartLine(
+            title=side.title or side.label, href=f"/series/{side.series_id}",
+            unit_text=side.unit_text,
+            frequency_text=side.display_frequency_text or side.frequency_text,
+            source_title=side.source_title, attribution=side.attribution,
+            licence=source_text(row["licence"]), licence_url=row["licence_url"],
+            period_text=side.period_text, value_display=side.last_display,
+            provenance=side.provenance))
+    table = tuple(
+        ChartTableRow(
+            period_text=row.period_text,
+            a_display=row.cells[0].display if row.cells else "",
+            b_display=row.cells[1].display if len(row.cells) > 1 else "")
+        for row in panel.table_rows)
+    return CmsChartView(
+        slug=slug, title=doc.title, note=doc.note, scale=doc.scale, window=doc.window,
+        window_text=WINDOW_TEXT.get(doc.window, doc.window), day=doc.day, frequency=frequency,
+        frequency_text=_frequency_text(lang, frequency), is_pair=len(lines) == 2,
+        chart=panel.chart, chart_payload=panel.chart_payload,
+        chart_range_label=panel.chart_range_label, chart_hint=panel.chart_hint,
+        provenance=tuple(lines), table=table,
+        table_note=panel.alignment_text or panel.window_text,
+        calculated=None, comparison_group=doc.comparison_group, analysis=panel)
+
+
 def _chart_view(db: Db, slug: str, doc: documents.ChartDocument,
                 lang: str) -> CmsChartView | None:
     if not isinstance(doc, documents.ChartDocument):
         return None
+    if _needs_shared_preparation(doc):
+        return _shared_chart_view(db, slug, doc, lang)
     derived_key = doc.derived_key if doc.series_b is None else None
     pairs = [(doc.series_a, derived_key)]
     if doc.series_b is not None:

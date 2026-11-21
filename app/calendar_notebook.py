@@ -128,12 +128,14 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
                      settings: notebook_chart.ChartSettings,
                      choices: tuple[notebook_chart.ChartChoice, ...],
                      copy: NotebookCopy, lang: str, *,
-                     axes: tuple[int, ...]) -> notebook_chart.NotebookChart:
+                     axes: tuple[int, ...], title: str | None = None
+                     ) -> notebook_chart.NotebookChart:
     """Sparse calendar for original A/S/Q/M/D selections with more than one frequency.
 
     The window is anchored on the newest finite observation start in the union and rolls back
     real calendar years. Every chosen side must keep at least one drawable observation inside
-    that window; otherwise the chart is unavailable rather than silently losing a side.
+    that window; otherwise the chart is unavailable rather than silently losing a side. An
+    authored `title` replaces the notebook heading; axis membership is passed through unchanged.
     """
     code = _window_code(settings.window)
     histories: list[list[dict]] = []
@@ -149,8 +151,8 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
         return notebook_chart._empty(
             "unavailable", copy.chart_no_common, settings, choices, copy)
     bound = None
-    if code in ("10y", "5y"):
-        bound = _rollback(max(anchors), 10 if code == "10y" else 5)
+    if code in notebook_chart._WINDOW_YEARS:
+        bound = _rollback(max(anchors), notebook_chart._WINDOW_YEARS[code])
 
     for row, values, starts in zip(rows, full, drawable):
         if bound is None:
@@ -172,7 +174,8 @@ def prepare_calendar(db: Db, rows: tuple[dict, ...], labels: tuple[str, ...],
     try:
         model = calendar_model(
             tuple(tuple(history) for history in histories), labels=labels, units=units,
-            frequencies=frequencies, title=labels[0] if len(labels) == 1 else copy.chart_heading,
+            frequencies=frequencies,
+            title=title or (labels[0] if len(labels) == 1 else copy.chart_heading),
             axes=axes)
     except ValueError:
         log.warning("notebook calendar refused an unusable history")
@@ -298,7 +301,7 @@ def _window_years(years: list[int], window: str) -> list[int]:
     code = _window_code(window)
     if code == "max":
         return years
-    floor = max(years) - (10 if code == "10y" else 5)
+    floor = max(years) - notebook_chart._WINDOW_YEARS[code]
     return [year for year in years if year >= floor]
 
 
@@ -393,12 +396,16 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
                    settings: notebook_chart.ChartSettings,
                    choices: tuple[notebook_chart.ChartChoice, ...],
                    copy: NotebookCopy, lang: str, *,
-                   axes: tuple[int, ...]) -> notebook_chart.NotebookChart:
+                   axes: tuple[int, ...], title: str | None = None
+                   ) -> notebook_chart.NotebookChart:
     """Annual harmonisation and optional base100/pp view over full histories.
 
     Annualise first, find the common complete years, choose the base (an explicit base may sit
     outside the window but must exist on every side; an automatic base is the first common year
-    in the window), normalise exact full inputs, and only then trim the display years.
+    in the window), normalise exact full inputs, and only then trim the display years. The
+    authoritative axis membership is validated again against every annual OUTPUT signature, so a
+    method that changed scale would fail closed; a transformed view keeps only the common left
+    axis. An authored `title` replaces the notebook heading.
     """
     sides: list[_AnnualSide] = []
     for row in rows:
@@ -426,13 +433,19 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
     transform = settings.transform
     if transform == "original":
         # The source signatures selected the axes. Annualisation must preserve that allocation;
-        # a future method with a different output unit is refused instead of mis-grouped.
-        output_plan = notebook_chart.allocate_axes(
-            tuple(_annual_output_signature(side) for side in side_tuple), settings.scale)
-        if output_plan.axes != axes:
-            log.warning("annual output scales changed the notebook axis allocation")
+        # an output method with a different unit is refused instead of mis-grouped. This reads
+        # the authored (0/1) membership directly, so a first series on the right stays there.
+        problem = notebook_chart.axis_membership_problem(
+            tuple(_annual_output_signature(side) for side in side_tuple), axes, settings.scale)
+        if problem:
+            log.warning("annual output scales changed the notebook axis allocation: %s", problem)
             return notebook_chart._empty(
                 "unavailable", copy.chart_no_draw, settings, choices, copy)
+    elif notebook_chart.axes_shape_problem(axes, len(side_tuple)) \
+            or any(axis != 0 for axis in axes):
+        # A transformed side carries the common index or p.p. unit, so only the left axis exists.
+        return notebook_chart._empty(
+            "unavailable", copy.chart_transform_shared, settings, choices, copy)
     base_year = None
     auto_base = False
     if transform != "original":
@@ -470,35 +483,20 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
         else:
             chart_units.append(base_unit_text(lang, row["unit"]))
 
-    points = [{"period": f"{year:04d}",
-               "value_text": selected[0][year].value_text} for year in window_years]
     latest_year = window_years[-1]
     calculated_flags = [transform != "original" or side.series.method != "native"
                         for side in side_tuple]
     chart_labels = tuple(
         f"{label} ({copy.chart_calculated_badge})" if calculated else label
         for label, calculated in zip(labels, calculated_flags))
-    title = chart_labels[0] if len(labels) == 1 else copy.chart_heading
-    if len(labels) == 1:
-        prepared = reads.prepare_line_chart(
-            points, frequency="A", title=title, unit=chart_units[0])
-    elif len(labels) == 2:
-        prepared = reads.prepare_comparison_chart(
-            [{"period": point["period"],
-              "a": selected[0][year].value_text,
-              "b": selected[1][year].value_text}
-             for point, year in zip(points, window_years)],
-            frequency="A", title=title, labels=(chart_labels[0], chart_labels[1]),
-            unit_a=chart_units[0], unit_b=chart_units[1],
-            dual=settings.scale == "dupla")
-    else:
-        prepared = reads.prepare_group_chart(
-            [{"period": point["period"],
-              "values": tuple(selected[index][year].value_text
-                              for index in range(len(labels)))}
-             for point, year in zip(points, window_years)],
-            frequency="A", title=title, labels=chart_labels,
-            units=tuple(chart_units), axes=axes)
+    finite = [
+        {"period": f"{year:04d}",
+         "values": [{"value_text": selected[index][year].value_text}
+                    for index in range(len(labels))]}
+        for year in window_years]
+    prepared = notebook_chart._model(
+        copy, finite, "A", chart_labels, tuple(chart_units), axes,
+        title=title or (chart_labels[0] if len(labels) == 1 else None), lang=lang)
     if prepared.chart is None:
         return notebook_chart._empty(
             "unavailable", copy.chart_no_draw, settings, choices, copy)
@@ -525,8 +523,7 @@ def prepare_annual(db: Db, rows: tuple[dict, ...], cards: dict[str, reads.Card],
             status_text = flag_text(lang, status) if status else ""
         chart_sides.append(notebook_chart.ChartSide(
             series_id=side.row["id"], label=label,
-            style=("a" if len(labels) == 1 else ("a", "b")[index]
-                   if len(labels) == 2
+            style=("a" if len(labels) == 1
                    else getattr(prepared.chart, "styles", ("a",))[index]),
             title=cards[side.row["id"]].title,
             source_title=reads.source_title(lang, side.row["source"]),
