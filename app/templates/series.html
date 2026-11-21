@@ -5,7 +5,7 @@
 {% block content %}
 <div class="notebook-workspace detail-workspace">
 <nav class="crumbs" aria-label="Caminho">
-  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/temas/{{ page.series.theme }}">{{ page.series.theme_text }}</a> <span aria-hidden="true">/</span> {{ page.series.family_title }}
+  <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/temas/{{ page.series.theme }}">{{ page.series.theme_text }}</a>
 </nav>
 
 <header class="page-head">
@@ -18,6 +18,15 @@
 <section class="chart-section notebook-chart" aria-labelledby="grafico">
   <div class="notebook-chart-head">
     <h2 id="grafico">Série</h2>
+    <div class="notebook-chart-links"><a class="button-quiet" href="#opcoes-serie">Intervalo e ações</a></div>
+  </div>
+  <figure class="chart-figure chart-figure-interactive">
+    {% if page.chart_payload %}{{ chart_shell(page, "series") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
+    <figcaption>{{ page.series.title }}. Fonte: {{ page.series.source_title }}. {% if page.is_15m %}Dia desenhado: {{ format_date(page.day) }} (UTC). {% endif %}Último valor da série em {{ page.series.latest.period_text }}.</figcaption>
+  </figure>
+  <details class="analytical-options">
+    <summary>Intervalo, Caderno e CSV</summary>
+    <div class="analytical-options-body" id="opcoes-serie">
     {% if not page.is_15m %}
     <nav class="windows" aria-label="Janela temporal">
       {% for code, label in page.windows %}<a href="{{ base }}/series/{{ page.series.id }}?janela={{ code }}"{% if code == page.window %} aria-current="true"{% endif %}>{{ label }}</a>{% endfor %}
@@ -27,7 +36,6 @@
       <a class="button-quiet" href="{{ base }}{{ notebook_path([page.series.id]) }}">{{ notebook_copy.series_action }}</a>
       <a class="button-quiet" href="{{ base }}/series/{{ page.series.id }}.csv">Descarregar CSV</a>
     </div>
-  </div>
   {% if page.is_15m %}
   <form class="chart-day-form" action="{{ base }}/series/{{ page.series.id }}" method="get">
     <label>Dia (UTC)
@@ -38,10 +46,8 @@
     <button type="submit">Ver</button>
   </form>
   {% endif %}
-  <figure class="chart-figure chart-figure-interactive">
-    {% if page.chart_payload %}{{ chart_shell(page, "series") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
-    <figcaption>{{ page.series.title }}. Fonte: {{ page.series.source_title }}. {% if page.is_15m %}Dia desenhado: {{ format_date(page.day) }} (UTC). {% endif %}Último valor da série em {{ page.series.latest.period_text }}.</figcaption>
-  </figure>
+    </div>
+  </details>
   {% if page.is_15m %}<p class="note">Intervalos de 15 minutos, no dia UTC escolhido. O Prumo não agrega esta série: cada ponto é o valor publicado.</p>{% endif %}
   <details class="table-details">
     <summary>Ver tabela de valores</summary>

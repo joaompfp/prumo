@@ -1023,6 +1023,10 @@ section { margin: 80px 0; }
 }
 .chart-day-form button { border-color: var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
 .detail-workspace .analytical-caveats { margin: 16px 0; }
+.analytical-options { margin: 12px 0; }
+.analytical-options > summary { cursor: pointer; color: var(--accent); font-size: .88rem; padding: 8px 0; }
+.analytical-options-body { display: grid; gap: 12px; padding: 12px 0; }
+@media print { .analytical-options { display: none; } }
 /* Calculated labels must wrap instead of imposing a min-content grid wider than a phone. */
 .notebook-workspace .figure-block > * { min-width: 0; }
 .notebook-workspace .figure-block .badge { max-width: 100%; white-space: normal; }

@@ -148,6 +148,10 @@ def test_chart_first_geometry_print_and_exact_inspection(analytical_origin):
                     if route == "/graficos/biblioteca":
                         assert page.locator(".authored-note").is_visible()
                     page.emulate_media(media="screen")
+                    if route.startswith("/series/"):
+                        page.get_by_role("link", name="Intervalo e ações", exact=True).click()
+                        assert page.locator(".analytical-options").get_attribute("open") is not None
+                        assert page.locator(".analytical-options .windows").is_visible()
                 assert not errors
                 context.close()
             nojs = browser.new_context(java_script_enabled=False)
@@ -156,6 +160,9 @@ def test_chart_first_geometry_print_and_exact_inspection(analytical_origin):
                 page.goto(analytical_origin + route)
                 assert page.locator("svg.chart").is_visible()
                 assert not page.locator(".chart-canvas canvas").count()
+                if route.startswith("/series/"):
+                    page.get_by_role("link", name="Intervalo e ações", exact=True).click()
+                    assert page.locator(".analytical-options .windows").is_visible()
             nojs.close()
         finally:
             browser.close()
