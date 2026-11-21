@@ -1,5 +1,13 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## Worker incident: candidate safety correction (2026-11-21)
+
+The owner requested investigation and applicable repair of the worker's autonomous restarts. Three SIGBUS exits (135, not OOM) are confirmed in the daemon at 20/11 21:39 and 21/11 14:49/15:04 UTC; current container still has count three. A mapped-shm truncation mechanism is reproducible only with deliberately simulated lock loss; the historical trigger is NOT proven. The existing writer lock is valid now. Apport failed to capture a core and Python fatal diagnostics were disabled.
+
+Accepted implementation `fe13837` makes the shared readonly opener unconditionally use `readonly_shm=1`, resolves canonical sidecar paths, refuses reader-side recovery and revalidates bounded immutable retries only with actual writer evidence. Regression tests reproduce the original shm writes, missing-sidecar creation and symlink stale-read defect. Worker environment adds `PYTHONFAULTHANDLER=1`. Specification and quality reviews passed. Controller reran 69 focused tests; whole-suite/committed-checkout/release gates are still in progress. No migration, source parser, CMS publication or edge/authentication change belongs to this task.
+
+Preflight receipts and a verified online recovery copy exist at `f0nix:/home/joao/prumo-operations/worker-sigbus-20261121`; integrity ok, zero foreign-key violations and no running source runs. All three services package the corrected persistence module and need a coordinated code-only replacement once release gates pass. Do not close historical cause or the real 24-hour observation merely because a newly created container starts at restart count zero. Investigation, reviews and recovery contract: `reports/worker-sigbus/README.md`.
+
 ## Current installed checkpoint: CMS-owned real comparisons (2026-11-21)
 
 The owner corrected the product boundary: create and configure real editorial comparisons in the backoffice, then present only their published CMS revision publicly. Runtime/main `a9add13399b257c6d49897d6acb769becfcb2083` is pushed and installed at 15:33 UTC. All nine prior real compositions were converted into published, editable, audited CMS charts; installation trials remain unpublished and the authored homepage is unchanged. Admin: `https://joao.date/dados/admin/cms#comparacoes`; actual editor example `/cms/chart/taxas-juro-credito-depositos` under that Admin mount. Public `/comparar` and its details no longer depend on code-curated definitions or configurable Caderno destinations. The Caderno remains separate exploration.

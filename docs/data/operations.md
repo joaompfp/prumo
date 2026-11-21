@@ -318,8 +318,13 @@ Since Task 23 (not in the deployed 49a3602 image until an authorized rebuild), `
 `lag` open the database strictly read-only (SQLite `mode=ro`): they never migrate and never
 create a file. They exit 2 with a clear message when the file is missing or its schema is
 older or newer than the code (the scheduler applies migrations; a report never does).
-If a writer starts or migrates during a read made without one (SQLite `immutable=1`), the
-report retries once with plain `mode=ro` instead of failing (Task 24).
+Read-only handles also use `readonly_shm=1`: `mode=ro` alone does not prevent writes to
+SQLite's shared-memory index. A missing `-shm` alongside a `-wal` is left for the writer to
+recover, even when the data directory is writable. Sidecar checks use the canonical database
+path, including when the caller supplied a symlink. If a writer changes a database during an
+immutable read, the report discards it and re-evaluates the read mode once. Every immutable
+attempt is validated against the main-file stamp and the WAL; repeated races fail closed.
+A quiet, checkpointed database remains readable without creating sidecars.
 The text report shows, per source and in total, the active series that are stale, never
 fetched and never verified (stale series ids listed, capped at 10); `last confirmed current`
 next to the retained data's fetch date (stale is judged on the former, see
@@ -369,7 +374,7 @@ import sqlite3
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-with sqlite3.connect("file:/data/prumo.sqlite3?mode=ro", uri=True) as db:
+with sqlite3.connect("file:/data/prumo.sqlite3?mode=ro&readonly_shm=1", uri=True) as db:
     assert db.execute("PRAGMA quick_check").fetchall() == [("ok",)]
     assert db.execute("PRAGMA foreign_key_check").fetchall() == []
     rows = db.execute("""

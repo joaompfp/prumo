@@ -55,7 +55,7 @@ def main():
         path: digest(subprocess.check_output(["git", "-C", "/home/joao/docker", "diff", "--", path]))
         for path in ("secrets/web.enc.env", "stacks/web/compose/prumo-backoffice.yml")
     }
-    with sqlite3.connect(f"file:{DATA}?mode=ro", uri=True) as db:
+    with sqlite3.connect(f"file:{DATA}?mode=ro&readonly_shm=1", uri=True) as db:
         db.execute("BEGIN")
         report["schema"] = digest(json.dumps(db.execute("SELECT name,type,sql FROM sqlite_master ORDER BY name").fetchall(), ensure_ascii=False).encode())
         report["migrations"] = [list(row) for row in db.execute("SELECT version FROM schema_migration ORDER BY version")]

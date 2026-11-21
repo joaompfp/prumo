@@ -11,7 +11,7 @@ source_path = Path('/home/joao/docker/stacks/web/appdata/prumo/prumo.sqlite3')
 if args.output.exists():
     raise FileExistsError(args.output)
 args.output.parent.mkdir(parents=True, exist_ok=True)
-with sqlite3.connect(f'file:{source_path}?mode=ro', uri=True) as source:
+with sqlite3.connect(f'file:{source_path}?mode=ro&readonly_shm=1', uri=True) as source:
     with sqlite3.connect(args.output) as target:
         source.backup(target)
         integrity = target.execute('PRAGMA quick_check').fetchone()[0]
