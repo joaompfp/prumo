@@ -461,6 +461,29 @@ def _add_block(fields: dict[str, str]) -> dict:
     raise FormError("escolha o tipo de bloco a acrescentar")
 
 
+def _chart_slot_document(doc: dict) -> dict:
+    """Map a stored chart's selected-order axes onto the editor's fixed series slots.
+
+    `ChartDocument.axes` assigns one axis per selected series in selection order, while the
+    editor renders six fixed slots. Rendering that list by position would move the axis of
+    the third selected series onto an empty B slot after a gap. The display copy keeps every
+    assignment on its own series slot; the stored body keeps the selected-order list.
+    """
+    view = dict(doc)
+    axes = view.get("axes")
+    if axes is None:
+        return view
+    slots = [view.get("series_a"), view.get("series_b"),
+             *list(view.get("series_extra") or ())[:MAX_EXTRA_SERIES]]
+    selected = [index for index, reference in enumerate(slots[:SERIES_SLOTS]) if reference]
+    axis_slots = [""] * SERIES_SLOTS
+    for position, slot in enumerate(selected):
+        if position < len(axes):
+            axis_slots[slot] = axes[position]
+    view["axes"] = axis_slots
+    return view
+
+
 def _submitted_document(kind: str, fields: dict[str, str]) -> dict:
     """A display-only document rebuilt from the submitted fields after a refusal.
 
@@ -817,6 +840,12 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
         if doc is None:
             doc = (_submitted_document(kind, values) if values is not None
                    else draft.model_dump(mode="json"))
+        display_doc = doc
+        if kind == "chart":
+            # A refused save re-renders the raw submitted slots, invalid tokens included. A
+            # stored draft is mapped from selected order onto the editor's fixed slots.
+            display_doc = (_submitted_document(kind, values) if values is not None
+                           else _chart_slot_document(doc))
         history = data.get("history", ())
         published_at = None
         if meta["published_revision_id"] is not None:
@@ -832,7 +861,7 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             return render_error(request, 503, "Editor CMS indisponível", str(exc))
         return admin.render(
             request, "cms_editor.html", status_code=status_code, kind=kind, slug=slug,
-            meta=meta, doc=doc, published=published, published_at=published_at,
+            meta=meta, doc=display_doc, published=published, published_at=published_at,
             diff=_diff(kind, published, doc), history=history,
             events=data.get("events", ()), usages=data.get("usages", ()),
             choices=choices, charts=charts, themes=themes, sections=_SECTIONS,
@@ -852,9 +881,12 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             library = _comparison_library(cms, charts)
         except (CmsUnavailable, CmsBusy) as exc:
             return render_error(request, 503, "Editor CMS indisponível", str(exc))
+        recovery = values or {}
+        chart_doc = (_submitted_document("chart", recovery)
+                     if recovery.get("kind") == "chart" else {})
         return admin.render(
             request, "cms_list.html", status_code=status_code, pages=pages, charts=charts,
-            choices=choices, values=values or {}, home=home, library=library,
+            choices=choices, values=recovery, chart_doc=chart_doc, home=home, library=library,
             sections=_SECTIONS, windows=_WINDOWS, scales=_SCALES,
             max_blocks=MAX_BLOCKS, max_slug=MAX_SLUG, max_title=MAX_TITLE, max_text=MAX_TEXT,
             error=error)

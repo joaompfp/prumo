@@ -442,6 +442,8 @@ class ChartDocument(_CmsModel):
                 raise ValueError("a dual chart needs at least one series on each axis")
         if self.transform != "original" and self.frequency != "annual":
             raise ValueError("a transformation requires the annual frequency")
+        if self.transform != "original" and self.scale != "single":
+            raise ValueError("a transformed view uses the single scale")
         if self.transform != "original" and self.axes is not None \
                 and any(axis != 0 for axis in self.axes):
             raise ValueError("a transformed view shares one left axis")
