@@ -35,3 +35,151 @@
 <option value="{{ c.slug }}"{% if c.slug == selected %} selected{% endif %}>{{ c.title }} ({{ c.slug }})</option>
 {%- endfor %}
 {% endmacro %}
+
+{# Six ordered series slots with an optional explicit axis beside each one. The axis is
+   empty for automatic allocation; the parser accepts either all selected axes or none. #}
+{% macro chart_series_fields(prefix, doc, choices) %}
+{%- set series_names = ["series_a", "series_b", "series_extra_0", "series_extra_1",
+                        "series_extra_2", "series_extra_3"] %}
+{%- set series_labels = ["Série A (obrigatória)", "Série B (opcional)", "Série C (opcional)",
+                         "Série D (opcional)", "Série E (opcional)", "Série F (opcional)"] %}
+{%- set series_short = ["Série A", "Série B", "Série C", "Série D", "Série E", "Série F"] %}
+{%- set blank_labels = ["escolher série", "sem segunda série", "sem série adicional",
+                        "sem série adicional", "sem série adicional", "sem série adicional"] %}
+{%- set extras = doc.series_extra if doc.series_extra is defined and doc.series_extra is not none else [] %}
+{%- set series_values = [doc.series_a or "", doc.series_b or "",
+                         extras[0] if extras|length > 0 else "",
+                         extras[1] if extras|length > 1 else "",
+                         extras[2] if extras|length > 2 else "",
+                         extras[3] if extras|length > 3 else ""] %}
+{%- set axes = doc.axes if doc.axes is defined and doc.axes is not none else [] %}
+{%- set axis_values = [axes[0] if axes|length > 0 else "",
+                       axes[1] if axes|length > 1 else "",
+                       axes[2] if axes|length > 2 else "",
+                       axes[3] if axes|length > 3 else "",
+                       axes[4] if axes|length > 4 else "",
+                       axes[5] if axes|length > 5 else ""] %}
+<fieldset>
+<legend>Séries comparadas</legend>
+<p class="fieldset-note">Até seis séries, pela ordem apresentada. As opções mostram o título,
+a cobertura servida, a unidade, a frequência, a geografia e a fonte canónicos; esses valores
+não se editam aqui.</p>
+{% for slot in range(6) %}
+{% set axis_value = axis_values[slot] if axis_values[slot] is not none else "" %}
+{% set current = namespace(choice=none) %}
+{% for c in choices %}{% if c.id == series_values[slot] %}{% set current.choice = c %}{% endif %}{% endfor %}
+<div class="form-grid">
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-series-{{ slot }}">{{ series_labels[slot] }}</label>
+    <select class="form-select" id="{{ prefix }}-series-{{ slot }}" name="{{ series_names[slot] }}"
+     {% if slot == 0 %}required{% endif %} data-filterable
+     data-filter-label="Filtrar séries: {{ series_short[slot] }}">
+      {{ series_options(choices, series_values[slot], blank_labels[slot]) }}
+    </select>
+    {% if current.choice %}<span class="form-hint">Identidade canónica: {{ current.choice.option_label }}</span>{% endif %}
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-axis-{{ slot }}">Eixo da {{ series_short[slot] }}</label>
+    <select class="form-select" id="{{ prefix }}-axis-{{ slot }}" name="axis_{{ slot }}">
+      <option value="">Automático</option>
+      <option value="0"{% if axis_value|string == "0" %} selected{% endif %}>Eixo 0 (esquerdo)</option>
+      <option value="1"{% if axis_value|string == "1" %} selected{% endif %}>Eixo 1 (direito)</option>
+      {% if axis_value|string not in ("", "0", "1") %}<option value="{{ axis_value }}" selected>valor inválido: {{ axis_value }}</option>{% endif %}
+    </select>
+    {% if slot == 0 %}<span class="form-hint">Vazio em todas as séries selecionadas = repartição
+    automática. Para fixar os eixos, indique 0 ou 1 em cada série selecionada.</span>{% endif %}
+  </div>
+</div>
+{% endfor %}
+</fieldset>
+{% endmacro %}
+
+{# Window, scale, approved transformations and the public comparison category. Empty
+   frequency/transform/base/category are posted as empty values and parsed as absent. #}
+{% macro chart_analysis_fields(prefix, doc, windows, scales) %}
+{%- set window_labels = {"max": "Máximo", "1y": "1 ano", "5y": "5 anos", "10y": "10 anos"} %}
+{%- set scale_labels = {"single": "Escala única", "dual": "Dois eixos"} %}
+{%- set window_value = doc.window or "" %}
+{%- set scale_value = doc.scale or "" %}
+{%- set derived_value = doc.derived_key or "" %}
+{%- set frequency_value = doc.frequency if doc.frequency is defined and doc.frequency is not none else "" %}
+{%- set transform_value = doc.transform if doc.transform is defined and doc.transform is not none else "" %}
+{%- set base_value = doc.base if doc.base is defined and doc.base is not none else "" %}
+{%- set group_value = doc.comparison_group if doc.comparison_group is defined and doc.comparison_group is not none else "" %}
+<fieldset class="chart-analysis">
+<legend>Janela, escala e transformação</legend>
+<div class="form-grid chart-analysis-grid">
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-window">Janela</label>
+    <select class="form-select" id="{{ prefix }}-window" name="window">
+    {% for w in windows %}<option value="{{ w }}"{% if window_value == w %} selected{% endif %}>{{ window_labels.get(w, w) }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-scale">Escala</label>
+    <select class="form-select" id="{{ prefix }}-scale" name="scale">
+    {% for s in scales %}<option value="{{ s }}"{% if scale_value == s %} selected{% endif %}>{{ scale_labels.get(s, s) }}</option>{% endfor %}
+    </select>
+    <span class="form-hint">Os eixos explícitos exigem dois eixos; sem atribuições, a
+    repartição é automática.</span>
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-derived">Série calculada (opcional)</label>
+    <select class="form-select" id="{{ prefix }}-derived" name="derived_key"
+     data-filterable data-filter-label="Filtrar séries calculadas">
+      {{ derived_options(choices, derived_value, "sem série calculada") }}
+    </select>
+    <span class="form-hint">Só pode acompanhar uma única série selecionada e mantém a
+    definição de série única: não combine com categoria, eixos, frequência anual ou
+    transformação.</span>
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-frequency">Frequência</label>
+    <select class="form-select" id="{{ prefix }}-frequency" name="frequency">
+      <option value="">Automático (original)</option>
+      <option value="original"{% if frequency_value == "original" %} selected{% endif %}>Original de cada série</option>
+      <option value="annual"{% if frequency_value == "annual" %} selected{% endif %}>Anual (harmonização revista)</option>
+      {% if frequency_value not in ("", "original", "annual") %}<option value="{{ frequency_value }}" selected>valor inválido: {{ frequency_value }}</option>{% endif %}
+    </select>
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-transform">Transformação</label>
+    <select class="form-select" id="{{ prefix }}-transform" name="transform">
+      <option value="">Sem transformação</option>
+      <option value="original"{% if transform_value == "original" %} selected{% endif %}>Original</option>
+      <option value="base100"{% if transform_value == "base100" %} selected{% endif %}>Base 100</option>
+      <option value="pp"{% if transform_value == "pp" %} selected{% endif %}>Pontos percentuais (p.p.)</option>
+      {% if transform_value not in ("", "original", "base100", "pp") %}<option value="{{ transform_value }}" selected>valor inválido: {{ transform_value }}</option>{% endif %}
+    </select>
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-base">Ano base (opcional)</label>
+    <input class="form-control" id="{{ prefix }}-base" type="text" name="base" inputmode="numeric"
+     pattern="[0-9]{4}" maxlength="4" size="6" placeholder="2019" value="{{ base_value }}">
+    <span class="form-hint">Quatro dígitos. Só se aplica às transformações base 100 ou pontos
+    percentuais; nas restantes deixe vazio.</span>
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-group">Categoria de comparação</label>
+    <select class="form-select" id="{{ prefix }}-group" name="comparison_group">
+      <option value="">Sem categoria (só biblioteca interna)</option>
+      <option value="portugal"{% if group_value == "portugal" %} selected{% endif %}>Portugal (Comparações)</option>
+      <option value="countries"{% if group_value == "countries" %} selected{% endif %}>Países (Comparações)</option>
+      <option value="general"{% if group_value == "general" %} selected{% endif %}>Geral (Comparações)</option>
+      {% if group_value not in ("", "portugal", "countries", "general") %}<option value="{{ group_value }}" selected>valor inválido: {{ group_value }}</option>{% endif %}
+    </select>
+    <span class="form-hint">A categoria publicada decide onde o gráfico aparece na página
+    pública Comparações. Sem categoria, fica apenas na biblioteca interna.</span>
+  </div>
+  <div class="field">
+    <label class="form-label" for="{{ prefix }}-day">Dia UTC (opcional)</label>
+    <input class="form-control" id="{{ prefix }}-day" type="date" name="day" value="{{ doc.day or '' }}">
+    <span class="form-hint">AAAA-MM-DD; só para séries de 15 minutos, como a E-REDES.
+    Não se combine com frequência anual ou transformação.</span>
+  </div>
+</div>
+<p class="fieldset-note">A frequência anual e as transformações base 100 e pontos percentuais
+são cálculos declarados, não valores publicados. Base 100 e pontos percentuais exigem a
+frequência anual e usam apenas o eixo esquerdo. A comparação não estabelece causalidade.</p>
+</fieldset>
+{% endmacro %}

@@ -509,6 +509,8 @@ legend { font-size: 0.95rem; font-weight: 650; padding: 0 0.45rem; }
 .editor-form .form-control, .editor-form .form-select { min-height: 2.75rem; }
 .editor-form .form-grid { gap: 0.6rem 0.9rem; }
 .editor-form .form-grid + .form-grid { margin-top: 0.35rem; }
+/* The enlarged reading scale needs wider setting tracks than the generic 220px minimum. */
+.chart-analysis-grid { grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
 .editor-form .field { gap: 0.25rem; }
 .editor-form .field > .form-label { font-size: 0.74rem; letter-spacing: 0; }
 

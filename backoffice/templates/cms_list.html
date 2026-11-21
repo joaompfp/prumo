@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% from "cms_macros.html" import series_options, derived_options, chart_options %}
+{% from "cms_macros.html" import series_options, derived_options, chart_options,
+  chart_series_fields, chart_analysis_fields %}
 {% block title %}CMS: páginas e gráficos - Prumo backoffice{% endblock %}
 {% block content %}
 {% set home_doc = home if home is defined and home else none %}
@@ -18,6 +19,7 @@
 {% if error %}<div class="alert alert-danger" role="alert"><p>{{ error }}</p></div>{% endif %}
 
 <div class="jump" aria-label="Secções desta página">
+  <a class="btn btn-outline-secondary btn-sm" href="{{ base }}/cms#comparacoes">Comparações</a>
   <a class="btn btn-outline-secondary btn-sm" href="{{ base }}/cms#paginas">Páginas</a>
   <a class="btn btn-outline-secondary btn-sm" href="{{ base }}/cms#graficos">Gráficos</a>
 </div>
@@ -49,6 +51,40 @@
       {% endif %}
     </div>
     <a class="btn btn-primary" href="{{ base }}/cms/home"><i class="icon icon-home" aria-hidden="true"></i> {% if home_doc %}Gerir página inicial{% else %}Preparar página inicial{% endif %}</a>
+  </div>
+</section>
+
+<section class="card comparison-library" id="comparacoes" aria-labelledby="comparacoes-title">
+  <div class="card-header">
+    <h2 class="card-title" id="comparacoes-title"><i class="icon icon-layers" aria-hidden="true"></i> Biblioteca de comparações</h2>
+    <span class="badge bg-secondary-lt">{{ library | length if library is defined else 0 }}</span>
+  </div>
+  <div class="card-body">
+    <p class="note">A categoria publicada decide onde cada gráfico aparece na página pública
+    Comparações. Um gráfico sem categoria continua disponível para páginas do CMS, mas não
+    entra nessa biblioteca pública. Alterar a categoria exige guardar e publicar o rascunho.</p>
+    {% if library is defined and library %}
+    <div class="scroll"><table class="table table-vcenter cms-table">
+    <thead><tr><th>Categoria</th><th>Gráfico</th><th class="num">Versão</th><th>Estado</th><th>Ações</th></tr></thead>
+    <tbody>
+    {% for row in library %}
+    <tr>
+      <td data-label="Categoria">{{ row.category_label }}{% if row.pending_category %} <span class="badge bg-warning-lt">categoria por publicar</span>{% endif %}</td>
+      <td class="wrap" data-label="Gráfico">{{ row.title }}</td>
+      <td class="num" data-label="Versão">{{ row.version }}</td>
+      <td data-label="Estado">{% if row.published %}<span class="badge bg-success-lt good"><i class="icon icon-check" aria-hidden="true"></i> Publicado</span>{% else %}<span class="badge bg-secondary-lt muted">Rascunho</span>{% endif %}</td>
+      <td data-label="Ações"><a class="btn btn-sm btn-outline-secondary" href="{{ base }}/cms/chart/{{ row.slug }}"><i class="icon icon-edit" aria-hidden="true"></i> Editar categoria</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table></div>
+    {% else %}
+    <div class="empty-state">
+      <i class="icon icon-layers" aria-hidden="true"></i>
+      <p>Ainda não há gráficos com categoria de comparação.</p>
+      <p>Atribua uma categoria no editor de um gráfico para o publicar em Comparações.</p>
+    </div>
+    {% endif %}
   </div>
 </section>
 
@@ -157,6 +193,8 @@
 <summary><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</summary>
 <form method="post" action="{{ base }}/cms/new">
 <input type="hidden" name="kind" value="chart">
+<fieldset>
+<legend>Identidade do gráfico</legend>
 <div class="form-grid">
   <div class="field">
     <label class="form-label" for="new-chart-slug">Slug</label>
@@ -173,52 +211,20 @@
     <label class="form-label" for="new-chart-note">Nota editorial</label>
     <textarea class="form-control" id="new-chart-note" name="note_text" maxlength="{{ max_text }}" rows="3" cols="70">{{ values.get('note_text', '') if values.get('kind') == 'chart' else '' }}</textarea>
   </div>
-  <div class="field">
-    <label class="form-label" for="new-chart-series-a">Série A</label>
-    <select class="form-select" id="new-chart-series-a" name="series_a" required data-filterable data-filter-label="Filtrar séries da série A">
-    {{ series_options(choices, values.get('series_a') if values.get('kind') == 'chart' else None, "escolher série") }}
-    </select>
-  </div>
-  <div class="field">
-    <label class="form-label" for="new-chart-series-b">Série B (opcional)</label>
-    <select class="form-select" id="new-chart-series-b" name="series_b" data-filterable data-filter-label="Filtrar séries da série B">
-    {{ series_options(choices, values.get('series_b') if values.get('kind') == 'chart' else None, "sem segunda série") }}
-    </select>
-    <span class="form-hint">Tem de ser diferente da série A.</span>
-  </div>
-  <div class="field">
-    <label class="form-label" for="new-chart-derived">Série calculada (opcional)</label>
-    <select class="form-select" id="new-chart-derived" name="derived_key" data-filterable data-filter-label="Filtrar séries calculadas">
-    {{ derived_options(choices, values.get('derived_key') if values.get('kind') == 'chart' else None, "sem série calculada") }}
-    </select>
-    <span class="form-hint">Só em gráfico de série única.</span>
-  </div>
-  <div class="field">
-    <label class="form-label" for="new-chart-window">Janela</label>
-    <select class="form-select" id="new-chart-window" name="window">
-    {% for w in windows %}<option value="{{ w }}"{% if values.get('kind') == 'chart' and values.get('window') == w %} selected{% endif %}>{{ w }}</option>{% endfor %}
-    </select>
-  </div>
-  <div class="field">
-    <label class="form-label" for="new-chart-scale">Escala</label>
-    <select class="form-select" id="new-chart-scale" name="scale">
-    {% for s in scales %}<option value="{{ s }}"{% if values.get('kind') == 'chart' and values.get('scale') == s %} selected{% endif %}>{{ s }}</option>{% endfor %}
-    </select>
-  </div>
-  <div class="field">
-    <label class="form-label" for="new-chart-day">Dia UTC (opcional)</label>
-    <input class="form-control" id="new-chart-day" type="date" name="day"
-     value="{{ values.get('day', '') if values.get('kind') == 'chart' else '' }}">
-    <span class="form-hint">AAAA-MM-DD, só para séries de 15 minutos.</span>
-  </div>
+</div>
+</fieldset>
+{{ chart_series_fields("new-chart", values, choices) }}
+{{ chart_analysis_fields("new-chart", values, windows, scales) }}
+<fieldset>
+<legend>Registo</legend>
+<div class="form-grid">
   <div class="field span-2">
     <label class="form-label" for="new-chart-reason">Motivo (obrigatório)</label>
     <input class="form-control" id="new-chart-reason" type="text" name="note" required maxlength="{{ max_text }}" size="50">
   </div>
 </div>
-<p class="note">Dois eixos são uma escolha explícita e independente; a comparação não
-estabelece causalidade. Séries diárias como a E-REDES usam um único dia UTC, sem agregação.</p>
 <div class="button-row"><button type="submit" class="btn btn-primary"><i class="icon icon-plus" aria-hidden="true"></i> Criar gráfico</button></div>
+</fieldset>
 </form>
 </details>
 {% endblock %}

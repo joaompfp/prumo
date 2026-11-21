@@ -65,11 +65,25 @@ PREVIEW_CSP = ("default-src 'none'; style-src 'self' 'unsafe-inline'; "
 CMS_FORM_MAX_BYTES = 12_582_912
 MAX_FIELDS = 1000
 
+MAX_EXTRA_SERIES = 4
+SERIES_SLOTS = 6
+_FREQUENCIES = ("original", "annual")
+_TRANSFORMS = ("original", "base100", "pp")
+_COMPARISON_GROUPS = ("portugal", "countries", "general")
+_GROUP_LABELS = {"portugal": "Portugal", "countries": "Países", "general": "Geral"}
+_BASE_YEAR = re.compile(r"[0-9]{4}\Z")
+# New chart controls are optional on the wire so a form posted by the older editor keeps its
+# exact body shape. Their names are read only when at least one of them is present.
+_ANALYTICAL_FIELDS = frozenset(
+    {"frequency", "transform", "base", "comparison_group"}
+    | {f"series_extra_{index}" for index in range(MAX_EXTRA_SERIES)}
+    | {f"axis_{index}" for index in range(SERIES_SLOTS)}
+)
 _SCALARS = frozenset({
     "title", "introduction", "section", "note", "note_text", "version", "block_count",
     "op", "kind", "slug", "new_slug", "revision_id", "series_a", "series_b",
     "derived_key", "window", "scale", "day",
-})
+}) | _ANALYTICAL_FIELDS
 _BLOCK = re.compile(
     r"block_(type|text|series|derived|chart|label|eyebrow|title|note|counts|freshness|"
     r"link_label|link_href|theme|step_label|step_text)_([0-9]{1,2})(?:_([0-9]{1,2}))?\Z")
@@ -297,8 +311,18 @@ def _page_body(fields: dict[str, str]) -> dict:
     }
 
 
+def _chart_choice(fields: dict[str, str], name: str, allowed: tuple[str, ...],
+                  label: str) -> str | None:
+    value = fields.get(name, "").strip()
+    if not value:
+        return None
+    if value not in allowed:
+        raise FormError(f"{label}: escolha uma das opções apresentadas")
+    return value
+
+
 def _chart_body(fields: dict[str, str]) -> dict:
-    return {
+    body = {
         "title": fields.get("title", ""),
         "note": fields.get("note_text", ""),
         "series_a": fields.get("series_a", ""),
@@ -308,6 +332,83 @@ def _chart_body(fields: dict[str, str]) -> dict:
         "scale": fields.get("scale", ""),
         "day": fields.get("day", "").strip() or None,
     }
+    if not any(name in fields for name in _ANALYTICAL_FIELDS):
+        # The older editor posted only the five original fields. Keep storing exactly that
+        # body so legacy forms, tests and restorable history stay canonical.
+        return body
+
+    slots = [
+        ("A", fields.get("series_a", "").strip()),
+        ("B", fields.get("series_b", "").strip()),
+    ] + [
+        (f"extra {index + 1}", fields.get(f"series_extra_{index}", "").strip())
+        for index in range(MAX_EXTRA_SERIES)
+    ]
+    selected = [(slot, value) for slot, value in enumerate(slots) if value[1]]
+    references = [value for _, (_, value) in selected]
+    if not references:
+        raise FormError("gráfico: escolha pelo menos uma série")
+    if len(slots[0][1]) == 0:
+        raise FormError("gráfico: escolha a série A")
+    if len(set(references)) != len(references):
+        raise FormError("gráfico: não repita uma série na mesma comparação")
+
+    derived_key = body["derived_key"]
+    if derived_key is not None and len(references) > 1:
+        raise FormError("gráfico: uma série calculada só pode acompanhar uma série selecionada")
+
+    axis_values = [fields.get(f"axis_{index}", "").strip()
+                   for index in range(SERIES_SLOTS)]
+    axes: list[int] | None = None
+    if any(axis_values[slot] for slot, _ in selected):
+        axes = []
+        for slot, (label, reference) in selected:
+            value = axis_values[slot]
+            if value not in ("0", "1"):
+                raise FormError(
+                    f"eixo da série {label} ({reference}): escolha 0 ou 1 para todas as "
+                    "séries selecionadas")
+            axes.append(int(value))
+
+    frequency = _chart_choice(fields, "frequency", _FREQUENCIES, "frequência")
+    transform = _chart_choice(fields, "transform", _TRANSFORMS, "transformação")
+    base = fields.get("base", "").strip() or None
+    if base is not None:
+        if not _BASE_YEAR.fullmatch(base):
+            raise FormError("ano base: indique quatro dígitos, por exemplo 2019")
+        if transform not in ("base100", "pp"):
+            raise FormError(
+                "o ano base só se aplica às transformações base 100 ou pontos percentuais")
+    comparison_group = _chart_choice(
+        fields, "comparison_group", _COMPARISON_GROUPS, "categoria de comparação")
+
+    body.update(
+        series_a=references[0],
+        series_b=slots[1][1] or None,
+        series_extra=[slot[1] for slot in slots[2:] if slot[1]],
+        axes=axes,
+        frequency=frequency,
+        transform=transform,
+        base=base,
+        comparison_group=comparison_group,
+    )
+    return body
+
+
+def _service_body(kind: str, body: dict) -> dict:
+    """Translate the form's absent values into the typed service contract.
+
+    The form posts empty frequency and transform controls as `None`, but those fields have
+    typed defaults (`original`) in the document. Omitting an absent field keeps the stored
+    body canonical and lets the document default apply; other optional fields accept null.
+    """
+    if kind != "chart":
+        return body
+    body = dict(body)
+    for key in ("frequency", "transform"):
+        if body.get(key) is None:
+            body.pop(key, None)
+    return body
 
 
 def _add_block(fields: dict[str, str]) -> dict:
@@ -374,10 +475,17 @@ def _submitted_document(kind: str, fields: dict[str, str]) -> dict:
             "note": fields.get("note_text", ""),
             "series_a": fields.get("series_a", ""),
             "series_b": fields.get("series_b", ""),
+            "series_extra": [fields.get(f"series_extra_{index}", "")
+                             for index in range(MAX_EXTRA_SERIES)],
             "derived_key": fields.get("derived_key", ""),
             "window": fields.get("window", ""),
             "scale": fields.get("scale", ""),
             "day": fields.get("day", ""),
+            "axes": [fields.get(f"axis_{index}", "") for index in range(SERIES_SLOTS)],
+            "frequency": fields.get("frequency", ""),
+            "transform": fields.get("transform", ""),
+            "base": fields.get("base", ""),
+            "comparison_group": fields.get("comparison_group", ""),
         }
 
     # An `add` submit failed: carry its fields into the block list as the block it was trying
@@ -525,16 +633,61 @@ def _page_label(block: dict) -> str:
     return "bloco desconhecido"
 
 
+def _maybe(value) -> str | None:
+    return None if value is None or value == "" else str(value)
+
+
+def _axes_label(axes) -> str:
+    values = list(axes or ())
+    assigned = [(index, value) for index, value in enumerate(values)
+                if value not in (None, "")]
+    if not assigned:
+        return "automáticos"
+    return ", ".join(f"série {index + 1}: eixo {value}" for index, value in assigned)
+
+
+def _chart_diff_fields(doc: dict) -> tuple[tuple[str, object], ...]:
+    extras = list(doc.get("series_extra") or ())
+    slots = [doc.get("series_a"), doc.get("series_b")] + [
+        extras[index] if index < len(extras) else None for index in range(MAX_EXTRA_SERIES)
+    ]
+    return (
+        ("Título", _maybe(doc.get("title"))),
+        ("Nota", _maybe(doc.get("note"))),
+        ("Série A", _maybe(slots[0])),
+        ("Série B", _maybe(slots[1])),
+        ("Série C", _maybe(slots[2])),
+        ("Série D", _maybe(slots[3])),
+        ("Série E", _maybe(slots[4])),
+        ("Série F", _maybe(slots[5])),
+        ("Série calculada", _maybe(doc.get("derived_key"))),
+        ("Janela", _maybe(doc.get("window"))),
+        ("Escala", _maybe(doc.get("scale"))),
+        ("Dia UTC", _maybe(doc.get("day"))),
+        ("Eixos", _axes_label(doc.get("axes"))),
+        ("Frequência", doc.get("frequency") or "original"),
+        ("Transformação", doc.get("transform") or "original"),
+        ("Ano base", _maybe(doc.get("base"))),
+        ("Categoria de comparação", _maybe(doc.get("comparison_group"))),
+    )
+
+
 def _diff(kind: str, live: dict | None, draft: dict | None) -> list[dict[str, str]]:
     """The fields that publishing would change, in the operator's words."""
     if live is None or not isinstance(draft, dict):
         return []
     rows: list[dict[str, str]] = []
-    fields = (("Título", "title"), ("Introdução", "introduction"), ("Secção", "section")) \
-        if kind == "page" else (
-            ("Título", "title"), ("Nota", "note"), ("Série A", "series_a"),
-            ("Série B", "series_b"), ("Série calculada", "derived_key"),
-            ("Janela", "window"), ("Escala", "scale"), ("Dia UTC", "day"))
+    if kind == "page":
+        fields = (("Título", "title"), ("Introdução", "introduction"), ("Secção", "section"))
+    else:
+        fields = _chart_diff_fields(draft)
+        live_fields = dict(_chart_diff_fields(live))
+        for label, after in fields:
+            before = live_fields.get(label)
+            if before != after:
+                rows.append({"field": label, "live": _short(before) or "(vazio)",
+                             "draft": _short(after) or "(vazio)"})
+        return rows
     for label, key in fields:
         before, after = live.get(key), draft.get(key)
         if before != after:
@@ -583,6 +736,46 @@ def _public_base(asset_base: str) -> str:
     if configured and (configured.startswith("http://") or configured.startswith("https://")):
         return configured
     return configured if _PUBLIC_PREFIX.fullmatch(configured) else ""
+
+
+def _comparison_library(cms: Cms, charts) -> list[dict]:
+    """Charts assigned to a public comparison category, with the published category visible.
+
+    The dashboard already holds chart head summaries. Reading each draft is a bounded extra
+    read in the Admin only; it keeps the category out of the service's list contract and lets
+    the editor show a draft category that still needs publication.
+    """
+    rows = []
+    for summary in charts:
+        data = cms.get("chart", summary["slug"])
+        if data is None:
+            continue
+        draft = data.get("draft")
+        published = data.get("published")
+        draft_group = getattr(draft, "comparison_group", None)
+        published_group = (getattr(published, "comparison_group", None)
+                           if published is not None else None)
+        if draft_group is None and published_group is None:
+            continue
+        display = published_group if summary["published"] else draft_group
+        if display is None:
+            display = draft_group
+        if display is None:
+            continue
+        rows.append({
+            "slug": summary["slug"],
+            "title": summary["title"],
+            "version": summary["version"],
+            "published": summary["published"],
+            "category": display,
+            "category_label": _GROUP_LABELS.get(display, display),
+            "pending_category": bool(summary["published"] and draft_group != published_group),
+        })
+    rows.sort(key=lambda row: (
+        _COMPARISON_GROUPS.index(row["category"])
+        if row["category"] in _COMPARISON_GROUPS else len(_COMPARISON_GROUPS),
+        row["title"].casefold()))
+    return rows
 
 
 def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | None) -> None:
@@ -656,11 +849,12 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
             charts = cms.list("chart")
             choices = cms.choices()
             home = cms.home()
+            library = _comparison_library(cms, charts)
         except (CmsUnavailable, CmsBusy) as exc:
             return render_error(request, 503, "Editor CMS indisponível", str(exc))
         return admin.render(
             request, "cms_list.html", status_code=status_code, pages=pages, charts=charts,
-            choices=choices, values=values or {}, home=home,
+            choices=choices, values=values or {}, home=home, library=library,
             sections=_SECTIONS, windows=_WINDOWS, scales=_SCALES,
             max_blocks=MAX_BLOCKS, max_slug=MAX_SLUG, max_title=MAX_TITLE, max_text=MAX_TEXT,
             error=error)
@@ -755,12 +949,12 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
                                     f"tipo de documento desconhecido: {kind}")
             slug = fields.get("slug", "")
             note = _note(fields)
-            body = _chart_body(fields) if kind == "chart" else {
+            body = (_service_body(kind, _chart_body(fields)) if kind == "chart" else {
                 "title": fields.get("title", ""),
                 "introduction": fields.get("introduction", ""),
                 "section": fields.get("section", ""),
                 "blocks": [],
-            }
+            })
         except FormError as exc:
             return await run_in_threadpool(list_page, request, status_code=422,
                                            error=str(exc), values=fields)
@@ -805,7 +999,9 @@ def register_cms(app: FastAPI, admin, db_path: Path, editorial_db_path: Path | N
         try:
             result = None
             if action == "save":
-                await run_in_threadpool(cms.save, kind, slug, version, doc,
+                assert doc is not None  # the save branch above always parses a body
+                await run_in_threadpool(cms.save, kind, slug, version,
+                                        _service_body(kind, doc),
                                         actor=admin.actor(request), note=note)
             elif action == "publish":
                 await run_in_threadpool(cms.publish, kind, slug, version,
