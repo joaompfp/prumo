@@ -256,29 +256,55 @@ function nearest(xs, value) {
   return lo;
 }
 
-/* One reader row per series. Version 2 names that side's own native period; a null side gets
- * the server's explicit missing string, never the previous value, "null" or "undefined". */
-function seriesLine(payload, point, index) {
-  if (payload.version === 2) {
-    const period = payload.cell_periods[point][index];
-    const display = payload.display[point][index];
-    if (period === null || display === null) {
-      return payload.series[index].title + ' - ' + payload.missing;
+/* The prepared reader view of one inspected point. Tooltip text, the visible readout and the
+ * polite announcement all come from this single boundary, so they cannot describe different
+ * rows. Version 2 names each side's own native period; a null side gets the server's explicit
+ * missing string, never the previous value, "null" or "undefined". */
+function pointView(payload, point) {
+  const rows = [];
+  for (let index = 0; index < payload.series.length; index += 1) {
+    const entry = payload.series[index];
+    if (payload.version === 2) {
+      const period = payload.cell_periods[point][index];
+      const display = payload.display[point][index];
+      rows.push({
+        title: entry.title,
+        period,
+        value: display,
+        missing: period === null || display === null,
+        axis: entry.axis,
+      });
+    } else {
+      rows.push({
+        title: entry.title,
+        period: null,
+        value: payload.display[point][index],
+        missing: false,
+        axis: Number.isInteger(entry.axis) ? entry.axis
+          : (index < payload.axes.length ? index : 0),
+      });
     }
-    return payload.series[index].title + ' - ' + period + ': ' + display;
   }
-  return payload.series[index].title + ': ' + payload.display[point][index];
+  return { period: payload.periods[point], rows };
+}
+
+/* The reviewed one-line row text shared by the tooltip and the announcement. */
+function rowText(payload, row) {
+  if (row.missing) return row.title + ' - ' + payload.missing;
+  if (row.period !== null) return row.title + ' - ' + row.period + ': ' + row.value;
+  return row.title + ': ' + row.value;
 }
 
 /* One block per line, filled with textContent so a publisher title can never become markup.
  * The browser wraps the text inside the box; values keep their U+00A0 thousands groups. */
 function tooltipNode(payload, point) {
+  const view = pointView(payload, point);
   const box = document.createElement('div');
   const lines = [];
   if (payload.series[0].badge) lines.push(payload.series[0].badge);
-  lines.push(payload.periods[point]);
-  for (let i = 0; i < payload.series.length; i += 1) {
-    lines.push(seriesLine(payload, point, i));
+  lines.push(view.period);
+  for (let i = 0; i < view.rows.length; i += 1) {
+    lines.push(rowText(payload, view.rows[i]));
   }
   for (let i = 0; i < lines.length; i += 1) {
     const row = document.createElement('div');
@@ -462,21 +488,15 @@ function optionFor(payload, width, activePoint) {
   };
 }
 
-function readoutText(payload, point) {
-  const period = payload.periods[point];
+/* The one-line announcement text. The visible readout is structured, but the polite live
+ * region keeps the reviewed sentence so keyboard users hear the period and every exact row. */
+function pointText(payload, point) {
+  const view = pointView(payload, point);
   if (payload.version === 2) {
-    const parts = [];
-    for (let i = 0; i < payload.series.length; i += 1) {
-      parts.push(seriesLine(payload, point, i));
-    }
-    return period + ' - ' + parts.join('; ');
+    return view.period + ' - ' + view.rows.map((row) => rowText(payload, row)).join('; ');
   }
-  if (payload.series.length === 1) return period + ': ' + payload.display[point][0];
-  const parts = [];
-  for (let i = 0; i < payload.series.length; i += 1) {
-    parts.push(payload.series[i].title + ': ' + payload.display[point][i]);
-  }
-  return period + ' - ' + parts.join('; ');
+  if (view.rows.length === 1) return view.period + ': ' + view.rows[0].value;
+  return view.period + ' - ' + view.rows.map((row) => rowText(payload, row)).join('; ');
 }
 
 function enhance(root) {
@@ -553,7 +573,7 @@ function enhance(root) {
     activePoint = point;
     range.value = String(point);
     range.setAttribute('aria-valuetext', payload.periods[point]);
-    readout.textContent = readoutText(payload, point);
+    readout.textContent = pointText(payload, point);
     if (announce) {
       live.textContent = readout.textContent;
       showTip(point);
@@ -656,7 +676,7 @@ function enhance(root) {
 
   range.addEventListener('input', () => show(Number(range.value), true));
   range.addEventListener('focus', () => {
-    live.textContent = readoutText(payload, current);
+    live.textContent = pointText(payload, current);
   });
 
   const onResize = () => {
