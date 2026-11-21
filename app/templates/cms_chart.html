@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
-{% block main_class %}{% if page.analysis %} notebook-main{% endif %}{% endblock %}
+{% block main_class %} notebook-main{% endblock %}
 {% block content %}
 {% if preview %}
 <div class="preview-banner" role="status">
@@ -12,22 +12,20 @@
 {% if page.analysis %}
 {% include "_cms_analysis.html" %}
 {% else %}
+<div class="notebook-workspace authored-workspace">
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.title }}
 </nav>
 
 <header class="page-head">
   <h1>{{ page.title }}</h1>
-  {% if page.note %}<p class="lede">{{ page.note }}</p>{% endif %}
   <p class="meta">
   {{ page.frequency_text }}{% if page.day %} · dia UTC {{ format_date(page.day) }}{% else %} · {{ page.window_text }}{% endif %}
   </p>
 </header>
 
-<section class="chart-section" aria-labelledby="grafico">
-  <div class="section-head">
-    <h2 id="grafico">{{ page.title }}</h2>
-  </div>
+<section class="chart-section notebook-chart authored-chart" aria-labelledby="grafico">
+  <h2 id="grafico" class="sr-only">Gráfico</h2>
   <figure class="chart-figure chart-figure-interactive">
     {% if page.chart_payload %}{{ chart_shell(page, "cms-chart") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
     <figcaption>
@@ -35,6 +33,12 @@
       Último valor em {{ page.provenance[0].period_text }}.
     </figcaption>
   </figure>
+  {% if page.note %}
+  <details class="authored-reading">
+    <summary>Sobre esta leitura</summary>
+    <p class="authored-note">{{ page.note }}</p>
+  </details>
+  {% endif %}
   <p class="note">{{ page.table_note }}</p>
   <details class="table-details">
   <summary>Ver tabela de valores</summary>
@@ -103,6 +107,7 @@
     {% endfor %}
   </div>
 </section>
+</div>
 {% endif %}
 {% endblock %}
 {% block scripts %}{% if page.chart_payload and not preview %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

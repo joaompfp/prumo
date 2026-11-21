@@ -1,5 +1,12 @@
 {% from "_chart.html" import chart_shell %}
 {% set panel = page.analysis %}
+{% macro series_links() %}
+  <ul class="authored-series-links">
+    {% for side in panel.sides %}
+    <li><a href="{{ base }}/series/{{ side.series_id }}">{{ side.label }}</a>{% if side.axis_text %} · {{ side.axis_text }}{% endif %} · {{ side.unit_text }}</li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
 <div class="notebook-workspace authored-workspace">
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a>{% if page.comparison_group %} <span aria-hidden="true">/</span> <a href="{{ base }}/comparar">Comparações</a>{% endif %}
@@ -13,13 +20,10 @@
     <figcaption class="notebook-chart-caption">
       <p class="notebook-chart-period"><span class="notebook-chart-period-label">{{ panel.period_label or notebook_copy.chart_period_label }}</span> <strong>{{ panel.last_period_text }}</strong></p>
     </figcaption>
-    {% if panel.chart_payload %}{{ chart_shell(panel, "cms-chart") }}{% else %}{{ chart_svg(panel.chart) }}{% endif %}
+    {% if panel.chart_payload %}
+    {% call chart_shell(panel, "cms-chart") %}{{ series_links() }}{% endcall %}
+    {% else %}{{ chart_svg(panel.chart) }}{{ series_links() }}{% endif %}
   </figure>
-  <ul class="authored-series-links">
-    {% for side in panel.sides %}
-    <li><a href="{{ base }}/series/{{ side.series_id }}">{{ side.label }}</a>{% if side.axis_text %} · {{ side.axis_text }}{% endif %} · {{ side.unit_text }}</li>
-    {% endfor %}
-  </ul>
 </section>
 {% if page.note or panel.analysis_note %}
 <details class="authored-reading">

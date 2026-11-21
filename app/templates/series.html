@@ -1,32 +1,35 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell %}
 {% block title %}{{ page.series.title }} - Prumo{% endblock %}
+{% block main_class %} notebook-main{% endblock %}
 {% block content %}
+<div class="notebook-workspace detail-workspace">
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> <a href="{{ base }}/temas/{{ page.series.theme }}">{{ page.series.theme_text }}</a> <span aria-hidden="true">/</span> {{ page.series.family_title }}
 </nav>
 
 <header class="page-head">
   <h1>{{ page.series.title }}</h1>
-  <p class="detail-actions"><a class="button-quiet" href="{{ base }}{{ notebook_path([page.series.id]) }}">{{ notebook_copy.series_action }}</a></p>
   <p class="meta">
     {{ page.series.geography_text }} · {{ page.series.frequency_text }} · {{ page.series.unit_text }}{% if page.series.seasonal_text %} · {{ page.series.seasonal_text }}{% endif %}{% if page.series.base_year %} · base {{ page.series.base_year }}{% endif %}
   </p>
 </header>
 
-{% include "_series_latest.html" %}
-
-<section class="chart-section" aria-labelledby="grafico">
-  <div class="section-head">
+<section class="chart-section notebook-chart" aria-labelledby="grafico">
+  <div class="notebook-chart-head">
     <h2 id="grafico">Série</h2>
     {% if not page.is_15m %}
     <nav class="windows" aria-label="Janela temporal">
       {% for code, label in page.windows %}<a href="{{ base }}/series/{{ page.series.id }}?janela={{ code }}"{% if code == page.window %} aria-current="true"{% endif %}>{{ label }}</a>{% endfor %}
     </nav>
     {% endif %}
+    <div class="notebook-chart-links">
+      <a class="button-quiet" href="{{ base }}{{ notebook_path([page.series.id]) }}">{{ notebook_copy.series_action }}</a>
+      <a class="button-quiet" href="{{ base }}/series/{{ page.series.id }}.csv">Descarregar CSV</a>
+    </div>
   </div>
   {% if page.is_15m %}
-  <form class="filters" action="{{ base }}/series/{{ page.series.id }}" method="get">
+  <form class="chart-day-form" action="{{ base }}/series/{{ page.series.id }}" method="get">
     <label>Dia (UTC)
       <select name="dia">
         {% for d in page.days %}<option value="{{ d }}"{% if d == page.day %} selected{% endif %}>{{ format_date(d) }}</option>{% endfor %}
@@ -38,7 +41,7 @@
   {% endif %}
   <figure class="chart-figure chart-figure-interactive">
     {% if page.chart_payload %}{{ chart_shell(page, "series") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
-    <figcaption>{{ page.series.title }}. Fonte: {{ page.series.source_title }}. Último valor em {{ page.series.latest.period_text }}.</figcaption>
+    <figcaption>{{ page.series.title }}. Fonte: {{ page.series.source_title }}. {% if page.is_15m %}Dia desenhado: {{ format_date(page.day) }} (UTC). {% endif %}Último valor da série em {{ page.series.latest.period_text }}.</figcaption>
   </figure>
   <details class="table-details">
     <summary>Ver tabela de valores</summary>
@@ -52,8 +55,9 @@
     </table>
     <p class="note">{{ page.table_note }}</p>
   </details>
-  <p class="download"><a href="{{ base }}/series/{{ page.series.id }}.csv">Descarregar CSV</a></p>
 </section>
+
+{% include "_series_latest.html" %}
 
 <section class="provenance" aria-labelledby="proveniencia">
   <div class="section-head">
@@ -142,5 +146,6 @@
   </table>
 </section>
 {% endif %}
+</div>
 {% endblock %}
 {% block scripts %}{% if page.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

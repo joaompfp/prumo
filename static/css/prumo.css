@@ -1012,6 +1012,22 @@ section { margin: 80px 0; }
   .notebook-table-scroll { overflow: visible; }
 }
 
+/* Native daily window selection on analytical detail pages. */
+.detail-workspace .chart-day-form {
+  display: flex; flex-wrap: wrap; align-items: end; gap: 8px 16px; margin: 8px 0;
+}
+.chart-day-form label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.chart-day-form select, .chart-day-form button {
+  min-height: 48px; max-width: 100%; padding: 8px 12px; border: 1px solid var(--rule-strong);
+  border-radius: 6px; background: var(--surface); color: var(--ink); font: inherit; font-size: .9rem;
+}
+.chart-day-form button { border-color: var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+.detail-workspace .analytical-caveats { margin: 16px 0; }
+/* Calculated labels must wrap instead of imposing a min-content grid wider than a phone. */
+.notebook-workspace .figure-block > * { min-width: 0; }
+.notebook-workspace .figure-block .badge { max-width: 100%; white-space: normal; }
+@media print { .chart-day-form { display: none !important; } }
+
 /* Published analytical documents share the wide plot, without composition controls. */
 .authored-workspace .crumbs { margin-bottom: 8px; }
 .authored-series-links {
@@ -1024,7 +1040,7 @@ section { margin: 80px 0; }
 .authored-reading > summary { font-size: .85rem; font-weight: 600; }
 .authored-note { white-space: pre-line; max-width: 78ch; }
 @media print {
-  .authored-reading::details-content { display: block; }
+  .authored-reading::details-content { content-visibility: visible !important; display: block !important; }
   .authored-reading > *:not(summary) { display: block !important; }
   .authored-reading > summary { display: none; }
 }
