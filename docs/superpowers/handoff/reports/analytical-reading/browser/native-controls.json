@@ -1,0 +1,92 @@
+{
+  "checks": [
+    {
+      "name": "-jsFalse-200",
+      "passed": true
+    },
+    {
+      "name": "-jsFalse-day-visible",
+      "passed": true
+    },
+    {
+      "name": "-jsFalse-native-get",
+      "passed": true
+    },
+    {
+      "name": "-jsFalse-selected-day-address",
+      "passed": true
+    },
+    {
+      "name": "-jsFalse-prefix-preserved",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsFalse-200",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsFalse-day-visible",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsFalse-native-get",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsFalse-selected-day-address",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsFalse-prefix-preserved",
+      "passed": true
+    },
+    {
+      "name": "-jsTrue-200",
+      "passed": true
+    },
+    {
+      "name": "-jsTrue-day-visible",
+      "passed": true
+    },
+    {
+      "name": "-jsTrue-native-get",
+      "passed": true
+    },
+    {
+      "name": "-jsTrue-selected-day-address",
+      "passed": true
+    },
+    {
+      "name": "-jsTrue-prefix-preserved",
+      "passed": true
+    },
+    {
+      "name": "-jsTrue-exact-served-asset",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsTrue-200",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsTrue-day-visible",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsTrue-native-get",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsTrue-selected-day-address",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsTrue-prefix-preserved",
+      "passed": true
+    },
+    {
+      "name": "/dados-jsTrue-exact-served-asset",
+      "passed": true
+    }
+  ]
+}

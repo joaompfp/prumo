@@ -1,5 +1,13 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## Phase B candidate: shared analytical reading (2026-11-21)
+
+The owner asked to continue after the real CMS comparisons were installed. Runtime `4d6b4c6` on `feature/analytical-reading` implements structured exact point rows, a 48px native range target and chart-first primary/calculated/CMS detail pages. All editorial selections/axes/time transformations remain authored in Admin; public comparisons still read only the published revision. The Caderno remains separate exploration. Local copies, not production, were used for the full draft/preview/publish/restore workflow.
+
+Independent specification and quality reviews passed. The spec reviewer initially treated two dead legacy templates as live renderers; actual route inspection resolved that claim without reviving code-curated pages. The final mobile-control delta was independently approved. Final real-copy acceptance passed 1,219 assertions across 128 populated route/viewport/mount cases, plus the actual CMS workflow and static Admin preview; 20 protected tables, schema and authored home fingerprints are identical. Exact full-suite/clean-checkout scopes and curated neutral captures are in `reports/analytical-reading/README.md`. Human screen-reader acceptance remains open.
+
+This is NOT installed: main/live remain the CMS-owned comparisons checkpoint below. No live CMS publication, migration, source-data write, container operation or edge/authentication change ran. The separate working branch `pipeline-rebuild` already contained unpushed worker-incident corrections through `68609ef`; this feature deliberately branches from installed main instead of implicitly including that operational work. Do not merge/release the whole operational branch as a reader-only UI update. A later authorized release of this feature affects public web and the static-preview Admin consumer only.
+
 ## Current installed checkpoint: CMS-owned real comparisons (2026-11-21)
 
 The owner corrected the product boundary: create and configure real editorial comparisons in the backoffice, then present only their published CMS revision publicly. Runtime/main `a9add13399b257c6d49897d6acb769becfcb2083` is pushed and installed at 15:33 UTC. All nine prior real compositions were converted into published, editable, audited CMS charts; installation trials remain unpublished and the authored homepage is unchanged. Admin: `https://joao.date/dados/admin/cms#comparacoes`; actual editor example `/cms/chart/taxas-juro-credito-depositos` under that Admin mount. Public `/comparar` and its details no longer depend on code-curated definitions or configurable Caderno destinations. The Caderno remains separate exploration.

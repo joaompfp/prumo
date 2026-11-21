@@ -76,11 +76,11 @@ Phase U is installed at 2026-11-20 22:33 UTC on authorized runtime/main `3aac922
 
 ## Phase B: shared chart reading and analytical pages
 
-Status: planned; depends on the notebook composition checkpoint.
+Status: IMPLEMENTED candidate on `feature/analytical-reading`, runtime `4d6b4c6`, based on installed main `34ed8c0`. Not merged or installed. B1 structured exact inspection and B2 shared analytical pages passed independent reviews and the isolated real-copy browser/CMS workflow (1,219 assertions, 128 populated viewport/route/mount cases). Full-suite and committed-checkout closeout are recorded in `../handoff/reports/analytical-reading/README.md`. Human screen-reader acceptance and release approval remain separate. Pending worker-safety commits on `pipeline-rebuild` are deliberately excluded.
 
 B1. Replace the long point-readout sentence with structured period/series/value rows while preserving exact strings, keyboard announcements and DOM-only tooltip safety. Make the native range target usable and keep series names/patterns adjacent to the plot. Review any canvas label/gutter adjustment together with SVG, touch coordinates, failed init and print; statistical domains do not change.
 
-B2. Apply the accepted analytical composition to curated pairs, five-country comparisons, reusable public chart pages and primary/calculated series detail. Preserve two axes, calculated caveats, UTC-day selection, complete tables and period-specific provenance. Test long names and five/six sides, not just two short labels.
+B2. Apply the accepted analytical composition to CMS-owned pairs, five-country comparisons and reusable public chart pages through `cms_chart.html`, plus primary/calculated series detail. Since phase D, the former `compare.html` and `compare_countries.html` templates are no longer routed; do not revive code-curated pages to satisfy this phase. Preserve two axes, calculated caveats, UTC-day selection, complete tables and period-specific provenance. Test long names and five/six sides, not just two short labels.
 
 Acceptance: each route family has a populated first-view comparison, exact point/table tests, no-JS/print proof and measured typography. No blanket CSS change that only fixes the notebook while shrinking or clipping other charts.
 
@@ -123,8 +123,10 @@ Carry forward source rights for REN/FRED/OECD, DGEG technical blockers, old-peri
 | A0 | Verified | Refactor `fad24e5`; 11 deterministic equivalence cases and controller repeat of all 50 existing notebook tests |
 | A1-A2 | Installed after owner release approval | Main `913eb2f`, runtime `050d69e`, f0nix 2026-11-19 16:55 UTC. Fluid plot-first notebook, native settings after figure, nearby add/configure actions, honest chart/card states and common-period/source labels |
 | A3 | Automated gates and authorized installation complete; human screen-reader open | Earlier full local suite: 2,856 on `0a0730e`; final development 126 committed-tree and 332 browser checks retain their scope. Exact-main hosted CI 44569621926 passed before activation: 2,847 passed, nine skipped, seven live deselected. Fresh release gate: 100 focused committed-tree tests, 459 installed public browser checks, 33 state/Admin and ten preview checks. Worker, schema and CMS fingerprints unchanged. Installation approval does not replace human screen-reader/usability acceptance |
-| B-C | Planned | Generalize only after the notebook composition is reviewed |
-| D-E | Future | Separate specification/product acceptance, not part of this prototype |
+| B | Implemented candidate, not installed | Runtime `4d6b4c6` on isolated `feature/analytical-reading`; structured inspector and chart-first series/derived/CMS pages, including real published pairs and countries. Exact tests, reviews and browser/CMS receipts: `../handoff/reports/analytical-reading/README.md` |
+| C | Planned | Discovery and entry, preserving the CMS-owned homepage and published content |
+| D | Installed | Nine real editable CMS comparisons, runtime `a9add13`; see owner correction above |
+| E | Future | Dated analysis and approved AI drafts need their own design/product acceptance |
 
 Development evidence, exact test scopes and neutral desktop/mobile captures: `../handoff/reports/analytical-workspace/README.md`. Installed acceptance, images, recovery and checker correction: `../handoff/reports/analytical-workspace-release/installed.md`. The settings form now contains window/scale/group/day AFTER the plot; the nearby Configurar action opens it natively. A1's near-result control requirement is implemented as this single path rather than duplicated forms. Later point-readout consolidation and global masthead alignment stay in B/C.
 
