@@ -1,0 +1,29 @@
+{
+  "runtime_and_tests": "4d6b4c6",
+  "full_suite": {
+    "passed": 3222,
+    "warnings": 4,
+    "exit_code": 0,
+    "seconds": 1463.98,
+    "interpreter": "/home/joao/projects/prumo-pipeline/.venv-ci/bin/python",
+    "command": "python -m pytest tests -n 2 --dist loadfile -q",
+    "runner_plugins": "pytest-xdist 3.8.0 and execnet 2.1.2 in scratch only",
+    "raw_sha256": "1fb84d62446254d338a3b887310210c9189f7e95c3d00da9d54a372c6e374617",
+    "archive_sha256": "ba12021babe84b682fef951c37278cfe0f63103dc5c6f189e768113d2f2c70f5"
+  },
+  "clean_checkout": {
+    "commit": "8ab93d8",
+    "passed": 97,
+    "imports_verified": true,
+    "ruff": "passed"
+  },
+  "browser": {
+    "matrix_assertions": 1219,
+    "matrix_cells": 128,
+    "auxiliary_assertions": 22,
+    "protected_tables": 20,
+    "schema_and_home_unchanged": true
+  },
+  "hosted_ci": "not claimed",
+  "installed": false
+}
