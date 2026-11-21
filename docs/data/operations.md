@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current public interface: grouped two-axis notebook and Portugal comparisons
+## Current public interface: phase B shared analytical reading
+
+Owner-authorized main/runtime `5346447` is installed on f0nix from 2026-11-21 21:36 UTC. Exact point inspection uses structured period/series/value rows; primary/calculated/CMS charts share the analytical layout. All nine comparisons remain CMS-authored and public read-only; the separate Caderno retains exploration. Only web and Admin were recreated, healthy with zero restarts. No migration, CMS/source-data write, worker or authentication/shared-edge operation ran.
+
+Exact-main CI `44951525399`: 3,193 passed, 29 skipped, seven live deselected, three warnings. Fresh clean-checkout tests: 84. Installed public browser: 1,392 assertions in 104 cases; nine Admin editors/static chart preview: 54; state/access: 33; static home preview: ten. Schema/migrations and every CMS table fingerprint match pre-activation. Worker remains container `39214757`, image `ff50b981`, start 2026-11-21 15:04:10 UTC and three pre-existing autonomous restarts. Its incident fixes on `pipeline-rebuild` remain separately pending, not part of this UI release.
+
+Recovery checkout `34ed8c0`, pinned images `prumo:rollback-analytical-reading-20261121T2122` and `prumo-backoffice:rollback-analytical-reading-20261121T2122`. Stop only the affected bind-mounted public reader before changing its checkout, then rebuild/recreate the two readers through the established aliases. Preserve the database, authored content and worker. Exact receipts, safe read-only probe and executed installation helpers: [installed phase B](../superpowers/handoff/reports/analytical-reading/installed.md). Human screen-reader acceptance and the existing shared-edge vr warning remain open. Later report-only commits do not require rebuilding healthy services.
+
+## Previous public interface: grouped two-axis notebook and Portugal comparisons
 
 Owner-authorized runtime/main `3aac922` is installed from 2026-11-20 22:33 UTC. Public web `31dcfe0b` and Admin `c5709790` are healthy with zero restarts. The Caderno supports up to six series in two compatible raw scale groups and `/comparar` has reviewed Portugal configurations. Pair links, native/annual views, exact source values and one-axis transformations retain their contracts.
 

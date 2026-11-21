@@ -1,0 +1,209 @@
+{
+  "checks": [
+    {
+      "name": "inflacao-e-desemprego-editor-200",
+      "passed": true
+    },
+    {
+      "name": "inflacao-e-desemprego-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "inflacao-e-desemprego-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "inflacao-e-desemprego-save-private",
+      "passed": true
+    },
+    {
+      "name": "inflacao-e-desemprego-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "euribor-e-inflacao-editor-200",
+      "passed": true
+    },
+    {
+      "name": "euribor-e-inflacao-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "euribor-e-inflacao-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "euribor-e-inflacao-save-private",
+      "passed": true
+    },
+    {
+      "name": "euribor-e-inflacao-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "credito-e-taxa-editor-200",
+      "passed": true
+    },
+    {
+      "name": "credito-e-taxa-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "credito-e-taxa-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "credito-e-taxa-save-private",
+      "passed": true
+    },
+    {
+      "name": "credito-e-taxa-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "taxas-juro-credito-depositos-editor-200",
+      "passed": true
+    },
+    {
+      "name": "taxas-juro-credito-depositos-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "taxas-juro-credito-depositos-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "taxas-juro-credito-depositos-save-private",
+      "passed": true
+    },
+    {
+      "name": "taxas-juro-credito-depositos-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "divida-saldo-pib-per-capita-editor-200",
+      "passed": true
+    },
+    {
+      "name": "divida-saldo-pib-per-capita-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "divida-saldo-pib-per-capita-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "divida-saldo-pib-per-capita-save-private",
+      "passed": true
+    },
+    {
+      "name": "divida-saldo-pib-per-capita-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "comercio-externo-pib-per-capita-editor-200",
+      "passed": true
+    },
+    {
+      "name": "comercio-externo-pib-per-capita-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "comercio-externo-pib-per-capita-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "comercio-externo-pib-per-capita-save-private",
+      "passed": true
+    },
+    {
+      "name": "comercio-externo-pib-per-capita-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-domestica-editor-200",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-domestica-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-domestica-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-domestica-save-private",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-domestica-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "pib-por-habitante-editor-200",
+      "passed": true
+    },
+    {
+      "name": "pib-por-habitante-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "pib-por-habitante-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "pib-por-habitante-save-private",
+      "passed": true
+    },
+    {
+      "name": "pib-por-habitante-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "divida-publica-editor-200",
+      "passed": true
+    },
+    {
+      "name": "divida-publica-six-authoring-slots",
+      "passed": true
+    },
+    {
+      "name": "divida-publica-six-axis-controls",
+      "passed": true
+    },
+    {
+      "name": "divida-publica-save-private",
+      "passed": true
+    },
+    {
+      "name": "divida-publica-publish-deliberate",
+      "passed": true
+    },
+    {
+      "name": "preview-200",
+      "passed": true
+    },
+    {
+      "name": "preview-private",
+      "passed": true
+    },
+    {
+      "name": "preview-no-executable-scripts",
+      "passed": true
+    },
+    {
+      "name": "preview-script-csp-none",
+      "passed": true
+    },
+    {
+      "name": "preview-svg",
+      "passed": true
+    },
+    {
+      "name": "preview-shared-analytical-layout",
+      "passed": false
+    }
+  ],
+  "passed": 50
+}

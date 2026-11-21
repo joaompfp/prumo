@@ -1,0 +1,104 @@
+{
+  "release": "53464477bbb34d511cafda9f2fdd48fb7462f908",
+  "files": {
+    "activate.sh": {
+      "bytes": 3151,
+      "sha256": "709ebfbcd070e4659875bd80ceda1b5a0164cbd348512294b9afcc3e617217ab"
+    },
+    "activated-images.json": {
+      "bytes": 767,
+      "sha256": "80a2eadad99d0e794942815ed97fc52c803885dc8b0d51979979b659708feff7"
+    },
+    "activation.log.gz": {
+      "bytes": 2148,
+      "sha256": "aa99524cec5959adaf647ec7530378017249c7b2273824e56e5b80c574ec0a53",
+      "decompressed_sha256": "0619caf634c5feefd869d6d2004b8ac638c9e3f10caa6a2401f983c61763f101"
+    },
+    "admin-initial.json": {
+      "bytes": 4500,
+      "sha256": "c4bb77781b7bf515188c88632708d70fa8a5eba55dd995d3c82a3542aa3857e6"
+    },
+    "admin.json": {
+      "bytes": 4730,
+      "sha256": "9bf5f8af3e52d83857f0b028c357bb5cbec927b14bc70d424a854ff360ac1657"
+    },
+    "admin_probe.py": {
+      "bytes": 4880,
+      "sha256": "7abda2fa69a3abbae08925a8e619cfd50edae35aa426254bb79bceae78872c8a"
+    },
+    "browser.json": {
+      "bytes": 188818,
+      "sha256": "4f08a8684b8a3943d18385306aea1d8b4995693846ffe96720d6bafe21a15a73"
+    },
+    "ci.json": {
+      "bytes": 2214,
+      "sha256": "5b6c76c7c49cc71c4b178f3de8d215fa8254c081ff687957f9890c9ccaedfa0d"
+    },
+    "ci.log.gz": {
+      "bytes": 88675,
+      "sha256": "b5b37e851fd002ca443fa4d512722b1c04220640df1f5a2fa94b1e3c148de1d8",
+      "decompressed_sha256": "68a3e533610bde5da46a201a67bf0a823fbfd7f235a88773a57e0e85fe1904a9"
+    },
+    "focused.log": {
+      "bytes": 1016,
+      "sha256": "31bfdbc8c8d2928a0db6285a87a109e96bfec314a3e88eb0966bd95094c8d36a"
+    },
+    "installed_browser.py": {
+      "bytes": 11660,
+      "sha256": "bbc11cfca49eb38e1f6bb0daa19dc0c728b66cb089ccafc5761e1afbc35808c1"
+    },
+    "post-acceptance.json": {
+      "bytes": 6463,
+      "sha256": "354dbc7ece27fae30bdd6cbdac54c3a6f027acd6111ec17897a343c8e8b4c70d"
+    },
+    "post-install.json": {
+      "bytes": 6463,
+      "sha256": "1474bedfcff8bf8ee3a2a108e7beb2e59c6ee0cebdac7aa5141db46aedb89de6"
+    },
+    "post-prebuild.json": {
+      "bytes": 3065,
+      "sha256": "9dc42c90e6148ae02b0006642aa1b554cf139f84f64a212258fbada7c0108410"
+    },
+    "pre-activation.json": {
+      "bytes": 5747,
+      "sha256": "8d446a355ddbb6f89062f4731e52f0a15e7d9d857c351a08f3aedf821fed1630"
+    },
+    "pre-install.json": {
+      "bytes": 5747,
+      "sha256": "4f4b4a75576ce30975f2b93066af5d7a441d35cf4af318b3f28fc22eeea30ec1"
+    },
+    "prebuild.log.gz": {
+      "bytes": 2008,
+      "sha256": "4ad6b64cc1c2df0b246c75a3c9f94ac31be2ca55535b203cbefd78cf9594f742",
+      "decompressed_sha256": "7eea6f985fdf83fe50d56c71ee4b699fcc1d115036c665d9b1551c8599e487fd"
+    },
+    "prebuild.sh": {
+      "bytes": 2615,
+      "sha256": "1c6c0a75be885d6ad09286c1cf754f29ca28f42446b7343c6904197b5a6a2d3d"
+    },
+    "preview.json": {
+      "bytes": 387,
+      "sha256": "00eff27a51d24d64cddac01bfa708d3cc0f7a9d08ecbd90aef12ac20f5461b4d"
+    },
+    "production_probe.py": {
+      "bytes": 7905,
+      "sha256": "26f6c735ec0f6e65cc6ddff4d376f475cbe8bd5bc172caac0bd7593a73307b61"
+    },
+    "series-1440.png": {
+      "bytes": 114315,
+      "sha256": "1d3e4c710cd464f21cf4ff8a10e7a09098b24e6d5a7dd35c03906cfdc7be95b8"
+    },
+    "series-390.png": {
+      "bytes": 57307,
+      "sha256": "c60befa4e2b6ef9089c1410b480da810736eef11e2b445dc8151c5d2c451c3e7"
+    },
+    "taxas-juro-credito-depositos-1440.png": {
+      "bytes": 159928,
+      "sha256": "131f18dc4484abe8fe7e56ed877f81295beae1825bbde31acf8740eb742470a2"
+    },
+    "taxas-juro-credito-depositos-390.png": {
+      "bytes": 79931,
+      "sha256": "f6ffe099844aa26d1d0bb5e3b61d041daa90e02f7d20b17f6654855ddb83ba29"
+    }
+  }
+}

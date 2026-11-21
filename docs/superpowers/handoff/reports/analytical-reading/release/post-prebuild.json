@@ -1,0 +1,119 @@
+{
+  "at": "2026-11-21T21:26:59.407819+00:00",
+  "containers": {
+    "prumo": {
+      "id": "8c430cb1c083a3bb0dbb8112fc086fca71275d0226125950940ded7544e1f5b1",
+      "image": "sha256:11410e96aad13fb8b3fb5158726d2750b360c6528751f5107b44b2b03fae4ef7",
+      "started": "2026-11-21T15:33:04.489936936Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    },
+    "prumo-ingest": {
+      "id": "3921475705a35df28b81a7d381e4d388918616c681607a116ac9df69ad334e4b",
+      "image": "sha256:ff50b981e4cdc7923c773fe1f017567340d64e979d6b336553045504806e53a3",
+      "started": "2026-11-21T15:04:10.860527167Z",
+      "restarts": 3,
+      "running": true,
+      "health": null
+    },
+    "prumo-backoffice": {
+      "id": "e37375c3ef266ea63ce16dc1d888b127ebdcd9c8c16a5e18c49115283f462eca",
+      "image": "sha256:85f02ae7566d0fca1c9261587572146e10465861bee0b4a2a158e70590e72bd4",
+      "started": "2026-11-21T15:33:06.267617454Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    }
+  },
+  "checks": [],
+  "checkout": "34ed8c008aa9cdbce23822f837eed9e51c09334e",
+  "infra_status": [
+    " M secrets/web.enc.env",
+    " M stacks/web/compose/prumo-backoffice.yml",
+    " M stacks/web/images/ifc-viewer/dist-xeokit/index.html",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/4d/",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/4d",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/data"
+  ],
+  "preexisting_infra_diff": {
+    "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+    "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb"
+  },
+  "schema": "e314abd22f6d1575a620881e1f2e8bc480c67206b3cf53f61d9369a8a145f13a",
+  "migrations": [
+    [
+      "0001_init"
+    ],
+    [
+      "0002_dataset_key"
+    ],
+    [
+      "0003_verification_replay"
+    ],
+    [
+      "0004_verification_audit"
+    ],
+    [
+      "0005_served_licence_gate"
+    ],
+    [
+      "0006_pt15m"
+    ],
+    [
+      "0007_scoped_legacy_serving"
+    ],
+    [
+      "0008_input_origin"
+    ],
+    [
+      "0009_blocked_stale_state"
+    ],
+    [
+      "0010_scheduler_state"
+    ],
+    [
+      "0011_data_time_serving_and_withdrawal"
+    ],
+    [
+      "0012_verification_audit_v2"
+    ],
+    [
+      "0013_run_and_audit_guards"
+    ],
+    [
+      "0014_derived_layer"
+    ],
+    [
+      "0015_observation_run_index"
+    ],
+    [
+      "0016_language_neutral_derived"
+    ],
+    [
+      "0017_derived_caveats"
+    ],
+    [
+      "0018_editorial_composition"
+    ],
+    [
+      "0019_statistics_cms"
+    ]
+  ],
+  "cms": {
+    "cms_document": {
+      "rows": 12,
+      "sha256": "14a31f5e0ca2cb7b6357f5451a770031e9bf2719263b9b5c197c221d351b2aa3"
+    },
+    "cms_revision": {
+      "rows": 15,
+      "sha256": "f34f5dbfdfcef30fdae93918b55ddb551906120948861b1bc579e4e275ecfdff"
+    },
+    "cms_event": {
+      "rows": 29,
+      "sha256": "74464c51089ebced2b5b9182a519d9b19c359bcb1ace221ec8ee1371715d4a0f"
+    }
+  },
+  "quick_check": "ok",
+  "foreign_keys": []
+}

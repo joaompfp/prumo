@@ -1,0 +1,17 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/joao/.hermes/cache/scratch/prumo-phase-b-release-20261121T2122/committed
+configfile: pytest.ini
+plugins: anyio-4.16.0
+collected 84 items
+
+tests/app/test_analytical_pages.py ...........                           [ 13%]
+tests/app/test_chart_interaction.py ...........                          [ 26%]
+tests/app/test_calendar_interaction.py ........                          [ 35%]
+tests/app/test_group_interaction.py ......                               [ 42%]
+tests/app/test_interactive.py ...................                        [ 65%]
+tests/backoffice/test_boundaries.py ....                                 [ 70%]
+tests/test_typography.py ..................                              [ 91%]
+tests/test_legibility_assets.py .......                                  [100%]
+
+================== 84 passed, 1 warning in 105.70s (0:01:45) ===================

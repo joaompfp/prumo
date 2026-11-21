@@ -2,7 +2,7 @@
 
 ## Delivery boundary
 
-Implemented candidate on `feature/analytical-reading`, runtime `4d6b4c6`, based on installed main `34ed8c0`. Not merged or installed. The separate `pipeline-rebuild` branch contained three unpushed worker-safety commits through `68609ef` before this work; none is included here. Source data, CMS schema, existing live publications, authentication and shared edge are outside this change.
+Implemented on `feature/analytical-reading`, runtime `4d6b4c6`, based on former installed main `34ed8c0`. Subsequently merged, pushed and installed with owner authorization at 2026-11-21 21:36 UTC from `5346447`; see [installation and recovery](installed.md). The following development receipts preserve their original local scope. The separate `pipeline-rebuild` branch contained three unpushed worker-safety commits through `68609ef` before this work; none is included here. Source data, CMS schema, existing live publications, authentication and shared edge are outside this change.
 
 Comparisons remain CMS documents. The backoffice selects series, axes, windows, transformations and editorial text; the public page displays the published revision. The Caderno remains separate exploration. No new custom comparison or implicit publication was introduced.
 

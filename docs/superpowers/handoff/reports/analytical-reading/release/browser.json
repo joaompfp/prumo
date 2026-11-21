@@ -1,0 +1,6835 @@
+{
+  "passed": 1392,
+  "checks": [
+    {
+      "name": "https://cae.joao.date-320-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-320-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-print-svg",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-print-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-series-print-no-controls",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-print-svg",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-print-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-derived-print-no-controls",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-print-svg",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-print-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-taxas-juro-credito-depositos-print-no-controls",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-390-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-series-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-interval-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-derived-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-taxas-juro-credito-depositos-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-eletricidade-domestica-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1440-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-series-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-interval-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-derived-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-taxas-juro-credito-depositos-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-eletricidade-domestica-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-1920-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.dateseries-nojs-svg",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.dateseries-nojs-no-canvas",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.datederived-nojs-svg",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.datederived-nojs-no-canvas",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.datetaxas-juro-credito-depositos-nojs-svg",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.datetaxas-juro-credito-depositos-nojs-no-canvas",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-blocked-bundle-svg",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-320-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-print-svg",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-print-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-series-print-no-controls",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-print-svg",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-print-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-derived-print-no-controls",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-print-svg",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-print-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-taxas-juro-credito-depositos-print-no-controls",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-390-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-series-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-interval-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-derived-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-taxas-juro-credito-depositos-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-eletricidade-domestica-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1440-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-directory-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-nine-real-documents",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-directory-script-free",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-series-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-nearby-interval-shortcut",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-interval-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-derived-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-notebook-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-inflacao-e-desemprego-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-euribor-e-inflacao-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-credito-e-taxa-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-taxas-juro-credito-depositos-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-saldo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-comercio-externo-pib-per-capita-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-eletricidade-domestica-whole-plot-first-view",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-pib-por-habitante-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-structured-rows",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-preserved-reading-scale",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-silent-pointer-region",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-48px-target",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-Home-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-End-exact-point",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-no-public-composition",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-all-authored-series",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-complete-table",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-neutral-top",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-1920-divida-publica-useful-plot-height",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dadosseries-nojs-svg",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dadosseries-nojs-no-canvas",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dadosderived-nojs-svg",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dadosderived-nojs-no-canvas",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dadostaxas-juro-credito-depositos-nojs-svg",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dadostaxas-juro-credito-depositos-nojs-no-canvas",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-blocked-bundle-svg",
+      "passed": true
+    },
+    {
+      "name": "no-application-errors",
+      "passed": true
+    },
+    {
+      "name": "no-new-console-errors",
+      "passed": true
+    },
+    {
+      "name": "no-off-origin-requests",
+      "passed": true
+    },
+    {
+      "name": "anonymous-admin-authelia",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-one-local-engine",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-installed-exact-bundle",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-installed-inspector-css",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-strict-csp",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/series/ine.hicp_yoy.PT.csv-csv",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/calculadas/derived.credit_housing.PT.yoy_change_pct.csv-csv",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-health",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date-unknown-404",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-one-local-engine",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-installed-exact-bundle",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-installed-inspector-css",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-strict-csp",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/series/ine.hicp_yoy.PT.csv-csv",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/calculadas/derived.credit_housing.PT.yoy_change_pct.csv-csv",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-health",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados-unknown-404",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'.",
+    "Error with Permissions-Policy header: Unrecognized feature: 'vr'."
+  ],
+  "measurements": [
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "series",
+      "plot": {
+        "x": 18,
+        "y": 594.65625,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "interval",
+      "plot": {
+        "x": 18,
+        "y": 632.921875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "derived",
+      "plot": {
+        "x": 18,
+        "y": 781.875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "notebook",
+      "plot": {
+        "x": 18,
+        "y": 629.40625,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 18,
+        "y": 590.375,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 18,
+        "y": 634.296875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 678.21875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 590.375,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 18,
+        "y": 590.375,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 320,
+      "route": "divida-publica",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "series",
+      "plot": {
+        "x": 18,
+        "y": 508.9375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "interval",
+      "plot": {
+        "x": 18,
+        "y": 547.203125,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "derived",
+      "plot": {
+        "x": 18,
+        "y": 737.953125,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "notebook",
+      "plot": {
+        "x": 18,
+        "y": 573.40625,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 18,
+        "y": 534.90625,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 503.921875,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 503.921875,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 18,
+        "y": 460,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 390,
+      "route": "divida-publica",
+      "plot": {
+        "x": 18,
+        "y": 416.078125,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "series",
+      "plot": {
+        "x": 130.15625,
+        "y": 434.9375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "interval",
+      "plot": {
+        "x": 130.15625,
+        "y": 434.9375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "derived",
+      "plot": {
+        "x": 130.15625,
+        "y": 489.625,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "notebook",
+      "plot": {
+        "x": 130.15625,
+        "y": 326.65625,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 130.15625,
+        "y": 425.921875,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 130.15625,
+        "y": 425.921875,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1440,
+      "route": "divida-publica",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "series",
+      "plot": {
+        "x": 266.640625,
+        "y": 446.6875,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "interval",
+      "plot": {
+        "x": 266.640625,
+        "y": 375.5,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "derived",
+      "plot": {
+        "x": 266.640625,
+        "y": 501.375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "notebook",
+      "plot": {
+        "x": 266.640625,
+        "y": 330.65625,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 266.640625,
+        "y": 437.671875,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 266.640625,
+        "y": 437.671875,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://cae.joao.date",
+      "width": 1920,
+      "route": "divida-publica",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "series",
+      "plot": {
+        "x": 18,
+        "y": 594.65625,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "interval",
+      "plot": {
+        "x": 18,
+        "y": 632.921875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "derived",
+      "plot": {
+        "x": 18,
+        "y": 781.875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "notebook",
+      "plot": {
+        "x": 18,
+        "y": 629.40625,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 18,
+        "y": 590.375,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 18,
+        "y": 634.296875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 678.21875,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 590.375,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 18,
+        "y": 590.375,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 320,
+      "route": "divida-publica",
+      "plot": {
+        "x": 18,
+        "y": 546.453125,
+        "width": 284,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "series",
+      "plot": {
+        "x": 18,
+        "y": 508.9375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "interval",
+      "plot": {
+        "x": 18,
+        "y": 547.203125,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "derived",
+      "plot": {
+        "x": 18,
+        "y": 737.953125,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "notebook",
+      "plot": {
+        "x": 18,
+        "y": 573.40625,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 18,
+        "y": 534.90625,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 503.921875,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 18,
+        "y": 503.921875,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 18,
+        "y": 490.984375,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 18,
+        "y": 460,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 390,
+      "route": "divida-publica",
+      "plot": {
+        "x": 18,
+        "y": 416.078125,
+        "width": 354,
+        "height": 264
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "series",
+      "plot": {
+        "x": 130.15625,
+        "y": 434.9375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "interval",
+      "plot": {
+        "x": 130.15625,
+        "y": 434.9375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "derived",
+      "plot": {
+        "x": 130.15625,
+        "y": 489.625,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "notebook",
+      "plot": {
+        "x": 130.15625,
+        "y": 326.65625,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 130.15625,
+        "y": 425.921875,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 130.15625,
+        "y": 425.921875,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1440,
+      "route": "divida-publica",
+      "plot": {
+        "x": 130.15625,
+        "y": 360.609375,
+        "width": 1179.6875,
+        "height": 455.78125
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "series",
+      "plot": {
+        "x": 266.640625,
+        "y": 446.6875,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "interval",
+      "plot": {
+        "x": 266.640625,
+        "y": 375.5,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "derived",
+      "plot": {
+        "x": 266.640625,
+        "y": 501.375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "notebook",
+      "plot": {
+        "x": 266.640625,
+        "y": 330.65625,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "inflacao-e-desemprego",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "euribor-e-inflacao",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "credito-e-taxa",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "taxas-juro-credito-depositos",
+      "plot": {
+        "x": 266.640625,
+        "y": 437.671875,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "divida-saldo-pib-per-capita",
+      "plot": {
+        "x": 266.640625,
+        "y": 437.671875,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "comercio-externo-pib-per-capita",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "eletricidade-domestica",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "pib-por-habitante",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    },
+    {
+      "origin": "https://joao.date/dados",
+      "width": 1920,
+      "route": "divida-publica",
+      "plot": {
+        "x": 266.640625,
+        "y": 366.484375,
+        "width": 1386.71875,
+        "height": 535.765625
+      }
+    }
+  ],
+  "bundle_sha256": "951c0f155f53a2b1278fc304d98e37f0aa5b8e84468803111b8806d9832a21ea"
+}
