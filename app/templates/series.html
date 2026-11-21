@@ -37,12 +37,12 @@
     </label>
     <button type="submit">Ver</button>
   </form>
-  <p class="note">Intervalos de 15 minutos, no dia UTC escolhido. O Prumo não agrega esta série: cada ponto é o valor publicado.</p>
   {% endif %}
   <figure class="chart-figure chart-figure-interactive">
     {% if page.chart_payload %}{{ chart_shell(page, "series") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
     <figcaption>{{ page.series.title }}. Fonte: {{ page.series.source_title }}. {% if page.is_15m %}Dia desenhado: {{ format_date(page.day) }} (UTC). {% endif %}Último valor da série em {{ page.series.latest.period_text }}.</figcaption>
   </figure>
+  {% if page.is_15m %}<p class="note">Intervalos de 15 minutos, no dia UTC escolhido. O Prumo não agrega esta série: cada ponto é o valor publicado.</p>{% endif %}
   <details class="table-details">
     <summary>Ver tabela de valores</summary>
     <table class="data-table">
