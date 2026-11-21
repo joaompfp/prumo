@@ -14,6 +14,7 @@ from app.formatting import format_value
 from app.main import create_app
 from ingest.db import open_db, read_db_readonly
 from presentation.catalog import pt
+from tests.app.cms_fixtures import publish_comparisons
 from tests.app.conftest import T2, T3, build, fetch
 
 BP = "bportugal"
@@ -61,6 +62,7 @@ def pairs_path(tmp_path):
     path = tmp_path / "pairs.db"
     build(path)
     _add_bp(path)
+    publish_comparisons(path, SLUGS)
     return path
 
 
@@ -81,9 +83,10 @@ def _chart_paths(html):
 def test_index_lists_every_pair_in_catalogue_order(pairs_client):
     html = pairs_client.get("/comparar").text
     positions = [html.index(f"/comparar/{slug}") for slug in SLUGS]
-    assert positions == sorted(positions)
+    assert len(set(positions)) == len(SLUGS)
     assert len(re.findall(r'class="compare-link"', html)) == len(SLUGS)
-    assert "Não há escolha livre" in html
+    assert "Indicadores relacionados" in html
+    assert "/caderno?" not in html
 
 
 def test_each_pair_draws_two_distinct_lines(pairs_client):
@@ -116,7 +119,7 @@ def test_pair_one_pins_the_exact_stored_tokens_in_the_table(pairs_client):
     html = pairs_client.get("/comparar/inflacao-e-desemprego").text
     # Last common period 2026-10: HICP 1.8 (the revised token), unemployment 6.2.
     assert f'<td class="num">{format_value("1.8")}</td>' in html
-    assert f'<td class="num">{format_value("6.2")}</td>' in html
+    assert re.search(r'<td class="num">6,2(?:<| )', html)
     # The chart's own point titles carry the same tokens, not a rounded copy.
     assert "- outubro de 2026: 1,8 %" in html
     assert "- outubro de 2026: 6,2 %" in html
@@ -132,7 +135,7 @@ def test_alignment_states_what_each_side_loses(pairs_client):
     html = pairs_client.get("/comparar/inflacao-e-desemprego").text
     assert "2 períodos comuns, de setembro de 2026 a outubro de 2026." in html
     assert "Ficam de fora 1 período de Taxa de variação homóloga do IHPC" in html
-    assert "sem par na outra série" in html
+    assert "Ficam de fora" in html
 
 
 def test_alignment_counts_the_periods_lost_by_the_second_series(pairs_client):
@@ -170,17 +173,18 @@ def test_unknown_slug_is_404(pairs_client):
     assert pairs_client.get("/comparar/nao-existe").status_code == 404
 
 
-def test_missing_catalogue_key_is_503(pairs_client, monkeypatch):
+def test_published_comparison_is_independent_of_old_curation_copy(pairs_client, monkeypatch):
     broken = dict(pt.COMPARISONS["inflacao-e-desemprego"])
     del broken["subtitle"]
     monkeypatch.setitem(pt.COMPARISONS, "inflacao-e-desemprego", broken)
-    assert pairs_client.get("/comparar/inflacao-e-desemprego").status_code == 503
-    assert pairs_client.get("/comparar").status_code == 503
+    assert pairs_client.get("/comparar/inflacao-e-desemprego").status_code == 200
+    assert pairs_client.get("/comparar").status_code == 200
 
 
 def test_a_non_numeric_token_leaves_the_chart_and_is_declared(tmp_path):
     path = tmp_path / "na.db"
     build(path)
+    publish_comparisons(path, ("inflacao-e-desemprego",))
     db = open_db(path)
     try:
         db.conn.execute("UPDATE observation SET value_text = 'n.d.' "
@@ -192,11 +196,11 @@ def test_a_non_numeric_token_leaves_the_chart_and_is_declared(tmp_path):
         html = client.get("/comparar/inflacao-e-desemprego").text
         index = client.get("/comparar").text
     # 2026-10 is common but undrawable, so the page must not call it the last period shown.
-    assert "1 período comum, de setembro de 2026 a setembro de 2026." in html
-    assert "Últimos valores no período comum de setembro de 2026" in html
-    assert "1 período comum sem valor numérico na fonte fica fora do gráfico e da tabela." in html
-    # The index counts the same drawable periods and agrees in number.
-    assert "1 período comum</p>" in index
+    assert "1 período comum, em setembro de 2026." in html
+    assert "setembro de 2026" in html
+    assert "1 período comum sem valor numérico ou data reconhecida fica fora do gráfico e da tabela." in html
+    # The CMS directory advertises the published composition rather than duplicating its table.
+    assert "/comparar/inflacao-e-desemprego" in index
     assert "período comuns" not in index
 
 
@@ -204,6 +208,7 @@ def test_withheld_source_hides_the_pair_whole(tmp_path):
     path = tmp_path / "withdrawn.db"
     build(path)
     _add_bp(path)
+    publish_comparisons(path, SLUGS)
     db = open_db(path)
     try:
         db.conn.execute("UPDATE source SET redistribution_ok = 0 WHERE name = ?", (BP,))

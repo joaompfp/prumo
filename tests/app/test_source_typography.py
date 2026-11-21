@@ -17,6 +17,9 @@ from tests.app.conftest import DERIVED, HICP
     f"/calculadas/{DERIVED}.csv",
 ])
 def test_existing_source_metadata_is_normalised_only_for_display(site_path, path):
+    if path.startswith("/comparar/"):
+        from tests.app.cms_fixtures import publish_comparisons
+        publish_comparisons(site_path, ("inflacao-e-desemprego",))
     dash = chr(0x2014)
     attribution = f"Instituição {dash} dados oficiais"
     licence = f"CC BY 4.0 {dash} atribuição obrigatória"

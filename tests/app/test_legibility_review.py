@@ -43,15 +43,19 @@ def test_long_left_unit_name_grows_into_the_plot():
 
 
 @pytest.mark.parametrize('prefix',['','/dados'])
-def test_detail_start_actions_keep_the_public_mount(client, prefix):
+def test_detail_start_actions_keep_the_public_mount(client, site_path, prefix):
+    from tests.app.cms_fixtures import publish_comparisons
+    publish_comparisons(site_path, ("inflacao-e-desemprego",))
     headers = {'X-Forwarded-Prefix':prefix}
     response = client.get('/series/'+HICP, headers=headers)
     assert response.status_code == 200
     assert f'href="{prefix}/caderno?s={HICP}"' in response.text
     response = client.get('/comparar/inflacao-e-desemprego', headers=headers)
     assert response.status_code == 200
-    assert f'href="{prefix}/caderno?s={HICP}&amp;s={UNEMP}"' in response.text
-    assert 'Criar caderno com estas duas séries' in response.text
+    assert f'href="{prefix}/series/{HICP}"' in response.text
+    assert f'href="{prefix}/series/{UNEMP}"' in response.text
+    assert 'Criar caderno com estas duas séries' not in response.text
+    assert "/caderno?" not in response.text
 
 
 def test_local_font_policy_does_not_enable_scripts_on_notebook(client):

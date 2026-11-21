@@ -82,8 +82,7 @@
   <figure class="chart-figure chart-figure-interactive">
     {% if block.chart.chart_payload %}{{ chart_shell(block.chart, "cms-" ~ loop.index) }}{% else %}{{ chart_svg(block.chart.chart) }}{% endif %}
     <figcaption>
-      {% for line in block.chart.provenance %}{{ line.title }}. Fonte: {{ line.source_title }}. {% endfor %}
-      Último valor em {{ block.chart.provenance[0].period_text }}.
+      {% for line in block.chart.provenance %}{{ line.title }}. Fonte: {{ line.source_title }}. Último período desenhado: {{ line.period_text }}. {% endfor %}
     </figcaption>
   </figure>
   <p class="download"><a href="{{ base }}/graficos/{{ block.chart.slug }}">Ver gráfico, tabela e proveniência</a></p>

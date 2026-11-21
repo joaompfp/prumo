@@ -33,6 +33,8 @@ def pairs_path(tmp_path):
     path = tmp_path / "pairs.db"
     build(path)
     _add_bp(path)
+    from tests.app.cms_fixtures import publish_comparisons
+    publish_comparisons(path, ("inflacao-e-desemprego", "credito-e-taxa"))
     return path
 
 

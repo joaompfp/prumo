@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from app import reads
 from app.chart_model import ComparisonModel
 from app.formatting import decimal_or_none, format_count, format_period, format_value
+from app.statistical_definitions import native_parts as _native_parts
 from ingest.db import Db
 from presentation import (
     base_unit_text,
@@ -123,26 +124,6 @@ class _PublishedGroup:
     dropped: tuple[int, ...]
     unparsed: int
     frequency: str
-
-
-def _native_parts(native_code: str | None) -> tuple[str, dict[str, str]] | None:
-    """`dataset:key=value,key=value` -> (dataset, dimensions), or None when malformed.
-
-    Order is irrelevant; duplicates and blank parts are refused because they make the pinned
-    dimensions ambiguous. `geo` is kept here and removed by the caller for the group comparison.
-    """
-    if not isinstance(native_code, str):
-        return None
-    dataset, separator, rest = native_code.partition(":")
-    if not separator or not dataset or not rest:
-        return None
-    dimensions: dict[str, str] = {}
-    for part in rest.split(","):
-        key, equals, value = part.partition("=")
-        if not equals or not key or not value or key in dimensions:
-            return None
-        dimensions[key] = value
-    return dataset, dimensions
 
 
 def _check_side(db: Db, definition: dict, country: str, slug: str) -> _Side | None:

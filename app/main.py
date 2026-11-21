@@ -18,14 +18,13 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 
 from app import (
+    cms_comparisons,
     cms_reads,
     cms_routes,
-    country_comparisons,
     interactive,
     navigation,
     notebook,
     notebook_routes,
-    portugal_comparisons,
     reads,
 )
 from app import home as home_page
@@ -242,39 +241,34 @@ def create_app(db_path: str | None = None) -> FastAPI:
     @app.api_route("/comparar", methods=PAGE_METHODS, response_class=HTMLResponse)
     def comparisons_index(request: Request):
         try:
-            data, countries, portugal = _read(request, lambda db: (
-                reads.comparisons_index(db), country_comparisons.index(db),
-                portugal_comparisons.index(db)))
+            data = _read(request, cms_comparisons.index)
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
-        return _render(templates, request, "compare_index.html",
-                       {"page": data, "countries": countries, "portugal": portugal})
+        return _render(templates, request, "compare_index.html", {"page": data})
 
-    # The country route must be registered before `/comparar/{slug}`, otherwise the pair route
-    # would treat "paises" as a pair slug and swallow the path.
     @app.api_route("/comparar/paises/{slug}", methods=PAGE_METHODS,
                    response_class=HTMLResponse)
     def country_comparison(request: Request, slug: str):
-        """A curated country group by slug: never five series ids from the address."""
+        """Keep old country bookmarks while the CMS owns the canonical comparison."""
+        from fastapi.responses import RedirectResponse
         try:
-            data = _read(request, lambda db: country_comparisons.page(db, slug))
+            data = _read(request, lambda db: cms_comparisons.public_chart(db, slug))
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
-        if data is None:
+        if data is None or data.comparison_group != "countries":
             return _render(templates, request, "404.html", {}, status=404)
-        return _render(templates, request, "compare_countries.html", {"page": data},
-                       script=data.chart_payload is not None)
+        return RedirectResponse(f"{_base(request)}/comparar/{slug}", status_code=301)
 
     @app.api_route("/comparar/{slug}", methods=PAGE_METHODS, response_class=HTMLResponse)
     def comparison(request: Request, slug: str):
-        """A curated pair by slug: the route never accepts two series ids."""
+        """Display the operator's published revision; URL settings cannot override it."""
         try:
-            data = _read(request, lambda db: reads.comparison_page(db, slug))
+            data = _read(request, lambda db: cms_comparisons.public_chart(db, slug))
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
         if data is None:
             return _render(templates, request, "404.html", {}, status=404)
-        return _render(templates, request, "compare.html", {"page": data},
+        return _render(templates, request, "cms_chart.html", {"page": data},
                        script=data.chart_payload is not None)
 
     cms_routes.add_routes(app, templates=templates, render=_render, unavailable=unavailable)

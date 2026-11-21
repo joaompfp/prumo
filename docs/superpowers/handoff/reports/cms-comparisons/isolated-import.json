@@ -1,0 +1,335 @@
+{
+  "before": {
+    "tables": {
+      "cms_document": {
+        "rows": 3,
+        "sha256": "c406cd4d8c0533ca77052f68a15a46c363b50538e05cbbb710319fa6c76b9316"
+      },
+      "cms_event": {
+        "rows": 11,
+        "sha256": "63e2a01d313cf7f103b477ea7765940d1ca69654d56a8521169419914f74f394"
+      },
+      "cms_revision": {
+        "rows": 6,
+        "sha256": "3b4d0dba0c89a5586b06ffccf408db3bbb1085b58f271c64122aaef0e744e357"
+      },
+      "dataset_run": {
+        "rows": 120,
+        "sha256": "3202161b63cb9883e30d8ed14bc7b9c7eb7928e93cb2f899463d19fcfbacbd98"
+      },
+      "derived_event": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "derived_observation": {
+        "rows": 10145,
+        "sha256": "c39e5c65655f54ea8804afcb5ae728fd77752c7f46e8eeb5262aa5001c7a15b0"
+      },
+      "derived_run": {
+        "rows": 20,
+        "sha256": "e35a6f03011af5ae8289d897e74a788f4411e96129a5986b39c7bf741b4ef1d4"
+      },
+      "derived_series": {
+        "rows": 23,
+        "sha256": "32a556621bcaebdf20c1d90321bc7856e63123b2c77a0e1b8c42e8106a868be7"
+      },
+      "editorial_event": {
+        "rows": 4,
+        "sha256": "adfb9edd73abc85268647afa3d1d04c75d5119200e589cdf8d378d8622b0d961"
+      },
+      "editorial_page": {
+        "rows": 1,
+        "sha256": "768f5636e01c542e9b41e788176c28ac82cb3dcfedf7ffd80cf1b4d6af00c578"
+      },
+      "editorial_slot": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "event": {
+        "rows": 393,
+        "sha256": "8f27d5358595e71cb4d942ab36b61cb8f16fa2b17e94f40b2ae2d4f576d37724"
+      },
+      "observation": {
+        "rows": 634848,
+        "sha256": "92009a31603545cb48021f08d57dac17b68caec0a8bd9080cdd97f2c5e4d2d0f"
+      },
+      "quarantine": {
+        "rows": 34343,
+        "sha256": "37fc82617047eb68d6e6ee812c1ee29be639d97342fe7eb987979e375615b40a"
+      },
+      "raw_fetch": {
+        "rows": 1146,
+        "sha256": "a244f8ddbded2c98a8c48032c363e8e8f2892b44522100dd9695cd83388418a4"
+      },
+      "scheduler_state": {
+        "rows": 26,
+        "sha256": "2e488531445a43b8c29628938706c763acb0d596d5ee245d25441d6c4e9eb078"
+      },
+      "schema_migration": {
+        "rows": 19,
+        "sha256": "544001aa150d6f3e6f7e7050520aeba04f69cdb334c1ac9ecbbd119994ca093d"
+      },
+      "series": {
+        "rows": 1791,
+        "sha256": "9a818fcec861812e1d54d849a238217ff36880f2bda08632dc9d855f8116665e"
+      },
+      "setting": {
+        "rows": 2,
+        "sha256": "07a3c736a5cefe74482d927c9023bb5c7f924e4bf2eb3fc14066d4a2e9b29aeb"
+      },
+      "source": {
+        "rows": 9,
+        "sha256": "ec1a2b1628469e5da020a070b60fcd16d3734c99cbf39ba27c3ddfe67446db42"
+      },
+      "verification": {
+        "rows": 55,
+        "sha256": "70543c861844664dc43eba19930bcaf55c0dfa5fd2c6249b141b57a0e3671536"
+      },
+      "verification_item": {
+        "rows": 186143,
+        "sha256": "6033981f77032d522687c075725c63631b7a55e9fab015784796520aef118309"
+      },
+      "verification_spec": {
+        "rows": 1388,
+        "sha256": "58eb9989e6182907b5ace0e83645ea99d9fb876cdd1fb96f4321e22d4613c9e6"
+      }
+    },
+    "schema": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7",
+    "integrity": [
+      [
+        "ok"
+      ]
+    ],
+    "foreign_keys": [],
+    "home": [
+      [
+        "page",
+        "inicio",
+        2,
+        6,
+        6,
+        "2026-11-17T09:57:20.977540+00:00",
+        "2026-11-17T09:57:20.981536+00:00"
+      ]
+    ]
+  },
+  "after": {
+    "tables": {
+      "cms_document": {
+        "rows": 12,
+        "sha256": "6dc6ee9de14bcce42804cd47e040be02f1cff10f432b1252f8256ffaa1f1f164"
+      },
+      "cms_event": {
+        "rows": 29,
+        "sha256": "fe7eb647f38b24319c2a38c664f283a664aee3a2527eb4270cc983ba30b048d7"
+      },
+      "cms_revision": {
+        "rows": 15,
+        "sha256": "80d457b5d2582ae5b3846427a9324b181c3aedce96008049fafe6aa0afb00a98"
+      },
+      "dataset_run": {
+        "rows": 120,
+        "sha256": "3202161b63cb9883e30d8ed14bc7b9c7eb7928e93cb2f899463d19fcfbacbd98"
+      },
+      "derived_event": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "derived_observation": {
+        "rows": 10145,
+        "sha256": "c39e5c65655f54ea8804afcb5ae728fd77752c7f46e8eeb5262aa5001c7a15b0"
+      },
+      "derived_run": {
+        "rows": 20,
+        "sha256": "e35a6f03011af5ae8289d897e74a788f4411e96129a5986b39c7bf741b4ef1d4"
+      },
+      "derived_series": {
+        "rows": 23,
+        "sha256": "32a556621bcaebdf20c1d90321bc7856e63123b2c77a0e1b8c42e8106a868be7"
+      },
+      "editorial_event": {
+        "rows": 4,
+        "sha256": "adfb9edd73abc85268647afa3d1d04c75d5119200e589cdf8d378d8622b0d961"
+      },
+      "editorial_page": {
+        "rows": 1,
+        "sha256": "768f5636e01c542e9b41e788176c28ac82cb3dcfedf7ffd80cf1b4d6af00c578"
+      },
+      "editorial_slot": {
+        "rows": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "event": {
+        "rows": 393,
+        "sha256": "8f27d5358595e71cb4d942ab36b61cb8f16fa2b17e94f40b2ae2d4f576d37724"
+      },
+      "observation": {
+        "rows": 634848,
+        "sha256": "92009a31603545cb48021f08d57dac17b68caec0a8bd9080cdd97f2c5e4d2d0f"
+      },
+      "quarantine": {
+        "rows": 34343,
+        "sha256": "37fc82617047eb68d6e6ee812c1ee29be639d97342fe7eb987979e375615b40a"
+      },
+      "raw_fetch": {
+        "rows": 1146,
+        "sha256": "a244f8ddbded2c98a8c48032c363e8e8f2892b44522100dd9695cd83388418a4"
+      },
+      "scheduler_state": {
+        "rows": 26,
+        "sha256": "2e488531445a43b8c29628938706c763acb0d596d5ee245d25441d6c4e9eb078"
+      },
+      "schema_migration": {
+        "rows": 19,
+        "sha256": "544001aa150d6f3e6f7e7050520aeba04f69cdb334c1ac9ecbbd119994ca093d"
+      },
+      "series": {
+        "rows": 1791,
+        "sha256": "9a818fcec861812e1d54d849a238217ff36880f2bda08632dc9d855f8116665e"
+      },
+      "setting": {
+        "rows": 2,
+        "sha256": "07a3c736a5cefe74482d927c9023bb5c7f924e4bf2eb3fc14066d4a2e9b29aeb"
+      },
+      "source": {
+        "rows": 9,
+        "sha256": "ec1a2b1628469e5da020a070b60fcd16d3734c99cbf39ba27c3ddfe67446db42"
+      },
+      "verification": {
+        "rows": 55,
+        "sha256": "70543c861844664dc43eba19930bcaf55c0dfa5fd2c6249b141b57a0e3671536"
+      },
+      "verification_item": {
+        "rows": 186143,
+        "sha256": "6033981f77032d522687c075725c63631b7a55e9fab015784796520aef118309"
+      },
+      "verification_spec": {
+        "rows": 1388,
+        "sha256": "58eb9989e6182907b5ace0e83645ea99d9fb876cdd1fb96f4321e22d4613c9e6"
+      }
+    },
+    "schema": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7",
+    "integrity": [
+      [
+        "ok"
+      ]
+    ],
+    "foreign_keys": [],
+    "home": [
+      [
+        "page",
+        "inicio",
+        2,
+        6,
+        6,
+        "2026-11-17T09:57:20.977540+00:00",
+        "2026-11-17T09:57:20.981536+00:00"
+      ]
+    ]
+  },
+  "import": [
+    {
+      "slug": "inflacao-e-desemprego",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 7
+    },
+    {
+      "slug": "euribor-e-inflacao",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 8
+    },
+    {
+      "slug": "credito-e-taxa",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 9
+    },
+    {
+      "slug": "taxas-juro-credito-depositos",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 10
+    },
+    {
+      "slug": "divida-saldo-pib-per-capita",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 11
+    },
+    {
+      "slug": "comercio-externo-pib-per-capita",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 12
+    },
+    {
+      "slug": "eletricidade-domestica",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 13
+    },
+    {
+      "slug": "pib-por-habitante",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 14
+    },
+    {
+      "slug": "divida-publica",
+      "status": "published",
+      "version": 2,
+      "published_revision_id": 15
+    }
+  ],
+  "repeat": [
+    {
+      "slug": "inflacao-e-desemprego",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "euribor-e-inflacao",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "credito-e-taxa",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "taxas-juro-credito-depositos",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "divida-saldo-pib-per-capita",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "comercio-externo-pib-per-capita",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "eletricidade-domestica",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "pib-por-habitante",
+      "status": "preserved",
+      "version": 2
+    },
+    {
+      "slug": "divida-publica",
+      "status": "preserved",
+      "version": 2
+    }
+  ],
+  "protected_unchanged": true,
+  "home_unchanged": true
+}

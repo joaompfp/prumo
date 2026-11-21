@@ -1011,3 +1011,20 @@ section { margin: 80px 0; }
   }
   .notebook-table-scroll { overflow: visible; }
 }
+
+/* Published analytical documents share the wide plot, without composition controls. */
+.authored-workspace .crumbs { margin-bottom: 8px; }
+.authored-series-links {
+  display: flex; flex-wrap: wrap; gap: 4px 20px;
+  list-style: none; margin: 8px 0 12px; padding: 0; font-size: .8rem;
+}
+.authored-series-links li { min-width: 0; overflow-wrap: anywhere; }
+.authored-chart .legend-axis { grid-column: 2; }
+.authored-reading { margin: 12px 0; }
+.authored-reading > summary { font-size: .85rem; font-weight: 600; }
+.authored-note { white-space: pre-line; max-width: 78ch; }
+@media print {
+  .authored-reading::details-content { display: block; }
+  .authored-reading > *:not(summary) { display: block !important; }
+  .authored-reading > summary { display: none; }
+}

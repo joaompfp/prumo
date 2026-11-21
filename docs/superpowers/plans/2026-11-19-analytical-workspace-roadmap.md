@@ -3,6 +3,10 @@
 Date: 2026-11-19
 Authority: owner request to create an improvements roadmap and begin implementation after the design council. This plan governs the next interface iteration; previous product milestones remain installed history, not unfinished features.
 
+## Owner correction: CMS owns editorial comparisons (2026-11-21)
+
+Phase D is prioritized ahead of further public configuration. Author series selection, axes, time transformations and copy in the authenticated CMS; the public comparison displays only its published revision. The Caderno remains a separate exploratory tool. Real existing comparisons, not installation trials, are converted into editable CMS documents. This owner-authorized content conversion amends the earlier no-live-publication boundary only for that explicit import, preserving authored home, source data, schema, worker and edge. Implementation plan: `2026-11-21-cms-owned-comparisons.md`. Scope is implemented and independently reviewed; release gates remain pending until the installed record is written.
+
 ## Goal and baseline
 
 Make the public Prumo an effective statistics tool: chart and composition controls first, readable evidence nearby, editorial prose at its appropriate reading width. Keep the CMS for authored content and preserve the existing data pipeline.

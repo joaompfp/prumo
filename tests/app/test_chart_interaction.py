@@ -104,6 +104,8 @@ def site_url(tmp_path_factory):
     build(path)
     _add_market_pair(path)
     _add_calendar_pair(path)
+    from tests.app.cms_fixtures import publish_comparisons
+    publish_comparisons(path, ("credito-e-taxa",))
     config = uvicorn.Config(create_app(str(path)), host="127.0.0.1", port=0, log_level="error")
     server = uvicorn.Server(config)
     thread = threading.Thread(target=server.run, daemon=True)

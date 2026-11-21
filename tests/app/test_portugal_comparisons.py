@@ -16,6 +16,7 @@ from app.main import create_app
 from ingest.db import open_db
 from ingest.models import SeriesSpec, SourceSpec
 from ingest.registry import sync_registry
+from tests.app.cms_fixtures import publish_comparisons
 from tests.app.conftest import EUROSTAT, T1, WORLDBANK, fetch
 
 BP = SourceSpec(name="bportugal", licence="CC BY 4.0",
@@ -67,6 +68,8 @@ def build_site(tmp_path, name="portugal-comparisons.db"):
             fetch(db, series_id, periods, T1, source=source.name)
     finally:
         db.close()
+    publish_comparisons(path, ("taxas-juro-credito-depositos", "divida-saldo-pib-per-capita",
+                               "comercio-externo-pib-per-capita"))
     return path
 
 
@@ -85,63 +88,52 @@ def payload(html: str) -> dict:
     return json.loads(match.group(1))
 
 
-def caderno_links(html: str) -> list[str]:
-    links = [unescape(link) for link in re.findall(r'href="(/caderno\?[^"]+)"', html)]
-    return list(dict.fromkeys(links))
+def comparison_links(html: str) -> list[str]:
+    return list(dict.fromkeys(unescape(link) for link in re.findall(
+        r'class="compare-link" href="([^"]+)"', html)))
 
 
-def test_index_advertises_the_three_curated_portugal_configurations(tmp_path):
+def test_index_advertises_the_three_cms_portugal_comparisons(tmp_path):
     path = build_site(tmp_path)
     with client(path) as site:
         response = site.get("/comparar")
     assert response.status_code == 200
     html = response.text
     assert '<section class="portugal-comparisons"' in html
-    assert "<h2 id=\"portugal\">Portugal</h2>" in html
-    for title in TITLES:
-        assert title in html
-    assert html.count("Abrir no Caderno") == 3
-    assert "não estabelece causalidade" in visible(html)
-
-    links = caderno_links(html)
-    assert len(links) == 3
-    for link, ids in zip(links, (RATES, FINANCE, TRADE)):
-        assert "grafico=on" in link and "escala=dupla" in link
-        assert all(f"s={series_id}" in link for series_id in ids)
-        assert all(f"g={series_id}" in link for series_id in ids)
-    assert "Eixo esquerdo: % · Eixo direito: milhões de euros" in visible(html)
-    assert visible(html).count("Eixo esquerdo: % do PIB · Eixo direito: euros por habitante") == 2
+    assert '<h2 id="portugal">Portugal</h2>' in html
+    assert all(title in html for title in TITLES)
+    assert "Abrir no Caderno" not in html and "/caderno?" not in html
+    assert set(comparison_links(html)) == {
+        "/comparar/taxas-juro-credito-depositos", "/comparar/divida-saldo-pib-per-capita",
+        "/comparar/comercio-externo-pib-per-capita"}
 
 
-def test_every_curated_card_opens_a_grouped_caderno(tmp_path):
+def test_every_published_comparison_uses_cms_grouped_axes_without_public_editing(tmp_path):
     path = build_site(tmp_path)
-    expected = (
-        (RATES, 4, ["%", "milhões de euros"], [0, 0, 1, 1]),
-        (FINANCE, 3, ["% do PIB", "euros por habitante"], [0, 0, 1]),
-        (TRADE, 3, ["% do PIB", "euros por habitante"], [0, 0, 1]),
-    )
+    expected = {
+        "taxas-juro-credito-depositos": (RATES, ["%", "milhões de euros"], [0, 0, 1, 1]),
+        "divida-saldo-pib-per-capita": (FINANCE, ["% do PIB", "euros por habitante"], [0, 0, 1]),
+        "comercio-externo-pib-per-capita": (TRADE, ["% do PIB", "euros por habitante"], [0, 0, 1]),
+    }
     with client(path) as site:
-        links = caderno_links(site.get("/comparar").text)
-        assert len(links) == 3
-        for link, (ids, cards, units, axes) in zip(links, expected):
-            response = site.get(link)
-            assert response.status_code == 200, link
+        for slug, (ids, units, axes) in expected.items():
+            response = site.get(f"/comparar/{slug}")
+            assert response.status_code == 200
             data = payload(response.text)
-            assert len(data["axes"]) == 2, link
             assert [axis["unit"] for axis in data["axes"]] == units
             assert [series["axis"] for series in data["series"]] == axes
-            assert response.text.count('<article class="card">') == cards
+            assert len(data["series"]) == len(ids)
+            assert all(f'href="/series/{sid}"' in response.text for sid in ids)
+            assert 'name="escala"' not in response.text
+            assert 'name="g"' not in response.text
+            assert "/caderno?" not in response.text
             assert "Eixo esquerdo" in visible(response.text)
             assert "Eixo direito" in visible(response.text)
-            assert all(series_id in response.text for series_id in ids)
+            assert "causalidade" in response.text
 
 
 def test_index_hides_a_configuration_when_a_source_loses_redistribution(tmp_path):
     path = build_site(tmp_path)
-    with client(path) as site:
-        assert all(title in site.get("/comparar").text for title in TITLES)
-        rates_link = caderno_links(site.get("/comparar").text)[0]
-
     db = open_db(path)
     try:
         db.conn.execute("UPDATE source SET redistribution_ok = 0 WHERE name = 'bportugal'")
@@ -149,18 +141,13 @@ def test_index_hides_a_configuration_when_a_source_loses_redistribution(tmp_path
     finally:
         db.close()
     reads.clear_cache()
-
     with client(path) as site:
         html = site.get("/comparar").text
         assert TITLES[0] not in html
         assert TITLES[1] in html and TITLES[2] in html
-        assert html.count("Abrir no Caderno") == 2
-
-        response = site.get(rates_link)
-    assert response.status_code == 200
+        response = site.get("/comparar/taxas-juro-credito-depositos")
+    assert response.status_code == 404
     assert "chart-data" not in response.text
-    assert "já não pode ser mostrada" in visible(response.text)
-    assert "s=bportugal.euribor_12m.EA" in response.text
 
 
 def test_index_hides_a_configuration_when_a_scale_signature_changes(tmp_path):
@@ -175,18 +162,17 @@ def test_index_hides_a_configuration_when_a_scale_signature_changes(tmp_path):
     reads.clear_cache()
     with client(path) as site:
         html = site.get("/comparar").text
-    # The reviewed "% GDP" left group no longer matches the live raw token.
     assert TITLES[1] not in html
     assert TITLES[0] in html and TITLES[2] in html
-    assert html.count("Abrir no Caderno") == 2
 
 
-def test_portugal_links_carry_the_mount_prefix(tmp_path):
+def test_portugal_comparison_links_carry_the_mount_prefix(tmp_path):
     path = build_site(tmp_path)
     with client(path) as site:
         html = site.get("/comparar", headers={"X-Forwarded-Prefix": "/dados"}).text
-    assert 'href="/dados/caderno?' in html
-    assert html.count('href="/dados/caderno?') >= 3
+    assert 'href="/dados/comparar/taxas-juro-credito-depositos"' in html
+    assert len(comparison_links(html)) == 3
+    assert all(link.startswith("/dados/comparar/") for link in comparison_links(html))
 
 
 def test_curated_copy_distinguishes_nominal_values_and_geography():

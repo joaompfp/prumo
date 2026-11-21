@@ -76,6 +76,8 @@ def comparison_path(tmp_path_factory):
     path = tmp_path_factory.mktemp("chart-layout") / "layout.db"
     build(path)
     _add_bp(path)
+    from tests.app.cms_fixtures import publish_comparisons
+    publish_comparisons(path, ("inflacao-e-desemprego",))
     return path
 
 

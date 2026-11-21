@@ -4,57 +4,23 @@
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> Comparações
 </nav>
-
 <header class="page-head">
   <h1>Comparações</h1>
-  <p class="lede">{{ page.intro }}</p>
+  <p class="lede">Indicadores relacionados, com escalas e períodos identificados.</p>
 </header>
-
-<ul class="compare-list">
-  {% for row in page.rows %}
-  <li class="compare-item">
-    <a class="compare-link" href="{{ base }}/comparar/{{ row.slug }}">{{ row.title }}</a>
-    <p class="compare-mechanism">{{ row.mechanism }}</p>
-    <p class="meta">{{ row.span_text }} · {{ row.common_text }}</p>
-  </li>
-  {% endfor %}
-</ul>
-
-{% if portugal.rows %}
-<section class="portugal-comparisons" aria-labelledby="portugal">
-  <div class="section-head">
-    <h2 id="portugal">{{ portugal.title }}</h2>
-    <p class="section-note">{{ portugal.intro }}</p>
-  </div>
-  <ul class="compare-list portugal-list">
-    {% for row in portugal.rows %}
+{% for group in page.groups %}
+<section class="{{ group.code }}-comparisons" aria-labelledby="{{ group.code }}">
+  <div class="section-head"><h2 id="{{ group.code }}">{{ group.title }}</h2></div>
+  <ul class="compare-list">
+    {% for row in group.rows %}
     <li class="compare-item">
-      <a class="compare-link" href="{{ base }}{{ row.path }}">{{ row.title }}</a>
-      <p class="compare-mechanism">{{ row.summary }}</p>
-      <p class="meta">{{ row.groups_text }} · {{ row.frequency_text }} · {{ row.window_text }} · {{ row.series_text }}</p>
-      <p class="note">{{ row.caveat }}</p>
-      <p><a class="button-quiet" href="{{ base }}{{ row.path }}">{{ row.action }}</a></p>
+      <a class="compare-link" href="{{ base }}/comparar/{{ row.slug }}">{{ row.title }}</a>
+      <p class="meta">{{ row.series_count }} séries · {{ row.window_text }}</p>
     </li>
     {% endfor %}
   </ul>
 </section>
-{% endif %}
-
-{% if countries.rows %}
-<section class="country-comparisons" aria-labelledby="paises">
-  <div class="section-head">
-    <h2 id="paises">{{ countries.title }}</h2>
-    <p class="section-note">{{ countries.intro }}</p>
-  </div>
-  <ul class="compare-list country-list">
-    {% for row in countries.rows %}
-    <li class="compare-item">
-      <a class="country-link" href="{{ base }}/comparar/paises/{{ row.slug }}">{{ row.title }}</a>
-      <p class="compare-mechanism">{{ row.subtitle }}</p>
-      <p class="meta">{{ row.countries_text }} · {{ row.span_text }} · {{ row.common_text }}</p>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-{% endif %}
+{% else %}
+<p class="empty-state">Ainda não há comparações publicadas.</p>
+{% endfor %}
 {% endblock %}

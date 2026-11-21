@@ -384,6 +384,37 @@ def _needs_shared_preparation(doc: documents.ChartDocument) -> bool:
             or doc.transform != "original" or len(doc.series_ids) > 2)
 
 
+def chart_definition_problem(doc: documents.ChartDocument, rows: tuple[dict, ...]) -> str | None:
+    """Cheap identity/axis checks shared by the directory and full chart preparation.
+
+    The directory reads registry metadata only. Values, overlap, transformations and provenance
+    are prepared when opening the published chart, not for every link in the directory.
+    """
+    if len(rows) != len(doc.series_ids):
+        return "uma série selecionada não está disponível"
+    if doc.comparison_group == "countries":
+        from app.statistical_definitions import country_signature
+        signatures = tuple(country_signature(row) for row in rows)
+        geographies = {row["geography"] for row in rows}
+        if None in signatures or len(set(signatures)) != 1 or len(geographies) != len(rows):
+            return "entre países exige o mesmo indicador e definição em geografias distintas"
+    frequencies = {row["frequency"] for row in rows}
+    if doc.day is not None and frequencies != {"PT15M"}:
+        return "o dia UTC só é válido para séries de 15 minutos"
+    if "PT15M" in frequencies and doc.day is None:
+        return "um gráfico de intervalos exige um dia UTC"
+    if doc.transform == "original":
+        scale = "dupla" if doc.scale == "dual" else "comum"
+        signatures = tuple(notebook_chart.axis_signature(row) for row in rows)
+        if doc.axes is not None:
+            problem = notebook_chart.axis_membership_problem(signatures, tuple(doc.axes), scale)
+        else:
+            problem = notebook_chart.allocate_axes(signatures, scale).problem
+        if problem:
+            return "as unidades e os eixos selecionados são incompatíveis"
+    return None
+
+
 def _shared_chart_view(db: Db, slug: str, doc: documents.ChartDocument,
                        lang: str) -> CmsChartView | None:
     """Prepare an authored multiseries/analytical chart from the shared read service.
@@ -410,20 +441,11 @@ def _shared_chart_view(db: Db, slug: str, doc: documents.ChartDocument,
         rows[series_id] = row
         cards[series_id] = card
 
-    if doc.day is not None and any(row["frequency"] != "PT15M" for row in rows.values()):
-        raise ValueError("o dia UTC só é válido para séries de 15 minutos")
+    problem = chart_definition_problem(doc, tuple(rows.values()))
+    if problem:
+        raise ValueError(problem)
     input_frequencies = {row["frequency"] for row in rows.values()}
-    if "PT15M" in input_frequencies and doc.day is None:
-        raise ValueError("um gráfico de intervalos exige um dia UTC")
-
     scale = "dupla" if doc.scale == "dual" else "comum"
-    if doc.axes is not None and doc.transform == "original":
-        problem = notebook_chart.axis_membership_problem(
-            tuple(notebook_chart.axis_signature(rows[series_id]) for series_id in series_ids),
-            tuple(doc.axes), scale)
-        if problem:
-            log.warning("cms chart %s: explicit axes are not compatible: %s", slug, problem)
-            return None
 
     settings = notebook_chart.ChartSettings(
         mode="explicit", group=series_ids, scale=scale,

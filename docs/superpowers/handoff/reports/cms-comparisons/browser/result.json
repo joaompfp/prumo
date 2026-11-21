@@ -1,0 +1,320 @@
+{
+  "checks": [
+    {
+      "name": "public--390-200",
+      "passed": true
+    },
+    {
+      "name": "public--390-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public--390-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public--390-four-series",
+      "passed": true
+    },
+    {
+      "name": "public--390-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public--390-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public--390-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "public--768-200",
+      "passed": true
+    },
+    {
+      "name": "public--768-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public--768-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public--768-four-series",
+      "passed": true
+    },
+    {
+      "name": "public--768-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public--768-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public--768-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "public--1440-200",
+      "passed": true
+    },
+    {
+      "name": "public--1440-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public--1440-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public--1440-four-series",
+      "passed": true
+    },
+    {
+      "name": "public--1440-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public--1440-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public--1440-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "public--1920-200",
+      "passed": true
+    },
+    {
+      "name": "public--1920-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public--1920-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public--1920-four-series",
+      "passed": true
+    },
+    {
+      "name": "public--1920-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public--1920-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public--1920-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-390-200",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-390-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-390-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-390-four-series",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-390-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-390-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-390-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-768-200",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-768-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-768-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-768-four-series",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-768-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-768-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-768-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1440-200",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1440-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1440-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1440-four-series",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1440-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1440-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1440-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1920-200",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1920-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1920-no-composition-controls",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1920-four-series",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1920-all-table-cells",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1920-keyboard",
+      "passed": true
+    },
+    {
+      "name": "public-/dados-1920-capture-at-top",
+      "passed": true
+    },
+    {
+      "name": "admin-editor-200",
+      "passed": true
+    },
+    {
+      "name": "admin-six-series-slots",
+      "passed": true
+    },
+    {
+      "name": "admin-six-axis-assignments",
+      "passed": true
+    },
+    {
+      "name": "saved-draft-has-five-series",
+      "passed": true
+    },
+    {
+      "name": "draft-is-private",
+      "passed": true
+    },
+    {
+      "name": "private-preview-200",
+      "passed": true
+    },
+    {
+      "name": "private-preview-static",
+      "passed": true
+    },
+    {
+      "name": "preview-title",
+      "passed": true
+    },
+    {
+      "name": "publish-post-303",
+      "passed": true
+    },
+    {
+      "name": "published-five-series",
+      "passed": true
+    },
+    {
+      "name": "published-editorial-title",
+      "passed": true
+    },
+    {
+      "name": "public-remains-read-only",
+      "passed": true
+    },
+    {
+      "name": "admin-390-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "admin-768-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "no-application-errors",
+      "passed": true
+    },
+    {
+      "name": "no-external-requests",
+      "passed": true
+    },
+    {
+      "name": "nojs-complete-svg",
+      "passed": true
+    },
+    {
+      "name": "nojs-six-series",
+      "passed": true
+    },
+    {
+      "name": "touch-exact-period",
+      "passed": true
+    },
+    {
+      "name": "touch-exact-each-value",
+      "passed": true
+    },
+    {
+      "name": "print-restores-svg",
+      "passed": true
+    },
+    {
+      "name": "print-hides-canvas",
+      "passed": true
+    },
+    {
+      "name": "blocked-bundle-keeps-svg",
+      "passed": true
+    }
+  ]
+}

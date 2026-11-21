@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
+{% block main_class %}{% if page.analysis %} notebook-main{% endif %}{% endblock %}
 {% block content %}
 {% if preview %}
 <div class="preview-banner" role="status">
@@ -8,6 +9,9 @@
   <p><a class="button" href="{{ admin_base }}">Voltar ao editor</a></p>
 </div>
 {% endif %}
+{% if page.analysis %}
+{% include "_cms_analysis.html" %}
+{% else %}
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.title }}
 </nav>
@@ -99,5 +103,6 @@
     {% endfor %}
   </div>
 </section>
+{% endif %}
 {% endblock %}
 {% block scripts %}{% if page.chart_payload and not preview %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}

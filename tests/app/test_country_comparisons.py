@@ -18,6 +18,7 @@ from ingest.db import open_db, read_db_readonly
 from ingest.models import SeriesSpec
 from ingest.registry import sync_registry
 from presentation.catalog import pt
+from tests.app.cms_fixtures import publish_comparisons
 from tests.app.conftest import EUROSTAT, T1, T2, T3, fetch
 
 COUNTRIES = ("PT", "ES", "FR", "DE", "IT")
@@ -118,6 +119,7 @@ def _seed(path):
 def countries_path(tmp_path):
     path = tmp_path / "countries.db"
     _seed(path)
+    publish_comparisons(path, SLUGS)
     return path
 
 
@@ -154,11 +156,11 @@ def _run_of(db, series_id, period):
 
 def test_index_lists_every_country_group_in_catalogue_order(countries_client):
     html = countries_client.get("/comparar").text
-    positions = [html.index(f"/comparar/paises/{slug}") for slug in SLUGS]
-    assert positions == sorted(positions)
-    assert len(re.findall(r'class="country-link"', html)) == len(SLUGS)
-    assert "Comparações entre países" in html
-    assert "sem escolha livre" in html
+    positions = [html.index(f"/comparar/{slug}") for slug in SLUGS]
+    assert len(set(positions)) == len(SLUGS)
+    assert len(re.findall(r'class="compare-link"', html)) == len(SLUGS)
+    assert "Entre países" in html
+    assert "/caderno?" not in html
     assert "<script" not in html.lower()
     assert "prumo-charts" not in html
 
@@ -172,13 +174,13 @@ def test_index_does_not_prepare_a_chart(countries_path):
 
 def test_unknown_country_slug_is_404_on_both_prefixes(countries_client):
     for headers in ({}, {"X-Forwarded-Prefix": "/dados"}):
-        response = countries_client.get("/comparar/paises/nao-existe", headers=headers)
+        response = countries_client.get("/comparar/nao-existe", headers=headers)
         assert response.status_code == 404
 
 
 def test_each_country_page_draws_five_distinct_lines_on_one_axis(countries_client):
     for slug in SLUGS:
-        response = countries_client.get(f"/comparar/paises/{slug}")
+        response = countries_client.get(f"/comparar/{slug}")
         assert response.status_code == 200, slug
         html = response.text
         styles = re.findall(r'class="chart-line chart-line-(g\d)"', html)
@@ -189,28 +191,27 @@ def test_each_country_page_draws_five_distinct_lines_on_one_axis(countries_clien
 
 
 def test_page_uses_short_country_labels_and_full_titles_elsewhere(countries_client):
-    html = countries_client.get("/comparar/paises/eletricidade-domestica").text
+    html = countries_client.get("/comparar/eletricidade-domestica").text
     for label in ("Portugal", "Espanha", "França", "Alemanha", "Itália"):
         assert label in html
     assert "Preço da eletricidade para uso doméstico - Portugal" in html
     assert "Eurostat" in html
 
 
-def test_notebook_action_carries_all_five_series(countries_client):
-    html = countries_client.get("/comparar/paises/eletricidade-domestica").text
-    link = re.search(r'href="([^"]*/caderno\?[^"]*)"', html)
-    assert link is not None
-    target = link.group(1)
-    assert target.count("s=") == 5
+def test_published_comparison_links_each_series_without_a_composition_form(countries_client):
+    html = countries_client.get("/comparar/eletricidade-domestica").text
+    assert "/caderno?" not in html
+    assert 'name="series_a"' not in html
+    assert 'name="escala"' not in html
     for country in COUNTRIES:
-        assert f"s={ELECTRICITY}.{country}" in target
+        assert f'href="/series/{ELECTRICITY}.{country}"' in html
 
 
 def test_links_and_assets_carry_the_mount_prefix(countries_client):
     index = countries_client.get("/comparar", headers={"X-Forwarded-Prefix": "/dados"}).text
-    assert 'href="/dados/comparar/paises/eletricidade-domestica"' in index
+    assert 'href="/dados/comparar/eletricidade-domestica"' in index
     assert 'href="/dados/static/css/prumo.css"' in index
-    page = countries_client.get("/comparar/paises/eletricidade-domestica",
+    page = countries_client.get("/comparar/eletricidade-domestica",
                                 headers={"X-Forwarded-Prefix": "/dados"}).text
     assert 'href="/dados/comparar"' in page
     assert 'src="/dados/static/js/prumo-charts.min.js?v=' in page
@@ -225,7 +226,7 @@ def test_summary_and_table_pin_the_exact_tokens(countries_path, countries_client
     assert tuple(side.latest_display for side in page.countries) == (
         format_value("0.2900"), format_value("0.2400"), format_value("0.2700"),
         format_value("0.4400"), format_value("0.3400"))
-    html = countries_client.get("/comparar/paises/eletricidade-domestica").text
+    html = countries_client.get("/comparar/eletricidade-domestica").text
     for token in ("0,2900", "0,2400", "0,2700", "0,4400", "0,3400"):
         assert token in html
     # The exact four-decimal token survives; the axis may round, the summary and table do not.
@@ -237,7 +238,7 @@ def test_provisional_flag_reaches_summary_and_table(countries_path, countries_cl
     de = page.countries[3]
     assert de.status_flag == "provisional" and de.status_text == "provisório"
     assert de.latest_display == format_value("42000")
-    html = countries_client.get("/comparar/paises/pib-por-habitante").text
+    html = countries_client.get("/comparar/pib-por-habitante").text
     assert html.count("provisório") >= 2
 
 
@@ -247,8 +248,8 @@ def test_table_renders_every_plotted_period(countries_path, countries_client):
         assert page.chart is not None, slug
         assert len(page.table_rows) == len(page.chart.points), slug
         assert len(page.table_rows) == len(GROUPS[slug]["periods"]), slug
-        html = countries_client.get(f"/comparar/paises/{slug}").text
-        assert html.count('class="data-table country-table"') == 1, slug
+        html = countries_client.get(f"/comparar/{slug}").text
+        assert html.count('class="data-table"') == 1, slug
         # Newest first, as on the pair detail page, and every chart period is present.
         assert page.table_rows[0].period_text == page.chart.points[-1].period_text
 
@@ -325,19 +326,19 @@ def test_a_country_with_a_gap_keeps_the_gap_in_the_line(countries_path):
 def test_withheld_source_hides_every_group(countries_path, countries_client):
     _mutate(countries_path, "UPDATE source SET redistribution_ok = 0 WHERE name = 'eurostat'")
     for slug in SLUGS:
-        assert countries_client.get(f"/comparar/paises/{slug}").status_code == 404, slug
+        assert countries_client.get(f"/comparar/{slug}").status_code == 404, slug
     index = countries_client.get("/comparar").text
-    assert "/comparar/paises/" not in index
+    assert "/comparar/" not in index
 
 
 def test_inactive_country_hides_only_its_group(countries_path, countries_client):
     _mutate(countries_path, "UPDATE series SET active = 0 WHERE id = ?",
             (f"{ELECTRICITY}.IT",))
-    assert countries_client.get("/comparar/paises/eletricidade-domestica").status_code == 404
-    assert countries_client.get("/comparar/paises/pib-por-habitante").status_code == 200
+    assert countries_client.get("/comparar/eletricidade-domestica").status_code == 404
+    assert countries_client.get("/comparar/pib-por-habitante").status_code == 200
     index = countries_client.get("/comparar").text
-    assert "/comparar/paises/eletricidade-domestica" not in index
-    assert "/comparar/paises/pib-por-habitante" in index
+    assert "/comparar/eletricidade-domestica" not in index
+    assert "/comparar/pib-por-habitante" in index
 
 
 def test_withdrawn_run_hides_the_group(countries_path, countries_client):
@@ -347,7 +348,7 @@ def test_withdrawn_run_hides_the_group(countries_path, countries_client):
         db.withdraw_run(run, "teste de retirada", T3)
     finally:
         db.close()
-    assert countries_client.get("/comparar/paises/eletricidade-domestica").status_code == 404
+    assert countries_client.get("/comparar/eletricidade-domestica").status_code == 404
 
 
 def test_legacy_values_never_stand_in_for_a_fetched_side(countries_path, countries_client):
@@ -356,35 +357,35 @@ def test_legacy_values_never_stand_in_for_a_fetched_side(countries_path, countri
             (f"{ELECTRICITY}.ES",))
     _mutate(countries_path,
             "UPDATE setting SET value = '1' WHERE key = 'legacy_served'")
-    assert countries_client.get("/comparar/paises/eletricidade-domestica").status_code == 404
+    assert countries_client.get("/comparar/eletricidade-domestica").status_code == 404
 
 
 def test_cross_check_side_hides_the_group(countries_path, countries_client):
     _mutate(countries_path, "UPDATE series SET role = 'cross_check' WHERE id = ?",
             (f"{ELECTRICITY}.FR",))
-    assert countries_client.get("/comparar/paises/eletricidade-domestica").status_code == 404
+    assert countries_client.get("/comparar/eletricidade-domestica").status_code == 404
 
 
 def test_a_different_native_dimension_hides_the_whole_group(countries_path, countries_client):
     _mutate(countries_path,
             "UPDATE series SET native_code = replace(native_code, "
             "'KWH2500-4999', 'KWH5000-14999') WHERE id = ?", (f"{ELECTRICITY}.FR",))
-    assert countries_client.get("/comparar/paises/eletricidade-domestica").status_code == 404
+    assert countries_client.get("/comparar/eletricidade-domestica").status_code == 404
     index = countries_client.get("/comparar").text
-    assert "/comparar/paises/eletricidade-domestica" not in index
+    assert "/comparar/eletricidade-domestica" not in index
 
 
 def test_a_different_stored_unit_hides_the_whole_group(countries_path, countries_client):
     _mutate(countries_path, "UPDATE series SET unit = 'EUR/MWh' WHERE id = ?",
             (f"{ELECTRICITY}.DE",))
-    assert countries_client.get("/comparar/paises/eletricidade-domestica").status_code == 404
+    assert countries_client.get("/comparar/eletricidade-domestica").status_code == 404
 
 
 def test_a_different_family_hides_the_whole_group(countries_path, countries_client):
     _mutate(countries_path,
             "UPDATE series SET indicator_key = 'eurostat_gdp_per_capita_eur.FR.A' "
             "WHERE id = ?", (f"{ELECTRICITY}.FR",))
-    assert countries_client.get("/comparar/paises/eletricidade-domestica").status_code == 404
+    assert countries_client.get("/comparar/eletricidade-domestica").status_code == 404
 
 
 # --- provenance is for the period drawn ---------------------------------------------------------
@@ -408,31 +409,33 @@ def test_provenance_uses_the_last_common_period_not_the_newest(countries_path):
     assert page.countries[0].provenance.run_id == run_2025
     assert run_2026 != run_2025
     with TestClient(create_app(str(countries_path))) as client:
-        html = client.get("/comparar/paises/pib-por-habitante").text
+        html = client.get("/comparar/pib-por-habitante").text
     assert f"#{run_2025}" in html
     assert f"#{run_2026}" not in html
 
 
 # --- catalogue faults, headers, no writes -------------------------------------------------------
 
-def test_missing_catalogue_key_is_logged_503_on_both_prefixes(countries_client, monkeypatch,
-                                                              caplog):
+def test_old_curation_text_cannot_change_a_published_cms_comparison(countries_client, monkeypatch,
+                                                                  caplog):
     broken = dict(pt.COUNTRY_COMPARISONS["pib-por-habitante"])
     del broken["subtitle"]
     monkeypatch.setitem(pt.COUNTRY_COMPARISONS, "pib-por-habitante", broken)
-    cases = (("/comparar/paises/pib-por-habitante", {}),
-             ("/comparar/paises/pib-por-habitante", {"X-Forwarded-Prefix": "/dados"}),
+    cases = (("/comparar/pib-por-habitante", {}),
+             ("/comparar/pib-por-habitante", {"X-Forwarded-Prefix": "/dados"}),
              ("/comparar", {}))
     for path, headers in cases:
         response = countries_client.get(path, headers=headers)
-        assert response.status_code == 503, path
-    assert "MissingText" in caplog.text
+        assert response.status_code == 200, path
+    assert "MissingText" not in caplog.text
 
 
-def test_malformed_country_list_is_503(countries_client, monkeypatch):
+def test_old_country_list_cannot_change_cms_series_membership(countries_client, monkeypatch):
     monkeypatch.setattr(pt, "COUNTRY_COMPARISONS_COUNTRIES", ("PT", "PT", "FR", "DE", "IT"))
-    assert countries_client.get("/comparar/paises/pib-por-habitante").status_code == 503
-    assert countries_client.get("/comparar").status_code == 503
+    response = countries_client.get("/comparar/pib-por-habitante")
+    assert response.status_code == 200
+    assert 'href="/series/eurostat.gdp_per_capita_eur.ES"' in response.text
+    assert countries_client.get("/comparar").status_code == 200
 
 
 def test_index_is_script_free_and_pages_get_the_chart_policy(countries_client):
@@ -440,7 +443,7 @@ def test_index_is_script_free_and_pages_get_the_chart_policy(countries_client):
     assert "default-src 'none'" in index.headers["content-security-policy"]
     assert "script-src" not in index.headers["content-security-policy"]
     assert "<script" not in index.text.lower()
-    page = countries_client.get("/comparar/paises/eletricidade-domestica")
+    page = countries_client.get("/comparar/eletricidade-domestica")
     assert page.status_code == 200
     assert "script-src 'self'" in page.headers["content-security-policy"]
     assert "script-src-attr 'none'" in page.headers["content-security-policy"]
@@ -449,7 +452,7 @@ def test_index_is_script_free_and_pages_get_the_chart_policy(countries_client):
     assert '<script type="application/json"' in tags[0]
     assert '<script src="/static/js/prumo-charts.min.js?v=' in tags[1]
     assert " defer>" in tags[1]
-    unknown = countries_client.get("/comparar/paises/nao-existe")
+    unknown = countries_client.get("/comparar/nao-existe")
     assert "script-src" not in unknown.headers["content-security-policy"]
 
 
@@ -458,7 +461,7 @@ def test_a_failed_chart_payload_keeps_the_server_svg(countries_path, countries_c
     def decline(model, *, badge="", lang="pt"):
         return None
     monkeypatch.setattr("app.reads.interactive.build_payload", decline)
-    response = countries_client.get("/comparar/paises/eletricidade-domestica")
+    response = countries_client.get("/comparar/eletricidade-domestica")
     assert response.status_code == 200
     assert "<svg" in response.text and "chart-line-g0" in response.text
     assert "prumo-charts" not in response.text
@@ -467,8 +470,8 @@ def test_a_failed_chart_payload_keeps_the_server_svg(countries_path, countries_c
 
 def test_reads_do_not_write_the_database(countries_path, countries_client):
     before = hashlib.sha256(countries_path.read_bytes()).hexdigest()
-    for path in ("/comparar", "/comparar/paises/eletricidade-domestica",
-                 "/comparar/paises/nao-existe"):
+    for path in ("/comparar", "/comparar/eletricidade-domestica",
+                 "/comparar/nao-existe"):
         countries_client.get(path)
     after = hashlib.sha256(countries_path.read_bytes()).hexdigest()
     assert after == before
