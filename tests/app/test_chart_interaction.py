@@ -175,6 +175,19 @@ READ = """() => ({
   controlsW: document.querySelector('.chart-controls').getBoundingClientRect().width
 })"""
 
+READOUT = """() => ({
+  text: document.querySelector('.chart-readout').textContent,
+  period: (document.querySelector('.chart-readout-period') || {}).textContent || '',
+  live: document.querySelector('.chart-live').textContent,
+  rows: [...document.querySelectorAll('.chart-readout-row')].map((row) => ({
+    axis: row.getAttribute('data-axis'),
+    missing: row.getAttribute('data-missing'),
+    title: (row.querySelector('.chart-readout-title') || {}).textContent || '',
+    native: (row.querySelector('.chart-readout-native') || {}).textContent || '',
+    value: (row.querySelector('.chart-readout-value') || {}).textContent || ''
+  }))
+})"""
+
 TOOLTIP = """() => {
   const tip = document.querySelector('.chart-tooltip');
   if (!tip || getComputedStyle(tip).display === 'none') return null;
@@ -286,6 +299,69 @@ def test_pointer_reads_the_period_painted_under_it(browser, site_url, width):
         context.close()
 
 
+@pytest.mark.parametrize("width", [320, 390])
+def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcement(browser, site_url,
+                                                                                  width):
+    context, page, errors = _open(browser, site_url + PAIR, width)
+    try:
+        payload = _payload(page)
+        ink = page.evaluate(SCAN)
+        box = ink["box"]
+        _move(page, box, (ink["min"] + ink["max"]) / 2)
+        index = page.evaluate(READ)["value"]
+        state = page.evaluate(READOUT)
+        assert state["period"] == payload["periods"][index]
+        assert len(state["rows"]) == len(payload["series"]) == 2
+        # Existing consumers still get the reviewed one-line sentence from textContent.
+        assert state["text"] == readout_text(payload, index)
+        for side, row in enumerate(state["rows"]):
+            assert row["title"] == payload["series"][side]["title"]
+            assert row["value"] == payload["display"][index][side]
+            assert row["axis"] == str(payload["series"][side].get("axis", side))
+            assert row["missing"] is None
+        # Pointer movement updates the visible rows but never floods the polite live region.
+        assert state["live"] == ""
+        assert page.evaluate(TOOLTIP)["rows"] == tooltip_rows(payload, index)
+
+        # Keyboard stepping is the announced path: the full exact sentence, politely.
+        page.locator(".chart-range").focus()
+        page.keyboard.press("Home")
+        page.wait_for_timeout(80)
+        state = page.evaluate(READOUT)
+        assert state["period"] == payload["periods"][0]
+        assert state["text"] == readout_text(payload, 0)
+        assert state["live"] == readout_text(payload, 0)
+        assert state["rows"][0]["value"] == payload["display"][0][0]
+        assert state["rows"][1]["value"] == payload["display"][0][1]
+
+        # The parent links chart-inspector.css. Applying it here proves the native range grows
+        # without the reading type shrinking and the rows stay inside the page.
+        page.add_style_tag(url=site_url + "/static/css/chart-inspector.css")
+        page.wait_for_timeout(80)
+        metrics = page.evaluate("""() => {
+          const range = document.querySelector('.chart-range');
+          const readout = document.querySelector('.chart-readout');
+          const row = document.querySelector('.chart-readout-row');
+          const sep = document.querySelector('.chart-readout-sep');
+          return {
+            rangeH: range.getBoundingClientRect().height,
+            font: parseFloat(getComputedStyle(readout).fontSize),
+            rowDisplay: getComputedStyle(row).display,
+            sepDisplay: getComputedStyle(sep).display,
+            scrollW: document.documentElement.scrollWidth,
+            innerW: window.innerWidth
+          };
+        }""")
+        assert metrics["rangeH"] >= 47.5, metrics
+        assert metrics["font"] >= 25.2, metrics
+        assert metrics["rowDisplay"] == "flex", metrics
+        assert metrics["sepDisplay"] == "none", metrics
+        assert metrics["scrollW"] <= metrics["innerW"] + 1, metrics
+        assert not errors
+    finally:
+        context.close()
+
+
 def test_touch_taps_select_the_visible_end_points(browser, site_url):
     context, page, errors = _open(browser, site_url + PAIR, 390, touch=True)
     try:
@@ -375,6 +451,39 @@ def test_mobile_keyboard_end_replaces_the_previous_calendar_tooltip(browser, sit
         assert page.evaluate(
             "() => document.querySelector('.chart-range').getAttribute('aria-valuetext')"
         ) == payload["periods"][last]
+        assert page.evaluate(
+            "() => document.documentElement.scrollWidth <= window.innerWidth + 1")
+        assert not errors
+    finally:
+        context.close()
+
+
+def test_structured_calendar_readout_keeps_long_missing_text_inside_the_page(browser, site_url):
+    context, page, errors = _open(browser, site_url + CALENDAR, 320)
+    try:
+        page.add_style_tag(url=site_url + "/static/css/chart-inspector.css")
+        page.wait_for_timeout(80)
+        page.locator(".chart-range").focus()
+        page.keyboard.press("End")
+        page.wait_for_timeout(120)
+        payload = _payload(page)
+        last = len(payload["periods"]) - 1
+        state = page.evaluate(READOUT)
+        assert state["text"] == calendar_readout(payload, last)
+        assert len(state["rows"]) == len(payload["series"]) == 2
+        assert state["rows"][1]["missing"] == "true"
+        assert state["rows"][1]["value"] == payload["missing"]
+        assert state["live"] == calendar_readout(payload, last)
+        metrics = page.evaluate("""() => {
+          const out = document.querySelector('.chart-readout').getBoundingClientRect();
+          const box = document.querySelector('.chart-readout-row:last-child .chart-readout-value')
+            .getBoundingClientRect();
+          return {scrollW: document.documentElement.scrollWidth,
+                  innerW: window.innerWidth,
+                  inside: box.left >= out.left - 0.5 && box.right <= out.right + 0.5};
+        }""")
+        assert metrics["scrollW"] <= metrics["innerW"] + 1, metrics
+        assert metrics["inside"], metrics
         assert not errors
     finally:
         context.close()
@@ -390,6 +499,12 @@ def test_single_point_keeps_its_readout_and_hides_the_stepping_hint(browser, sit
         assert page.evaluate("() => document.querySelector('.chart-hint').hidden") is True
         assert state["readout"] == readout_text(payload, 0)
         assert state["readout"] == "outubro de 2026: 0,3 p.p."
+        structured = page.evaluate(READOUT)
+        assert structured["period"] == "outubro de 2026"
+        assert len(structured["rows"]) == 1
+        assert structured["rows"][0]["title"] == ""
+        assert structured["rows"][0]["value"] == "0,3 p.p."
+        assert structured["live"] == ""
         assert not errors
     finally:
         context.close()

@@ -1,0 +1,78 @@
+/* Prumo chart inspector: structured exact point rows and the native range touch target.
+ *
+ * Loaded after prumo.css by the page shell. This file owns only the inspection controls, so
+ * charts that keep the server SVG do not depend on it and no other page rule is redefined. */
+
+.chart-shell .chart-controls {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Keep the native control's full hit area usable on touch without changing any reading type.
+   The thumb and track paint inside this box; the slider still steps one exact period. */
+.chart-shell .chart-range {
+  min-height: 48px;
+}
+
+.chart-shell .chart-readout {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+  font-size: .9rem;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-readout-period {
+  font-weight: 700;
+}
+
+.chart-readout-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 .5em;
+  min-width: 0;
+}
+
+.chart-readout-title,
+.chart-readout-native {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.chart-readout-native {
+  color: var(--muted);
+}
+
+/* The union period is already the row above; only a different native period needs its own
+   visible label. The hidden copy stays in the DOM for exact text compatibility. */
+.chart-readout-native-same {
+  display: none;
+}
+
+.chart-readout-value {
+  min-width: 0;
+  margin-left: auto;
+  text-align: right;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Compatibility separators: textContent keeps the reviewed one-line sentence, while the
+   visible inspector is the period plus one row per series. Hidden from painting and the
+   accessibility tree; the polite live region carries the full sentence on keyboard changes. */
+.chart-readout-sep {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .chart-shell .chart-range,
+  .chart-shell .chart-readout {
+    flex: 1 1 100%;
+  }
+}

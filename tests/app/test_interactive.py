@@ -207,6 +207,10 @@ def test_controls_and_live_region_are_rendered_without_javascript(client):
         r'<input class="chart-range"[^>]*>', html).group(0)
     assert 'aria-valuetext="outubro de 2026"' in html
     assert 'class="chart-readout"' in html
+    match = re.search(r'<output class="chart-readout"[^>]*>', html)
+    assert match
+    readout = match.group(0)
+    assert 'for="chart-range-' in readout and 'aria-live="off"' in readout
     assert 'class="sr-only chart-live" aria-live="polite"' in html
     assert "Período no gráfico" in html
     assert "Use as setas, Início e Fim" in html

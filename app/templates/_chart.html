@@ -9,7 +9,7 @@
   <div class="chart-controls">
     <label class="sr-only" for="chart-range-{{ chart_id }}">{{ page.chart_range_label }}</label>
     <input class="chart-range" id="chart-range-{{ chart_id }}" type="range" min="0" max="{{ page.chart_payload.x|length - 1 }}" step="1" value="{{ page.chart_payload.x|length - 1 }}" aria-valuetext="{{ page.chart_payload.periods[-1] }}" hidden>
-    <output class="chart-readout" for="chart-range-{{ chart_id }}"></output>
+    <output class="chart-readout" for="chart-range-{{ chart_id }}" aria-live="off"></output>
     <span class="sr-only chart-live" aria-live="polite"></span>
   </div>
   <p class="chart-hint" hidden>{{ page.chart_hint }}</p>

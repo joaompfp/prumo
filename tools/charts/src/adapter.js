@@ -499,6 +499,54 @@ function pointText(payload, point) {
   return view.period + ' - ' + view.rows.map((row) => rowText(payload, row)).join('; ');
 }
 
+function appendSpan(parent, className, text) {
+  const node = document.createElement('span');
+  node.className = className;
+  node.textContent = text;
+  parent.appendChild(node);
+  return node;
+}
+
+/* Structured visible readout: the period on its own line, then one row per series.
+ *
+ * The hidden separator spans keep `output.textContent` byte-identical to the reviewed
+ * one-line sentence existing consumers already inspect. They are display:none in
+ * chart-inspector.css, so the visible structure is rows while exact strings and the live
+ * announcement stay unchanged. Values are inserted with textContent, never markup. */
+function renderReadout(readout, payload, point) {
+  const view = pointView(payload, point);
+  while (readout.firstChild) readout.removeChild(readout.firstChild);
+  appendSpan(readout, 'chart-readout-period', view.period);
+  const multi = payload.version === 2 || view.rows.length > 1;
+  appendSpan(readout, 'chart-readout-sep', multi ? ' - ' : ': ');
+  for (let index = 0; index < view.rows.length; index += 1) {
+    const row = view.rows[index];
+    if (index) appendSpan(readout, 'chart-readout-sep', '; ');
+    const line = document.createElement('span');
+    line.className = 'chart-readout-row';
+    line.setAttribute('data-axis', String(row.axis));
+    if (row.missing) line.setAttribute('data-missing', 'true');
+    if (multi) {
+      appendSpan(line, 'chart-readout-title', row.title);
+      if (row.missing) {
+        appendSpan(line, 'chart-readout-sep', ' - ');
+        appendSpan(line, 'chart-readout-value', payload.missing);
+      } else {
+        if (row.period !== null) {
+          appendSpan(line, 'chart-readout-sep', ' - ');
+          const native = appendSpan(line, 'chart-readout-native', row.period);
+          if (row.period === view.period) native.classList.add('chart-readout-native-same');
+        }
+        appendSpan(line, 'chart-readout-sep', ': ');
+        appendSpan(line, 'chart-readout-value', row.value);
+      }
+    } else {
+      appendSpan(line, 'chart-readout-value', row.value);
+    }
+    readout.appendChild(line);
+  }
+}
+
 function enhance(root) {
   const data = root.querySelector('script.chart-data');
   const stage = root.querySelector('.chart-canvas');
@@ -573,9 +621,9 @@ function enhance(root) {
     activePoint = point;
     range.value = String(point);
     range.setAttribute('aria-valuetext', payload.periods[point]);
-    readout.textContent = pointText(payload, point);
+    renderReadout(readout, payload, point);
     if (announce) {
-      live.textContent = readout.textContent;
+      live.textContent = pointText(payload, point);
       showTip(point);
     }
   }

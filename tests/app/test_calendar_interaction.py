@@ -219,6 +219,33 @@ def _readout(page):
         " live: document.querySelector('.chart-live').textContent})")
 
 
+def _structured(page):
+    return page.evaluate("""() => ({
+      period: (document.querySelector('.chart-readout-period') || {}).textContent || '',
+      rows: [...document.querySelectorAll('.chart-readout-row')].map((row) => ({
+        missing: row.getAttribute('data-missing'),
+        title: (row.querySelector('.chart-readout-title') || {}).textContent || '',
+        native: (row.querySelector('.chart-readout-native') || {}).textContent || '',
+        value: (row.querySelector('.chart-readout-value') || {}).textContent || ''
+      }))
+    })""")
+
+
+def _expect_rows(structured, payload, index):
+    assert structured["period"] == payload["periods"][index]
+    assert len(structured["rows"]) == len(payload["series"])
+    for side, row in enumerate(structured["rows"]):
+        native = payload["cell_periods"][index][side]
+        assert row["title"] == payload["series"][side]["title"]
+        assert row["native"] == ("" if native is None else native)
+        if native is None:
+            assert row["missing"] == "true"
+            assert row["value"] == payload["missing"]
+        else:
+            assert row["missing"] is None
+            assert row["value"] == payload["display"][index][side]
+
+
 def _find_value(page, box, target):
     for x in range(2, int(box["width"]) - 1, 4):
         _move(page, box, x)
@@ -341,6 +368,8 @@ def test_v2_pointer_tooltip_readout_and_native_gaps_are_exact(browser, synthetic
         rows = _tooltip_rows(page)
         assert rows == EXPECTED_ROWS[2]
         assert state["readout"] == rows[0] + " - " + "; ".join(rows[1:])
+        assert state["live"] == ""
+        _expect_rows(_structured(page), payload, 2)
         assert "null" not in state["readout"] and "undefined" not in state["readout"]
 
         # The annual value is absent at the intervening month, not carried forward.
@@ -391,6 +420,7 @@ def test_v2_touch_and_keyboard_open_the_union_tooltip_when_most_sides_are_null(b
         assert state["value"] == 2
         assert state["readout"] == expected_readout(EXPECTED_ROWS[2])
         assert state["live"] == state["readout"]
+        _expect_rows(_structured(page), payload, 2)
         assert _tooltip_rows(page) == EXPECTED_ROWS[2]
         assert not errors
     finally:

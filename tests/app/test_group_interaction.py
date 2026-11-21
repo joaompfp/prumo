@@ -293,6 +293,18 @@ def test_grouped_payload_carries_explicit_axes_and_names_every_side(grouped_site
             for index in range(3)]
         expect(page.locator(".chart-readout")).to_have_text(
             last_rows[0] + " - " + "; ".join(last_rows[1:]), timeout=3000)
+        structured = page.evaluate("""() => ({
+          period: document.querySelector('.chart-readout-period').textContent,
+          rows: [...document.querySelectorAll('.chart-readout-row')].map((row) => ({
+            axis: row.getAttribute('data-axis'),
+            title: row.querySelector('.chart-readout-title').textContent,
+            value: row.querySelector('.chart-readout-value').textContent
+          }))
+        })""")
+        assert structured["period"] == payload["periods"][-1]
+        assert [row["axis"] for row in structured["rows"]] == [str(axis) for axis in AXES]
+        assert [row["title"] for row in structured["rows"]] == list(LABELS)
+        assert [row["value"] for row in structured["rows"]] == payload["display"][-1]
 
         # The tooltip lists every series of the union row with its exact prepared value.
         box = page.locator(".chart-canvas").bounding_box()
