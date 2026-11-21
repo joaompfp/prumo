@@ -11,17 +11,9 @@
   <p class="meta">Calculada a partir de <a href="{{ base }}/series/{{ page.base_id }}">{{ page.base_title }}</a> · unidade: {{ page.unit_text }}</p>
 </header>
 
-<section class="figure-block" aria-label="Valor mais recente">
-  <p class="figure-value">{{ page.latest.value_display }} <span class="figure-unit">{{ page.unit_text }}</span></p>
-  <p class="figure-period">{{ page.latest.period_text }}</p>
-  <p class="figure-source">Valor calculado, não publicado pelo editor.</p>
-</section>
+{% include "_derived_latest.html" %}
 
-<section class="formula" aria-labelledby="formula">
-  <h2 id="formula">Como é calculado</h2>
-  <p>{{ page.formula_text }}</p>
-  <p class="note">O cálculo usa exatamente os valores publicados que aparecem abaixo. Qualquer pessoa pode refazê-lo.</p>
-</section>
+{% include "_derived_formula.html" %}
 
 <section class="chart-section" aria-labelledby="grafico">
   <div class="section-head"><h2 id="grafico">Série calculada</h2></div>

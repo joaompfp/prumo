@@ -1,0 +1,14 @@
+<section class="figure-block" aria-label="Valor mais recente">
+  <div class="figure-main">
+    <p class="figure-value">{{ page.series.latest.value_display }} <span class="figure-unit">{{ page.series.unit_text }}</span></p>
+    <p class="figure-period"><span class="mini-label">Período</span>{{ page.series.latest.period_text }}{% if page.series.latest.status_text %} · <span class="flag">{{ page.series.latest.status_text }}</span>{% endif %}</p>
+    <p class="figure-source"><span class="mini-label">Recolhido</span>{{ page.series.latest.fetched_text }}</p>
+  </div>
+  <dl class="figure-meta">
+    <dt>Fonte</dt><dd>{{ page.series.source_title }}</dd>
+    {% if page.provenance and page.provenance.verification_created_text %}
+    <dt>Verificação</dt><dd>{{ page.provenance.verification_created_text }}{% if page.provenance.sample_size_text %}, amostra de {{ page.provenance.sample_size_text }} valores do conjunto{% endif %}{% if page.provenance.verification_passed %}, 100% coincidentes{% endif %}</dd>
+    {% endif %}
+    <dt>Licença</dt><dd>{{ page.series.licence }}</dd>
+  </dl>
+</section>
