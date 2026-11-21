@@ -9,7 +9,8 @@ rereview-2-verification-status.md) and re-review 1 M-4.
   construction); empty evidence fails.
 - M3: World Bank exponent rewrite is bounded.
 - M5: a pinned-bundle verification never confirms currency; status shows the channel.
-- M6: the read-only report retries once with plain mode=ro after an immutable read error.
+- M6: an immutable read error is retried only when a writer left evidence (a -wal file or
+  a changed main-file stamp); without it the original error propagates.
 - RR1 M-4: a pending-verification run older than 24 h is counted and shows its remedy.
 """
 import json
@@ -277,19 +278,19 @@ def test_stuck_pending_verification_is_counted_with_its_remedy(db):
 
 # --- M6 ------------------------------------------------------------------------------------
 
-def test_read_only_report_retries_once_with_plain_mode_ro(tmp_path):
+def test_read_only_report_does_not_retry_an_immutable_error_without_writer_evidence(
+        tmp_path):
     path = tmp_path / "p.db"
     open_db(path).close()
     seen = []
 
     def read(db):
         seen.append(db.immutable)
-        if len(seen) == 1:
-            raise sqlite3.DatabaseError("database disk image is malformed")
-        return "ok"
+        raise sqlite3.DatabaseError("database disk image is malformed")
 
-    assert read_db_readonly(path, read) == "ok"
-    assert seen == [True, False]
+    with pytest.raises(sqlite3.DatabaseError, match="malformed"):
+        read_db_readonly(path, read)
+    assert seen == [True]
 
 
 def test_read_only_report_does_not_retry_a_plain_open(tmp_path):
