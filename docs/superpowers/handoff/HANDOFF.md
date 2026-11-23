@@ -1,5 +1,9 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## Worker safety release authorized (2026-11-23)
+
+The owner explicitly requested installing the pending incident correction and restarting ingestion. The accepted safety changes through `68609ef` are being integrated with installed main `4719f55` in `/home/joao/projects/prumo-worker-release`, branch `fix/worker-readonly-release`, without dropping phase B. All three consumers of the shared persistence module must be replaced; no migration, CMS publication, source-policy or edge/authentication change is authorized by this repair. Release tests, exact-main CI and live acceptance are pending. The historical SIGBUS trigger and the real 24-hour post-installation observation remain open.
+
 ## Current installed checkpoint: phase B shared analytical reading (2026-11-21)
 
 Owner authorized merge and installation. Main/runtime release `53464477bbb34d511cafda9f2fdd48fb7462f908` was pushed, read back and installed on f0nix at 21:36 UTC. Structured exact point rows and chart-first primary/calculated/CMS detail pages are live on both addresses. The backoffice still owns editorial series/axes/time settings and the public comparisons display only the published CMS revision. No live content edit or trial publication ran.
@@ -17,6 +21,14 @@ The owner asked to continue after the real CMS comparisons were installed. Runti
 Independent specification and quality reviews passed. The spec reviewer initially treated two dead legacy templates as live renderers; actual route inspection resolved that claim without reviving code-curated pages. The final mobile-control delta was independently approved. Final real-copy acceptance passed 1,219 assertions across 128 populated route/viewport/mount cases, plus the actual CMS workflow and static Admin preview; 20 protected tables, schema and authored home fingerprints are identical. The frozen runtime/test tree passed 3,222 tests locally, with four warnings; a fresh committed checkout at `8ab93d8` passed 97 focused tests with local imports verified and ruff clean. Exact scopes and curated neutral captures are in `reports/analytical-reading/README.md`. The durable feature worktree is `/home/joao/projects/prumo-analytical-reading`. Human screen-reader acceptance remains open.
 
 At the candidate checkpoint this was not installed; the subsequent installed phase B checkpoint is recorded above. No live CMS publication, migration, source-data write, container operation or edge/authentication change ran. The separate working branch `pipeline-rebuild` already contained unpushed worker-incident corrections through `68609ef`; this feature deliberately branches from installed main instead of implicitly including that operational work. Do not merge/release the whole operational branch as a reader-only UI update. A later authorized release of this feature affects public web and the static-preview Admin consumer only.
+
+## Worker incident: candidate safety correction (2026-11-21)
+
+The owner requested investigation and applicable repair of the worker's autonomous restarts. Three SIGBUS exits (135, not OOM) are confirmed in the daemon at 20/11 21:39 and 21/11 14:49/15:04 UTC; current container still has count three. A mapped-shm truncation mechanism is reproducible only with deliberately simulated lock loss; the historical trigger is NOT proven. The existing writer lock is valid now. Apport failed to capture a core and Python fatal diagnostics were disabled.
+
+Accepted implementation `fe13837` makes the shared readonly opener unconditionally use `readonly_shm=1`, resolves canonical sidecar paths, refuses reader-side recovery and revalidates bounded immutable retries only with actual writer evidence. Regression tests reproduce the original shm writes, missing-sidecar creation and symlink stale-read defect. Worker environment adds `PYTHONFAULTHANDLER=1`. Specification and quality reviews passed. Controller reran 69 focused tests; whole-suite/committed-checkout/release gates are still in progress. No migration, source parser, CMS publication or edge/authentication change belongs to this task.
+
+Preflight receipts and a verified online recovery copy exist at `f0nix:/home/joao/prumo-operations/worker-sigbus-20261121`; integrity ok, zero foreign-key violations and no running source runs. All three services package the corrected persistence module and need a coordinated code-only replacement once release gates pass. Do not close historical cause or the real 24-hour observation merely because a newly created container starts at restart count zero. Investigation, reviews and recovery contract: `reports/worker-sigbus/README.md`.
 
 ## Previous installed checkpoint: CMS-owned real comparisons (2026-11-21)
 
