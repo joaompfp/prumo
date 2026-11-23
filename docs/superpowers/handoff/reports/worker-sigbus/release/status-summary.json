@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-11-23T08:32:59.171893+00:00",
+  "schema": "prumo-status",
+  "version": 4,
+  "totals": {
+    "active_series": 1344,
+    "never_fetched": 0,
+    "never_verified": 0,
+    "pending_stuck": 0,
+    "stale": 0
+  },
+  "source_count": 9,
+  "next_eligible_at": "2026-11-23T10:14:15.037737+00:00"
+}

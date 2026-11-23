@@ -1,0 +1,516 @@
+{
+  "at": "2026-11-23T08:48:05.801003+00:00",
+  "containers": {
+    "prumo-ingest": {
+      "id": "fd1f7b572bd8f355de68f3ea21e19eed2d3f81cb45b168c111cb1bb2c343d5e0",
+      "image": "sha256:8679a19d535a450343c5bd130104c58a466dddb095957cf610e48684cfd28af9",
+      "started": "2026-11-23T08:32:43.627785908Z",
+      "restarts": 0,
+      "running": true,
+      "oom": false,
+      "pid": 537891,
+      "health": null,
+      "faulthandler": "1",
+      "mounts": [
+        {
+          "source": "/home/joao/docker/stacks/web/appdata/prumo",
+          "target": "/data",
+          "rw": true
+        }
+      ]
+    },
+    "prumo": {
+      "id": "9a57ad8e8b0a95e7599c10f50ad066973549d3323d904f43d484238f0a688c26",
+      "image": "sha256:f5c6c99161ad4e81e86e85a8b8ab78a6a73e1237fa53e6973e1307aebb2a43fb",
+      "started": "2026-11-23T08:32:44.879464233Z",
+      "restarts": 0,
+      "running": true,
+      "oom": false,
+      "pid": 538062,
+      "health": "healthy",
+      "faulthandler": null,
+      "mounts": [
+        {
+          "source": "/home/joao/docker/stacks/web/appdata/prumo",
+          "target": "/data",
+          "rw": true
+        }
+      ]
+    },
+    "prumo-backoffice": {
+      "id": "9dd2b77c24edc876ca9e081dc73a28b8c45239b2cf134d032695aa5b99295fe9",
+      "image": "sha256:b303b4ac29782e202b9803a01336db74c94b091e571e8bd934a2de86bb589421",
+      "started": "2026-11-23T08:32:46.125265314Z",
+      "restarts": 0,
+      "running": true,
+      "oom": false,
+      "pid": 538234,
+      "health": "healthy",
+      "faulthandler": null,
+      "mounts": [
+        {
+          "source": "/home/joao/docker/stacks/web/appdata/prumo",
+          "target": "/data",
+          "rw": false
+        },
+        {
+          "source": "/home/joao/docker/stacks/web/appdata/prumo",
+          "target": "/data-w",
+          "rw": true
+        }
+      ]
+    }
+  },
+  "checkout": "3ab1fdcad3c40fc2a9e7dc5e3fa9fe32f6cfe547",
+  "sqlite_version": "3.46.1",
+  "files": {
+    "main": {
+      "device": 2049,
+      "inode": 259662,
+      "size": 300126208,
+      "mode": "0o644",
+      "uid": 1000,
+      "mtime_ns": 1795422761867123400
+    },
+    "-wal": {
+      "device": 2049,
+      "inode": 302415,
+      "size": 0,
+      "mode": "0o644",
+      "uid": 1000,
+      "mtime_ns": 1795422766100110913
+    },
+    "-shm": {
+      "device": 2049,
+      "inode": 302416,
+      "size": 32768,
+      "mode": "0o644",
+      "uid": 1000,
+      "mtime_ns": 1795422766100913736
+    }
+  },
+  "locks": [
+    "7: POSIX  ADVISORY  READ 537891 08:01:302416 128 128",
+    "8: POSIX  ADVISORY  READ 537891 08:01:259662 1073741826 1073742335"
+  ],
+  "schema": "ebd832e12058915c2847d89b732ca695b7e4a2bb5053733ab60fa35a8d2046a8",
+  "migrations": [
+    [
+      "0001_init"
+    ],
+    [
+      "0002_dataset_key"
+    ],
+    [
+      "0003_verification_replay"
+    ],
+    [
+      "0004_verification_audit"
+    ],
+    [
+      "0005_served_licence_gate"
+    ],
+    [
+      "0006_pt15m"
+    ],
+    [
+      "0007_scoped_legacy_serving"
+    ],
+    [
+      "0008_input_origin"
+    ],
+    [
+      "0009_blocked_stale_state"
+    ],
+    [
+      "0010_scheduler_state"
+    ],
+    [
+      "0011_data_time_serving_and_withdrawal"
+    ],
+    [
+      "0012_verification_audit_v2"
+    ],
+    [
+      "0013_run_and_audit_guards"
+    ],
+    [
+      "0014_derived_layer"
+    ],
+    [
+      "0015_observation_run_index"
+    ],
+    [
+      "0016_language_neutral_derived"
+    ],
+    [
+      "0017_derived_caveats"
+    ],
+    [
+      "0018_editorial_composition"
+    ],
+    [
+      "0019_statistics_cms"
+    ]
+  ],
+  "tables": {
+    "cms_document": {
+      "rows": 12,
+      "sha256": "07d06aead3372ef5e597950d45436f681371dcce5c66b40b7acc51ec8f5aa0a1"
+    },
+    "cms_event": {
+      "rows": 29,
+      "sha256": "b7799fce05e0c2b17d0267830ab9d6121e1677907d71fd1600507fa875c2a265"
+    },
+    "cms_revision": {
+      "rows": 15,
+      "sha256": "a0e713282469ab08231a52a396c8fbcf3cf7330f508a7458eb9f73efeb76a4d6"
+    },
+    "dataset_run": {
+      "rows": 132,
+      "sha256": "ced19af0c86a901a7d213678e95564bdb59449aed577ce9772de8c8c2b8e3e93"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 10145,
+      "sha256": "dbee3c2ad9e2de642806d4493c38be5d0fdd1f4ba49dbbba51e01159e69c47c3"
+    },
+    "derived_run": {
+      "rows": 24,
+      "sha256": "3e26a721e8fc28332983d7403f917be4386d6a9bc01937cc3731171f35fdb941"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 399,
+      "sha256": "14e04436bf2c15c6f6700976a068281bdee81a143ce1eb4f25cb1ed6ddf163a6"
+    },
+    "observation": {
+      "rows": 635430,
+      "sha256": "f7a4d20e6600ec9538dd22af7b7417f5e0eda793630ad490651a24c16deb7306"
+    },
+    "quarantine": {
+      "rows": 34343,
+      "sha256": "20ac1198648fef85ebd097593153bc2dfb385a6664546ab8d9604e890c2bab7e"
+    },
+    "raw_fetch": {
+      "rows": 1306,
+      "sha256": "c244f186014131a3bb0a848a1f4a9a3ba6038b07f45100932ab8cdf923f17705"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "953e282b2357a7fcc5b9809fe06f35f33ef6bb09d55f31b91aba1486b1539af3"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 57,
+      "sha256": "7b42d1b624d1077adb2187e54ca142150df7adc52143d493f4887b23432fa094"
+    },
+    "verification_item": {
+      "rows": 186725,
+      "sha256": "c8657d360f1237d07132bfba085b00afb6a4b4de1c8a02c22022005cc64e40c0"
+    },
+    "verification_spec": {
+      "rows": 1394,
+      "sha256": "6039ed3596ad5a024495e962158d37bcd25fb86e94ad854e557547c47c62a9da"
+    }
+  },
+  "scheduler": [
+    [
+      "bportugal:9f3dbe808e6966f89f84042b22e35ca7e342de92e7347ac921366379008f804c",
+      "bportugal",
+      "bportugal",
+      "2026-11-23T02:44:33.619888+00:00",
+      "verified",
+      "2026-11-23T02:44:37.878673+00:00",
+      0,
+      "2026-11-23T02:44:37.878673+00:00"
+    ],
+    [
+      "eredes:ee575e10694b6b3c8bbc09617494289f5a263e1f35cb71248d66048741b42ad7",
+      "eredes",
+      "eredes",
+      "2026-11-23T02:44:37.948330+00:00",
+      "verified",
+      "2026-11-23T02:44:45.052379+00:00",
+      0,
+      "2026-11-23T02:44:45.052379+00:00"
+    ],
+    [
+      "eurostat:5215ccf028098ca26ac51c95de3d465ea51af0a1ed4965c5ecbd746301a34384",
+      "eurostat",
+      "eurostat",
+      "2026-11-22T11:44:15.138983+00:00",
+      "verified",
+      "2026-11-22T11:44:33.254616+00:00",
+      0,
+      "2026-11-22T11:44:33.254616+00:00"
+    ],
+    [
+      "eurostat:6d1b8625b412871bc96c2cb98c6af1360a5e9b6a046c2c343a40e8d5f7a1f4fd",
+      "eurostat",
+      "eurostat",
+      "2026-11-14T01:35:38.786868+00:00",
+      "verified",
+      "2026-11-14T01:36:18.372739+00:00",
+      0,
+      "2026-11-14T01:36:18.372739+00:00"
+    ],
+    [
+      "fred:3c8c2796ab7cf32115365cd7a3c60991c5c59ec7683a7f2b2543a410982f5cff",
+      "fred",
+      "fred",
+      "2026-11-23T02:44:45.053914+00:00",
+      "verified",
+      "2026-11-23T02:45:08.381765+00:00",
+      0,
+      "2026-11-23T02:45:08.381765+00:00"
+    ],
+    [
+      "ine:7ee1691d0e848f45dd19ec5471d551743372615baf5aa4ad6b76bf0d197f5a55",
+      "ine",
+      "ine",
+      "2026-11-22T10:05:18.847892+00:00",
+      "verified",
+      "2026-11-22T10:14:15.037737+00:00",
+      0,
+      "2026-11-22T10:14:15.037737+00:00"
+    ],
+    [
+      "oecd:098cada4140d30246ebd2d9a84062cba7db2e13f9a299f7710c354e9da96a268",
+      "oecd",
+      "oecd",
+      "2026-11-23T03:15:08.391807+00:00",
+      "verified",
+      "2026-11-23T03:15:13.546403+00:00",
+      0,
+      "2026-11-23T03:15:13.546403+00:00"
+    ],
+    [
+      "ren:6a0e466dd95947af9aae2cfb969385b528ee6401706052c5fd281e4b61e76b07",
+      "ren",
+      "ren",
+      "2026-11-23T03:15:13.547674+00:00",
+      "verified",
+      "2026-11-23T03:15:38.702052+00:00",
+      0,
+      "2026-11-23T03:15:38.702052+00:00"
+    ],
+    [
+      "worldbank:17c38139e393c1d28a6b6eb2ffaf25c0269fef4650b13ab30487dbadeef289f3",
+      "worldbank",
+      "SI.POV.GINI",
+      "2026-11-13T02:50:33.777206+00:00",
+      "verified",
+      "2026-11-13T02:50:35.720338+00:00",
+      0,
+      "2026-11-13T02:50:35.720338+00:00"
+    ],
+    [
+      "worldbank:29080c8e00f185f2dcb0d69341c37406891696fa8415b0faca99954462346aa9",
+      "worldbank",
+      "SL.UEM.TOTL.ZS",
+      "2026-11-13T02:50:39.750800+00:00",
+      "verified",
+      "2026-11-13T02:50:41.745314+00:00",
+      0,
+      "2026-11-13T02:50:41.745314+00:00"
+    ],
+    [
+      "worldbank:3a959e047a2f7fdc4d063cfa1590f87d83f1a578073c949c7b912117ce7dc138",
+      "worldbank",
+      "SP.DYN.LE00.IN",
+      "2026-11-13T02:52:17.707546+00:00",
+      "verified",
+      "2026-11-13T02:52:18.827421+00:00",
+      0,
+      "2026-11-13T02:52:18.827421+00:00"
+    ],
+    [
+      "worldbank:3ffe3d40c6a221c01247079fb548bf2d99746e2dbc39d394e809add35c38b0d8",
+      "worldbank",
+      "SP.POP.TOTL",
+      "2026-11-13T01:46:42.426806+00:00",
+      "verified",
+      "2026-11-13T01:46:43.540672+00:00",
+      0,
+      "2026-11-13T01:46:43.540672+00:00"
+    ],
+    [
+      "worldbank:533b4754889e6443a253d1a283e5b384e6b72a489d93cf6b56f6fa3d6d5cd7b5",
+      "worldbank",
+      "NY.GDP.MKTP.KD.ZG",
+      "2026-11-13T06:52:22.039953+00:00",
+      "verified",
+      "2026-11-13T06:52:24.054195+00:00",
+      0,
+      "2026-11-13T06:52:24.054195+00:00"
+    ],
+    [
+      "worldbank:5823b0fc5c842667670b858831a606d3b9007e95e3d613a4fbf0716d16873fb8",
+      "worldbank",
+      "NE.EXP.GNFS.ZS",
+      "2026-11-13T02:47:19.539697+00:00",
+      "verified",
+      "2026-11-13T02:47:21.585561+00:00",
+      0,
+      "2026-11-13T02:47:21.585561+00:00"
+    ],
+    [
+      "worldbank:5fc5fcec6d5d7eeed9ae4de45f2b191c518921b713b0e2a37539b3db5e1bea56",
+      "worldbank",
+      "NE.RSB.GNFS.ZS",
+      "2026-11-13T06:52:20.929598+00:00",
+      "verified",
+      "2026-11-13T06:52:22.039326+00:00",
+      0,
+      "2026-11-13T06:52:22.039326+00:00"
+    ],
+    [
+      "worldbank:73cf941ca3c414fb23af55dd940c9b79e63cbc181d97895aa3969c22e0d934b0",
+      "worldbank",
+      "NY.GDP.PCAP.CD",
+      "2026-11-13T02:50:32.649706+00:00",
+      "verified",
+      "2026-11-13T02:50:33.776689+00:00",
+      0,
+      "2026-11-13T02:50:33.776689+00:00"
+    ],
+    [
+      "worldbank:7949ed47f962c79cac8eb1f11950c29c35dc1e8cd47cec189604e308d7ec8036",
+      "worldbank",
+      "SL.TLF.CACT.FE.ZS",
+      "2026-11-13T02:50:37.722556+00:00",
+      "verified",
+      "2026-11-13T02:50:39.749992+00:00",
+      0,
+      "2026-11-13T02:50:39.749992+00:00"
+    ],
+    [
+      "worldbank:836e91f61d991b417af18d812cbe743e25586925e3727b4010bfd42f32480431",
+      "worldbank",
+      "BX.KLT.DINV.WD.GD.ZS",
+      "2026-11-13T02:47:14.476845+00:00",
+      "verified",
+      "2026-11-13T02:47:15.613784+00:00",
+      0,
+      "2026-11-13T02:47:15.613784+00:00"
+    ],
+    [
+      "worldbank:8d62d1aed7e86ef4f01f029c4cafa0de695afe37cf2034bdf924b209f6eb8baf",
+      "worldbank",
+      "SP.DYN.CBRT.IN",
+      "2026-11-13T02:50:41.746024+00:00",
+      "verified",
+      "2026-11-13T02:50:43.756031+00:00",
+      0,
+      "2026-11-13T02:50:43.756031+00:00"
+    ],
+    [
+      "worldbank:9149ebf989959fac2af2ef9ca929754c458da6934cfac672e6b7b19f31afa57f",
+      "worldbank",
+      "NY.GDP.MKTP.CD",
+      "2026-11-13T02:48:57.568695+00:00",
+      "verified",
+      "2026-11-13T02:48:58.704651+00:00",
+      0,
+      "2026-11-13T02:48:58.704651+00:00"
+    ],
+    [
+      "worldbank:a98cf27a120c70084448a8b87aa7970db91469d3ac864dcce340351ffe77033e",
+      "worldbank",
+      "GC.DOD.TOTL.GD.ZS",
+      "2026-11-13T02:47:17.535425+00:00",
+      "verified",
+      "2026-11-13T02:47:19.539172+00:00",
+      0,
+      "2026-11-13T02:47:19.539172+00:00"
+    ],
+    [
+      "worldbank:c80d2b80495f724d8b0193b727332e32d8c089cd729144ab1ab0e0199ff9d10d",
+      "worldbank",
+      "NE.IMP.GNFS.ZS",
+      "2026-11-13T02:47:21.586352+00:00",
+      "verified",
+      "2026-11-13T02:47:23.588995+00:00",
+      0,
+      "2026-11-13T02:47:23.588995+00:00"
+    ],
+    [
+      "worldbank:d35617155fff59ecf3e46c37c4a82dce648c7fc5a9fac2a54e6243ca666babd8",
+      "worldbank",
+      "SP.URB.TOTL.IN.ZS",
+      "2026-11-13T02:52:18.828092+00:00",
+      "verified",
+      "2026-11-13T02:52:20.848394+00:00",
+      0,
+      "2026-11-13T02:52:20.848394+00:00"
+    ],
+    [
+      "worldbank:df599834685dbb4bfb019a91fd48cbca153df22adfdc384a849e72c7b147c767",
+      "worldbank",
+      "SP.DYN.CDRT.IN",
+      "2026-11-13T06:52:24.055093+00:00",
+      "verified",
+      "2026-11-13T06:52:26.027280+00:00",
+      0,
+      "2026-11-13T06:52:26.027280+00:00"
+    ],
+    [
+      "worldbank:e0da6255968e6ca4d0e92ad44afc8891232e974376afd0c890f852a85e01799d",
+      "worldbank",
+      "SL.EMP.TOTL.SP.ZS",
+      "2026-11-13T02:50:35.721115+00:00",
+      "verified",
+      "2026-11-13T02:50:37.721741+00:00",
+      0,
+      "2026-11-13T02:50:37.721741+00:00"
+    ],
+    [
+      "worldbank:ee9200d27f80952c784595daf7d4faa77e8caa455f93df3fb8cc20e4f92fb0df",
+      "worldbank",
+      "GB.XPD.RSDV.GD.ZS",
+      "2026-11-13T02:47:15.614290+00:00",
+      "verified",
+      "2026-11-13T02:47:17.534791+00:00",
+      0,
+      "2026-11-13T02:47:17.534791+00:00"
+    ]
+  ],
+  "running_runs": [],
+  "quick_check": "ok",
+  "foreign_keys": [],
+  "worker_daemon_events": []
+}

@@ -1,0 +1,331 @@
+{
+  "at": "2026-11-23T08:48:10.813306+00:00",
+  "checks": [
+    {
+      "label": "integrity and FK",
+      "passed": true
+    },
+    {
+      "label": "schema and migrations preserved",
+      "passed": true
+    },
+    {
+      "label": "exact approved checkout",
+      "passed": true
+    },
+    {
+      "label": "same table inventory",
+      "passed": true
+    },
+    {
+      "label": "cms_document preserved",
+      "passed": true
+    },
+    {
+      "label": "cms_revision preserved",
+      "passed": true
+    },
+    {
+      "label": "cms_event preserved",
+      "passed": true
+    },
+    {
+      "label": "editorial_page preserved",
+      "passed": true
+    },
+    {
+      "label": "editorial_slot preserved",
+      "passed": true
+    },
+    {
+      "label": "editorial_event preserved",
+      "passed": true
+    },
+    {
+      "label": "source preserved",
+      "passed": true
+    },
+    {
+      "label": "series preserved",
+      "passed": true
+    },
+    {
+      "label": "setting preserved",
+      "passed": true
+    },
+    {
+      "label": "derived_series preserved",
+      "passed": true
+    },
+    {
+      "label": "verification_spec preserved",
+      "passed": true
+    },
+    {
+      "label": "all table contents unchanged during activation",
+      "passed": true
+    },
+    {
+      "label": "prumo-ingest replaced",
+      "passed": true
+    },
+    {
+      "label": "prumo-ingest running without autonomous restart",
+      "passed": true
+    },
+    {
+      "label": "prumo-ingest actual image equals rebuilt tag",
+      "passed": true
+    },
+    {
+      "label": "prumo-ingest installed persistence bytes",
+      "passed": true
+    },
+    {
+      "label": "prumo-ingest no fatal/application error",
+      "passed": true
+    },
+    {
+      "label": "worker fatal diagnostics configured",
+      "passed": true
+    },
+    {
+      "label": "worker fatal diagnostics active in installed Python",
+      "passed": true
+    },
+    {
+      "label": "worker scheduler and writer uid",
+      "passed": true
+    },
+    {
+      "label": "actual scheduler startup pass",
+      "passed": true
+    },
+    {
+      "label": "worker currently owns shared-memory DMS read lock",
+      "passed": true
+    },
+    {
+      "label": "prumo replaced",
+      "passed": true
+    },
+    {
+      "label": "prumo running without autonomous restart",
+      "passed": true
+    },
+    {
+      "label": "prumo actual image equals rebuilt tag",
+      "passed": true
+    },
+    {
+      "label": "prumo installed persistence bytes",
+      "passed": true
+    },
+    {
+      "label": "prumo no fatal/application error",
+      "passed": true
+    },
+    {
+      "label": "prumo healthy",
+      "passed": true
+    },
+    {
+      "label": "prumo-backoffice replaced",
+      "passed": true
+    },
+    {
+      "label": "prumo-backoffice running without autonomous restart",
+      "passed": true
+    },
+    {
+      "label": "prumo-backoffice actual image equals rebuilt tag",
+      "passed": true
+    },
+    {
+      "label": "prumo-backoffice installed persistence bytes",
+      "passed": true
+    },
+    {
+      "label": "prumo-backoffice no fatal/application error",
+      "passed": true
+    },
+    {
+      "label": "prumo-backoffice healthy",
+      "passed": true
+    },
+    {
+      "label": "unrelated infrastructure edit preserved: secrets/web.enc.env",
+      "passed": true
+    },
+    {
+      "label": "unrelated infrastructure edit preserved: stacks/web/compose/prumo-backoffice.yml",
+      "passed": true
+    },
+    {
+      "label": "unrelated infrastructure edit preserved: stacks/web/images/ifc-viewer/dist-xeokit/index.html",
+      "passed": true
+    },
+    {
+      "label": "installed worker read-only status succeeds",
+      "passed": true
+    }
+  ],
+  "changed_tables": [],
+  "worker_started": "2026-11-23T08:32:43.627785908Z",
+  "worker_age_seconds": 927.645,
+  "schema_migrations": [
+    [
+      "0001_init"
+    ],
+    [
+      "0002_dataset_key"
+    ],
+    [
+      "0003_verification_replay"
+    ],
+    [
+      "0004_verification_audit"
+    ],
+    [
+      "0005_served_licence_gate"
+    ],
+    [
+      "0006_pt15m"
+    ],
+    [
+      "0007_scoped_legacy_serving"
+    ],
+    [
+      "0008_input_origin"
+    ],
+    [
+      "0009_blocked_stale_state"
+    ],
+    [
+      "0010_scheduler_state"
+    ],
+    [
+      "0011_data_time_serving_and_withdrawal"
+    ],
+    [
+      "0012_verification_audit_v2"
+    ],
+    [
+      "0013_run_and_audit_guards"
+    ],
+    [
+      "0014_derived_layer"
+    ],
+    [
+      "0015_observation_run_index"
+    ],
+    [
+      "0016_language_neutral_derived"
+    ],
+    [
+      "0017_derived_caveats"
+    ],
+    [
+      "0018_editorial_composition"
+    ],
+    [
+      "0019_statistics_cms"
+    ]
+  ],
+  "tables": {
+    "cms_document": {
+      "rows": 12,
+      "sha256": "07d06aead3372ef5e597950d45436f681371dcce5c66b40b7acc51ec8f5aa0a1"
+    },
+    "cms_event": {
+      "rows": 29,
+      "sha256": "b7799fce05e0c2b17d0267830ab9d6121e1677907d71fd1600507fa875c2a265"
+    },
+    "cms_revision": {
+      "rows": 15,
+      "sha256": "a0e713282469ab08231a52a396c8fbcf3cf7330f508a7458eb9f73efeb76a4d6"
+    },
+    "dataset_run": {
+      "rows": 132,
+      "sha256": "ced19af0c86a901a7d213678e95564bdb59449aed577ce9772de8c8c2b8e3e93"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 10145,
+      "sha256": "dbee3c2ad9e2de642806d4493c38be5d0fdd1f4ba49dbbba51e01159e69c47c3"
+    },
+    "derived_run": {
+      "rows": 24,
+      "sha256": "3e26a721e8fc28332983d7403f917be4386d6a9bc01937cc3731171f35fdb941"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 399,
+      "sha256": "14e04436bf2c15c6f6700976a068281bdee81a143ce1eb4f25cb1ed6ddf163a6"
+    },
+    "observation": {
+      "rows": 635430,
+      "sha256": "f7a4d20e6600ec9538dd22af7b7417f5e0eda793630ad490651a24c16deb7306"
+    },
+    "quarantine": {
+      "rows": 34343,
+      "sha256": "20ac1198648fef85ebd097593153bc2dfb385a6664546ab8d9604e890c2bab7e"
+    },
+    "raw_fetch": {
+      "rows": 1306,
+      "sha256": "c244f186014131a3bb0a848a1f4a9a3ba6038b07f45100932ab8cdf923f17705"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "953e282b2357a7fcc5b9809fe06f35f33ef6bb09d55f31b91aba1486b1539af3"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 57,
+      "sha256": "7b42d1b624d1077adb2187e54ca142150df7adc52143d493f4887b23432fa094"
+    },
+    "verification_item": {
+      "rows": 186725,
+      "sha256": "c8657d360f1237d07132bfba085b00afb6a4b4de1c8a02c22022005cc64e40c0"
+    },
+    "verification_spec": {
+      "rows": 1394,
+      "sha256": "6039ed3596ad5a024495e962158d37bcd25fb86e94ad854e557547c47c62a9da"
+    }
+  },
+  "historical_cause_closed": false,
+  "elapsed_24h_accepted": false
+}

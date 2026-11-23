@@ -1,0 +1,6 @@
+ActiveState=active
+TimersCalendar={ OnCalendar=2026-11-24 08:35:00 UTC ; next_elapse=Tue 2026-11-24 08:35:00 UTC }
+NextElapseUSecRealtime=Tue 2026-11-24 08:35:00 UTC
+ExecStart={ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 /home/joao/prumo-operations/worker-safety-release-20261123/observe.py --minimum-seconds 86400 --output /home/joao/prumo-operations/worker-safety-release-20261123/observation-24h.json ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }
+User=joao
+Group=joao

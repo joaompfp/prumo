@@ -1,0 +1,132 @@
+{
+  "runtime": "3ab1fdcad3c40fc2a9e7dc5e3fa9fe32f6cfe547",
+  "hosted_ci": 45138023772,
+  "ci_passed": 3206,
+  "clean_committed_tests": 71,
+  "public_browser_checks": 1392,
+  "initial_acceptance_checks": 41,
+  "final_acceptance_checks": 42,
+  "schema_cms_and_all_table_hashes_preserved": true,
+  "infra_activation_commit": "ab7be58",
+  "observed_uninterrupted_seconds": 917.064146,
+  "historical_cause_closed": false,
+  "elapsed_24h_accepted": false,
+  "files": {
+    "activate.sh": {
+      "bytes": 4724,
+      "sha256": "9715b6e26106ce3d1a29d61577540add476590c2b3d0c3d13e04fb0fffb7c43a"
+    },
+    "activated-images.json": {
+      "bytes": 1089,
+      "sha256": "af945cdbcc775c5c09baff5c26dcfc9536fbe218897c6b3327c9e9c62e046c7e"
+    },
+    "activation-acceptance.json": {
+      "bytes": 7699,
+      "sha256": "d833f5dba14782406ccd6c346b10e65b2a804052569074dda3ae8f176d2a64ed"
+    },
+    "activation-guard-tests.json": {
+      "bytes": 12150,
+      "sha256": "34a9047aea112fc1209e1bf292a3e1496627fb1796c2cfeefa2992ba8af2945e"
+    },
+    "browser.json.gz": {
+      "bytes": 7204,
+      "sha256": "aea2f7e8d548f209b1a30ed11307546a59631ed38cf3d5402e5373cdfb5382f9"
+    },
+    "ci.json": {
+      "bytes": 3443,
+      "sha256": "0332e73be173ba67a9782b92afa88432515707887c3dc65a169c484e370df609"
+    },
+    "ci.log.gz": {
+      "bytes": 86227,
+      "sha256": "c2916d6d83cfb19032cf1791837705e70753b855f1be40da1210c0c715d70c1d"
+    },
+    "editors.json": {
+      "bytes": 4730,
+      "sha256": "9bf5f8af3e52d83857f0b028c357bb5cbec927b14bc70d424a854ff360ac1657"
+    },
+    "final-acceptance.json": {
+      "bytes": 7796,
+      "sha256": "6d2898ac226bf002a2608d9b02651cb06dc4d6479d8d99c1d8004b15e0fb748c"
+    },
+    "final-state.json": {
+      "bytes": 14182,
+      "sha256": "ff61431fe9801b9a9ac6768191fb6c7a47f2e0bf135664f629fe4e2e819f709c"
+    },
+    "focused.xml.gz": {
+      "bytes": 2115,
+      "sha256": "8e0d901f49e31e2c22f94a06ada15912461569e1ed26cd45d508bccd31c7d899"
+    },
+    "initial-service-readback.txt": {
+      "bytes": 114,
+      "sha256": "d51dbddb74b928ccd25f8c3e4f02b6a515a6d841efb8c7f619c571fe681134a4"
+    },
+    "observation-15min.json": {
+      "bytes": 15937,
+      "sha256": "5538759f8ebdfd7886053cb69689cce2d52674c8c043e611c5123215a17afbd3"
+    },
+    "observe.py": {
+      "bytes": 4108,
+      "sha256": "8a9c2c061f6d28afdbbfcd2234e6e9e5587b11e99c7c155a080c8f5e857feeba"
+    },
+    "post-activation.json": {
+      "bytes": 14182,
+      "sha256": "a94f391015885d85f2b3e7a37ea7275e819c43e8b4676c1d486d77763bb39504"
+    },
+    "post-prebuild.json": {
+      "bytes": 16188,
+      "sha256": "a36b92636bb40410240c95bed5c76370e830ecd00230f65735b7d13c7998ec5c"
+    },
+    "pre-activation.json": {
+      "bytes": 16188,
+      "sha256": "f07f9c13cbe305ecbd339ebbaad07c810ca991c82d2b709bef5933d37489423b"
+    },
+    "prebuild-start.json": {
+      "bytes": 16188,
+      "sha256": "0d8cf8c994ab79427adb0a8407c53901dd5392460015d14ca6b80d59017246e5"
+    },
+    "prebuild.sh": {
+      "bytes": 2878,
+      "sha256": "023a119930bf44a3b18b0d254c25fb1adadf32809e580b8445085770df5857e7"
+    },
+    "preflight.json": {
+      "bytes": 16407,
+      "sha256": "1ede6d327bd8085af195102e72e8994d44d2a338f5a56b553448ada5f9957825"
+    },
+    "preserved-infra.json": {
+      "bytes": 334,
+      "sha256": "f88500201dddeae8ae095d3594ac1ce25db5f0b218d907bdcf159b9245f6e979"
+    },
+    "preview.json": {
+      "bytes": 387,
+      "sha256": "00eff27a51d24d64cddac01bfa708d3cc0f7a9d08ecbd90aef12ac20f5461b4d"
+    },
+    "prumo-ingest-before.yml": {
+      "bytes": 1346,
+      "sha256": "79f6739c4e9bb732a6327085adcd8a42c9435f6418b75891eb22581806212e51"
+    },
+    "public-admin.json": {
+      "bytes": 5827,
+      "sha256": "cab6a918ab72151ac52904f88cc971fd5c1906d60b7060833661dc6a5df3d950"
+    },
+    "refused-early-observation.json": {
+      "bytes": 212,
+      "sha256": "2b40c756910783cbd62a416d8b41d935ca4d2435a28eadf941043e16743fb045"
+    },
+    "status-summary.json": {
+      "bytes": 313,
+      "sha256": "cb01841d553b62aaa1a2d4d99530efee976e5bb369022f1716f20f23a12d5bb1"
+    },
+    "test_activation_guards.py": {
+      "bytes": 3597,
+      "sha256": "239501548a9b87d7d3cd3fef08e90617a4bd2f91e734a41fbe4e8fc87639d6bc"
+    },
+    "timer-readback.txt": {
+      "bytes": 522,
+      "sha256": "6d2494adf8bba003c78fe1e6f21f81d2854c69acb8c032010ed21795d47700f8"
+    },
+    "verify.py": {
+      "bytes": 6331,
+      "sha256": "ef5105332ea4bc45b147d09405ed0f746aa3be0c96c3431cc851864eecbaddb2"
+    }
+  }
+}

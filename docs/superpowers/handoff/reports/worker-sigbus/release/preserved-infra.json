@@ -1,0 +1,5 @@
+{
+  "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+  "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb",
+  "stacks/web/images/ifc-viewer/dist-xeokit/index.html": "7881e0a50d6660c025370285bef235dd6653f57338bf2342d5d1c469e0fcfa2e"
+}

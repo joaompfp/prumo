@@ -2,7 +2,7 @@
 
 ## Scope and current boundary
 
-The owner requested investigation of the autonomous ingestion-worker restarts and a bug fix if applicable. Product features, source parsers, licences, migrations and authored CMS content are outside this repair. `fe13837` implements the accepted read-path correction; release verification and installation are recorded separately below when completed. No retrospective assertion that the three SIGBUS incidents are fully explained is made.
+The owner requested investigation of the autonomous ingestion-worker restarts and a bug fix if applicable, then explicitly requested installing that correction. Product features, source parsers, licences, migrations and authored CMS content are outside this repair. `fe13837` implements the accepted read-path correction; integrated runtime `3ab1fdc` was installed on 2026-11-23 at 08:32 UTC. Current release verification, recovery and remaining observation are in [installed.md](installed.md). No retrospective assertion that the three SIGBUS incidents are fully explained is made.
 
 ## Confirmed live incident
 
@@ -28,7 +28,7 @@ An exclusive-created, online SQLite recovery copy is held at `f0nix:/home/joao/p
 
 Release scope: rebuild the worker, public reader and Admin because they package the shared persistence module. Install the worker's reviewed environment include. No SQL migration, CMS publication, ownership, proxy, authentication or Traefik change is required. Prebuild from a detached exact approved commit while live binds stay untouched. Stop and read back the bind-mounted public reader before advancing its checkout, then replace worker and readers using the established `dc-web` aliases. Preserve unrelated infrastructure edits. Confirm no running source attempt before a controlled worker recreation.
 
-Pin the actual old images before rebuilding. Roll back the same code checkout (`34ed8c0`) and all affected exact image tags if safety or serving checks fail; retain the diagnostic environment where possible. Preserve the database and CMS history: this is schema-compatible and requires no restore. A source-data fingerprint mismatch after restart must be explained from actual scheduler work rather than erased by restoring a snapshot.
+Pin the actual old images before rebuilding. For the installed 23/11 safety release, recover the actual prior checkout `4719f55` and all affected exact image tags recorded in [installed.md](installed.md) if safety or serving checks fail; retain the diagnostic environment where possible. The earlier `34ed8c0` baseline predates the separately installed phase B and is not the current code-recovery point. Preserve the database and CMS history: this is schema-compatible and requires no restore. A source-data fingerprint mismatch after restart must be explained from actual scheduler work rather than erased by restoring a snapshot.
 
 ## Acceptance and remaining gate
 

@@ -1,0 +1,129 @@
+{
+  "conclusion": "success",
+  "event": "push",
+  "headBranch": "main",
+  "headSha": "3ab1fdcad3c40fc2a9e7dc5e3fa9fe32f6cfe547",
+  "jobs": [
+    {
+      "completedAt": "2026-11-23T08:22:06Z",
+      "conclusion": "success",
+      "databaseId": 137568871857,
+      "name": "Lint (ruff)",
+      "startedAt": "2026-11-23T08:21:59Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run pip install ruff",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run ruff check app/ ingest/ --output-format=github",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 10,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/joaompfp/prumo/actions/runs/45138023772/job/137568871857"
+    },
+    {
+      "completedAt": "2026-11-23T08:31:42Z",
+      "conclusion": "success",
+      "databaseId": 137568872224,
+      "name": "Test (pytest)",
+      "startedAt": "2026-11-23T08:21:59Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Install dependencies",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run tests",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 10,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/joaompfp/prumo/actions/runs/45138023772/job/137568872224"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/joaompfp/prumo/actions/runs/45138023772",
+  "workflowName": "CI"
+}

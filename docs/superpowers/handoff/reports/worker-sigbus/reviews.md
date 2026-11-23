@@ -17,3 +17,9 @@ Non-blocking diagnostic limitation: a refusal on the second open is labelled cha
 The safety regressions are deterministic file-effect tests, not a claim that the historical live DMS (dead-man-switch) lock loss was observed. The SIGBUS race probe deliberately removes a lock to demonstrate a mechanism. Both reviewers retained that limitation. Neither reviewer accessed production or approved closing the operational root-cause/elapsed-observation gate.
 
 The controller separately runs whole-suite, committed-checkout and installed checks. Review approvals do not substitute for those results.
+
+## Final integration review for the installed phase B base
+
+A fresh read-only reviewer approved the integration with main `4719f55`, now runtime `3ab1fdc`. It confirmed that the accepted persistence implementation/tests match `fe13837` exactly and that no phase B file in app/backoffice/static/presentation was lost. Its independent probes observed the baseline reader rewrite a copied shm, the accepted reader leave bytes unchanged, an actual read-only shm descriptor without truncation, stable transactions and fail-closed missing-sidecar behavior. Its focused tests were review evidence only; authoritative release gates remain the controller's 71 clean-commit tests and exact-main CI 3,206, followed by installed checks in [installed.md](installed.md).
+
+The review retained the existing non-blocking fail-closed diagnostic limitation on a writer that checkpoints/exits during an immutable schema read. It did not assert the live historical trigger was captured or close the 24-hour gate.

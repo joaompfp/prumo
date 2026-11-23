@@ -1,6 +1,16 @@
 # Prumo image and ingestion operations
 
-## Current public interface: phase B shared analytical reading
+## Current worker safety release
+
+Owner-authorized main/runtime `3ab1fdc` is installed on f0nix from 2026-11-23 08:32 UTC. The worker, public web and Admin all contain the reviewed shared SQLite reader correction: unconditional `readonly_shm=1`, canonical sidecars, no reader recovery and bounded evidenced immutable retries. Worker fatal-fault diagnostics are enabled with `PYTHONFAULTHANDLER=1`. The phase B interface and CMS-owned comparisons are preserved. No migration, source-data/CMS edit, rights, ownership or authentication/shared-edge change ran.
+
+Exact-main CI `45138023772` passed 3,206 tests, 29 skipped and seven live deselected. Actual clean committed checkout: 71 focused checks and broader ruff passed. Production: 41 worker/image/data checks, 1,392 public-browser checks, 25 access/state checks, 54 real comparison-editor/preview checks and ten home-preview checks passed. All table/schema/CMS fingerprints match before/after activation; quick integrity ok, zero FK violations. Worker command, uid, diagnostic environment, shared-memory lock and read-only CLI status are verified. No fresh source verification is invented when no source is due.
+
+Worker restarted deliberately at 08:32:43.627785908 UTC; this is distinct from the old container's three autonomous SIGBUS restarts. Initial observation completed at 08:48 UTC after 917 uninterrupted seconds, zero new restarts and 42 final checks passed; every table fingerprint still matched. Definitive historical cause and the real 24-hour acceptance remain open. Local-only evidence collection is scheduled on f0nix for 24/11 08:35 UTC as `prumo-worker-safety-evidence-20261123.timer`, executing as `joao:joao`; it refuses early/replaced/restarted workers and does not accept the incident automatically. No outbound alerts or recurring backup job are involved.
+
+Exact images, verified recovery artifact, safe activation helpers, retained checker failures and observation receipts: [installed worker safety release](../superpowers/handoff/reports/worker-sigbus/installed.md). Operator directory: `/home/joao/prumo-operations/worker-safety-release-20261123`. Schema-compatible recovery is actual previous checkout `4719f55` plus the three pinned `rollback-worker-safety-20261123` image tags, preserving database/CMS history. Do not restore old source data or use build-only overrides for activation. Later documentation-only commits need no service recreation.
+
+## Previous public interface: phase B shared analytical reading
 
 Owner-authorized main/runtime `5346447` is installed on f0nix from 2026-11-21 21:36 UTC. Exact point inspection uses structured period/series/value rows; primary/calculated/CMS charts share the analytical layout. All nine comparisons remain CMS-authored and public read-only; the separate Caderno retains exploration. Only web and Admin were recreated, healthy with zero restarts. No migration, CMS/source-data write, worker or authentication/shared-edge operation ran.
 

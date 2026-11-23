@@ -1,0 +1,6 @@
+Result=success
+ExecMainStatus=0
+User=
+Group=
+ActiveState=active
+NextElapseUSecRealtime=Tue 2026-11-24 08:35:00 UTC

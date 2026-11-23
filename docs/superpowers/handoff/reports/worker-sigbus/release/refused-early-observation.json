@@ -1,0 +1,7 @@
+{
+  "at": "2026-11-23T08:36:27.498669+00:00",
+  "minimum_seconds": 86400,
+  "historical_cause_closed": false,
+  "incident_accepted": false,
+  "error": "observation too early: 223.871s elapsed; 86400s required"
+}

@@ -1,0 +1,23 @@
+{
+  "prumo-ingest": {
+    "container": "fd1f7b572bd8f355de68f3ea21e19eed2d3f81cb45b168c111cb1bb2c343d5e0",
+    "actual_image": "sha256:8679a19d535a450343c5bd130104c58a466dddb095957cf610e48684cfd28af9",
+    "rollback": "sha256:ff50b981e4cdc7923c773fe1f017567340d64e979d6b336553045504806e53a3",
+    "started": "2026-11-23T08:32:43.627785908Z",
+    "restarts": 0
+  },
+  "prumo": {
+    "container": "9a57ad8e8b0a95e7599c10f50ad066973549d3323d904f43d484238f0a688c26",
+    "actual_image": "sha256:f5c6c99161ad4e81e86e85a8b8ab78a6a73e1237fa53e6973e1307aebb2a43fb",
+    "rollback": "sha256:6022e973b69044e03d645ef56d6fd7df4577eddbb63ef9bce51ef1e2c52b031e",
+    "started": "2026-11-23T08:32:44.879464233Z",
+    "restarts": 0
+  },
+  "prumo-backoffice": {
+    "container": "9dd2b77c24edc876ca9e081dc73a28b8c45239b2cf134d032695aa5b99295fe9",
+    "actual_image": "sha256:b303b4ac29782e202b9803a01336db74c94b091e571e8bd934a2de86bb589421",
+    "rollback": "sha256:90cfbfaec6721b6c93944a45c3cbf9d3bdf80802906fbbe5990bc1f52de25d97",
+    "started": "2026-11-23T08:32:46.125265314Z",
+    "restarts": 0
+  }
+}
