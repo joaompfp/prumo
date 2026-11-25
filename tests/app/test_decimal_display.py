@@ -47,6 +47,7 @@ def test_ui_rounding_does_not_depend_on_or_modify_decimal_context():
 @pytest.mark.parametrize("token", ["2.35673648910157", "80.7926829268293", "0.004"])
 def test_page_rounds_display_without_rounding_geometry_or_csv(site_path, token):
     import hashlib
+    from html import escape
 
     from fastapi.testclient import TestClient
 
@@ -65,6 +66,9 @@ def test_page_rounds_display_without_rounding_geometry_or_csv(site_path, token):
         payload = payload_of(response.text)
         assert payload["display"][-1] == [format_value(token) + " %"]
         assert payload["y"][-1] == [float(token)]
+        assert f'<td class="num">{escape(format_value(token))}</td>' in response.text
+        assert (f'class="figure-value">{escape(format_value(token))} '
+                '<span class="figure-unit">') in response.text
         exported = client.get(f"/series/{HICP}.csv")
         assert exported.status_code == 200
         assert f"2026-11;{token};" in exported.text
