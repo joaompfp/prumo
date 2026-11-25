@@ -12,8 +12,8 @@ from app.formatting import (
 )
 
 
-def test_value_limits_decimals_and_groups_thousands():
-    assert format_value("1234567.80") == "1\u00a0234\u00a0567,8"
+def test_value_limits_significant_figures_and_groups_thousands():
+    assert format_value("1234567.80") == "1\u00a0235\u00a0000"
     assert format_value("3.90") == "3,9"
     assert format_value("3.9") == "3,9"
     assert format_value("-0.50") == "-0,5"

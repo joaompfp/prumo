@@ -41,8 +41,8 @@
 
 <section aria-labelledby="precisao">
   <h2 id="precisao">Precisão, unidades e arredondamento</h2>
-  <p>O Prumo guarda os valores originais com toda a precisão publicada e a mesma unidade. Na interface, apresenta no máximo duas casas decimais, sem zeros finais desnecessários. Os empates de arredondamento afastam-se de zero: 2,345 passa a 2,35 e -2,345 a -2,35. Valores não nulos demasiado pequenos aparecem como limites, por exemplo «&lt; 0,01», em vez de zero. Os CSV mantêm a precisão completa. Nas revisões e entradas de cálculo, «Valor original» permite consultar o número sem arredondamento. Os eixos usam notação científica quando necessária para distinguir valores pequenos.</p>
-  <p>No Caderno, o leitor pode escolher uma vista anual calculada, um índice de base 100 ou uma diferença em pontos percentuais. Estas vistas estão identificadas como calculadas, mostram a fórmula, o ano de base e os valores originais usados, sem alterar a base de dados. Os cálculos usam os valores exatos publicados e aritmética decimal; o resultado interno é arredondado half-even a seis casas decimais e nunca é apresentado com essa precisão, porque a página mostra no máximo duas casas decimais. A verificação independente recomputa cada resultado por aritmética racional.</p>
+  <p>O Prumo guarda os valores originais com toda a precisão publicada e a mesma unidade. Na interface, apresenta até quatro algarismos significativos, ajustando as casas decimais à dimensão do valor e sem zeros finais desnecessários. Por exemplo, 2,356736 passa a 2,357; 0,0123456 a 0,01235; e 12 345 a 12 350. Os empates de arredondamento afastam-se de zero: 2,3455 passa a 2,346 e -2,3455 a -2,346. Valores muito pequenos ou muito grandes usam notação científica, sem transformar valores não nulos em zero. Os CSV mantêm a precisão completa. Nas revisões e entradas de cálculo, «Valor original» permite consultar o número sem arredondamento. Os eixos usam notação científica quando necessária para distinguir valores pequenos.</p>
+  <p>No Caderno, o leitor pode escolher uma vista anual calculada, um índice de base 100 ou uma diferença em pontos percentuais. Estas vistas estão identificadas como calculadas, mostram a fórmula, o ano de base e os valores originais usados, sem alterar a base de dados. Os cálculos usam os valores exatos publicados e aritmética decimal; o resultado interno é arredondado half-even a seis casas decimais, enquanto a apresentação usa até quatro algarismos significativos. A verificação independente recomputa cada resultado por aritmética racional.</p>
 </section>
 
 <section aria-labelledby="estados">
@@ -71,7 +71,7 @@
   <h2 id="naofaz">O que o Prumo não faz</h2>
   <ul class="plain-list">
     <li>Não prevê, não interpola e não preenche lacunas.</li>
-    <li>Não converte unidades. O valor publicado não é alterado; a apresentação na página arredonda a duas casas decimais e o CSV mantém a precisão guardada.</li>
+    <li>Não converte unidades. O valor publicado não é alterado; a apresentação na página usa até quatro algarismos significativos e o CSV mantém a precisão guardada.</li>
     <li>Não apresenta comentário automático nem pontuações compostas.</li>
     <li>Não usa cookies, rastreio ou publicidade.</li>
     <li>Não esconde uma fonte em avaliação: nomeia-a e explica porque não publica os seus valores.</li>

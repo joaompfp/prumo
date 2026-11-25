@@ -408,7 +408,7 @@ _PT = NotebookCopy(
     chart_analysis_annual="Vista anual calculada a partir do histórico completo.",
     chart_analysis_rounding="Os valores calculados usam aritmética decimal exata. O resultado "
                             "interno é arredondado half-even a seis casas decimais; a "
-                            "apresentação usa no máximo duas casas decimais, arredondadas meio "
+                            "apresentação usa até quatro algarismos significativos, arredondados meio "
                             "para cima. Os valores originais não são alterados e o token exato "
                             "de cada entrada fica em «Valor original».",
     chart_analysis_calculated="Os valores assinalados como calculados são vistas analíticas do "

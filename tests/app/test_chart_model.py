@@ -6,6 +6,8 @@ the same cases again for the further 10 percent label role and gutter scale. Ori
 captures remain in golden/pre_legibility. Every point/title/tick text is identical in both
 captures and in the versioned golden-deltas receipt. The 2026-11-25 decimal-display
 pass changes text only; geometry/attribute equality is pinned in its golden-deltas.json.
+The four-significant-figure correction changes only the dual-axis tick labels; its prior
+capture remains in golden/charts/pre_significant_figures.
 """
 import math
 import re

@@ -1,8 +1,8 @@
 """Portuguese presentation of stored values, periods and timestamps.
 
-Reader values use at most two decimal places. This presentation boundary never changes
-stored tokens, calculation inputs, plot coordinates or CSV exports. Very small nonzero
-values are shown as bounds rather than being mistaken for zero.
+Reader values use at most four significant figures. This presentation boundary never
+changes stored tokens, calculation inputs, plot coordinates or CSV exports. Small
+nonzero values retain relative precision instead of being rounded to zero.
 """
 import re
 from datetime import datetime, timezone
@@ -14,8 +14,7 @@ MONTHS = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "
 MONTHS_SHORT = ("jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov",
                 "dez")
 _NUMBER = re.compile(r"[+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?", re.ASCII)
-DISPLAY_DECIMAL_PLACES = 2
-_DISPLAY_QUANTUM = Decimal("0.01")
+DISPLAY_SIGNIFICANT_FIGURES = 4
 
 
 def _localize_fixed(text: str) -> str:
@@ -27,28 +26,28 @@ def _localize_fixed(text: str) -> str:
     return sign + grouped + ("," + decimals if decimals else "")
 
 
-def _scientific(value: Decimal) -> str:
-    """Keep very small ticks distinct without a long fractional part."""
-    with localcontext() as context:
-        context.rounding = ROUND_HALF_UP
-        mantissa, exponent = format(value, f".{DISPLAY_DECIMAL_PLACES}E").split("E")
-    return _localize_fixed(mantissa.rstrip("0").rstrip(".")) + "e" + str(int(exponent))
+def _trim_fraction(text: str) -> str:
+    """Remove fractional padding, never the place-value zeros of an integer."""
+    return text.rstrip("0").rstrip(".") if "." in text else text
 
 
-def _rounded_display(value: Decimal) -> str:
+def _rounded_display(value: Decimal, *, small_exponent: int = -6) -> str:
     if not value:
         return "0"
-    # Avoid expanding an extreme exponent or depending on a caller's Decimal precision.
-    if value.adjusted() > 1000:
-        return _scientific(value)
+    # Decimal's general format rounds significant figures independently of context
+    # precision/exponent limits. Keep that rounding separate from PT localization.
     with localcontext() as context:
-        context.prec = max(28, value.adjusted() + DISPLAY_DECIMAL_PLACES + 2)
-        rounded = value.quantize(_DISPLAY_QUANTUM, rounding=ROUND_HALF_UP)
-    return _localize_fixed(format(rounded, "f").rstrip("0").rstrip("."))
+        context.rounding = ROUND_HALF_UP
+        rounded = Decimal(format(value, f".{DISPLAY_SIGNIFICANT_FIGURES}g"))
+    # Bound text length without rescaling units or suppressing tiny nonzero values.
+    if rounded.adjusted() < small_exponent or rounded.adjusted() >= 12:
+        mantissa, exponent = format(rounded, "E").split("E")
+        return _localize_fixed(_trim_fraction(mantissa)) + "e" + str(int(exponent))
+    return _localize_fixed(_trim_fraction(format(rounded, "f")))
 
 
 def format_value(token: str) -> str:
-    """Round reader text to at most two places; never use it as a calculation input.
+    """Round reader text to at most four significant figures, never calculation inputs.
 
     Half ties round away from zero. CSV and original-value evidence bypass this helper.
     """
@@ -58,16 +57,12 @@ def format_value(token: str) -> str:
     value = decimal_or_none(text)
     if value is None:
         return token
-    if value and value.copy_abs() < Decimal("0.005"):
-        return "> -0,01" if value.is_signed() else "< 0,01"
     return _rounded_display(value)
 
 
 def format_axis(value: Decimal) -> str:
-    """Bounded PT tick text; scientific notation prevents false zero on tiny axes."""
-    if value and value.copy_abs() < _DISPLAY_QUANTUM:
-        return _scientific(value)
-    return _rounded_display(value)
+    """Share reader precision, using scientific notation on very small ticks."""
+    return _rounded_display(value, small_exponent=-2)
 
 
 def format_count(n: int) -> str:

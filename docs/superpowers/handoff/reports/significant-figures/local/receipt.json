@@ -1,0 +1,539 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 original not printed by default",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 no page overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 payload display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 unchanged coordinate",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 all plotted readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 tooltip",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 table population",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 all table readings bounded",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440 original CSV",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/ HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/ populated",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/ four significant figures",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/ no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/pesquisa?fonte=worldbank&geografia=DE HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/pesquisa?fonte=worldbank&geografia=DE populated",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/pesquisa?fonte=worldbank&geografia=DE four significant figures",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/pesquisa?fonte=worldbank&geografia=DE no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/caderno?s=worldbank.life_expectancy.DE&s=worldbank.trade_balance_pct_gdp.DE&escala=dupla HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/caderno?s=worldbank.life_expectancy.DE&s=worldbank.trade_balance_pct_gdp.DE&escala=dupla populated",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/caderno?s=worldbank.life_expectancy.DE&s=worldbank.trade_balance_pct_gdp.DE&escala=dupla four significant figures",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/caderno?s=worldbank.life_expectancy.DE&s=worldbank.trade_balance_pct_gdp.DE&escala=dupla no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/taxas-juro-credito-depositos HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/taxas-juro-credito-depositos populated",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/taxas-juro-credito-depositos four significant figures",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/taxas-juro-credito-depositos no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/taxas-juro-credito-depositos no public composition controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/eletricidade-domestica HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/eletricidade-domestica populated",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/eletricidade-domestica four significant figures",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/eletricidade-domestica no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/comparar/eletricidade-domestica no public composition controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/calculadas/derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/calculadas/derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct populated",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/calculadas/derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct four significant figures",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307/calculadas/derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307 methodology current",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307 CSS unchanged",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307 no-JS headline",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:44307 no-JS SVG",
+      "passed": true
+    },
+    {
+      "name": "no application errors",
+      "passed": true
+    },
+    {
+      "name": "no external requests",
+      "passed": true
+    },
+    {
+      "name": "only pre-existing edge warning",
+      "passed": true
+    },
+    {
+      "name": "isolated DB bytes unchanged",
+      "passed": true
+    }
+  ],
+  "cases": [
+    "http://127.0.0.1:44307/worldbank.life_expectancy.DE/320",
+    "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/320",
+    "http://127.0.0.1:44307/worldbank.life_expectancy.DE/390",
+    "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/390",
+    "http://127.0.0.1:44307/worldbank.life_expectancy.DE/768",
+    "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/768",
+    "http://127.0.0.1:44307/worldbank.life_expectancy.DE/1440",
+    "http://127.0.0.1:44307/worldbank.trade_balance_pct_gdp.DE/1440"
+  ],
+  "errors": [],
+  "warnings": [],
+  "outside": []
+}

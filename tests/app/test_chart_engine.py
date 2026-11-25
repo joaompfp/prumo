@@ -71,11 +71,11 @@ def test_pair_payload_stays_byte_shaped_for_existing_readers():
             {"unit": "milhões de euros", "min": 99750.0, "max": 101250.0, "interval": 250.0,
              "ticks": [{"value": 99750.0, "text": "99\u00a0750"},
                        {"value": 100000.0, "text": "100\u00a0000"},
-                       {"value": 100250.0, "text": "100\u00a0250"},
+                       {"value": 100250.0, "text": "100\u00a0300"},
                        {"value": 100500.0, "text": "100\u00a0500"},
-                       {"value": 100750.0, "text": "100\u00a0750"},
+                       {"value": 100750.0, "text": "100\u00a0800"},
                        {"value": 101000.0, "text": "101\u00a0000"},
-                       {"value": 101250.0, "text": "101\u00a0250"}]},
+                       {"value": 101250.0, "text": "101\u00a0300"}]},
         ],
         "series": [
             {"title": "A", "unit": "%", "style": "ink", "badge": ""},
@@ -239,7 +239,7 @@ def test_group_keeps_exact_tokens_in_the_svg_payload_and_values():
     assert payload["y"][0] == [float(t) for t in tokens]
     assert payload["periods"][0] == "1.º semestre de 2024"
     svg = str(group_chart(rows, frequency="S", title="Preço", labels=labels, unit="EUR/kWh"))
-    assert "Portugal - 1.º semestre de 2024: 0,23 EUR/kWh" in svg
+    assert "Portugal - 1.º semestre de 2024: 0,2315 EUR/kWh" in svg
     assert "Espanha - 1.º semestre de 2024: 0,21 EUR/kWh" in svg
     assert "França - 1.º semestre de 2024: 0,25 EUR/kWh" in svg
 

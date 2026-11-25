@@ -359,7 +359,7 @@ def test_annual_pp_rates_disclose_calculated_method_base_and_raw_inputs(tmp_path
     assert "100 × valor ÷ valor do ano de base" not in text
     assert "valor − valor do ano de base" in text
     assert "resultado interno é arredondado half-even a seis casas decimais" in text
-    assert "apresentação usa no máximo duas casas decimais" in text
+    assert "apresentação usa até quatro algarismos significativos" in text
     assert html.count('badge badge-quiet">calculado') >= 4
     # Evidence is after the plot and names both the latest and the base raw inputs.
     assert text.index("Entradas originais") > text.index("Evolução conjunta")

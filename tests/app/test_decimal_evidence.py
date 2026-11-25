@@ -43,9 +43,9 @@ def test_small_revisions_share_the_display_and_keep_both_exact_tokens(evidence_d
     assert page is not None
     latest = page.revisions[0]
     assert latest.period == "2026-11"
-    assert [version.value_display for version in latest.versions] == ["2,35", "2,35"]
+    assert [version.value_display for version in latest.versions] == ["2,345", "2,345"]
     assert [version.raw_value for version in latest.versions] == ["2.3451", "2.3452"]
-    assert page.cross_checks[0].value_display == "2,35"
+    assert page.cross_checks[0].value_display == "2,345"
     assert page.cross_checks[0].raw_value == "2.3451"
 
     with TestClient(create_app(str(evidence_db))) as client:
@@ -81,7 +81,7 @@ def test_notebook_evidence_preserves_exact_input_and_output_tokens():
     value = AnalyticalValue(period="2026", value_text="1.234568", inputs=(item,), method="mean")
     output = calendar_notebook._evidence_output(copy, value, raw, "M", "pt")
     assert source.value_display == "6,4" and source.raw_value == "6.400123"
-    assert output.value_display == "1,23" and output.raw_value == "1.234568"
+    assert output.value_display == "1,235" and output.raw_value == "1.234568"
     assert output.inputs[0].raw_value == "6.400123"
 
     side = notebook_chart.SideEvidence(
