@@ -30,4 +30,4 @@ The first browser checker incorrectly expected the value in tooltip row zero, wh
 
 ## Release boundary
 
-No merge or deployment is part of this candidate checkpoint. A later authorized installation affects only `prumo` and `prumo-backoffice`, because Admin's static preview consumes these templates. It requires no migration, worker restart, CMS write, source refresh, rights/ownership or shared-edge change. Until that installation, public pages continue on their prior formatting.
+The original candidate checkpoint above included no merge or deployment. The owner subsequently authorized publication: exact main `1ad4f16` was pushed and installed on 2026-11-25 at 17:02 UTC. Only `prumo` and `prumo-backoffice` changed, because Admin's static preview consumes these templates; no migration, worker restart, CMS write, source refresh, rights/ownership or shared-edge change ran. The fresh exact-release CI and installed acceptance are recorded separately in [installed.md](installed.md), without recasting the earlier candidate test history.

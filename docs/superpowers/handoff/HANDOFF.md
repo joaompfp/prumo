@@ -1,6 +1,16 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Numeric display correction candidate (2026-11-25)
+## Numeric display correction installed (2026-11-25)
+
+Owner explicitly authorized implementation/publication. Main/release `1ad4f16d53adc9bcb59768368aefbf8e1090bf66` is pushed, read back and installed on f0nix at 17:02 UTC; runtime `082c4d2`, test follow-up `4c8cb3b`. Normal reader values now use at most two decimal places, HALF_UP, Portuguese separators and no redundant zeros. Both reported examples are live as `2,36` and `80,79` on both addresses. Original tokens, calculations, geometry and CSV precision are preserved; original-value disclosures stay available.
+
+Exact-main hosted CI `45658810915` passed 3,286 tests, 29 skipped/seven live deselected; 155 fresh committed-checkout tests and broader ruff passed. Installed public browser acceptance passed 244 checks in 16 populated example/address/viewport cases plus catalogue/home/Caderno/calculated/published-comparison/no-JS; real editors 54, numeric static previews 45, state/access 36 and home preview 13. Supplemental reconciliation 39 checks proves unchanged coordinate hashes and six exact CSV bodies apart from their documented request-time clock. Failed checker receipts remain explicit: primary-detail table cap mistaken for full-chart population, and dynamic CSV clock mistaken for data drift. Human screen-reader acceptance/shared-edge vr warning remain separate.
+
+Only web/Admin changed, healthy/zero restarts, actual images `852643e9`/`db6dbf97`. Complete worker baseline unchanged: `fd1f7b57`, image `8679a19d`, StartedAt 2026-11-23 08:32:43 UTC, zero restarts. Immediate pre/post and post-browser schema/migration/CMS fingerprints match, including authored homepage. No migration, source refresh, live CMS/source write, rights/ownership or edge/authentication change ran. Initial reader observation completed at 17:17:34 UTC after 900.031338 seconds/29 matching baseline samples, healthy/zero restarts; final 36 state/access checks passed again. Concurrent unrelated schedule-app changes were isolated by reconstructing the original full infrastructure-diff hash excluding only that newly changed subtree; every original unrelated diff and all Prumo guards remain verified.
+
+Installed record/recovery: `reports/decimal-display/installed.md`; operator directory `f0nix:/home/joao/prumo-operations/decimal-display-release-20261125T165109Z`. Recuo is actual previous checkout `50ede36` and exact pinned reader tags `rollback-decimal-20261125T165109Z`, preserving data/history/worker. Phase E dated/human-approved AI, rights/DGEG/lag, operational writes and historical worker cause/24-hour acceptance remain separate. Roadmap: `/home/joao/vaults/projects/prumo/roadmap-e-implementacao.md`.
+
+## Previous numeric display correction candidate (2026-11-25)
 
 Owner requested limits after long World Bank decimals wrapped headline values. Branch `fix/ui-decimal-limits` in `/home/joao/projects/prumo-pipeline`; runtime `082c4d2`, test-only follow-up `4c8cb3b`, preceded by behavior-neutral extraction `04241a6`. Normal UI uses at most two decimals, Decimal HALF_UP, PT separators and no redundant zeros; tiny nonzero readings use bounds rather than zero. SVG, tables, readout/tooltips and static CMS previews share this preparation. Original tokens, calculations, coordinates/domains and CSV are unchanged; original revision/cross-check/calculation evidence is available through closed disclosures.
 

@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current public interface: phase C discovery and entry
+## Current public interface: bounded numeric display
+
+Owner-authorized main/release `1ad4f16` is installed on f0nix from 2026-11-25 17:02 UTC. Normal reader values share the two-decimal HALF_UP policy with Portuguese separators and no redundant zeros; tiny nonzero values use bounds, while source tokens/calculation inputs/geometry/CSV retain precision. The long World Bank examples now show `2,36` and `80,79`. Only web and static-preview Admin were recreated, healthy with zero restarts. Worker, schema/migrations, authored homepage and CMS history are unchanged; no migration, data/content write or edge/authentication change ran.
+
+Exact-release hosted CI `45658810915`: 3,286 passed, 29 skipped, seven live deselected. Fresh committed-checkout checks 155 and broader ruff passed. Installed acceptance: public browser 244, real editors 54, numeric static previews 45, state/access 36, home preview 13; supplemental coordinate/export reconciliation 39. CSV bodies are identical apart from the documented request-time export-clock record, with original hashes reconciled. Human accessibility and pre-existing shared-edge warnings stay open. Initial reader observation completed at 17:17:34 UTC after 900.031338 seconds/29 matching samples, healthy/zero restarts; the final 36 state/access checks passed again. Concurrent unrelated schedule-app changes were explicitly reconciled against the original infrastructure-diff hash without changing any Prumo or original-edit guard.
+
+Recovery is actual previous checkout `50ede36` and exact old reader images pinned as `rollback-decimal-20261125T165109Z`. Stop only the public bind-mounted reader before restoring code; use established aliases for the affected readers and preserve database/CMS/history/worker. [Installed numeric-display record](../superpowers/handoff/reports/decimal-display/installed.md) contains exact helpers, failed checker receipts and hashes. Operator directory: `/home/joao/prumo-operations/decimal-display-release-20261125T165109Z`. Do not rerun dated activation helpers blindly. Report-only follow-ups need no image recreation. Policy: [numeric-display.md](numeric-display.md).
+
+## Previous public interface: phase C discovery and entry
 
 Owner-authorized main/release `72fa437` is installed on f0nix from 2026-11-25 13:37 UTC, reviewed runtime `cd55507`. Catalogue/search use truthful totals, pagination and native theme/geography/source/frequency filters; discovery/CMS cards open a single-series Caderno. Public comparison configuration remains authored and published in Admin. Only web and static-preview Admin were recreated; healthy, zero restarts. No migration, live content/source-data write, worker or shared-edge/authentication operation ran.
 
