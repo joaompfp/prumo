@@ -4,6 +4,10 @@ Date: 2026-11-25
 Base: installed main `1a0bf13`, runtime `3ab1fdc`.
 Authority: owner continuation after phase B, under `2026-11-19-analytical-workspace-roadmap.md`, C1-C2. This is implementation authorization, not an installation or editorial-publication decision.
 
+## Installed checkpoint
+
+Owner explicitly authorized merge and installation. Release/main `72fa437` is installed from 2026-11-25 13:37 UTC. Exact hosted CI, read-only public/Admin acceptance, preservation checks and recovery are recorded in `../handoff/reports/discovery-entry/installed.md`. The implementation and release-gate wording below is the approved contract, not an outstanding request for another authorization. No next phase, live CMS edit or worker change was started.
+
 ## Delivery contract
 
 Make finding an indicator and opening a useful notebook straightforward, without making the public frontend the editor of authored comparisons. Preserve the CMS homepage, all its blocks and their text/order. Published comparison configuration remains in the authenticated backoffice. Source data, read-only SQLite safety, source rights, schema and worker remain untouched.

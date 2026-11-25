@@ -1,6 +1,8 @@
 # Phase C: discovery and entry
 
-## Candidate, not installed
+## Implemented candidate, now installed
+
+Owner-authorized release `72fa437` is installed on f0nix from 2026-11-25 13:37 UTC. Exact hosted CI and installed browser/Admin/state verification are recorded in [installed.md](installed.md). The remainder of this report retains the earlier development scope; candidate-era permission gates below are historical, not a pending request to repeat installation.
 
 Branch: `feature/discovery-navigation` in `/home/joao/projects/prumo-discovery`.
 Installed base: main `1a0bf13`, runtime `3ab1fdc`. Candidate runtime: `cd55507`.

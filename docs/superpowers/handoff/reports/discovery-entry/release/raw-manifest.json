@@ -1,0 +1,37 @@
+[
+  {
+    "file": "prebuild-initial.log.gz",
+    "raw_sha256": "87a9602483f7f446f17888da97df8c73171669438d7e30de87d938811ca9b230",
+    "archive_sha256": "e1568b257199110645fb95d9d0559c853c8544d019c56973624cec43ac762da2",
+    "raw_bytes": 853,
+    "archive_bytes": 373
+  },
+  {
+    "file": "prebuild.log.gz",
+    "raw_sha256": "5e7f07e126943b1496d40112f903b3900d867f3e81e8c0ce092e16b7686e3787",
+    "archive_sha256": "9024723a364d7e915bb1a2f42db279bddb5f24e6ab57c798dd80bf529b1d0e10",
+    "raw_bytes": 16120,
+    "archive_bytes": 4060
+  },
+  {
+    "file": "activation.log.gz",
+    "raw_sha256": "2ec54a0fc86d5b8e1bc63f6cbbc1afe90f61314c42a8688d681853f66f54809d",
+    "archive_sha256": "449d41e727397bd90dde3a3242f8cb92b751bdfc93fae709ec16cd241deb5f2a",
+    "raw_bytes": 7930,
+    "archive_bytes": 2155
+  },
+  {
+    "file": "ci.log.gz",
+    "raw_sha256": "f96d7f56c52013e416a77bcdbe9a9d7a94d10dd903d1da299977316625378696",
+    "archive_sha256": "2c7ceb1bddfabfa9d8fac7d975228808ff51280aef29d9a122738730cf8afd83",
+    "raw_bytes": 587639,
+    "archive_bytes": 87776
+  },
+  {
+    "file": "browser.json.gz",
+    "raw_sha256": "fa2b64996ccfc228131d804f36ade703f279d5628c753c74629f6444627d5476",
+    "archive_sha256": "3cecb4f687967c829296e9ecceef8dba60734e98bb095275839a87176fee0a15",
+    "raw_bytes": 161049,
+    "archive_bytes": 6575
+  }
+]

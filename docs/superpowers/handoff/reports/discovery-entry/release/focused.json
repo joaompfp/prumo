@@ -1,0 +1,25 @@
+{
+  "revision": "72fa437b70a1d78e4f6a9d861f7c0ceafca55474",
+  "scope": "fresh committed checkout, not the full suite",
+  "checkout": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/verify",
+  "passed": 168,
+  "warnings": 1,
+  "seconds": 131.93,
+  "ruff": "passed: app ingest presentation backoffice tests",
+  "imports_inside_checkout": [
+    "app.main",
+    "ingest.db"
+  ],
+  "tests": [
+    "tests/app/test_discovery_search.py",
+    "tests/app/test_navigation.py",
+    "tests/app/test_series_list_views.py",
+    "tests/app/test_card_create.py",
+    "tests/app/test_routes.py",
+    "tests/app/test_cms_home.py",
+    "tests/backoffice/test_cms_home.py",
+    "tests/backoffice/test_boundaries.py",
+    "tests/test_typography.py",
+    "tests/test_legibility_assets.py"
+  ]
+}

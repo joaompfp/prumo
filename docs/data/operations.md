@@ -1,5 +1,13 @@
 # Prumo image and ingestion operations
 
+## Current public interface: phase C discovery and entry
+
+Owner-authorized main/release `72fa437` is installed on f0nix from 2026-11-25 13:37 UTC, reviewed runtime `cd55507`. Catalogue/search use truthful totals, pagination and native theme/geography/source/frequency filters; discovery/CMS cards open a single-series Caderno. Public comparison configuration remains authored and published in Admin. Only web and static-preview Admin were recreated; healthy, zero restarts. No migration, live content/source-data write, worker or shared-edge/authentication operation ran.
+
+Exact-release hosted CI `45623191922` passed 3,249 tests, 29 skipped and seven live deselected. Clean committed-checkout gate: 168 passed and broader ruff clean. Installed public acceptance: 1,380 checks/126 cases and four complete JS/no-JS journeys; real editors/preview 54, state/access 36, static home preview 13 and supplemental geometry/exports 21. Schema/migrations and CMS content/history hashes match the immediate pre-activation snapshot. Worker identity/image/start/restarts remain exactly unchanged, with zero restarts since 23/11 08:32 UTC. Human screen-reader acceptance remains separate.
+
+Recovery is actual previous checkout `1a0bf13` plus pinned reader tags `rollback-discovery-20261125T1324`; stop only the affected public bind-mounted reader before restoring code, preserve database/CMS/history/worker, and use the established aliases. Do not repeat the dated activation helper or use its context-only override for up. [Installed discovery record and exact receipts](../superpowers/handoff/reports/discovery-entry/installed.md). Operator directory: `/home/joao/prumo-operations/discovery-release-20261125T1324`. Initial UI observation finished at 13:52:43 UTC with at least 900 seconds of reader uptime, no restarts and the final 36-check state/access probe passing; schema/CMS fingerprints still match. Later report-only commits do not require image recreation.
+
 ## Current worker safety release
 
 Owner-authorized main/runtime `3ab1fdc` is installed on f0nix from 2026-11-23 08:32 UTC. The worker, public web and Admin all contain the reviewed shared SQLite reader correction: unconditional `readonly_shm=1`, canonical sidecars, no reader recovery and bounded evidenced immutable retries. Worker fatal-fault diagnostics are enabled with `PYTHONFAULTHANDLER=1`. The phase B interface and CMS-owned comparisons are preserved. No migration, source-data/CMS edit, rights, ownership or authentication/shared-edge change ran.

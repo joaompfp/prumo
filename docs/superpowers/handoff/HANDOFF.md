@@ -1,6 +1,16 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Phase C discovery candidate (2026-11-25)
+## Phase C discovery installed (2026-11-25)
+
+The owner explicitly authorized merge and installation. Main/release `72fa437b70a1d78e4f6a9d861f7c0ceafca55474` is pushed, read back and installed on f0nix from 13:37 UTC; reviewed implementation is `cd55507`. Complete catalogue, token search, truthful pagination/filter counts, native navigation and single-series notebook entries are live on both addresses. Editorial comparison configuration remains in the authenticated CMS; public readers receive only the published revision. No live content publication ran.
+
+Exact-release hosted CI `45623191922` passed 3,249 tests, with 29 skipped and seven live deselected; 168 fresh committed-checkout tests and broader ruff passed. Installed public acceptance: 1,380 assertions / 126 populated cases and four complete JS/no-JS journeys; nine Admin editors/static analytical preview 54; state/access 36; static home preview 13; supplemental geometry/exports 21. No application errors or off-origin requests; the pre-existing shared-edge vr warning remains. Human screen-reader acceptance is still open.
+
+Only web/Admin were recreated, healthy and zero restarts, actual images `05eb87f9`/`f297f139`. The full worker baseline is unchanged: `fd1f7b57`, image `8679a19d`, StartedAt 2026-11-23 08:32:43 UTC, restarts zero. Schema/migrations and all authored CMS/history hashes match immediate pre-activation and post-browser snapshots, including homepage. No migration, source-data/CMS write, rights/ownership or edge/authentication change ran. Source collection remains active and is not represented by a frozen live database hash.
+
+Catalogue: https://joao.date/dados/pesquisa . Installed receipts/recovery: `reports/discovery-entry/installed.md`; operator directory `f0nix:/home/joao/prumo-operations/discovery-release-20261125T1324`. Recuo is actual previous checkout `1a0bf13` plus pinned reader tags `rollback-discovery-20261125T1324`, preserving database/history/worker. Current product resume target is main in `/home/joao/docker/stacks/web/images/prumo`; the feature candidate below is historical. Further authored-home composition requires an explicit operator decision; E dated analyses/human-approved AI needs its own reviewed design. Rights/DGEG, worker cause/24-hour observation and human accessibility remain separate. No next product phase was started during this release. Initial observation finished at 13:52:43 UTC with minimum reader uptime 900.040981 seconds, zero reader/worker restarts and the final 36 state/access checks passing; schema/CMS hashes still match.
+
+## Previous phase C discovery candidate (2026-11-25)
 
 Owner requested continuation after phase B. Candidate runtime `cd55507` is implemented in `/home/joao/projects/prumo-discovery`, branch `feature/discovery-navigation`, based on installed main `1a0bf13` / runtime `3ab1fdc`. Catalogue search now has real totals, pagination, token search and native filters; search/theme records and existing CMS cards open a single-series Caderno. Navigation emphasizes Explorar, Comparações and Caderno without duplicate task search. Published comparisons remain authored in Admin; CMS home content/order/history, source data, schema, worker and shared edge are unchanged. No merge, installation or live publication ran.
 

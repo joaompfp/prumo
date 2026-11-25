@@ -1,0 +1,142 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "mobile search HTTP200",
+      "passed": true
+    },
+    {
+      "name": "main content respects 18px page gutters",
+      "passed": true
+    },
+    {
+      "name": ".discovery-summary a respects 18px page gutters",
+      "passed": true
+    },
+    {
+      "name": "#pesquisa-q respects 18px page gutters",
+      "passed": true
+    },
+    {
+      "name": ".discovery-query button respects 18px page gutters",
+      "passed": true
+    },
+    {
+      "name": "full query value preserved",
+      "passed": true
+    },
+    {
+      "name": "native query input scrolls to its end",
+      "passed": true
+    },
+    {
+      "name": "native query input scrolls to its start",
+      "passed": true
+    },
+    {
+      "name": "query and button heights aligned",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/series/ine.hicp_yoy.PT.csv HTTP200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/series/ine.hicp_yoy.PT.csv CSV type",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/series/ine.hicp_yoy.PT.csv populated CSV",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/calculadas/derived.credit_housing.PT.yoy_change_pct.csv HTTP200",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/calculadas/derived.credit_housing.PT.yoy_change_pct.csv CSV type",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/calculadas/derived.credit_housing.PT.yoy_change_pct.csv populated CSV",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/series/ine.hicp_yoy.PT.csv HTTP200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/series/ine.hicp_yoy.PT.csv CSV type",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/series/ine.hicp_yoy.PT.csv populated CSV",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/calculadas/derived.credit_housing.PT.yoy_change_pct.csv HTTP200",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/calculadas/derived.credit_housing.PT.yoy_change_pct.csv CSV type",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/calculadas/derived.credit_housing.PT.yoy_change_pct.csv populated CSV",
+      "passed": true
+    }
+  ],
+  "geometry": [
+    {
+      "selector": "main",
+      "x": 0,
+      "y": 152.140625,
+      "width": 390,
+      "height": 1272.84375
+    },
+    {
+      "selector": ".discovery-summary a",
+      "x": 131.875,
+      "y": 384.65625,
+      "width": 240.125,
+      "height": 43.46875
+    },
+    {
+      "selector": "#pesquisa-q",
+      "x": 18,
+      "y": 228.0625,
+      "width": 211.484375,
+      "height": 63.125
+    },
+    {
+      "selector": ".discovery-query button",
+      "x": 239.484375,
+      "y": 228.0625,
+      "width": 132.515625,
+      "height": 63.125
+    }
+  ],
+  "exports": [
+    {
+      "url": "https://cae.joao.date/series/ine.hicp_yoy.PT.csv",
+      "rows_including_header": 366,
+      "columns": 4
+    },
+    {
+      "url": "https://cae.joao.date/calculadas/derived.credit_housing.PT.yoy_change_pct.csv",
+      "rows_including_header": 558,
+      "columns": 3
+    },
+    {
+      "url": "https://joao.date/dados/series/ine.hicp_yoy.PT.csv",
+      "rows_including_header": 366,
+      "columns": 4
+    },
+    {
+      "url": "https://joao.date/dados/calculadas/derived.credit_housing.PT.yoy_change_pct.csv",
+      "rows_including_header": 558,
+      "columns": 3
+    }
+  ]
+}

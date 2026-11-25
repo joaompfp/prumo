@@ -1,0 +1,67 @@
+{
+  "completed": true,
+  "passed": true,
+  "required_uptime_seconds": 900,
+  "samples": [
+    {
+      "at": "2026-11-25T13:47:30.124640+00:00",
+      "reader_minimum_uptime_seconds": 587.480632,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:48:00.160246+00:00",
+      "reader_minimum_uptime_seconds": 617.516238,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:48:30.195226+00:00",
+      "reader_minimum_uptime_seconds": 647.551218,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:49:00.230850+00:00",
+      "reader_minimum_uptime_seconds": 677.586842,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:49:30.256917+00:00",
+      "reader_minimum_uptime_seconds": 707.612909,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:50:00.294282+00:00",
+      "reader_minimum_uptime_seconds": 737.650274,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:50:30.341575+00:00",
+      "reader_minimum_uptime_seconds": 767.697567,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:51:00.383083+00:00",
+      "reader_minimum_uptime_seconds": 797.739075,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:51:30.415866+00:00",
+      "reader_minimum_uptime_seconds": 827.771858,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:52:00.450057+00:00",
+      "reader_minimum_uptime_seconds": 857.806049,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:52:30.483990+00:00",
+      "reader_minimum_uptime_seconds": 887.839982,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-25T13:52:42.684989+00:00",
+      "reader_minimum_uptime_seconds": 900.040981,
+      "containers_match": true
+    }
+  ]
+}
