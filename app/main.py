@@ -11,7 +11,7 @@ import os
 import sqlite3
 from pathlib import Path
 
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -183,11 +183,12 @@ def create_app(db_path: str | None = None) -> FastAPI:
 
     @app.api_route("/temas/{code}", methods=PAGE_METHODS, response_class=HTMLResponse)
     def theme(request: Request, code: str, grupo: str = "", fonte: str = "",
-              frequencia: str = "", pagina: int = Query(1, ge=1)):
+              frequencia: str = "", pagina: str = "1"):
+        page = reads.parse_page_number(pagina)
         try:
             data, cms_pages = _read(request, lambda db: (
                 reads.theme(db, code, group=grupo, source=fonte, frequency=frequencia,
-                            page=pagina),
+                            page=page),
                 cms_reads.section_pages(db, code)))
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
@@ -219,12 +220,16 @@ def create_app(db_path: str | None = None) -> FastAPI:
                        script=data.chart_payload is not None)
 
     @app.api_route("/pesquisa", methods=PAGE_METHODS, response_class=HTMLResponse)
-    def search(request: Request, q: str = ""):
+    def search(request: Request, q: str = "", tema: str = "", grupo: str = "",
+               fonte: str = "", frequencia: str = "", pagina: str = "1"):
+        page = reads.parse_page_number(pagina)
         try:
-            rows = _read(request, lambda db: reads.search(db, q))
+            data = _read(request, lambda db: reads.search_page(
+                db, q, theme=tema, group=grupo, source=fonte, frequency=frequencia,
+                page=page))
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
-        return _render(templates, request, "search.html", {"query": q, "rows": rows})
+        return _render(templates, request, "search.html", {"page": data})
 
     @app.api_route("/fontes", methods=PAGE_METHODS, response_class=HTMLResponse)
     def sources(request: Request):

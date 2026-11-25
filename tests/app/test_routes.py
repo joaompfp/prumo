@@ -351,10 +351,13 @@ def test_search_is_accent_insensitive_and_finds_by_geography(client):
     assert "Taxa de desemprego" in visible(client.get(f"/pesquisa?q={UNEMP}").text)
 
 
-def test_search_without_results_and_without_query(client):
+def test_search_without_results_and_the_empty_query_opens_the_catalogue(client):
     empty = visible(client.get("/pesquisa?q=zzzz").text)
     assert "Sem resultados" in empty
-    assert "Escreva um termo" in visible(client.get("/pesquisa").text)
+    catalogue = visible(client.get("/pesquisa").text)
+    assert "Catálogo" in catalogue
+    assert "3 séries publicadas no catálogo" in catalogue
+    assert "Escreva um termo" not in catalogue
 
 
 def test_search_escapes_the_query_in_input_and_heading(client):

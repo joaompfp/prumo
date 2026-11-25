@@ -5,10 +5,12 @@ their stored token; dates, periods and flags get Portuguese text. Dataclasses ar
 template cannot mutate what the page was assembled from.
 """
 import logging
+import re
 import time
 import unicodedata
 from dataclasses import dataclass
 from typing import Generic, TypeVar
+from urllib.parse import urlencode
 
 from app import chart_model, interactive
 from app.chart_model import ComparisonModel, LineChartModel
@@ -54,10 +56,15 @@ from presentation.catalog import pt
 log = logging.getLogger("prumo.app")
 
 PAGE_SIZE = 50
+SEARCH_PAGE_SIZE = 24
 SEARCH_CAP = 100
+SEARCH_MAX_QUERY = 200
+SEARCH_MAX_PAGE_DIGITS = 6
 TABLE_CAP = 60
 REVISION_CAP = 30
 CATALOGUE_TTL_S = 30.0
+
+_CONTROL = re.compile(r"[\x00-\x1f\x7f]")
 
 THEME_ORDER = ("economy", "demography", "energy")
 EU_GEOS = frozenset({"EU27_2020", "EA", "EU", "EL", "GR"})
@@ -836,6 +843,42 @@ class ThemePage:
     sources: tuple[tuple[str, str], ...]
     frequencies: tuple[tuple[str, str], ...]
     groups_filter: tuple[tuple[str, str], ...] = GROUPS
+    filters_active: bool = False
+    clear_path: str = ""
+    prev_path: str | None = None
+    next_path: str | None = None
+
+
+@dataclass(frozen=True)
+class SearchPage:
+    """The complete served catalogue as the reader can browse and filter it.
+
+    `total` is the real number of catalogue rows that match before pagination, never
+    the number of rows prepared for this page. Choices are derived from the whole
+    catalogue and kept even when a filter is active, so a reader can widen the search
+    again without losing the context that produced an empty page.
+    """
+
+    query: str
+    notice: str
+    rows: tuple[Row, ...]
+    total: int
+    page: int
+    pages: int
+    per_page: int
+    theme: str
+    group: str
+    source: str
+    frequency: str
+    theme_options: tuple[tuple[str, str], ...]
+    group_options: tuple[tuple[str, str], ...]
+    source_options: tuple[tuple[str, str], ...]
+    frequency_options: tuple[tuple[str, str], ...]
+    filters_active: bool
+    clear_path: str
+    prev_path: str | None
+    next_path: str | None
+    rows_missing: int
 
 
 def _row(row: dict, value: dict, lang: str) -> Row:
@@ -871,11 +914,12 @@ def _grouped_rows(rows: tuple[Row, ...]) -> tuple[Group, ...]:
     return tuple(Group(title=title, rows=tuple(group)) for title, group in grouped.items())
 
 
-def _filtered_catalogue(rows: list[dict], *, group: str = "", source: str = "",
-                        frequency: str = "") -> list[dict]:
-    """Apply the catalogue's geography, source and frequency filters to theme rows."""
+def _filtered_catalogue(rows: list[dict], *, theme: str = "", group: str = "",
+                        source: str = "", frequency: str = "") -> list[dict]:
+    """Apply the catalogue's theme, geography, source and frequency filters."""
     return [r for r in rows
-            if (not group or _geo_group(r["geography"]) == group)
+            if (not theme or r["theme"] == theme)
+            and (not group or _geo_group(r["geography"]) == group)
             and (not source or r["source"] == source)
             and (not frequency or r["frequency"] == frequency)]
 
@@ -886,11 +930,21 @@ def _ordered_catalogue(rows: list[dict], lang: str) -> list[dict]:
                                        geography_name(lang, r["geography"]), r["id"]))
 
 
-def _page_slice(rows: list[dict], page: int) -> tuple[list[dict], int, int]:
+def _page_slice(rows: list[dict], page: int,
+                size: int = PAGE_SIZE) -> tuple[list[dict], int, int]:
     """Clamp a requested page to the list and return its chunk plus page and page count."""
-    pages = max(1, (len(rows) + PAGE_SIZE - 1) // PAGE_SIZE)
+    pages = max(1, (len(rows) + size - 1) // size)
     page = min(max(1, page), pages)
-    return rows[(page - 1) * PAGE_SIZE: page * PAGE_SIZE], page, pages
+    return rows[(page - 1) * size: page * size], page, pages
+
+
+def _page_path(path: str, params: list[tuple[str, str]], page: int) -> str:
+    """A relative address carrying every non-empty state value plus a non-first page."""
+    pairs = [(name, value) for name, value in params if value]
+    if page > 1:
+        pairs.append(("pagina", str(page)))
+    encoded = urlencode(pairs)
+    return f"{path}?{encoded}" if encoded else path
 
 
 def theme(db: Db, code: str, *, group: str = "", source: str = "", frequency: str = "",
@@ -904,13 +958,19 @@ def theme(db: Db, code: str, *, group: str = "", source: str = "", frequency: st
     ordered = _ordered_catalogue(filtered, lang)
     chunk, page, pages = _page_slice(ordered, page)
     prepared = _served_rows(db, chunk, lang)
+    params = [("grupo", group), ("fonte", source), ("frequencia", frequency)]
+    path = f"/temas/{code}"
     return ThemePage(
         code=code, title=theme_text(lang, code), blurb=theme_blurb(lang, code),
         groups=_grouped_rows(prepared),
         total=len(ordered), page=page, pages=pages, group=group, source=source,
         frequency=frequency,
         sources=tuple((s, source_title(lang, s)) for s in sources),
-        frequencies=tuple((f, frequency_text(lang, f)) for f in frequencies))
+        frequencies=tuple((f, frequency_text(lang, f)) for f in frequencies),
+        filters_active=any((group, source, frequency)),
+        clear_path=path,
+        prev_path=_page_path(path, params, page - 1) if page > 1 else None,
+        next_path=_page_path(path, params, page + 1) if page < pages else None)
 
 
 def _norm(text: str) -> str:
@@ -918,29 +978,103 @@ def _norm(text: str) -> str:
     return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
 
 
-def _matches(row: dict, needle: str, lang: str) -> bool:
-    """Whether a catalogue row matches an already-normalised search needle.
+def _search_haystack(row: dict, lang: str) -> str:
+    return " ".join((_title(row, lang), geography_name(lang, row["geography"]),
+                     source_title(lang, row["source"]), row["id"], row["indicator_key"],
+                     search_aliases(lang, row["family"])))
 
-    The single definition of what a reader can search: title, geography, source, series
-    identifier, indicator key and the family's declared aliases.
-    """
-    haystack = " ".join((_title(row, lang), geography_name(lang, row["geography"]),
-                         source_title(lang, row["source"]), row["id"], row["indicator_key"],
-                         search_aliases(lang, row["family"])))
-    return needle in _norm(haystack)
+
+def _search_terms(query: str) -> tuple[str, ...]:
+    """The normalised terms of one reader query; an empty query has no terms."""
+    return tuple(term for term in _norm(query.strip()).split() if term)
+
+
+def _matches_all(row: dict, terms: tuple[str, ...], lang: str) -> bool:
+    """Every term must occur in the same row. Token matching is conjunctive."""
+    haystack = _norm(_search_haystack(row, lang))
+    return all(term in haystack for term in terms)
+
+
+def parse_search_query(value: str) -> str | None:
+    """The stripped term, or None when the address carries too much or control bytes."""
+    if not isinstance(value, str):
+        return None
+    if len(value) > SEARCH_MAX_QUERY or _CONTROL.search(value):
+        return None
+    return value.strip()
+
+
+def parse_page_number(value: str | int | None) -> int:
+    """A safe page number before any `int` conversion of untrusted address text."""
+    if isinstance(value, int) and not isinstance(value, bool):
+        return max(1, value)
+    text = "" if value is None else str(value).strip()
+    if not text or len(text) > SEARCH_MAX_PAGE_DIGITS or not text.isdecimal():
+        return 1
+    return max(1, int(text))
 
 
 def search(db: Db, query: str, lang: str = "pt") -> tuple[Row, ...]:
-    needle = _norm(query.strip())
-    if not needle:
+    """The old notebook-facing search: one query string, every term, capped results.
+
+    The signature and the 100-row cap stay stable because the notebook composes its
+    add/remove links from this list. The catalogue page uses `search_page`, which
+    counts before paging and keeps the full matching set.
+    """
+    terms = _search_terms(query)
+    if not terms:
         return ()
     matched = []
     for r in catalogue(db):
-        if _matches(r, needle, lang):
+        if _matches_all(r, terms, lang):
             matched.append(r)
             if len(matched) >= SEARCH_CAP:
                 break
     return _served_rows(db, matched, lang)
+
+
+def search_page(db: Db, query: str = "", *, theme: str = "", group: str = "",
+                source: str = "", frequency: str = "", page: int = 1,
+                lang: str = "pt") -> SearchPage:
+    """The complete served catalogue for `/pesquisa`, with honest counts and state.
+
+    Choices are taken from the whole catalogue before any filter is applied. Unknown
+    filter values therefore produce a truthful, recoverable empty page instead of a
+    silently widened result. The query is bounded here, before the catalogue scan, so
+    a hostile address costs one notice, not a request error.
+    """
+    parsed = parse_search_query(query)
+    notice = "" if parsed is not None else (
+        "O termo de pesquisa é inválido ou demasiado longo. "
+        "O catálogo completo está abaixo.")
+    clean_query = parsed or ""
+    rows = catalogue(db)
+    theme_options = tuple((code, theme_text(lang, code)) for code in THEME_ORDER
+                          if any(r["theme"] == code for r in rows))
+    source_options = tuple((name, source_title(lang, name))
+                           for name in sorted({r["source"] for r in rows}))
+    frequency_options = tuple((code, frequency_text(lang, code))
+                              for code in sorted({r["frequency"] for r in rows}))
+    terms = _search_terms(clean_query)
+    matched = [r for r in rows if not terms or _matches_all(r, terms, lang)]
+    filtered = _filtered_catalogue(matched, theme=theme, group=group, source=source,
+                                   frequency=frequency)
+    ordered = _ordered_catalogue(filtered, lang)
+    chunk, page, pages = _page_slice(ordered, page, SEARCH_PAGE_SIZE)
+    prepared = _served_rows(db, chunk, lang)
+    params = [("q", clean_query), ("tema", theme), ("grupo", group),
+              ("fonte", source), ("frequencia", frequency)]
+    return SearchPage(
+        query=clean_query, notice=notice, rows=prepared, total=len(ordered),
+        page=page, pages=pages, per_page=SEARCH_PAGE_SIZE,
+        theme=theme, group=group, source=source, frequency=frequency,
+        theme_options=theme_options, group_options=GROUPS,
+        source_options=source_options, frequency_options=frequency_options,
+        filters_active=any((theme, group, source, frequency)),
+        clear_path=_page_path("/pesquisa", [("q", clean_query)], 1),
+        prev_path=_page_path("/pesquisa", params, page - 1) if page > 1 else None,
+        next_path=_page_path("/pesquisa", params, page + 1) if page < pages else None,
+        rows_missing=len(chunk) - len(prepared))
 
 
 @dataclass(frozen=True)

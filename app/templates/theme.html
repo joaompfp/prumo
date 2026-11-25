@@ -4,11 +4,53 @@
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.title }}
 </nav>
-<header class="page-head">
+<header class="page-head discovery-head">
   <h1>{{ page.title }}</h1>
   <p class="lede">{{ page.blurb }}</p>
   <p class="meta">{{ format_count(page.total) }} séries publicadas nesta secção.</p>
 </header>
+
+<details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
+  <summary>Filtrar por geografia, fonte e frequência</summary>
+  <form class="filters" action="{{ base }}/temas/{{ page.code }}" method="get">
+    <label>Geografia
+      <select name="grupo">
+        {% for code, label in page.groups_filter %}<option value="{{ code }}"{% if code == page.group %} selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Fonte
+      <select name="fonte">
+        <option value="">Todas</option>
+        {% for code, label in page.sources %}<option value="{{ code }}"{% if code == page.source %} selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Frequência
+      <select name="frequencia">
+        <option value="">Todas</option>
+        {% for code, label in page.frequencies %}<option value="{{ code }}"{% if code == page.frequency %} selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+    </label>
+    <button type="submit">Aplicar filtros</button>
+    {% if page.filters_active %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
+  </form>
+</details>
+
+{% if page.groups %}
+{% for group in page.groups %}
+<section class="family" aria-labelledby="fam-{{ loop.index }}">
+  <h2 id="fam-{{ loop.index }}">{{ group.title }}</h2>
+  {% with rows = group.rows %}{% include "_series_results.html" %}{% endwith %}
+</section>
+{% endfor %}
+
+<nav class="pager" aria-label="Paginação">
+  {% if page.prev_path %}<a href="{{ base }}{{ page.prev_path }}" rel="prev">Página anterior</a>{% endif %}
+  <span>Página {{ page.page }} de {{ page.pages }}</span>
+  {% if page.next_path %}<a href="{{ base }}{{ page.next_path }}" rel="next">Página seguinte</a>{% endif %}
+</nav>
+{% else %}
+<p class="empty-state">Nenhuma série corresponde a estes filtros. <a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>.</p>
+{% endif %}
 
 {% if cms_pages %}
 <section class="cms-links" aria-labelledby="analises">
@@ -25,47 +67,5 @@
     {% endfor %}
   </ul>
 </section>
-{% endif %}
-
-<form class="filters" action="{{ base }}/temas/{{ page.code }}" method="get">
-  <label>Geografia
-    <select name="grupo">
-      {% for code, label in page.groups_filter %}<option value="{{ code }}"{% if code == page.group %} selected{% endif %}>{{ label }}</option>{% endfor %}
-    </select>
-  </label>
-  <label>Fonte
-    <select name="fonte">
-      <option value="">Todas</option>
-      {% for code, label in page.sources %}<option value="{{ code }}"{% if code == page.source %} selected{% endif %}>{{ label }}</option>{% endfor %}
-    </select>
-  </label>
-  <label>Frequência
-    <select name="frequencia">
-      <option value="">Todas</option>
-      {% for code, label in page.frequencies %}<option value="{{ code }}"{% if code == page.frequency %} selected{% endif %}>{{ label }}</option>{% endfor %}
-    </select>
-  </label>
-  <button type="submit">Aplicar</button>
-</form>
-
-{% if page.groups %}
-{% for group in page.groups %}
-<section class="family" aria-labelledby="fam-{{ loop.index }}">
-  <h2 id="fam-{{ loop.index }}">{{ group.title }}</h2>
-  {% with rows = group.rows %}{% include "_series_table.html" %}{% endwith %}
-</section>
-{% endfor %}
-
-<nav class="pager" aria-label="Paginação">
-  {% if page.page > 1 %}
-  <a href="{{ base }}/temas/{{ page.code }}?grupo={{ page.group }}&amp;fonte={{ page.source }}&amp;frequencia={{ page.frequency }}&amp;pagina={{ page.page - 1 }}">Página anterior</a>
-  {% endif %}
-  <span>Página {{ page.page }} de {{ page.pages }}</span>
-  {% if page.page < page.pages %}
-  <a href="{{ base }}/temas/{{ page.code }}?grupo={{ page.group }}&amp;fonte={{ page.source }}&amp;frequencia={{ page.frequency }}&amp;pagina={{ page.page + 1 }}">Página seguinte</a>
-  {% endif %}
-</nav>
-{% else %}
-<p class="empty-state">Nenhuma série corresponde a estes filtros. <a href="{{ base }}/temas/{{ page.code }}">Limpar filtros</a>.</p>
 {% endif %}
 {% endblock %}

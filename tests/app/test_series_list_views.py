@@ -130,16 +130,10 @@ def _squash(value):
 
 
 def _series_row(html, series_id):
-    match = re.search(rf'<tr>\s*<td><a href="/series/{re.escape(series_id)}">.*?</tr>',
-                      html, re.S)
-    assert match is not None, series_id
-    return _squash(match.group(0))
-
-
-def _table_head(html):
-    match = re.search(r"<thead>.*?</thead>", html, re.S)
-    assert match is not None
-    return _squash(match.group(0))
+    blocks = re.findall(r'<li class="series-result">.*?</li>', html, re.S)
+    matches = [block for block in blocks if f'href="/series/{series_id}"' in block]
+    assert len(matches) == 1, series_id
+    return _squash(matches[0])
 
 
 def test_search_and_theme_render_the_same_series_row_markup(client):
@@ -156,13 +150,15 @@ def test_search_and_theme_render_the_same_series_row_markup(client):
     flagged = client.get("/pesquisa?q=desemprego")
     assert flagged.status_code == 200
 
-    assert _table_head(search.text) == _table_head(theme.text)
+    assert 'class="series-results"' in search.text
+    assert 'class="series-results"' in theme.text
     assert _series_row(search.text, HICP) == _series_row(theme.text, HICP)
     assert _series_row(flagged.text, UNEMP) == _series_row(theme.text, UNEMP)
     row = _series_row(search.text, HICP)
     assert "INE - Instituto Nacional de Estatística" in row
     assert "1,8" in row and "outubro de 2026" in row and "03/11/2026" in row
     assert row.count('href="/series/' + HICP + '"') == 1
+    assert f'href="/caderno?s={HICP}"' in row
     assert '<span class="flag">provisório</span>' in _series_row(flagged.text, UNEMP)
 
 
