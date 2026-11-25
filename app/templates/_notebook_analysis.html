@@ -1,3 +1,4 @@
+{% from "_original_value.html" import original_value %}
 {% macro evidence_output(output, page) %}
     <table class="data-table analysis-inputs">
       <thead>
@@ -14,9 +15,9 @@
       <tbody>
         {% for input in output.inputs %}
         <tr>
-          <td>{{ output.period_text }} · {{ output.value_display }}</td>
+          <td>{{ output.period_text }} · {{ output.value_display }}{{ original_value(output.raw_value, output.value_display) }}</td>
           <td>{{ input.period_text }}</td>
-          <td class="num">{{ input.value_display }}</td>
+          <td class="num">{{ input.value_display }}{{ original_value(input.raw_value, input.value_display) }}</td>
           <td>{% if input.status_text %}<span class="flag">{{ input.status_text }}</span>{% endif %}</td>
           <td>{{ input.fetched_text }}</td>
           <td>{% if input.run_id %}#{{ input.run_id }}{% endif %}</td>

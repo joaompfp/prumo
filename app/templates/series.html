@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell %}
+{% from "_original_value.html" import original_value %}
 {% block title %}{{ page.series.title }} - Prumo{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
 {% block content %}
@@ -104,7 +105,7 @@
       {% for v in rev.versions %}
       <tr>
         <td>{% if loop.first %}{{ rev.period_text }}{% endif %}</td>
-        <td class="num">{{ v.value_display }}</td>
+        <td class="num">{{ v.value_display }}{{ original_value(v.raw_value, v.value_display) }}</td>
         <td>{{ v.fetched_text }}</td>
         <td>{% if v.served %}<span class="badge badge-quiet">em vigor</span>{% else %}substituído{% endif %}</td>
       </tr>
@@ -146,7 +147,7 @@
     <thead><tr><th scope="col">Fonte</th><th scope="col" class="num">Último valor</th><th scope="col">Período</th><th scope="col">Recolhido</th></tr></thead>
     <tbody>
       {% for c in page.cross_checks %}
-      <tr><td>{{ c.source_title }}</td><td class="num">{{ c.value_display }} <span class="unit">{{ c.unit_text }}</span></td><td>{{ c.period_text }}</td><td>{{ c.fetched_text }}</td></tr>
+      <tr><td>{{ c.source_title }}</td><td class="num">{{ c.value_display }} <span class="unit">{{ c.unit_text }}</span>{{ original_value(c.raw_value, c.value_display) }}</td><td>{{ c.period_text }}</td><td>{{ c.fetched_text }}</td></tr>
       {% endfor %}
     </tbody>
   </table>

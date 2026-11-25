@@ -137,14 +137,14 @@ def test_default_chart_uses_the_common_periods_and_matches_its_table(tmp_path):
 
     # The pair is intersected; A's own newest period is not drawn just because it exists.
     assert data["periods"] == ["agosto de 2026", "setembro de 2026"]
-    assert data["display"] == [["10,00 milhões de euros", "20,00 milhões de euros"],
-                               ["11,50 milhões de euros", "21,50 milhões de euros"]]
+    assert data["display"] == [["10 milhões de euros", "20 milhões de euros"],
+                               ["11,5 milhões de euros", "21,5 milhões de euros"]]
     table = chart_block(html)
     assert re.findall(r"<td>(agosto de 2026|setembro de 2026)</td>", table) == [
         "setembro de 2026", "agosto de 2026"]
     assert "outubro de 2026" not in visible(table)
-    assert "10,00" in table and "20,00" in table
-    assert "11,50" in table and "21,50" in table
+    assert 'class="num">10' in table and 'class="num">20' in table
+    assert "11,5" in table and "21,5" in table
     assert table.count("provisório") == 2
 
     # Provenance is the last plotted period on each side, not A's newer October value.
@@ -341,9 +341,9 @@ def test_mixed_frequency_uses_a_sparse_calendar_without_dropping_cards(tmp_path)
     assert data["version"] == 2 and data["kind"] == "calendar"
     assert data["periods"] == ["01/01/2026", "01/09/2026", "01/10/2026"]
     # The annual side is present only on its own real start day; missing cells stay null.
-    assert data["display"] == [[None, "10,0 %"],
-                               ["1,0 %", None],
-                               ["2,0 %", None]]
+    assert data["display"] == [[None, "10 %"],
+                               ["1 %", None],
+                               ["2 %", None]]
     assert data["cell_periods"] == [[None, "2026"],
                                     ["setembro de 2026", None],
                                     ["outubro de 2026", None]]
@@ -550,7 +550,7 @@ def test_interval_chart_uses_only_a_bounded_shared_day(tmp_path):
     data = payload(default.text)
     assert data["periods"] == ["01/11/2026, 00:00 UTC", "01/11/2026, 00:15 UTC",
                                "01/11/2026, 00:30 UTC"]
-    assert "99,0" not in chart_block(default.text)
+    assert all(99.0 not in row for row in data["y"])
     assert "Dia UTC: 01/11/2026" in visible(default.text)
 
     assert one.status_code == 200

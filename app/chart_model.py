@@ -2,7 +2,7 @@
 
 `app.charts` renders SVG from this model; the interactive adapter's payload is serialised from
 the same model, so the fallback, the canvas renderer and the point readout share periods,
-coordinates, domains, ticks and exact display strings. Nothing here formats a value back from a
+coordinates, domains, ticks and shared display strings. Nothing here formats a value back from a
 number: values are the stored tokens rendered by `app.formatting.format_value`.
 
 The module is pure: no HTML, no database, no request state. A CMS reader can call

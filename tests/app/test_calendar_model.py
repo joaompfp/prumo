@@ -157,14 +157,14 @@ def test_exact_native_tokens_survive_and_hostile_labels_are_xml_escaped():
     assert cell.period == "2026-01"
     assert cell.period_text == "janeiro de 2026"
     assert cell.value_text == "1.10"
-    assert cell.value_display == "1,10"
+    assert cell.value_display == "1,1"
     assert cell.number == Decimal("1.10")
     assert model.labels == (hostile,)
 
     svg = str(calendar_svg(model))
     assert "<script>" not in svg and "</title><script>" not in svg
     assert "&lt;/title&gt;&lt;script&gt;" in svg
-    assert "janeiro de 2026" in svg and "1,10 %" in svg
+    assert "janeiro de 2026" in svg and "1,1 %" in svg
 
 
 def expected_axis_y(model, number, axis):
@@ -386,7 +386,7 @@ def test_single_point_is_centred_and_gets_a_visible_last_marker_and_legend():
     svg = str(calendar_plot(model))
     assert 'class="chart-last chart-last-g0"' in svg
     legend = str(calendar_legend(model))
-    assert "3,90 %" in legend and "janeiro de 2026" in legend
+    assert "3,9 %" in legend and "janeiro de 2026" in legend
 
 
 def test_chart_dispatch_uses_the_calendar_renderer_without_changing_dense_models():
@@ -466,7 +466,7 @@ def test_dense_payload_v1_is_byte_for_byte_the_existing_contract():
         "version": 1, "kind": "line", "name": "T (%)",
         "x": [24312.0], "x_min": 24311.0, "x_max": 24313.0,
         "x_ticks": [{"x": 24312.0, "text": "jan 2026"}],
-        "periods": ["janeiro de 2026"], "display": [["1,0 %"]], "y": [[1.0]],
+        "periods": ["janeiro de 2026"], "display": [["1 %"]], "y": [[1.0]],
         "breaks": [],
         "axes": [{"unit": "%", "min": 0.9, "max": 1.1, "interval": 0.05,
                   "ticks": [{"value": 0.9, "text": "0,9"},

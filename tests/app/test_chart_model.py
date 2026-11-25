@@ -4,7 +4,8 @@ Goldens were deliberately recaptured for the approved 50 percent legibility pass
 label margins and inward endpoint anchors. The 2026-11-17 typography increment recaptured
 the same cases again for the further 10 percent label role and gutter scale. Original
 captures remain in golden/pre_legibility. Every point/title/tick text is identical in both
-captures and in the versioned golden-deltas receipt.
+captures and in the versioned golden-deltas receipt. The 2026-11-25 decimal-display
+pass changes text only; geometry/attribute equality is pinned in its golden-deltas.json.
 """
 import math
 import re
@@ -80,7 +81,7 @@ def test_line_model_filters_nonfinite_tokens_and_keeps_exact_strings():
     model = chart_model.line_model(monthly(["1.0", "n.d.", "3.90", "NaN"]), frequency="M",
                                    title="T", unit="%")
     assert [p.value_text for p in model.points] == ["1.0", "3.90"]
-    assert [p.value_display for p in model.points] == ["1,0", "3,90"]
+    assert [p.value_display for p in model.points] == ["1", "3,9"]
     assert [p.period_text for p in model.points] == ["janeiro de 2026", "março de 2026"]
     assert all(math.isfinite(p.x) and math.isfinite(p.y) for p in model.points)
 
@@ -126,7 +127,7 @@ def test_single_point_is_centred_and_has_a_visible_last_mark():
     assert len(model.points) == 1
     assert model.points[0].x == chart_model.LEFT + (chart_model.WIDTH - chart_model.LEFT
                                                     - chart_model.RIGHT) / 2
-    assert model.last_label == "3,90"
+    assert model.last_label == "3,9"
 
 
 def test_comparison_intersects_finite_pairs_and_records_breaks():

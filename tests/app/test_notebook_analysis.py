@@ -139,7 +139,7 @@ def test_mixed_hicp_and_gdp_uses_calendar_rows_cards_and_side_provenance(tmp_pat
         ["dezembro de 2024", None],
     ]
     assert data["display"] == [
-        ["2,0 %", "20\u00a0000 euros por habitante"],
+        ["2 %", "20\u00a0000 euros por habitante"],
         ["2,1 %", None],
         [None, "21\u00a0000 euros por habitante"],
         ["2,2 %", None],
@@ -215,10 +215,10 @@ def test_quarter_semester_and_annual_originals_share_only_real_start_rows(tmp_pa
         ["2.º trimestre de 2024", None, None],
         [None, "2.º semestre de 2024", None],
     ]
-    assert data["display"] == [["1,0 milhões de euros", "3,0 milhões de euros",
-                                "5,0 milhões de euros"],
-                               ["2,0 milhões de euros", None, None],
-                               [None, "4,0 milhões de euros", None]]
+    assert data["display"] == [["1 milhões de euros", "3 milhões de euros",
+                                "5 milhões de euros"],
+                               ["2 milhões de euros", None, None],
+                               [None, "4 milhões de euros", None]]
     assert "Últimos períodos por série" in visible(response.text)
 
 
@@ -350,8 +350,8 @@ def test_annual_pp_rates_disclose_calculated_method_base_and_raw_inputs(tmp_path
     assert data["version"] == 1 and data["kind"] == "comparison"
     assert data["periods"] == ["2023", "2024"]
     assert [axis["unit"] for axis in data["axes"]] == ["p.p."]
-    assert data["display"] == [["0,000000 p.p.", "0,000000 p.p."],
-                               ["1,000000 p.p.", "1,000000 p.p."]]
+    assert data["display"] == [["0 p.p.", "0 p.p."],
+                               ["1 p.p.", "1 p.p."]]
     assert "A média anual calculada de doze taxas homólogas mensais não é a taxa de " \
            "inflação anual oficial." in text
     assert "A média anual calculada de doze taxas mensais de desemprego é não ponderada" in text
@@ -388,18 +388,18 @@ def test_annual_base100_two_geographies_auto_and_explicit_base_outside_window(tm
         missing = site.get(f"/caderno?{base_query}&base=2000")
     auto_data = payload(auto.text)
     assert auto_data["periods"] == ["2019", "2020", "2024"]
-    assert auto_data["display"][0] == ["100,000000 índice (base 2019=100)",
-                                       "100,000000 índice (base 2019=100)"]
-    assert auto_data["display"][1] == ["105,000000 índice (base 2019=100)",
-                                       "110,000000 índice (base 2019=100)"]
+    assert auto_data["display"][0] == ["100 índice (base 2019=100)",
+                                       "100 índice (base 2019=100)"]
+    assert auto_data["display"][1] == ["105 índice (base 2019=100)",
+                                       "110 índice (base 2019=100)"]
     assert "automático, primeiro ano comum na janela" in visible(auto.text)
     assert "2019" in visible(auto.text)
 
     # The explicit base may be outside the display window, but it must exist on every side.
     explicit_data = payload(explicit.text)
     assert explicit_data["periods"] == ["2019", "2020", "2024"]
-    assert explicit_data["display"][0] == ["200,000000 índice (base 2010=100)",
-                                           "150,000000 índice (base 2010=100)"]
+    assert explicit_data["display"][0] == ["200 índice (base 2010=100)",
+                                           "150 índice (base 2010=100)"]
     assert "explícito" in visible(explicit.text)
     assert "Entradas originais" in visible(auto.text)
     assert "Valor de base" in visible(explicit.text)
@@ -546,7 +546,7 @@ def test_zero_base_is_valid_for_percentage_points(tmp_path):
             f"/caderno?s={HICP}&frequencia=anual&transformacao=pp&base=2023")
     assert response.status_code == 200
     data = payload(response.text)
-    assert data["display"] == [["0,000000 p.p."], ["2,000000 p.p."]]
+    assert data["display"] == [["0 p.p."], ["2 p.p."]]
     assert "O índice base 100 exige" not in visible(response.text)
 
 
@@ -563,7 +563,7 @@ def test_year_end_policy_keeps_december_token_and_calls_it_calculated(tmp_path):
     assert response.status_code == 200
     data = payload(response.text)
     assert data["periods"] == ["2023", "2024"]
-    assert data["display"] == [["9,0 milhões de euros"], ["12,5 milhões de euros"]]
+    assert data["display"] == [["9 milhões de euros"], ["12,5 milhões de euros"]]
     text = visible(response.text)
     assert "valor de dezembro, com ano mensal completo" in text
     assert "O valor de dezembro é uma vista calculada" in text

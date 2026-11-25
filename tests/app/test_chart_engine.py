@@ -59,7 +59,7 @@ def test_pair_payload_stays_byte_shaped_for_existing_readers():
         "x_ticks": [{"x": 24312.0, "text": "jan 2026"},
                     {"x": 24313.0, "text": "fev 2026"}],
         "periods": ["janeiro de 2026", "fevereiro de 2026"],
-        "display": [["1,0 %", "100\u00a0000 milhões de euros"],
+        "display": [["1 %", "100\u00a0000 milhões de euros"],
                     ["1,5 %", "101\u00a0000 milhões de euros"]],
         "y": [[1.0, 100000.0], [1.5, 101000.0]],
         "breaks": [],
@@ -239,9 +239,9 @@ def test_group_keeps_exact_tokens_in_the_svg_payload_and_values():
     assert payload["y"][0] == [float(t) for t in tokens]
     assert payload["periods"][0] == "1.º semestre de 2024"
     svg = str(group_chart(rows, frequency="S", title="Preço", labels=labels, unit="EUR/kWh"))
-    assert "Portugal - 1.º semestre de 2024: 0,2315 EUR/kWh" in svg
-    assert "Espanha - 1.º semestre de 2024: 0,2100 EUR/kWh" in svg
-    assert "França - 1.º semestre de 2024: 0,2500 EUR/kWh" in svg
+    assert "Portugal - 1.º semestre de 2024: 0,23 EUR/kWh" in svg
+    assert "Espanha - 1.º semestre de 2024: 0,21 EUR/kWh" in svg
+    assert "França - 1.º semestre de 2024: 0,25 EUR/kWh" in svg
 
 
 def test_group_payload_declares_n_dimensions_and_one_explicit_axis():
@@ -344,7 +344,7 @@ def test_group_axes_bind_domains_and_geometry_to_every_member():
     assert payload["y"] == [[100000.0, 1.0, 2.0], [101000.0, 1.5, 3.0],
                             [102500.0, 1.2, 2.5]]
     assert payload["display"][0] == [f"{format_value('100000')} milhões de euros",
-                                     "1,0 %", "2,0 %"]
+                                     "1 %", "2 %"]
 
     svg = str(group_chart(rows, frequency="S", title="Preço", labels=labels,
                           units=MIXED_UNITS, axes=(0, 1, 1)))

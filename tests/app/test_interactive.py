@@ -55,11 +55,11 @@ def test_series_payload_uses_the_same_periods_and_exact_tokens(client):
     payload = payload_of(html)
     assert payload["version"] == 1 and payload["kind"] == "line"
     assert payload["periods"] == ["agosto de 2026", "setembro de 2026", "outubro de 2026"]
-    assert payload["display"] == [["2,1 %"], ["2,0 %"], ["1,8 %"]]
+    assert payload["display"] == [["2,1 %"], ["2 %"], ["1,8 %"]]
     assert payload["series"] == [{"title": "Taxa de variação homóloga do IHPC - Portugal",
                                   "unit": "%", "style": "ink", "badge": ""}]
-    # The exact stored token is also what the table and the headline show.
-    assert '<td class="num">2,0</td>' in html or '<td class="num">1,8</td>' in html
+    # The same bounded reader string appears in the table, headline and payload.
+    assert '<td class="num">2</td>' in html or '<td class="num">1,8</td>' in html
     assert "1,8" in html and payload["display"][-1][0].startswith("1,8")
     for forbidden in ("hicp_yoy", "redistribution_ok", "value_text"):
         assert forbidden not in json.dumps(payload, ensure_ascii=False)

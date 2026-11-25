@@ -388,6 +388,7 @@ class EvidenceInput:
     fetched_text: str
     run_id: int | None
     sha256: str | None
+    raw_value: str = ""
 
 
 @dataclass(frozen=True)
@@ -399,6 +400,7 @@ class EvidenceOutput:
     method_text: str
     calculated: bool
     inputs: tuple[EvidenceInput, ...]
+    raw_value: str = ""
 
 
 @dataclass(frozen=True)

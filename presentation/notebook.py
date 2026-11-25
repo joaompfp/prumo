@@ -406,9 +406,11 @@ _PT = NotebookCopy(
                              "escolhidas. O gráfico fica indisponível; as séries elegíveis "
                              "continuam no caderno.",
     chart_analysis_annual="Vista anual calculada a partir do histórico completo.",
-    chart_analysis_rounding="Os valores calculados usam aritmética decimal e arredondamento "
-                            "half-even a seis casas decimais; os valores originais não são "
-                            "arredondados.",
+    chart_analysis_rounding="Os valores calculados usam aritmética decimal exata. O resultado "
+                            "interno é arredondado half-even a seis casas decimais; a "
+                            "apresentação usa no máximo duas casas decimais, arredondadas meio "
+                            "para cima. Os valores originais não são alterados e o token exato "
+                            "de cada entrada fica em «Valor original».",
     chart_analysis_calculated="Os valores assinalados como calculados são vistas analíticas do "
                               "Prumo, não observações verificadas pela fonte.",
     chart_analysis_hicp="A média anual calculada de doze taxas homólogas mensais não é a taxa "

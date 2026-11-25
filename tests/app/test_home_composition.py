@@ -270,4 +270,4 @@ def test_a_slot_published_after_the_catalogue_was_cached_renders_at_once(site_pa
         html = c.get("/").text  # same client, catalogue cache still warm
     assert 'class="card"' in html
     assert "Taxa de variação homóloga do IHPC - Portugal" in html
-    assert "2,0" in html
+    assert 'class="card-value">2 <span class="card-unit">' in html

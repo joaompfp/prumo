@@ -21,8 +21,8 @@ def test_chart_is_svg_with_finite_geometry_and_no_script():
 
 def test_chart_shows_periods_and_values_in_titles():
     svg = str(line_chart(_points(["1.0", "2.0"]), frequency="M", title="T", unit="%"))
-    assert "janeiro de 2026: 1,0 %" in svg
-    assert "fevereiro de 2026: 2,0 %" in svg
+    assert "janeiro de 2026: 1 %" in svg
+    assert "fevereiro de 2026: 2 %" in svg
 
 
 def test_chart_escapes_untrusted_title():

@@ -316,8 +316,8 @@ section { margin: 80px 0; }
   font-variant-numeric: tabular-nums lining-nums; margin: 0; min-height: 2.2em;
   overflow-wrap: anywhere; word-break: normal;
 }
-/* Publisher precision is the product. A long exact token wraps in its card; it is never
-   rounded and never shrunk below the minimum readable type size. */
+/* Display decimals are bounded by the shared formatter. Large integer values can still
+   wrap; their functional reading scale must not shrink to fit a card. */
 .card-value--long { font-size: 2.1rem; letter-spacing: -0.02em; }
 .card-unit {
   display: block; font-size: .8rem; font-weight: 400; color: var(--muted);

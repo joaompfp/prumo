@@ -1,8 +1,8 @@
 """Inline SVG charts. No JavaScript, no external library, no inline style attribute.
 
-The chart is decoration over a table that the template always renders: values keep their
-stored precision, the axis is the only rounded thing on the page. Geometry, domains, ticks and
-the exact point strings come from `app.chart_model`; this module only turns a prepared model
+The chart accompanies a table that the template always renders. Stored values and geometry
+retain their precision; reader strings follow the shared display policy. Geometry, domains,
+ticks and point strings come from `app.chart_model`; this module only turns a prepared model
 into SVG, so the interactive canvas and the fallback cannot describe different charts.
 """
 from markupsafe import Markup, escape

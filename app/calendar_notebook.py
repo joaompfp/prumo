@@ -312,6 +312,7 @@ def _evidence_input(item: InputValue, raw_by_period: dict[str, dict],
     return notebook_chart.EvidenceInput(
         period_text=format_period(item.period, frequency),
         value_display=format_value(item.value_text),
+        raw_value=item.value_text,
         status_text=flag_text(lang, status) if status else "",
         fetched_text=format_datetime(raw.get("fetched_at")),
         run_id=raw.get("run_id"),
@@ -324,6 +325,7 @@ def _evidence_output(copy: NotebookCopy, value: AnalyticalValue, raw_by_period: 
     return notebook_chart.EvidenceOutput(
         period_text=format_period(value.period, "A"),
         value_display=format_value(value.value_text),
+        raw_value=value.value_text,
         method_text=_method_text(copy, value),
         calculated=value.method != "native" or value.transformation != "original",
         inputs=tuple(_evidence_input(item, raw_by_period, frequency, lang)

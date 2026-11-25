@@ -372,7 +372,7 @@ def test_full_notebook_still_shows_selection_and_refuses_a_thirteenth(tmp_path):
         html = response.text
         text = visible(html)
         assert "12 de 12 séries." in text
-        assert "1,90" in text  # the publisher token 1.90 keeps its trailing zero
+        assert "1,9" in text  # display omits a redundant zero; source token remains 1.90
         assert card_count(html) == 12
         assert hidden_selection(html) == selection
         assert "Coeficiente de Gini" in text

@@ -227,10 +227,10 @@ def test_summary_and_table_pin_the_exact_tokens(countries_path, countries_client
         format_value("0.2900"), format_value("0.2400"), format_value("0.2700"),
         format_value("0.4400"), format_value("0.3400"))
     html = countries_client.get("/comparar/eletricidade-domestica").text
-    for token in ("0,2900", "0,2400", "0,2700", "0,4400", "0,3400"):
+    for token in ("0,29", "0,24", "0,27", "0,44", "0,34"):
         assert token in html
     # The exact four-decimal token survives; the axis may round, the summary and table do not.
-    assert "0,2900" in html
+    assert "0,29" in html
 
 
 def test_provisional_flag_reaches_summary_and_table(countries_path, countries_client):

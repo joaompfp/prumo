@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell %}
+{% from "_original_value.html" import original_value %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
 {% block content %}
@@ -52,7 +53,7 @@
     <thead><tr><th scope="col">Série</th><th scope="col">Período</th><th scope="col" class="num">Valor</th></tr></thead>
     <tbody>
       {% for i in page.inputs %}
-      <tr><td><a href="{{ base }}/series/{{ i.series_id }}">{{ i.title }}</a></td><td>{{ i.period_text }}</td><td class="num">{{ i.value_display }}</td></tr>
+      <tr><td><a href="{{ base }}/series/{{ i.series_id }}">{{ i.title }}</a></td><td>{{ i.period_text }}</td><td class="num">{{ i.value_display }}{{ original_value(i.raw_value, i.value_display) }}</td></tr>
       {% endfor %}
     </tbody>
   </table>

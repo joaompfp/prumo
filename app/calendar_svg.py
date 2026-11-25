@@ -3,7 +3,7 @@
 Every present cell is a real native observation; a missing cell is simply absent from the
 series path. A path command restarts only at that series' own native gap, so an annual line
 runs through months observed by another side without inventing an annual value. Markers carry
-the original native period and exact stored value, and the legend states each side's own last
+the original native period and shared display value, and the legend states each side's own last
 value and native period instead of a floating label that could collide.
 """
 from markupsafe import Markup, escape
@@ -81,7 +81,7 @@ def calendar_plot(model: CalendarModel | None) -> Markup:
                          f'({escape(cell.period)}): '
                          f'{escape(_display(cell.value_display, series.unit))}</title></circle>')
 
-    # Each side marks its own latest actual observation. The exact value and native period live
+    # Each side marks its own latest actual observation. The display value and native period live
     # in the legend, so no floating label can collide with another side.
     for index, series in enumerate(model.series):
         row = model.rows[series.latest_index]
@@ -97,7 +97,7 @@ def calendar_plot(model: CalendarModel | None) -> Markup:
 
 
 def calendar_legend(model: CalendarModel | None) -> Markup:
-    """The side key: label, axis membership when dual, last exact value and native period."""
+    """The side key: label, axis membership when dual, last display value and native period."""
     if model is None:
         return Markup("")
     show_axes = model.dual and len(model.series) > 2

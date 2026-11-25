@@ -1,19 +1,21 @@
 """Portuguese presentation of stored values, periods and timestamps.
 
-Values keep the publisher's token and precision: this module only changes separators, never
-rounds, rescales or converts. Axis ticks in `charts` are the one place where a number is
-rounded, and they are not values.
+Reader values use at most two decimal places. This presentation boundary never changes
+stored tokens, calculation inputs, plot coordinates or CSV exports. Very small nonzero
+values are shown as bounds rather than being mistaken for zero.
 """
 import re
 from datetime import datetime, timezone
-from decimal import Decimal, InvalidOperation
+from decimal import ROUND_HALF_UP, Decimal, InvalidOperation, localcontext
 
 NBSP = "\u00a0"
 MONTHS = ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto",
           "setembro", "outubro", "novembro", "dezembro")
 MONTHS_SHORT = ("jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov",
                 "dez")
-_NUMBER = re.compile(r"[+-]?\d+(?:\.\d+)?")
+_NUMBER = re.compile(r"[+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?", re.ASCII)
+DISPLAY_DECIMAL_PLACES = 2
+_DISPLAY_QUANTUM = Decimal("0.01")
 
 
 def _localize_fixed(text: str) -> str:
@@ -25,29 +27,47 @@ def _localize_fixed(text: str) -> str:
     return sign + grouped + ("," + decimals if decimals else "")
 
 
+def _scientific(value: Decimal) -> str:
+    """Keep very small ticks distinct without a long fractional part."""
+    with localcontext() as context:
+        context.rounding = ROUND_HALF_UP
+        mantissa, exponent = format(value, f".{DISPLAY_DECIMAL_PLACES}E").split("E")
+    return _localize_fixed(mantissa.rstrip("0").rstrip(".")) + "e" + str(int(exponent))
+
+
+def _rounded_display(value: Decimal) -> str:
+    if not value:
+        return "0"
+    # Avoid expanding an extreme exponent or depending on a caller's Decimal precision.
+    if value.adjusted() > 1000:
+        return _scientific(value)
+    with localcontext() as context:
+        context.prec = max(28, value.adjusted() + DISPLAY_DECIMAL_PLACES + 2)
+        rounded = value.quantize(_DISPLAY_QUANTUM, rounding=ROUND_HALF_UP)
+    return _localize_fixed(format(rounded, "f").rstrip("0").rstrip("."))
+
+
 def format_value(token: str) -> str:
-    """`1234567.80` -> `1 234 567,80`. Unparseable tokens are returned unchanged: the stored
-    text is the authority, never a reformatted guess."""
+    """Round reader text to at most two places; never use it as a calculation input.
+
+    Half ties round away from zero. CSV and original-value evidence bypass this helper.
+    """
     text = token.strip()
     if not _NUMBER.fullmatch(text):
         return token
-    return _localize_fixed(text)
+    value = decimal_or_none(text)
+    if value is None:
+        return token
+    if value and value.copy_abs() < Decimal("0.005"):
+        return "> -0,01" if value.is_signed() else "< 0,01"
+    return _rounded_display(value)
 
 
 def format_axis(value: Decimal) -> str:
-    """A rounded axis tick, at most two decimals, with PT separators."""
-    if value == value.to_integral():
-        text = str(int(value))
-    else:
-        text = format(value.normalize(), "f")
-        integer, _, decimals = text.partition(".")
-        decimals = decimals[:2].rstrip("0")
-        text = integer + ("," + decimals if decimals else "")
-    integer, _, decimals = text.partition(",")
-    sign = "-" if integer.startswith("-") else ""
-    digits = integer.lstrip("-")
-    grouped = f"{int(digits):,}".replace(",", NBSP) if digits else digits
-    return sign + grouped + ("," + decimals if decimals else "")
+    """Bounded PT tick text; scientific notation prevents false zero on tiny axes."""
+    if value and value.copy_abs() < _DISPLAY_QUANTUM:
+        return _scientific(value)
+    return _rounded_display(value)
 
 
 def format_count(n: int) -> str:

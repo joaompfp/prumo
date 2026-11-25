@@ -22,6 +22,7 @@ from tests.app.conftest import (
     WORLD,
     fetch,
 )
+from tests.app.test_interactive import payload_of
 
 PAGE = "precos-e-desemprego"
 CHART = "inflacao-desemprego"
@@ -322,7 +323,8 @@ def test_chart_provenance_is_the_last_common_period_not_the_newest_value(
     html = visible(response.text)
     assert "setembro de 2026" in html
     assert "outubro de 2026" not in html
-    assert "11,0" in html and "21,0" in html
+    assert payload_of(response.text)["display"][-1] == ["11 milhões de euros",
+                                                        "21 milhões de euros"]
     assert "01/11/2026, 09:00 UTC" in html     # A's provenance at the common period
     assert "02/11/2026, 09:00 UTC" in html     # B's provenance at the common period
     assert "03/11/2026, 09:00 UTC" not in html  # A's newer period is not drawn
@@ -347,8 +349,7 @@ def test_interval_chart_reads_only_the_explicit_utc_day(client, cms, site_path):
     assert response.status_code == 200
     html = visible(response.text)
     assert "01/11/2026" in html
-    assert "10,0" in html and "11,0" in html
-    assert "99,0" not in html
+    assert payload_of(response.text)["display"] == [["10 GWh"], ["11 GWh"]]
     assert "2 intervalos no dia UTC escolhido." in html
 
 

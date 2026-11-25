@@ -41,8 +41,8 @@
 
 <section aria-labelledby="precisao">
   <h2 id="precisao">Precisão, unidades e arredondamento</h2>
-  <p>Nas séries originais, o Prumo guarda e mostra o número tal como o editor o publicou, com a mesma precisão e unidade. Apenas as marcas dos eixos são arredondadas para leitura. Os valores originais nas tabelas e nos ficheiros CSV mantêm a precisão publicada.</p>
-  <p>No Caderno, o leitor pode escolher uma vista anual calculada, um índice de base 100 ou uma diferença em pontos percentuais. Estas vistas estão identificadas como calculadas, mostram a fórmula, o ano de base e os valores originais usados, sem alterar a base de dados. Os resultados são apresentados com seis casas decimais, com arredondamento para o par mais próximo e recomputação independente por aritmética racional.</p>
+  <p>O Prumo guarda os valores originais com toda a precisão publicada e a mesma unidade. Na interface, apresenta no máximo duas casas decimais, sem zeros finais desnecessários. Os empates de arredondamento afastam-se de zero: 2,345 passa a 2,35 e -2,345 a -2,35. Valores não nulos demasiado pequenos aparecem como limites, por exemplo «&lt; 0,01», em vez de zero. Os CSV mantêm a precisão completa. Nas revisões e entradas de cálculo, «Valor original» permite consultar o número sem arredondamento. Os eixos usam notação científica quando necessária para distinguir valores pequenos.</p>
+  <p>No Caderno, o leitor pode escolher uma vista anual calculada, um índice de base 100 ou uma diferença em pontos percentuais. Estas vistas estão identificadas como calculadas, mostram a fórmula, o ano de base e os valores originais usados, sem alterar a base de dados. Os cálculos usam os valores exatos publicados e aritmética decimal; o resultado interno é arredondado half-even a seis casas decimais e nunca é apresentado com essa precisão, porque a página mostra no máximo duas casas decimais. A verificação independente recomputa cada resultado por aritmética racional.</p>
 </section>
 
 <section aria-labelledby="estados">
@@ -71,7 +71,7 @@
   <h2 id="naofaz">O que o Prumo não faz</h2>
   <ul class="plain-list">
     <li>Não prevê, não interpola e não preenche lacunas.</li>
-    <li>Não converte unidades nem arredonda valores publicados.</li>
+    <li>Não converte unidades. O valor publicado não é alterado; a apresentação na página arredonda a duas casas decimais e o CSV mantém a precisão guardada.</li>
     <li>Não apresenta comentário automático nem pontuações compostas.</li>
     <li>Não usa cookies, rastreio ou publicidade.</li>
     <li>Não esconde uma fonte em avaliação: nomeia-a e explica porque não publica os seus valores.</li>

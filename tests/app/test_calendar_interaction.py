@@ -33,10 +33,10 @@ QUARTERLY = [{"period": "2023-Q1", "value_text": "1.0"},
 MONTHLY = [{"period": "2024-01", "value_text": "2.0"},
            {"period": "2024-02", "value_text": "2.1"}]
 EXPECTED_ROWS = [
-    ["01/01/2023", "Anual - 2023: 100 %", "Trimestral - 1.º trimestre de 2023: 1,0 %",
+    ["01/01/2023", "Anual - 2023: 100 %", "Trimestral - 1.º trimestre de 2023: 1 %",
      "Mensal - sem observação nesta posição temporal"],
     ["01/01/2024", "Anual - sem observação nesta posição temporal",
-     "Trimestral - 1.º trimestre de 2024: 1,2 %", "Mensal - janeiro de 2024: 2,0 %"],
+     "Trimestral - 1.º trimestre de 2024: 1,2 %", "Mensal - janeiro de 2024: 2 %"],
     ["01/02/2024", "Anual - sem observação nesta posição temporal",
      "Trimestral - sem observação nesta posição temporal",
      "Mensal - fevereiro de 2024: 2,1 %"],

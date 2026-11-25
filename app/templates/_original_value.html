@@ -1,0 +1,9 @@
+{# One collapsed disclosure of the exact stored token behind a rounded display value.
+   It is omitted when there is no token or when the token is already the display text,
+   so a raw number never appears by default and simple values add no noise. #}
+{% macro original_value(raw, display=None) -%}
+  {%- set token = raw|string if raw is not none else "" -%}
+  {%- if token and (display is none or token != display|string|trim) -%}
+  <details class="original-value"><summary>Valor original</summary><span class="num">{{ token }}</span></details>
+  {%- endif -%}
+{%- endmacro %}

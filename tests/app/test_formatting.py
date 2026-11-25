@@ -1,4 +1,4 @@
-"""PT formatting: separators change, precision never does."""
+"""PT reader formatting is bounded without changing source tokens."""
 from decimal import Decimal
 
 from app.formatting import (
@@ -12,11 +12,11 @@ from app.formatting import (
 )
 
 
-def test_value_keeps_decimals_and_groups_thousands():
-    assert format_value("1234567.80") == "1\u00a0234\u00a0567,80"
-    assert format_value("3.90") == "3,90"
+def test_value_limits_decimals_and_groups_thousands():
+    assert format_value("1234567.80") == "1\u00a0234\u00a0567,8"
+    assert format_value("3.90") == "3,9"
     assert format_value("3.9") == "3,9"
-    assert format_value("-0.50") == "-0,50"
+    assert format_value("-0.50") == "-0,5"
     assert format_value("0") == "0"
 
 
@@ -29,7 +29,7 @@ def test_axis_ticks_round_and_use_pt_separators():
     assert format_axis(Decimal("5000")) == "5\u00a0000"
     assert format_axis(Decimal("2.5")) == "2,5"
     assert format_axis(Decimal("-0.25")) == "-0,25"
-    assert format_axis(Decimal("0.0001")) == "0"
+    assert format_axis(Decimal("0.0001")) == "1e-4"
 
 
 def test_periods_in_portuguese():

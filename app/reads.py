@@ -214,6 +214,7 @@ class VersionView:
     status_text: str
     fetched_text: str
     served: bool
+    raw_value: str = ""
 
 
 @dataclass(frozen=True)
@@ -244,6 +245,7 @@ class CrossCheck:
     fetched_text: str
     status_text: str
     unit_text: str
+    raw_value: str = ""
 
 
 @dataclass(frozen=True)
@@ -427,6 +429,7 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
         revisions.append(RevisionView(
             period=r["period"], period_text=format_period(r["period"], frequency),
             versions=tuple(VersionView(value_display=format_value(v["value_text"]),
+                                       raw_value=v["value_text"],
                                        status_text=flag_text(lang, v["status_flag"])
                                        if v["status_flag"] else "",
                                        fetched_text=format_datetime(v["fetched_at"]),
@@ -445,6 +448,7 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
     cross = tuple(CrossCheck(id=c["id"], source_title=source_title(lang, c["source"]),
                              attribution=source_text(c["attribution"]),
                              value_display=format_value(c["latest_value_text"]),
+                             raw_value=c["latest_value_text"],
                              period_text=format_period(c["latest_period"], frequency),
                              fetched_text=format_datetime(c["latest_fetched_at"]),
                              status_text=flag_text(lang, c["latest_status_flag"])
@@ -491,6 +495,7 @@ class InputView:
     title: str
     period_text: str
     value_display: str
+    raw_value: str = ""
 
 
 @dataclass(frozen=True)
@@ -538,7 +543,9 @@ def derived_page(db: Db, key: str, lang: str = "pt") -> DerivedDetail | None:
             title=base_title,
             period_text=format_period(i["period"], frequency),
             value_display=format_value(observed[i["observation_id"]]["value_text"])
-            if i["observation_id"] in observed else "")
+            if i["observation_id"] in observed else "",
+            raw_value=(observed[i["observation_id"]]["value_text"]
+                       if i["observation_id"] in observed else ""))
             for i in newest["inputs"])
     title = derived_title(lang, key)
     chart_points = tuple({"period": v["period"], "value_text": v["value_text"]} for v in values)
