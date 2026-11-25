@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current public interface: bounded numeric display
+## Current public interface: four-significant-figure display
+
+Main/runtime `63662ba` is installed on f0nix from 2026-11-25 20:09 UTC, following the owner's refinement of the authorized display correction. Reader values use at most four significant figures, Decimal HALF_UP and Portuguese separators. Decimal places follow magnitude; small nonzero values remain numeric. Source tokens, calculations, coordinates, original evidence and CSV retain precision; counts/dates/identifiers remain exact. Full policy: [numeric display](numeric-display.md).
+
+Exact-release CI `45689882466` passed 3,364 tests, 29 skipped/seven live deselected; clean committed-checkout 255 and broader ruff passed. Installed acceptance: public browser 255, real editors 54, numeric static previews 45, state/access 36 and home preview 13. Ten before/after cases prove unchanged original coordinates and six complete CSV bodies except their documented request-time export clock. Only web/static-preview Admin were recreated, healthy/zero restarts; the complete worker baseline, schema/migrations, authored homepage and CMS history match. No migration, source refresh, content publication, rights/ownership or edge/authentication change ran. Initial reader observation completed at 20:24:27 UTC after at least 900 seconds/30 matching samples, with healthy readers and zero restarts. The final 36 state/access checks passed again; worker/schema/CMS and unrelated-infrastructure baselines still match.
+
+Recovery is previous checkout `6b9307f` and exact old reader images pinned as `rollback-significant-20261125T195130Z`. Stop only the bind-mounted public reader before changing checkout, restore affected readers through established aliases and preserve data/history/worker. [Installed record and evidence](../superpowers/handoff/reports/significant-figures/installed.md). Operator directory: `/home/joao/prumo-operations/significant-figures-release-20261125T195130Z`.
+
+## Previous public interface: fixed two-decimal display
 
 Owner-authorized main/release `1ad4f16` is installed on f0nix from 2026-11-25 17:02 UTC. Normal reader values share the two-decimal HALF_UP policy with Portuguese separators and no redundant zeros; tiny nonzero values use bounds, while source tokens/calculation inputs/geometry/CSV retain precision. The long World Bank examples now show `2,36` and `80,79`. Only web and static-preview Admin were recreated, healthy with zero restarts. Worker, schema/migrations, authored homepage and CMS history are unchanged; no migration, data/content write or edge/authentication change ran.
 
