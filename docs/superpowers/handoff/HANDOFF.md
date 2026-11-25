@@ -1,5 +1,13 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## Numeric display correction candidate (2026-11-25)
+
+Owner requested limits after long World Bank decimals wrapped headline values. Branch `fix/ui-decimal-limits` in `/home/joao/projects/prumo-pipeline`; runtime `082c4d2`, test-only follow-up `4c8cb3b`, preceded by behavior-neutral extraction `04241a6`. Normal UI uses at most two decimals, Decimal HALF_UP, PT separators and no redundant zeros; tiny nonzero readings use bounds rather than zero. SVG, tables, readout/tooltips and static CMS previews share this preparation. Original tokens, calculations, coordinates/domains and CSV are unchanged; original revision/cross-check/calculation evidence is available through closed disclosures.
+
+Independent focused review approved. Real archived-production-copy browser gate passed 178 checks across 20 populated detail/mount/viewport cases plus catalogue, Caderno, published CMS chart, static preview and no-JS. All isolated database bytes are unchanged. Clean committed checkout at runtime `082c4d2` passed 158 focused checks; the final test-only follow-up passed all 66 precision/evidence/annual-analysis checks in its clean checkout. The whole offline run executed 3,315 tests: 3,314 passed and the sole failure was the obsolete precision-copy assertion. That assertion was corrected and all 66 affected tests passed in the committed follow-up. Exact scopes are in `reports/decimal-display/README.md`, `gates.json` and retained receipts; do not recast the targeted repair as a fresh all-green whole-suite run or hosted CI.
+
+No merge or installation ran; main/production remain outside this candidate change. A later owner-authorized release affects only public web and static-preview Admin; no migration, worker restart, source refresh, CMS publication/history write, rights/ownership or shared-edge change. Policy: `../../data/numeric-display.md`. Required release gates remain explicit approval, exact-release CI and installed checks on both public mounts. Continue preserving separate source/worker/human-accessibility gates, not phase E development.
+
 ## Phase C discovery installed (2026-11-25)
 
 The owner explicitly authorized merge and installation. Main/release `72fa437b70a1d78e4f6a9d861f7c0ceafca55474` is pushed, read back and installed on f0nix from 13:37 UTC; reviewed implementation is `cd55507`. Complete catalogue, token search, truthful pagination/filter counts, native navigation and single-series notebook entries are live on both addresses. Editorial comparison configuration remains in the authenticated CMS; public readers receive only the published revision. No live content publication ran.

@@ -1,0 +1,98 @@
+{
+  "entries": [
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-unit-first.log",
+      "archive": "receipts/unit-first.log.gz",
+      "raw_sha256": "aa3982ed8dd7f9a26f605e6f916aa279f9e2f76da34f1e077d207f327d99da65",
+      "archive_sha256": "6e268fac16f385a61a79ff5b8355e13f99e4a63461d552f4ccda853d7091040e"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-failures.xml",
+      "archive": "receipts/unit-first.xml.gz",
+      "raw_sha256": "4775da10d08a40be2391da9cd98cbb8149f26394363fb83494622f345d9225dc",
+      "archive_sha256": "60c123dd0f961e915cfbfa746557270e475dadfa961c7eae41070f13f4ae006f"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-20261125/browser-first/receipt.json",
+      "archive": "receipts/browser-first.json.gz",
+      "raw_sha256": "07eac3156dcebef521d79c0b0eb4ebe16a6b38838360f900ff21c89435d388dd",
+      "archive_sha256": "b7a6034b902109f1c6317bc5812ff5faa8e2331e95b359783154498a8f8accf6"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-browser-first.log",
+      "archive": "receipts/browser-first.log.gz",
+      "raw_sha256": "82c443034867a4775fd2295601e063ac72e7671fb95a2c8e6117884b5bf11920",
+      "archive_sha256": "0f3c07fd857e0699177fad50a3b00da66703d3eb266a13dc6a3df0994726330c"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-20261125/browser-second/receipt.json",
+      "archive": "receipts/browser-accepted.json.gz",
+      "raw_sha256": "cd2c86d4c12246c4ae38832c779081b2c9d8bf79ed5657f46a8c3cace6431bd8",
+      "archive_sha256": "960c4dc83346c1d469f42d25f1eb26c5d754050c0140576e9e72e22f5299c894"
+    },
+    {
+      "asset": "assets/worldbank.life_expectancy.DE-1440.png",
+      "sha256": "a272d27ed26223ce53e32d86e971c65f5366842f7c728bc6b9f199ab2b0a1a4f"
+    },
+    {
+      "asset": "assets/worldbank.life_expectancy.DE-390.png",
+      "sha256": "e813103879ddd17f24904f4862a50199c0599a0e75b4ac1a9c7015e8675c5487"
+    },
+    {
+      "asset": "assets/worldbank.trade_balance_pct_gdp.DE-1440.png",
+      "sha256": "7ff1fb1ea94711a5f5e32e9f3cd4b1535cdf19693d1dbabc92f8980cbd1c616a"
+    },
+    {
+      "asset": "assets/worldbank.trade_balance_pct_gdp.DE-390.png",
+      "sha256": "b977764dbd7ee745f25b4ea08db084282f7dc8ed9a8f75f7d97cc277e187af33"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-full.log",
+      "archive": "receipts/full-first.log.gz",
+      "raw_sha256": "e59be7682f5928df16ca709ad27d64a93cce3d98121fd50db8591abe12a912f8",
+      "archive_sha256": "668391c84329832dae4debd1f80fa61f41b0810ea830c1c4bf8271293632c308"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-full.xml",
+      "archive": "receipts/full-first.xml.gz",
+      "raw_sha256": "2ae619a3384bde0717820dc760187605b42da67760a25f1c6ca2129991e58d14",
+      "archive_sha256": "049ec21c82d481010c08e998c3a58a86939d9268b72968a6acf5aa2f6961292a"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-committed.log",
+      "archive": "receipts/committed-runtime.log.gz",
+      "raw_sha256": "ecdf271d8d78fe304107d0370e55b98d083b5d3e6b818bfef48c089d8d0c32f0",
+      "archive_sha256": "1de0be225c4ba4f896238ad8af938e2d8cf1d2ac786e0ec6718444bcde6afd6d"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-committed.xml",
+      "archive": "receipts/committed-runtime.xml.gz",
+      "raw_sha256": "5f641590339a4f4f9959734fd351e63fea83647847d37e68c5fe74129deb8313",
+      "archive_sha256": "05615bf8fc85a14e0678c7fe18d8db32aac4c421b6bfb1431fc568c2e9bd81fb"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-copy-followup.log",
+      "archive": "receipts/copy-followup.log.gz",
+      "raw_sha256": "af59849931016e3c9249ad271e8d530a387bc5b8215402940320197eada421b1",
+      "archive_sha256": "11ad66f5df3d75c50c97b6f8839f137ab821f5eeb3a9672687a84440bb156f00"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-copy-followup.xml",
+      "archive": "receipts/copy-followup.xml.gz",
+      "raw_sha256": "1dd1042a69e1667b96ee4207f5a4c1728083ee92c555df2d33ca22daafdf6047",
+      "archive_sha256": "201b31ed71ee82f18199d974d9ca936e067fe7ad8de9065b4efe9cd14f7215ff"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-committed-final.log",
+      "archive": "receipts/committed-final.log.gz",
+      "raw_sha256": "ce21ec1aa9c35f68aeb7f123535a4fe9e11950cbaef2b5c8b472bc2d4dc717a6",
+      "archive_sha256": "a25f5c934b9f012d9f632cfe99261d6f55a3c9b5ee2fbfe13c8633dbf44d2f3a"
+    },
+    {
+      "source": "/home/joao/.hermes/cache/scratch/prumo-decimal-committed-final.xml",
+      "archive": "receipts/committed-final.xml.gz",
+      "raw_sha256": "2f05e11076a68d06d3bbf309f25bf9e220a553ac4bb755bdefa8d832771500b8",
+      "archive_sha256": "9abf8906c39747ff3646320db05f7e0769847c55e1e3a63fee9d85767c80fb14"
+    }
+  ]
+}

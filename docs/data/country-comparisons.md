@@ -22,7 +22,7 @@ Gas prices are not included. No gas dataset was added to the ingestion registry 
 
 The latest summary and legend refer to the latest period with a finite served value for every country. The chart and its complete table use the same period intersection. A later observation for one country is not combined with an older observation for another. The coverage note states exclusions; missing values are neither filled nor interpolated.
 
-Hover, tap or use the keyboard period control to inspect exact values. Country line patterns supplement their colours. Portugal is Carmim. A complete value table and the named SVG remain available without JavaScript, after a blocked chart bundle and in print. The source precision is retained, including differing numbers of decimal places. Provisional and other publisher statuses appear in the table and latest-country summary.
+Hover, tap or use the keyboard period control to inspect values. Country line patterns supplement their colours. Portugal is Carmim. A complete value table and the named SVG remain available without JavaScript, after a blocked chart bundle and in print. Normal UI strings follow the shared [two-decimal display policy](numeric-display.md); original source precision remains in stored data, CSV and technical evidence. Provisional and other publisher statuses appear in the table and latest-country summary.
 
 Each country has a series link and provenance for the last common period, with collection, archived file, verification context and attribution. A comparison disappears whole when a required series becomes inactive, unlicensed, withdrawn or empty. The page never silently changes its country population.
 

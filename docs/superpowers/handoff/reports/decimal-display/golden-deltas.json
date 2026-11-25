@@ -1,0 +1,53 @@
+{
+  "baseline": "50ede36",
+  "deltas": [
+    {
+      "case": "line_monthly",
+      "old_sha256": "7d94f8e024ec0e8d91be4e32396fdfd082405e8582393d2c2b4b13d0e09c2758",
+      "new_sha256": "87d025f758878c0de0c860d6e0e4da5079a5f6637b678c91e2fe2488a57da852",
+      "geometry_and_attributes_unchanged": true
+    },
+    {
+      "case": "line_single",
+      "old_sha256": "448b0b925a985f9de3bf42e81a0a8baa2fd3ed5a00cf20d61480958f8d95cefe",
+      "new_sha256": "30cbb8e863b14ef97b462c866f2a35e75f70a65837dbff977c71398a153e4e33",
+      "geometry_and_attributes_unchanged": true
+    },
+    {
+      "case": "line_negative",
+      "old_sha256": "5a1e9ec21d1ce1657c31cab33b4d61bc1c1dbbeb9706a42c282777df9f33d4a3",
+      "new_sha256": "a4ae4f8e0afbf1fbfe2792e7568f38b0af3f1a1cdfdae6d5a50898fd29e090f5",
+      "geometry_and_attributes_unchanged": true
+    },
+    {
+      "case": "line_nonfinite",
+      "old_sha256": "fb51bb4fafffabe40970b4f8f2f1491606216a3a75c9dd27494775c9a4503d5b",
+      "new_sha256": "92ab06a23d7e2680f7ae240fb14ba522b5cd0f95570f366d7c4c63426353d044",
+      "geometry_and_attributes_unchanged": true
+    },
+    {
+      "case": "cmp_gap",
+      "old_sha256": "ab7f435830248e420db306abe474ca360212b04be4dcf92aa895535ba8538311",
+      "new_sha256": "2694571157205a6e23ad9387d50fa373f0692b5e8b4fb0443016876bd1b5845a",
+      "geometry_and_attributes_unchanged": true
+    },
+    {
+      "case": "cmp_dual",
+      "old_sha256": "03dc09ad285b95b0fc5b45c8311369205a084ce5b7e3e9c203790456671697db",
+      "new_sha256": "924d28893eec577e85622bdf624ee7f29276f10131712cc11b9b0af58897bba9",
+      "geometry_and_attributes_unchanged": true
+    },
+    {
+      "case": "cmp_single",
+      "old_sha256": "06152193c08cbf75ed73e6e4a2c57e795497f1a92de4014fa4e44e984d536ad9",
+      "new_sha256": "00abe11a476acf0066ae3b858c247e8c96bb4a39dbaa4bc74a4e861e71796247",
+      "geometry_and_attributes_unchanged": true
+    },
+    {
+      "case": "cmp_negative",
+      "old_sha256": "6456e92df67338471a3882327466fe2008ea2f6cbc0ab848012bbaa1ccddbf30",
+      "new_sha256": "052ad91b671513b9cd650e456efb2cf473d1caf766205d072cc8d63a3c76299a",
+      "geometry_and_attributes_unchanged": true
+    }
+  ]
+}

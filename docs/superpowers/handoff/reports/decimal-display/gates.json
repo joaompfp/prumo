@@ -1,0 +1,46 @@
+{
+  "runtime_revision": "082c4d2",
+  "test_followup_revision": "4c8cb3b",
+  "full_initial_scope": {
+    "tests": 3315,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 3314,
+    "failure_ids": [
+      "tests.app.test_notebook_analysis.test_annual_pp_rates_disclose_calculated_method_base_and_raw_inputs"
+    ]
+  },
+  "committed_runtime_scope": {
+    "tests": 158,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 158,
+    "failure_ids": []
+  },
+  "corrected_copy_and_stronger_display_assertions": {
+    "tests": 66,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 66,
+    "failure_ids": []
+  },
+  "committed_test_followup_scope": {
+    "tests": 66,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 66,
+    "failure_ids": []
+  },
+  "application_runtime_unchanged_after_full_run_started": true,
+  "fresh_all_green_whole_suite_claimed": false,
+  "browser": {
+    "passed": true,
+    "checks": 178,
+    "source_detail_cases": 20
+  },
+  "installed": false
+}
