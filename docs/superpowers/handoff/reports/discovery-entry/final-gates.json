@@ -1,0 +1,57 @@
+{
+  "runtime_sha": "cd555078f34c5da4150d5ec84a4ddb01506ddc6e",
+  "finished_at": "2026-11-25T11:58:51.497424+00:00",
+  "full_suite": {
+    "passed": 3278,
+    "deselected": 7,
+    "warnings": 3,
+    "seconds": 1893.48,
+    "archive": "receipts/full-suite-final-cd55507.log.gz",
+    "raw_sha256": "926ce43275b202350bb3747cd01a93c38ba86c67d5f9e33e734cc3816540a7b0"
+  },
+  "clean_checkout": {
+    "sha": "ca0904c106360faef4c67d4358e23d9ecc8e2a0c",
+    "passed": 182,
+    "imports_and_real_copy_route_asset_checks": true,
+    "ruff": "passed"
+  },
+  "browser": {
+    "checks": 2148,
+    "journeys": 4,
+    "all_23_tables_and_schema_unchanged": true,
+    "receipt": "receipts/browser-extended.json.gz"
+  },
+  "production_untouched_services": {
+    "/prumo": [
+      "9a57ad8e8b0a95e7599c10f50ad066973549d3323d904f43d484238f0a688c26",
+      "sha256:f5c6c99161ad4e81e86e85a8b8ab78a6a73e1237fa53e6973e1307aebb2a43fb",
+      "2026-11-23T08:32:44.879464233Z",
+      "0",
+      "true"
+    ],
+    "/prumo-ingest": [
+      "fd1f7b572bd8f355de68f3ea21e19eed2d3f81cb45b168c111cb1bb2c343d5e0",
+      "sha256:8679a19d535a450343c5bd130104c58a466dddb095957cf610e48684cfd28af9",
+      "2026-11-23T08:32:43.627785908Z",
+      "0",
+      "true"
+    ],
+    "/prumo-backoffice": [
+      "9dd2b77c24edc876ca9e081dc73a28b8c45239b2cf134d032695aa5b99295fe9",
+      "sha256:b303b4ac29782e202b9803a01336db74c94b091e571e8bd934a2de86bb589421",
+      "2026-11-23T08:32:46.125265314Z",
+      "0",
+      "true"
+    ]
+  },
+  "hosted_ci": "not claimed for feature branch",
+  "open_gates": [
+    "Owner visual acceptance",
+    "Human screen-reader and zoom usability",
+    "Explicit merge/install approval"
+  ],
+  "future_services": [
+    "prumo",
+    "prumo-backoffice"
+  ]
+}

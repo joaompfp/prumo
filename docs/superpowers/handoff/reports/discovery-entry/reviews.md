@@ -20,4 +20,4 @@ The theme description remains in secondary filter/help content by the phase's da
 
 ## Outstanding acceptance
 
-Final full offline suite and actual committed-tree gate are recorded separately in README and machine receipts. Automated browser/keyboard checks do not establish human screen-reader or 200-percent zoom acceptance. Owner visual acceptance and explicit release approval remain open. This feature did not operate production or close any worker, licence or source-data incident.
+Controller final full offline suite passed 3,278 tests; the actual clean committed checkout passed 182 affected tests. Their exact scopes are recorded separately in README and machine receipts. Expanded browser acceptance passed 2,148 assertions, including long current-navigation contexts and an actual click from static preview to the notebook. Automated browser/keyboard checks do not establish human screen-reader or 200-percent zoom acceptance. Owner visual acceptance and explicit release approval remain open. This feature did not operate production or close any worker, licence or source-data incident.

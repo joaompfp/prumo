@@ -94,7 +94,9 @@ def main():
                 for width in (320,390,600,601,768,820,821,900,901,1024,1100,1101,1440,1920):
                     page.set_viewport_size({'width': width, 'height': 844 if width < 700 else 1000})
                     for name, path in (('catalogue','/pesquisa'), ('search','/pesquisa?q=desemprego+Portugal'),
-                                       ('theme','/temas/energy'), ('home','/')):
+                                       ('theme','/temas/energy'), ('home','/'),
+                                       ('demography','/temas/demography'), ('comparisons','/comparar'),
+                                       ('methodology','/metodologia')):
                         response = page.goto(args.origin + prefix + path)
                         tag = f'{prefix}-{width}-{name}'
                         check(tag+'-200', response.status == 200)
@@ -105,7 +107,7 @@ def main():
                         check(tag+'-script-free', page.locator('script').count() == 0)
                         check(tag+'-strict-csp', "default-src 'none'" in response.headers['content-security-policy'])
                         check(tag+'-local-assets', page.locator('link[rel=stylesheet][href$="/discovery.css"]').count() == 1)
-                        if name != 'home':
+                        if name in ('catalogue','search','theme'):
                             check(tag+'-populated', page.locator('.series-result').count() > 0)
                             first = page.locator('.series-result').first
                             check(tag+'-value-intact', first.locator('.series-result-number').evaluate('e=>e.scrollWidth <= e.clientWidth+1')
@@ -189,6 +191,8 @@ def main():
             page.goto(args.origin+'/dados/admin/cms/page/inicio/preview')
             check('static-preview-cards',page.locator('a.card-create').count() > 0)
             check('static-preview-no-executable-scripts',page.locator('script[src],script:not([type="application/json"])').count() == 0)
+            page.locator('a.card-create').first.click()
+            check('static-preview-card-opens-real-notebook',page.locator('.notebook-selection .card').count() == 1)
             css = context.request.get(args.origin+'/dados/static/css/discovery.css')
             check('served-stylesheet-200',css.status == 200)
             check('served-stylesheet-bytes',css.body() == (ROOT/'static/css/discovery.css').read_bytes())

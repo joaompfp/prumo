@@ -81,5 +81,19 @@
     "outcome": "Earlier working tree changed during this run;3274 passed,not final frozen-tree acceptance",
     "raw_sha256": "063a9ee6c25b9c7eab8be0e213e6c1700ec2b25c73f0ae952ecd9d78c8691a16",
     "sha256": "305875b1e7a7ee6f46b1a49ad8eb65283e77a5adf8518ef1264a5e1ad4f961ad"
+  },
+  {
+    "path": "receipts/browser-extended.json.gz",
+    "source": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/browser-extended/result.json",
+    "outcome": "2148 checks passed on cd55507, including long active navigation and actual static-preview CTA",
+    "raw_sha256": "a4a0c4e1057925c45a9c7d430b93691e2bd8e6f749808eae0eebc80635dd104c",
+    "sha256": "0b9bba86b758bc9594621a81d65fa4f1c8153781e62a3ead8e583c9951f6b01a"
+  },
+  {
+    "path": "receipts/full-suite-final-cd55507.log.gz",
+    "source": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/full-suite-final-cd55507.log",
+    "outcome": "Final frozen-runtime offline suite passed",
+    "raw_sha256": "926ce43275b202350bb3747cd01a93c38ba86c67d5f9e33e734cc3816540a7b0",
+    "sha256": "77b3931f999fc33915f07507c67780d8670755cdccde9b8cb6b9767c9d600b57"
   }
 ]
