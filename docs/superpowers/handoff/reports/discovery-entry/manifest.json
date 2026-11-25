@@ -1,0 +1,85 @@
+[
+  {
+    "path": "assets/after-theme-390.png",
+    "sha256": "a2259a0ecfd1697b69fbae1c43f9ae981d658c5ae9e4dcba6c6b906caed31655"
+  },
+  {
+    "path": "assets/before-theme-1440.png",
+    "sha256": "c3de8ad394dcdc4def530e7e85d6a8b47ac890086b48fe829b57ca5aac3eb7e5"
+  },
+  {
+    "path": "assets/before-theme-390.png",
+    "sha256": "ec8b98416dd00050efdebfc03e29a61a7a3beff6bc15cf1272a5ff037661625f"
+  },
+  {
+    "path": "assets/after-theme-1440.png",
+    "sha256": "b63feb3f470bf791713d137152b95ce99e4dfdfb7251e5055f4f47a26ade8d8b"
+  },
+  {
+    "path": "assets/after-search-1440.png",
+    "sha256": "c5be4542dbd5e54fa0db32b96e5710d4e747a190af32b8c2704b63372da00b0b"
+  },
+  {
+    "path": "assets/before-home-1440.png",
+    "sha256": "b4e0b20f1bbf5590dab3240694366922960250e0bb1ddb542ef23ab49c985946"
+  },
+  {
+    "path": "assets/before-search-390.png",
+    "sha256": "a835b066181bdf5199181aa298d5e710a83183009b9ec37c7c642d46b806471a"
+  },
+  {
+    "path": "assets/after-search-390.png",
+    "sha256": "2891d268fa01cb487bf4f1318594d941e483e4740cec2fa43c00af87f77f0968"
+  },
+  {
+    "path": "assets/after-home-1440.png",
+    "sha256": "0ccd9d9c80676e8849bcaf6484427e375cb3bca0cbfdf6df483e2c5dc9df1675"
+  },
+  {
+    "path": "assets/before-search-1440.png",
+    "sha256": "fcb47ad616514cc1f00e5745746ba6b78f897c7e5f25654fcd95951a932704a7"
+  },
+  {
+    "path": "assets/after-home-390.png",
+    "sha256": "3cf06a7ee8536f8d39b5d91c96629b4756ef0925b44f8358ee182a0f366e1061"
+  },
+  {
+    "path": "assets/before-home-390.png",
+    "sha256": "3cf06a7ee8536f8d39b5d91c96629b4756ef0925b44f8358ee182a0f366e1061"
+  },
+  {
+    "path": "receipts/browser-final.json.gz",
+    "source": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/browser-final/result.json",
+    "outcome": "1391 checks passed on cd55507",
+    "raw_sha256": "31a348828737d236ee689765c0136e474aa3f2283ea307357e0786a6b7163208",
+    "sha256": "93bf83292a39327c871e3e27d043ed8cd26ed0abb50b40a63afc8404588cec62"
+  },
+  {
+    "path": "receipts/browser-harness-disclosure-failure.json.gz",
+    "source": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/browser-run2/result.json",
+    "outcome": "FAILED: checker did not open the native actions disclosure; the early passed field is not a completion verdict",
+    "raw_sha256": "68c014aaf89a341329728f5f793d71a7e7ed150cf9eed9c96d9d17d852082ca0",
+    "sha256": "304d38e04415cf6c4e844d5ae19312f2eb4c00e9c998faa81ced6b9f5ed30870"
+  },
+  {
+    "path": "receipts/browser-before-final-copy-fixes.json.gz",
+    "source": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/browser-run3/result.json",
+    "outcome": "Earlier runtime:1391-check extension absent;1387 checks passed",
+    "raw_sha256": "068a41e9602c15de873dd3156d6d702006fddeb284bb9c31909c7b36ed3c1f88",
+    "sha256": "1e95e2f54aef3a419a1b3f282ba1f02ca4de5e0a9d3bf508693374346e19e7d9"
+  },
+  {
+    "path": "receipts/first-layout.json.gz",
+    "source": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/first-look/summary.json",
+    "outcome": "Early candidate rejected for data below first view",
+    "raw_sha256": "f6d340c3dd97e598b2b18d56544ff1125aa181b0e10d298406d294ddb88bb4c6",
+    "sha256": "aae082eb6b180d4363ed283611f9c6398853f2f8b784634dadfc36829c578e3f"
+  },
+  {
+    "path": "receipts/full-suite-initial.log.gz",
+    "source": "/home/joao/.hermes/cache/scratch/prumo-discovery-20261125/full-suite-initial.log",
+    "outcome": "Earlier working tree changed during this run;3274 passed,not final frozen-tree acceptance",
+    "raw_sha256": "063a9ee6c25b9c7eab8be0e213e6c1700ec2b25c73f0ae952ecd9d78c8691a16",
+    "sha256": "305875b1e7a7ee6f46b1a49ad8eb65283e77a5adf8518ef1264a5e1ad4f961ad"
+  }
+]

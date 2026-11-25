@@ -1,5 +1,13 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## Phase C discovery candidate (2026-11-25)
+
+Owner requested continuation after phase B. Candidate runtime `cd55507` is implemented in `/home/joao/projects/prumo-discovery`, branch `feature/discovery-navigation`, based on installed main `1a0bf13` / runtime `3ab1fdc`. Catalogue search now has real totals, pagination, token search and native filters; search/theme records and existing CMS cards open a single-series Caderno. Navigation emphasizes Explorar, Comparações and Caderno without duplicate task search. Published comparisons remain authored in Admin; CMS home content/order/history, source data, schema, worker and shared edge are unchanged. No merge, installation or live publication ran.
+
+Independent specification and quality reviews, including scoped corrections, are approved. Controller final focused gate: 132 tests passed and ruff is clean; final real-copy acceptance: 1,391 assertions/four complete JS and no-JS journeys passed, with all 23 table/schema fingerprints preserved. Functional type remains at the installed scale. The final frozen-runtime whole suite is running; do not substitute the earlier 3,274-test run that preceded later corrections. Human visual/screen-reader and explicit installation gates remain open.
+
+Plan: `../plans/2026-11-25-discovery-entry.md`; evidence: `reports/discovery-entry/README.md`. The durable feature checkout is the resume target, not an unmerged checkout of pipeline-rebuild. Next: complete final suite and clean committed-checkout acceptance, push/read back feature, update this checkpoint, then present the visual/release gate. A later authorized release changes only public web and static-preview Admin. Phase E needs separate dated-analysis/approved-AI design; worker observation and rights/DGEG remain separate.
+
 ## Worker safety correction installed (2026-11-23)
 
 The owner explicitly requested the pending incident correction and restart. Runtime/main `3ab1fdcad3c40fc2a9e7dc5e3fa9fe32f6cfe547` is pushed and installed at 08:32 UTC, integrating the reviewed operational branch with phase B. Worker `fd1f7b57` / image `8679a19d` started at 08:32:43.627785908 UTC with `PYTHONFAULTHANDLER=1`; public `9a57ad8e` / `f5c6c991` and Admin `9dd2b77c` / `b303b4ac` are healthy. All three contain the exact corrected persistence module. No migration, CMS publication, source-policy, ownership or edge/authentication change ran.

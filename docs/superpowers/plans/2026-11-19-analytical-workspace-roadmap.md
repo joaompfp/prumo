@@ -86,7 +86,7 @@ Acceptance: each route family has a populated first-view comparison, exact point
 
 ## Phase C: discovery and entry into the tool
 
-Status: planned; depends on B's shared surface.
+Status: implemented candidate `cd55507` on `feature/discovery-navigation` in `/home/joao/projects/prumo-discovery`, not installed. Detailed contract: `2026-11-25-discovery-entry.md`; evidence: `../handoff/reports/discovery-entry/README.md`. Specification/quality reviews, 132 focused tests and 1,391 real-copy browser checks passed; final frozen-runtime suite and clean committed-tree gate are in progress. CMS home and publications are preserved. Owner visual/release approval and human screen-reader acceptance remain open.
 
 C1. Refine global navigation/search at the enlarged scale, emphasizing Explore, Comparisons and Notebook without another tall presentation block. Keep themes, authored pages, sources, methodology and Admin discoverable. Validate expanded rightmost menus and current labels at breakpoint neighbours.
 
@@ -124,7 +124,7 @@ Carry forward source rights for REN/FRED/OECD, DGEG technical blockers, old-peri
 | A1-A2 | Installed after owner release approval | Main `913eb2f`, runtime `050d69e`, f0nix 2026-11-19 16:55 UTC. Fluid plot-first notebook, native settings after figure, nearby add/configure actions, honest chart/card states and common-period/source labels |
 | A3 | Automated gates and authorized installation complete; human screen-reader open | Earlier full local suite: 2,856 on `0a0730e`; final development 126 committed-tree and 332 browser checks retain their scope. Exact-main hosted CI 44569621926 passed before activation: 2,847 passed, nine skipped, seven live deselected. Fresh release gate: 100 focused committed-tree tests, 459 installed public browser checks, 33 state/Admin and ten preview checks. Worker, schema and CMS fingerprints unchanged. Installation approval does not replace human screen-reader/usability acceptance |
 | B | Installed after owner authorization | Main/runtime `5346447`, f0nix 2026-11-21 21:36 UTC. Exact-main CI 3,193 passed; 84 fresh committed-tree tests; 1,392 installed public assertions, 54 Admin editors/preview, 33 state/access and ten home-preview checks. Only readers replaced; schema/CMS/worker unchanged. Human screen-reader gate remains open. Evidence: `../handoff/reports/analytical-reading/installed.md` |
-| C | Planned | Discovery and entry, preserving the CMS-owned homepage and published content |
+| C | Implemented candidate, not installed | Runtime `cd55507`, native catalogue/search/navigation/CMS-card entries. 132 focused tests and 1,391 browser checks passed; full/committed-tree gates in progress. Preserve published CMS content; visual and installation approvals remain open |
 | D | Installed | Nine real editable CMS comparisons, runtime `a9add13`; see owner correction above |
 | E | Future | Dated analysis and approved AI drafts need their own design/product acceptance |
 
