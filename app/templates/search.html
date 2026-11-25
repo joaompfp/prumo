@@ -15,22 +15,7 @@
 
 {% if query and rows %}
 <p class="meta">{{ format_count(rows|length) }} resultados para «{{ query }}».</p>
-<table class="data-table">
-  <thead>
-    <tr><th scope="col">Série</th><th scope="col" class="num">Último valor</th><th scope="col">Período</th><th scope="col">Fonte</th><th scope="col">Recolhido</th></tr>
-  </thead>
-  <tbody>
-    {% for row in rows %}
-    <tr>
-      <td><a href="{{ base }}{{ row.href }}">{{ row.title }}</a><span class="row-meta">{{ row.geography_text }} · {{ row.frequency_text }}</span></td>
-      <td class="num">{{ row.value_display }} <span class="unit">{{ row.unit_text }}</span>{% if row.status_text %}<span class="flag">{{ row.status_text }}</span>{% endif %}</td>
-      <td>{{ row.period_text }}</td>
-      <td>{{ row.source_title }}</td>
-      <td>{{ row.fetched_text }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+{% include "_series_table.html" %}
 {% elif query %}
 <p class="empty-state">Sem resultados para «{{ query }}». Tente uma palavra mais geral, como «desemprego» ou «energia».</p>
 {% else %}

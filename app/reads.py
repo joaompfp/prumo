@@ -852,6 +852,47 @@ def _row(row: dict, value: dict, lang: str) -> Row:
                fetched_text=format_date(value["fetched_at"]))
 
 
+def _served_rows(db: Db, rows: list[dict], lang: str) -> tuple[Row, ...]:
+    """Prepare the reader-facing row for each catalogue row that still has a served value.
+
+    One latest-value read for the visible rows: a series whose value disappeared between the
+    catalogue read and this read is skipped, never rendered with a blank value. Search and
+    the theme list share this boundary so their rows always carry the same fields.
+    """
+    latest = db.public_latest_values([r["id"] for r in rows])
+    return tuple(_row(r, latest[r["id"]], lang) for r in rows if r["id"] in latest)
+
+
+def _grouped_rows(rows: tuple[Row, ...]) -> tuple[Group, ...]:
+    """Group prepared rows by family, keeping the order each family first appears in."""
+    grouped: dict[str, list[Row]] = {}
+    for row in rows:
+        grouped.setdefault(row.family_title, []).append(row)
+    return tuple(Group(title=title, rows=tuple(group)) for title, group in grouped.items())
+
+
+def _filtered_catalogue(rows: list[dict], *, group: str = "", source: str = "",
+                        frequency: str = "") -> list[dict]:
+    """Apply the catalogue's geography, source and frequency filters to theme rows."""
+    return [r for r in rows
+            if (not group or _geo_group(r["geography"]) == group)
+            and (not source or r["source"] == source)
+            and (not frequency or r["frequency"] == frequency)]
+
+
+def _ordered_catalogue(rows: list[dict], lang: str) -> list[dict]:
+    """Order catalogue rows by reader-facing family, geography and identifier."""
+    return sorted(rows, key=lambda r: (family_title(lang, r["family"]),
+                                       geography_name(lang, r["geography"]), r["id"]))
+
+
+def _page_slice(rows: list[dict], page: int) -> tuple[list[dict], int, int]:
+    """Clamp a requested page to the list and return its chunk plus page and page count."""
+    pages = max(1, (len(rows) + PAGE_SIZE - 1) // PAGE_SIZE)
+    page = min(max(1, page), pages)
+    return rows[(page - 1) * PAGE_SIZE: page * PAGE_SIZE], page, pages
+
+
 def theme(db: Db, code: str, *, group: str = "", source: str = "", frequency: str = "",
           page: int = 1, lang: str = "pt") -> ThemePage | None:
     if code not in THEME_ORDER:
@@ -859,24 +900,13 @@ def theme(db: Db, code: str, *, group: str = "", source: str = "", frequency: st
     rows = [r for r in catalogue(db) if r["theme"] == code]
     sources = sorted({r["source"] for r in rows})
     frequencies = sorted({r["frequency"] for r in rows})
-    filtered = [r for r in rows
-                if (not group or _geo_group(r["geography"]) == group)
-                and (not source or r["source"] == source)
-                and (not frequency or r["frequency"] == frequency)]
-    ordered = sorted(filtered, key=lambda r: (family_title(lang, r["family"]),
-                                              geography_name(lang, r["geography"]), r["id"]))
-    pages = max(1, (len(ordered) + PAGE_SIZE - 1) // PAGE_SIZE)
-    page = min(max(1, page), pages)
-    chunk = ordered[(page - 1) * PAGE_SIZE: page * PAGE_SIZE]
-    latest = db.public_latest_values([r["id"] for r in chunk])
-    grouped: dict[str, list[Row]] = {}
-    for r in chunk:
-        if r["id"] not in latest:
-            continue
-        grouped.setdefault(family_title(lang, r["family"]), []).append(_row(r, latest[r["id"]], lang))
+    filtered = _filtered_catalogue(rows, group=group, source=source, frequency=frequency)
+    ordered = _ordered_catalogue(filtered, lang)
+    chunk, page, pages = _page_slice(ordered, page)
+    prepared = _served_rows(db, chunk, lang)
     return ThemePage(
         code=code, title=theme_text(lang, code), blurb=theme_blurb(lang, code),
-        groups=tuple(Group(title=k, rows=tuple(v)) for k, v in grouped.items()),
+        groups=_grouped_rows(prepared),
         total=len(ordered), page=page, pages=pages, group=group, source=source,
         frequency=frequency,
         sources=tuple((s, source_title(lang, s)) for s in sources),
@@ -888,21 +918,29 @@ def _norm(text: str) -> str:
     return "".join(ch for ch in decomposed if not unicodedata.combining(ch))
 
 
+def _matches(row: dict, needle: str, lang: str) -> bool:
+    """Whether a catalogue row matches an already-normalised search needle.
+
+    The single definition of what a reader can search: title, geography, source, series
+    identifier, indicator key and the family's declared aliases.
+    """
+    haystack = " ".join((_title(row, lang), geography_name(lang, row["geography"]),
+                         source_title(lang, row["source"]), row["id"], row["indicator_key"],
+                         search_aliases(lang, row["family"])))
+    return needle in _norm(haystack)
+
+
 def search(db: Db, query: str, lang: str = "pt") -> tuple[Row, ...]:
     needle = _norm(query.strip())
     if not needle:
         return ()
-    rows = []
+    matched = []
     for r in catalogue(db):
-        haystack = " ".join((_title(r, lang), geography_name(lang, r["geography"]),
-                             source_title(lang, r["source"]), r["id"], r["indicator_key"],
-                             search_aliases(lang, r["family"])))
-        if needle in _norm(haystack):
-            rows.append(r)
-            if len(rows) >= SEARCH_CAP:
+        if _matches(r, needle, lang):
+            matched.append(r)
+            if len(matched) >= SEARCH_CAP:
                 break
-    latest = db.public_latest_values([r["id"] for r in rows])
-    return tuple(_row(r, latest[r["id"]], lang) for r in rows if r["id"] in latest)
+    return _served_rows(db, matched, lang)
 
 
 @dataclass(frozen=True)
