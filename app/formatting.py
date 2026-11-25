@@ -16,17 +16,22 @@ MONTHS_SHORT = ("jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "
 _NUMBER = re.compile(r"[+-]?\d+(?:\.\d+)?")
 
 
+def _localize_fixed(text: str) -> str:
+    """Apply PT separators to a fixed-point token without changing its digits."""
+    sign = "-" if text.startswith("-") else ""
+    body = text.lstrip("+-")
+    integer, _, decimals = body.partition(".")
+    grouped = f"{int(integer):,}".replace(",", NBSP)
+    return sign + grouped + ("," + decimals if decimals else "")
+
+
 def format_value(token: str) -> str:
     """`1234567.80` -> `1 234 567,80`. Unparseable tokens are returned unchanged: the stored
     text is the authority, never a reformatted guess."""
     text = token.strip()
     if not _NUMBER.fullmatch(text):
         return token
-    sign = "-" if text.startswith("-") else ""
-    body = text.lstrip("+-")
-    integer, _, decimals = body.partition(".")
-    grouped = f"{int(integer):,}".replace(",", NBSP)
-    return sign + grouped + ("," + decimals if decimals else "")
+    return _localize_fixed(text)
 
 
 def format_axis(value: Decimal) -> str:
