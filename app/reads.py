@@ -951,7 +951,7 @@ def theme(db: Db, code: str, *, group: str = "", source: str = "", frequency: st
           page: int = 1, lang: str = "pt") -> ThemePage | None:
     if code not in THEME_ORDER:
         return None
-    rows = [r for r in catalogue(db) if r["theme"] == code]
+    rows = [r for r in catalogue(db, fresh=True) if r["theme"] == code]
     sources = sorted({r["source"] for r in rows})
     frequencies = sorted({r["frequency"] for r in rows})
     filtered = _filtered_catalogue(rows, group=group, source=source, frequency=frequency)
@@ -1047,7 +1047,7 @@ def search_page(db: Db, query: str = "", *, theme: str = "", group: str = "",
         "O termo de pesquisa é inválido ou demasiado longo. "
         "O termo não foi aplicado. Reveja a pesquisa; os filtros mantêm-se.")
     clean_query = parsed or ""
-    rows = catalogue(db)
+    rows = catalogue(db, fresh=True)
     theme_options = tuple((code, theme_text(lang, code)) for code in THEME_ORDER
                           if any(r["theme"] == code for r in rows))
     source_options = tuple((name, source_title(lang, name))

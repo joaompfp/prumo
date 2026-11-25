@@ -64,7 +64,7 @@ def test_search_matches_the_catalogue_fields_and_caps_results(monkeypatch):
             "id": "ine.worldbank_gdp_growth.US",
             "indicator_key": "worldbank_gdp_growth.US.A"},
     ])
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     db = _FakeDb()
 
     capped = reads.search(db, "ine")
@@ -83,7 +83,7 @@ def test_search_matches_the_catalogue_fields_and_caps_results(monkeypatch):
 def test_theme_filters_orders_and_pages_the_catalogue_without_extra_reads(monkeypatch):
     rows = [_catalogue_row(i, geography="DE" if i % 10 == 0 else "PT")
             for i in range(GENERIC)]
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     db = _FakeDb()
 
     first = reads.theme(db, "economy")

@@ -336,7 +336,7 @@ def test_theme_page_filters_by_geography_group(client):
     text = visible(client.get("/temas/economy?grupo=world").text)
     assert "Crescimento do PIB" in text
     assert "Taxa de desemprego" not in text
-    assert "1 séries publicadas nesta secção" in text
+    assert "1 série publicada nesta secção" in text
 
 
 def test_theme_unknown_or_cross_check_series_stay_out(client):

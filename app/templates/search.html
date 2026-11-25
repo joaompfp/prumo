@@ -31,7 +31,7 @@
 {% if page.notice %}<p class="empty-state" role="status">{{ page.notice }}</p>{% endif %}
 
 <div class="discovery-summary">
-  <p class="meta">{{ format_count(page.total) }} {% if page.total == 1 %}série{% else %}séries{% endif %}{% if page.filters_active %} com os filtros ativos{% elif not page.query %} publicadas no catálogo{% endif %}.</p>
+  <p class="meta">{{ format_count(page.total) }} {% if page.total == 1 %}série{% else %}séries{% endif %}{% if page.filters_active %} com os filtros ativos{% elif not page.query %} {% if page.total == 1 %}publicada{% else %}publicadas{% endif %} no catálogo{% endif %}.</p>
   {% if page.query %}<a href="{{ base }}/pesquisa">Ver todo o catálogo</a>{% endif %}
 </div>
 
@@ -40,9 +40,9 @@
   <h2 id="resultados" class="sr-only">Séries</h2>
   {% if page.rows %}
   {% with rows = page.rows %}{% include "_series_results.html" %}{% endwith %}
-  {% if page.rows_missing %}<p class="empty-state">Algumas séries desta página deixaram de ter um valor publicado. <a href="{{ base }}{{ page.clear_path }}">Recomeçar a pesquisa</a>.</p>{% endif %}
+  {% if page.rows_missing %}<p class="empty-state">Algumas séries desta página deixaram de ter um valor publicado. <a href="{{ base }}/pesquisa">Reabrir o catálogo</a>.</p>{% endif %}
   {% else %}
-  <p class="empty-state">As séries desta página deixaram de ter um valor publicado. <a href="{{ base }}{{ page.clear_path }}">Recomeçar a pesquisa</a>.</p>
+  <p class="empty-state">As séries desta página deixaram de ter um valor publicado. <a href="{{ base }}/pesquisa">Reabrir o catálogo</a>.</p>
   {% endif %}
   <nav class="pager" aria-label="Paginação">
     {% if page.prev_path %}<a href="{{ base }}{{ page.prev_path }}" rel="prev">Página anterior</a>{% endif %}

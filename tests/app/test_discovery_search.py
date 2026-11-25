@@ -5,6 +5,7 @@ These tests describe the new page contract: uncapped total, filters that keep th
 whole option list, URL-encoded pager state and accent-insensitive all-token matching.
 """
 import re
+import sqlite3
 from urllib.parse import parse_qs, urlsplit
 
 from app import reads
@@ -66,7 +67,7 @@ def test_all_tokens_must_match_accent_insensitively(monkeypatch):
             "indicator_key": "eurostat_ipi_total.PT.M",
         },
     ]
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     db = _FakeDb()
 
     assert _ids(reads.search_page(db, "desemprego Portugal").rows) == ["ine.unemployment_rate.PT"]
@@ -83,7 +84,7 @@ def test_all_tokens_must_match_accent_insensitively(monkeypatch):
 
 def test_search_page_reports_the_real_total_and_pages_without_the_cap(monkeypatch):
     rows = _generic_rows(130)
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     db = _FakeDb()
 
     first = reads.search_page(db, "ine")
@@ -112,7 +113,7 @@ def test_filter_options_come_from_before_filtering_and_unknown_values_are_empty(
             + [_catalogue_row(200 + i, geography="US", family="worldbank_population",
                               source="worldbank", theme="demography", frequency="A")
                for i in range(40)])
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     db = _FakeDb()
 
     page = reads.search_page(db, "", theme="energy")
@@ -142,7 +143,7 @@ def test_filter_options_come_from_before_filtering_and_unknown_values_are_empty(
 
 def test_search_page_paths_are_percent_encoded_and_keep_all_state(monkeypatch):
     rows = [_catalogue_row(i) | {"indicator_key": f"a&b.C{i:02d}"} for i in range(30)]
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     db = _FakeDb()
 
     page = reads.search_page(db, "a&b", theme="economy", group="pt", source="ine",
@@ -159,7 +160,7 @@ def test_search_page_paths_are_percent_encoded_and_keep_all_state(monkeypatch):
 
 
 def test_query_and_page_parsing_are_bounded_before_any_database_work(monkeypatch):
-    monkeypatch.setattr(reads, "catalogue", lambda db: _generic_rows(3))
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: _generic_rows(3))
     db = _FakeDb()
 
     assert reads.parse_search_query("  desemprego  ") == "desemprego"
@@ -178,7 +179,7 @@ def test_query_and_page_parsing_are_bounded_before_any_database_work(monkeypatch
 def test_theme_pager_keeps_its_filters_and_clear_path(monkeypatch):
     rows = _generic_rows(70) + [
         _catalogue_row(100 + i, geography="DE", source="eurostat") for i in range(30)]
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     db = _FakeDb()
 
     first = reads.theme(db, "economy", group="pt", source="ine", frequency="M")
@@ -307,7 +308,7 @@ def test_invalid_page_and_query_inputs_recover_without_a_500(client):
 
 def test_the_pager_carries_percent_encoded_state_into_the_page(client, monkeypatch):
     rows = [_catalogue_row(i) | {"indicator_key": f"a&b.C{i:02d}"} for i in range(30)]
-    monkeypatch.setattr(reads, "catalogue", lambda db: rows)
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     page = reads.search_page(_FakeDb(), "a&b", theme="economy", group="pt",
                              source="ine", frequency="M")
     monkeypatch.setattr(reads, "search_page", lambda db, query="", **kwargs: page)
@@ -316,3 +317,44 @@ def test_the_pager_carries_percent_encoded_state_into_the_page(client, monkeypat
     assert ('href="/pesquisa?q=a%26b&amp;tema=economy&amp;grupo=pt&amp;fonte=ine'
             '&amp;frequencia=M&amp;pagina=2"' in html)
     assert 'rel="next"' in html
+
+
+def test_discovery_counts_refresh_when_a_warm_series_is_withdrawn(client, site_path):
+    assert "3 séries publicadas no catálogo" in client.get("/pesquisa").text
+    assert "3 séries publicadas nesta secção" in client.get("/temas/economy").text
+    with sqlite3.connect(site_path) as conn:
+        conn.execute("UPDATE series SET active=0 WHERE id=?", (UNEMP,))
+    for route, phrase in (("/pesquisa", "2 séries publicadas no catálogo"),
+                          ("/temas/economy", "2 séries publicadas nesta secção")):
+        html = client.get(route).text
+        assert phrase in re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
+        assert f'href="/series/{UNEMP}"' not in html
+
+
+def test_single_series_counts_use_singular_copy(client, site_path):
+    with sqlite3.connect(site_path) as conn:
+        conn.execute("UPDATE series SET active=0 WHERE id<>?", (HICP,))
+    for route, phrase in (("/pesquisa", "1 série publicada no catálogo"),
+                          ("/temas/economy", "1 série publicada nesta secção")):
+        text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", client.get(route).text))
+        assert phrase in text
+        assert "1 séries" not in text and "1 série publicadas" not in text
+
+
+def test_unavailable_result_page_still_offers_accurate_recovery_and_pagination(client, monkeypatch):
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: _generic_rows(60))
+    theme = client.get("/temas/economy").text
+    assert "As séries desta página estão indisponíveis" in theme
+    assert 'rel="next"' in theme
+    assert "Nenhuma série corresponde" not in theme
+    search = client.get("/pesquisa?q=ine").text
+    assert "As séries desta página deixaram de ter um valor publicado" in search
+    assert 'href="/pesquisa">Reabrir o catálogo' in search
+    assert 'rel="next"' in search
+
+
+def test_unknown_theme_filters_do_not_disguise_the_address_as_all_values(client):
+    for name in ("grupo", "fonte", "frequencia"):
+        html = client.get(f"/temas/economy?{name}=indisponivel").text
+        assert '<option value="indisponivel" selected>Seleção indisponível</option>' in html
+        assert "Nenhuma série corresponde a estes filtros" in html

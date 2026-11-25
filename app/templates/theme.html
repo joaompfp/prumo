@@ -8,7 +8,7 @@
 </nav>
 <header class="page-head discovery-head">
   <h1>{{ page.title }}</h1>
-  <p class="meta">{{ format_count(page.total) }} séries publicadas nesta secção.</p>
+  <p class="meta">{{ format_count(page.total) }} {% if page.total == 1 %}série publicada{% else %}séries publicadas{% endif %} nesta secção.</p>
 </header>
 
 <details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
@@ -30,14 +30,18 @@
   {% with rows = group.rows %}{% include "_series_results.html" %}{% endwith %}
 </section>
 {% endfor %}
+{% elif page.total %}
+<p class="empty-state">As séries desta página estão indisponíveis. <a href="{{ base }}{{ page.clear_path }}">Reabrir o tema</a>.</p>
+{% else %}
+<p class="empty-state">Nenhuma série corresponde a estes filtros. <a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>.</p>
+{% endif %}
 
+{% if page.total %}
 <nav class="pager" aria-label="Paginação">
   {% if page.prev_path %}<a href="{{ base }}{{ page.prev_path }}" rel="prev">Página anterior</a>{% endif %}
   <span>Página {{ page.page }} de {{ page.pages }}</span>
   {% if page.next_path %}<a href="{{ base }}{{ page.next_path }}" rel="next">Página seguinte</a>{% endif %}
 </nav>
-{% else %}
-<p class="empty-state">Nenhuma série corresponde a estes filtros. <a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>.</p>
 {% endif %}
 
 {% if cms_pages %}
