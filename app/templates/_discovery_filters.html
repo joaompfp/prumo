@@ -1,0 +1,10 @@
+{# Keep an unknown addressed filter visible instead of pretending it is "Todas". #}
+{% macro choice(label, name, options, current, empty_label='') %}
+<label>{{ label }}
+  <select name="{{ name }}">
+    {% if empty_label %}<option value="">{{ empty_label }}</option>{% endif %}
+    {% if current and current not in options|map(attribute=0)|list %}<option value="{{ current }}" selected>Seleção indisponível</option>{% endif %}
+    {% for code, text in options %}<option value="{{ code }}"{% if code == current %} selected{% endif %}>{{ text }}</option>{% endfor %}
+  </select>
+</label>
+{% endmacro %}

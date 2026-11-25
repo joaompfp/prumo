@@ -1,73 +1,43 @@
 {% extends "base.html" %}
+{% from "_discovery_filters.html" import choice %}
 {% block title %}{% if page.query %}Pesquisa: {{ page.query }} - Prumo{% else %}Catálogo de séries - Prumo{% endif %}{% endblock %}
+{% block main_class %} discovery-main{% endblock %}
 {% block content %}
 <header class="page-head discovery-head">
   <h1>{% if page.query %}Pesquisa{% else %}Catálogo{% endif %}</h1>
-  <p class="lede">{% if page.query %}Todos os termos contam. A pesquisa ignora maiúsculas e acentos.{% else %}Todas as séries publicadas, com o último valor, a fonte e a data da recolha.{% endif %}</p>
 </header>
 
 <form class="filters discovery-search" action="{{ base }}/pesquisa" method="get" role="search">
-  <label for="pesquisa-q">Termo
+  <div class="discovery-query">
+    <label class="sr-only" for="pesquisa-q">Pesquisar indicadores</label>
     <input id="pesquisa-q" name="q" type="search" value="{{ page.query }}"
-           maxlength="200" placeholder="ex.: desemprego Portugal">
-  </label>
-  <button type="submit">Procurar</button>
-  {% if page.query %}<a class="button-quiet" href="{{ base }}/pesquisa">Ver todo o catálogo</a>{% endif %}
+           maxlength="200" placeholder="ex.: desemprego Portugal" aria-describedby="pesquisa-ajuda">
+    <button type="submit">Procurar</button>
+  </div>
+  <p id="pesquisa-ajuda" class="sr-only">Todos os termos contam. A pesquisa ignora maiúsculas e acentos.</p>
+  <details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
+    <summary>Filtros{% if page.filters_active %} ativos{% endif %}<span class="sr-only">: tema, geografia, fonte e frequência</span></summary>
+    <div class="filters">
+      {{ choice('Tema', 'tema', page.theme_options, page.theme, 'Todos os temas') }}
+      {{ choice('Geografia', 'grupo', page.group_options, page.group) }}
+      {{ choice('Fonte', 'fonte', page.source_options, page.source, 'Todas') }}
+      {{ choice('Frequência', 'frequencia', page.frequency_options, page.frequency, 'Todas') }}
+      <button type="submit">Aplicar filtros</button>
+      {% if page.filters_active %}<a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
+    </div>
+  </details>
 </form>
-
-<details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
-  <summary>Filtrar por tema, geografia, fonte e frequência</summary>
-  <form class="filters" action="{{ base }}/pesquisa" method="get">
-    {% if page.query %}<input type="hidden" name="q" value="{{ page.query }}">{% endif %}
-    <label>Tema
-      <select name="tema">
-        <option value="">Todos os temas</option>
-        {% for code, label in page.theme_options %}<option value="{{ code }}"{% if code == page.theme %} selected{% endif %}>{{ label }}</option>{% endfor %}
-      </select>
-    </label>
-    <label>Geografia
-      <select name="grupo">
-        {% for code, label in page.group_options %}<option value="{{ code }}"{% if code == page.group %} selected{% endif %}>{{ label }}</option>{% endfor %}
-      </select>
-    </label>
-    <label>Fonte
-      <select name="fonte">
-        <option value="">Todas</option>
-        {% for code, label in page.source_options %}<option value="{{ code }}"{% if code == page.source %} selected{% endif %}>{{ label }}</option>{% endfor %}
-      </select>
-    </label>
-    <label>Frequência
-      <select name="frequencia">
-        <option value="">Todas</option>
-        {% for code, label in page.frequency_options %}<option value="{{ code }}"{% if code == page.frequency %} selected{% endif %}>{{ label }}</option>{% endfor %}
-      </select>
-    </label>
-    <button type="submit">Aplicar filtros</button>
-    {% if page.filters_active %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
-  </form>
-</details>
 
 {% if page.notice %}<p class="empty-state" role="status">{{ page.notice }}</p>{% endif %}
 
-<p class="meta discovery-summary">
-  {% if page.query and page.filters_active %}
-  {% if page.total == 1 %}1 série corresponde a «{{ page.query }}» com os filtros ativos.
-  {% else %}{{ format_count(page.total) }} séries correspondem a «{{ page.query }}» com os filtros ativos.{% endif %}
-  {% elif page.query %}
-  {% if page.total == 1 %}1 série corresponde a «{{ page.query }}».
-  {% else %}{{ format_count(page.total) }} séries correspondem a «{{ page.query }}».{% endif %}
-  {% elif page.filters_active %}
-  {% if page.total == 1 %}1 série publicada com os filtros ativos.
-  {% else %}{{ format_count(page.total) }} séries publicadas com os filtros ativos.{% endif %}
-  {% else %}
-  {% if page.total == 1 %}1 série publicada no catálogo.
-  {% else %}{{ format_count(page.total) }} séries publicadas no catálogo.{% endif %}
-  {% endif %}
-</p>
+<div class="discovery-summary">
+  <p class="meta">{{ format_count(page.total) }} {% if page.total == 1 %}série{% else %}séries{% endif %}{% if page.filters_active %} com os filtros ativos{% elif not page.query %} publicadas no catálogo{% endif %}.</p>
+  {% if page.query %}<a href="{{ base }}/pesquisa">Ver todo o catálogo</a>{% endif %}
+</div>
 
 {% if page.total %}
 <section class="discovery-results" aria-labelledby="resultados">
-  <h2 id="resultados">Séries</h2>
+  <h2 id="resultados" class="sr-only">Séries</h2>
   {% if page.rows %}
   {% with rows = page.rows %}{% include "_series_results.html" %}{% endwith %}
   {% if page.rows_missing %}<p class="empty-state">Algumas séries desta página deixaram de ter um valor publicado. <a href="{{ base }}{{ page.clear_path }}">Recomeçar a pesquisa</a>.</p>{% endif %}

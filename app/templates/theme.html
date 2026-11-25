@@ -1,37 +1,25 @@
 {% extends "base.html" %}
+{% from "_discovery_filters.html" import choice %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
+{% block main_class %} discovery-main{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Caminho">
   <a href="{{ base }}/">Início</a> <span aria-hidden="true">/</span> {{ page.title }}
 </nav>
 <header class="page-head discovery-head">
   <h1>{{ page.title }}</h1>
-  <p class="lede">{{ page.blurb }}</p>
   <p class="meta">{{ format_count(page.total) }} séries publicadas nesta secção.</p>
 </header>
 
 <details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
-  <summary>Filtrar por geografia, fonte e frequência</summary>
+  <summary>Filtros{% if page.filters_active %} ativos{% endif %}<span class="sr-only">: geografia, fonte e frequência</span></summary>
   <form class="filters" action="{{ base }}/temas/{{ page.code }}" method="get">
-    <label>Geografia
-      <select name="grupo">
-        {% for code, label in page.groups_filter %}<option value="{{ code }}"{% if code == page.group %} selected{% endif %}>{{ label }}</option>{% endfor %}
-      </select>
-    </label>
-    <label>Fonte
-      <select name="fonte">
-        <option value="">Todas</option>
-        {% for code, label in page.sources %}<option value="{{ code }}"{% if code == page.source %} selected{% endif %}>{{ label }}</option>{% endfor %}
-      </select>
-    </label>
-    <label>Frequência
-      <select name="frequencia">
-        <option value="">Todas</option>
-        {% for code, label in page.frequencies %}<option value="{{ code }}"{% if code == page.frequency %} selected{% endif %}>{{ label }}</option>{% endfor %}
-      </select>
-    </label>
+    {{ choice('Geografia', 'grupo', page.groups_filter, page.group) }}
+    {{ choice('Fonte', 'fonte', page.sources, page.source, 'Todas') }}
+    {{ choice('Frequência', 'frequencia', page.frequencies, page.frequency, 'Todas') }}
     <button type="submit">Aplicar filtros</button>
-    {% if page.filters_active %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
+    {% if page.filters_active %}<a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
+    <p class="discovery-description">{{ page.blurb }}</p>
   </form>
 </details>
 

@@ -1015,18 +1015,17 @@ def parse_page_number(value: str | int | None) -> int:
 
 
 def search(db: Db, query: str, lang: str = "pt") -> tuple[Row, ...]:
-    """The old notebook-facing search: one query string, every term, capped results.
+    """Keep the notebook's original phrase matching, order and 100-row cap.
 
-    The signature and the 100-row cap stay stable because the notebook composes its
-    add/remove links from this list. The catalogue page uses `search_page`, which
-    counts before paging and keeps the full matching set.
+    Token matching and full pagination belong to `search_page`; the notebook's
+    add/remove workflow continues to consume this existing bounded contract.
     """
-    terms = _search_terms(query)
-    if not terms:
+    needle = _norm(query.strip())
+    if not needle:
         return ()
     matched = []
     for r in catalogue(db):
-        if _matches_all(r, terms, lang):
+        if needle in _norm(_search_haystack(r, lang)):
             matched.append(r)
             if len(matched) >= SEARCH_CAP:
                 break
@@ -1046,7 +1045,7 @@ def search_page(db: Db, query: str = "", *, theme: str = "", group: str = "",
     parsed = parse_search_query(query)
     notice = "" if parsed is not None else (
         "O termo de pesquisa é inválido ou demasiado longo. "
-        "O catálogo completo está abaixo.")
+        "O termo não foi aplicado. Reveja a pesquisa; os filtros mantêm-se.")
     clean_query = parsed or ""
     rows = catalogue(db)
     theme_options = tuple((code, theme_text(lang, code)) for code in THEME_ORDER

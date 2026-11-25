@@ -17,7 +17,7 @@
       <a href="{{ header_nav.home.href }}"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>{{ header_nav.home.label }}</a>
       <details class="nav-disclosure"{% if header_nav.explore.state %} data-state="{{ header_nav.explore.state }}"{% endif %}>
         <summary>
-          <span class="nav-disclosure-label">{{ header_nav.explore.label }}</span>
+          <span class="nav-disclosure-label">{{ header_nav.explore.label }}</span>{% if header_nav.explore.current_label %}<span class="sr-only">: {{ header_nav.explore.current_label }}</span>{% endif %}
         </summary>
         <ul class="nav-disclosure-panel">
           {% for link in header_nav.explore.links %}
@@ -30,7 +30,7 @@
       {% endfor %}
       <details class="nav-disclosure"{% if header_nav.support.state %} data-state="{{ header_nav.support.state }}"{% endif %}>
         <summary>
-          <span class="nav-disclosure-label">{{ header_nav.support.label }}</span>
+          <span class="nav-disclosure-label">{{ header_nav.support.label }}</span>{% if header_nav.support.current_label %}<span class="sr-only">: {{ header_nav.support.current_label }}</span>{% endif %}
         </summary>
         <ul class="nav-disclosure-panel">
           {% for link in header_nav.support.links %}

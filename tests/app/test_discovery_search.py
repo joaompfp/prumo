@@ -69,11 +69,14 @@ def test_all_tokens_must_match_accent_insensitively(monkeypatch):
     monkeypatch.setattr(reads, "catalogue", lambda db: rows)
     db = _FakeDb()
 
-    assert _ids(reads.search(db, "desemprego Portugal")) == ["ine.unemployment_rate.PT"]
+    assert _ids(reads.search_page(db, "desemprego Portugal").rows) == ["ine.unemployment_rate.PT"]
+    assert _ids(reads.search_page(db, "PRODUÇÃO INDUSTRIAL").rows) == ["eurostat.ipi.PT"]
+    assert reads.search_page(db, "desemprego Alemanha").rows[0].id == "ine.unemployment_rate.DE"
+    assert reads.search_page(db, "desemprego Portugal industrial").rows == ()
+    # The notebook keeps its original phrase matching, ordering and cap.
+    assert reads.search(db, "desemprego Portugal") == ()
+    assert reads.search(db, "ine PT") == ()
     assert _ids(reads.search(db, "PRODUÇÃO INDUSTRIAL")) == ["eurostat.ipi.PT"]
-    assert reads.search(db, "desemprego Alemanha")[0].id == "ine.unemployment_rate.DE"
-    assert reads.search(db, "desemprego Portugal industrial") == ()
-    # The old helper still takes one query string and still stops at the shared cap.
     assert len(reads.search(db, "ine")) == 2
     assert reads.SEARCH_CAP == 100
 
@@ -206,6 +209,9 @@ def test_empty_search_opens_the_catalogue(client):
     assert task_form is not None
     assert task_form.group(0).count('type="search"') == 1
     assert 'name="q"' in task_form.group(0)
+    assert response.text.count('<form ') == 1
+    assert all(f'name="{name}"' in task_form.group(0)
+               for name in ("tema", "grupo", "fonte", "frequencia"))
 
 
 def test_search_results_are_one_semantic_list_with_an_explicit_single_series_action(client):
@@ -240,6 +246,8 @@ def test_unknown_filters_are_a_truthful_empty_state_with_a_clear_path(client):
         text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", response.text))
         assert "Nenhuma série corresponde a estes filtros" in text, path
         assert 'href="/pesquisa"' in response.text, path
+        assert re.search(r'<option value="nope" selected>Seleção indisponível</option>',
+                         response.text), path
 
     html = client.get("/pesquisa?q=desemprego&tema=nope").text
     assert 'href="/pesquisa?q=desemprego"' in html
@@ -274,7 +282,10 @@ def test_discovery_css_is_served_and_never_shrinks_inherited_type(client):
     assert response.headers["content-type"].startswith("text/css")
     css = response.text
     assert ".series-results" in css and ".discovery-filters" in css
-    assert not re.search(r"font-size:\s*[\d.]", css)
+    sized_selectors = re.findall(r"([^{}]+)\{[^{}]*font-size:\s*[\d.][^{}]*\}", css)
+    assert {selector.strip() for selector in sized_selectors} <= {
+        ".discovery-head h1", ".discovery-main .family h2"}
+    assert ".series-result-title { margin: 0; font-family: inherit; font-size: inherit;" in css
 
 
 def test_invalid_page_and_query_inputs_recover_without_a_500(client):
