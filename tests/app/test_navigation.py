@@ -1,4 +1,4 @@
-"""The public navigation contract: exact, nested, theme and mount-prefix states.
+"""The public navigation contract: task entries, exact, nested, theme and mount states.
 
 The model is tested without templates; the rendered checks exercise a real public
 request. The goldens under `golden/` stay historical captures of the old chrome.
@@ -10,7 +10,8 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from app.main import create_app
-from app.navigation import build_navigation
+from app.navigation import build_navigation, legacy_links
+from tests.app.conftest import HICP
 
 HEADER = re.compile(r"<header class=\"site-header\">.*?</header>", re.S)
 CSS = Path(__file__).resolve().parents[2] / "static" / "css" / "prumo.css"
@@ -22,11 +23,47 @@ def _attrs(html: str, href: str) -> str:
     return match.group(1)
 
 
+def _header(html: str) -> str:
+    match = HEADER.search(html)
+    assert match
+    return match.group(0)
+
+
 def test_exact_destination_is_a_current_page():
     nav = build_navigation("/comparar", "")
     assert nav.home.current == ""
-    assert [link.current for link in nav.sections] == ["page", "", ""]
+    assert [link.current for link in nav.sections] == ["page", ""]
     assert nav.compact_current == "Comparações"
+
+
+def test_primary_tasks_lead_with_explore_and_authored_pages_move_to_more():
+    nav = build_navigation("/", "")
+    assert nav.explore.label == "Explorar"
+    assert [link.label for link in nav.explore.links] == [
+        "Catálogo", "Economia", "Demografia", "Energia"]
+    assert nav.catalogue.href == "/pesquisa"
+    assert [link.label for link in nav.sections] == ["Comparações", "Caderno"]
+    assert [link.label for link in nav.support.links] == [
+        "Páginas", "Fontes", "Metodologia"]
+    # The old `themes` disclosure remains readable by existing callers.
+    assert nav.themes.links == nav.explore.links[1:]
+
+
+def test_catalogue_is_a_page_only_at_its_exact_address_and_a_location_below_it():
+    exact = build_navigation("/pesquisa", "")
+    assert exact.catalogue.current == "page"
+    assert exact.catalogue.is_current
+    assert exact.explore.state == "page"
+    assert exact.explore.current_label == "Catálogo"
+    assert exact.compact_current == "Catálogo"
+
+    nested = build_navigation("/pesquisa/series/calculadas", "")
+    assert nested.catalogue.current == "location"
+    assert not nested.catalogue.is_current
+    assert nested.explore.state == "location"
+    assert nested.home.current == ""
+    assert all(link.current == "" for link in (*nested.themes.links, *nested.sections))
+    assert nested.compact_current == "Catálogo"
 
 
 def test_nested_section_is_a_location_and_never_a_current_home():
@@ -43,6 +80,7 @@ def test_theme_disclosure_names_the_current_theme_and_marks_only_its_child():
     nav = build_navigation("/temas/economy", "")
     assert nav.themes.current_label == "Economia"
     assert nav.themes.current
+    assert nav.explore.current_label == "Economia"
     assert [link.current for link in nav.themes.links] == ["page", "", ""]
     assert nav.compact_current == "Economia"
     assert nav.home.current == ""
@@ -53,6 +91,7 @@ def test_nested_theme_route_keeps_honest_section_context():
     assert nav.themes.current_label == "Energia"
     assert nav.themes.state == "location"
     assert [link.current for link in nav.themes.links] == ["", "", "location"]
+    assert nav.explore.state == "location"
     assert nav.compact_current == "Energia"
 
 
@@ -61,6 +100,7 @@ def test_support_link_is_current_without_claiming_the_home():
     fontes = next(link for link in nav.support.links if link.label == "Fontes")
     assert fontes.current == "page"
     assert nav.support.current_label == "Fontes"
+    assert nav.support.state == "page"
     assert nav.home.current == ""
     assert nav.compact_current == "Fontes"
 
@@ -68,19 +108,39 @@ def test_support_link_is_current_without_claiming_the_home():
 def test_unknown_route_has_no_false_current_destination():
     nav = build_navigation("/series/ine.hicp_yoy.PT", "")
     assert nav.home.current == ""
+    assert nav.explore.current_label == ""
     assert nav.themes.current_label == ""
     assert nav.support.current_label == ""
     assert nav.compact_current == ""
     assert all(link.current == "" for link in nav.destinations)
 
 
+def test_task_pages_do_not_repeat_the_global_search_above_their_own():
+    assert not build_navigation("/pesquisa", "").show_search
+    assert not build_navigation("/pesquisa/series/calculadas", "").show_search
+    assert not build_navigation("/caderno", "").show_search
+    assert build_navigation("/", "").show_search
+    assert build_navigation("/temas/economy", "").show_search
+
+
 def test_prefix_is_joined_once_and_a_trailing_slash_is_the_same_destination():
     nav = build_navigation("/comparar/", "/dados")
     assert nav.home.href == "/dados/"
     assert nav.search_href == "/dados/pesquisa"
+    assert nav.catalogue.href == "/dados/pesquisa"
     assert next(link for link in nav.sections if link.label == "Comparações").current == "page"
     assert all(link.href.startswith("/dados/") for link in nav.destinations)
     assert "/dados/dados" not in repr(nav)
+
+
+def test_legacy_flat_links_keep_their_pair_shape_for_the_preview_caller():
+    assert legacy_links() == (
+        ("/", "Início"), ("/pesquisa", "Catálogo"),
+        ("/temas/economy", "Economia"), ("/temas/demography", "Demografia"),
+        ("/temas/energy", "Energia"), ("/comparar", "Comparações"),
+        ("/caderno", "Caderno"), ("/paginas", "Páginas"), ("/fontes", "Fontes"),
+        ("/metodologia", "Metodologia"),
+    )
 
 
 def test_rendered_exact_and_nested_sections_use_page_and_location(client):
@@ -93,27 +153,42 @@ def test_rendered_exact_and_nested_sections_use_page_and_location(client):
     assert "aria-current" not in _attrs(nested, "/temas/economy")
 
 
-def test_the_current_theme_stays_visible_in_the_closed_disclosure(client):
-    html = client.get("/temas/demography").text
-    match = HEADER.search(html)
-    assert match
-    header = match.group(0)
+def test_nested_catalogue_route_never_claims_the_catalogue_page_itself(client):
+    html = client.get("/pesquisa/series/calculadas").text  # the shared 404 shell
+    header = _header(html)
+    assert 'aria-current="location"' in _attrs(header, "/pesquisa")
+    assert 'aria-current="page"' not in _attrs(header, "/pesquisa")
+    assert '<details class="nav-disclosure" data-state="location">' in header
+
+
+def test_the_current_theme_stays_marked_in_the_closed_disclosure(client):
+    header = _header(client.get("/temas/demography").text)
     assert '<details class="nav-disclosure" data-state="page">' in header
-    assert '<span class="nav-disclosure-current">Demografia</span>' in header
+    assert '<span class="nav-disclosure-label">Explorar</span>' in header
     assert '<span class="nav-menu-current">Demografia</span>' in header
     assert 'aria-current="page">Demografia</a>' in header
     assert "aria-current" not in _attrs(header, "/temas/economy")
     assert "aria-current" not in _attrs(header, "/")
 
 
+def test_supporting_page_marks_the_more_disclosure_without_hiding_its_label(client):
+    header = _header(client.get("/fontes").text)
+    assert '<details class="nav-disclosure" data-state="page">' in header
+    assert '<span class="nav-disclosure-label">Mais</span>' in header
+    assert 'aria-current="page">Fontes</a>' in header
+    assert '<span class="nav-menu-current">Fontes</span>' in header
+
+
 def test_every_destination_is_discoverable_in_desktop_and_compact_nav(client):
     html = client.get("/").text
-    hrefs = {"/", "/temas/economy", "/temas/demography", "/temas/energy", "/comparar",
-             "/caderno", "/paginas", "/fontes", "/metodologia"}
+    header = html[:html.index('<main id="conteudo"')]
+    hrefs = {"/", "/pesquisa", "/temas/economy", "/temas/demography", "/temas/energy",
+             "/comparar", "/caderno", "/paginas", "/fontes", "/metodologia"}
     for href in hrefs:
-        assert html.count(f'href="{href}"') >= 2, href
-    assert '<details class="nav-menu">' in html
-    assert 'aria-label="Secções no telemóvel"' in html
+        assert header.count(f'href="{href}"') >= 2, href
+    assert '<details class="nav-menu">' in header
+    assert 'aria-label="Secções no telemóvel"' in header
+    assert header.count('href="/pesquisa"') == 2
 
 
 def test_native_menu_and_search_need_no_script(client):
@@ -123,6 +198,27 @@ def test_native_menu_and_search_need_no_script(client):
     assert 'name="q"' in html
     assert "<script" not in html.lower()
     assert "onclick" not in html.lower()
+
+
+def test_task_pages_suppress_the_global_search_and_keep_their_own(client):
+    for path in ("/pesquisa", "/pesquisa?q=desemprego", "/pesquisa/series/calculadas"):
+        assert '<form class="search"' not in client.get(path).text, path
+    notebook = client.get(f"/caderno?s={HICP}").text
+    assert '<form class="search"' not in notebook
+    assert '<form id="notebook-search-form"' in notebook
+    assert 'href="#pesquisa" aria-label="Acrescentar séries">Acrescentar</a>' in notebook
+
+
+def test_discovery_stylesheet_is_unconditional_and_mount_aware(client):
+    for path in ("/", "/pesquisa", "/caderno", f"/series/{HICP}"):
+        assert '<link rel="stylesheet" href="/static/css/discovery.css">' in client.get(path).text
+    prefixed = client.get("/", headers={"X-Forwarded-Prefix": "/dados"}).text
+    assert '<link rel="stylesheet" href="/dados/static/css/discovery.css">' in prefixed
+
+
+def test_footer_keeps_the_admin_entry_discoverable(client):
+    html = client.get("/").text
+    assert '<a href="https://joao.date/dados/admin/">Admin</a>' in html
 
 
 def test_forwarded_prefix_root_path_and_real_mount_render_the_same_mounted_chrome(site_path):
@@ -136,16 +232,24 @@ def test_forwarded_prefix_root_path_and_real_mount_render_the_same_mounted_chrom
         mounted_html = mounted.get("/dados/comparar").text
 
     for html in (forwarded, root_path_html, mounted_html):
-        match = HEADER.search(html)
-        assert match
-        header = match.group(0)
+        header = _header(html)
         assert 'href="/dados/"' in header
         assert 'href="/dados/temas/economy"' in header
+        assert 'href="/dados/pesquisa"' in header
         assert 'href="/dados/comparar"' in header
         assert 'action="/dados/pesquisa"' in header
         assert 'href="/dados/static/css/prumo.css"' in html
+        assert 'href="/dados/static/css/discovery.css"' in html
         assert "/dados/dados" not in html
         assert 'aria-current="page"' in _attrs(header, "/dados/comparar")
+
+
+def test_long_compact_current_is_tagged_for_the_narrow_breakpoint():
+    assert build_navigation("/comparar", "").compact_current_long
+    assert not build_navigation("/pesquisa", "").compact_current_long
+    css = CSS.read_text(encoding="utf-8")
+    assert ".nav-menu-summary--long { flex-wrap: wrap; }" in css
+    assert "@media (max-width: 380px)" in css
 
 
 def test_last_disclosure_panel_is_anchored_to_the_rail_edge():

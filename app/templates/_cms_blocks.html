@@ -10,7 +10,7 @@
 {% for block in blocks %}
 {% if block.type == "card" %}
 {% if not state.cards_open %}<div class="cards">{% set state.cards_open = true %}{% endif %}
-{% with card = block.card %}{% include "_card.html" %}{% endwith %}
+{% with card = block.card, card_create_path = notebook_path([block.card.series_id]) %}{% include "_card.html" %}{% endwith %}
 {% if loop.last or blocks[loop.index].type != "card" %}
 </div>{% set state.cards_open = false %}
 {% endif %}

@@ -4,21 +4,23 @@
       <img class="brand-icon" src="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg" alt="" width="40" height="40">
       <span class="brand-name">Prumo</span>
     </a>
+    {% if header_nav.show_search|default(true) %}
     <form class="search" action="{{ header_nav.search_href }}" method="get" role="search">
       <label class="sr-only" for="q">Pesquisar séries</label>
       <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
       <button type="submit">Procurar</button>
     </form>
+    {% endif %}
   </div>
   <div class="wrap destination-rail">
     <nav class="site-nav" aria-label="Secções">
       <a href="{{ header_nav.home.href }}"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>{{ header_nav.home.label }}</a>
-      <details class="nav-disclosure"{% if header_nav.themes.state %} data-state="{{ header_nav.themes.state }}"{% endif %}>
+      <details class="nav-disclosure"{% if header_nav.explore.state %} data-state="{{ header_nav.explore.state }}"{% endif %}>
         <summary>
-          {% if header_nav.themes.current_label %}<span class="sr-only">{{ header_nav.themes.label }}: </span><span class="nav-disclosure-current">{{ header_nav.themes.current_label }}</span>{% else %}<span class="nav-disclosure-label">{{ header_nav.themes.label }}</span>{% endif %}
+          <span class="nav-disclosure-label">{{ header_nav.explore.label }}</span>
         </summary>
         <ul class="nav-disclosure-panel">
-          {% for link in header_nav.themes.links %}
+          {% for link in header_nav.explore.links %}
           <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
           {% endfor %}
         </ul>
@@ -28,7 +30,7 @@
       {% endfor %}
       <details class="nav-disclosure"{% if header_nav.support.state %} data-state="{{ header_nav.support.state }}"{% endif %}>
         <summary>
-          {% if header_nav.support.current_label %}<span class="sr-only">{{ header_nav.support.label }}: </span><span class="nav-disclosure-current">{{ header_nav.support.current_label }}</span>{% else %}<span class="nav-disclosure-label">{{ header_nav.support.label }}</span>{% endif %}
+          <span class="nav-disclosure-label">{{ header_nav.support.label }}</span>
         </summary>
         <ul class="nav-disclosure-panel">
           {% for link in header_nav.support.links %}
@@ -44,8 +46,8 @@
       </summary>
       <nav class="site-nav site-nav-compact" aria-label="Secções no telemóvel">
         <a href="{{ header_nav.home.href }}"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>{{ header_nav.home.label }}</a>
-        <p class="nav-compact-group">{{ header_nav.themes.label }}</p>
-        {% for link in header_nav.themes.links %}
+        <p class="nav-compact-group">{{ header_nav.explore.label }}</p>
+        {% for link in header_nav.explore.links %}
         <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
         {% endfor %}
         {% for link in header_nav.sections %}

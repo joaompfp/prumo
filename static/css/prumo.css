@@ -166,9 +166,9 @@ img { max-width: 100%; }
    one link-padding to the right of the brand. */
 .destination-rail > .site-nav > a:first-child { padding-left: 0; }
 
-/* Native theme and supporting disclosures on the desktop rail. No script, no focus
-   trap: the summary opens an in-page list, and the current theme stays visible in
-   the summary even when the list is closed. */
+/* Native exploration and supporting disclosures on the desktop rail. No script, no
+   focus trap: the summary opens an in-page list, keeps its stable task label, and
+   marks the current section with the same accent rule as a current link. */
 .nav-disclosure { position: relative; display: flex; }
 .nav-disclosure > summary {
   display: inline-flex; align-items: center; gap: 8px;
@@ -192,7 +192,6 @@ img { max-width: 100%; }
   color: var(--accent); font-weight: 600; box-shadow: inset 0 -3px 0 var(--accent);
 }
 .nav-disclosure[data-state="location"] > summary { color: var(--accent); font-weight: 600; }
-.nav-disclosure-current { color: var(--accent); font-weight: 600; }
 .nav-disclosure-panel {
   position: absolute; left: 0; top: 100%; z-index: 30; min-width: 16rem;
   margin: 0; padding: 8px; list-style: none;
@@ -340,6 +339,7 @@ section { margin: 80px 0; }
 .card-link { font-size: .85rem; }
 .card-actions { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: auto 0 0; padding-top: 4px; }
 .card-actions .card-link { margin: 0; }
+.card-create { font-size: .85rem; font-weight: 600; }
 .card-remove { font-size: .85rem; color: var(--muted); text-decoration-color: var(--rule-strong); }
 .card-remove:hover { color: var(--accent); }
 

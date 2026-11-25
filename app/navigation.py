@@ -5,6 +5,12 @@ mount prefix itself. A destination is `page` only when its href is the current
 address, and `location` when the reader is on a nested route of that section. The
 home link is therefore never current except on the home page itself.
 
+The primary tasks are `Explorar` (the complete catalogue plus the three themes),
+`Comparações` and `Caderno`. Authored pages, sources and methodology sit in the
+supporting `Mais` disclosure, so the compact rail keeps its task order. `/pesquisa`
+and `/caderno` already carry a task search, so the shared header search is hidden
+across the catalogue section and on the notebook instead of competing with it.
+
 `X-Forwarded-Prefix` remains the edge mount contract. A real ASGI `root_path` mount
 is honoured as the fallback when the edge did not forward a prefix. `root_path`
 comes from the server configuration, not from a request header, so it is only
@@ -18,9 +24,14 @@ HOME = ("/", "Início")
 THEMES = (("/temas/economy", "Economia"),
           ("/temas/demography", "Demografia"),
           ("/temas/energy", "Energia"))
-SECTIONS = (("/comparar", "Comparações"), ("/caderno", None), ("/paginas", "Páginas"))
-SUPPORT = (("/fontes", "Fontes"), ("/metodologia", "Metodologia"))
 SEARCH_PATH = "/pesquisa"
+CATALOGUE = (SEARCH_PATH, "Catálogo")
+SECTIONS = (("/comparar", "Comparações"), ("/caderno", None))
+SUPPORT = (("/paginas", "Páginas"), ("/fontes", "Fontes"), ("/metodologia", "Metodologia"))
+# These pages own a task-specific search; repeating the global one in the masthead
+# would offer two term fields for the same job.
+TASK_SEARCH_PATHS = frozenset({SEARCH_PATH, "/caderno"})
+EXPLORE_LABEL = "Explorar"
 
 
 @dataclass(frozen=True)
@@ -50,19 +61,37 @@ class NavDisclosure:
 class Navigation:
     base: str
     home: NavLink
-    themes: NavDisclosure
+    explore: NavDisclosure
     sections: tuple[NavLink, ...]
     support: NavDisclosure
     compact_current: str = ""
     compact_current_long: bool = False
+    show_search: bool = True
 
     @property
     def search_href(self) -> str:
         return f"{self.base}{SEARCH_PATH}"
 
     @property
+    def catalogue(self) -> NavLink:
+        """The complete indicator catalogue, the first child of `Explorar`."""
+        return self.explore.links[0]
+
+    @property
+    def themes(self) -> NavDisclosure:
+        """The old themes-only disclosure, derived from the same `Explorar` links.
+
+        Existing callers keep reading `themes`; the model keeps one authoritative
+        tuple of theme links instead of preparing the same destinations twice.
+        """
+        links = self.explore.links[1:]
+        current_label, state = _first_current(links)
+        return NavDisclosure(label="Temas", links=links, current_label=current_label,
+                             state=state)
+
+    @property
     def destinations(self) -> tuple[NavLink, ...]:
-        return (self.home, *self.themes.links, *self.sections, *self.support.links)
+        return (self.home, *self.explore.links, *self.sections, *self.support.links)
 
 
 def root_path_base(request: Request) -> str:
@@ -111,22 +140,36 @@ def _link(base: str, path: str, label: str, current_path: str) -> NavLink:
     return NavLink(href=_href(base, path), label=label, current=current)
 
 
+def _first_current(links: tuple[NavLink, ...]) -> tuple[str, str]:
+    link = next((link for link in links if link.current), None)
+    return (link.label, link.current) if link else ("", "")
+
+
 def build_navigation(path: str, base: str = "", notebook_label: str = "Caderno") -> Navigation:
     """Prepare every destination, its exact current state and the compact context."""
     current_path = _normalise(path)
     base = "" if base == "/" else base.rstrip("/")
 
     home = _link(base, HOME[0], HOME[1], current_path)
+    catalogue = _link(base, CATALOGUE[0], CATALOGUE[1], current_path)
     themes = tuple(_link(base, href, label, current_path) for href, label in THEMES)
     sections = tuple(_link(base, href, label or notebook_label, current_path)
                      for href, label in SECTIONS)
     support = tuple(_link(base, href, label, current_path) for href, label in SUPPORT)
 
-    theme_current = next((link.label for link in themes if link.current), "")
-    theme_state = next((link.current for link in themes if link.current), "")
-    support_current = next((link.label for link in support if link.current), "")
-    support_state = next((link.current for link in support if link.current), "")
-    compact_current = home.label if home.current else theme_current
+    theme_current, theme_state = _first_current(themes)
+    support_current, support_state = _first_current(support)
+
+    # `Explorar` owns the catalogue first and the themes after it. Its state is the
+    # strongest child state: an exact child page is `page`, a nested child `location`.
+    explore_state = catalogue.current or theme_state
+    explore_current = catalogue.label if catalogue.current else theme_current
+    explore = NavDisclosure(label=EXPLORE_LABEL, links=(catalogue, *themes),
+                            current_label=explore_current, state=explore_state)
+
+    compact_current = home.label if home.current else ""
+    if not compact_current and explore.current:
+        compact_current = explore_current or explore.label
     if not compact_current:
         compact_current = next((link.label for link in (*sections, *support)
                                 if link.current), "")
@@ -134,8 +177,7 @@ def build_navigation(path: str, base: str = "", notebook_label: str = "Caderno")
     return Navigation(
         base=base,
         home=home,
-        themes=NavDisclosure(label="Temas", links=themes, current_label=theme_current,
-                             state=theme_state),
+        explore=explore,
         sections=sections,
         support=NavDisclosure(label="Mais", links=support, current_label=support_current,
                               state=support_state),
@@ -143,13 +185,17 @@ def build_navigation(path: str, base: str = "", notebook_label: str = "Caderno")
         # Long labels may not share the compact summary line at 320px. The template
         # only tags them; the narrow media query moves that one label to a second line.
         compact_current_long=len(compact_current) >= 10,
+        # The catalogue owns its search on `/pesquisa` and on every nested catalogue
+        # view; the notebook owns its own task search on `/caderno`.
+        show_search=not (current_path in TASK_SEARCH_PATHS
+                         or current_path.startswith(SEARCH_PATH + "/")),
     )
 
 
 def legacy_links(notebook_label: str = "Caderno") -> tuple[tuple[str, str], ...]:
     """The flat `(href, label)` shape the backoffice preview still passes around."""
-    return ((HOME, *THEMES, *((href, label or notebook_label) for href, label in SECTIONS),
-             *SUPPORT))
+    return ((HOME, CATALOGUE, *THEMES,
+             *((href, label or notebook_label) for href, label in SECTIONS), *SUPPORT))
 
 
 __all__ = ["NavDisclosure", "NavLink", "Navigation", "build_navigation",
