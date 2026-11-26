@@ -674,8 +674,10 @@ def test_controls_links_and_actions_preserve_frequency_transform_and_base(tmp_pa
     assert 'type="checkbox" name="s" value="ine.credit.PT"' in batch
     assert "Acrescentar selecionadas" in visible(batch)
 
-    clear = unescape(re.search(
-        r'href="([^"]+)">Limpar seleção</a>', html).group(1))
+    clear_match = re.search(
+        r'<a class="button-link" href="([^"]+)">(?:(?!</a>).)*Limpar seleção</a>', html, re.S)
+    assert clear_match is not None
+    clear = unescape(clear_match.group(1))
     assert clear.startswith("/caderno?")
     assert "q=cr%C3%A9dito" in clear
     assert "grafico=off" in clear

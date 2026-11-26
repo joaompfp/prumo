@@ -222,6 +222,7 @@ def test_controls_and_live_region_are_rendered_without_javascript(client):
 
 def test_fallback_and_print_css_keep_the_server_svg():
     css = (ROOT / "static" / "css" / "prumo.css").read_text(encoding="utf-8")
+    css += (ROOT / "static" / "css" / "workspace.css").read_text(encoding="utf-8")
     assert ".chart-canvas" in css and "opacity: 0; pointer-events: none" in css
     assert ".chart-enhanced .chart { opacity: 0; pointer-events: none; }" in css
     assert "@media print" in css
