@@ -1,6 +1,12 @@
 # Prumo image and ingestion operations
 
-## Current selection interface
+## Current responsive chart inspection
+
+Runtime/main `f6fc106` is installed from 26/11/2026 21:32 UTC. Mobile/narrow/coarse charts keep inspected values in flow below the plot, with no covering tooltip; desktop fine-hover keeps its floating tooltip. Hybrid input and responsive changes retain the period. Touch scroll does not change selection. Public web and shared static-preview Admin only were recreated. Worker, schema/migrations, authored CMS/history, original coordinates and CSV are unchanged. Exact-runtime hosted CI `45897388598` passed 3409 tests; public acceptance passed 2092 assertions on both mounts and real-editor/static-preview checks passed. Reader observation passed at 21:46:59 UTC after 900.034003 seconds/30 stable samples; final 36 state/access checks passed again at 21:47:11 UTC, worker/schema/CMS and unrelated infrastructure unchanged. Full record: [mobile inspection](../superpowers/handoff/reports/mobile-inspector/installed.md).
+
+Recovery is actual prior checkout `23ea019` plus exact reader tags `rollback-mobile-inspector-20261126T211558Z`. Stop only the affected bind-mounted public reader before restoring checkout, recreate the two readers through existing aliases and preserve database/history/worker. Operator directory: `/home/joao/prumo-operations/mobile-inspector-release-20261126T211558Z`. Dated execution helpers must not be rerun blindly. Documentation-only follow-ups need no runtime recreation.
+
+## Previous selection interface
 
 Release/main `79c182b` (runtime `bb1416e`) is installed from 26/11/2026 13:55 UTC. Catalogue and Caderno quick search both support batch selection; query, order, references and chart fields use native submissions. The catalogue's compact sticky tray and the local selection helper provide current counts and selected-row feedback. Comparisons remain authored in CMS. Only web/static-preview Admin changed; worker, schema and CMS/history are preserved. Exact-release hosted CI `45832394649` passed 3,409 tests. Full release evidence and the original failed copy-test receipt are retained in `../superpowers/handoff/reports/selection-ux/`. Reader observation passed at 14:10 UTC after 900.025605 seconds and 30 matching samples; final state/access and preservation checks passed again.
 
