@@ -1,6 +1,7 @@
 <section class="notebook-search" aria-labelledby="pesquisa">
   <div class="section-head">
     <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
+    <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}">Escolher várias no catálogo</a>
   </div>
   <form id="notebook-search-form" class="filters" action="{{ base }}/caderno" method="get">
     {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
@@ -10,6 +11,7 @@
     </label>
     <button type="submit" formaction="{{ base }}/caderno#pesquisa">{{ page.copy.search_button }}</button>
   </form>
+  <p class="note">Pesquisa rápida neste caderno. Para escolher várias referências, use o catálogo.</p>
 
   <div class="notebook-results">
   {% if page.query %}

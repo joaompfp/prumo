@@ -12,7 +12,7 @@ import sqlite3
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
@@ -21,6 +21,7 @@ from app import (
     cms_comparisons,
     cms_reads,
     cms_routes,
+    discovery_selection,
     interactive,
     navigation,
     notebook,
@@ -223,13 +224,48 @@ def create_app(db_path: str | None = None) -> FastAPI:
     def search(request: Request, q: str = "", tema: str = "", grupo: str = "",
                fonte: str = "", frequencia: str = "", pagina: str = "1"):
         page = reads.parse_page_number(pagina)
+        raw_refs = request.query_params.getlist("s")
+        selection = discovery_selection.parse_references(raw_refs)
+        if selection is None:
+            # The bound and the identifier syntax are checked before the read-only handle is
+            # opened; the generic page never echoes the offending value.
+            return _render(templates, request, "404.html", {}, status=404)
+        duplicates = len(raw_refs) - len(selection)
+
+        clear = request.query_params.get("limpar", "")
+        if clear == "selecao":
+            selection = ()
+            duplicates = 0
+        elif clear == "filtros":
+            tema = grupo = fonte = frequencia = ""
+            page = 1
+        elif clear == "pesquisa":
+            q = ""
+            tema = grupo = fonte = frequencia = ""
+            page = 1
+
+        selection = discovery_selection.retire(
+            selection, request.query_params.getlist("retirar"))
+        # A chart group that outlived an unchecked current-page reference is pruned here, so
+        # the handoff redirects to a canonical notebook instead of 404ing on a stale `g`.
+        settings = discovery_selection.read_chart_settings(request.query_params, selection)
+        if settings is None:
+            return _render(templates, request, "404.html", {}, status=404)
+        if request.query_params.get("acao") == "abrir":
+            if len(selection) <= notebook.MAX_SELECTION:
+                target = f"{_base(request)}{notebook.selection_path(selection, chart=settings)}"
+                return RedirectResponse(target, status_code=303)
+
         try:
             data = _read(request, lambda db: reads.search_page(
                 db, q, theme=tema, group=grupo, source=fonte, frequency=frequencia,
-                page=page))
+                page=page, selection=selection, duplicate_count=duplicates))
         except ReadOnlyOpenError as exc:
             return unavailable(request, exc)
-        return _render(templates, request, "search.html", {"page": data})
+        return _render(templates, request, "search.html", {
+            "page": data,
+            "chart_fields": discovery_selection.chart_form_params(settings),
+        })
 
     @app.api_route("/fontes", methods=PAGE_METHODS, response_class=HTMLResponse)
     def sources(request: Request):
@@ -255,7 +291,6 @@ def create_app(db_path: str | None = None) -> FastAPI:
                    response_class=HTMLResponse)
     def country_comparison(request: Request, slug: str):
         """Keep old country bookmarks while the CMS owns the canonical comparison."""
-        from fastapi.responses import RedirectResponse
         try:
             data = _read(request, lambda db: cms_comparisons.public_chart(db, slug))
         except ReadOnlyOpenError as exc:

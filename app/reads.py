@@ -9,7 +9,7 @@ import re
 import time
 import unicodedata
 from dataclasses import dataclass
-from typing import Generic, TypeVar
+from typing import Generic, Sequence, TypeVar
 from urllib.parse import urlencode
 
 from app import chart_model, interactive
@@ -23,7 +23,7 @@ from app.formatting import (
     format_value,
 )
 from ingest.db import Db
-from ingest.editorial_rules import SlotFacts, page_problems, slot_problem
+from ingest.editorial_rules import MAX_SLOTS, SlotFacts, page_problems, slot_problem
 from presentation import (
     MissingText,
     base_unit_text,
@@ -857,6 +857,20 @@ class ThemePage:
 
 
 @dataclass(frozen=True)
+class SelectedReference:
+    """One server-submitted selection reference and its resolved reader label.
+
+    Unavailable references keep a generic label: an unknown, withdrawn or withheld id must
+    not reveal a stored protected title or expose the id as reader text. The id remains in the
+    form value so the native remove control can name what it removes.
+    """
+
+    id: str
+    title: str
+    available: bool
+
+
+@dataclass(frozen=True)
 class SearchPage:
     """The complete served catalogue as the reader can browse and filter it.
 
@@ -864,6 +878,11 @@ class SearchPage:
     the number of rows prepared for this page. Choices are derived from the whole
     catalogue and kept even when a filter is active, so a reader can widen the search
     again without losing the context that produced an empty page.
+
+    `selection` is the server's last submitted ordered reference list, resolved against the
+    same fresh catalogue snapshot as the results. `hidden_refs` are selected references not
+    rendered as a checkbox on this page; the form carries them as hidden `s` values. Their
+    count is never a live DOM count and never truncated at twelve here.
     """
 
     query: str
@@ -886,6 +905,14 @@ class SearchPage:
     prev_path: str | None
     next_path: str | None
     rows_missing: int
+    selection: tuple[SelectedReference, ...]
+    selected_ids: tuple[str, ...]
+    hidden_refs: tuple[str, ...]
+    selection_count: int
+    selection_can_open: bool
+    selection_duplicate_notice: str
+    selection_limit_notice: str
+    selection_chart_notice: str
 
 
 def _row(row: dict, value: dict, lang: str) -> Row:
@@ -1059,9 +1086,61 @@ def search(db: Db, query: str, lang: str = "pt") -> tuple[Row, ...]:
     return _served_rows(db, matched, lang)
 
 
+def _selected_references(rows: list[dict], selection: Sequence[str],
+                         lang: str) -> tuple[SelectedReference, ...]:
+    """Resolve the submitted references from the fresh catalogue rows already in hand.
+
+    No history read and no second catalogue lookup: a reference either carries a public label
+    from this snapshot or gets the generic unavailable label. A missing catalogue title is
+    treated as unavailable for the tray instead of echoing a stored protected value.
+    """
+    by_id = {row["id"]: row for row in rows}
+    out: list[SelectedReference] = []
+    for series_id in selection:
+        row = by_id.get(series_id)
+        if row is None:
+            out.append(SelectedReference(series_id, "Referência indisponível", False))
+            continue
+        try:
+            title = _title(row, lang)
+        except MissingText:
+            out.append(SelectedReference(series_id, "Referência indisponível", False))
+            continue
+        out.append(SelectedReference(series_id, title, True))
+    return tuple(out)
+
+
+def _selection_notices(selection: Sequence[str], duplicate_count: int) -> tuple[str, str, str]:
+    """The three server-count messages: duplicates, the twelve limit and the six-plot note."""
+    count = len(selection)
+    if duplicate_count == 1:
+        duplicates = ("Foi ignorada 1 referência repetida; cada série conta uma vez.")
+    elif duplicate_count > 1:
+        duplicates = (f"Foram ignoradas {format_count(duplicate_count)} referências repetidas; "
+                      "cada série conta uma vez.")
+    else:
+        duplicates = ""
+    if count > MAX_SLOTS:
+        excess = count - MAX_SLOTS
+        noun = "referência" if excess == 1 else "referências"
+        limit = (f"A seleção tem {format_count(count)} referências; o caderno aceita "
+                 f"{format_count(MAX_SLOTS)}. Remova {format_count(excess)} {noun} para abrir "
+                 "o caderno.")
+    else:
+        limit = ""
+    if MAX_SLOTS >= count > chart_model.GROUP_MAX_SERIES:
+        chart_note = (f"A seleção tem {format_count(count)} referências; o caderno pode mostrar "
+                      f"até {format_count(count)} cartões. Escolha até "
+                      f"{format_count(chart_model.GROUP_MAX_SERIES)} para o gráfico.")
+    else:
+        chart_note = ""
+    return duplicates, limit, chart_note
+
+
 def search_page(db: Db, query: str = "", *, theme: str = "", group: str = "",
                 source: str = "", frequency: str = "", page: int = 1,
-                lang: str = "pt") -> SearchPage:
+                lang: str = "pt", selection: Sequence[str] = (),
+                duplicate_count: int = 0) -> SearchPage:
     """The complete served catalogue for `/pesquisa`, with honest counts and state.
 
     Choices are taken from the whole catalogue before any filter is applied. Unknown
@@ -1088,8 +1167,14 @@ def search_page(db: Db, query: str = "", *, theme: str = "", group: str = "",
     ordered = _ordered_catalogue(filtered, lang)
     chunk, page, pages = _page_slice(ordered, page, SEARCH_PAGE_SIZE)
     prepared = _served_rows(db, chunk, lang)
-    params = [("q", clean_query), ("tema", theme), ("grupo", group),
-              ("fonte", source), ("frequencia", frequency)]
+    refs = tuple(selection)
+    selected = _selected_references(rows, refs, lang)
+    visible_ids = {row.id for row in prepared}
+    hidden_refs = tuple(series_id for series_id in refs if series_id not in visible_ids)
+    duplicate_notice, limit_notice, chart_notice = _selection_notices(refs, duplicate_count)
+    params = ([("q", clean_query)] + [("s", series_id) for series_id in refs]
+              + [("tema", theme), ("grupo", group), ("fonte", source),
+                 ("frequencia", frequency)])
     return SearchPage(
         query=clean_query, notice=notice, rows=prepared, total=len(ordered),
         page=page, pages=pages, per_page=SEARCH_PAGE_SIZE,
@@ -1097,10 +1182,15 @@ def search_page(db: Db, query: str = "", *, theme: str = "", group: str = "",
         theme_options=theme_options, group_options=GROUPS,
         source_options=source_options, frequency_options=frequency_options,
         filters_active=any((theme, group, source, frequency)),
-        clear_path=_page_path("/pesquisa", [("q", clean_query)], 1),
+        clear_path=_page_path(
+            "/pesquisa", [("q", clean_query)] + [("s", series_id) for series_id in refs], 1),
         prev_path=_page_path("/pesquisa", params, page - 1) if page > 1 else None,
         next_path=_page_path("/pesquisa", params, page + 1) if page < pages else None,
-        rows_missing=len(chunk) - len(prepared))
+        rows_missing=len(chunk) - len(prepared),
+        selection=selected, selected_ids=refs, hidden_refs=hidden_refs,
+        selection_count=len(refs), selection_can_open=len(refs) <= MAX_SLOTS,
+        selection_duplicate_notice=duplicate_notice,
+        selection_limit_notice=limit_notice, selection_chart_notice=chart_notice)
 
 
 @dataclass(frozen=True)

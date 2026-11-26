@@ -439,9 +439,10 @@ def test_mount_prefix_is_preserved_on_every_new_action(site_path):
     assert 'action="/dados/caderno"' in form_text(html)
     assert 'formaction="/dados/caderno#grafico"' in form_text(html)
     assert 'href="/dados/caderno?s=' in html
-    assert 'class="button-quiet" href="#pesquisa"' in html
+    assert 'class="button-quiet" href="/dados/pesquisa?s=' in html
     assert 'class="button-quiet" href="#definicoes"' in html
     assert 'href="/caderno' not in html and 'action="/caderno' not in html
+    assert 'href="/pesquisa' not in html
 
 
 def test_help_disclosure_keeps_the_moved_explanations_below_the_workspace(site_path):

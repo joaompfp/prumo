@@ -14,12 +14,17 @@ import re
 from typing import Sequence
 from urllib.parse import urlencode
 
+from app import notebook_chart
 from ingest.editorial_rules import MAX_SLOTS
 
 MAX_RAW_REFERENCES = 48
 MAX_REFERENCES = MAX_SLOTS
 
 _SERIES_ID = re.compile(r"[A-Za-z0-9_.-]{1,255}")
+# The catalogue already uses `frequencia` for its series-frequency filter. Chart display
+# frequency therefore travels under one explicit alias so a Caderno round trip cannot turn
+# `frequencia=anual` into an impossible catalogue filter.
+_CHART_ALIASES = {"frequencia": "frequencia_grafico"}
 
 
 def build_address(path: str, params: Sequence[tuple[str, str]]) -> str:
@@ -61,3 +66,44 @@ def retire(selection: Sequence[str], values: Sequence[str]) -> tuple[str, ...]:
     if not named:
         return tuple(selection)
     return tuple(series_id for series_id in selection if series_id not in named)
+
+
+def chart_form_params(settings: notebook_chart.ChartSettings) -> list[tuple[str, str]]:
+    """The chart settings as catalogue form fields, with the one required name alias."""
+    return [(_CHART_ALIASES.get(name, name), value) for name, value in settings.params()]
+
+
+def _chart_values(values, name: str) -> list[str]:
+    """One chart parameter's repeated values from a QueryParams or a plain mapping."""
+    if hasattr(values, "getlist"):
+        return list(values.getlist(_CHART_ALIASES.get(name, name)))
+    raw = values.get(_CHART_ALIASES.get(name, name), ())
+    if raw is None:
+        return []
+    if isinstance(raw, str):
+        return [raw]
+    return list(raw)
+
+
+def read_chart_settings(values, selection: Sequence[str]) -> notebook_chart.ChartSettings | None:
+    """The Caderno chart settings carried by a catalogue address, or None when invalid.
+
+    `g` values are sanitized against the submitted selection: a grouped series that the reader
+    unchecked on this response is pruned with `notebook_chart.without_side`, so the handoff does
+    not 404 merely because a hidden round-trip field outlived its checkbox. Every other chart
+    parameter keeps the notebook's strict bounds.
+    """
+    mapped = {name: _chart_values(values, name) for name in notebook_chart.PARAM_NAMES}
+    raw_group = mapped["g"]
+    for series_id in raw_group:
+        if not isinstance(series_id, str) or _SERIES_ID.fullmatch(series_id) is None:
+            return None
+    candidate = tuple(dict.fromkeys([*selection, *raw_group]))
+    settings = notebook_chart.parse_settings(mapped, candidate)
+    if settings is None:
+        return None
+    chosen = set(selection)
+    for series_id in raw_group:
+        if series_id not in chosen:
+            settings = notebook_chart.without_side(settings, series_id)
+    return settings

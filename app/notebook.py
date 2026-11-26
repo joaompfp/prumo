@@ -67,6 +67,17 @@ def selection_path(selection: Sequence[str], query: str | None = None, *,
     return discovery_selection.build_address("/caderno", params)
 
 
+def catalogue_path(selection: Sequence[str], chart: notebook_chart.ChartSettings) -> str:
+    """The discovery address carrying every addressed reference and the actual chart settings.
+
+    The notebook's `s` order is kept. Chart settings use the catalogue form alias for display
+    frequency, so `frequencia=anual` cannot be mistaken for a catalogue frequency filter.
+    """
+    params: list[tuple[str, str]] = [("s", series_id) for series_id in selection]
+    params.extend(discovery_selection.chart_form_params(chart))
+    return discovery_selection.build_address("/pesquisa", params)
+
+
 @dataclass(frozen=True)
 class NotebookCard:
     card: reads.Card
@@ -93,6 +104,7 @@ class NotebookPage:
     query: str
     results: tuple[NotebookResult, ...]
     canonical_path: str
+    catalogue_path: str
     clear_path: str | None
     chart_panel: notebook_chart.NotebookChart
     chart_off_path: str
@@ -224,6 +236,7 @@ def page(db: Db, selection: tuple[str, ...], query: str = "", *,
         query=query,
         results=tuple(results),
         canonical_path=canonical_path,
+        catalogue_path=catalogue_path(selection, settings),
         clear_path=(selection_path((), query,
                                    chart=notebook_chart.without_all_sides(settings))
                     if selection else None),

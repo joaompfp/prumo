@@ -206,7 +206,8 @@ def test_task_pages_suppress_the_global_search_and_keep_their_own(client):
     notebook = client.get(f"/caderno?s={HICP}").text
     assert '<form class="search"' not in notebook
     assert '<form id="notebook-search-form"' in notebook
-    assert 'href="#pesquisa" aria-label="Acrescentar séries">Acrescentar</a>' in notebook
+    assert (f'href="/pesquisa?s={HICP}" aria-label="Acrescentar séries">'
+            "Acrescentar</a>") in notebook
 
 
 def test_discovery_stylesheet_is_unconditional_and_mount_aware(client):
