@@ -465,7 +465,7 @@ def test_check_germany_and_spain_across_a_page_change_then_uncheck_spain(client,
 def _catalogue_href(html: str) -> str:
     from html import unescape
     match = re.search(
-        r'<a class="button-quiet" href="([^"]+)" aria-label="Acrescentar séries"', html)
+        r'<a class="button" href="([^"]+)" aria-label="Acrescentar séries"', html)
     assert match is not None
     return unescape(match.group(1))
 

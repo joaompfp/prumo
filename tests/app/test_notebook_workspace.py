@@ -193,7 +193,7 @@ def test_workspace_is_a_notebook_scoped_fluid_column_not_the_prose_wrap(site_pat
     workspace = one(root, "div", "notebook-workspace")
     assert workspace.parent is main
 
-    css = CSS.read_text(encoding="utf-8")
+    css = CSS.read_text(encoding="utf-8") + (CSS.parent / "workspace.css").read_text(encoding="utf-8")
     assert ".wrap.notebook-main { max-width: none; }" in css
     assert ".notebook-workspace {" in css
     workspace_rule = css[css.index(".notebook-workspace {"):]
@@ -211,18 +211,18 @@ def test_compact_title_keeps_functional_roles_at_the_approved_scale(site_path):
     root = dom(html)
     header = one(root, "header", "page-head")
     heading = one(header, "h1")
-    assert heading.all_text().strip() == "Caderno de indicadores"
+    assert heading.all_text().strip() == "Caderno"
     status = one(header, "p", "meta")
     assert "2 de 12 séries." in status.all_text()
     # The long public-link and snapshot explanation moved below the work surface.
     assert "Qualquer pessoa com esta ligação" not in header.all_text()
     assert "não é um retrato histórico" not in header.all_text()
 
-    css = CSS.read_text(encoding="utf-8")
+    css = CSS.read_text(encoding="utf-8") + (CSS.parent / "workspace.css").read_text(encoding="utf-8")
     rule = css[css.index(".notebook-main .page-head h1 {"):]
     rule = rule[:rule.index("}")]
     assert "font-size: clamp(" in rule
-    assert "2.5rem" in rule or "2.4rem" in rule or "2.35rem" in rule
+    assert "1.85rem" in rule and "font-family: var(--sans)" in rule
     # Existing functional roles keep their approved tokens.
     assert "html { font-size: 28.05px; }" in css
     assert ".note { color: var(--muted); font-size: 0.85rem; }" in css
@@ -484,8 +484,8 @@ def test_help_disclosure_keeps_the_moved_explanations_below_the_workspace(site_p
 
 
 def test_print_rules_keep_the_caption_and_restore_the_svg(site_path):
-    css = CSS.read_text(encoding="utf-8")
-    print_block = css[css.index("@media print {"):]
+    workspace = (CSS.parent / "workspace.css").read_text(encoding="utf-8")
+    print_block = workspace[workspace.index("@media print {"):workspace.index("/* Shared tool panels")]
     assert ".notebook-chart-caption" not in print_block
     assert ".notebook-chart-sources" not in print_block
     assert ".notebook-caveat { display: block; }" in print_block
@@ -572,7 +572,7 @@ def test_redundant_breadcrumb_and_mobile_plot_floor_overrides_are_gone(site_path
     assert not root.find_all("nav", "crumbs")
     assert ".notebook-chart .chart-enhanced .chart-wrap { min-height: 0; }" not in CSS.read_text(
         encoding="utf-8")
-    css = CSS.read_text(encoding="utf-8")
+    css = CSS.read_text(encoding="utf-8") + (CSS.parent / "workspace.css").read_text(encoding="utf-8")
     assert ".notebook-chart .chart-enhanced .chart-wrap" not in css
     assert "min-width: 660px; min-height: 264px;" in css
     assert ".chart-enhanced .chart-wrap { min-width: 0; }" in css
@@ -603,5 +603,5 @@ def test_settings_fragment_targets_content_inside_the_native_disclosure(site_pat
     links = [node for node in root.find_all("a") if node.attrs.get("href") == "#definicoes"]
     assert len(links) == 1
     assert visible(links[0].all_text()).strip() in links[0].attrs["aria-label"]
-    css = CSS.read_text(encoding="utf-8")
+    css = CSS.read_text(encoding="utf-8") + (CSS.parent / "workspace.css").read_text(encoding="utf-8")
     assert "repeat(auto-fit, minmax(min(14rem, 100%), 1fr))" in css

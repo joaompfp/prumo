@@ -15,6 +15,7 @@ from tests.app.conftest import HICP
 
 HEADER = re.compile(r"<header class=\"site-header\">.*?</header>", re.S)
 CSS = Path(__file__).resolve().parents[2] / "static" / "css" / "prumo.css"
+SHELL = Path(__file__).resolve().parents[2] / "static" / "css" / "app-shell.css"
 
 
 def _attrs(html: str, href: str) -> str:
@@ -34,18 +35,25 @@ def test_exact_destination_is_a_current_page():
     assert nav.home.current == ""
     assert [link.current for link in nav.sections] == ["page", ""]
     assert nav.compact_current == "Comparações"
+    assert not nav.more.state
 
 
-def test_primary_tasks_lead_with_explore_and_authored_pages_move_to_more():
+def test_primary_tasks_are_direct_and_secondary_destinations_move_to_more():
     nav = build_navigation("/", "")
-    assert nav.explore.label == "Explorar"
-    assert [link.label for link in nav.explore.links] == [
-        "Catálogo", "Economia", "Demografia", "Energia"]
+    assert [link.label for link in nav.primary] == [
+        "Catálogo", "Comparações", "Caderno"]
+    assert [link.icon for link in nav.primary] == ["list", "chart", "notebook"]
+    assert [link.compact_label for link in nav.primary] == ["", "Comparar", ""]
     assert nav.catalogue.href == "/pesquisa"
     assert [link.label for link in nav.sections] == ["Comparações", "Caderno"]
     assert [link.label for link in nav.support.links] == [
         "Páginas", "Fontes", "Metodologia"]
-    # The old `themes` disclosure remains readable by existing callers.
+    # One More disclosure owns both themes and support, with one resolved state.
+    assert nav.more.label == "Mais"
+    assert [link.label for link in nav.more.links] == [
+        "Economia", "Demografia", "Energia", "Páginas", "Fontes", "Metodologia"]
+    assert not nav.more.state
+    # The old `explore` and `themes` views remain readable by existing callers.
     assert nav.themes.links == nav.explore.links[1:]
 
 
@@ -92,6 +100,8 @@ def test_nested_theme_route_keeps_honest_section_context():
     assert nav.themes.state == "location"
     assert [link.current for link in nav.themes.links] == ["", "", "location"]
     assert nav.explore.state == "location"
+    assert nav.more.state == "location"
+    assert nav.more.current_label == "Energia"
     assert nav.compact_current == "Energia"
 
 
@@ -103,6 +113,8 @@ def test_support_link_is_current_without_claiming_the_home():
     assert nav.support.state == "page"
     assert nav.home.current == ""
     assert nav.compact_current == "Fontes"
+    assert nav.more.current_label == "Fontes"
+    assert nav.more.state == "page"
 
 
 def test_unknown_route_has_no_false_current_destination():
@@ -158,14 +170,14 @@ def test_nested_catalogue_route_never_claims_the_catalogue_page_itself(client):
     header = _header(html)
     assert 'aria-current="location"' in _attrs(header, "/pesquisa")
     assert 'aria-current="page"' not in _attrs(header, "/pesquisa")
-    assert '<details class="nav-disclosure" data-state="location">' in header
+    assert '<details class="app-disclosure app-more">' in header
 
 
-def test_the_current_theme_stays_marked_in_the_closed_disclosure(client):
+def test_the_current_theme_is_marked_on_the_more_disclosure(client):
     header = _header(client.get("/temas/demography").text)
-    assert '<details class="nav-disclosure" data-state="page">' in header
-    assert '<span class="nav-disclosure-label">Explorar</span>' in header
-    assert '<span class="nav-menu-current">Demografia</span>' in header
+    assert '<details class="app-disclosure app-more" data-state="page">' in header
+    assert '<span class="app-disclosure-label">Mais</span>' in header
+    assert '<span class="sr-only">: Demografia</span>' in header
     assert 'aria-current="page">Demografia</a>' in header
     assert "aria-current" not in _attrs(header, "/temas/economy")
     assert "aria-current" not in _attrs(header, "/")
@@ -173,26 +185,29 @@ def test_the_current_theme_stays_marked_in_the_closed_disclosure(client):
 
 def test_supporting_page_marks_the_more_disclosure_without_hiding_its_label(client):
     header = _header(client.get("/fontes").text)
-    assert '<details class="nav-disclosure" data-state="page">' in header
-    assert '<span class="nav-disclosure-label">Mais</span>' in header
+    assert '<details class="app-disclosure app-more" data-state="page">' in header
+    assert '<span class="app-disclosure-label">Mais</span>' in header
     assert 'aria-current="page">Fontes</a>' in header
-    assert '<span class="nav-menu-current">Fontes</span>' in header
+    assert '<span class="sr-only">: Fontes</span>' in header
 
 
-def test_every_destination_is_discoverable_in_desktop_and_compact_nav(client):
+def test_every_destination_is_discoverable_once_in_the_shared_nav(client):
     html = client.get("/").text
     header = html[:html.index('<main id="conteudo"')]
     hrefs = {"/", "/pesquisa", "/temas/economy", "/temas/demography", "/temas/energy",
              "/comparar", "/caderno", "/paginas", "/fontes", "/metodologia"}
     for href in hrefs:
-        assert header.count(f'href="{href}"') >= 2, href
-    assert '<details class="nav-menu">' in header
-    assert 'aria-label="Secções no telemóvel"' in header
-    assert header.count('href="/pesquisa"') == 2
+        assert header.count(f'href="{href}"') == 1, href
+    assert '<nav class="site-nav" aria-label="Secções">' in header
+    assert '<details class="app-disclosure app-more">' in header
+    assert '<form class="search"' in header
+    assert '<details class="nav-menu">' not in header
+    assert header.count('href="/pesquisa"') == 1
 
 
 def test_native_menu_and_search_need_no_script(client):
     html = client.get("/").text
+    assert '<details class="app-disclosure app-more">' in html
     assert '<form class="search" action="/pesquisa" method="get" role="search">' in html
     assert '<button type="submit">Procurar</button>' in html
     assert 'name="q"' in html
@@ -203,11 +218,16 @@ def test_native_menu_and_search_need_no_script(client):
 def test_task_pages_suppress_the_global_search_and_keep_their_own(client):
     for path in ("/pesquisa", "/pesquisa?q=desemprego", "/pesquisa/series/calculadas"):
         assert '<form class="search"' not in client.get(path).text, path
+        assert '<details class="app-disclosure app-search">' not in client.get(path).text, path
     notebook = client.get(f"/caderno?s={HICP}").text
     assert '<form class="search"' not in notebook
     assert '<form id="notebook-search-form"' in notebook
-    assert (f'href="/pesquisa?s={HICP}" aria-label="Acrescentar séries">'
-            "Acrescentar</a>") in notebook
+    add_link = re.search(
+        rf'<a class="button" href="/pesquisa\?s={re.escape(HICP)}" '
+        r'aria-label="Acrescentar séries">(.*?)</a>', notebook, re.S)
+    assert add_link is not None
+    assert 'class="ui-icon"' in add_link.group(1)
+    assert add_link.group(1).endswith("Acrescentar")
 
 
 def test_discovery_stylesheet_is_unconditional_and_mount_aware(client):
@@ -240,34 +260,39 @@ def test_forwarded_prefix_root_path_and_real_mount_render_the_same_mounted_chrom
         assert 'href="/dados/comparar"' in header
         assert 'action="/dados/pesquisa"' in header
         assert 'href="/dados/static/css/prumo.css"' in html
+        assert 'href="/dados/static/css/app-shell.css"' in html
         assert 'href="/dados/static/css/discovery.css"' in html
         assert "/dados/dados" not in html
         assert 'aria-current="page"' in _attrs(header, "/dados/comparar")
 
 
-def test_long_compact_current_is_tagged_for_the_narrow_breakpoint():
-    assert build_navigation("/comparar", "").compact_current_long
-    assert not build_navigation("/pesquisa", "").compact_current_long
+def test_narrow_grid_uses_the_short_visible_label_without_renaming_the_link(client):
+    header = _header(client.get("/comparar").text)
+    assert '<span class="app-nav-label app-nav-label-wide">Comparações</span>' in header
+    assert '<span class="app-nav-label app-nav-label-narrow">Comparar</span>' in header
+    shell = SHELL.read_text(encoding="utf-8")
+    assert ".app-nav-label-narrow { display: none; }" in shell
+    assert ".app-nav-label-wide { display: none; }" in shell
+
+
+def test_each_disclosure_panel_is_anchored_inside_the_viewport():
+    shell = SHELL.read_text(encoding="utf-8")
+    # Desktop panels open below their trigger, anchored to its right edge; the narrow
+    # layout returns the same panel to normal flow instead of covering the page.
+    assert ".app-panel {" in shell
+    assert "right: 0;" in shell
+    assert "position: static;" in shell
+    assert ".app-disclosure:not([open]) > .app-panel { display: none; }" in shell
+
+
+def test_responsive_wrap_padding_preserves_header_block_padding():
     css = CSS.read_text(encoding="utf-8")
-    assert ".nav-menu-summary--long { flex-wrap: wrap; }" in css
-    assert "@media (max-width: 380px)" in css
-
-
-def test_last_disclosure_panel_is_anchored_to_the_rail_edge():
-    css = CSS.read_text(encoding="utf-8")
-    # The last rail disclosure sits near the viewport edge; its 16rem panel must
-    # open leftwards instead of crossing the 901-1100px desktop widths.
-    assert ".site-nav > .nav-disclosure:last-child > .nav-disclosure-panel" in css
-    assert "left: auto; right: 0;" in css
-
-
-def test_responsive_wrap_padding_preserves_masthead_and_rail_block_padding():
-    css = CSS.read_text(encoding="utf-8")
-    # `.wrap` also carries the masthead and destination rail. A shorthand in a
-    # narrow media query silently resets their vertical padding, so only the
-    # inline axis may change at each breakpoint.
+    shell = SHELL.read_text(encoding="utf-8")
+    # `.wrap` also carries the masthead. A shorthand in a narrow media query silently
+    # resets its vertical padding, so only the inline axis may change at each breakpoint.
     assert ".wrap { padding: 0 24px; }" not in css
     assert ".wrap { padding: 0 18px; }" not in css
     assert ".wrap { padding-inline: 24px; }" in css
     assert ".wrap { padding-inline: 18px; }" in css
-    assert ".masthead" in css and "padding-top: 12px; padding-bottom: 12px;" in css
+    assert ".masthead" in shell and "padding-block: 6px;" in shell
+    assert ".masthead" in shell and "padding-block: 2px;" in shell

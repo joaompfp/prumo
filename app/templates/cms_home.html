@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% from "_cms_blocks.html" import render_blocks with context %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
+{% block main_class %} cms-home-main{% endblock %}
 {% block content %}
 {% if preview %}
 <div class="preview-banner" role="status">

@@ -122,7 +122,7 @@ def card_remove_href(html: str) -> str:
 
 
 def clear_href(html: str) -> str | None:
-    match = re.search(r'<a class="button-quiet" href="([^"]+)">Limpar seleção</a>', html)
+    match = re.search(r'<a class="button-link" href="([^"]+)">(?:(?!</a>).)*Limpar seleção</a>', html, re.S)
     return unescape(match.group(1)) if match else None
 
 

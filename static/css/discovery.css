@@ -2,7 +2,7 @@
    Functional text keeps the installed reading scale; only display headings compact. */
 .discovery-main .crumbs { padding-top: 12px; }
 .discovery-head { padding: 12px 0 8px; }
-.discovery-head h1 { font-size: clamp(1.45rem, 4.2vw, 2rem); margin: 0; }
+.discovery-head h1 { font-family: var(--sans); font-size: clamp(1.45rem, 4.2vw, 1.85rem); line-height: 1.15; margin: 0; }
 .discovery-head .meta { margin: 6px 0 0; }
 .discovery-search { display: block; margin: 0; padding: 0; border: 0; background: transparent; }
 .discovery-query { display: flex; align-items: stretch; gap: 10px; }
@@ -12,12 +12,15 @@
 #discovery-form .discovery-pager button { font: inherit; line-height: 1.25; }
 .discovery-query button { flex: 0 0 auto; width: auto; }
 .discovery-results { margin: 0 0 30px; }
-.discovery-filters { margin: 14px 0; border-block: 1px solid var(--rule); }
-.discovery-filters > summary { padding: 10px 0; color: var(--ink); font-weight: 600; cursor: pointer; }
+.discovery-filters { margin: 14px 0; border: 1px solid var(--rule-strong); border-radius: 8px; background: var(--surface); }
+.discovery-filters > summary { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 10px 12px; color: var(--ink); font-weight: 600; cursor: pointer; list-style: none; }
+.discovery-filters > summary span { flex: 1; }
+.discovery-filters > summary::-webkit-details-marker { display: none; }
+.discovery-filters[open] > summary > .ui-icon:last-child { transform: rotate(180deg); }
 .discovery-filters[open] > summary { border-bottom: 1px solid var(--rule); }
 .discovery-filters .filters {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
-  margin: 0; padding: 16px 0; border: 0; background: transparent; align-items: end;
+  margin: 0; padding: 16px; border: 0; background: transparent; align-items: end;
 }
 .discovery-filters select { width: 100%; min-width: 0; }
 .discovery-filters .filters > a { align-self: center; }
@@ -29,9 +32,9 @@
    query/filter group only, so the result controls are not announced as site search. */
 .discovery-search-group { display: block; }
 .discovery-selection {
-  position: sticky; top: 0; z-index: 5; max-height: 70dvh; overflow-y: auto;
+  position: relative; z-index: 5;
   margin: 12px 0 8px; padding: 10px 14px; border: 1px solid var(--rule-strong);
-  border-top: 3px solid var(--accent); border-radius: 0 0 8px 8px; background: var(--surface);
+  border-radius: 8px; background: var(--surface);
 }
 .discovery-selection-head {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
@@ -84,15 +87,15 @@
   border: 1px solid var(--rule-strong); border-radius: 7px; background: var(--surface);
   font-weight: 600; cursor: pointer;
 }
-.series-result-heading .series-result-select { margin-bottom: 10px; }
+.series-result-heading .series-result-select { margin-bottom: 8px; border: 0; background: transparent; padding-inline: 0; }
 .series-result-select input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); flex: none; }
 .series-result-select:hover { border-color: var(--accent); background: var(--accent-soft); }
 .discovery-main .family { margin: 22px 0; }
 .discovery-main .family h2 { font-size: 1.15rem; margin: 0 0 12px; }
-.series-results { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.series-results { list-style: none; margin: 0; padding: 0; border: 1px solid var(--rule); border-radius: 9px; background: var(--surface); }
 .series-result {
   display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr) auto;
-  gap: 12px 24px; align-items: start; padding: 18px 0; border-bottom: 1px solid var(--rule);
+  gap: 12px 24px; align-items: start; padding: 16px; border-bottom: 1px solid var(--rule);
 }
 .series-result > * { min-width: 0; }
 .series-result:hover { background: var(--accent-soft); }
@@ -110,6 +113,9 @@
 .series-result-facts dd { display: inline; margin: 0; overflow-wrap: anywhere; }
 .series-result-action { grid-column: 3; grid-row: 1; margin: 0; }
 .series-result-action .button-quiet { white-space: nowrap; }
+@media (min-width: 901px) {
+  .discovery-selection { position: sticky; top: 12px; }
+}
 @media (max-width: 1100px) {
   .series-result { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
   .series-result-facts { grid-column: 1 / -1; grid-row: 2; }

@@ -1,63 +1,62 @@
+{% from "_ui.html" import icon %}
 <header class="site-header">
   <div class="wrap masthead">
-    <a class="brand" href="{{ header_nav.home.href }}">
-      <img class="brand-icon" src="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg" alt="" width="40" height="40">
+    <a href="{{ header_nav.home.href }}" class="brand"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>
+      <img class="brand-icon" src="{{ asset_base|default(base) }}/static/images/prumo/favicon.svg" alt="" width="32" height="32">
       <span class="brand-name">Prumo</span>
     </a>
-    {% if header_nav.show_search|default(true) %}
-    <form class="search" action="{{ header_nav.search_href }}" method="get" role="search">
-      <label class="sr-only" for="q">Pesquisar séries</label>
-      <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
-      <button type="submit">Procurar</button>
-    </form>
-    {% endif %}
-  </div>
-  <div class="wrap destination-rail">
+
     <nav class="site-nav" aria-label="Secções">
-      <a href="{{ header_nav.home.href }}"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>{{ header_nav.home.label }}</a>
-      <details class="nav-disclosure"{% if header_nav.explore.state %} data-state="{{ header_nav.explore.state }}"{% endif %}>
-        <summary>
-          <span class="nav-disclosure-label">{{ header_nav.explore.label }}</span>{% if header_nav.explore.current_label %}<span class="sr-only">: {{ header_nav.explore.current_label }}</span>{% endif %}
-        </summary>
-        <ul class="nav-disclosure-panel">
-          {% for link in header_nav.explore.links %}
-          <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
-          {% endfor %}
-        </ul>
-      </details>
-      {% for link in header_nav.sections %}
-      <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
+      {% for link in header_nav.primary %}
+      <a href="{{ link.href }}" class="app-nav-link"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>
+        {{ icon(link.icon) }}
+        {% if link.compact_label and link.compact_label != link.label %}
+        <span class="app-nav-label app-nav-label-wide">{{ link.label }}</span>
+        <span class="app-nav-label app-nav-label-narrow">{{ link.compact_label }}</span>
+        {% else %}
+        <span class="app-nav-label">{{ link.label }}</span>
+        {% endif %}
+      </a>
       {% endfor %}
-      <details class="nav-disclosure"{% if header_nav.support.state %} data-state="{{ header_nav.support.state }}"{% endif %}>
-        <summary>
-          <span class="nav-disclosure-label">{{ header_nav.support.label }}</span>{% if header_nav.support.current_label %}<span class="sr-only">: {{ header_nav.support.current_label }}</span>{% endif %}
-        </summary>
-        <ul class="nav-disclosure-panel">
-          {% for link in header_nav.support.links %}
-          <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
-          {% endfor %}
-        </ul>
-      </details>
     </nav>
-    <details class="nav-menu">
-      <summary{% if header_nav.compact_current_long %} class="nav-menu-summary--long"{% endif %}>
-        <span class="nav-menu-label">Menu</span>
-        {% if header_nav.compact_current %}<span class="nav-menu-current">{{ header_nav.compact_current }}</span>{% endif %}
-      </summary>
-      <nav class="site-nav site-nav-compact" aria-label="Secções no telemóvel">
-        <a href="{{ header_nav.home.href }}"{% if header_nav.home.current %} aria-current="{{ header_nav.home.current }}"{% endif %}>{{ header_nav.home.label }}</a>
-        <p class="nav-compact-group">{{ header_nav.explore.label }}</p>
-        {% for link in header_nav.explore.links %}
-        <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
-        {% endfor %}
-        {% for link in header_nav.sections %}
-        <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
-        {% endfor %}
-        <p class="nav-compact-group">{{ header_nav.support.label }}</p>
-        {% for link in header_nav.support.links %}
-        <a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a>
-        {% endfor %}
-      </nav>
-    </details>
+
+    <div class="app-utilities">
+      <details class="app-disclosure app-more"{% if header_nav.more.state %} data-state="{{ header_nav.more.state }}"{% endif %}>
+        <summary>
+          <span class="app-disclosure-label">Mais</span>
+          {% if header_nav.more.current_label %}<span class="sr-only">: {{ header_nav.more.current_label }}</span>{% endif %}
+          <span class="app-disclosure-marker">{{ icon("chevron") }}</span>
+        </summary>
+        <div class="app-panel app-more-panel">
+          {% if header_nav.show_search|default(true) %}
+          <div class="app-panel-group">
+            <p class="app-panel-title">Pesquisar séries</p>
+            <form class="search" action="{{ header_nav.search_href }}" method="get" role="search">
+              <label class="sr-only" for="q">Pesquisar séries</label>
+              <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
+              <button type="submit">Procurar</button>
+            </form>
+          </div>
+          {% endif %}
+
+          <div class="app-panel-group">
+            <p class="app-panel-title">Temas</p>
+            <ul class="app-panel-list">
+              {% for link in header_nav.themes.links %}
+              <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="app-panel-group">
+            <p class="app-panel-title">Sobre</p>
+            <ul class="app-panel-list">
+              {% for link in header_nav.support.links %}
+              <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
   </div>
 </header>

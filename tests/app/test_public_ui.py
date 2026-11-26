@@ -9,7 +9,7 @@ def test_public_css_draws_the_search_icon_locally(client):
     assert 'href="/dados/static/images/prumo/favicon.svg"' in html
     assert "cdn." not in html and "googleapis" not in html
 
-    css = client.get("/static/css/prumo.css").text
+    css = client.get("/static/css/app-shell.css").text
     assert ".search button::before" in css and "data:image/svg+xml" in css
     # The visible label stays in the markup; the glyph is additional.
     assert "<button type=\"submit\">Procurar</button>" in html

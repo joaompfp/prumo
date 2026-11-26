@@ -100,6 +100,9 @@
 
 .chart-readout-period {
   font-weight: 700;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: var(--paper);
 }
 
 .chart-readout-row {
@@ -107,6 +110,8 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0 .5em;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
   min-width: 0;
 }
 
@@ -171,10 +176,20 @@ details.chart-meta {
 
 details.chart-meta > summary {
   cursor: pointer;
-  color: var(--accent);
+  display: flex; align-items: center; gap: 10px; min-height: 52px;
+  color: var(--ink); font-weight: 600;
   font-size: .88rem;
-  padding: 8px 0;
+  padding: 10px 12px; list-style: none;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 7px;
 }
+
+details.chart-meta > summary::-webkit-details-marker { display: none; }
+details.chart-meta > summary::after {
+  content: ""; flex: none; width: .45em; height: .45em; margin-left: auto;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+details.chart-meta[open] > summary::after { transform: rotate(225deg); }
 
 .chart-source-list {
   list-style: none;

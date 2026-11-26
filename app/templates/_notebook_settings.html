@@ -1,7 +1,10 @@
-  <details class="notebook-chart-settings"{% if not panel.chart %} open{% endif %}>
-    <summary>{{ page.copy.chart_settings_summary }}</summary>
-    <div class="notebook-chart-options" id="definicoes">
-      <div class="notebook-chart-pair" role="group" aria-label="{{ page.copy.chart_settings_summary }}">
+{% from "_ui.html" import icon %}
+<details class="notebook-chart-settings"{% if not panel.chart %} open{% endif %}>
+  <summary>{{ icon("settings") }}<span>{{ page.copy.chart_settings_summary }}</span>{{ icon("chevron") }}</summary>
+  <div class="notebook-chart-options" id="definicoes">
+    <fieldset class="settings-group">
+      <legend>{{ page.copy.chart_period_group }}</legend>
+      <div class="notebook-chart-pair">
         <label>{{ page.copy.chart_window_legend }}
           <select name="janela">
             <option value="10a"{% if panel.settings.window == "10a" %} selected{% endif %}>{{ page.copy.chart_window_10a }}</option>
@@ -16,7 +19,10 @@
           </select>
         </label>
       </div>
-      <div class="notebook-chart-pair" role="group" aria-label="{{ page.copy.chart_analysis_note }}">
+    </fieldset>
+    <fieldset class="settings-group">
+      <legend>{{ page.copy.chart_treatment_group }}</legend>
+      <div class="notebook-chart-pair">
         <label>{{ page.copy.chart_frequency_legend }}
           <select name="frequencia">
             <option value="original"{% if panel.settings.frequency == "original" %} selected{% endif %}>{{ page.copy.chart_frequency_original }}</option>
@@ -35,18 +41,18 @@
         </label>
       </div>
       <p class="note">{{ page.copy.chart_analysis_note }}</p>
-      <fieldset>
-        <legend>{{ page.copy.chart_group_legend }}</legend>
-        <div class="notebook-chart-choices">
-          {% for choice in panel.choices %}
-          <label>
-            <input type="checkbox" name="g" value="{{ choice.series_id }}"{% if choice.checked %} checked{% endif %}>
-            {{ choice.label }}{% if choice.unit_text %} <span class="note">({{ choice.unit_text }})</span>{% endif %}{% if not choice.available %} <span class="note">({{ page.copy.chart_unavailable_mark }})</span>{% endif %}
-          </label>
-          {% endfor %}
-        </div>
-        <p class="note">{{ page.copy.chart_group_note }}</p>
-      </fieldset>
+    </fieldset>
+    <fieldset class="settings-group settings-series">
+      <legend>{{ page.copy.chart_group_legend }}</legend>
+      <div class="notebook-chart-choices">
+        {% for choice in panel.choices %}
+        <label>
+          <input type="checkbox" name="g" value="{{ choice.series_id }}"{% if choice.checked %} checked{% endif %}>
+          <span>{{ choice.label }}{% if choice.unit_text %} <span class="note">({{ choice.unit_text }})</span>{% endif %}{% if not choice.available %} <span class="note">({{ page.copy.chart_unavailable_mark }})</span>{% endif %}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <p class="note">{{ page.copy.chart_group_note }}</p>
       {% if panel.axis_groups %}
       <div class="notebook-axis-groups">
         <p class="note">{{ page.copy.chart_axis_groups_note }}</p>
@@ -57,15 +63,22 @@
         </ul>
       </div>
       {% endif %}
+    </fieldset>
+    <fieldset class="settings-group">
+      <legend>{{ page.copy.chart_interval_group }}</legend>
       <label>{{ page.copy.chart_day_label }}
         <input name="dia" type="date" value="{{ panel.settings.day or '' }}">
       </label>
-      <button type="submit" formaction="{{ base }}/caderno#grafico">{{ page.copy.chart_submit }}</button>
-      <p class="note">{{ page.copy.chart_settings_note }}</p>
+      <p class="note">{{ page.copy.chart_interval_note }}</p>
+    </fieldset>
+    <div class="settings-actions">
+      <button type="submit" formaction="{{ base }}/caderno#grafico">{{ icon("chart") }}{{ page.copy.chart_submit }}</button>
       {% if panel.state == "off" %}
-      <p><a class="button-quiet" href="{{ base }}{{ page.chart_auto_path }}#grafico">{{ page.copy.chart_activate }}</a></p>
+      <a class="button-quiet" href="{{ base }}{{ page.chart_auto_path }}#grafico">{{ page.copy.chart_activate }}</a>
       {% else %}
-      <p><a class="button-quiet" href="{{ base }}{{ page.chart_off_path }}#grafico">{{ page.copy.chart_deactivate }}</a></p>
+      <a class="button-link" href="{{ base }}{{ page.chart_off_path }}#grafico">{{ page.copy.chart_deactivate }}</a>
       {% endif %}
     </div>
-  </details>
+    <p class="note">{{ page.copy.chart_settings_note }}</p>
+  </div>
+</details>

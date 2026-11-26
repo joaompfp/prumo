@@ -62,6 +62,11 @@ class NotebookCopy:
     chart_state_choose: str
     chart_state_unavailable: str
     chart_settings_summary: str
+    chart_period_group: str
+    chart_treatment_group: str
+    chart_interval_group: str
+    chart_interval_note: str
+    chart_method_summary: str
     chart_configure_label: str
     chart_add_label: str
     chart_group_legend: str
@@ -272,6 +277,11 @@ _PT = NotebookCopy(
     chart_state_choose="Escolha as séries do gráfico",
     chart_state_unavailable="Gráfico indisponível",
     chart_settings_summary="Definições do gráfico",
+    chart_period_group="Período e escalas",
+    chart_treatment_group="Tratamento dos dados",
+    chart_interval_group="Séries de 15 minutos",
+    chart_interval_note="Apenas para séries com intervalos de 15 minutos.",
+    chart_method_summary="Notas e método",
     chart_configure_label="Configurar",
     chart_add_label="Acrescentar",
     chart_group_legend="Séries no gráfico (até seis)",

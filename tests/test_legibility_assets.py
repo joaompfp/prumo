@@ -62,7 +62,6 @@ def test_public_root_and_wrap_support_the_approved_scale():
 def test_public_fixed_role_tokens_meet_the_one_and_a_half_floor():
     css = (ROOT / "static" / "css" / "prumo.css").read_text()
     for token in (
-        ".site-nav > a {", "font-size: 0.95rem",        # grouped nav 26.6475px
         ".card-label {", "font-size: .8rem",            # 22.44px
         ".card-source {", "font-size: .78rem",          # 21.879px
         ".data-table th {", "font-size: .74rem",        # 20.757px
@@ -70,6 +69,8 @@ def test_public_fixed_role_tokens_meet_the_one_and_a_half_floor():
         ".site-footer p {", "font-size: .82rem",        # 23.001px
     ):
         assert token in css, token
+    shell = (ROOT / "static" / "css" / "app-shell.css").read_text()
+    assert ".app-nav-link {" in shell and "font-size: 0.95rem" in shell
     # SVG unit names use .chart-axis-label at 18.15px; .chart-axis-title at 19.8px has no
     # consumer. The canvas adapter draws its axis names at 19.8 CSS px.
     assert css.count("font-size: 18.15px") == 2           # SVG ticks and axis unit names

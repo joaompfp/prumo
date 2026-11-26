@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_ui.html" import icon %}
 {% from "_discovery_filters.html" import choice %}
 {% block title %}{% if page.query %}Pesquisa: {{ page.query }} - Prumo{% else %}Catálogo de séries - Prumo{% endif %}{% endblock %}
 {% block main_class %} discovery-main{% endblock %}
@@ -20,11 +21,11 @@
       <label class="sr-only" for="pesquisa-q">Pesquisar indicadores</label>
       <input id="pesquisa-q" name="q" type="search" value="{{ page.query }}"
              maxlength="200" placeholder="ex.: desemprego Portugal" aria-describedby="pesquisa-ajuda">
-      <button type="submit" class="button">Procurar</button>
+      <button type="submit" class="button-quiet">{{ icon("search") }}Procurar</button>
     </div>
     <p id="pesquisa-ajuda" class="sr-only">Todos os termos contam. A pesquisa ignora maiúsculas e acentos.</p>
     <details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
-      <summary>Filtros{% if page.filters_active %} ativos{% endif %}<span class="sr-only">: tema, geografia, fonte e frequência</span></summary>
+      <summary>{{ icon("filter") }}<span>Filtros{% if page.filters_active %} ativos{% endif %}<span class="sr-only">: tema, geografia, fonte e frequência</span></span>{{ icon("chevron") }}</summary>
       <div class="filters">
         {{ choice('Tema', 'tema', page.theme_options, page.theme, 'Todos os temas') }}
         {{ choice('Geografia', 'grupo', page.group_options, page.group) }}
@@ -46,7 +47,7 @@
   <section class="discovery-selection" aria-labelledby="selecao-referencias">
     <div class="discovery-selection-head">
       <h2 id="selecao-referencias"><span class="sr-only">Seleção: </span><span data-selection-count-number>{{ page.selection_count }}</span> / 12<span class="sr-only"> séries selecionadas</span></h2>
-      <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
+      <button type="submit" name="acao" value="abrir" class="button">{{ icon("notebook") }}Abrir caderno</button>
     </div>
     <p class="selection-instruction" id="selecao-ajuda">Marque várias séries para as juntar.</p>
     <p class="sr-only" role="status" aria-live="polite" data-selection-count-text>{% if page.selection_count == 1 %}1 selecionada{% else %}{{ page.selection_count }} selecionadas{% endif %}</p>

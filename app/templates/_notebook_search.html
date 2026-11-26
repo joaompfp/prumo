@@ -1,7 +1,8 @@
+{% from "_ui.html" import icon %}
 <section class="notebook-search" aria-labelledby="pesquisa">
   <div class="section-head">
     <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
-    <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}">{{ page.copy.search_catalogue_label }}</a>
+    <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}">{{ icon("list") }}{{ page.copy.search_catalogue_label }}</a>
   </div>
   <form id="notebook-search-form" class="notebook-batch" action="{{ base }}/pesquisa" method="get">
     {# One form owns both the query and the result checkboxes. A visible result emits only its
@@ -13,7 +14,7 @@
       <label>{{ page.copy.search_label }}
         <input name="q" type="search" maxlength="200" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
       </label>
-      <button type="submit" name="acao" value="pesquisar_caderno">{{ page.copy.search_button }}</button>
+      <button type="submit" name="acao" value="pesquisar_caderno">{{ icon("search") }}{{ page.copy.search_button }}</button>
     </div>
 
     <div class="notebook-results">

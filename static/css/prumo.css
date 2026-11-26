@@ -84,174 +84,8 @@ img { max-width: 100%; }
 .skip-link:focus { left: 10px; top: 10px; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 
-/* Masthead, search and destination rail ---------------------------------- */
-.site-header {
-  background: var(--surface);
-  border-top: 4px solid var(--accent);
-  border-bottom: 1px solid var(--rule);
-}
-.masthead {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 14px 32px; padding-top: 12px; padding-bottom: 12px;
-}
-.brand {
-  display: inline-flex; align-items: center; gap: 12px; flex: none;
-  color: var(--ink); text-decoration: none;
-}
-.brand:hover { color: var(--ink); }
-.brand-icon { display: block; width: 40px; height: 40px; flex: none; }
-.brand-name {
-  font-family: var(--serif); font-size: 1.6rem; font-weight: 700; letter-spacing: -0.035em;
-  line-height: 1;
-}
-
-/* One joined control: the field and the submit button stretch to the same height.
-   The field gives up width first; at 320px the submit keeps its locally drawn icon
-   and the text that gives it its accessible name. */
-.search {
-  display: flex; align-items: stretch; flex: 0 1 420px; min-width: 0;
-  margin: 0 0 0 auto;
-}
-.search input {
-  flex: 1 1 auto; min-width: 0; width: 100%; margin: 0;
-  border: 1px solid var(--rule-strong); border-right: 0; border-radius: 7px 0 0 7px;
-  background: var(--surface); padding: 10px 14px; font: inherit; font-size: 0.9rem;
-  color: var(--ink); min-height: 52px;
-}
-.search input:focus-visible { outline-offset: -2px; }
-/* The search icon is a locally inlined vector: no font, no extra request, and the visible
-   "Procurar" label remains the accessible name if the image is unavailable. */
-.search button::before {
-  content: "";
-  width: 0.92em;
-  height: 0.92em;
-  flex: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23f6f4f1' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-.search button, .filters button {
-  border: 1px solid var(--accent); border-radius: 7px; background: var(--accent); color: #fff;
-  padding: 10px 20px; font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-  min-height: 52px; white-space: nowrap;
-  transition: background-color var(--motion) ease, border-color var(--motion) ease,
-              transform 80ms ease;
-}
-.search button { flex: 0 0 auto; border-radius: 0 7px 7px 0; }
-.search button:hover, .filters button:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-.search button:active, .filters button:active { transform: translateY(1px); }
-
-/* The destination rail shares the masthead's content edges. The active indicator is
-   the link's own bottom edge, so it sits on the single baseline instead of floating
-   above it. */
-.destination-rail {
-  display: flex; align-items: stretch; justify-content: space-between; gap: 0 12px;
-  border-top: 1px solid var(--rule);
-}
-.destination-rail > .site-nav {
-  display: flex; align-items: stretch; gap: 2px; flex-wrap: nowrap; min-width: 0;
-}
-.site-nav > a {
-  display: inline-flex; align-items: center; min-height: 52px;
-  color: var(--muted); text-decoration: none; font-size: 0.95rem; font-weight: 400;
-  padding: 8px 13px; white-space: nowrap;
-  box-shadow: inset 0 -3px 0 transparent;
-  transition: color var(--motion) ease, box-shadow var(--motion) ease;
-}
-.site-nav > a:hover { color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent-soft); }
-.site-nav > a[aria-current="page"] {
-  color: var(--accent); font-weight: 600; box-shadow: inset 0 -3px 0 var(--accent);
-}
-.site-nav > a[aria-current="location"] { color: var(--accent); font-weight: 600; }
-/* The first rail label shares the masthead's content edge rather than starting
-   one link-padding to the right of the brand. */
-.destination-rail > .site-nav > a:first-child { padding-left: 0; }
-
-/* Native exploration and supporting disclosures on the desktop rail. No script, no
-   focus trap: the summary opens an in-page list, keeps its stable task label, and
-   marks the current section with the same accent rule as a current link. */
-.nav-disclosure { position: relative; display: flex; }
-.nav-disclosure > summary {
-  display: inline-flex; align-items: center; gap: 8px;
-  min-height: 52px; padding: 8px 13px; cursor: pointer;
-  color: var(--muted); font-size: 0.95rem; font-weight: 400; white-space: nowrap;
-  list-style: none;
-}
-.nav-disclosure > summary::-webkit-details-marker,
-.nav-menu > summary::-webkit-details-marker { display: none; }
-.nav-disclosure > summary::after,
-.nav-menu > summary::after {
-  content: ""; width: 0.5rem; height: 0.5rem; flex: none;
-  border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
-  transform: rotate(45deg) translateY(-2px); transition: transform var(--motion) ease;
-}
-.nav-disclosure[open] > summary::after,
-.nav-menu[open] > summary::after { transform: rotate(225deg) translateY(-2px); }
-.nav-disclosure > summary:hover,
-.nav-disclosure[open] > summary { color: var(--accent); }
-.nav-disclosure[data-state="page"] > summary {
-  color: var(--accent); font-weight: 600; box-shadow: inset 0 -3px 0 var(--accent);
-}
-.nav-disclosure[data-state="location"] > summary { color: var(--accent); font-weight: 600; }
-.nav-disclosure-panel {
-  position: absolute; left: 0; top: 100%; z-index: 30; min-width: 16rem;
-  margin: 0; padding: 8px; list-style: none;
-  background: var(--surface); border: 1px solid var(--rule-strong);
-  border-top: 3px solid var(--accent); border-radius: 0 0 8px 8px;
-  box-shadow: 0 14px 34px rgba(26, 26, 26, 0.14);
-}
-/* The last disclosure ends the rail, so a 16rem panel anchored to its left edge would
-   leave the viewport between 901px and 1100px. Anchor that panel to the rail's right
-   edge instead; the first panel keeps its reading-order left anchor. */
-.site-nav > .nav-disclosure:last-child > .nav-disclosure-panel { left: auto; right: 0; }
-/* Native details hides its panel; these keep an author display rule from overriding
-   the closed state in browsers that expose it through the UA stylesheet. */
-.nav-disclosure:not([open]) > .nav-disclosure-panel,
-.nav-menu:not([open]) > .site-nav-compact { display: none; }
-.nav-disclosure-panel a {
-  display: flex; align-items: center; min-height: 52px; padding: 8px 12px;
-  border-radius: 5px; color: var(--ink); text-decoration: none; white-space: nowrap;
-}
-.nav-disclosure-panel a:hover { background: var(--accent-soft); color: var(--accent); }
-.nav-disclosure-panel a[aria-current="page"] { color: var(--accent); font-weight: 600; }
-.nav-disclosure-panel a[aria-current="location"] { color: var(--accent); font-weight: 600; }
-
-/* The compact menu is a native disclosure in normal flow: no overlay, no focus
-   trap, no script. It replaces the rail below the desktop breakpoint. */
-.nav-menu { display: none; flex: 1 1 100%; min-width: 0; }
-.nav-menu > summary {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  min-height: 52px; min-width: 0; padding: 10px 14px; cursor: pointer;
-  border: 1px solid var(--rule-strong); border-radius: 7px; background: var(--surface);
-  font-weight: 600; color: var(--ink); list-style: none;
-}
-.nav-menu[open] > summary { border-color: var(--accent); }
-.nav-menu-current { margin-left: auto; color: var(--accent); font-weight: 600; }
-.nav-menu-current::before {
-  content: "·"; color: var(--muted); margin-right: 8px; font-weight: 400;
-}
-.nav-menu .site-nav-compact {
-  display: flex; flex-direction: column; align-items: stretch; gap: 2px;
-  margin-top: 8px; padding: 8px;
-  background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 7px;
-}
-.nav-menu .site-nav-compact > a {
-  justify-content: flex-start; width: 100%; min-height: 52px;
-  padding: 8px 12px; border-radius: 5px; box-shadow: none;
-  border-left: 3px solid transparent;
-}
-.nav-menu .site-nav-compact > a:hover { background: var(--accent-soft); }
-.nav-menu .site-nav-compact > a[aria-current="page"] {
-  background: var(--accent-soft); border-left-color: var(--accent); box-shadow: none;
-}
-.nav-menu .site-nav-compact > a[aria-current="location"] {
-  background: var(--accent-soft); border-left-color: var(--rule-strong); box-shadow: none;
-}
-.nav-compact-group {
-  margin: 8px 0 0; padding: 8px 12px 2px;
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--muted);
-}
-.nav-compact-group:first-child { margin-top: 0; }
+/* The shared site header, primary navigation, native disclosures, search and action
+   roles live in app-shell.css. This file keeps page presentation and component styles. */
 
 /* Hero and section rhythm -------------------------------------------------- */
 .hero { padding: 96px 0 50px; max-width: 64rem; }
@@ -263,18 +97,6 @@ img { max-width: 100%; }
 .lede { font-size: 1.22rem; color: var(--muted); max-width: 62ch; margin-top: 22px; line-height: 1.5; }
 .meta { font-size: 0.88rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin: 32px 0 22px; }
-.button, .button-quiet {
-  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-  min-height: 54px; padding: 13px 22px; font-size: 0.9rem; font-weight: 600;
-  text-decoration: none; border: 1px solid var(--accent); border-radius: 7px;
-  transition: background-color var(--motion) ease, border-color var(--motion) ease,
-              color var(--motion) ease, transform 80ms ease;
-}
-.button { background: var(--accent); color: #fff; }
-.button:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
-.button-quiet { color: var(--accent); background: var(--surface); }
-.button-quiet:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-.button:active, .button-quiet:active { transform: translateY(1px); }
 .freshness {
   display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--muted);
   margin: 0; font-variant-numeric: tabular-nums;
@@ -527,9 +349,6 @@ section { margin: 80px 0; }
 .preview-banner { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 9px; padding: 20px 24px; margin: 24px 0; }
 
 .detail-actions { margin: 22px 0 26px; }
-@media (max-width: 760px) {
-  .detail-actions .button-quiet { width: 100%; text-align: center; }
-}
 
 /* Notebook ---------------------------------------------------------------- */
 .notebook-selection .section-head .button-quiet,
@@ -582,22 +401,14 @@ section { margin: 80px 0; }
   .steps { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 1000px) {
-  .search { flex-basis: 360px; }
-}
-
 @media (max-width: 1280px) {
   /* Exact values and large reading type need a local table scroller before tablet width. */
   .data-table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; }
 }
 
 @media (max-width: 900px) {
-  .brand-name { font-size: 1.45rem; }
-  .destination-rail { padding: 8px 0; }
-  .destination-rail > .site-nav { display: none; }
-  .nav-menu { display: block; }
-  /* Inline-only: .wrap also carries the masthead and destination rail, whose
-     block padding must survive this breakpoint. */
+  /* Inline-only: .wrap also carries the masthead, whose block padding must survive
+     this breakpoint. The shared app bar owns its own narrow composition. */
   .wrap { padding-inline: 24px; }
   .hero { padding: 64px 0 40px; }
   .figure-block { padding: 24px; }
@@ -625,16 +436,8 @@ section { margin: 80px 0; }
   .chart-enhanced .chart-wrap { min-width: 0; }
 }
 
-@media (max-width: 640px) {
-  /* The masthead keeps one row of identity and one full-width joined search; the
-     field never stacks above the button. */
-  .masthead { flex-wrap: wrap; gap: 12px; }
-  .search { flex: 1 1 100%; margin-left: 0; }
-}
-
 @media (max-width: 480px) {
   .wrap { padding-inline: 18px; }
-  .brand-icon { width: 34px; height: 34px; }
   .filters { padding: 18px; }
   .filters label { flex: 1 1 100%; }
   .filters select, .filters input { min-width: 0; width: 100%; }
@@ -646,32 +449,8 @@ section { margin: 80px 0; }
   .chart-range, .chart-readout { flex: 1 1 100%; }
 }
 
-@media (max-width: 420px) {
-  /* Still one joined control at 320: the field shrinks, the submit keeps a 52px
-     target, its local icon and the text that names it for assistive technology. */
-  .search input { padding-inline: 10px; }
-  .search button {
-    flex: 0 0 52px; width: 52px; min-width: 52px; padding: 0; font-size: 0;
-  }
-  .search button::before { width: 24px; height: 24px; }
-}
-
-@media (max-width: 380px) {
-  /* Only a long current label drops to a second line; short labels stay on the
-     Menu row, so the closed summary remains one compact target. */
-  .nav-menu-summary--long { flex-wrap: wrap; }
-  .nav-menu-summary--long .nav-menu-current {
-    order: 3; flex: 1 1 100%; margin-left: 0;
-  }
-  .nav-menu-summary--long .nav-menu-current::before { content: none; }
-  .nav-menu-summary--long::after { order: 2; margin-left: auto; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
-  .button:active, .button-quiet:active, .search button:active, .filters button:active {
-    transform: none;
-  }
 }
 
 /* --- two-series comparisons --------------------------------------------------------------- */
@@ -769,270 +548,7 @@ section { margin: 80px 0; }
   .country-table { display: table; width: 46rem; overflow: visible; white-space: normal; }
 }
 
-/* Notebook analytical workspace ------------------------------------------- */
-/* Scoped to the public notebook. The working column is wider than the prose
-   measure and is tied to the viewport height at the chart's own 880:340 aspect
-   ratio: a wide monitor gains both chart width and chart height, while a laptop
-   still fits the whole plot in the first view. Settings stay below the plot so
-   opening them cannot move it. No sticky management bar. */
-.wrap.notebook-main { max-width: none; }
-.notebook-main { padding-inline: clamp(18px, 2.4vw, 48px); }
-.notebook-main .crumbs { padding-top: 6px; }
-.notebook-main .page-head { padding: 6px 0; max-width: none; }
-.notebook-main .page-head h1 { font-size: clamp(1.45rem, 4.2vw, 2.35rem); }
-.notebook-main .page-head .meta { margin: 4px 0 0; }
-.notebook-head-row {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 4px 24px; flex-wrap: wrap;
-}
-.notebook-main .notebook-head-row .meta { margin: 0; }
-.notebook-main .notebook-search, .notebook-main .notebook-selection { margin: 22px 0; }
-.notebook-workspace {
-  width: min(100%, 2400px, max(calc((100vh - 19.4rem) * 2.588), 40rem));
-  margin-inline: auto;
-}
-.notebook-chart-head {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 10px 20px; flex-wrap: wrap; margin: 0 0 8px;
-}
-.notebook-chart-head h2 { font-size: clamp(1.05rem, 2.2vw, 1.3rem); }
-.notebook-chart-links { display: flex; flex-wrap: wrap; gap: 8px 12px; }
-.notebook-chart-links .button-quiet { min-height: 48px; padding: 4px 12px; font-size: .85rem; }
-.notebook-chart-state {
-  margin: 0 0 8px; color: var(--accent); font-weight: 600; font-size: .88rem;
-}
-.notebook-chart-form { margin: 0; }
-.notebook-chart .chart-figure { margin: 0 0 8px; }
-.notebook-chart .chart-figure figcaption {
-  max-width: none; margin: 0 0 8px; color: var(--muted);
-  font-size: .8rem; line-height: 1.3;
-}
-.notebook-chart-period { margin: 0 0 4px; color: var(--ink); font-size: .85rem; line-height: 1.3; }
-.notebook-chart-period-label {
-  color: var(--accent); font-weight: 600; letter-spacing: 0; margin: 0 4px 0 0;
-}
-.notebook-chart-period .note { font-size: .8rem; }
-.notebook-chart-sources {
-  list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: 2px 26px; margin: 0; padding: 0;
-}
-.notebook-chart-sources li { display: grid; gap: 0; min-width: 0; }
-.notebook-chart-sources strong, .notebook-chart-sources span { line-height: 1.3; }
-.notebook-chart-sources strong { color: var(--ink); }
-.notebook-chart-sources .legend-swatch { vertical-align: middle; margin-right: 8px; }
-.notebook-chart-alignment { margin: 10px 0 0; max-width: 78ch; }
-.notebook-analysis-note { margin: 10px 0 0; max-width: 78ch; color: var(--ink); }
-.cell-period { display: block; color: var(--muted); font-size: .78em; font-weight: 400; }
-.cell-missing { color: var(--muted); font-style: italic; }
-.notebook-calculation-side { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--rule); }
-.notebook-calculation-side h4, .notebook-calculation-side h5 { margin: 8px 0 4px; }
-.notebook-calculation-side .analysis-inputs { margin-top: 6px; }
-.card-chart {
-  margin: 8px 0 0; color: var(--muted); font-size: .85rem; line-height: 1.35;
-}
-.notebook-help {
-  margin: 28px 0 0; border-top: 1px solid var(--rule); padding-top: 10px;
-}
-.notebook-help > summary {
-  cursor: pointer; color: var(--accent); font-size: .88rem; font-weight: 600;
-  padding: 8px 0;
-}
-.notebook-help-body { max-width: 68ch; }
-.notebook-help-body p { font-size: .9rem; }
-.notebook-toolbar {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
-  margin: 10px 0 0;
-}
-.notebook-toolbar .button-quiet { min-height: 48px; padding: 10px 16px; font-size: .85rem; }
-.notebook-caveat {
-  margin: 14px 0 0; padding: 10px 14px; border-left: 4px solid #d9b45a;
-  background: #fbf6e8; color: #5a4a00; max-width: 78ch;
-}
-.notebook-chart { margin: 4px 0 10px; }
-.notebook-chart .figure-block { grid-template-columns: 1fr; gap: 20px; }
-.notebook-chart .figure-meta {
-  border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 18px;
-}
-.notebook-chart .chart-shell, .notebook-chart .chart-figure { width: 100%; }
-.notebook-chart .legend {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: 12px 26px;
-}
-.notebook-chart .legend li {
-  display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 4px 10px;
-}
-.notebook-chart .legend-value { grid-column: 2; }
-.notebook-definitions, .notebook-chart .provenance-details { margin-top: 12px; }
-.notebook-definitions > summary, .notebook-chart .provenance-details > summary {
-  cursor: pointer; color: var(--accent); font-size: .88rem; padding: 8px 0;
-}
-.notebook-table-scroll { overflow-x: auto; max-width: 100%; }
-.notebook-table-scroll .data-table {
-  display: table; width: max-content; min-width: 100%; white-space: normal;
-}
-.notebook-table-scroll th { max-width: 18rem; }
-.notebook-chart-settings {
-  margin: 18px 0 0; background: var(--surface); border: 1px solid var(--rule);
-  border-radius: 9px;
-}
-.notebook-chart-settings > summary {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  min-height: 52px; padding: 10px 16px; cursor: pointer; font-weight: 600;
-  list-style: none;
-}
-.notebook-chart-settings > summary::-webkit-details-marker { display: none; }
-.notebook-chart-settings > summary::after {
-  content: ""; width: 0.5rem; height: 0.5rem; flex: none;
-  border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
-  transform: rotate(45deg) translateY(-2px); transition: transform var(--motion) ease;
-}
-.notebook-chart-settings[open] > summary::after {
-  transform: rotate(225deg) translateY(-2px);
-}
-.notebook-chart-options { display: grid; gap: 16px; padding: 2px 16px 18px; }
-.notebook-chart-options fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
-.notebook-chart-options legend { font-weight: 600; margin-bottom: 8px; }
-.notebook-chart-pair {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
-  gap: 16px;
-}
-.notebook-chart-pair label {
-  display: flex; flex-direction: column; gap: 6px; min-width: 0; font-weight: 600;
-}
-.notebook-chart-options > label {
-  display: flex; flex-direction: column; gap: 6px; font-weight: 600;
-}
-.notebook-chart-options select, .notebook-chart-options input[type="date"],
-.notebook-chart-options input[name="base"] {
-  width: 100%; max-width: 100%;
-  font: inherit; font-size: .9rem; color: var(--ink); background: var(--surface);
-  border: 1px solid var(--rule-strong); border-radius: 6px;
-  padding: 10px 12px; min-height: 52px; min-width: 0;
-}
-.notebook-chart-options button {
-  justify-self: start; min-height: 52px; padding: 10px 20px;
-  border: 1px solid var(--accent); border-radius: 7px;
-  background: var(--accent); color: #fff; font: inherit; font-size: .85rem;
-  font-weight: 600; cursor: pointer;
-}
-.notebook-chart-options button:hover {
-  background: var(--accent-hover); border-color: var(--accent-hover);
-}
-.notebook-chart-choices { display: grid; gap: 2px; margin: 0; padding: 0; }
-.notebook-chart-choices label {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 10px 0; border-top: 1px solid var(--rule); cursor: pointer;
-}
-.notebook-chart-choices label:first-child { border-top: 0; }
-.notebook-chart-choices input[type="checkbox"] {
-  width: 22px; height: 22px; margin: 4px 0 0; flex: none; accent-color: var(--accent);
-}
-.notebook-chart .chart-series-meta {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: 18px; margin-top: 18px;
-}
-.notebook-chart .chart-series-meta-side {
-  background: var(--surface); border: 1px solid var(--rule); border-radius: 9px;
-  padding: 20px 22px; min-width: 0;
-}
-.notebook-chart .chart-series-meta-side h3 { font-size: 1rem; margin-bottom: 10px; }
-.notebook-chart .chart-series-meta-side dl {
-  display: grid; grid-template-columns: minmax(7rem, max-content) minmax(0, 1fr);
-  gap: 6px 14px; margin: 0; font-size: .85rem;
-}
-.notebook-chart .chart-series-meta-side dt { color: var(--muted); font-weight: 600; }
-.notebook-chart .chart-series-meta-side dd { margin: 0; overflow-wrap: anywhere; }
-.notebook-results { width: 100%; overflow-x: auto; }
-.notebook-results .data-table { min-width: 100%; }
-.notebook-results th, .notebook-results td {
-  padding: 12px 10px; border-bottom: 1px solid var(--rule);
-  text-align: left; vertical-align: top;
-}
-.notebook-results th { font-size: .74rem; font-weight: 700; color: var(--muted); }
-
-@media (max-width: 1280px) {
-  /* Large reading type needs labelled result records through tablet/laptop widths. */
-  .notebook-results {
-    display: block; width: 100%; overflow: visible; white-space: normal;
-  }
-  .notebook-results tbody, .notebook-results tr, .notebook-results td { display: block; width: 100%; }
-  .notebook-results thead {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); white-space: nowrap;
-  }
-  .notebook-results tr {
-    background: var(--surface); border: 1px solid var(--rule); border-radius: 9px;
-    padding: 8px 16px; margin: 0 0 12px;
-  }
-  .notebook-results td {
-    border: 0; border-top: 1px solid var(--rule); padding: 10px 0;
-    white-space: normal;
-  }
-  .notebook-results td:first-child { border-top: 0; }
-  .notebook-results td::before {
-    content: attr(data-label); display: block; margin-bottom: 2px;
-    color: var(--muted); font-weight: 600;
-  }
-  .notebook-results td:not([data-label])::before { content: none; }
-}
-
-@media (max-width: 899px) {
-  /* Below the desktop heading row: the plot stays first, settings follow it. */
-  .notebook-chart-head { margin-bottom: 4px; }
-}
-
-@media (max-width: 760px) {
-  .notebook-main { padding-inline: 18px; }
-  .notebook-head-row { display: block; }
-  .notebook-main .notebook-head-row .meta { margin-top: 4px; }
-  .notebook-chart-caption { font-size: .8rem; }
-  .notebook-chart-period { font-size: .85rem; }
-  .notebook-chart-sources { grid-template-columns: 1fr; }
-}
-
-@media print {
-  .site-header, .site-footer, .search, .filters, .windows, .pager, .download { display: none; }
-  .notebook-toolbar, .notebook-chart-settings, .notebook-chart-options,
-  .notebook-search { display: none; }
-  .notebook-workspace { width: 100%; }
-  .notebook-chart-links, .notebook-help { display: none; }
-  body { background: #fff; }
-  .card, .figure-block, .provenance, .formula { border-color: #999; }
-  .chart-scroll { overflow: visible; }
-  .chart-wrap { min-width: 0; }
-  /* The snapshot/causality caveat and the plot metadata must survive print. */
-  .notebook-caveat { display: block; }
-  /* Print selects the server SVG: the canvas and its controls never reach paper. */
-  .chart-enhanced .chart { opacity: 1 !important; }
-  .chart-canvas, .chart-controls, .chart-hint { display: none !important; }
-  /* Evidence must reach paper even when its native disclosure is closed on screen. The
-     ::details-content rule opens the browser's content wrapper; the child rule is the
-     fallback for engines that still hide closed details with display:none. */
-  .notebook-workspace details.notebook-definitions,
-  .notebook-workspace details.provenance-details,
-  .notebook-workspace details.table-details { display: block; }
-  .notebook-workspace details.notebook-definitions > summary,
-  .notebook-workspace details.provenance-details > summary,
-  .notebook-workspace details.table-details > summary { display: none; }
-  .notebook-workspace details.notebook-definitions::details-content,
-  .notebook-workspace details.provenance-details::details-content,
-  .notebook-workspace details.table-details::details-content {
-    content-visibility: visible !important;
-    display: block !important;
-  }
-  .notebook-workspace details.notebook-definitions > *:not(summary),
-  .notebook-workspace details.provenance-details > *:not(summary),
-  .notebook-workspace details.table-details > *:not(summary) {
-    display: block !important;
-  }
-  .notebook-workspace details.notebook-definitions > table,
-  .notebook-workspace details.provenance-details > table,
-  .notebook-workspace details.table-details > table {
-    display: table !important;
-  }
-  .notebook-table-scroll { overflow: visible; }
-}
+/* Analytical workspace rules live in workspace.css. */
 
 /* Native daily window selection on analytical detail pages. */
 .detail-workspace .chart-day-form {

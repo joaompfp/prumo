@@ -1,4 +1,5 @@
 {% from "_chart.html" import chart_shell, chart_meta %}
+{% from "_ui.html" import icon %}
 {% set panel = page.chart_panel %}
 {% if panel.settings.window == "5a" %}{% set active_window = page.copy.chart_window_5a %}
 {% elif panel.settings.window == "max" %}{% set active_window = page.copy.chart_window_max %}
@@ -19,8 +20,8 @@
   <div class="notebook-chart-head">
     <h2 id="grafico-caderno">{{ page.copy.chart_heading }}</h2>
     <div class="notebook-chart-links">
-      <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}" aria-label="{{ page.copy.search_heading }}">{{ page.copy.chart_add_label }}</a>
-      <a class="button-quiet" href="#definicoes" aria-label="{{ page.copy.chart_configure_label }}: {{ page.copy.chart_settings_summary }} · {{ active_window }} · {{ active_scale }}">{{ page.copy.chart_configure_label }}</a>
+      <a class="button" href="{{ base }}{{ page.catalogue_path }}" aria-label="{{ page.copy.search_heading }}">{{ icon("plus") }}{{ page.copy.chart_add_label }}</a>
+      <a class="button-quiet" href="#definicoes" aria-label="{{ page.copy.chart_configure_label }}: {{ page.copy.chart_settings_summary }} · {{ active_window }} · {{ active_scale }}">{{ icon("settings") }}{{ page.copy.chart_configure_label }}</a>
     </div>
   </div>
   {% if panel.state_label %}<p class="notebook-chart-state" data-chart-state="{{ panel.public_state }}">{{ panel.state_label }}</p>{% endif %}
@@ -55,6 +56,14 @@
 {% include "_notebook_settings.html" %}
   </form>
 
+  <div class="notebook-toolbar">
+    <a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ icon("share") }}{{ page.copy.canonical_label }}</a>
+    {% if page.clear_path %}<a class="button-link" href="{{ base }}{{ page.clear_path }}">{{ icon("trash") }}{{ page.copy.clear_label }}</a>{% endif %}
+  </div>
+
+  <details class="authored-reading notebook-method">
+    <summary>{{ page.copy.chart_method_summary }}</summary>
+    <div class="notebook-method-body">
   {% if panel.chart %}
   <p class="note notebook-chart-window">{{ panel.window_text }}</p>
   <p class="note notebook-chart-alignment">{{ panel.alignment_text }}</p>
@@ -62,10 +71,7 @@
   {% if panel.analysis_note %}<p class="note notebook-analysis-note">{{ panel.analysis_note }}</p>{% endif %}
   {% endif %}
 
-  <div class="notebook-toolbar">
-    <a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ page.copy.canonical_label }}</a>
-    {% if page.clear_path %}<a class="button-quiet" href="{{ base }}{{ page.clear_path }}">{{ page.copy.clear_label }}</a>{% endif %}
-  </div>
-
   <p class="note notebook-caveat">{{ page.copy.not_snapshot_note }} {{ page.copy.chart_comparison_note }}</p>
+    </div>
+  </details>
 </section>
