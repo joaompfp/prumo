@@ -108,6 +108,12 @@ def test_legend_is_a_sibling_of_the_plot_that_the_canvas_covers(comparison_html)
     assert canvases[0].parent is wrap
     assert len(legend.find_all("li")) == 2
 
+    # The progressive inspector follows the plot and precedes the legend and any disclosure.
+    children = [child.classes() for child in shell.children]
+    scroll_at = next(index for index, names in enumerate(children) if "chart-scroll" in names)
+    controls_at = next(index for index, names in enumerate(children) if "chart-controls" in names)
+    assert scroll_at < controls_at < shell.children.index(legend)
+
     # One accessible chart: the named SVG remains; the canvas stays ornamental.
     svgs = [node for node in wrap.find_all("svg") if "chart" in node.classes()]
     assert len(svgs) == 1
@@ -205,12 +211,16 @@ def test_enhancement_keeps_the_legend_visible_without_layout_shift(live_comparis
         # The canvas covers the SVG plot exactly; the legend starts at or below its bottom.
         assert after["canvas"]["height"] == pytest.approx(after["svg"]["height"], abs=1)
         assert after["canvas"]["bottom"] <= after["legend"]["top"] + 1
-        # Enhancement changes paint, not the plot/legend boxes. Controls and the hint become
-        # visible below by design; their tops stay put and only their own height grows.
-        for key in ("shell", "wrap", "legend", "controls"):
+        # Enhancement adds the inspector between the plot and the legend instead of leaving an
+        # empty control block on a no-JavaScript page. The plot itself does not move or shrink.
+        assert before["controls"]["height"] == 0
+        assert after["controls"]["height"] > 0
+        for key in ("shell", "wrap"):
             assert after[key]["top"] == pytest.approx(before[key]["top"], abs=1), key
-        for key in ("wrap", "legend"):
-            assert after[key]["height"] == pytest.approx(before[key]["height"], abs=1), key
+        assert after["wrap"]["height"] == pytest.approx(before["wrap"]["height"], abs=1)
+        assert after["legend"]["height"] == pytest.approx(before["legend"]["height"], abs=1)
+        assert after["controls"]["top"] >= after["wrap"]["bottom"] - 1
+        assert after["legend"]["top"] >= after["controls"]["bottom"] - 1
         assert not errors
         context.close()
     finally:

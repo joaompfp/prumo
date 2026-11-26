@@ -1,9 +1,10 @@
 {% from "_chart.html" import chart_shell, chart_meta %}
 {% set panel = page.analysis %}
+{% set mixed_latest = panel.sides|length > 1 and panel.period_label == notebook_copy.chart_period_mixed %}
 {% macro series_links() %}
   <ul class="authored-series-links">
     {% for side in panel.sides %}
-    <li><a href="{{ base }}/series/{{ side.series_id }}">{{ side.label }}</a>{% if side.axis_text %} · {{ side.axis_text }}{% endif %} · {{ side.unit_text }}</li>
+    <li><a href="{{ base }}/series/{{ side.series_id }}">{{ side.label }}</a>{% if side.axis_text %} · {{ side.axis_text }}{% endif %} · {{ side.unit_text }} · {{ notebook_copy.chart_meta_period }}: {{ side.period_text }} · {{ side.source_title }}</li>
     {% endfor %}
   </ul>
 {% endmacro %}
@@ -18,7 +19,7 @@
 <section class="notebook-chart authored-chart" aria-label="{{ page.title }}">
   <figure class="chart-figure chart-figure-interactive">
     <figcaption class="notebook-chart-caption">
-      <p class="notebook-chart-period"><span class="notebook-chart-period-label">{{ panel.period_label or notebook_copy.chart_period_label }}</span> <strong>{{ panel.last_period_text }}</strong></p>
+      <p class="notebook-chart-period"><span class="notebook-chart-period-label">{{ panel.period_label or notebook_copy.chart_period_label }}</span>{% if mixed_latest %} <span class="note">{{ notebook_copy.chart_period_mixed_note }}</span>{% else %} <strong>{{ panel.last_period_text }}</strong>{% endif %}</p>
     </figcaption>
     {% if panel.chart_payload %}
     {% call chart_shell(panel, "cms-chart") %}{{ series_links() }}{% endcall %}

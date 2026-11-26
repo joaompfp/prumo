@@ -147,7 +147,7 @@ These are not separate gates, but they will cause avoidable regressions if left 
 - Name the catalogue-only matching boundary before implementing L3.
 - Keep L4-L6 as future phases with separate specs. No live CMS edits, no production release and no full-suite claim belongs to this review.
 
-## Addendum — adjudication of B1–B5 against the binding resolutions (26/11/2026)
+## Addendum - adjudication of B1–B5 against the binding resolutions (26/11/2026)
 
 Scoped second pass. Read only the roadmap's new "Binding review resolutions before implementation" section and this report; no repository, production or test re-audit. The section is treated as self-contained and as superseding the earlier slice shorthand.
 

@@ -484,7 +484,7 @@ def series_page(db: Db, series_id: str, *, window: str = "max", day: str | None 
         revisions=tuple(revisions), revised_periods=len(revised), unchanged_periods=unchanged,
         derived=tuple(derived), cross_checks=cross,
         window=window if window in ("10", "25") else "max",
-        windows=(("10", "10 anos"), ("25", "25 anos"), ("max", "Máximo")),
+        windows=(("10", "10 anos"), ("25", "25 anos"), ("max", "Todo o histórico")),
         is_15m=is_15m, days=days, day=chosen_day, total_periods=total_periods,
         table_note=table_note)
 

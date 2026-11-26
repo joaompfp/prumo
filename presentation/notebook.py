@@ -147,6 +147,7 @@ class NotebookCopy:
     chart_base_placeholder: str
     chart_analysis_note: str
     chart_period_mixed: str
+    chart_period_mixed_note: str
     chart_period_calendar: str
     chart_period_annual: str
     chart_missing_cell: str
@@ -275,7 +276,7 @@ _PT = NotebookCopy(
     chart_window_1a="1 ano",
     chart_window_10a="10 anos",
     chart_window_5a="5 anos",
-    chart_window_max="Máximo",
+    chart_window_max="Todo o histórico",
     chart_day_label="Dia UTC (apenas para séries de intervalos)",
     chart_submit="Atualizar gráfico",
     chart_settings_note="O gráfico usa os valores publicados. Quando escolhe uma vista anual ou "
@@ -371,6 +372,7 @@ _PT = NotebookCopy(
     chart_base_placeholder="automático",
     chart_analysis_note="As transformações exigem frequência anual e escala comum.",
     chart_period_mixed="Últimos períodos por série",
+    chart_period_mixed_note="Datas por série em «Séries, eixos e fontes».",
     chart_period_calendar="Última posição no calendário",
     chart_period_annual="Último período anual",
     chart_missing_cell="sem observação nesta posição temporal",

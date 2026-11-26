@@ -2,7 +2,7 @@
    only owns the boundary: callers keep their populated links, units and provenance. Print and
    no-JavaScript fallbacks keep the content in the document. #}
 {% macro chart_meta(content=None, summary="Séries, eixos e fontes") %}
-<details class="chart-meta" open>
+<details class="chart-meta">
   <summary>{{ summary }}</summary>
   {% if content is not none %}{{ content }}{% else %}{{ caller() }}{% endif %}
 </details>
@@ -15,14 +15,14 @@
       {{ chart_plot(page.chart) }}
       <div class="chart-canvas" aria-hidden="true"></div>
     </div>
-  </div>{% if caller is defined %}{{ chart_meta(caller()) }}{% endif %}{{ chart_legend(page.chart) }}
+  </div>
   <div class="chart-controls">
     <label class="sr-only" for="chart-range-{{ chart_id }}">{{ page.chart_range_label }}</label>
     <input class="chart-range" id="chart-range-{{ chart_id }}" type="range" min="0" max="{{ page.chart_payload.x|length - 1 }}" step="1" value="{{ page.chart_payload.x|length - 1 }}" aria-valuetext="{{ page.chart_payload.periods[-1] }}" hidden>
     <output class="chart-readout" for="chart-range-{{ chart_id }}" aria-live="off"></output>
     <span class="sr-only chart-live" aria-live="polite"></span>
   </div>
-  <p class="chart-hint" hidden>{{ page.chart_hint }}</p>
+  <p class="chart-hint" hidden>{{ page.chart_hint }}</p>{{ chart_legend(page.chart) }}{% if caller is defined %}{{ chart_meta(caller()) }}{% endif %}
   <script type="application/json" class="chart-data">{{ page.chart_payload|tojson }}</script>
 </div>
 {% endmacro %}

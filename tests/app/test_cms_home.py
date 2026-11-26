@@ -335,6 +335,11 @@ def test_only_a_published_eligible_chart_payload_enables_scripts_on_the_home(cms
     assert response.headers["content-security-policy"] == CHART_CSP
     assert "/static/js/prumo-charts" in response.text
     assert '<svg class="chart' in response.text
+    assert '<details class="chart-meta">' in response.text
+    assert "<summary>Séries, eixos e fontes</summary>" in response.text
+    assert response.text.index('class="chart-scroll"') < response.text.index('class="chart-controls"')
+    assert response.text.index('class="chart-controls"') < response.text.index('class="chart-meta"')
+    assert "Último período desenhado" in response.text
 
     meta = cms.get("chart", CHART)["meta"]
     cms.unpublish("chart", CHART, meta["version"], actor="owner", note="retirar gráfico")

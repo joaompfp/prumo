@@ -264,6 +264,12 @@ function pointView(payload, point) {
   const rows = [];
   for (let index = 0; index < payload.series.length; index += 1) {
     const entry = payload.series[index];
+    const axis = Number.isInteger(entry.axis) ? entry.axis
+      : (index < payload.axes.length ? index : 0);
+    // Both fields are prepared by the server. The unit is never inferred from a translated
+    // series label, and the style key drives the same swatch classes as the visible legend.
+    const unit = typeof entry.unit === 'string' ? entry.unit
+      : (payload.axes[axis] ? payload.axes[axis].unit : '');
     if (payload.version === 2) {
       const period = payload.cell_periods[point][index];
       const display = payload.display[point][index];
@@ -272,7 +278,9 @@ function pointView(payload, point) {
         period,
         value: display,
         missing: period === null || display === null,
-        axis: entry.axis,
+        axis,
+        style: entry.style,
+        unit,
       });
     } else {
       rows.push({
@@ -280,8 +288,9 @@ function pointView(payload, point) {
         period: null,
         value: payload.display[point][index],
         missing: false,
-        axis: Number.isInteger(entry.axis) ? entry.axis
-          : (index < payload.axes.length ? index : 0),
+        axis,
+        style: entry.style,
+        unit,
       });
     }
   }
@@ -527,7 +536,20 @@ function renderReadout(readout, payload, point) {
     line.setAttribute('data-axis', String(row.axis));
     if (row.missing) line.setAttribute('data-missing', 'true');
     if (multi) {
+      if (row.style) {
+        const swatch = document.createElement('span');
+        swatch.className = 'legend-swatch swatch-' + row.style;
+        swatch.setAttribute('aria-hidden', 'true');
+        line.appendChild(swatch);
+      }
       appendSpan(line, 'chart-readout-title', row.title);
+      if (row.unit) {
+        const unit = document.createElement('span');
+        unit.className = 'chart-readout-unit';
+        unit.setAttribute('data-unit', row.unit);
+        unit.setAttribute('aria-hidden', 'true');
+        line.appendChild(unit);
+      }
       if (row.missing) {
         appendSpan(line, 'chart-readout-sep', ' - ');
         appendSpan(line, 'chart-readout-value', payload.missing);

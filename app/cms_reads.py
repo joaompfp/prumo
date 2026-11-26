@@ -43,7 +43,7 @@ log = logging.getLogger("prumo.app")
 
 SECTION_ORDER = ("economy", "demography", "energy", "general")
 SECTION_TITLES = {"general": "Geral"}
-WINDOW_TEXT = {"max": "Máximo", "1y": "1 ano", "5y": "5 anos", "10y": "10 anos"}
+WINDOW_TEXT = {"max": "Todo o histórico", "1y": "1 ano", "5y": "5 anos", "10y": "10 anos"}
 AVAILABILITY_NOTE = "Parte desta página não está disponível neste momento."
 CHART_UNAVAILABLE_NOTE = "Este gráfico não está disponível neste momento."
 HOME_SLUG = "inicio"

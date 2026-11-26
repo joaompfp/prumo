@@ -427,6 +427,9 @@ def test_preview_templates_show_the_banner_and_suppress_the_bundle(client, cms):
     assert 'href="/dados/admin/cms/paginas/precos"' in html
     assert "/static/js/prumo-charts" not in html
     assert '<svg class="chart' in html
+    assert '<details class="chart-meta">' in html
+    assert "<summary>Séries, eixos e fontes</summary>" in html
+    assert "Último período desenhado" in html
 
     name, view = cms.preview("chart", CHART)
     html = env.get_template(name).render(

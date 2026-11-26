@@ -1,5 +1,6 @@
 """Chart-first detail pages share a working layout, never public CMS composition controls."""
 import json
+import re
 import threading
 import time
 
@@ -59,6 +60,14 @@ def test_detail_pages_share_the_analytical_shell_and_local_inspector(analytical_
         assert payload_of(html)["display"]
         assert len(root.find_all("output", "chart-readout")) == 1
         assert root.find_all("output", "chart-readout")[0].attrs["aria-live"] == "off"
+        shell = root.find_all("div", "chart-shell")[0]
+        classes = [child.classes() for child in shell.children]
+        scroll_at = next(index for index, names in enumerate(classes) if "chart-scroll" in names)
+        controls_at = next(index for index, names in enumerate(classes) if "chart-controls" in names)
+        legend_at = next((index for index, names in enumerate(classes) if "legend" in names), None)
+        assert scroll_at < controls_at
+        if legend_at is not None:
+            assert controls_at < legend_at
         if route.startswith(("/comparar/", "/graficos/")):
             assert not root.find_all("main")[0].find_all("form")
             assert "notebook-chart-form" not in html
@@ -68,6 +77,9 @@ def test_detail_pages_share_the_analytical_shell_and_local_inspector(analytical_
             assert html.index('class="chart-section notebook-chart"') < html.index('class="figure-block"')
             assert f'href="{prefix}/series/{HICP}.csv"' in html
             assert "Último valor da série em" in html
+            # Full coverage is named for the reader, not by a bare maximum shorthand.
+            assert "Todo o histórico" in html
+            assert ">Máximo<" not in html
         if route.startswith("/calculadas/"):
             assert html.index('class="chart-section notebook-chart"') < html.index('class="formula"')
             assert html.index('class="chart-section notebook-chart"') < html.index('class="figure-block"')
@@ -80,7 +92,15 @@ def test_detail_pages_share_the_analytical_shell_and_local_inspector(analytical_
             links = root.find_all("ul", "authored-series-links")[0]
             legend = root.find_all("ul", "legend")[0]
             assert meta.parent is shell and links.parent is meta and legend.parent is shell
-            assert shell.children.index(meta) < shell.children.index(legend)
+            assert shell.children.index(legend) < shell.children.index(meta)
+            assert meta.attrs.get("open") is None
+            assert re.search(
+                r'<details class="chart-meta">\s*<summary>Séries, eixos e fontes</summary>', html)
+            match = re.search(r'<ul class="authored-series-links">(.*?)</ul>', html, re.S)
+            assert match is not None
+            links_text = re.sub(r"<[^>]+>", " ", match.group(1))
+            assert links_text.count("Período:") == 2
+            assert links_text.count("INE - Instituto Nacional de Estatística") == 2
 
 
 @pytest.fixture(scope="module")
@@ -146,6 +166,12 @@ def test_chart_first_geometry_print_and_exact_inspection(analytical_origin):
                     assert page.locator(".chart-canvas").evaluate("el => getComputedStyle(el).display") == "none"
                     assert page.locator("svg.chart").first.evaluate("el => getComputedStyle(el).opacity") == "1"
                     assert page.locator(".table-details tbody").bounding_box()["height"] > 0
+                    if route == "/comparar/publicado":
+                        # The native disclosure opens on paper, including its details-content
+                        # wrapper, without duplicating the summary line.
+                        assert page.locator(".chart-meta > summary").evaluate(
+                            "el => getComputedStyle(el).display") == "none"
+                        assert page.locator(".chart-meta .authored-series-links").is_visible()
                     if route == "/graficos/biblioteca":
                         assert page.locator(".authored-note").is_visible()
                     page.emulate_media(media="screen")
@@ -161,6 +187,13 @@ def test_chart_first_geometry_print_and_exact_inspection(analytical_origin):
                 page.goto(analytical_origin + route)
                 assert page.locator("svg.chart").is_visible()
                 assert not page.locator(".chart-canvas canvas").count()
+                assert page.locator(".chart-controls").evaluate(
+                    "el => getComputedStyle(el).display") == "none"
+                if route == "/comparar/publicado":
+                    assert page.locator(".chart-meta > summary").is_visible()
+                    assert not page.locator(".chart-meta .authored-series-links").is_visible()
+                    page.locator(".chart-meta > summary").click()
+                    assert page.locator(".chart-meta .authored-series-links").is_visible()
                 if route.startswith("/series/"):
                     page.get_by_role("link", name="Intervalo e ações", exact=True).click()
                     assert page.locator(".analytical-options .windows").is_visible()

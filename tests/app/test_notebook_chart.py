@@ -349,6 +349,14 @@ def test_mixed_frequency_uses_a_sparse_calendar_without_dropping_cards(tmp_path)
                                     ["outubro de 2026", None]]
     assert "Últimos períodos por série" in visible(html)
     assert "último período comum" not in visible(html).lower()
+    # The caption names the deferral instead of concatenating a bare chain of latest dates.
+    caption = re.search(
+        r'<figcaption class="notebook-chart-caption">.*?</figcaption>', html, re.S).group(0)
+    assert "outubro de 2026 · 2026" not in visible(caption)
+    assert "Datas por série em «Séries, eixos e fontes»." in visible(caption)
+    sources = re.search(r'<ul class="notebook-chart-sources">.*?</ul>', html, re.S).group(0)
+    assert "Período: outubro de 2026" in visible(sources)
+    assert "Período: 2026" in visible(sources)
     assert html.count('<article class="card">') == 2
     assert "sem observação nesta posição temporal" in chart_block(html)
 
@@ -580,7 +588,7 @@ def test_window_is_bounded_and_anchored_on_the_newest_common_period(tmp_path):
     assert "Janela: 5 anos" in visible(five.text)
     assert payload(maximum.text)["periods"] == ["janeiro de 2015", "janeiro de 2020",
                                                "outubro de 2026"]
-    assert "Janela: Máximo" in visible(maximum.text)
+    assert "Janela: Todo o histórico" in visible(maximum.text)
 
 
 def test_window_reads_the_full_common_history_before_trimming(tmp_path):

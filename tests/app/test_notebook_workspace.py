@@ -295,7 +295,8 @@ def test_common_period_and_each_side_source_unit_and_fetch_are_beside_the_plot(t
     assert html.index('class="notebook-chart-caption"') < html.index('class="chart-scroll"')
 
     # The legend carries names and exact common values; the adjacent source list carries
-    # source/unit/fetched notes, both before the long range/readout control block.
+    # source/unit/fetched notes. The inspector sits between the canvas and the legend, and the
+    # secondary source metadata follows both inside one native disclosure.
     sources = one(figure, "ul", "notebook-chart-sources")
     text = visible(sources.all_text())
     assert "Taxa de variação homóloga do IHPC - Portugal" in text
@@ -304,9 +305,25 @@ def test_common_period_and_each_side_source_unit_and_fetch_are_beside_the_plot(t
     assert text.count("%") >= 2
     # Per-side fetch of the plotted period, not the series' own latest fetch.
     assert "01/11/2026" in text and "03/11/2026" in text
-    assert html.index('class="chart-scroll"') < html.index('class="notebook-chart-sources"')
-    assert html.index('class="notebook-chart-sources"') < html.index('class="legend"')
-    assert html.index('class="notebook-chart-sources"') < html.index('class="chart-controls"')
+    # Each side's newest plotted native period is named here, not left as a bare date chain in
+    # the caption above the plot.
+    assert text.count("Período: setembro de 2026") == 2
+    assert html.index('class="chart-scroll"') < html.index('class="chart-controls"')
+    assert html.index('class="chart-controls"') < html.index('class="legend"')
+    assert html.index('class="legend"') < html.index('class="chart-meta"')
+    meta = one(figure, "details", "chart-meta")
+    assert one(meta, "summary").all_text().strip() == "Séries, eixos e fontes"
+    assert meta.attrs.get("open") is None
+    assert sources.parent is meta
+
+    # The point inspector belongs to the chart, never to the configuration form: Enter in a
+    # settings field must not submit a different inspected point.
+    form = one(root, "form", "notebook-chart-form")
+    shell = one(figure, "div", "chart-shell")
+    controls = one(shell, "div", "chart-controls")
+    assert one(controls, "input", "chart-range")
+    assert one(controls, "output", "chart-readout")
+    assert controls not in form.find_all("div", "chart-controls")
 
 
 def test_cards_distinguish_their_own_latest_period_from_the_plotted_common_period(tmp_path):
@@ -464,6 +481,14 @@ def test_print_rules_keep_the_caption_and_restore_the_svg(site_path):
     assert ".chart-scroll { overflow: visible; }" in print_block
     assert ".chart-wrap { min-width: 0; }" in print_block
     assert ".chart-canvas, .chart-controls, .chart-hint { display: none !important; }" in print_block
+    inspector = (ROOT / "static" / "css" / "chart-inspector.css").read_text(encoding="utf-8")
+    # The inspector is progressive enhancement: no empty control block without a drawn canvas.
+    assert ".chart-shell .chart-controls {\n  display: none;\n}" in inspector
+    assert ".chart-shell.chart-enhanced .chart-controls" in inspector
+    # Secondary metadata opens on paper even when the native disclosure is closed on screen.
+    assert "details.chart-meta::details-content" in inspector
+    assert "content-visibility: visible !important;" in inspector
+    assert "details.chart-meta > summary" in inspector
     html = notebook_html(site_path)
     assert 'class="notebook-chart-caption"' in html
     assert 'class="notebook-chart-sources"' in html
@@ -527,6 +552,7 @@ def test_blank_chart_states_do_not_render_empty_evidence_disclosures(site_path):
     assert one(ready, "details", "notebook-definitions")
     assert one(ready, "details", "table-details")
     assert one(ready, "details", "provenance-details")
+    assert one(ready, "details", "chart-meta")
 
 
 def test_redundant_breadcrumb_and_mobile_plot_floor_overrides_are_gone(site_path):

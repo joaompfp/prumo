@@ -182,6 +182,9 @@ READOUT = """() => ({
   rows: [...document.querySelectorAll('.chart-readout-row')].map((row) => ({
     axis: row.getAttribute('data-axis'),
     missing: row.getAttribute('data-missing'),
+    swatch: (row.querySelector('.legend-swatch') || {}).className || '',
+    unit: (row.querySelector('.chart-readout-unit')
+      ? row.querySelector('.chart-readout-unit').getAttribute('data-unit') || '' : ''),
     title: (row.querySelector('.chart-readout-title') || {}).textContent || '',
     native: (row.querySelector('.chart-readout-native') || {}).textContent || '',
     value: (row.querySelector('.chart-readout-value') || {}).textContent || ''
@@ -318,6 +321,8 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
             assert row["title"] == payload["series"][side]["title"]
             assert row["value"] == payload["display"][index][side]
             assert row["axis"] == str(payload["series"][side].get("axis", side))
+            assert payload["series"][side]["style"] in row["swatch"]
+            assert row["unit"] == payload["series"][side]["unit"]
             assert row["missing"] is None
         # Pointer movement updates the visible rows but never floods the polite live region.
         assert state["live"] == ""
@@ -348,6 +353,12 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
             font: parseFloat(getComputedStyle(readout).fontSize),
             rowDisplay: getComputedStyle(row).display,
             sepDisplay: getComputedStyle(sep).display,
+            swatches: [...document.querySelectorAll('.chart-readout-row > .legend-swatch')]
+              .map((swatch) => {
+                const style = getComputedStyle(swatch);
+                return {width: swatch.getBoundingClientRect().width,
+                        colour: style.backgroundColor, pattern: style.backgroundImage};
+              }),
             scrollW: document.documentElement.scrollWidth,
             innerW: window.innerWidth
           };
@@ -356,6 +367,12 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
         assert metrics["font"] >= 25.2, metrics
         assert metrics["rowDisplay"] == "flex", metrics
         assert metrics["sepDisplay"] == "none", metrics
+        # Both prepared series show their own painted key beside the title: solid ink and the
+        # dashed carmim pattern, never a colour inferred here from a translated label.
+        assert len(metrics["swatches"]) == len(payload["series"]), metrics
+        assert all(swatch["width"] >= 17 for swatch in metrics["swatches"]), metrics
+        assert all(swatch["colour"] != "rgba(0, 0, 0, 0)" or swatch["pattern"] != "none"
+                   for swatch in metrics["swatches"]), metrics
         assert metrics["scrollW"] <= metrics["innerW"] + 1, metrics
         assert not errors
     finally:
@@ -520,5 +537,8 @@ def test_no_javascript_still_gets_the_svg_and_a_contained_page(browser, site_url
         assert page.evaluate(
             "() => document.documentElement.scrollWidth <= window.innerWidth + 1")
         assert page.locator(".chart-range").is_hidden()
+        # No empty inspector gap between the plot and the legend when enhancement never runs.
+        assert page.locator(".chart-controls").evaluate(
+            "el => getComputedStyle(el).display") == "none"
     finally:
         context.close()

@@ -224,6 +224,10 @@ def _structured(page):
       period: (document.querySelector('.chart-readout-period') || {}).textContent || '',
       rows: [...document.querySelectorAll('.chart-readout-row')].map((row) => ({
         missing: row.getAttribute('data-missing'),
+        axis: row.getAttribute('data-axis'),
+        swatch: (row.querySelector('.legend-swatch') || {}).className || '',
+        unit: (row.querySelector('.chart-readout-unit')
+          ? row.querySelector('.chart-readout-unit').getAttribute('data-unit') || '' : ''),
         title: (row.querySelector('.chart-readout-title') || {}).textContent || '',
         native: (row.querySelector('.chart-readout-native') || {}).textContent || '',
         value: (row.querySelector('.chart-readout-value') || {}).textContent || ''
@@ -237,6 +241,9 @@ def _expect_rows(structured, payload, index):
     for side, row in enumerate(structured["rows"]):
         native = payload["cell_periods"][index][side]
         assert row["title"] == payload["series"][side]["title"]
+        assert row["axis"] == str(payload["series"][side]["axis"])
+        assert payload["series"][side]["style"] in row["swatch"]
+        assert row["unit"] == payload["series"][side]["unit"]
         assert row["native"] == ("" if native is None else native)
         if native is None:
             assert row["missing"] == "true"

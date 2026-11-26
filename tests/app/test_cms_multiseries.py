@@ -240,6 +240,8 @@ def test_authored_preview_renders_the_same_svg_without_the_chart_bundle(tmp_path
     assert "Pré-visualização" in html
     assert "/static/js/prumo-charts" not in html
     assert '<svg class="chart' in html
+    assert '<details class="chart-meta">' in html
+    assert "<summary>Séries, eixos e fontes</summary>" in html
     assert "Eixo direito" in html and "Eixo esquerdo" in html
 
 
