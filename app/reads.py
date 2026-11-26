@@ -991,14 +991,34 @@ def _search_haystack(row: dict, lang: str) -> str:
                      search_aliases(lang, row["family"])))
 
 
+def _catalogue_haystack(row: dict, lang: str) -> str:
+    """The complete catalogue's haystack adds the resolved theme title, never its blurb.
+
+    `Energia` helps a reader reach every eligible energy series, while blurb words such as
+    `produção` and `preços` would silently turn one theme into a broad, misleading match. The
+    bounded notebook phrase search keeps `_search_haystack` unchanged.
+    """
+    try:
+        theme = theme_text(lang, row["theme"])
+    except MissingText:
+        theme = ""
+    return f"{_search_haystack(row, lang)} {theme}"
+
+
 def _search_terms(query: str) -> tuple[str, ...]:
     """The normalised terms of one reader query; an empty query has no terms."""
     return tuple(term for term in _norm(query.strip()).split() if term)
 
 
-def _matches_all(row: dict, terms: tuple[str, ...], lang: str) -> bool:
-    """Every term must occur in the same row. Token matching is conjunctive."""
-    haystack = _norm(_search_haystack(row, lang))
+def _matches_all(row: dict, terms: tuple[str, ...], lang: str, *,
+                 catalogue: bool = False) -> bool:
+    """Every term must occur in the same row. Token matching is conjunctive.
+
+    `catalogue=True` selects the discovery haystack; the default keeps the notebook's existing
+    phrase contract byte-identical.
+    """
+    haystack = _catalogue_haystack(row, lang) if catalogue else _search_haystack(row, lang)
+    haystack = _norm(haystack)
     return all(term in haystack for term in terms)
 
 
@@ -1062,7 +1082,7 @@ def search_page(db: Db, query: str = "", *, theme: str = "", group: str = "",
     frequency_options = tuple((code, frequency_text(lang, code))
                               for code in sorted({r["frequency"] for r in rows}))
     terms = _search_terms(clean_query)
-    matched = [r for r in rows if not terms or _matches_all(r, terms, lang)]
+    matched = [r for r in rows if not terms or _matches_all(r, terms, lang, catalogue=True)]
     filtered = _filtered_catalogue(matched, theme=theme, group=group, source=source,
                                    frequency=frequency)
     ordered = _ordered_catalogue(filtered, lang)

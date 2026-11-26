@@ -82,6 +82,39 @@ def test_all_tokens_must_match_accent_insensitively(monkeypatch):
     assert reads.SEARCH_CAP == 100
 
 
+def test_catalogue_matching_uses_the_theme_title_but_not_its_blurb(monkeypatch):
+    rows = [
+        _catalogue_row(0, family="eurostat_electricity_price_household",
+                       source="eurostat", theme="energy") | {
+            "id": "eurostat.electricity_price_household.PT",
+            "indicator_key": "eurostat_electricity_price_household.PT.M",
+        },
+        _catalogue_row(1, family="unemployment_rate") | {
+            "id": "ine.unemployment_rate.PT",
+            "indicator_key": "unemployment_rate.PT.M",
+        },
+    ]
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
+    db = _FakeDb()
+
+    # The complete catalogue appends the resolved theme title (`Energia`) to its haystack.
+    energia = reads.search_page(db, "energia")
+    assert _ids(energia.rows) == ["eurostat.electricity_price_household.PT"]
+    assert energia.total == 1
+    # The bounded notebook phrase search is untouched by the catalogue-only vocabulary.
+    assert reads.search(db, "energia") == ()
+    # The theme blurb ("Produção e preços de eletricidade.") is not searchable.
+    assert reads.search_page(db, "produção").rows == ()
+    # Ordinary title/alias matching still works in both contracts.
+    assert _ids(reads.search_page(db, "eletricidade").rows) == [
+        "eurostat.electricity_price_household.PT"]
+    assert _ids(reads.search(db, "eletricidade")) == [
+        "eurostat.electricity_price_household.PT"]
+    # Multi-term and accent-insensitive matching composes with the theme vocabulary.
+    assert _ids(reads.search_page(db, "energia eletricidade").rows) == [
+        "eurostat.electricity_price_household.PT"]
+
+
 def test_search_page_reports_the_real_total_and_pages_without_the_cap(monkeypatch):
     rows = _generic_rows(130)
     monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
