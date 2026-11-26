@@ -23,7 +23,7 @@ Retain four significant figures for normal reader strings through the shared for
 | Phase | Outcome | Acceptance | Status |
 |---|---|---|---|
 | L1. Adjacent inspection | Period control and structured series/value rows immediately follow the canvas; detailed metadata no longer separates them | Published dual/multicountry charts, native mixed-frequency Caderno and detail; pointer/touch/keyboard exactness, no-JS/blocked/print, both mounts, 320/390/768/1440/1920 | Installed 26/11, runtime `17b65de`; verified in installed.md |
-| L2. Build a selection from search | Native multi-result selection, explicit current selection, one action to open Caderno; selections survive search/filter/pagination deliberately | Select Portugal/Spain/Germany together, add to existing references, remove a selection, cross pages without loss, no cookies or public writes; twelve-card/six-plot rules remain | Installed 26/11, runtime `17b65de`; verified in installed.md |
+| L2. Build a selection from search | Native multi-result selection, explicit current selection, one action to open Caderno; selections survive search/filter/pagination deliberately | Select Portugal/Spain/Germany together, add to existing references, remove a selection, cross pages without loss, no cookies or public writes; twelve-card/six-plot rules remain | Installed 26/11 at 10:26; usability correction release `79c182b` installed at 13:55, native Caderno batch and sticky progressive feedback; reports/selection-ux |
 | L3. Discover by subject | Theme vocabulary helps complete catalogue discovery; useful verified empty states, without broadening bounded notebook suggestions accidentally | `energia` offers actual eligible energy series; multi-token/accent/filter/withdrawal/count tests; no invented unavailable destinations | Installed 26/11, runtime `17b65de`; bounded suggestions unchanged |
 | L4. CMS-authored data-first entry | Compact homepage opening plus visible published values and comparison entry | Real published content with unit/period/source above the desktop fold, mobile usable, editor can change composition, operator drafts preserved | Planned next; no live CMS edits in L1-L3 |
 | L5. Comparable-country discovery | Group comparable concepts and make country choices clearer; related published comparisons | Transparent grouping/ordering, truthful counts/coverage, no hidden definition differences | Planned after selection workflow |
@@ -31,6 +31,10 @@ Retain four significant figures for normal reader strings through the shared for
 | L7. Dated analysis and AI | Fixed references and editable AI drafts approved by a person | Separate design; no automatic public generation/publication | Future, not part of this release |
 
 Separate open tracks remain rights/DGEG, stale historical periods, operational authoring, historical worker cause/elapsed acceptance and human screen-reader testing. A UI release closes none of those gates.
+
+## Selection usability amendment
+
+The owner found the first L2 delivery difficult to use. The revised contract makes batch choice primary in selectable catalogue rows and Caderno quick search, removing the competing per-row one-series action only in that selection context. Query and choices share a native form, including further searches, ordering and removals. A compact sticky tray replaces duplicated pre-result scaffolding. A small local progressive script supplies live feedback and enhanced twelve-item limits while native GET recovery remains usable without it. This supersedes the earlier iteration's script-free choice and its individual-shortcut decision on selectable rows. Chart settings apply to the submitted notebook; pending selection must first be applied. Ordinary link navigation does not autosave a pending form. No editorial CMS/source-data boundary changes.
 
 ## Binding review resolutions before implementation
 

@@ -1,5 +1,11 @@
 # Prumo image and ingestion operations
 
+## Current selection interface
+
+Release/main `79c182b` (runtime `bb1416e`) is installed from 26/11/2026 13:55 UTC. Catalogue and Caderno quick search both support batch selection; query, order, references and chart fields use native submissions. The catalogue's compact sticky tray and the local selection helper provide current counts and selected-row feedback. Comparisons remain authored in CMS. Only web/static-preview Admin changed; worker, schema and CMS/history are preserved. Exact-release hosted CI `45832394649` passed 3,409 tests. Full release evidence and the original failed copy-test receipt are retained in `../superpowers/handoff/reports/selection-ux/`. Reader observation passed at 14:10 UTC after 900.025605 seconds and 30 matching samples; final state/access and preservation checks passed again.
+
+Recovery: stop only the affected bind-mounted public reader before restoring checkout `65c1832`; restore web/Admin using exact reader tags `rollback-selection-ux-20261126T133306Z` and the established dc-web aliases, without restoring the database or operating ingestion. Operator directory: `/home/joao/prumo-operations/selection-ux-release-20261126T133306Z`. Dated activation scripts are receipts, not commands to rerun blindly.
+
 ## Current public interface: finding, collecting and inspecting indicators
 
 Owner-authorized runtime/main `17b65de` is installed on f0nix from 26/11/2026 10:26 UTC. Native catalogue multi-selection retains query/filter/pager state, Caderno chart settings and existing selection order; subject titles help complete catalogue discovery. The selected-period control/readout follows each plot directly, with source/definition metadata in a native disclosure, including static/print fallbacks. Comparison composition remains authored and deliberately published through Admin. Four significant figures and exact original values, coordinates and CSV are unchanged.

@@ -4,7 +4,7 @@ O Caderno reúne até doze séries publicadas e permite escolher até seis para 
 
 ## Escolher e partilhar
 
-Pesquise pelo indicador, país ou instituição e use "Acrescentar ao caderno". Os cartões mantêm os valores originais com período, unidade, estado, fonte, recolha e ligação à proveniência. Remover uma série conserva as outras definições. "Ligação limpa para guardar ou partilhar" retira apenas o termo de pesquisa.
+Pesquise pelo indicador, país ou instituição, marque várias séries nos resultados e use "Acrescentar selecionadas". Pode pesquisar outro termo antes de aplicar: as marcações e desmarcações seguem com a nova pesquisa. No catálogo, a barra de seleção mostra quantas referências escolheu e acompanha a lista; "Abrir caderno" abre o conjunto. Aplique a seleção antes de configurar o gráfico. Sem JavaScript, a contagem só muda após enviar o formulário. Os cartões mantêm os valores originais com período, unidade, estado, fonte, recolha e ligação à proveniência. Remover uma série conserva as outras definições. "Ligação limpa para guardar ou partilhar" retira apenas o termo de pesquisa.
 
 O gráfico vem antes das definições e dos cartões. "Configurar" abre as opções sem o empurrar para baixo. As formas nativas de adicionar, remover, configurar, desativar e partilhar funcionam sem JavaScript. Seleção explicitamente vazia e gráfico desativado são estados diferentes; nunca escolhemos outras séries por si.
 
