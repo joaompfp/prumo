@@ -1,7 +1,7 @@
 /* Discovery has its own work surface, not an editorial introduction.
    Functional text keeps the installed reading scale; only display headings compact. */
 .discovery-main .crumbs { padding-top: 12px; }
-.discovery-head { padding: 20px 0 12px; }
+.discovery-head { padding: 12px 0 8px; }
 .discovery-head h1 { font-size: clamp(1.45rem, 4.2vw, 2rem); margin: 0; }
 .discovery-head .meta { margin: 6px 0 0; }
 .discovery-search { display: block; margin: 0; padding: 0; border: 0; background: transparent; }
@@ -25,21 +25,12 @@
 .discovery-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin: 14px 0; }
 .discovery-summary p { margin: 0; }
 .discovery-summary a { font-size: inherit; }
-/* The selection action sits with the results, not only in the review box above them. */
-.discovery-selection-bar {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
-  margin: 0 0 8px; padding: 10px 0; border-block: 1px solid var(--rule);
-}
-.discovery-selection-bar .selection-instruction { flex: 1 1 22rem; margin: 0; }
-.discovery-selection-bar .selection-live {
-  margin: 0; font-weight: 600; font-variant-numeric: tabular-nums;
-}
-.discovery-selection-bar .button { width: auto; flex: 0 0 auto; }
 /* One native form owns query, filters, results, tray and pager. The search landmark is the
    query/filter group only, so the result controls are not announced as site search. */
 .discovery-search-group { display: block; }
 .discovery-selection {
-  margin: 24px 0 8px; padding: 16px 18px; border: 1px solid var(--rule-strong);
+  position: sticky; top: 0; z-index: 5; max-height: 70dvh; overflow-y: auto;
+  margin: 12px 0 8px; padding: 10px 14px; border: 1px solid var(--rule-strong);
   border-top: 3px solid var(--accent); border-radius: 0 0 8px 8px; background: var(--surface);
 }
 .discovery-selection-head {
@@ -48,7 +39,7 @@
 }
 .discovery-selection-head > .button { width: auto; flex: 0 0 auto; }
 .discovery-selection-head h2 { margin: 0; font-family: inherit; font-size: inherit; overflow-wrap: anywhere; }
-.discovery-selection > .note { margin: 8px 0 0; }
+.discovery-selection > .note, .discovery-selection > .selection-instruction { margin: 6px 0 0; }
 .selection-review { margin-top: 10px; }
 .selection-review > summary { cursor: pointer; color: var(--accent); }
 .discovery-selection-end { display: flex; justify-content: flex-end; margin: 16px 0; }
@@ -130,19 +121,17 @@
   .series-result-action .button-quiet { width: auto; }
 }
 @media (max-width: 600px) {
-  .discovery-selection-bar { align-items: stretch; }
-  .discovery-selection-bar .button { width: 100%; }
   .series-result-action { justify-content: flex-start; }
   .series-result-action .button-quiet { width: 100%; }
   .series-result-select { width: 100%; }
-  .discovery-selection { padding: 14px; }
+  .discovery-selection { padding: 8px 10px; }
   .selection-title { flex-basis: 100%; }
   .selection-remove { width: 100%; }
   .selection-actions .button, .selection-actions .button-quiet { width: 100%; }
 }
 @media print {
   /* The one native form contains the printed results too: hide only its controls. */
-  .discovery-query, .discovery-filters, .discovery-selection, .discovery-selection-bar,
+  .discovery-query, .discovery-filters, .discovery-selection,
   .series-result-action, .discovery-pager, .series-result-select, #discovery-form button {
     display: none;
   }

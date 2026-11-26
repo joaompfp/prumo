@@ -45,16 +45,17 @@
 
   <section class="discovery-selection" aria-labelledby="selecao-referencias">
     <div class="discovery-selection-head">
-      <h2 id="selecao-referencias">Seleção</h2>
+      <h2 id="selecao-referencias"><span class="sr-only">Seleção: </span><span data-selection-count-number>{{ page.selection_count }}</span> / 12<span class="sr-only"> séries selecionadas</span></h2>
       <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
     </div>
-    <p class="sr-only" id="selecao-ajuda">Marque séries e abra o Caderno. Até 12 séries, com 6 no gráfico.</p>
+    <p class="selection-instruction" id="selecao-ajuda">Marque várias séries para as juntar.</p>
+    <p class="sr-only" role="status" aria-live="polite" data-selection-count-text>{% if page.selection_count == 1 %}1 selecionada{% else %}{{ page.selection_count }} selecionadas{% endif %}</p>
     {% if page.selection_duplicate_notice %}<p class="note" role="status">{{ page.selection_duplicate_notice }}</p>{% endif %}
     {% if page.selection_limit_notice %}<p class="selection-warning" role="status">{{ page.selection_limit_notice }}</p>{% endif %}
     {% if page.selection_chart_notice %}<p class="note">{{ page.selection_chart_notice }}</p>{% endif %}
     {% if page.selection %}
     <details class="selection-review"{% if page.selection_limit_notice %} open{% endif %}>
-      <summary>{{ format_count(page.selection_count) }} {% if page.selection_count == 1 %}referência selecionada{% else %}referências selecionadas{% endif %} · Rever</summary>
+      <summary>Último envio: {{ format_count(page.selection_count) }} {% if page.selection_count == 1 %}referência selecionada{% else %}referências selecionadas{% endif %} · Rever</summary>
       <p class="note">A contagem descreve o último envio do formulário. As novas marcações seguem no próximo envio.</p>
       <ul class="selection-list">
         {% for reference in page.selection %}
@@ -77,12 +78,6 @@
   <section class="discovery-results" aria-labelledby="resultados">
     <h2 id="resultados" class="sr-only">Séries</h2>
     {% if page.rows %}
-    <div class="discovery-selection-bar">
-      <p class="selection-instruction">Marque os resultados que quer juntar no Caderno. Até 12 séries; 6 no gráfico.</p>
-      <p class="selection-live" role="status" aria-live="polite" data-selection-count-text>{% if page.selection_count == 1 %}1 selecionada{% else %}{{ format_count(page.selection_count) }} selecionadas{% endif %}</p>
-      <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
-    </div>
-    <noscript><p class="note">Sem JavaScript, a contagem muda quando envia o formulário.</p></noscript>
     {% with rows = page.rows, selection_enabled = true, selected_ids = page.selected_ids %}
     {% include "_series_results.html" %}
     {% endwith %}

@@ -26,7 +26,9 @@
         <button type="submit" class="button" name="acao" value="abrir">{{ page.copy.search_batch_action }}</button>
       </div>
       {% if page.at_limit %}<p class="selection-warning" role="status">{{ page.copy.limit_reached }}</p>{% endif %}
-      <div class="notebook-table-scroll">
+      <p class="note selection-pending" role="status" data-selection-pending hidden>Tem séries por aplicar. Use Acrescentar selecionadas antes de configurar o gráfico.</p>
+      <noscript><p class="note">Marque várias séries e envie a seleção antes de configurar o gráfico. A contagem só muda após o envio.</p></noscript>
+      <div class="notebook-table-scroll" tabindex="0" role="region" aria-label="Resultados da pesquisa de séries">
         <table class="data-table notebook-batch-table">
           <thead>
             <tr><th scope="col">{{ page.copy.search_batch_col }}</th><th scope="col">{{ page.copy.results_col_series }}</th><th scope="col" class="num">{{ page.copy.results_col_value }}</th><th scope="col">{{ page.copy.results_col_period }}</th><th scope="col">{{ page.copy.results_col_source }}</th><th scope="col">{{ page.copy.results_col_fetched }}</th></tr>

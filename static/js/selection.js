@@ -1,58 +1,61 @@
-/* Progressive selection feedback for the catalogue and the notebook quick search.
-   The native GET forms remain the source of truth: this only keeps the visible count and the
-   checked row styling in step while the reader is choosing. No network, storage or inline code. */
+/* Native GET forms own the selection. This local enhancement adds feedback only.
+   No network, cookies or second selection store; submitted values are validated by the server. */
 (function () {
   "use strict";
 
-  function selectedCount(form) {
-    var values = new Set();
-    var fields = form.elements;
-    for (var index = 0; index < fields.length; index += 1) {
-      var field = fields[index];
-      if (field.name !== "s") {
-        continue;
-      }
-      if (field.type === "checkbox" && !field.checked) {
-        continue;
-      }
-      values.add(field.value);
-    }
-    return values.size;
+  function selectedValues(form) {
+    return Array.from(new Set(Array.from(form.elements).filter(function (field) {
+      return field.name === "s" && !field.disabled &&
+        (field.type !== "checkbox" || field.checked);
+    }).map(function (field) { return field.value; })));
   }
 
   function countText(count) {
     return count === 1 ? "1 selecionada" : count + " selecionadas";
   }
 
-  function sync(form) {
-    var count = selectedCount(form);
-    var targets = form.querySelectorAll("[data-selection-count-text]");
-    for (var index = 0; index < targets.length; index += 1) {
-      targets[index].textContent = countText(count);
-    }
-    var boxes = form.querySelectorAll('input[type="checkbox"][name="s"]');
-    for (var boxIndex = 0; boxIndex < boxes.length; boxIndex += 1) {
-      var row = boxes[boxIndex].closest("[data-selection-row]");
-      if (row) {
-        row.classList.toggle("is-selected", boxes[boxIndex].checked);
-      }
-    }
-  }
-
   function init(form) {
-    sync(form);
+    var original = selectedValues(form).sort().join("\n");
+    var pending = false;
+    function sync() {
+      var values = selectedValues(form);
+      var count = values.length;
+      pending = values.sort().join("\n") !== original;
+      form.querySelectorAll("[data-selection-count-text]").forEach(function (target) {
+        target.textContent = countText(count);
+      });
+      form.querySelectorAll("[data-selection-count-number]").forEach(function (target) {
+        target.textContent = count;
+      });
+      form.querySelectorAll('[type="checkbox"][name="s"]').forEach(function (box) {
+        var row = box.closest("[data-selection-row]");
+        if (row) row.classList.toggle("is-selected", box.checked);
+        box.disabled = count >= 12 && !box.checked;
+      });
+      form.querySelectorAll("[data-selection-pending]").forEach(function (target) {
+        target.hidden = !pending;
+      });
+    }
     form.addEventListener("change", function (event) {
-      if (event.target && event.target.name === "s") {
-        sync(form);
-      }
+      if (event.target && event.target.name === "s") sync();
     });
-  }
+    window.addEventListener("pageshow", sync);
+    sync();
 
-  var forms = document.querySelectorAll("form");
-  for (var index = 0; index < forms.length; index += 1) {
-    var form = forms[index];
-    if (form.querySelector("[data-selection-count-text]")) {
-      init(form);
+    // Chart settings operate on the applied notebook, not an unsubmitted selection.
+    // Refuse that unrelated submit rather than discarding pending checked/unchecked rows.
+    var chartForm = document.getElementById("notebook-chart-form");
+    if (chartForm && form.id === "notebook-search-form") {
+      chartForm.addEventListener("submit", function (event) {
+        if (!pending) return;
+        event.preventDefault();
+        var apply = form.querySelector('button[name="acao"][value="abrir"]');
+        if (apply) apply.focus();
+      });
     }
   }
+
+  document.querySelectorAll("form").forEach(function (form) {
+    if (form.querySelector("[data-selection-count-text]")) init(form);
+  });
 })();

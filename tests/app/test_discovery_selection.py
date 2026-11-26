@@ -229,9 +229,8 @@ def _row(html: str, series_id: str) -> str:
 
 
 def _results_bar(html: str) -> str:
-    match = re.search(r'<div class="discovery-selection-bar".*?</div>', html, re.S)
-    assert match is not None
-    return match.group(0)
+    # The compact sticky tray is also the single action/count bar, not another pre-result block.
+    return _tray(html)
 
 
 def test_catalogue_has_one_form_owner_and_the_search_landmark_is_only_its_query_group(client):
@@ -573,7 +572,7 @@ def test_selection_controls_are_native_44px_labels_and_print_keeps_results(clien
     assert ".series-result-select" in css and "min-height: 44px" in css
     assert "accent-color: var(--accent)" in css
     assert ".series-result.is-selected" in css
-    assert ".discovery-selection-bar" in css
+    assert "position: sticky" in css
     assert "#discovery-form .selection-remove" in css
     assert ".discovery-selection," in css  # hidden in print, unlike the results
 
@@ -595,8 +594,10 @@ def test_catalogue_batch_selection_is_primary_and_theme_keeps_its_shortcut(clien
     assert f'href="/series/{UNEMP}"' in row
 
     bar = _results_bar(html)
-    assert "Marque os resultados" in _visible(bar)
-    assert "Até 12 séries" in _visible(bar)
+    assert "Marque várias séries" in _visible(bar)
+    assert "/ 12" in _visible(bar)
+    assert html.count('class="discovery-selection"') == 1
+    assert 'class="discovery-selection-bar"' not in html
     assert 'name="acao" value="abrir"' in bar
     assert "data-selection-count-text" in bar
 

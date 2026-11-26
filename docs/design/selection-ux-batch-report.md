@@ -11,8 +11,8 @@ Commits:
 
 - Selectable catalogue rows no longer carry a competing one-series `Criar caderno` link.
   The title still opens the series, and the checked row is the only selection affordance.
-- A results bar above the list states the multi-select rule, shows the current count, and
-  carries the nearby `Abrir caderno` action.
+- A single compact sticky tray above the list states the multi-select rule, shows the current
+  count out of twelve and carries the `Abrir caderno` action while scrolling.
 - Checked rows are marked on the server for a no-JavaScript response. The same rows update
   `is-selected` and the count while the reader checks or unchecks with the local helper.
 - Theme pages are not selectable and keep their individual `Criar caderno` shortcut. CMS
@@ -21,7 +21,8 @@ Commits:
 ## Caderno quick search
 
 - The result table now has one checkbox column and one `Acrescentar selecionadas` action.
-- The batch form is a native GET to the existing `/pesquisa` boundary with `acao=abrir`,
+- Search and results share one native GET form to `/pesquisa`; `acao=pesquisar_caderno`
+  retains unsent checks/unchecks when searching again, while `acao=abrir` applies the batch with
   hidden addressed references that have no visible result, the bounded addressed `ordem`,
   and the actual chart settings through `discovery_selection.chart_form_params`.
 - A visible member emits only its checkbox. It is checked when it already belongs to the

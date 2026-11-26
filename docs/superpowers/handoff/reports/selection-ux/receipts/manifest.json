@@ -1,0 +1,14 @@
+{
+  "browser-first": {
+    "raw_sha256": "998beb6a4f63431a1bfe16148ea49848c7803939d5e1a91f1b7df8dfdbbdba4d",
+    "archive_sha256": "68364c1f7675bd4f9f80b65d5853b175e98460e6ca0f44a60a056bed64bf8ee8"
+  },
+  "browser-second": {
+    "raw_sha256": "9ff5b2394af147e3a02cec7d10712d9f74b827ce281bd00df8d5d93539bd2be5",
+    "archive_sha256": "2bf9c6f6446354c302a2bdb658bc594759b4b255939c721fa0c74a9c59d5436c"
+  },
+  "browser-third": {
+    "raw_sha256": "21ac4fd24a8c20974cbeb24526ac001433ddb4ee390f69cc4f804f2957b1a51c",
+    "archive_sha256": "46a6891692545052db83f532f8a7f88a3adf90cfff0dbac507cab3f38d7c5938"
+  }
+}
