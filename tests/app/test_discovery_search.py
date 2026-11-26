@@ -295,7 +295,7 @@ def test_search_results_are_one_semantic_list_with_batch_selection(client):
     assert f'href="/caderno?s={UNEMP}"' not in html
     assert "Criar caderno" not in text
     assert f'type="checkbox" name="s" value="{UNEMP}"' in html
-    assert "Marque os resultados" in text and "Abrir caderno" in text
+    assert "Marque várias séries para as juntar." in text and "Abrir caderno" in text
 
 
 def test_theme_uses_the_shared_result_list_and_keeps_its_counts(client):
