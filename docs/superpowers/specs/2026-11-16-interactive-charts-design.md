@@ -3,6 +3,12 @@
 Date: 2026-11-16
 Status: implementation authorized within the statistics CMS cycle; implemented on the development branch, not deployed. Final acceptance gates are recorded in the current handoff.
 
+## Responsive inspection amendment (2026-11-26)
+
+The owner prefers an unobstructed mobile plot and the existing floating desktop effect. Narrow viewports below 600 CSS pixels or a coarse primary pointer use the existing persistent readout immediately below the plot, full width, before the native range. Each swatch stays beside its own title and the value below that title. Do not duplicate the tooltip as a second below-plot box. Fine hovering pointers at wider viewports retain the safe DOM tooltip. On hybrid devices an actual touch or pen switches to inline inspection; a mouse restores eligible desktop hover. Responsive changes preserve the inspected period and remove stale overlays.
+
+A tap selects an actual observed point and retains the prepared reader values; a vertical drag scrolls without changing the selected row. Keyboard and the labelled native range remain available, without adding public composition settings to published CMS comparisons. No numerical precision, geometry, alignment, source token, CSV, schema, CMS document, security policy or fallback changes belong to this presentation fix. Static Admin preview stays non-executable; no-JavaScript and print still use SVG. This supersedes only the earlier requirement for a floating mobile tooltip.
+
 ## Implementation amendment (2026-11-17)
 
 The mobile verification found that ECharts 6.1.0 richText tooltips cannot wrap the complete exact value strings. The implemented formatter therefore returns DOM nodes constructed exclusively with createElement/textContent, never HTML strings. This is a narrow amendment to the richText-only/no-HTML-tooltip wording below, supported by an independent browser security review: hostile titles remained literal text, no injected element executed, and the existing strict CSP stayed unchanged, with no unsafe-inline, unsafe-eval, remote origin or connect-src permission. The formatter must always return a node; a future HTML-string formatter is outside this amendment. This is a presentation correction, not a change to source tokens, coordinate domains or statistical methods.

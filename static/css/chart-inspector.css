@@ -33,6 +33,40 @@
   order: -1;
   flex: 0 0 auto;
   width: 100%;
+  gap: 8px;
+}
+
+/* Keep each key beside its own title even when the title wraps. The value and optional native
+   period belong to that same text column, rather than wrapping independently around the key. */
+.chart-shell.chart-inline-readout .chart-readout-row {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  column-gap: .5em;
+  row-gap: 2px;
+  align-items: baseline;
+}
+
+.chart-shell.chart-inline-readout .chart-readout-row > .legend-swatch {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  margin-top: .6em;
+}
+
+.chart-shell.chart-inline-readout .chart-readout-title,
+.chart-shell.chart-inline-readout .chart-readout-native,
+.chart-shell.chart-inline-readout .chart-readout-value {
+  grid-column: 2;
+}
+
+.chart-shell.chart-inline-readout .chart-readout-value {
+  margin-left: 0;
+  text-align: left;
+  font-weight: 700;
+}
+
+.chart-shell.chart-inline-readout .chart-readout-value:only-child {
+  grid-column: 1 / -1;
 }
 
 .chart-shell.chart-inline-readout .chart-range {

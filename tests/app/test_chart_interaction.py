@@ -425,7 +425,7 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
         assert metrics["readoutTop"] >= metrics["plotBottom"] - 1, metrics
         assert metrics["readoutTop"] - metrics["plotBottom"] <= 8, metrics
         assert metrics["readoutW"] >= metrics["controlsW"] - 1, metrics
-        assert metrics["rowDisplay"] == "flex", metrics
+        assert metrics["rowDisplay"] == "grid", metrics
         assert metrics["sepDisplay"] == "none", metrics
         # Both prepared series show their own painted key beside the title: solid ink and the
         # dashed carmim pattern, never a colour inferred here from a translated label.
@@ -690,6 +690,46 @@ def test_single_point_keeps_its_readout_and_hides_the_stepping_hint(browser, sit
         assert structured["rows"][0]["title"] == ""
         assert structured["rows"][0]["value"] == "0,3 p.p."
         assert structured["live"] == ""
+        assert not errors
+    finally:
+        context.close()
+
+
+def test_hybrid_touch_uses_inline_rows_and_mouse_restores_desktop_tooltip(browser, site_url):
+    """Inject pointer types on a fine-pointer fixture to model a hybrid's input switch."""
+    context, page, errors = _open(browser, site_url + PAIR, 1440)
+    try:
+        ink = page.evaluate(SCAN)
+        box = ink["box"]
+        _move(page, box, (ink["min"] + ink["max"]) / 2)
+        assert page.evaluate(TOOLTIP) is not None
+        assert page.evaluate("() => matchMedia('(pointer: fine)').matches")
+        target = page.locator('.chart-canvas canvas')
+        point = {"pointerType": "touch", "pointerId": 1, "isPrimary": True,
+                 "clientX": box["left"] + ink["min"] + 1,
+                 "clientY": box["top"] + box["height"] / 2}
+        target.dispatch_event('pointerdown', point)
+        target.dispatch_event('pointerup', point)
+        page.wait_for_timeout(150)
+        assert_inline_inspector(page)
+        assert page.evaluate(READ)["value"] == 0
+        assert page.evaluate("() => matchMedia('(pointer: fine)').matches")
+        rows = page.locator('.chart-readout-row').evaluate_all("""rows => rows.map(row => {
+            const key = row.querySelector('.legend-swatch').getBoundingClientRect();
+            const title = row.querySelector('.chart-readout-title').getBoundingClientRect();
+            const value = row.querySelector('.chart-readout-value').getBoundingClientRect();
+            return {keyTop: key.top, titleTop: title.top, titleBottom: title.bottom,
+                    valueTop: value.top, titleLeft: title.left, valueLeft: value.left};
+        })""")
+        assert len(rows) == 2
+        for row in rows:
+            assert abs(row["keyTop"] - row["titleTop"]) < 24, row
+            assert row["valueTop"] >= row["titleBottom"] - 1, row
+            assert abs(row["valueLeft"] - row["titleLeft"]) < 1, row
+        _move(page, box, (ink["min"] + ink["max"]) / 2)
+        assert not page.locator('.chart-shell').evaluate(
+            "el => el.classList.contains('chart-inline-readout')")
+        assert page.evaluate(TOOLTIP) is not None
         assert not errors
     finally:
         context.close()

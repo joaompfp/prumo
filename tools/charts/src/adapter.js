@@ -595,6 +595,7 @@ function enhance(root) {
   if (!width || !height) return;
 
   const floatingQuery = window.matchMedia(FLOATING_QUERY);
+  let touchInspection = false;
   let floating = floatingQuery.matches;
   let chart;
   let activePoint = payload.x.length - 1;
@@ -685,8 +686,12 @@ function enhance(root) {
    * coarse and resized-to-narrow transitions hide any floating tooltip but keep `current`
    * and the persistent readout untouched; widening back restores the desktop tooltip at that
    * point. The tooltip component stays enabled so its axis cursor still tracks the plot. */
-  function applyPresentation() {
-    const next = floatingQuery.matches;
+  function applyPresentation(pointerType) {
+    // A hybrid laptop can report a fine primary pointer while the reader touches its screen.
+    // Honour that actual input until a mouse returns, without removing desktop hover support.
+    if (pointerType === 'touch' || pointerType === 'pen') touchInspection = true;
+    else if (pointerType === 'mouse') touchInspection = false;
+    const next = floatingQuery.matches && !touchInspection;
     if (next === floating) return;
     floating = next;
     root.classList.toggle('chart-inline-readout', !floating);
@@ -743,9 +748,11 @@ function enhance(root) {
   // Capture phase: zrender may stop propagation at the canvas, and the readout must still
   // follow the same pointer/touch position the tooltip uses. A touch only selects on release
   // and only when it did not turn into a scroll, so panning the page over the chart stays inert.
+  root.addEventListener('pointerdown', (event) => applyPresentation(event.pointerType), true);
   let touchStart = null;
   stage.addEventListener('pointermove', (event) => {
     if (event.pointerType !== 'touch') {
+      applyPresentation(event.pointerType);
       const point = locate(event);
       if (point !== null) syncTip(point);
     }
