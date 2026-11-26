@@ -652,7 +652,7 @@ def test_controls_links_and_actions_preserve_frequency_transform_and_base(tmp_pa
     assert 'name="transformacao"' in form and 'value="base100" selected' in form
     assert re.search(r'name="base"[^>]*value="2019"', form)
     search_form = re.search(r'<form id="notebook-search-form".*?</form>', html, re.S).group(0)
-    assert 'name="frequencia" value="anual"' in search_form
+    assert 'name="frequencia_grafico" value="anual"' in search_form
     assert 'name="transformacao" value="base100"' in search_form
     assert 'name="base" value="2019"' in search_form
 
@@ -660,7 +660,7 @@ def test_controls_links_and_actions_preserve_frequency_transform_and_base(tmp_pa
     assert canonical == (f"/caderno?s={GDP_PT}&s={GDP_ES}&grafico=on&g={GDP_PT}&g={GDP_ES}"
                           "&janela=5a&frequencia=anual&transformacao=base100&base=2019")
 
-    batch_match = re.search(r'<form id="notebook-batch-form".*?</form>', html, re.S)
+    batch_match = re.search(r'<form id="notebook-search-form".*?</form>', html, re.S)
     assert batch_match is not None
     batch = batch_match.group(0)
     assert 'action="/pesquisa"' in batch and 'name="acao" value="abrir"' in batch

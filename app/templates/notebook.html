@@ -3,7 +3,6 @@
 {% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
 {% block content %}
-{% macro chart_hidden(settings) %}{% for name, value in settings.params() %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}{% endmacro %}
 {% set panel = page.chart_panel %}
 <div class="notebook-workspace">
 <header class="page-head notebook-head">

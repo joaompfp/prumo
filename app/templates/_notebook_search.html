@@ -3,30 +3,27 @@
     <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
     <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}">{{ page.copy.search_catalogue_label }}</a>
   </div>
-  <form id="notebook-search-form" class="filters" action="{{ base }}/caderno" method="get">
-    {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
-    {{ chart_hidden(page.chart_panel.settings) }}
-    <label>{{ page.copy.search_label }}
-      <input name="q" type="search" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
-    </label>
-    <button type="submit" formaction="{{ base }}/caderno#pesquisa">{{ page.copy.search_button }}</button>
-  </form>
+  <form id="notebook-search-form" class="notebook-batch" action="{{ base }}/pesquisa" method="get">
+    {# One form owns both the query and the result checkboxes. A visible result emits only its
+       checkbox, so a tick survives the next search and an uncheck removes the reference. #}
+    {% for series_id in page.batch_hidden %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+    {% for series_id in page.addressed %}<input type="hidden" name="ordem" value="{{ series_id }}">{% endfor %}
+    {% for name, value in page.batch_chart_fields %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+    <div class="filters">
+      <label>{{ page.copy.search_label }}
+        <input name="q" type="search" maxlength="200" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
+      </label>
+      <button type="submit" name="acao" value="pesquisar_caderno">{{ page.copy.search_button }}</button>
+    </div>
 
-  <div class="notebook-results">
-  {% if page.query %}
-    {% if page.results %}
-    <p class="meta">{{ page.results_notice }} {{ page.copy.search_note }}</p>
-    <form id="notebook-batch-form" class="notebook-batch" action="{{ base }}/pesquisa" method="get">
-      <input type="hidden" name="acao" value="abrir">
-      {# Addressed references without a visible result remain selected. A visible member emits
-         only its checkbox: unchecking it must remove the reference, never leave a hidden copy. #}
-      {% for series_id in page.batch_hidden %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
-      {% for series_id in page.addressed %}<input type="hidden" name="ordem" value="{{ series_id }}">{% endfor %}
-      {% for name, value in page.batch_chart_fields %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+    <div class="notebook-results">
+    {% if page.query %}
+      {% if page.results %}
+      <p class="meta">{{ page.results_notice }} {{ page.copy.search_note }}</p>
       <div class="notebook-batch-bar">
         <p class="selection-instruction">{{ page.copy.search_batch_note }}</p>
         <p class="selection-live" role="status" aria-live="polite" data-selection-count-text>{{ page.batch_selection_text }}</p>
-        <button type="submit" class="button">{{ page.copy.search_batch_action }}</button>
+        <button type="submit" class="button" name="acao" value="abrir">{{ page.copy.search_batch_action }}</button>
       </div>
       {% if page.at_limit %}<p class="selection-warning" role="status">{{ page.copy.limit_reached }}</p>{% endif %}
       <div class="notebook-table-scroll">
@@ -53,13 +50,13 @@
           </tbody>
         </table>
       </div>
-    </form>
+      {% else %}
+      <p class="empty-state">{{ page.search_empty_text }}</p>
+      {% endif %}
+      {% if page.at_limit and not page.results %}<p class="note">{{ page.copy.limit_reached }}</p>{% endif %}
     {% else %}
-    <p class="empty-state">{{ page.search_empty_text }}</p>
+    <p class="note">{{ page.copy.search_prompt }}</p>
     {% endif %}
-    {% if page.at_limit and not page.results %}<p class="note">{{ page.copy.limit_reached }}</p>{% endif %}
-  {% else %}
-  <p class="note">{{ page.copy.search_prompt }}</p>
-  {% endif %}
-  </div>
+    </div>
+  </form>
 </section>

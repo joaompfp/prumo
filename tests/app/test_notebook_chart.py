@@ -758,7 +758,7 @@ def test_search_and_card_actions_preserve_or_prune_the_chart_settings(tmp_path):
     assert 'name="escala" value="dupla"' in search_form
     assert 'name="janela" value="5a"' in search_form
 
-    batch_match = re.search(r'<form id="notebook-batch-form".*?</form>', html, re.S)
+    batch_match = re.search(r'<form id="notebook-search-form".*?</form>', html, re.S)
     assert batch_match is not None
     batch = batch_match.group(0)
     assert 'action="/pesquisa"' in batch and 'name="acao" value="abrir"' in batch
@@ -840,7 +840,7 @@ def test_chart_forms_and_scripts_respect_the_public_mount_prefix(site_path):
         response = site.get(url, headers={"X-Forwarded-Prefix": "/dados"})
     html = response.text
     assert 'action="/dados/caderno"' in chart_form(html)
-    assert 'action="/dados/caderno"' in re.search(
+    assert 'action="/dados/pesquisa"' in re.search(
         r'<form id="notebook-search-form".*?</form>', html, re.S).group(0)
     assert 'src="/dados/static/js/prumo-charts' in html
     assert 'href="/caderno' not in html and 'action="/caderno' not in html

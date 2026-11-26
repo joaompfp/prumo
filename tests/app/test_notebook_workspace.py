@@ -412,7 +412,7 @@ def test_more_than_six_implicit_series_are_not_silently_plotted(tmp_path):
 
 def test_quick_search_batch_and_card_remove_return_to_their_work_area(site_path):
     html = notebook_html(site_path, f"?s={HICP}&q=desemprego")
-    match = re.search(r'<form id="notebook-batch-form".*?</form>', html, re.S)
+    match = re.search(r'<form id="notebook-search-form".*?</form>', html, re.S)
     assert match is not None
     form = match.group(0)
     assert 'action="/pesquisa"' in form and 'name="acao" value="abrir"' in form
@@ -426,7 +426,7 @@ def test_quick_search_batch_and_card_remove_return_to_their_work_area(site_path)
     assert opened.headers["location"] == f"/caderno?s={HICP}&s={UNEMP}"
 
     selected = notebook_html(site_path, f"?s={HICP}&s={UNEMP}&q=desemprego")
-    match = re.search(r'<form id="notebook-batch-form".*?</form>', selected, re.S)
+    match = re.search(r'<form id="notebook-search-form".*?</form>', selected, re.S)
     assert match is not None
     form = match.group(0)
     assert re.search(rf'<input type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)

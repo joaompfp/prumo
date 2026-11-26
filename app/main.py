@@ -260,9 +260,21 @@ def create_app(db_path: str | None = None) -> FastAPI:
             return _render(templates, request, "404.html", {}, status=404)
         if clear == "selecao":
             settings = notebook_chart.ChartSettings()
-        if request.query_params.get("acao") == "abrir":
+        acao = request.query_params.get("acao", "")
+        if acao in ("abrir", "pesquisar_caderno"):
+            # The quick-search form submits both the query and the checked results here. A
+            # notebook search is bounded exactly like the notebook address before any read;
+            # an over-limit selection falls through to the catalogue recovery page instead.
+            notebook_query = ""
+            if acao == "pesquisar_caderno":
+                notebook_query = notebook.parse_query(request.query_params.get("q", ""))
+                if notebook_query is None:
+                    return _render(templates, request, "404.html", {}, status=404)
             if len(selection) <= notebook.MAX_SELECTION:
-                target = f"{_base(request)}{notebook.selection_path(selection, chart=settings)}"
+                target = (f"{_base(request)}"
+                          f"{notebook.selection_path(selection, notebook_query, chart=settings)}")
+                if acao == "pesquisar_caderno":
+                    target = f"{target}#pesquisa"
                 return RedirectResponse(target, status_code=303)
 
         try:
