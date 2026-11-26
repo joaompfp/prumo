@@ -8,9 +8,8 @@ readers, and `ingest.editorial_rules` stays the authoritative eligibility rule.
 import re
 from dataclasses import dataclass, replace
 from typing import Sequence
-from urllib.parse import urlencode
 
-from app import notebook_chart, reads
+from app import discovery_selection, notebook_chart, reads
 from ingest.db import Db
 from ingest.editorial_rules import MAX_SLOTS, slot_problem
 from presentation import MissingText
@@ -65,8 +64,7 @@ def selection_path(selection: Sequence[str], query: str | None = None, *,
         params.extend(chart.params())
     if query:
         params.append(("q", query))
-    encoded = urlencode(params)
-    return f"/caderno?{encoded}" if encoded else "/caderno"
+    return discovery_selection.build_address("/caderno", params)
 
 
 @dataclass(frozen=True)
