@@ -9,12 +9,14 @@ import re
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import CHART_CSP, SECURITY_HEADERS, create_app
+from app.main import CHART_CSP, SCRIPT_CSP, SECURITY_HEADERS, create_app
 from tests.app.conftest import DERIVED, HICP, INACTIVE, UNEMP, WITHHELD, XCHECK
 
-# Detail pages carry the approved interactive chart; everything else stays script-free.
+# Detail pages carry the approved interactive chart; the catalogue and notebook quick search
+# carry only the small local selection helper; everything else stays script-free.
 DETAIL_PAGES = (f"/series/{HICP}", f"/calculadas/{DERIVED}")
-PAGES = ("/", "/temas/economy", "/fontes", "/metodologia", "/pesquisa?q=desemprego")
+SELECTION_PAGES = ("/pesquisa", "/pesquisa?q=desemprego")
+PAGES = ("/", "/temas/economy", "/fontes", "/metodologia", "/pesquisa?q=zzzz")
 
 
 def visible(html: str) -> str:
@@ -55,6 +57,12 @@ def test_security_headers_are_exact_on_every_page(client):
         assert headers["content-security-policy"] == SECURITY_HEADERS["Content-Security-Policy"]
         assert headers["x-content-type-options"] == "nosniff"
         assert headers["referrer-policy"] == "no-referrer"
+    for path in SELECTION_PAGES:
+        headers = client.get(path).headers
+        assert headers["content-security-policy"] == SCRIPT_CSP
+        assert headers["content-security-policy"].count("default-src") == 1
+        assert headers["x-content-type-options"] == "nosniff"
+        assert headers["referrer-policy"] == "no-referrer"
     for path in DETAIL_PAGES:
         headers = client.get(path).headers
         assert headers["content-security-policy"] == CHART_CSP
@@ -66,7 +74,7 @@ def test_security_headers_are_exact_on_every_page(client):
 
 
 def test_only_get_and_head_are_routed(client):
-    for path in PAGES + DETAIL_PAGES:
+    for path in PAGES + SELECTION_PAGES + DETAIL_PAGES:
         assert client.post(path).status_code == 405
         assert client.delete(path).status_code == 405
 
@@ -76,6 +84,12 @@ def test_summaries_ship_no_javascript_and_detail_pages_only_the_approved_assets(
         html = client.get(path).text
         assert "<script" not in html.lower(), path
         assert not re.search(r"<[a-zA-Z][^>]*\son[a-z]+=", html), path
+    for path in SELECTION_PAGES:
+        html = client.get(path).text
+        tags = re.findall(r"<script[^>]*>", html)
+        assert len(tags) == 1, path
+        assert '<script src="/static/js/selection.js" defer>' in tags[0], path
+        assert not re.search(r"<[a-zA-Z][^>]*\son[a-z]+=", html), path
     for path in DETAIL_PAGES:
         html = client.get(path).text
         tags = re.findall(r"<script[^>]*>", html)
@@ -84,7 +98,7 @@ def test_summaries_ship_no_javascript_and_detail_pages_only_the_approved_assets(
         assert '<script src="/static/js/prumo-charts.min.js?v=' in tags[1], path
         assert " defer>" in tags[1], path
         assert not re.search(r"<[a-zA-Z][^>]*\son[a-z]+=", html), path
-    for path in PAGES + DETAIL_PAGES:
+    for path in PAGES + SELECTION_PAGES + DETAIL_PAGES:
         html = client.get(path).text
         assert 'href="http://' not in html and 'src="http://' not in html, path
         assert "cdn." not in html and "googleapis" not in html, path

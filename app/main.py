@@ -66,7 +66,8 @@ def _templates() -> Jinja2Templates:
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR), autoescape=True)
     env.globals.update(chart=line_chart, chart_two=two_series_chart, chart_svg=chart_svg,
                        chart_plot=chart_plot, chart_legend=chart_legend,
-                       chart_js=interactive.asset_path(), spark=sparkline,
+                       chart_js=interactive.asset_path(), selection_js="/static/js/selection.js",
+                       spark=sparkline,
                        format_value=format_value, format_period=format_period,
                        format_datetime=format_datetime, format_date=format_date,
                        format_count=format_count, notebook_path=notebook.selection_path,
@@ -273,7 +274,7 @@ def create_app(db_path: str | None = None) -> FastAPI:
         return _render(templates, request, "search.html", {
             "page": data,
             "chart_fields": discovery_selection.chart_form_params(settings),
-        })
+        }, script=bool(data.rows))
 
     @app.api_route("/fontes", methods=PAGE_METHODS, response_class=HTMLResponse)
     def sources(request: Request):

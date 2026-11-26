@@ -52,5 +52,7 @@ def add_routes(app, *, templates, render, unavailable) -> None:
         if failure is not None:
             return noindex(failure)
         assert data is not None  # the only None branch is the failure return above
+        selection_script = bool(data.query and data.results)
         return noindex(render(templates, request, "notebook.html", {"page": data},
-                              script=data.chart_panel.chart_payload is not None))
+                              script=data.chart_panel.chart_payload is not None
+                              or selection_script))

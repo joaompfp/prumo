@@ -8,7 +8,7 @@ current order.
 import re
 
 from app import reads
-from app.main import SECURITY_HEADERS
+from app.main import SCRIPT_CSP, SECURITY_HEADERS
 from ingest.db import read_db_readonly
 from tests.app.conftest import HICP, T3, UNEMP
 
@@ -142,31 +142,41 @@ def test_search_and_theme_render_the_same_series_row_markup(client):
     for response in (search, theme):
         assert response.status_code == 200
         assert response.headers["content-type"].startswith("text/html")
-        assert response.headers["content-security-policy"] == SECURITY_HEADERS[
-            "Content-Security-Policy"]
         path = response.request.url.raw_path.decode("utf-8")
         assert client.head(path).status_code == 200
+    # The catalogue carries the local selection enhancement; the theme list does not.
+    assert search.headers["content-security-policy"] == SCRIPT_CSP
+    assert theme.headers["content-security-policy"] == SECURITY_HEADERS[
+        "Content-Security-Policy"]
 
     flagged = client.get("/pesquisa?q=desemprego")
     assert flagged.status_code == 200
 
     assert 'class="series-results"' in search.text
     assert 'class="series-results"' in theme.text
-    def without_selection(markup):
-        # Only the complete catalogue opts into multi-selection; all statistical text,
-        # facts and individual notebook links remain the authoritative shared partial.
+    def without_selection_and_shortcut(markup):
+        # Only the complete catalogue opts into multi-selection; all statistical text, facts
+        # and the title link remain the authoritative shared partial. A theme keeps its one
+        # series shortcut, which is deliberately not repeated on a selectable catalogue row.
         labels = re.findall(r'<label class="series-result-select">.*?</label>', markup, re.S)
-        assert len(labels) == 1
-        return _squash(markup.replace(labels[0], ""))
+        if labels:
+            markup = markup.replace(labels[0], "")
+        actions = re.findall(r'<p class="series-result-action">.*?</p>', markup, re.S)
+        for action in actions:
+            markup = markup.replace(action, "")
+        return _squash(markup)
 
-    assert without_selection(_series_row(search.text, HICP)) == _series_row(theme.text, HICP)
-    assert without_selection(_series_row(flagged.text, UNEMP)) == _series_row(theme.text, UNEMP)
+    assert without_selection_and_shortcut(_series_row(search.text, HICP)) == \
+        without_selection_and_shortcut(_series_row(theme.text, HICP))
+    assert without_selection_and_shortcut(_series_row(flagged.text, UNEMP)) == \
+        without_selection_and_shortcut(_series_row(theme.text, UNEMP))
     assert 'type="checkbox"' not in theme.text
     row = _series_row(search.text, HICP)
     assert "INE - Instituto Nacional de Estatística" in row
     assert "1,8" in row and "outubro de 2026" in row and "03/11/2026" in row
     assert row.count('href="/series/' + HICP + '"') == 1
-    assert f'href="/caderno?s={HICP}"' in row
+    assert f'href="/caderno?s={HICP}"' not in row
+    assert f'href="/caderno?s={HICP}"' in _series_row(theme.text, HICP)
     assert '<span class="flag">provisório</span>' in _series_row(flagged.text, UNEMP)
 
 

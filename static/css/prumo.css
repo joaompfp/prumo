@@ -536,6 +536,25 @@ section { margin: 80px 0; }
 .notebook-links .button-quiet { min-height: 48px; padding: 10px 16px; font-size: .85rem; }
 .notebook-search .filters { margin-top: 0; }
 .notebook-search .filters label { flex: 1 1 320px; }
+.notebook-batch { margin: 10px 0 0; }
+.notebook-batch-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
+  margin: 0 0 10px; padding: 10px 0; border-block: 1px solid var(--rule);
+}
+.notebook-batch-bar .selection-instruction { flex: 1 1 22rem; margin: 0; }
+.notebook-batch-bar .selection-live {
+  margin: 0; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.notebook-batch-bar .button { width: auto; flex: 0 0 auto; }
+.notebook-result-select {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; cursor: pointer;
+}
+.notebook-result-select input {
+  width: 22px; height: 22px; margin: 0; accent-color: var(--accent);
+}
+.notebook-result-row.is-selected { background: var(--accent-soft); box-shadow: inset 4px 0 0 var(--accent); }
+.notebook-batch-table .selection-cell { width: 1%; white-space: nowrap; }
 .notebook-links { margin-top: 48px; }
 
 /* Footer ------------------------------------------------------------------- */
@@ -594,6 +613,8 @@ section { margin: 80px 0; }
   .footer-row { gap: 20px; }
   .footer-links { line-height: 2; }
   .data-table th, .data-table td { padding: 10px 8px; }
+  .notebook-batch-bar { align-items: stretch; }
+  .notebook-batch-bar .button { width: 100%; }
   .sources-table td { min-width: 0; }
   .sources-table td:first-child { min-width: 0; }
   /* No JavaScript: the server SVG keeps a readable fixed label scale and the wrapper scrolls.

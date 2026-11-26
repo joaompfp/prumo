@@ -283,7 +283,7 @@ def test_empty_search_opens_the_catalogue(client):
                for name in ("tema", "grupo", "fonte", "frequencia"))
 
 
-def test_search_results_are_one_semantic_list_with_an_explicit_single_series_action(client):
+def test_search_results_are_one_semantic_list_with_batch_selection(client):
     html = client.get("/pesquisa?q=desemprego Portugal").text
     text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
     assert "<table" not in html and 'class="series-results"' in html
@@ -292,10 +292,10 @@ def test_search_results_are_one_semantic_list_with_an_explicit_single_series_act
     assert "INE - Instituto Nacional de Estatística" in text
     assert "outubro de 2026" in text and "03/11/2026" in text
     assert f'href="/series/{UNEMP}"' in html
-    assert f'href="/caderno?s={UNEMP}"' in html
-    assert 'aria-label="Criar caderno para Taxa de desemprego' in html
-    assert "Criar caderno" in text
-    assert html.count(f'href="/caderno?s={UNEMP}"') == 1
+    assert f'href="/caderno?s={UNEMP}"' not in html
+    assert "Criar caderno" not in text
+    assert f'type="checkbox" name="s" value="{UNEMP}"' in html
+    assert "Marque os resultados" in text and "Abrir caderno" in text
 
 
 def test_theme_uses_the_shared_result_list_and_keeps_its_counts(client):

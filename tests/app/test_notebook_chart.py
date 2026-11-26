@@ -758,40 +758,48 @@ def test_search_and_card_actions_preserve_or_prune_the_chart_settings(tmp_path):
     assert 'name="escala" value="dupla"' in search_form
     assert 'name="janela" value="5a"' in search_form
 
-    # The add link keeps the settings but never silently adds the new side to the explicit group.
-    add = re.search(r'href="([^"]+)">Acrescentar ao caderno</a>', html)
-    assert add is not None
-    add_path = add.group(1)
-    assert "grafico=on" in add_path and "g=ine.act_a.PT" in add_path
-    assert "g=ine.act_c.PT" not in add_path
-    assert "escala=dupla" in add_path and "janela=5a" in add_path and "q=confian" in add_path
+    batch_match = re.search(r'<form id="notebook-batch-form".*?</form>', html, re.S)
+    assert batch_match is not None
+    batch = batch_match.group(0)
+    assert 'action="/pesquisa"' in batch and 'name="acao" value="abrir"' in batch
+    assert batch.count('name="s" value="ine.act_a.PT"') == 1
+    assert batch.count('name="s" value="ine.act_b.PT"') == 1
+    assert 'type="checkbox" name="s" value="ine.act_c.PT"' in batch
+    assert 'name="grafico" value="on"' in batch
+    assert batch.count('name="g" value=') == 2
+    assert 'name="escala" value="dupla"' in batch and 'name="janela" value="5a"' in batch
+    assert "Acrescentar selecionadas" in visible(batch)
 
     canonical = re.search(r'id="ligacao-limpa" href="([^"]+)"', html).group(1)
     assert canonical.startswith("/caderno?s=ine.act_a.PT&amp;s=ine.act_b.PT&amp;grafico=on")
     assert "q=" not in canonical
 
-    # Search removal is deliberate: removing A prunes only A, and removing the last side is off.
+    # A native batch submission appends the checked result without silently joining it to the
+    # explicit chart group; the hidden settings keep the reader's actual graph.
     with client(path) as site:
-        selected = site.get(
-            "/caderno?s=ine.act_a.PT&s=ine.act_b.PT&grafico=on&g=ine.act_a.PT&g=ine.act_b.PT"
-            "&escala=dupla&janela=5a&q=cr%C3%A9dito")
-    removes = re.findall(
-        r'href="([^"]+)">Remover do caderno</a> <span class="badge badge-quiet">Já no caderno'
-        r'</span>', selected.text)
-    assert len(removes) == 2
-    assert "s=ine.act_a.PT" not in removes[0]
-    assert "g=ine.act_a.PT" not in removes[0] and "g=ine.act_b.PT" in removes[0]
-    assert "s=ine.act_b.PT" not in removes[1]
-    assert "g=ine.act_b.PT" not in removes[1] and "g=ine.act_a.PT" in removes[1]
+        added = site.get("/pesquisa", params=[
+            ("s", "ine.act_a.PT"), ("s", "ine.act_b.PT"),
+            ("ordem", "ine.act_a.PT"), ("ordem", "ine.act_b.PT"),
+            ("s", "ine.act_c.PT"), ("grafico", "on"),
+            ("g", "ine.act_a.PT"), ("g", "ine.act_b.PT"),
+            ("escala", "dupla"), ("janela", "5a"), ("acao", "abrir")],
+            follow_redirects=False)
+    assert added.status_code == 303
+    assert added.headers["location"] == (
+        "/caderno?s=ine.act_a.PT&s=ine.act_b.PT&s=ine.act_c.PT&grafico=on"
+        "&g=ine.act_a.PT&g=ine.act_b.PT&escala=dupla&janela=5a")
 
+    # Unchecking a visible member removes it and prunes only its group side.
     with client(path) as site:
-        last_group = site.get(
-            "/caderno?s=ine.act_a.PT&s=ine.act_b.PT&grafico=on&g=ine.act_a.PT&q=cr%C3%A9dito")
-    last_remove = re.search(
-        r'href="([^"]+)">Remover do caderno</a> <span class="badge badge-quiet">Já no caderno'
-        r'</span>', last_group.text)
-    assert last_remove is not None
-    assert "grafico=off" in last_remove.group(1) and "g=" not in last_remove.group(1)
+        pruned = site.get("/pesquisa", params=[
+            ("ordem", "ine.act_a.PT"), ("ordem", "ine.act_b.PT"),
+            ("s", "ine.act_b.PT"), ("grafico", "on"),
+            ("g", "ine.act_a.PT"), ("g", "ine.act_b.PT"),
+            ("escala", "dupla"), ("janela", "5a"), ("acao", "abrir")],
+            follow_redirects=False)
+    assert pruned.status_code == 303
+    assert pruned.headers["location"] == (
+        "/caderno?s=ine.act_b.PT&grafico=on&g=ine.act_b.PT&escala=dupla&janela=5a")
 
     with client(path) as site:
         last = site.get("/caderno?s=ine.act_a.PT&s=ine.act_b.PT&grafico=on&g=ine.act_a.PT")

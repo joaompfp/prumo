@@ -221,6 +221,19 @@ def _tray(html: str) -> str:
     return match.group(0)
 
 
+def _row(html: str, series_id: str) -> str:
+    blocks = re.findall(r'<li class="series-result[^"]*"[^>]*>.*?</li>', html, re.S)
+    matches = [block for block in blocks if f'href="/series/{series_id}"' in block]
+    assert len(matches) == 1, series_id
+    return matches[0]
+
+
+def _results_bar(html: str) -> str:
+    match = re.search(r'<div class="discovery-selection-bar".*?</div>', html, re.S)
+    assert match is not None
+    return match.group(0)
+
+
 def test_catalogue_has_one_form_owner_and_the_search_landmark_is_only_its_query_group(client):
     html = client.get("/pesquisa").text
     assert html.count("<form ") == 1
@@ -476,8 +489,8 @@ def test_caderno_links_to_the_catalogue_with_addressed_refs_and_chart_settings(c
         f"/pesquisa?s={HICP}&s={UNEMP}&s={WORLD}&grafico=on&g={HICP}&g={UNEMP}"
         "&escala=dupla&janela=5a&frequencia_grafico=anual&transformacao=base100&base=2020")
     assert caderno.count(f'href="{html_escape(href)}"') == 2
-    assert "Escolher várias no catálogo" in _visible(caderno)
-    assert "Pesquisa rápida neste caderno" in _visible(caderno)
+    assert "Catálogo completo" in _visible(caderno)
+    assert "Pesquisa rápida neste caderno" not in _visible(caderno)
 
     catalogue = client.get(href)
     assert catalogue.status_code == 200
@@ -538,6 +551,7 @@ def test_discovery_form_and_handoff_keep_the_mount_prefix(client):
     html = client.get("/pesquisa", headers={"X-Forwarded-Prefix": "/dados"}).text
     assert ('<form class="discovery-search" id="discovery-form" action="/dados/pesquisa"'
             ' method="get" aria-describedby="selecao-ajuda">') in html
+    assert '<script src="/dados/static/js/selection.js" defer></script>' in html
     opened = client.get("/pesquisa", params=[("s", HICP), ("acao", "abrir")],
                         headers={"X-Forwarded-Prefix": "/dados"}, follow_redirects=False)
     assert opened.status_code == 303
@@ -552,21 +566,80 @@ def test_selection_controls_are_native_44px_labels_and_print_keeps_results(clien
         assert 'type="checkbox" name="s"' in label
         assert "Selecionar" in label and "sr-only" in label
         assert "/series/" not in label  # the title link is a separate action
+    rows = re.findall(r'<li class="series-result[^"]*"[^>]*>.*?</li>', html, re.S)
+    assert rows and all("Criar caderno" not in row for row in rows)
 
     css = client.get("/static/css/discovery.css").text
     assert ".series-result-select" in css and "min-height: 44px" in css
     assert "accent-color: var(--accent)" in css
+    assert ".series-result.is-selected" in css
+    assert ".discovery-selection-bar" in css
     assert "#discovery-form .selection-remove" in css
     assert ".discovery-selection," in css  # hidden in print, unlike the results
 
+    notebook_css = client.get("/static/css/prumo.css").text
+    assert ".notebook-result-select" in notebook_css and "min-height: 44px" in notebook_css
+    assert "accent-color: var(--accent)" in notebook_css
+    assert ".notebook-result-row.is-selected" in notebook_css
 
-def test_selection_page_stays_script_free_and_keeps_the_base_csp(client):
+
+def test_catalogue_batch_selection_is_primary_and_theme_keeps_its_shortcut(client):
     from tests.app.conftest import HICP, UNEMP
 
-    response = client.get("/pesquisa", params=[
-        ("s", HICP), ("s", UNEMP), ("grafico", "on"), ("g", HICP)])
+    html = client.get("/pesquisa?q=desemprego Portugal").text
+    row = _row(html, UNEMP)
+    assert 'type="checkbox" name="s"' in row
+    assert 'data-selection-row' in row
+    assert "Criar caderno" not in row
+    assert f'href="/caderno?s={UNEMP}"' not in row
+    assert f'href="/series/{UNEMP}"' in row
+
+    bar = _results_bar(html)
+    assert "Marque os resultados" in _visible(bar)
+    assert "Até 12 séries" in _visible(bar)
+    assert 'name="acao" value="abrir"' in bar
+    assert "data-selection-count-text" in bar
+
+    theme_row = _row(client.get("/temas/economy").text, HICP)
+    assert "Criar caderno" in theme_row
+    assert f'href="/caderno?s={HICP}"' in theme_row
+    assert 'type="checkbox"' not in theme_row
+
+
+def test_catalogue_selected_rows_are_marked_and_counted_without_javascript(client):
+    from tests.app.conftest import HICP
+
+    html = client.get(f"/pesquisa?s={HICP}").text
+    row = _row(html, HICP)
+    assert 'class="series-result is-selected"' in row
+    assert re.search(rf'<input type="checkbox" name="s" value="{HICP}"[^>]*checked', row)
+    assert "1 selecionada" in _visible(_results_bar(html))
+
+
+def test_selection_pages_use_only_the_local_asset_and_the_narrow_script_policy(client):
+    from app.main import SCRIPT_CSP, SECURITY_HEADERS
+
+    response = client.get("/pesquisa")
     assert response.status_code == 200
-    assert "<script" not in response.text
-    policy = response.headers["content-security-policy"]
-    assert "script-src" not in policy
-    assert policy.startswith("default-src 'none';")
+    assert '<script src="/static/js/selection.js" defer></script>' in response.text
+    assert response.headers["content-security-policy"] == SCRIPT_CSP
+    assert "onclick=" not in response.text and "javascript:" not in response.text
+
+    asset = client.get("/static/js/selection.js")
+    assert asset.status_code == 200
+    assert "data-selection-count-text" in asset.text
+    for forbidden in ("localStorage", "sessionStorage", "document.cookie", "fetch(",
+                      "XMLHttpRequest", "eval(", "innerHTML"):
+        assert forbidden not in asset.text
+
+    empty = client.get("/pesquisa?q=termo-sem-qualquer-serie")
+    assert empty.status_code == 200
+    assert "selection.js" not in empty.text
+    assert empty.headers["content-security-policy"] == SECURITY_HEADERS["Content-Security-Policy"]
+
+    over_limit = client.get("/pesquisa", params=[
+        ("s", "x.one")] + [("s", f"x.{i}") for i in range(2, 50)])
+    assert over_limit.status_code == 404
+    assert "selection.js" not in over_limit.text
+    assert over_limit.headers["content-security-policy"] == SECURITY_HEADERS[
+        "Content-Security-Policy"]

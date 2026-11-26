@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from app import notebook
+from app import notebook, notebook_chart
 from app.main import create_app
 from ingest.db import open_db
 from ingest.models import Observation
@@ -73,6 +73,12 @@ def hidden_selection(html: str) -> list[str]:
     match = re.search(r'<form id="notebook-search-form".*?</form>', html, re.S)
     assert match is not None
     return re.findall(r'<input type="hidden" name="s" value="([^"]+)">', match.group(0))
+
+
+def batch_form(html: str) -> str:
+    match = re.search(r'<form id="notebook-batch-form".*?</form>', html, re.S)
+    assert match is not None
+    return match.group(0)
 
 
 def canonical_href(html: str) -> str:
@@ -314,28 +320,136 @@ def test_fresh_rights_and_activity_beat_the_warm_catalogue_cache(site_path):
         assert "chart-data" not in html and "prumo-charts" not in html
 
 
-def test_search_keeps_selection_and_offers_add_remove_clear_and_canonical(notebook_client):
+def test_quick_search_offers_one_batch_action_without_per_result_links(notebook_client):
     response = notebook_client.get(f"/caderno?s={HICP}&q=desemprego")
     assert response.status_code == 200
     html = response.text
-    text = visible(html)
-    assert hidden_selection(html) == [HICP]
-    assert 'action="/caderno"' in html
-    assert "Taxa de desemprego" in text
-    assert "1 resultado." in text
-    assert "Só aparecem séries que podem ser publicadas neste momento." in text
-    assert f'href="/caderno?s={HICP}&amp;s={UNEMP}&amp;q=desemprego#grafico"' in html
-    assert canonical_href(html) == f"/caderno?s={HICP}"
-    assert clear_href(html) == "/caderno?q=desemprego"
-    assert card_remove_href(html) == "/caderno?q=desemprego#selecao"
+    form = batch_form(html)
+    assert 'action="/pesquisa"' in form and 'method="get"' in form
+    assert 'name="acao" value="abrir"' in form
+    assert f'<input type="hidden" name="s" value="{HICP}">' in form
+    assert f'<input type="hidden" name="ordem" value="{HICP}">' in form
+    assert f'type="checkbox" name="s" value="{UNEMP}"' in form
+    assert "Acrescentar selecionadas" in visible(form)
+    assert "Acrescentar ao caderno" not in form and "Remover do caderno" not in form
+    assert "#grafico" not in form and "#pesquisa" not in form
+    assert "Catálogo completo" in visible(html)
+    assert "Pesquisa rápida neste caderno" not in visible(html)
 
-    selected = notebook_client.get(f"/caderno?s={HICP}&s={UNEMP}&q=desemprego")
-    assert selected.status_code == 200
-    selected_html = selected.text
-    assert hidden_selection(selected_html) == [HICP, UNEMP]
-    assert "Já no caderno" in visible(selected_html)
-    assert f'href="/caderno?s={HICP}&amp;q=desemprego#pesquisa"' in selected_html
-    assert f"/caderno?s={HICP}&amp;s={UNEMP}&amp;q=desemprego" not in selected_html
+    assert '<script src="/static/js/selection.js" defer></script>' in html
+    assert "script-src 'self'" in response.headers["content-security-policy"]
+
+
+def test_quick_search_batch_never_duplicates_a_visible_member_and_keeps_it_checked(notebook_client):
+    response = notebook_client.get(f"/caderno?s={HICP}&s={UNEMP}&q=desemprego")
+    assert response.status_code == 200
+    form = batch_form(response.text)
+    assert re.search(rf'<input type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
+    assert form.count(f'name="s" value="{UNEMP}"') == 1
+    assert f'<input type="hidden" name="s" value="{HICP}">' in form
+    assert 'class="notebook-result-row is-selected"' in form
+    # The search form still carries every addressed reference for the next query.
+    assert hidden_selection(response.text) == [HICP, UNEMP]
+
+
+def test_quick_search_batch_appends_new_refs_after_the_addressed_order(notebook_client):
+    html = notebook_client.get(f"/caderno?s={HICP}&s={WORLD}&q=desemprego").text
+    form = batch_form(html)
+    assert f'<input type="hidden" name="s" value="{HICP}">' in form
+    assert f'<input type="hidden" name="s" value="{WORLD}">' in form
+    assert f'type="checkbox" name="s" value="{UNEMP}"' in form
+
+    opened = notebook_client.get("/pesquisa", params=[
+        ("s", HICP), ("s", WORLD), ("ordem", HICP), ("ordem", WORLD),
+        ("s", UNEMP), ("acao", "abrir")], follow_redirects=False)
+    assert opened.status_code == 303
+    assert opened.headers["location"] == f"/caderno?s={HICP}&s={WORLD}&s={UNEMP}"
+
+
+def test_quick_search_batch_keeps_settings_and_prunes_an_unchecked_group_side(notebook_client):
+    settings = notebook_chart.ChartSettings(
+        mode="explicit", group=(HICP, UNEMP), scale="dupla", window="5a",
+        frequency="anual")
+    html = notebook_client.get("/caderno", params=[
+        ("s", HICP), ("s", UNEMP), *settings.params(), ("q", "desemprego")]).text
+    form = batch_form(html)
+    assert 'name="grafico" value="on"' in form
+    assert form.count('name="g" value=') == 2
+    assert 'name="escala" value="dupla"' in form
+    assert 'name="janela" value="5a"' in form
+    assert 'name="frequencia_grafico" value="anual"' in form
+    assert f'<input type="hidden" name="s" value="{HICP}">' in form
+    assert form.count(f'name="s" value="{UNEMP}"') == 1
+
+    # Native unchecking submits the off-result HICP hidden field, the prior order and the
+    # unchanged chart fields; the server prunes the group side that is no longer selected.
+    opened = notebook_client.get("/pesquisa", params=[
+        ("s", HICP), ("ordem", HICP), ("ordem", UNEMP),
+        ("grafico", "on"), ("g", HICP), ("g", UNEMP), ("escala", "dupla"),
+        ("janela", "5a"), ("frequencia_grafico", "anual"), ("acao", "abrir")],
+        follow_redirects=False)
+    assert opened.status_code == 303
+    assert opened.headers["location"] == (
+        f"/caderno?s={HICP}&grafico=on&g={HICP}&escala=dupla&janela=5a&frequencia=anual")
+
+
+def test_quick_search_batch_retains_an_unavailable_addressed_reference(notebook_client):
+    html = notebook_client.get(f"/caderno?s={INACTIVE}&q=desemprego").text
+    form = batch_form(html)
+    assert f'<input type="hidden" name="s" value="{INACTIVE}">' in form
+    assert f'<input type="hidden" name="ordem" value="{INACTIVE}">' in form
+
+    opened = notebook_client.get("/pesquisa", params=[
+        ("s", INACTIVE), ("ordem", INACTIVE), ("s", UNEMP), ("acao", "abrir")],
+        follow_redirects=False)
+    assert opened.status_code == 303
+    assert opened.headers["location"] == f"/caderno?s={INACTIVE}&s={UNEMP}"
+
+    reopened = notebook_client.get(opened.headers["location"])
+    assert reopened.status_code == 200
+    text = visible(reopened.text)
+    assert "1 de 12 séries." in text
+    assert "1 série desta ligação já não pode ser mostrada" in text
+
+
+def test_quick_search_batch_over_limit_is_reported_not_truncated(notebook_client):
+    twelve = tuple(f"missing.caderno.{i:02d}" for i in range(12))
+    html = notebook_client.get("/caderno", params=[
+        *[("s", series_id) for series_id in twelve], ("q", "desemprego")]).text
+    form = batch_form(html)
+    assert "Acrescentar selecionadas" in visible(form)
+    assert "O caderno tem 12 séries, o máximo." in visible(html)
+    assert f'type="checkbox" name="s" value="{UNEMP}"' in form
+
+    blocked = notebook_client.get("/pesquisa", params=[
+        *[("s", series_id) for series_id in twelve],
+        *[("ordem", series_id) for series_id in twelve],
+        ("s", UNEMP), ("acao", "abrir")])
+    assert blocked.status_code == 200
+    assert "13 referências selecionadas" in visible(blocked.text)
+    assert "A seleção tem 13 referências" in visible(blocked.text)
+    assert "Remova 1 referência" in visible(blocked.text)
+
+
+def test_notebook_selection_asset_only_accompanies_quick_search_results(notebook_client):
+    from app.main import SCRIPT_CSP, SECURITY_HEADERS
+
+    no_query = notebook_client.get(f"/caderno?s={HICP}")
+    assert "notebook-batch-form" not in no_query.text
+    assert "selection.js" not in no_query.text
+
+    no_results = notebook_client.get(f"/caderno?s={HICP}&q=termo-sem-serie")
+    assert "notebook-batch-form" not in no_results.text
+    assert "selection.js" not in no_results.text
+
+    off = notebook_client.get(f"/caderno?s={HICP}&grafico=off")
+    assert off.headers["content-security-policy"] == SECURITY_HEADERS[
+        "Content-Security-Policy"]
+
+    results = notebook_client.get(f"/caderno?s={HICP}&q=desemprego")
+    assert results.headers["content-security-policy"] == SCRIPT_CSP
+    assert '<script src="/static/js/selection.js" defer></script>' in results.text
+    assert "onclick=" not in results.text and "javascript:" not in results.text
 
 
 def test_full_notebook_still_shows_selection_and_refuses_a_thirteenth(tmp_path):
@@ -377,7 +491,8 @@ def test_full_notebook_still_shows_selection_and_refuses_a_thirteenth(tmp_path):
         assert hidden_selection(html) == selection
         assert "Coeficiente de Gini" in text
         assert "O caderno tem 12 séries, o máximo. Remova uma para acrescentar outra." in text
-        assert "ine.notebook_13.PT" not in html
+        assert 'type="checkbox" name="s" value="ine.notebook_13.PT"' in html
+        assert not re.search(r'name="s" value="ine.notebook_13.PT"[^>]*checked', html)
         canonical = canonical_href(html)
         assert canonical.startswith("/caderno?")
         assert canonical.count("s=") == 12 and "q=" not in canonical
@@ -405,7 +520,8 @@ def test_same_selection_reopens_under_both_public_prefixes(site_path):
 
     prefixed_html = prefixed.text
     assert 'action="/dados/caderno"' in prefixed_html
-    assert f'href="/dados/caderno?s={HICP}&amp;q=desemprego#pesquisa"' in prefixed_html
+    assert '<form id="notebook-batch-form" class="notebook-batch" action="/dados/pesquisa"' in prefixed_html
+    assert '<script src="/dados/static/js/selection.js" defer></script>' in prefixed_html
     assert canonical_href(prefixed_html) == f"/dados/caderno?s={HICP}&s={UNEMP}"
     assert clear_href(prefixed_html) == "/dados/caderno?q=desemprego"
     assert 'href="/dados/series/' in prefixed_html

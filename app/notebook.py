@@ -13,7 +13,14 @@ from app import discovery_selection, notebook_chart, reads
 from ingest.db import Db
 from ingest.editorial_rules import MAX_SLOTS, slot_problem
 from presentation import MissingText
-from presentation.notebook import NotebookCopy, results_text, search_empty_text, skipped_text, text
+from presentation.notebook import (
+    NotebookCopy,
+    batch_count_text,
+    results_text,
+    search_empty_text,
+    skipped_text,
+    text,
+)
 
 MAX_SELECTION = MAX_SLOTS
 MAX_QUERY = 200
@@ -103,6 +110,9 @@ class NotebookPage:
     max_selection: int
     query: str
     results: tuple[NotebookResult, ...]
+    batch_hidden: tuple[str, ...]
+    batch_chart_fields: tuple[tuple[str, str], ...]
+    batch_selection_text: str
     canonical_path: str
     catalogue_path: str
     clear_path: str | None
@@ -209,6 +219,12 @@ def page(db: Db, selection: tuple[str, ...], query: str = "", *,
             results.append(NotebookResult(row=row, selected=row.id in addressed_set,
                                           action_path=path))
 
+    # A result already visible as a checkbox owns its own `s` value. Only addressed references
+    # without a visible result travel hidden, so unchecking a visible member really removes it.
+    visible_result_ids = {result.row.id for result in results}
+    batch_hidden = tuple(series_id for series_id in selection
+                         if series_id not in visible_result_ids)
+
     copy_text = text(lang)
     skipped = len(selection) - len(valid_ids)
     chart_panel = notebook_chart.prepare(db, selection, cards_by_id, settings, lang=lang)
@@ -235,6 +251,9 @@ def page(db: Db, selection: tuple[str, ...], query: str = "", *,
         max_selection=MAX_SELECTION,
         query=query,
         results=tuple(results),
+        batch_hidden=batch_hidden,
+        batch_chart_fields=tuple(discovery_selection.chart_form_params(settings)),
+        batch_selection_text=batch_count_text(lang, len(selection)),
         canonical_path=canonical_path,
         catalogue_path=catalogue_path(selection, settings),
         clear_path=(selection_path((), query,

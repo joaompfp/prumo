@@ -48,7 +48,7 @@
       <h2 id="selecao-referencias">Seleção</h2>
       <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
     </div>
-    <p class="sr-only" id="selecao-ajuda">Marque resultados e abra o Caderno. Até 12 indicadores, com 6 no gráfico.</p>
+    <p class="sr-only" id="selecao-ajuda">Marque séries e abra o Caderno. Até 12 séries, com 6 no gráfico.</p>
     {% if page.selection_duplicate_notice %}<p class="note" role="status">{{ page.selection_duplicate_notice }}</p>{% endif %}
     {% if page.selection_limit_notice %}<p class="selection-warning" role="status">{{ page.selection_limit_notice }}</p>{% endif %}
     {% if page.selection_chart_notice %}<p class="note">{{ page.selection_chart_notice }}</p>{% endif %}
@@ -77,6 +77,12 @@
   <section class="discovery-results" aria-labelledby="resultados">
     <h2 id="resultados" class="sr-only">Séries</h2>
     {% if page.rows %}
+    <div class="discovery-selection-bar">
+      <p class="selection-instruction">Marque os resultados que quer juntar no Caderno. Até 12 séries; 6 no gráfico.</p>
+      <p class="selection-live" role="status" aria-live="polite" data-selection-count-text>{% if page.selection_count == 1 %}1 selecionada{% else %}{{ format_count(page.selection_count) }} selecionadas{% endif %}</p>
+      <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
+    </div>
+    <noscript><p class="note">Sem JavaScript, a contagem muda quando envia o formulário.</p></noscript>
     {% with rows = page.rows, selection_enabled = true, selected_ids = page.selected_ids %}
     {% include "_series_results.html" %}
     {% endwith %}
@@ -101,3 +107,4 @@
 
 </form>
 {% endblock %}
+{% block scripts %}{% if page.rows %}<script src="{{ base }}{{ selection_js }}" defer></script>{% endif %}{% endblock %}

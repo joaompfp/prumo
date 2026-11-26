@@ -26,10 +26,12 @@
       <div><dt>Fonte</dt><dd>{{ row.source_title }}</dd></div>
       <div><dt>Recolhido</dt><dd>{{ row.fetched_text }}</dd></div>
     </dl>
+    {% if not selectable %}
     <p class="series-result-action">
       <a class="button-quiet" href="{{ base }}{{ notebook_path([row.id]) }}"
          aria-label="Criar caderno para {{ row.title }}">Criar caderno</a>
     </p>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>

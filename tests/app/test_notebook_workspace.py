@@ -410,17 +410,27 @@ def test_more_than_six_implicit_series_are_not_silently_plotted(tmp_path):
     assert " checked" not in form_text(html)
 
 
-def test_search_removal_and_add_links_return_to_their_work_area(site_path):
+def test_quick_search_batch_and_card_remove_return_to_their_work_area(site_path):
     html = notebook_html(site_path, f"?s={HICP}&q=desemprego")
-    add = re.search(r'href="([^"]+)">Acrescentar ao caderno</a>', html)
-    assert add is not None
-    assert add.group(1).startswith(f"/caderno?s={HICP}&amp;s={UNEMP}&amp;q=desemprego")
-    assert add.group(1).endswith("#grafico")
+    match = re.search(r'<form id="notebook-batch-form".*?</form>', html, re.S)
+    assert match is not None
+    form = match.group(0)
+    assert 'action="/pesquisa"' in form and 'name="acao" value="abrir"' in form
+    assert f'<input type="hidden" name="s" value="{HICP}">' in form
+    assert f'type="checkbox" name="s" value="{UNEMP}"' in form
+    with client(site_path) as site:
+        opened = site.get("/pesquisa", params=[
+            ("s", HICP), ("ordem", HICP), ("s", UNEMP), ("acao", "abrir")],
+            follow_redirects=False)
+    assert opened.status_code == 303
+    assert opened.headers["location"] == f"/caderno?s={HICP}&s={UNEMP}"
 
     selected = notebook_html(site_path, f"?s={HICP}&s={UNEMP}&q=desemprego")
-    remove = re.search(r'href="([^"]+)">Remover do caderno</a> <span class="badge badge-quiet">'
-                       r'Já no caderno</span>', selected)
-    assert remove is not None and remove.group(1).endswith("#pesquisa")
+    match = re.search(r'<form id="notebook-batch-form".*?</form>', selected, re.S)
+    assert match is not None
+    form = match.group(0)
+    assert re.search(rf'<input type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
+    assert form.count(f'name="s" value="{UNEMP}"') == 1
     card_remove = re.search(r'class="card-remove" href="([^"]+)"', selected)
     assert card_remove is not None and card_remove.group(1).endswith("#selecao")
     canonical = re.search(r'id="ligacao-limpa" href="([^"]+)"', selected).group(1)

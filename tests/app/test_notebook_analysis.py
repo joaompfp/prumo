@@ -660,14 +660,19 @@ def test_controls_links_and_actions_preserve_frequency_transform_and_base(tmp_pa
     assert canonical == (f"/caderno?s={GDP_PT}&s={GDP_ES}&grafico=on&g={GDP_PT}&g={GDP_ES}"
                           "&janela=5a&frequencia=anual&transformacao=base100&base=2019")
 
-    add = unescape(re.search(r'href="([^"]+)">Acrescentar ao caderno</a>', html).group(1))
-    assert "frequencia=anual" in add and "transformacao=base100" in add and "base=2019" in add
-    assert "g=ine.credit.PT" not in add
-
-    remove = unescape(re.search(r'href="([^"]+)">Remover do caderno</a>', html).group(1))
-    assert f"s={GDP_PT}" not in remove and f"s={GDP_ES}" in remove
-    assert "frequencia=anual" in remove and "transformacao=base100" in remove
-    assert "base=2019" in remove
+    batch_match = re.search(r'<form id="notebook-batch-form".*?</form>', html, re.S)
+    assert batch_match is not None
+    batch = batch_match.group(0)
+    assert 'action="/pesquisa"' in batch and 'name="acao" value="abrir"' in batch
+    assert f'<input type="hidden" name="s" value="{GDP_PT}">' in batch
+    assert f'<input type="hidden" name="s" value="{GDP_ES}">' in batch
+    assert 'name="grafico" value="on"' in batch
+    assert batch.count('name="g" value=') == 2
+    assert 'name="frequencia_grafico" value="anual"' in batch
+    assert 'name="transformacao" value="base100"' in batch
+    assert 'name="base" value="2019"' in batch
+    assert 'type="checkbox" name="s" value="ine.credit.PT"' in batch
+    assert "Acrescentar selecionadas" in visible(batch)
 
     clear = unescape(re.search(
         r'href="([^"]+)">Limpar seleção</a>', html).group(1))

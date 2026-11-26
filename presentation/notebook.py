@@ -31,9 +31,14 @@ class NotebookCopy:
     search_note: str
     results_one: str
     results_many: str
-    add_label: str
+    search_batch_col: str
+    search_batch_select: str
+    search_batch_action: str
+    search_batch_note: str
+    search_batch_count_one: str
+    search_batch_count_many: str
+    search_catalogue_label: str
     remove_label: str
-    in_notebook_label: str
     limit_reached: str
     clear_label: str
     canonical_heading: str
@@ -49,7 +54,6 @@ class NotebookCopy:
     results_col_period: str
     results_col_source: str
     results_col_fetched: str
-    results_col_notebook: str
     chart_heading: str
     chart_lede: str
     chart_period_label: str
@@ -236,9 +240,14 @@ _PT = NotebookCopy(
     search_note="Só aparecem séries que podem ser publicadas neste momento.",
     results_one="1 resultado.",
     results_many="{count} resultados.",
-    add_label="Acrescentar ao caderno",
+    search_batch_col="Incluir",
+    search_batch_select="Incluir no caderno:",
+    search_batch_action="Acrescentar selecionadas",
+    search_batch_note="Marque os resultados que quer acrescentar. Desmarque uma série já incluída para a remover.",
+    search_batch_count_one="1 referência selecionada",
+    search_batch_count_many="{count} referências selecionadas",
+    search_catalogue_label="Catálogo completo",
     remove_label="Remover do caderno",
-    in_notebook_label="Já no caderno",
     limit_reached="O caderno tem 12 séries, o máximo. Remova uma para acrescentar outra.",
     clear_label="Limpar seleção",
     canonical_heading="Guardar esta seleção",
@@ -254,7 +263,6 @@ _PT = NotebookCopy(
     results_col_period="Período",
     results_col_source="Fonte",
     results_col_fetched="Recolhido",
-    results_col_notebook="Caderno",
     chart_heading="Evolução conjunta",
     chart_lede="Compare as séries escolhidas num só gráfico. A escala, a janela, a frequência, a "
                "transformação e a base ficam guardadas nesta ligação.",
@@ -489,4 +497,12 @@ def results_text(lang: str, count: int) -> str:
     return copy.results_one if count == 1 else copy.results_many.format(count=count)
 
 
-__all__ = ["NotebookCopy", "text", "skipped_text", "search_empty_text", "results_text"]
+def batch_count_text(lang: str, count: int) -> str:
+    """The current notebook size for the one batch action, with a truthful singular."""
+    copy = text(lang)
+    return (copy.search_batch_count_one if count == 1
+            else copy.search_batch_count_many.format(count=count))
+
+
+__all__ = ["NotebookCopy", "text", "skipped_text", "search_empty_text", "results_text",
+           "batch_count_text"]

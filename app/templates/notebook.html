@@ -48,4 +48,4 @@
 </details>
 </div>
 {% endblock %}
-{% block scripts %}{% if page.chart_panel.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% endblock %}
+{% block scripts %}{% if page.chart_panel.chart_payload %}<script src="{{ base }}{{ chart_js }}" defer></script>{% endif %}{% if page.query and page.results %}<script src="{{ base }}{{ selection_js }}" defer></script>{% endif %}{% endblock %}

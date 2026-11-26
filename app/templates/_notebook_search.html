@@ -1,7 +1,7 @@
 <section class="notebook-search" aria-labelledby="pesquisa">
   <div class="section-head">
     <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
-    <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}">Escolher várias no catálogo</a>
+    <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}">{{ page.copy.search_catalogue_label }}</a>
   </div>
   <form id="notebook-search-form" class="filters" action="{{ base }}/caderno" method="get">
     {% for series_id in page.addressed %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
@@ -11,41 +11,53 @@
     </label>
     <button type="submit" formaction="{{ base }}/caderno#pesquisa">{{ page.copy.search_button }}</button>
   </form>
-  <p class="note">Pesquisa rápida neste caderno. Para escolher várias referências, use o catálogo.</p>
 
   <div class="notebook-results">
   {% if page.query %}
     {% if page.results %}
     <p class="meta">{{ page.results_notice }} {{ page.copy.search_note }}</p>
-    <table class="data-table">
-      <thead>
-        <tr><th scope="col">{{ page.copy.results_col_series }}</th><th scope="col" class="num">{{ page.copy.results_col_value }}</th><th scope="col">{{ page.copy.results_col_period }}</th><th scope="col">{{ page.copy.results_col_source }}</th><th scope="col">{{ page.copy.results_col_fetched }}</th><th scope="col">{{ page.copy.results_col_notebook }}</th></tr>
-      </thead>
-      <tbody>
-        {% for result in page.results %}
-        <tr>
-          <td data-label="{{ page.copy.results_col_series }}">{{ result.row.title }}<span class="row-meta">{{ result.row.geography_text }} · {{ result.row.frequency_text }}</span></td>
-          <td data-label="{{ page.copy.results_col_value }}" class="num">{{ result.row.value_display }} <span class="unit">{{ result.row.unit_text }}</span>{% if result.row.status_text %}<span class="flag">{{ result.row.status_text }}</span>{% endif %}</td>
-          <td data-label="{{ page.copy.results_col_period }}">{{ result.row.period_text }}</td>
-          <td data-label="{{ page.copy.results_col_source }}">{{ result.row.source_title }}</td>
-          <td data-label="{{ page.copy.results_col_fetched }}">{{ result.row.fetched_text }}</td>
-          <td data-label="{{ page.copy.results_col_notebook }}">
-            {% if result.selected %}
-            <a href="{{ base }}{{ result.action_path }}#pesquisa">{{ page.copy.remove_label }}</a> <span class="badge badge-quiet">{{ page.copy.in_notebook_label }}</span>
-            {% elif result.action_path %}
-            <a href="{{ base }}{{ result.action_path }}#grafico">{{ page.copy.add_label }}</a>
-            {% else %}
-            <span class="note">{{ page.copy.limit_reached }}</span>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <form id="notebook-batch-form" class="notebook-batch" action="{{ base }}/pesquisa" method="get">
+      <input type="hidden" name="acao" value="abrir">
+      {# Addressed references without a visible result remain selected. A visible member emits
+         only its checkbox: unchecking it must remove the reference, never leave a hidden copy. #}
+      {% for series_id in page.batch_hidden %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+      {% for series_id in page.addressed %}<input type="hidden" name="ordem" value="{{ series_id }}">{% endfor %}
+      {% for name, value in page.batch_chart_fields %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+      <div class="notebook-batch-bar">
+        <p class="selection-instruction">{{ page.copy.search_batch_note }}</p>
+        <p class="selection-live" role="status" aria-live="polite" data-selection-count-text>{{ page.batch_selection_text }}</p>
+        <button type="submit" class="button">{{ page.copy.search_batch_action }}</button>
+      </div>
+      {% if page.at_limit %}<p class="selection-warning" role="status">{{ page.copy.limit_reached }}</p>{% endif %}
+      <div class="notebook-table-scroll">
+        <table class="data-table notebook-batch-table">
+          <thead>
+            <tr><th scope="col">{{ page.copy.search_batch_col }}</th><th scope="col">{{ page.copy.results_col_series }}</th><th scope="col" class="num">{{ page.copy.results_col_value }}</th><th scope="col">{{ page.copy.results_col_period }}</th><th scope="col">{{ page.copy.results_col_source }}</th><th scope="col">{{ page.copy.results_col_fetched }}</th></tr>
+          </thead>
+          <tbody>
+            {% for result in page.results %}
+            <tr class="notebook-result-row{% if result.selected %} is-selected{% endif %}" data-selection-row>
+              <td data-label="{{ page.copy.search_batch_col }}" class="selection-cell">
+                <label class="notebook-result-select">
+                  <input type="checkbox" name="s" value="{{ result.row.id }}"{% if result.selected %} checked{% endif %}>
+                  <span class="sr-only">{{ page.copy.search_batch_select }} {{ result.row.title }}</span>
+                </label>
+              </td>
+              <td data-label="{{ page.copy.results_col_series }}">{{ result.row.title }}<span class="row-meta">{{ result.row.geography_text }} · {{ result.row.frequency_text }}</span></td>
+              <td data-label="{{ page.copy.results_col_value }}" class="num">{{ result.row.value_display }} <span class="unit">{{ result.row.unit_text }}</span>{% if result.row.status_text %}<span class="flag">{{ result.row.status_text }}</span>{% endif %}</td>
+              <td data-label="{{ page.copy.results_col_period }}">{{ result.row.period_text }}</td>
+              <td data-label="{{ page.copy.results_col_source }}">{{ result.row.source_title }}</td>
+              <td data-label="{{ page.copy.results_col_fetched }}">{{ result.row.fetched_text }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
     {% else %}
     <p class="empty-state">{{ page.search_empty_text }}</p>
     {% endif %}
-    {% if page.at_limit %}<p class="note">{{ page.copy.limit_reached }}</p>{% endif %}
+    {% if page.at_limit and not page.results %}<p class="note">{{ page.copy.limit_reached }}</p>{% endif %}
   {% else %}
   <p class="note">{{ page.copy.search_prompt }}</p>
   {% endif %}

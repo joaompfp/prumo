@@ -25,6 +25,16 @@
 .discovery-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin: 14px 0; }
 .discovery-summary p { margin: 0; }
 .discovery-summary a { font-size: inherit; }
+/* The selection action sits with the results, not only in the review box above them. */
+.discovery-selection-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
+  margin: 0 0 8px; padding: 10px 0; border-block: 1px solid var(--rule);
+}
+.discovery-selection-bar .selection-instruction { flex: 1 1 22rem; margin: 0; }
+.discovery-selection-bar .selection-live {
+  margin: 0; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.discovery-selection-bar .button { width: auto; flex: 0 0 auto; }
 /* One native form owns query, filters, results, tray and pager. The search landmark is the
    query/filter group only, so the result controls are not announced as site search. */
 .discovery-search-group { display: block; }
@@ -95,6 +105,7 @@
 }
 .series-result > * { min-width: 0; }
 .series-result:hover { background: var(--accent-soft); }
+.series-result.is-selected { background: var(--accent-soft); box-shadow: inset 4px 0 0 var(--accent); }
 .series-result-title { margin: 0; font-family: inherit; font-size: inherit; line-height: 1.25; }
 .series-result-title a { color: var(--ink); text-decoration-color: var(--rule-strong); }
 .series-result-title a:hover { color: var(--accent); }
@@ -119,6 +130,8 @@
   .series-result-action .button-quiet { width: auto; }
 }
 @media (max-width: 600px) {
+  .discovery-selection-bar { align-items: stretch; }
+  .discovery-selection-bar .button { width: 100%; }
   .series-result-action { justify-content: flex-start; }
   .series-result-action .button-quiet { width: 100%; }
   .series-result-select { width: 100%; }
@@ -129,6 +142,9 @@
 }
 @media print {
   /* The one native form contains the printed results too: hide only its controls. */
-  .discovery-query, .discovery-filters, .series-result-action, .discovery-selection,
-  .discovery-pager, .series-result-select, #discovery-form button { display: none; }
+  .discovery-query, .discovery-filters, .discovery-selection, .discovery-selection-bar,
+  .series-result-action, .discovery-pager, .series-result-select, #discovery-form button {
+    display: none;
+  }
+  .series-result.is-selected { background: transparent; box-shadow: none; }
 }
