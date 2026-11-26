@@ -1,13 +1,15 @@
 {# Selection is an explicit opt-in context: theme pages keep their individual entry and never
    render an orphan checkbox or a second form owner. #}
 {% set selectable = selection_enabled|default(false) %}
+{% set chosen = selected_ids|default((), true) %}
 <ul class="series-results"{% if selectable %} data-selection="true"{% endif %}>
   {% for row in rows %}
-  <li class="series-result">
+  {% set is_selected = selectable and row.id in chosen %}
+  <li class="series-result{% if is_selected %} is-selected{% endif %}"{% if selectable %} data-selection-row{% endif %}>
     <div class="series-result-heading">
       {% if selectable %}
       <label class="series-result-select">
-        <input type="checkbox" name="s" value="{{ row.id }}"{% if row.id in selected_ids %} checked{% endif %}>
+        <input type="checkbox" name="s" value="{{ row.id }}"{% if row.id in chosen %} checked{% endif %}>
         <span>Selecionar</span><span class="sr-only"> {{ row.title }}</span>
       </label>
       {% endif %}

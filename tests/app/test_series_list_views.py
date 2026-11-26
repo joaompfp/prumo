@@ -130,7 +130,7 @@ def _squash(value):
 
 
 def _series_row(html, series_id):
-    blocks = re.findall(r'<li class="series-result">.*?</li>', html, re.S)
+    blocks = re.findall(r'<li class="series-result[^"]*"[^>]*>(.*?)</li>', html, re.S)
     matches = [block for block in blocks if f'href="/series/{series_id}"' in block]
     assert len(matches) == 1, series_id
     return _squash(matches[0])

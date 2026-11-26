@@ -50,10 +50,13 @@ SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "no-referrer",
 }
-# Only successful detail responses that actually carry a chart payload get this; summaries,
-# errors, exports and the backoffice keep the no-script policy above.
-CHART_CSP = (SECURITY_HEADERS["Content-Security-Policy"]
-             + "; script-src 'self'; script-src-attr 'none'")
+# Only successful responses that actually carry a local executable asset get this; summaries,
+# errors, exports and the backoffice keep the no-script policy above. The chart bundle and the
+# small progressive selection enhancement share one policy: local source only, no attributes.
+SCRIPT_CSP = (SECURITY_HEADERS["Content-Security-Policy"]
+              + "; script-src 'self'; script-src-attr 'none'")
+# The chart-only name is the installed contract used by the chart routes and their tests.
+CHART_CSP = SCRIPT_CSP
 
 
 log = logging.getLogger("prumo.app")
