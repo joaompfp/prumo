@@ -284,6 +284,7 @@
     row-gap: 3px;
     padding-block: 2px;
   }
+  .brand { justify-self: start; min-height: 54px; max-width: calc(100% - 110px); }
   .brand-name { font-size: 1.45rem; }
   .site-nav {
     display: grid;

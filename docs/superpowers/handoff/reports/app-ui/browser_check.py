@@ -61,6 +61,13 @@ def main():
                         nav_size = page.locator('.app-nav-link').first.evaluate('(e) => parseFloat(getComputedStyle(e).fontSize)')
                         check('nav reading scale preserved', nav_size >= 26.64)
                         more = page.locator('.app-more')
+                        check('utility never covers task navigation', page.evaluate('''() => {
+                            const u=document.querySelector('.app-more > summary').getBoundingClientRect();
+                            return [...document.querySelectorAll('.app-nav-link')].every(e => {
+                                const r=e.getBoundingClientRect();
+                                return r.right<=u.left || r.left>=u.right || r.bottom<=u.top || r.top>=u.bottom;
+                            });
+                        }'''))
                         more.locator('summary').click()
                         check('native more panel opens', more.get_attribute('open') is not None)
                         check('open menu stays within viewport', more.locator('.app-panel').evaluate('(e) => { const r=e.getBoundingClientRect(); return r.x>=-1 && r.right<=innerWidth+1 }'))
