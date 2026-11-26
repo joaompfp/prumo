@@ -1,6 +1,14 @@
 # Prumo image and ingestion operations
 
-## Current public interface: four-significant-figure display
+## Current public interface: finding, collecting and inspecting indicators
+
+Owner-authorized runtime/main `17b65de` is installed on f0nix from 26/11/2026 10:26 UTC. Native catalogue multi-selection retains query/filter/pager state, Caderno chart settings and existing selection order; subject titles help complete catalogue discovery. The selected-period control/readout follows each plot directly, with source/definition metadata in a native disclosure, including static/print fallbacks. Comparison composition remains authored and deliberately published through Admin. Four significant figures and exact original values, coordinates and CSV are unchanged.
+
+Exact-runtime hosted CI `45799922931`: 3,397 passed, 29 skipped/seven live deselected; fresh clean-checkout affected gate 149 and broader ruff passed. Final isolated browser 996 and installed full recheck 995 passed; nine real editors/static analytical preview 54, homepage preview 13, state/access 36. The initial installed console failure (one empty-MIME stylesheet response) and successful independent refetch/full retry are retained with cause unestablished. Ten before/after routes and six CSV bodies preserve original coordinates/exports except the single export-clock record. Initial observation completed at 10:41:39 UTC after 900.037206 seconds/30 matching samples, healthy with zero restarts; the final 36 state/access checks passed again. The redundant local whole-suite repetition was stopped at 64% after the exact hosted full offline gate and clean-commit/browser gates passed; its partial receipt is not counted as a completed pass.
+
+Only web/static-preview Admin changed, healthy/zero restarts. Full worker baseline, schema/migrations, homepage and CMS/history hashes match before/after activation. No migration, live source/CMS write, rights/ownership or authentication/edge operation ran. Recovery checkout `3b29735` and exact old reader tags `rollback-analysis-loop-20261126T101812Z`; stop only the affected bind-mounted public reader before restoring its checkout, preserve data/history/worker, and use the existing aliases. Do not blindly rerun dated activation helpers. [Installed record and receipts](../superpowers/handoff/reports/analysis-loop/installed.md). Operator directory: `/home/joao/prumo-operations/analysis-loop-release-20261126T101812Z`.
+
+## Previous public interface: four-significant-figure display
 
 Main/runtime `63662ba` is installed on f0nix from 2026-11-25 20:09 UTC, following the owner's refinement of the authorized display correction. Reader values use at most four significant figures, Decimal HALF_UP and Portuguese separators. Decimal places follow magnitude; small nonzero values remain numeric. Source tokens, calculations, coordinates, original evidence and CSV retain precision; counts/dates/identifiers remain exact. Full policy: [numeric display](numeric-display.md).
 

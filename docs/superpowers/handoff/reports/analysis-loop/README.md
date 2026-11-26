@@ -26,7 +26,7 @@ The post-review focused gate passed 84 tests, including actual chart interaction
 
 `browser_check.py` exercises populated chart pages at 320, 390, 768, 1440 and 1920 pixels on both public prefixes. It covers adjacent controls, exact keyboard point strings, native missing cells, preserved fonts, metadata, print, blocked/no-JavaScript fallbacks, actual compiled asset bytes and native selection/search/pager journeys with and without JavaScript. Neutral captures clear the tooltip before capture and assert scrollY=0; earlier active screenshots are not neutral geometry evidence. Public source CSV and original coordinates are outside the behavioral delta.
 
-Final release, clean-commit/hosted gates, installed checks and recovery will be recorded in `installed.md` after execution. Human screen-reader acceptance and the separate source/worker operating gates remain open.
+Final release, clean-commit/hosted gates, installed checks and recovery are in [installed.md](installed.md). Exact-runtime CI passed 3,397 tests and the clean committed checkout passed 149 affected tests. The additional full local repetition was stopped at 64% after those completed gates; its partial receipt is retained without a fabricated pass. Human screen-reader acceptance and the separate source/worker operating gates remain open.
 
 ## Next product slice
 

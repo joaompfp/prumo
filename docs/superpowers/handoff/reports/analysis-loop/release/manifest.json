@@ -1,0 +1,298 @@
+{
+  "runtime": "17b65dec4f78224f80cdc83b31364eed9c4f2bd0",
+  "artifacts": [
+    {
+      "archive": "activated-images.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/activated-images.json",
+      "raw_sha256": "6bbc137b18c50b3e23fe1968010425b7c2b19aab1e285f0ed1a10aaeb9656189",
+      "archive_sha256": "1a8b01122d570086bd8a4a9790040a1bab4b64ea0e3f29c09e358f9482a94833"
+    },
+    {
+      "archive": "admin.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/admin.json",
+      "raw_sha256": "fe220bf0fc17553b73707fa5fa2b1e5ec8b0ab379e769422401e87be54936fcb",
+      "archive_sha256": "4dd681f952164a0b448acaad950b60ed19dc9864585b05c8a6e82dc5e5090055"
+    },
+    {
+      "archive": "asset-retry.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/asset-retry.json",
+      "raw_sha256": "fa6d548d85d383ca20bb3226bbef7c0c9dc9e6c6da2f85c3c1651581c2879456",
+      "archive_sha256": "c046d1e27ceab3b99c391d37ef594620d482d87a50c82ba92705b37f8ef75410"
+    },
+    {
+      "archive": "ci.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/ci.json",
+      "raw_sha256": "d3e942dba4ec60702924c07663eb82a788143f1d1871ed24cc861acedb4aae62",
+      "archive_sha256": "b7712ac91571ba3b13b7f052369e2d99bc2ef26e6a88a3607f021adb4ef19073"
+    },
+    {
+      "archive": "during-observation.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/during-observation.json",
+      "raw_sha256": "161aade7724ca29c7d743a0ddcc58fb4c564b2c9a0e806e20b705083cde5d05e",
+      "archive_sha256": "a1d5fa7805e8a9dc4900110fb116ec16e5bbd7e905360d5d7bde52e042b5aafc"
+    },
+    {
+      "archive": "local-repetition-disposition.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/local-repetition-disposition.json",
+      "raw_sha256": "a2117cd98565ccbddc64de3895563a2ba91bdbb47ed63d19c28f680a02d52bf5",
+      "archive_sha256": "3494b2904ac49d244430281a781199e35a1f72004e6180277d993b0ed274745f"
+    },
+    {
+      "archive": "observation.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/observation.json",
+      "raw_sha256": "bb54198e9efb5f4b85192492448812aa537fbdbb4bd8bf4d18351a7f11536a58",
+      "archive_sha256": "08c2f9324fe294d393b1dab74c70823d3a936520108c6a5c770ad422cc1b76a5"
+    },
+    {
+      "archive": "post-install.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/post-install.json",
+      "raw_sha256": "80a19f363defceee2e03620e4ef75dc12ef68fc444c9e649efabd1ea86338ddc",
+      "archive_sha256": "4c7b09845195522558caae5378284a7db2a8e5c2b9bc4c61afc4909cc4828765"
+    },
+    {
+      "archive": "post-observation.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/post-observation.json",
+      "raw_sha256": "feb676ed0023e3d036ff2e592ab095aec730144243ad358adff268ed42efb237",
+      "archive_sha256": "975bcefa76b2a869091afdc65436f569ab37b77ae3c05ac6b38d574831ad0fec"
+    },
+    {
+      "archive": "post-prebuild.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/post-prebuild.json",
+      "raw_sha256": "1204ee8f30772e89549779374dca2fd379850dd1e60e236baef6d530f6a7c1b8",
+      "archive_sha256": "20215d31c0653b78e440af037182ce5c06286cd15d35aa9d65dee9a2a0e7c692"
+    },
+    {
+      "archive": "pre-activation.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/pre-activation.json",
+      "raw_sha256": "9ff4644a67eaf46cd53fd98c97a7c7a22d4e36b51d7468b0139c2c3386bcdb6d",
+      "archive_sha256": "9df11adaf5380f3d8d6b3e7029cc3443ace482c58b8f76bc100a4a6ed6b8801a"
+    },
+    {
+      "archive": "pre-closeout.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/pre-closeout.json",
+      "raw_sha256": "57d0cefc2a5429731e12470fbe1a422a75611242f030ea199be28a22a7e2121b",
+      "archive_sha256": "4f009719faff3a089f4f7e6bdecc83751104ce581ba2cdf019c6f8078d54ac84"
+    },
+    {
+      "archive": "pre-install.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/pre-install.json",
+      "raw_sha256": "a850cccdb83b9800ea193ad5dc71fa545a1fa3d5deac79d05f8c6d8be9d2ea4f",
+      "archive_sha256": "4960300aedb17879d0161fe551ee3880156566542a54168d3576c324c6ed298f"
+    },
+    {
+      "archive": "preview.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/preview.json",
+      "raw_sha256": "66d18206e29b85491f17015b150b1ef83674a6f7e8bae4491752e12ba85bc68e",
+      "archive_sha256": "25791f4baaedb4abf3983d17f199479f4ff7b02b653410eefb874d94f6892334"
+    },
+    {
+      "archive": "activation.log.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/activation.log",
+      "raw_sha256": "78cd863d75ee49f90fc6a871079552e46dd3d43c757c5e440fbbfbb33d5afe80",
+      "archive_sha256": "241560701bd814ef1ada1db9c532aec5acb45519014b7cc17c6baa0ce51e3c56"
+    },
+    {
+      "archive": "ci-watch.log.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/ci-watch.log",
+      "raw_sha256": "b2d28db9b0a294e0ed75bc46ac9da63b49f34eadede99812c3b2f5e0063e4b32",
+      "archive_sha256": "5aa6e5bef5d259250426a96318baab62e54251b505c07d2a569b21f6fb6ffb11"
+    },
+    {
+      "archive": "ci.log.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/ci.log",
+      "raw_sha256": "5e776c3155c61095b4fd8fa150d123cd9bf21efe3ec2d24ef825ae3ce35415e5",
+      "archive_sha256": "7a01dadedac560f1bea019873705066e967212b7b90e2fe3da31d5858bc14fed"
+    },
+    {
+      "archive": "prebuild.log.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/prebuild.log",
+      "raw_sha256": "b0ce0ca8cc3cdaa2c043b64e94a18d7b10f63c9a78a40b254aec2a6025b143c1",
+      "archive_sha256": "1e1256bc4cdcac6e92bb86352536dd1ae034dadf372d8e773670ca9d82158000"
+    },
+    {
+      "archive": "browser-installed-receipt.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/browser-installed/receipt.json",
+      "raw_sha256": "f520b5c336a572e8e31f62676865e81dade6f29a22f9fdbf70bd763356ac7d20",
+      "archive_sha256": "565f0b4470771ee3665824f9b63c74a0c1f4b42d305567fbfc88de4f6eb18ee2"
+    },
+    {
+      "archive": "browser-recheck-receipt.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/browser-recheck/receipt.json",
+      "raw_sha256": "90ea95e67c75cea84de9d055f1848726a44e6e31c13f5680438c68269bf691d9",
+      "archive_sha256": "2a858c4285b456ffae2f048ab7e376764305a6472242c3bad40ff6fde4a7b63b"
+    },
+    {
+      "archive": "public-before-receipt.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-before/receipt.json",
+      "raw_sha256": "f759087d619964a0c596075969d2f0fd536cfd8934f7f687eeab767e0c8852f6",
+      "archive_sha256": "8429fa963d5043d75d40f6e60d20d45dfb25612fb6d11aa873a2637d4a4606e0"
+    },
+    {
+      "archive": "public-after-receipt.json.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-after/receipt.json",
+      "raw_sha256": "d2c23f3607934ac170753ff93583a1d6e581bb530ac6bd228ed9a0407a1a9726",
+      "archive_sha256": "491596d2cc2d5ea3afedad030916cb600e3912cc40497529eb790330bb922534"
+    },
+    {
+      "archive": "clean-commit.log.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-20261126/clean-commit.log",
+      "raw_sha256": "cf2cac9f094d6b1865cf60e7b162b17155c48a93bb40f73b7c78b5d8c9313e4c",
+      "archive_sha256": "c9c2a0db525c9a14670c703e8bcfdc69956a05f90283117950b8f8c4f3f39a9f"
+    },
+    {
+      "archive": "additional-local-full-partial.log.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-20261126/final-full.log",
+      "raw_sha256": "0c2ec727741470f95e2ef3e5728b3b8c0d063300f5e3d94a8a4c5065cb841a63",
+      "archive_sha256": "47a077e23e609b57e667094bfefd24fea9a4e3ed2a4735f42a8cb837f2deee43"
+    },
+    {
+      "file": "activate.sh",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/activate.sh",
+      "sha256": "73bed6816c69afaa9f6431887532ef89ff491b66439ab601e6f4d80cac392ea5"
+    },
+    {
+      "file": "admin_probe.py",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/admin_probe.py",
+      "sha256": "faaa65464e5f43bd81b6eaff1edcb87c21123d224961bdd4741559af893299fa"
+    },
+    {
+      "file": "closeout.py",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/closeout.py",
+      "sha256": "56564ad8b024a1f3ca1239f84b37b87e9908d3840c90a32fbc69486ce6f0ddd2"
+    },
+    {
+      "file": "observe.py",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/observe.py",
+      "sha256": "627ff2c34311fc71ee276fef82b135bd0367ee73f5e716488749db22cb323cb3"
+    },
+    {
+      "file": "prebuild.sh",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/prebuild.sh",
+      "sha256": "663291b6155a312c4390d5708a863e3e8aaeac0d36215d275cd4c29a854f03be"
+    },
+    {
+      "file": "preview_probe.py",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/preview_probe.py",
+      "sha256": "ff562e397dfc15adc186256ff6631031f89305b7550e6a653652c3d5a39ce5e7"
+    },
+    {
+      "file": "production_probe.py",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/production_probe.py",
+      "sha256": "7c9b2e515e83d2e73ac95731a2d562c20f123a461f73765807fcc716dd242bcb"
+    },
+    {
+      "archive": "public-before-0-0.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-before/0-0.csv",
+      "raw_sha256": "79fc9b5c85fbf2bce8fac1b81f43269168fdeccb9794ea127c620cd2b0d7f2d0",
+      "archive_sha256": "3b72cc397e52266faad3e48c4c6b4c63778c71f7524e72aa41ccc472d3d81837"
+    },
+    {
+      "archive": "public-before-0-1.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-before/0-1.csv",
+      "raw_sha256": "69fdb716e56e5083db587f35d5a9851b392e72ae2a8e1ce88309ada8c2258475",
+      "archive_sha256": "08cf9f94068d4fbbb8023b9ff3a3be199f8c1fedde51ee8cb24430d5d0937c4a"
+    },
+    {
+      "archive": "public-before-0-2.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-before/0-2.csv",
+      "raw_sha256": "eed15e371826e52e57c0105d80fc9dbb5a9ae92bce02f39c4b062c0c4acaa8ff",
+      "archive_sha256": "125d1d15cbf6612f6e725fe53800553c41c47bfe15f6df084223386d32e9c2b5"
+    },
+    {
+      "archive": "public-before-1-0.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-before/1-0.csv",
+      "raw_sha256": "79fc9b5c85fbf2bce8fac1b81f43269168fdeccb9794ea127c620cd2b0d7f2d0",
+      "archive_sha256": "3b72cc397e52266faad3e48c4c6b4c63778c71f7524e72aa41ccc472d3d81837"
+    },
+    {
+      "archive": "public-before-1-1.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-before/1-1.csv",
+      "raw_sha256": "69fdb716e56e5083db587f35d5a9851b392e72ae2a8e1ce88309ada8c2258475",
+      "archive_sha256": "08cf9f94068d4fbbb8023b9ff3a3be199f8c1fedde51ee8cb24430d5d0937c4a"
+    },
+    {
+      "archive": "public-before-1-2.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-before/1-2.csv",
+      "raw_sha256": "eed15e371826e52e57c0105d80fc9dbb5a9ae92bce02f39c4b062c0c4acaa8ff",
+      "archive_sha256": "125d1d15cbf6612f6e725fe53800553c41c47bfe15f6df084223386d32e9c2b5"
+    },
+    {
+      "archive": "public-after-0-0.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-after/0-0.csv",
+      "raw_sha256": "8cced1b15df3217b705283fa9ea1ffa5a41ae9ef164d7a8e349040a141b954f4",
+      "archive_sha256": "ccc9ad938045273e86385f5cda7b50f2389e84d36a60a28265f3c6dc71dab5f9"
+    },
+    {
+      "archive": "public-after-0-1.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-after/0-1.csv",
+      "raw_sha256": "fbb75b7adf274da0263ec1c3c42f35d4c5304f15a2ec0195004473fe69cbd744",
+      "archive_sha256": "ff102871827fbc9aa6ec5d93f699fc25988b4a15f2d6086e827d8df0cd47e0ef"
+    },
+    {
+      "archive": "public-after-0-2.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-after/0-2.csv",
+      "raw_sha256": "6acf2d7fd990e515fe057d8da253c16a6c564221543f98f0259b37706048a11e",
+      "archive_sha256": "3e7ec40c51c2af1446068a54daa1c377aba4d2cb09087720266d73a151a57f85"
+    },
+    {
+      "archive": "public-after-1-0.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-after/1-0.csv",
+      "raw_sha256": "8cced1b15df3217b705283fa9ea1ffa5a41ae9ef164d7a8e349040a141b954f4",
+      "archive_sha256": "ccc9ad938045273e86385f5cda7b50f2389e84d36a60a28265f3c6dc71dab5f9"
+    },
+    {
+      "archive": "public-after-1-1.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-after/1-1.csv",
+      "raw_sha256": "fbb75b7adf274da0263ec1c3c42f35d4c5304f15a2ec0195004473fe69cbd744",
+      "archive_sha256": "ff102871827fbc9aa6ec5d93f699fc25988b4a15f2d6086e827d8df0cd47e0ef"
+    },
+    {
+      "archive": "public-after-1-2.csv.gz",
+      "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-release-20261126T101812Z/public-after/1-2.csv",
+      "raw_sha256": "d222b32ffdacc6e9ba1a80bacecfcaa1c47087c6539db512010ee07206597ec5",
+      "archive_sha256": "e9ed9d73406734bfb91807d04442e8e6186a8f92630381fddf12c2acd1031041"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "screenshots/cae.joao.date-catalogue-390.png",
+      "sha256": "0f7dff6f66fa61c3a87e1bc1384010caa23b755c67a23197ec1a52efd0dfff11"
+    },
+    {
+      "file": "screenshots/cae.joao.date-credit-1440.png",
+      "sha256": "1e24a40e3d8f9953089ae03950ee14ebb122566d3cfca3ab5f6555965d8cd85f"
+    },
+    {
+      "file": "screenshots/cae.joao.date-credit-390.png",
+      "sha256": "d6e1cbbc3eb99bb59c370040e87f2ad286125f6a2a7ea288c9f3781f87c3df87"
+    },
+    {
+      "file": "screenshots/cae.joao.date-mixed-1440.png",
+      "sha256": "14e72a573c7f94c8dadac22b642af9203e3d1e19e49122110df3983dcd821944"
+    },
+    {
+      "file": "screenshots/cae.joao.date-mixed-390.png",
+      "sha256": "9ce9bf0dc111267de3ee500dc1107c6df6af7ce93a7fcab598a2dac2a18f9119"
+    },
+    {
+      "file": "screenshots/joao.date-catalogue-390.png",
+      "sha256": "0f7dff6f66fa61c3a87e1bc1384010caa23b755c67a23197ec1a52efd0dfff11"
+    },
+    {
+      "file": "screenshots/joao.date-mounted-credit-1440.png",
+      "sha256": "1e24a40e3d8f9953089ae03950ee14ebb122566d3cfca3ab5f6555965d8cd85f"
+    },
+    {
+      "file": "screenshots/joao.date-mounted-credit-390.png",
+      "sha256": "d6e1cbbc3eb99bb59c370040e87f2ad286125f6a2a7ea288c9f3781f87c3df87"
+    },
+    {
+      "file": "screenshots/joao.date-mounted-mixed-1440.png",
+      "sha256": "14e72a573c7f94c8dadac22b642af9203e3d1e19e49122110df3983dcd821944"
+    },
+    {
+      "file": "screenshots/joao.date-mounted-mixed-390.png",
+      "sha256": "9ce9bf0dc111267de3ee500dc1107c6df6af7ce93a7fcab598a2dac2a18f9119"
+    }
+  ]
+}
