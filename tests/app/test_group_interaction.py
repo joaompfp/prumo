@@ -215,8 +215,26 @@ def _tip_rows(payload, index):
         for side in range(len(payload["series"]))]
 
 
+def _readout_text(payload, index):
+    return payload["periods"][index] + " - " + "; ".join(
+        payload["series"][side]["title"] + ": " + payload["display"][index][side]
+        for side in range(len(payload["series"])))
+
+
+def _no_tooltip(page):
+    return page.evaluate("""() => {
+      const tip = document.querySelector('.chart-tooltip');
+      if (!tip) return true;
+      const style = getComputedStyle(tip);
+      const box = tip.getBoundingClientRect();
+      return style.display === 'none' || style.visibility === 'hidden'
+        || style.opacity === '0' || !tip.querySelector('.chart-tip-line')
+        || !box.width || !box.height;
+    }""")
+
+
 @pytest.mark.parametrize("width", [390, 1440])
-def test_pointer_tooltip_matches_the_selected_row_at_first_mid_and_last(
+def test_pointer_matches_the_selected_row_at_first_mid_and_last(
         grouped_site, browser, width):
     context = browser.new_context(viewport={"width": width, "height": 900},
                                   device_scale_factor=1)
@@ -239,8 +257,6 @@ def test_pointer_tooltip_matches_the_selected_row_at_first_mid_and_last(
                  ("last", ink["max"] - 1, last)]
         for name, x, expected in moves:
             page.mouse.move(box["left"] + x, box["top"] + box["height"] / 2)
-            page.locator(".chart-tooltip .chart-tip-line").first.wait_for(
-                state="visible", timeout=5000)
             page.wait_for_timeout(240)
             index = int(page.locator(".chart-range").input_value())
             if expected is None:
@@ -248,7 +264,16 @@ def test_pointer_tooltip_matches_the_selected_row_at_first_mid_and_last(
             else:
                 assert index == expected, (width, name, index)
             rows = _tip_rows(payload, index)
-            assert _tip_lines(page) == rows, (width, name, index, rows)
+            if width >= 600:
+                page.locator(".chart-tooltip .chart-tip-line").first.wait_for(
+                    state="visible", timeout=5000)
+                assert _tip_lines(page) == rows, (width, name, index, rows)
+            else:
+                # A narrow viewport keeps the exact row in the persistent readout below the
+                # plot; no floating box may cover the chart.
+                assert _no_tooltip(page), (width, name)
+                assert page.locator(".chart-readout").text_content() == _readout_text(
+                    payload, index), (width, name, index)
         assert not errors
     finally:
         context.close()

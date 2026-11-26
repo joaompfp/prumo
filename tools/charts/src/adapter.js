@@ -15,6 +15,13 @@ use([LineChart, GridComponent, TooltipComponent, CanvasRenderer]);
 const VIEW_W = 880;
 const VIEW_H = 340;
 
+/* Inspection presentation policy. A floating tooltip can cover the plot on a narrow phone and
+ * is redundant beside the persistent in-flow readout there. Input capability and the page
+ * viewport decide, never one inline chart's own width: a narrow chart inside a wide desktop
+ * page keeps the desktop tooltip. Coarse pointers keep the readout even in landscape, where
+ * the viewport is wide. */
+const FLOATING_QUERY = '(min-width: 600px) and (hover: hover) and (pointer: fine)';
+
 function css(name, fallback) {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   return value || fallback;
@@ -324,7 +331,7 @@ function tooltipNode(payload, point) {
   return box;
 }
 
-function optionFor(payload, width, activePoint) {
+function optionFor(payload, width, activePoint, floatingAllowed) {
   const ink = css('--ink', '#1a1a1a');
   const red = css('--red', '#c0392b');
   const muted = css('--muted', '#524d48');
@@ -435,6 +442,9 @@ function optionFor(payload, width, activePoint) {
 
   const maps = payload.series.map((entry, index) => indexMap(payload, index));
   const formatter = (params) => {
+    // The inline presentation owns no floating content. Returning an empty tooltip keeps the
+    // axis cursor on the canvas while the complete rows stay in the persistent readout below.
+    if (!floatingAllowed()) return '';
     // The readout snaps to a union row before ECharts renders the tooltip. Prefer that same
     // row: at the extreme plot edges ECharts can pass empty or edge-clamped params, and a
     // touch must never open a tooltip for a different period than the live readout.
@@ -584,11 +594,13 @@ function enhance(root) {
   const height = stage.clientHeight;
   if (!width || !height) return;
 
+  const floatingQuery = window.matchMedia(FLOATING_QUERY);
+  let floating = floatingQuery.matches;
   let chart;
   let activePoint = payload.x.length - 1;
   try {
     chart = init(stage, null, { renderer: 'canvas', width, height });
-    chart.setOption(optionFor(payload, width, () => activePoint), true);
+    chart.setOption(optionFor(payload, width, () => activePoint, () => floating), true);
   } catch (error) {
     if (chart) {
       try { chart.dispose(); } catch (ignored) { /* fallback stays usable */ }
@@ -608,8 +620,13 @@ function enhance(root) {
   // updateAxisPointer and rewrite the row that was just chosen.
   let syncingTip = false;
   let tipTimer = 0;
+  // Touch drags scroll the page. ECharts still tracks its axis cursor while a finger is down,
+  // so its updateAxisPointer event must not rewrite the selected row until a real tap ends.
+  let touchActive = false;
+  let suppressAxisUntil = 0;
 
   function showTip(point) {
+    if (!floating) return;
     try {
       // Axis-trigger tooltips are positioned by a canvas coordinate, not by dataIndex.
       // dataIndex works for item trigger only; using it here left the visible tooltip on the
@@ -645,7 +662,7 @@ function enhance(root) {
   }
 
   function syncTip(point) {
-    if (syncingTip) return;
+    if (syncingTip || !floating) return;
     // Native pointer handling runs in the same dispatch before this deferred task. At the plot
     // edges it hides the axis tooltip even though its content was just rendered; reassert the
     // chosen point after that handler, coalescing a burst of moves into one showTip.
@@ -664,7 +681,25 @@ function enhance(root) {
     tipTimer = 0;
   }
 
+  /* One policy boundary changes both the chart presentation and the layout class. Narrow,
+   * coarse and resized-to-narrow transitions hide any floating tooltip but keep `current`
+   * and the persistent readout untouched; widening back restores the desktop tooltip at that
+   * point. The tooltip component stays enabled so its axis cursor still tracks the plot. */
+  function applyPresentation() {
+    const next = floatingQuery.matches;
+    if (next === floating) return;
+    floating = next;
+    root.classList.toggle('chart-inline-readout', !floating);
+    if (floating) {
+      showTip(current);
+    } else {
+      cancelTip();
+      try { chart.dispatchAction({ type: 'hideTip' }); } catch (ignored) { /* none shown */ }
+    }
+  }
+
   root.classList.add('chart-enhanced');
+  root.classList.toggle('chart-inline-readout', !floating);
   if (xs.length > 1) {
     range.hidden = false;
     range.max = String(xs.length - 1);
@@ -676,7 +711,7 @@ function enhance(root) {
   show(xs.length - 1, false);
 
   chart.on('updateAxisPointer', (event) => {
-    if (syncingTip) return;
+    if (syncingTip || touchActive || performance.now() < suppressAxisUntil) return;
     const info = event.axesInfo && event.axesInfo[0];
     if (!info || !finite(info.value)) return;
     show(nearest(xs, info.value), false);
@@ -718,6 +753,7 @@ function enhance(root) {
   stage.addEventListener('pointerdown', (event) => {
     if (event.pointerType === 'touch') {
       touchStart = [event.clientX, event.clientY];
+      touchActive = true;
     } else {
       const point = locate(event);
       if (point !== null) syncTip(point);
@@ -727,12 +763,37 @@ function enhance(root) {
     if (event.pointerType !== 'touch') return;
     const start = touchStart;
     touchStart = null;
+    touchActive = false;
     if (!start) return;
-    if (Math.abs(event.clientX - start[0]) > 10 || Math.abs(event.clientY - start[1]) > 10) return;
+    if (Math.abs(event.clientX - start[0]) > 10 || Math.abs(event.clientY - start[1]) > 10) {
+      // Let the axis cursor settle without letting the drag's final position select a row.
+      suppressAxisUntil = performance.now() + 150;
+      return;
+    }
     locate(event);
     showTip(current);
   }, true);
-  stage.addEventListener('pointercancel', () => { touchStart = null; }, true);
+  stage.addEventListener('pointercancel', () => {
+    touchStart = null;
+    suppressAxisUntil = performance.now() + 300;
+  }, true);
+  // A scroll gesture cancels the pointer stream, but ECharts keeps handling the raw touch
+  // stream. Track that touch until it ends so axis moves cannot select during the drag.
+  stage.addEventListener('touchstart', () => {
+    touchActive = true;
+    suppressAxisUntil = performance.now() + 300;
+  }, { capture: true, passive: true });
+  stage.addEventListener('touchmove', () => {
+    suppressAxisUntil = performance.now() + 300;
+  }, { capture: true, passive: true });
+  stage.addEventListener('touchend', () => {
+    touchActive = false;
+    suppressAxisUntil = performance.now() + 150;
+  }, { capture: true, passive: true });
+  stage.addEventListener('touchcancel', () => {
+    touchActive = false;
+    suppressAxisUntil = performance.now() + 150;
+  }, { capture: true, passive: true });
   stage.addEventListener('pointerleave', () => {
     cancelTip();
     try { chart.dispatchAction({ type: 'hideTip' }); } catch (ignored) { /* nothing shown */ }
@@ -748,11 +809,19 @@ function enhance(root) {
     const h = stage.clientHeight;
     if (!w || !h) return;
     chart.resize({ width: w, height: h });
-    chart.setOption({ grid: optionFor(payload, w, () => activePoint).grid });
+    chart.setOption({ grid: optionFor(payload, w, () => activePoint, () => floating).grid });
+    // A media-query change can arrive before the resize observer. Reconcile both here, using
+    // the already-resized plot if the presentation changes.
+    applyPresentation();
   };
   if (window.ResizeObserver) {
     const observer = new ResizeObserver(onResize);
     observer.observe(stage);
+  }
+  if (floatingQuery.addEventListener) {
+    floatingQuery.addEventListener('change', applyPresentation);
+  } else if (floatingQuery.addListener) {
+    floatingQuery.addListener(applyPresentation);
   }
 }
 

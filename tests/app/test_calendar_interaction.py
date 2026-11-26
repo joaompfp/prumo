@@ -275,6 +275,18 @@ def _tooltip_rows(page):
     return page.locator(".chart-tooltip .chart-tip-line").all_text_contents()
 
 
+def _no_tooltip(page):
+    return page.evaluate("""() => {
+      const tip = document.querySelector('.chart-tooltip');
+      if (!tip) return true;
+      const style = getComputedStyle(tip);
+      const box = tip.getBoundingClientRect();
+      return style.display === 'none' || style.visibility === 'hidden'
+        || style.opacity === '0' || !tip.querySelector('.chart-tip-line')
+        || !box.width || !box.height;
+    }""")
+
+
 SCAN = """() => {
   const stage = document.querySelector('.chart-canvas');
   const canvas = stage.querySelector('canvas');
@@ -395,8 +407,8 @@ def test_v2_pointer_tooltip_readout_and_native_gaps_are_exact(browser, synthetic
         context.close()
 
 
-def test_v2_touch_and_keyboard_open_the_union_tooltip_when_most_sides_are_null(browser,
-                                                                               synthetic_site):
+def test_v2_touch_and_keyboard_keep_the_union_readout_inline_when_most_sides_are_null(browser,
+                                                                                     synthetic_site):
     context, page, errors = _open(browser, synthetic_site.url + "/valid.html", touch=True)
     try:
         payload = _payload(page)
@@ -409,7 +421,8 @@ def test_v2_touch_and_keyboard_open_the_union_tooltip_when_most_sides_are_null(b
         assert state["value"] == 2
         assert state["vt"] == payload["periods"][2]
         assert state["readout"] == expected_readout(EXPECTED_ROWS[2])
-        assert _tooltip_rows(page) == EXPECTED_ROWS[2]
+        assert _tooltip_rows(page) == []
+        assert _no_tooltip(page)
         assert page.evaluate("() => window.scrollY") == scroll_before
         assert "null" not in state["readout"] and "undefined" not in state["readout"]
 
@@ -427,7 +440,8 @@ def test_v2_touch_and_keyboard_open_the_union_tooltip_when_most_sides_are_null(b
         assert state["readout"] == expected_readout(EXPECTED_ROWS[2])
         assert state["live"] == state["readout"]
         _expect_rows(_structured(page), payload, 2)
-        assert _tooltip_rows(page) == EXPECTED_ROWS[2]
+        assert _tooltip_rows(page) == []
+        assert _no_tooltip(page)
         assert not errors
     finally:
         context.close()

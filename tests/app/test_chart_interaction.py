@@ -1,11 +1,13 @@
-"""Real-browser regression for chart point selection, tooltip completeness and mobile width.
+"""Real-browser regression for chart point selection, tooltip presentation and mobile width.
 
 Ground truth is the painted chart, not a guessed canvas fraction: the leftmost and rightmost
 dark pixels of the first series are the drawn first and last periods. A pointer or a touch on
 those pixels must read those periods, the padding around the plot must clamp to the same two
-ends, and the keyboard must reach the same values. The tooltip is a DOM node whose rows must
-carry the exact prepared strings and whose box must stay inside the canvas. Nothing here reads
-ECharts internals or patches the DOM/library.
+ends, and the keyboard must reach the same values. Desktop fine pointers get a DOM tooltip whose
+rows carry the exact prepared strings and whose box stays inside the canvas. Narrow viewports
+and coarse pointers instead get those same rows in the persistent readout directly below the
+plot, with no floating box covering it. Nothing here reads ECharts internals or patches the
+DOM/library.
 
 Skipped when Playwright or a cached Chromium is absent; the rest of the suite is unaffected.
 """
@@ -175,6 +177,39 @@ READ = """() => ({
   controlsW: document.querySelector('.chart-controls').getBoundingClientRect().width
 })"""
 
+INLINE = """() => {
+  const shell = document.querySelector('.chart-shell');
+  const plot = document.querySelector('.chart-wrap').getBoundingClientRect();
+  const controls = document.querySelector('.chart-controls').getBoundingClientRect();
+  const readout = document.querySelector('.chart-readout').getBoundingClientRect();
+  const range = document.querySelector('.chart-range').getBoundingClientRect();
+  return {
+    classed: shell.classList.contains('chart-inline-readout'),
+    plotBottom: plot.bottom,
+    controlsTop: controls.top,
+    readoutTop: readout.top,
+    readoutWidth: readout.width,
+    controlsWidth: controls.width,
+    rangeTop: range.top,
+    font: parseFloat(getComputedStyle(document.querySelector('.chart-readout')).fontSize),
+    scrollW: document.documentElement.scrollWidth,
+    innerW: window.innerWidth
+  };
+}"""
+
+
+def assert_inline_inspector(page):
+    """The persistent readout is full width and immediately below the plot, with no overlay."""
+    assert page.evaluate(TOOLTIP) is None
+    metrics = page.evaluate(INLINE)
+    assert metrics["classed"] is True, metrics
+    assert metrics["readoutTop"] >= metrics["plotBottom"] - 1, metrics
+    assert metrics["readoutTop"] - metrics["plotBottom"] <= 8, metrics
+    assert metrics["readoutWidth"] >= metrics["controlsWidth"] - 1, metrics
+    assert metrics["rangeTop"] >= metrics["readoutTop"] - 1, metrics
+    assert metrics["scrollW"] <= metrics["innerW"] + 1, metrics
+    return metrics
+
 READOUT = """() => ({
   text: document.querySelector('.chart-readout').textContent,
   period: (document.querySelector('.chart-readout-period') || {}).textContent || '',
@@ -192,10 +227,17 @@ READOUT = """() => ({
 
 TOOLTIP = """() => {
   const tip = document.querySelector('.chart-tooltip');
-  if (!tip || getComputedStyle(tip).display === 'none') return null;
+  if (!tip) return null;
+  const style = getComputedStyle(tip);
+  // ECharts hides the tooltip with visibility/opacity, and keeps an empty zero-height node
+  // even when the policy disables it.
+  if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0')
+    return null;
+  const rows = [...tip.querySelectorAll('.chart-tip-line')].map(el => el.textContent);
   const box = tip.getBoundingClientRect();
+  if (!rows.length || !box.width || !box.height) return null;
   const canvas = document.querySelector('.chart-canvas').getBoundingClientRect();
-  return {rows: [...tip.querySelectorAll('.chart-tip-line')].map(el => el.textContent),
+  return {rows,
           left: box.left - canvas.left, right: box.right - canvas.left,
           top: box.top - canvas.top, bottom: box.bottom - canvas.top,
           width: canvas.width, height: canvas.height};
@@ -223,8 +265,8 @@ def _payload(page):
         "() => document.querySelector('script.chart-data').textContent"))
 
 
-def _open(browser, url, width, *, touch=False):
-    context = browser.new_context(viewport={"width": width, "height": 900},
+def _open(browser, url, width, *, height=900, touch=False):
+    context = browser.new_context(viewport={"width": width, "height": height},
                                   device_scale_factor=1, has_touch=touch, is_mobile=touch)
     page = context.new_page()
     errors = []
@@ -267,14 +309,19 @@ def test_pointer_reads_the_period_painted_under_it(browser, site_url, width):
             assert state["vt"] == payload["periods"][index]
             assert state["readout"] == readout_text(payload, index)
 
-        # The tooltip at the middle of the painted span carries the prepared strings whole.
+        # Desktop fine pointers keep the complete floating tooltip. Narrow viewports keep the
+        # same exact readout in flow; a floating box there would cover the plot being read.
         _move(page, box, (ink["min"] + ink["max"]) / 2)
         tip = page.evaluate(TOOLTIP)
         index = page.evaluate(READ)["value"]
-        assert tip is not None
-        assert tip["rows"] == tooltip_rows(payload, index)
-        assert tip["left"] >= -1 and tip["right"] <= tip["width"] + 1
-        assert tip["top"] >= -1 and tip["bottom"] <= tip["height"] + 1
+        if width >= 600:
+            assert tip is not None
+            assert tip["rows"] == tooltip_rows(payload, index)
+            assert tip["left"] >= -1 and tip["right"] <= tip["width"] + 1
+            assert tip["top"] >= -1 and tip["bottom"] <= tip["height"] + 1
+        else:
+            assert_inline_inspector(page)
+            assert page.evaluate(READ)["readout"] == readout_text(payload, index)
 
         # The footer links wrap; the page never pans sideways.
         assert page.evaluate(READ)["scrollW"] <= page.evaluate(READ)["innerW"] + 1
@@ -325,7 +372,9 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
             assert row["missing"] is None
         # Pointer movement updates the visible rows but never floods the polite live region.
         assert state["live"] == ""
-        assert page.evaluate(TOOLTIP)["rows"] == tooltip_rows(payload, index)
+        # A narrow viewport never gets a floating overlay: the verified rows above are the
+        # visible inspector, immediately below the plot.
+        assert_inline_inspector(page)
 
         # Keyboard stepping is the announced path: the full exact sentence, politely.
         page.locator(".chart-range").focus()
@@ -347,11 +396,19 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
           const readout = document.querySelector('.chart-readout');
           const row = document.querySelector('.chart-readout-row');
           const sep = document.querySelector('.chart-readout-sep');
+          const plot = document.querySelector('.chart-wrap').getBoundingClientRect();
+          const controls = document.querySelector('.chart-controls').getBoundingClientRect();
+          const readoutBox = readout.getBoundingClientRect();
           return {
             rangeH: range.getBoundingClientRect().height,
+            rangeTop: range.getBoundingClientRect().top,
             font: parseFloat(getComputedStyle(readout).fontSize),
             rowDisplay: getComputedStyle(row).display,
             sepDisplay: getComputedStyle(sep).display,
+            plotBottom: plot.bottom,
+            readoutTop: readoutBox.top,
+            readoutW: readoutBox.width,
+            controlsW: controls.width,
             swatches: [...document.querySelectorAll('.chart-readout-row > .legend-swatch')]
               .map((swatch) => {
                 const style = getComputedStyle(swatch);
@@ -363,7 +420,11 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
           };
         }""")
         assert metrics["rangeH"] >= 47.5, metrics
+        assert metrics["rangeTop"] >= metrics["readoutTop"] - 1, metrics
         assert metrics["font"] >= 25.2, metrics
+        assert metrics["readoutTop"] >= metrics["plotBottom"] - 1, metrics
+        assert metrics["readoutTop"] - metrics["plotBottom"] <= 8, metrics
+        assert metrics["readoutW"] >= metrics["controlsW"] - 1, metrics
         assert metrics["rowDisplay"] == "flex", metrics
         assert metrics["sepDisplay"] == "none", metrics
         # Both prepared series show their own painted key beside the title: solid ink and the
@@ -394,15 +455,125 @@ def test_touch_taps_select_the_visible_end_points(browser, site_url):
         state = page.evaluate(READ)
         assert state["value"] == 0 and state["vt"] == payload["periods"][0]
         assert state["readout"] == readout_text(payload, 0)
-        assert page.evaluate(TOOLTIP)["rows"] == tooltip_rows(payload, 0)
+        assert_inline_inspector(page)
 
         page.touchscreen.tap(box["left"] + ink["max"] - 1, box["top"] + box["height"] / 2)
         page.wait_for_timeout(200)
         state = page.evaluate(READ)
         assert state["value"] == last and state["vt"] == payload["periods"][last]
         assert state["readout"] == readout_text(payload, last)
-        assert page.evaluate(TOOLTIP)["rows"] == tooltip_rows(payload, last)
+        assert_inline_inspector(page)
         assert page.evaluate("() => window.scrollY") == scroll_before
+        assert not errors
+    finally:
+        context.close()
+
+
+@pytest.mark.parametrize("width,height", [(390, 844), (844, 390)])
+def test_coarse_pointer_uses_the_inline_readout_in_portrait_and_landscape(browser, site_url,
+                                                                          width, height):
+    context, page, errors = _open(browser, site_url + PAIR, width, height=height, touch=True)
+    try:
+        payload = _payload(page)
+        assert page.evaluate("() => matchMedia('(pointer: coarse)').matches")
+        last = len(payload["periods"]) - 1
+        state = page.evaluate(READ)
+        assert state["value"] == last and state["readout"] == readout_text(payload, last)
+        assert_inline_inspector(page)
+
+        # Keyboard selection also stays inline; the live region still carries the sentence.
+        page.locator(".chart-range").focus()
+        page.keyboard.press("Home")
+        page.wait_for_timeout(80)
+        assert page.evaluate(READ)["readout"] == readout_text(payload, 0)
+        assert page.evaluate(READOUT)["live"] == readout_text(payload, 0)
+        assert_inline_inspector(page)
+
+        # A tap on the painted plot selects only on release and never auto-scrolls. The range
+        # focus above may have scrolled the page; return the plot to the viewport first.
+        page.locator(".chart-wrap").scroll_into_view_if_needed()
+        page.wait_for_timeout(120)
+        ink = page.evaluate(SCAN)
+        box = ink["box"]
+        scroll_before = page.evaluate("() => window.scrollY")
+        page.touchscreen.tap(box["left"] + ink["max"] - 1,
+                             box["top"] + box["height"] / 2)
+        page.wait_for_timeout(200)
+        state = page.evaluate(READ)
+        assert state["value"] == last and state["readout"] == readout_text(payload, last)
+        assert page.evaluate("() => window.scrollY") == scroll_before
+        assert_inline_inspector(page)
+        assert not errors
+    finally:
+        context.close()
+
+
+def test_touch_drag_scrolls_the_page_without_selecting_or_opening_an_overlay(browser, site_url):
+    context, page, errors = _open(browser, site_url + PAIR, 390, height=844, touch=True)
+    try:
+        payload = _payload(page)
+        selected = page.evaluate(READ)["value"]
+        scroll_before = page.evaluate("() => window.scrollY")
+        box = page.evaluate(SCAN)["box"]
+        x = box["left"] + box["width"] / 2
+        y = box["top"] + box["height"] * 0.65
+        session = context.new_cdp_session(page)
+        session.send("Input.dispatchTouchEvent", {
+            "type": "touchStart", "touchPoints": [{"x": x, "y": y}]})
+        for step in range(1, 5):
+            session.send("Input.dispatchTouchEvent", {
+                "type": "touchMove", "touchPoints": [{"x": x, "y": y - step * 30}]})
+            page.wait_for_timeout(30)
+        session.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
+        page.wait_for_timeout(500)
+        assert page.evaluate("() => window.scrollY") > scroll_before
+        assert page.evaluate(READ)["value"] == selected
+        assert page.evaluate(READ)["readout"] == readout_text(payload, selected)
+        assert_inline_inspector(page)
+        assert not errors
+    finally:
+        context.close()
+
+
+def test_resize_drops_the_desktop_tooltip_and_restores_it_with_the_selection(browser, site_url):
+    context, page, errors = _open(browser, site_url + PAIR, 1440)
+    try:
+        payload = _payload(page)
+        ink = page.evaluate(SCAN)
+        _move(page, ink["box"], (ink["min"] + ink["max"]) / 2)
+        tip = page.evaluate(TOOLTIP)
+        assert tip is not None and tip["rows"] == tooltip_rows(
+            payload, page.evaluate(READ)["value"])
+        selected = page.evaluate(READ)["value"]
+
+        page.set_viewport_size({"width": 390, "height": 844})
+        page.wait_for_timeout(300)
+        assert page.evaluate(TOOLTIP) is None
+        assert page.evaluate(READ)["value"] == selected
+        assert page.evaluate(READ)["readout"] == readout_text(payload, selected)
+        assert_inline_inspector(page)
+
+        # Narrow keyboard input keeps the same selected point and opens no overlay.
+        page.locator(".chart-range").focus()
+        page.keyboard.press("Home")
+        page.wait_for_timeout(80)
+        assert page.evaluate(READ)["value"] == 0
+        assert page.evaluate(TOOLTIP) is None
+
+        page.set_viewport_size({"width": 1440, "height": 900})
+        page.wait_for_timeout(300)
+        assert page.evaluate(
+            "() => document.querySelector('.chart-shell').classList.contains"
+            "('chart-inline-readout')") is False
+        assert page.evaluate(READ)["value"] == 0
+        ink = page.evaluate(SCAN)
+        _move(page, ink["box"], (ink["min"] + ink["max"]) / 2)
+        tip = page.evaluate(TOOLTIP)
+        assert tip is not None
+        index = page.evaluate(READ)["value"]
+        assert tip["rows"] == tooltip_rows(payload, index)
+        assert tip["left"] >= -1 and tip["right"] <= tip["width"] + 1
+        assert tip["top"] >= -1 and tip["bottom"] <= tip["height"] + 1
         assert not errors
     finally:
         context.close()
@@ -425,13 +596,12 @@ def calendar_readout(payload, index):
     return rows[0] + " - " + "; ".join(rows[1:])
 
 
-def test_mobile_keyboard_end_replaces_the_previous_calendar_tooltip(browser, site_url):
-    """121 native-calendar rows at 390 touch: End must repaint every tooltip line.
+def test_mobile_keyboard_end_updates_the_inline_calendar_readout(browser, site_url):
+    """121 native-calendar rows at 390 touch: End must repaint the in-flow rows exactly.
 
-    The last period converts to the plot's right edge. ECharts rejects a pixel point whose
-    round-trip back to local coordinates lands outside the grid, so the tooltip can keep the
-    previous period even though the native range and readout already moved. This checks the
-    rendered tooltip itself, line by line, not only the readout.
+    The last period converts to the plot's right edge, so the earlier implementation had to
+    fight ECharts into replacing a stale tooltip. Coarse pointers no longer open that overlay
+    at all; this verifies the persistent readout and every visible row instead.
     """
     from playwright.sync_api import expect
 
@@ -450,25 +620,24 @@ def test_mobile_keyboard_end_replaces_the_previous_calendar_tooltip(browser, sit
         page.keyboard.press("ArrowRight")
         expect(page.locator(".chart-readout")).to_have_text(
             calendar_readout(payload, 1), timeout=3000)
-        # A visible tooltip for the previous period is the state End has to replace.
-        expect(page.locator(".chart-tooltip")).to_be_visible(timeout=3000)
-        expect(page.locator(".chart-tip-line").first).to_have_text(
-            payload["periods"][1], timeout=3000)
+        assert page.evaluate(TOOLTIP) is None
 
         page.keyboard.press("End")
         expect(page.locator(".chart-readout")).to_have_text(
             calendar_readout(payload, last), timeout=3000)
-        expect(page.locator(".chart-tooltip")).to_be_visible(timeout=3000)
         expected = calendar_rows(payload, last)
-        expect(page.locator(".chart-tip-line")).to_have_count(len(expected), timeout=3000)
-        for index, line in enumerate(expected):
-            expect(page.locator(".chart-tip-line").nth(index)).to_have_text(
-                line, timeout=3000)
+        structured = page.evaluate(READOUT)
+        assert structured["text"] == calendar_readout(payload, last)
+        assert len(structured["rows"]) == len(expected) - 1
+        for index, line in enumerate(expected[1:]):
+            assert structured["rows"][index]["value"] in line
+        assert page.evaluate(TOOLTIP) is None
         assert page.evaluate(
             "() => document.querySelector('.chart-range').getAttribute('aria-valuetext')"
         ) == payload["periods"][last]
         assert page.evaluate(
             "() => document.documentElement.scrollWidth <= window.innerWidth + 1")
+        assert_inline_inspector(page)
         assert not errors
     finally:
         context.close()

@@ -16,6 +16,35 @@
   flex-wrap: wrap;
 }
 
+/* The same capability/viewport policy that owns the floating tooltip gives narrow and coarse
+   readers the persistent readout directly below the plot. The readout comes first and spans
+   the full controls width; the native range follows as the larger touch target. Reading type
+   is inherited unchanged. */
+.chart-shell.chart-inline-readout .chart-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+  align-items: stretch;
+  min-height: 0;
+  margin-top: 2px;
+}
+
+.chart-shell.chart-inline-readout .chart-readout {
+  order: -1;
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.chart-shell.chart-inline-readout .chart-range {
+  width: 100%;
+}
+
+/* The axis cursor stays on the canvas, but its floating content box is not painted in this
+   presentation. The server-prepared rows are visible in the persistent readout above. */
+.chart-shell.chart-inline-readout .chart-tooltip {
+  display: none !important;
+}
+
 /* Keep the native control's full hit area usable on touch without changing any reading type.
    The thumb and track paint inside this box; the slider still steps one exact period. */
 .chart-shell .chart-range {
