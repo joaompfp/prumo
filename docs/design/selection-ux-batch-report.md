@@ -2,6 +2,11 @@
 
 Branch `fix/selection-ux`, based on `65c1832`.
 
+Commits:
+
+- `0b3e1f4` `refactor(ui): give selectable results one shared selection-row contract`
+- `a989cd6` `feat(ui): make batch selection the catalogue and notebook quick-search action`
+
 ## Catalogue
 
 - Selectable catalogue rows no longer carry a competing one-series `Criar caderno` link.
