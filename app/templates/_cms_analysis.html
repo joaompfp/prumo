@@ -1,4 +1,4 @@
-{% from "_chart.html" import chart_shell %}
+{% from "_chart.html" import chart_shell, chart_meta %}
 {% set panel = page.analysis %}
 {% macro series_links() %}
   <ul class="authored-series-links">
@@ -22,7 +22,7 @@
     </figcaption>
     {% if panel.chart_payload %}
     {% call chart_shell(panel, "cms-chart") %}{{ series_links() }}{% endcall %}
-    {% else %}{{ chart_svg(panel.chart) }}{{ series_links() }}{% endif %}
+    {% else %}{{ chart_svg(panel.chart) }}{% call chart_meta() %}{{ series_links() }}{% endcall %}{% endif %}
   </figure>
 </section>
 {% if page.note or panel.analysis_note %}

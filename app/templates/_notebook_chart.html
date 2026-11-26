@@ -1,4 +1,4 @@
-{% from "_chart.html" import chart_shell %}
+{% from "_chart.html" import chart_shell, chart_meta %}
 {% set panel = page.chart_panel %}
 {% if panel.settings.window == "5a" %}{% set active_window = page.copy.chart_window_5a %}
 {% elif panel.settings.window == "max" %}{% set active_window = page.copy.chart_window_max %}
@@ -35,7 +35,7 @@
     {% endcall %}
     {% else %}
     {{ chart_svg(panel.chart) }}
-    {{ source_metadata() }}
+    {% call chart_meta() %}{{ source_metadata() }}{% endcall %}
     {% endif %}
   </figure>
   {% else %}

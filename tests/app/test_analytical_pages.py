@@ -76,10 +76,11 @@ def test_detail_pages_share_the_analytical_shell_and_local_inspector(analytical_
             assert html.index('class="chart-shell"') < html.index('class="authored-reading"')
         if route == "/comparar/publicado":
             shell = root.find_all("div", "chart-shell")[0]
+            meta = root.find_all("details", "chart-meta")[0]
             links = root.find_all("ul", "authored-series-links")[0]
             legend = root.find_all("ul", "legend")[0]
-            assert links.parent is shell and legend.parent is shell
-            assert shell.children.index(links) < shell.children.index(legend)
+            assert meta.parent is shell and links.parent is meta and legend.parent is shell
+            assert shell.children.index(meta) < shell.children.index(legend)
 
 
 @pytest.fixture(scope="module")

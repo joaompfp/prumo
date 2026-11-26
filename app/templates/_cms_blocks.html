@@ -4,7 +4,12 @@
    preserved while the cards land in one grid instead of one grid per card. Text stays escaped
    by the environment's autoescape. A chart block renders its static SVG; the page-level
    template decides whether the published eligible payload may load the local chart script. #}
-{% from "_chart.html" import chart_shell %}
+{% from "_chart.html" import chart_shell, chart_meta %}
+{% macro block_provenance(chart) %}
+<ul class="chart-source-list">
+  {% for line in chart.provenance %}<li>{{ line.title }}. Fonte: {{ line.source_title }}. Último período desenhado: {{ line.period_text }}.</li>{% endfor %}
+</ul>
+{% endmacro %}
 {% macro render_blocks(blocks) %}
 {% set state = namespace(cards_open=false) %}
 {% for block in blocks %}
@@ -80,10 +85,12 @@
     {% if block.chart.note %}<p class="section-note">{{ block.chart.note }}</p>{% endif %}
   </div>
   <figure class="chart-figure chart-figure-interactive">
-    {% if block.chart.chart_payload %}{{ chart_shell(block.chart, "cms-" ~ loop.index) }}{% else %}{{ chart_svg(block.chart.chart) }}{% endif %}
-    <figcaption>
-      {% for line in block.chart.provenance %}{{ line.title }}. Fonte: {{ line.source_title }}. Último período desenhado: {{ line.period_text }}. {% endfor %}
-    </figcaption>
+    {% if block.chart.chart_payload %}
+    {% call chart_shell(block.chart, "cms-" ~ loop.index) %}{{ block_provenance(block.chart) }}{% endcall %}
+    {% else %}
+    {{ chart_svg(block.chart.chart) }}
+    {% call chart_meta() %}{{ block_provenance(block.chart) }}{% endcall %}
+    {% endif %}
   </figure>
   <p class="download"><a href="{{ base }}/graficos/{{ block.chart.slug }}">Ver gráfico, tabela e proveniência</a></p>
 </section>
