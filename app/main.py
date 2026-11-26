@@ -25,6 +25,7 @@ from app import (
     interactive,
     navigation,
     notebook,
+    notebook_chart,
     notebook_routes,
     reads,
 )
@@ -226,11 +227,13 @@ def create_app(db_path: str | None = None) -> FastAPI:
         page = reads.parse_page_number(pagina)
         raw_refs = request.query_params.getlist("s")
         selection = discovery_selection.parse_references(raw_refs)
-        if selection is None:
+        previous_order = discovery_selection.parse_references(request.query_params.getlist("ordem"))
+        if selection is None or previous_order is None:
             # The bound and the identifier syntax are checked before the read-only handle is
             # opened; the generic page never echoes the offending value.
             return _render(templates, request, "404.html", {}, status=404)
         duplicates = len(raw_refs) - len(selection)
+        selection = discovery_selection.preserve_order(selection, previous_order)
 
         clear = request.query_params.get("limpar", "")
         if clear == "selecao":
@@ -251,6 +254,8 @@ def create_app(db_path: str | None = None) -> FastAPI:
         settings = discovery_selection.read_chart_settings(request.query_params, selection)
         if settings is None:
             return _render(templates, request, "404.html", {}, status=404)
+        if clear == "selecao":
+            settings = notebook_chart.ChartSettings()
         if request.query_params.get("acao") == "abrir":
             if len(selection) <= notebook.MAX_SELECTION:
                 target = f"{_base(request)}{notebook.selection_path(selection, chart=settings)}"

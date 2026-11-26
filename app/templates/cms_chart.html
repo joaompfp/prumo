@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_chart.html" import chart_shell %}
+{% from "_chart.html" import chart_shell, chart_meta %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
 {% block content %}
@@ -27,11 +27,13 @@
 <section class="chart-section notebook-chart authored-chart" aria-labelledby="grafico">
   <h2 id="grafico" class="sr-only">Gráfico</h2>
   <figure class="chart-figure chart-figure-interactive">
-    {% if page.chart_payload %}{{ chart_shell(page, "cms-chart") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
-    <figcaption>
-      {% for line in page.provenance %}{{ line.title }}. Fonte: {{ line.source_title }}. {% endfor %}
+    {% macro source_metadata() %}
+    <p class="chart-source-note">
+      {% for line in page.provenance %}<a href="#proveniencia">{{ line.title }}</a>. Fonte: {{ line.source_title }}. {{ line.unit_text }} · {{ line.period_text }}. {% endfor %}
       Último valor em {{ page.provenance[0].period_text }}.
-    </figcaption>
+    </p>
+    {% endmacro %}
+    {% if page.chart_payload %}{% call chart_shell(page, "cms-chart") %}{{ source_metadata() }}{% endcall %}{% else %}{{ chart_svg(page.chart) }}{% call chart_meta() %}{{ source_metadata() }}{% endcall %}{% endif %}
   </figure>
   {% if page.note %}
   <details class="authored-reading">

@@ -1,0 +1,20 @@
+[
+  {
+    "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-independent-spec-review.md",
+    "archive": "prumo-analysis-loop-independent-spec-review.md.gz",
+    "raw_sha256": "024037667ef2c7ecd87ea2bceed7adb25add159de9b746ba23f93359eecdc49e",
+    "archive_sha256": "50896d277560099c6fe9e67990bb3228251065e959581f09f07c8e34f842cd75"
+  },
+  {
+    "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-spec-rereview.md",
+    "archive": "prumo-analysis-loop-spec-rereview.md.gz",
+    "raw_sha256": "cc5d33ddd701827f83acede692ecfba82a6ecb8289912e99b773801a206fcf61",
+    "archive_sha256": "2ad4a6152d37158d1c55d9a45e0ab4544c7ad24df5938dca00010d60185f8b1b"
+  },
+  {
+    "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-code-review.md",
+    "archive": "prumo-analysis-loop-code-review.md.gz",
+    "raw_sha256": "7df8a2d6c428602002e150cbf884369c6df8863c95061389bed3de27e64a348c",
+    "archive_sha256": "2bdc0fbeee392f4dec4e0aa6544618db2b4cfdec9cb767d1aadc01d0875f70f7"
+  }
+]

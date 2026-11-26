@@ -62,6 +62,47 @@ def test_discovery_parser_rejects_malformed_references():
         assert discovery_selection.parse_references([malformed]) is None
 
 
+def test_native_order_metadata_cannot_restore_unchecked_references():
+    assert discovery_selection.preserve_order(("b", "a", "c"), ("a", "b")) == ("a", "b", "c")
+    assert discovery_selection.preserve_order(("b", "c"), ("a", "b")) == ("b", "c")
+    assert discovery_selection.preserve_order(("a",), ("missing",)) == ("a",)
+
+
+def test_pager_preserves_order_despite_native_hidden_field_submission_order(client):
+    from tests.app.conftest import HICP, WORLD
+
+    # Hidden off-page fields precede checked visible fields in a native GET submission.
+    response = client.get("/pesquisa", params=[("s", WORLD), ("s", HICP),
+        ("ordem", HICP), ("ordem", WORLD), ("acao", "abrir")], follow_redirects=False)
+    assert response.status_code == 303
+    assert parse_qs(urlsplit(response.headers["location"]).query)["s"] == [HICP, WORLD]
+    unchecked = client.get("/pesquisa", params=[("s", WORLD), ("ordem", HICP),
+        ("ordem", WORLD), ("acao", "abrir")], follow_redirects=False)
+    assert parse_qs(urlsplit(unchecked.headers["location"]).query)["s"] == [WORLD]
+    rendered = client.get(f"/pesquisa?s={HICP}&s={WORLD}").text
+    assert re.findall(r'name="ordem" value="([^"]+)"', rendered) == [HICP, WORLD]
+
+
+def test_order_metadata_is_bounded_before_database_reads(tmp_path):
+    from fastapi.testclient import TestClient
+
+    from app.main import create_app
+
+    broken = TestClient(create_app(str(tmp_path / "missing.db")))
+    for params in ([("ordem", "bad/id")], [("ordem", "x")] * 49):
+        response = broken.get("/pesquisa", params=params)
+        assert response.status_code == 404
+        assert "bad/id" not in response.text
+
+
+def test_clearing_selection_resets_previous_chart_off_setting(client):
+    from tests.app.conftest import HICP
+
+    response = client.get(f"/pesquisa?s={HICP}&grafico=off&limpar=selecao")
+    assert response.status_code == 200
+    assert 'name="grafico" value="off"' not in _form(response.text)
+
+
 def test_retiring_references_removes_only_named_values_and_preserves_order():
     selection = ("a", "b", "c")
     assert discovery_selection.retire(selection, ["b"]) == ("a", "c")
@@ -187,7 +228,9 @@ def test_catalogue_has_one_form_owner_and_the_search_landmark_is_only_its_query_
     assert form.count('role="search"') == 1
     assert '<div class="discovery-search-group" role="search"' in form
     assert form.count('type="checkbox" name="s"') == 3
-    assert 'name="acao" value="abrir"' not in form  # empty selection: no fake live action
+    assert 'name="acao" value="abrir"' in form  # submits newly checked results on the first visit
+    assert "disabled" not in _tray(html)
+    assert html.index('class="discovery-selection"') < html.index('class="discovery-results"')
     assert 'name="retirar"' not in form  # empty selection, no tray rows
 
     theme_html = client.get("/temas/economy").text
@@ -247,7 +290,9 @@ def test_duplicates_and_thirteen_to_forty_eight_refs_are_recoverable_not_truncat
     assert "13 referências selecionadas" in text
     assert "A seleção tem 13 referências" in text and "aceita 12" in text
     assert "Remova 1 referência" in text
-    assert "Abrir caderno" in text and "disabled" in html
+    # The server refuses over-limit handoff. Keep the native submit available so unchecking
+    # current-page results can recover immediately, without JS or an intermediate refresh.
+    assert "Abrir caderno" in text and "disabled" not in _tray(html)
     assert len(re.findall(r'name="retirar" ', _tray(html))) == 13
 
     blocked = client.get("/pesquisa", params=[("s", value) for value in refs]
@@ -354,7 +399,8 @@ def test_native_clear_actions_keep_the_last_submitted_selection(client):
 
     cleared_selection = client.get("/pesquisa", params=[
         ("s", HICP), ("s", WORLD), ("limpar", "selecao")]).text
-    assert "0 referências selecionadas" in _visible(cleared_selection)
+    assert "Seleção" in _visible(_tray(cleared_selection))
+    assert 'name="retirar"' not in _tray(cleared_selection)
     assert 'name="retirar"' not in _form(cleared_selection)
 
 
@@ -491,7 +537,7 @@ def test_discovery_form_and_handoff_keep_the_mount_prefix(client):
 
     html = client.get("/pesquisa", headers={"X-Forwarded-Prefix": "/dados"}).text
     assert ('<form class="discovery-search" id="discovery-form" action="/dados/pesquisa"'
-            ' method="get">') in html
+            ' method="get" aria-describedby="selecao-ajuda">') in html
     opened = client.get("/pesquisa", params=[("s", HICP), ("acao", "abrir")],
                         headers={"X-Forwarded-Prefix": "/dados"}, follow_redirects=False)
     assert opened.status_code == 303

@@ -1,0 +1,4045 @@
+{
+  "complete": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "http://127.0.0.1:8134/credit/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/credit/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/electricity/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/mixed/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/primary/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/derived/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134static/css/discovery.css actual installed bytes",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134static/css/chart-inspector.css actual installed bytes",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134static/js/prumo-charts.min.js actual installed bytes",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True first-click three-series handoff",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True no duplicates",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True catalogue preserves current refs",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True search preserves selection",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True add without replacing",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True unsaved check retained by pager",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True offpage refs retained in original order",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True unchecked visible reference absent",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True real subject discovery",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True real value in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True selection control in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=True no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False first-click three-series handoff",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False no duplicates",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False catalogue preserves current refs",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False search preserves selection",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False add without replacing",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False unsaved check retained by pager",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False offpage refs retained in original order",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False unchecked visible reference absent",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False real subject discovery",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False real value in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False selection control in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/selection/js=False no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/fallback/False SVG visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/fallback/False inspector hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/fallback/False source links accessible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/fallback/True SVG visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/fallback/True inspector hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/fallback/True source links accessible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/320 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/390 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/768 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 first-view scroll",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1440 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/credit/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 no public authoring",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/electricity/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/mixed/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/primary/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 HTTP200",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 strict CSP",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 no overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 adjacent controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 functional chart height",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 point rows",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 prepared style swatches",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 unit appears in values only",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 metadata disclosure",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 metadata after controls",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 range outside every form",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 enlarged functional text",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920Home exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920End exact point display",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 expanding sources does not displace inspector",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 print metadata content visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/derived/1920 print interactive control hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dadosstatic/css/discovery.css actual installed bytes",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dadosstatic/css/chart-inspector.css actual installed bytes",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dadosstatic/js/prumo-charts.min.js actual installed bytes",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True first-click three-series handoff",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True no duplicates",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True catalogue preserves current refs",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True search preserves selection",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True add without replacing",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True unsaved check retained by pager",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True offpage refs retained in original order",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True unchecked visible reference absent",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True real subject discovery",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True real value in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True selection control in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=True no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False first-click three-series handoff",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False no duplicates",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False catalogue preserves current refs",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False search preserves selection",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False add without replacing",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False unsaved check retained by pager",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False offpage refs retained in original order",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False unchecked visible reference absent",
+      "passed": true
+    },
+    {
+      "name": "catalogue HTTP200",
+      "passed": true
+    },
+    {
+      "name": "single native form",
+      "passed": true
+    },
+    {
+      "name": "query keeps enlarged typography",
+      "passed": true
+    },
+    {
+      "name": "summary response has no script",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False real subject discovery",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False real value in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False selection control in first view",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/selection/js=False no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/fallback/False SVG visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/fallback/False inspector hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/fallback/False source links accessible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/fallback/True SVG visible",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/fallback/True inspector hidden",
+      "passed": true
+    },
+    {
+      "name": "http://127.0.0.1:8134/dados/fallback/True source links accessible",
+      "passed": true
+    },
+    {
+      "name": "no application errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "only known edge vr warnings",
+      "passed": true
+    },
+    {
+      "name": "isolated database bytes unchanged",
+      "passed": true
+    }
+  ],
+  "cases": [
+    "http://127.0.0.1:8134/credit/320",
+    "http://127.0.0.1:8134/electricity/320",
+    "http://127.0.0.1:8134/mixed/320",
+    "http://127.0.0.1:8134/primary/320",
+    "http://127.0.0.1:8134/derived/320",
+    "http://127.0.0.1:8134/credit/390",
+    "http://127.0.0.1:8134/electricity/390",
+    "http://127.0.0.1:8134/mixed/390",
+    "http://127.0.0.1:8134/primary/390",
+    "http://127.0.0.1:8134/derived/390",
+    "http://127.0.0.1:8134/credit/768",
+    "http://127.0.0.1:8134/electricity/768",
+    "http://127.0.0.1:8134/mixed/768",
+    "http://127.0.0.1:8134/primary/768",
+    "http://127.0.0.1:8134/derived/768",
+    "http://127.0.0.1:8134/credit/1440",
+    "http://127.0.0.1:8134/electricity/1440",
+    "http://127.0.0.1:8134/mixed/1440",
+    "http://127.0.0.1:8134/primary/1440",
+    "http://127.0.0.1:8134/derived/1440",
+    "http://127.0.0.1:8134/credit/1920",
+    "http://127.0.0.1:8134/electricity/1920",
+    "http://127.0.0.1:8134/mixed/1920",
+    "http://127.0.0.1:8134/primary/1920",
+    "http://127.0.0.1:8134/derived/1920",
+    "http://127.0.0.1:8134/dados/credit/320",
+    "http://127.0.0.1:8134/dados/electricity/320",
+    "http://127.0.0.1:8134/dados/mixed/320",
+    "http://127.0.0.1:8134/dados/primary/320",
+    "http://127.0.0.1:8134/dados/derived/320",
+    "http://127.0.0.1:8134/dados/credit/390",
+    "http://127.0.0.1:8134/dados/electricity/390",
+    "http://127.0.0.1:8134/dados/mixed/390",
+    "http://127.0.0.1:8134/dados/primary/390",
+    "http://127.0.0.1:8134/dados/derived/390",
+    "http://127.0.0.1:8134/dados/credit/768",
+    "http://127.0.0.1:8134/dados/electricity/768",
+    "http://127.0.0.1:8134/dados/mixed/768",
+    "http://127.0.0.1:8134/dados/primary/768",
+    "http://127.0.0.1:8134/dados/derived/768",
+    "http://127.0.0.1:8134/dados/credit/1440",
+    "http://127.0.0.1:8134/dados/electricity/1440",
+    "http://127.0.0.1:8134/dados/mixed/1440",
+    "http://127.0.0.1:8134/dados/primary/1440",
+    "http://127.0.0.1:8134/dados/derived/1440",
+    "http://127.0.0.1:8134/dados/credit/1920",
+    "http://127.0.0.1:8134/dados/electricity/1920",
+    "http://127.0.0.1:8134/dados/mixed/1920",
+    "http://127.0.0.1:8134/dados/primary/1920",
+    "http://127.0.0.1:8134/dados/derived/1920"
+  ],
+  "errors": [],
+  "warnings": [],
+  "off_origin": []
+}

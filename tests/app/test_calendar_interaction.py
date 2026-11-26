@@ -226,8 +226,7 @@ def _structured(page):
         missing: row.getAttribute('data-missing'),
         axis: row.getAttribute('data-axis'),
         swatch: (row.querySelector('.legend-swatch') || {}).className || '',
-        unit: (row.querySelector('.chart-readout-unit')
-          ? row.querySelector('.chart-readout-unit').getAttribute('data-unit') || '' : ''),
+        unit: row.getAttribute('data-unit') || '',
         title: (row.querySelector('.chart-readout-title') || {}).textContent || '',
         native: (row.querySelector('.chart-readout-native') || {}).textContent || '',
         value: (row.querySelector('.chart-readout-value') || {}).textContent || ''

@@ -534,6 +534,7 @@ function renderReadout(readout, payload, point) {
     const line = document.createElement('span');
     line.className = 'chart-readout-row';
     line.setAttribute('data-axis', String(row.axis));
+    line.setAttribute('data-unit', row.unit);
     if (row.missing) line.setAttribute('data-missing', 'true');
     if (multi) {
       if (row.style) {
@@ -543,13 +544,6 @@ function renderReadout(readout, payload, point) {
         line.appendChild(swatch);
       }
       appendSpan(line, 'chart-readout-title', row.title);
-      if (row.unit) {
-        const unit = document.createElement('span');
-        unit.className = 'chart-readout-unit';
-        unit.setAttribute('data-unit', row.unit);
-        unit.setAttribute('aria-hidden', 'true');
-        line.appendChild(unit);
-      }
       if (row.missing) {
         appendSpan(line, 'chart-readout-sep', ' - ');
         appendSpan(line, 'chart-readout-value', payload.missing);

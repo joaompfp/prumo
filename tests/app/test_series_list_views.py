@@ -152,8 +152,16 @@ def test_search_and_theme_render_the_same_series_row_markup(client):
 
     assert 'class="series-results"' in search.text
     assert 'class="series-results"' in theme.text
-    assert _series_row(search.text, HICP) == _series_row(theme.text, HICP)
-    assert _series_row(flagged.text, UNEMP) == _series_row(theme.text, UNEMP)
+    def without_selection(markup):
+        # Only the complete catalogue opts into multi-selection; all statistical text,
+        # facts and individual notebook links remain the authoritative shared partial.
+        labels = re.findall(r'<label class="series-result-select">.*?</label>', markup, re.S)
+        assert len(labels) == 1
+        return _squash(markup.replace(labels[0], ""))
+
+    assert without_selection(_series_row(search.text, HICP)) == _series_row(theme.text, HICP)
+    assert without_selection(_series_row(flagged.text, UNEMP)) == _series_row(theme.text, UNEMP)
+    assert 'type="checkbox"' not in theme.text
     row = _series_row(search.text, HICP)
     assert "INE - Instituto Nacional de Estatística" in row
     assert "1,8" in row and "outubro de 2026" in row and "03/11/2026" in row

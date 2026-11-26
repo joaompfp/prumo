@@ -47,8 +47,7 @@
   min-width: 0;
 }
 
-/* The inspected row repeats the prepared series style and unit membership from the payload;
-   the pseudo-element keeps the reviewed one-line textContent contract for existing consumers. */
+/* Prepared styles identify series; values already carry their unit, exactly once. */
 .chart-readout-row > .legend-swatch {
   align-self: center;
   width: 18px;
@@ -60,12 +59,6 @@
 
 .chart-readout .swatch-red {
   background: repeating-linear-gradient(90deg, var(--red) 0 6px, transparent 6px 10px);
-}
-
-.chart-readout-unit::before {
-  content: attr(data-unit);
-  color: var(--muted);
-  font-size: .82em;
 }
 
 /* A calendar row's native observation is not the union calendar position. The label names
@@ -109,11 +102,11 @@
 
 /* Secondary series/axis/source metadata. The native disclosure keeps the populated links and
    provenance in the document for no-JavaScript and print; print opens it even when closed. */
-.chart-shell details.chart-meta {
+details.chart-meta {
   margin: 10px 0 0;
 }
 
-.chart-shell details.chart-meta > summary {
+details.chart-meta > summary {
   cursor: pointer;
   color: var(--accent);
   font-size: .88rem;
@@ -136,20 +129,20 @@
 }
 
 @media print {
-  .chart-shell details.chart-meta {
+  details.chart-meta {
     display: block;
   }
-  .chart-shell details.chart-meta > summary {
+  details.chart-meta > summary {
     display: none;
   }
-  .chart-shell details.chart-meta::details-content {
+  details.chart-meta::details-content {
     content-visibility: visible !important;
     display: block !important;
   }
-  .chart-shell details.chart-meta > *:not(summary) {
+  details.chart-meta > *:not(summary) {
     display: block !important;
   }
-  .chart-shell details.chart-meta > ul.notebook-chart-sources {
+  details.chart-meta > ul.notebook-chart-sources {
     display: grid !important;
   }
 }

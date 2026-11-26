@@ -7,10 +7,12 @@
   <h1>{% if page.query %}Pesquisa{% else %}Catálogo{% endif %}</h1>
 </header>
 
-<form class="discovery-search" id="discovery-form" action="{{ base }}/pesquisa" method="get">
+<form class="discovery-search" id="discovery-form" action="{{ base }}/pesquisa" method="get" aria-describedby="selecao-ajuda">
   {# Selected references not rendered as a checkbox on this page travel unchanged. A selected
      current-page reference emits only its checkbox, so unchecking it removes it here. #}
   {% for series_id in page.hidden_refs %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+  {# Order metadata cannot select a reference: unchecked ids are discarded by the parser. #}
+  {% for reference in page.selection %}<input type="hidden" name="ordem" value="{{ reference.id }}">{% endfor %}
   {% for name, value in chart_fields %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
 
   <div class="discovery-search-group" role="search" aria-label="Pesquisar no catálogo">
@@ -29,6 +31,7 @@
         {{ choice('Fonte', 'fonte', page.source_options, page.source, 'Todas') }}
         {{ choice('Frequência', 'frequencia', page.frequency_options, page.frequency, 'Todas') }}
         <button type="submit">Aplicar filtros</button>
+        {% if page.query %}<button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Ver todo o catálogo</button>{% endif %}
         {% if page.filters_active %}<button type="submit" name="limpar" value="filtros" class="discovery-link-button">Limpar filtros</button>{% endif %}
       </div>
     </details>
@@ -38,8 +41,37 @@
 
   <div class="discovery-summary">
     <p class="meta">{{ format_count(page.total) }} {% if page.total == 1 %}série{% else %}séries{% endif %}{% if page.filters_active %} com os filtros ativos{% elif not page.query %} {% if page.total == 1 %}publicada{% else %}publicadas{% endif %} no catálogo{% endif %}.</p>
-    {% if page.query %}<button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Ver todo o catálogo</button>{% endif %}
   </div>
+
+  <section class="discovery-selection" aria-labelledby="selecao-referencias">
+    <div class="discovery-selection-head">
+      <h2 id="selecao-referencias">Seleção</h2>
+      <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
+    </div>
+    <p class="sr-only" id="selecao-ajuda">Marque resultados e abra o Caderno. Até 12 indicadores, com 6 no gráfico.</p>
+    {% if page.selection_duplicate_notice %}<p class="note" role="status">{{ page.selection_duplicate_notice }}</p>{% endif %}
+    {% if page.selection_limit_notice %}<p class="selection-warning" role="status">{{ page.selection_limit_notice }}</p>{% endif %}
+    {% if page.selection_chart_notice %}<p class="note">{{ page.selection_chart_notice }}</p>{% endif %}
+    {% if page.selection %}
+    <details class="selection-review"{% if page.selection_limit_notice %} open{% endif %}>
+      <summary>{{ format_count(page.selection_count) }} {% if page.selection_count == 1 %}referência selecionada{% else %}referências selecionadas{% endif %} · Rever</summary>
+      <p class="note">A contagem descreve o último envio do formulário. As novas marcações seguem no próximo envio.</p>
+      <ul class="selection-list">
+        {% for reference in page.selection %}
+        <li class="selection-item{% if not reference.available %} selection-item-unavailable{% endif %}">
+          <span class="selection-title">{{ reference.title }}</span>
+          {% if not reference.available %}<span class="flag">Indisponível</span>{% endif %}
+          <button type="submit" name="retirar" value="{{ reference.id }}" class="button-quiet selection-remove" aria-label="Remover {% if reference.available %}{{ reference.title }}{% else %}referência indisponível{% endif %} da seleção">Remover</button>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="selection-actions">
+        <button type="submit" name="pagina" value="{{ page.page }}" class="discovery-link-button">Atualizar seleção</button>
+        <button type="submit" name="limpar" value="selecao" class="button-quiet">Limpar seleção</button>
+      </div>
+    </details>
+    {% endif %}
+  </section>
 
   {% if page.total %}
   <section class="discovery-results" aria-labelledby="resultados">
@@ -57,6 +89,7 @@
       <span>Página {{ page.page }} de {{ page.pages }}</span>
       {% if page.next_path %}<button type="submit" name="pagina" value="{{ page.page + 1 }}">Página seguinte</button>{% endif %}
     </nav>
+    <div class="discovery-selection-end"><button type="submit" name="acao" value="abrir" class="button">Abrir seleção no Caderno</button></div>
   </section>
   {% elif page.filters_active %}
   <p class="empty-state">Nenhuma série corresponde a estes filtros{% if page.query %} e ao termo «{{ page.query }}»{% endif %}. <button type="submit" name="limpar" value="filtros" class="discovery-link-button">Limpar filtros</button>.</p>
@@ -66,37 +99,5 @@
   <p class="empty-state">Ainda não há séries publicadas no catálogo.</p>
   {% endif %}
 
-  <section class="discovery-selection" aria-labelledby="selecao-referencias">
-    <div class="discovery-selection-head">
-      <h2 id="selecao-referencias">{{ format_count(page.selection_count) }} {% if page.selection_count == 1 %}referência selecionada{% else %}referências selecionadas{% endif %}</h2>
-      {% if page.selection %}<button type="submit" name="pagina" value="{{ page.page }}" class="discovery-link-button">Atualizar seleção</button>{% endif %}
-    </div>
-    <p class="note">A contagem descreve o último envio do formulário.</p>
-    {% if page.selection_duplicate_notice %}<p class="note" role="status">{{ page.selection_duplicate_notice }}</p>{% endif %}
-    {% if page.selection_limit_notice %}<p class="selection-warning" role="status">{{ page.selection_limit_notice }}</p>{% endif %}
-    {% if page.selection_chart_notice %}<p class="note">{{ page.selection_chart_notice }}</p>{% endif %}
-
-    {% if page.selection %}
-    <ul class="selection-list">
-      {% for reference in page.selection %}
-      <li class="selection-item{% if not reference.available %} selection-item-unavailable{% endif %}">
-        <span class="selection-title">{{ reference.title }}</span>
-        {% if not reference.available %}<span class="flag">Indisponível</span>{% endif %}
-        <button type="submit" name="retirar" value="{{ reference.id }}" class="button-quiet selection-remove" aria-label="Remover {% if reference.available %}{{ reference.title }}{% else %}referência indisponível{% endif %} da seleção">Remover</button>
-      </li>
-      {% endfor %}
-    </ul>
-    <div class="selection-actions">
-      {% if page.selection_can_open %}
-      <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
-      {% else %}
-      <button type="submit" name="acao" value="abrir" class="button" disabled>Abrir caderno</button>
-      {% endif %}
-      <button type="submit" name="limpar" value="selecao" class="button-quiet">Limpar seleção</button>
-    </div>
-    {% else %}
-    <p class="note">Marque resultados para reunir referências. A seleção mantém-se ao pesquisar, filtrar e mudar de página.</p>
-    {% endif %}
-  </section>
 </form>
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_chart.html" import chart_shell %}
+{% from "_chart.html" import chart_shell, chart_meta %}
 {% from "_original_value.html" import original_value %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
@@ -23,8 +23,10 @@
     </div>
   </div>
   <figure class="chart-figure chart-figure-interactive">
-    {% if page.chart_payload %}{{ chart_shell(page, "derived") }}{% else %}{{ chart_svg(page.chart) }}{% endif %}
-    <figcaption>{{ page.title }}. Calculado pelo Prumo a partir de {{ page.base_title }}.</figcaption>
+    {% macro source_metadata() %}
+    <p class="chart-source-note">{{ page.title }}. Calculado pelo Prumo a partir de <a href="{{ base }}/series/{{ page.base_id }}">{{ page.base_title }}</a>. Unidade: {{ page.unit_text }}.</p>
+    {% endmacro %}
+    {% if page.chart_payload %}{% call chart_shell(page, "derived") %}{{ source_metadata() }}{% endcall %}{% else %}{{ chart_svg(page.chart) }}{% call chart_meta() %}{{ source_metadata() }}{% endcall %}{% endif %}
   </figure>
   <details class="table-details">
     <summary>Ver tabela de valores</summary>

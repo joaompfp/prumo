@@ -1,0 +1,26 @@
+[
+  {
+    "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-20261126/full.log",
+    "archive": "full.log.gz",
+    "raw_sha256": "f942f5de75d4614b3285806fb575e5fea7b6d2161f6a1a4daa253dac743c9431",
+    "archive_sha256": "a62709fc1116ac3ba118248a0ccefa28f14c627e64870584396d4ab23095a1fb"
+  },
+  {
+    "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-20261126/full.xml",
+    "archive": "full.xml.gz",
+    "raw_sha256": "20cf658faa8bc574f1a6a654a0c403b6c63758c3f2c4b82fd0b2f32a7bfc9a87",
+    "archive_sha256": "6d09146f0f23f1bc47955e39816f2ff8dcbbe256b787def697d6e2f4d72559fd"
+  },
+  {
+    "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-20261126/review-fixes.log",
+    "archive": "review-fixes.log.gz",
+    "raw_sha256": "31c7cfd4d282ca28dc3fa4308ebb8e120621d64eef72cd063142d8a64d44abf7",
+    "archive_sha256": "ea3f3152befb0b2b32021476fa15ba0c415ea683cc226d162b11f51ee4985442"
+  },
+  {
+    "source": "/home/joao/.hermes/cache/scratch/prumo-analysis-loop-20261126/integration-focused.log",
+    "archive": "integration-focused.log.gz",
+    "raw_sha256": "1d7e9d0754c04834ec428d60b5a6654d5d0e795b8cf6215de3cd56466d5e9f08",
+    "archive_sha256": "ffd92692324e41bd3051c3b6a1bdae25e2337a3c94e4f81c92ee978f2e4ec646"
+  }
+]

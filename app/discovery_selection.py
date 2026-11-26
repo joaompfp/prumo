@@ -55,6 +55,18 @@ def parse_references(values: Sequence[str]) -> tuple[str, ...] | None:
     return tuple(ordered)
 
 
+def preserve_order(selection: Sequence[str], previous: Sequence[str]) -> tuple[str, ...]:
+    """Keep retained references in prior order; append new choices in submission order.
+
+    Native forms submit hidden off-page fields before visible checked boxes. The separately
+    bounded prior-order metadata is not a selection: absent/unchecked references never return.
+    """
+    selected = set(selection)
+    retained = tuple(value for value in previous if value in selected)
+    old = set(retained)
+    return retained + tuple(value for value in selection if value not in old)
+
+
 def retire(selection: Sequence[str], values: Sequence[str]) -> tuple[str, ...]:
     """Remove the named references, preserving every other reference and its order.
 

@@ -5,6 +5,12 @@
   {% for row in rows %}
   <li class="series-result">
     <div class="series-result-heading">
+      {% if selectable %}
+      <label class="series-result-select">
+        <input type="checkbox" name="s" value="{{ row.id }}"{% if row.id in selected_ids %} checked{% endif %}>
+        <span>Selecionar</span><span class="sr-only"> {{ row.title }}</span>
+      </label>
+      {% endif %}
       <h3 class="series-result-title"><a href="{{ base }}{{ row.href }}">{{ row.title }}</a></h3>
       <span class="row-meta">{{ row.geography_text }} · {{ row.frequency_text }}</span>
     </div>
@@ -19,12 +25,6 @@
       <div><dt>Recolhido</dt><dd>{{ row.fetched_text }}</dd></div>
     </dl>
     <p class="series-result-action">
-      {% if selectable %}
-      <label class="series-result-select">
-        <input type="checkbox" name="s" value="{{ row.id }}"{% if row.id in selected_ids %} checked{% endif %}>
-        <span>Selecionar</span><span class="sr-only"> {{ row.title }}</span>
-      </label>
-      {% endif %}
       <a class="button-quiet" href="{{ base }}{{ notebook_path([row.id]) }}"
          aria-label="Criar caderno para {{ row.title }}">Criar caderno</a>
     </p>

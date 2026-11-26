@@ -66,6 +66,10 @@ def test_detail_pages_share_the_analytical_shell_and_local_inspector(analytical_
         controls_at = next(index for index, names in enumerate(classes) if "chart-controls" in names)
         legend_at = next((index for index, names in enumerate(classes) if "legend" in names), None)
         assert scroll_at < controls_at
+        metadata = shell.find_all("details", "chart-meta")
+        assert len(metadata) == 1, (route, "missing adjacent source disclosure")
+        assert "<summary>Séries, eixos e fontes</summary>" in html
+        assert metadata[0].find_all("a"), (route, "missing source-series link")
         if legend_at is not None:
             assert controls_at < legend_at
         if route.startswith(("/comparar/", "/graficos/")):
@@ -101,6 +105,24 @@ def test_detail_pages_share_the_analytical_shell_and_local_inspector(analytical_
             links_text = re.sub(r"<[^>]+>", " ", match.group(1))
             assert links_text.count("Período:") == 2
             assert links_text.count("INE - Instituto Nacional de Estatística") == 2
+
+
+@pytest.mark.parametrize("route", ROUTES)
+def test_static_fallback_keeps_source_disclosure_without_the_enhancement_shell(
+        analytical_path, route, monkeypatch):
+    from app import interactive
+
+    monkeypatch.setattr(interactive, "build_payload", lambda *args, **kwargs: None)
+    with TestClient(create_app(str(analytical_path))) as client:
+        response = client.get(route)
+    assert response.status_code == 200
+    root = dom(response.text)
+    assert not root.find_all("div", "chart-shell")
+    assert root.find_all("svg", "chart")
+    metadata = root.find_all("details", "chart-meta")
+    assert len(metadata) == 1
+    assert metadata[0].find_all("a")
+    assert "<summary>Séries, eixos e fontes</summary>" in response.text
 
 
 @pytest.fixture(scope="module")
