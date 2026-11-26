@@ -4,7 +4,7 @@
 .discovery-head { padding: 20px 0 12px; }
 .discovery-head h1 { font-size: clamp(1.45rem, 4.2vw, 2rem); margin: 0; }
 .discovery-head .meta { margin: 6px 0 0; }
-.filters.discovery-search { display: block; margin: 0; padding: 0; border: 0; background: transparent; }
+.discovery-search { display: block; margin: 0; padding: 0; border: 0; background: transparent; }
 .discovery-query { display: flex; align-items: stretch; gap: 10px; }
 .discovery-query input { flex: 1 1 0; width: 100%; min-width: 0; }
 .discovery-query button { flex: 0 0 auto; width: auto; }
@@ -22,6 +22,61 @@
 .discovery-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin: 14px 0; }
 .discovery-summary p { margin: 0; }
 .discovery-summary a { font-size: inherit; }
+/* One native form owns query, filters, results, tray and pager. The search landmark is the
+   query/filter group only, so the result controls are not announced as site search. */
+.discovery-search-group { display: block; }
+.discovery-selection {
+  margin: 24px 0 8px; padding: 16px 18px; border: 1px solid var(--rule-strong);
+  border-top: 3px solid var(--accent); border-radius: 0 0 8px 8px; background: var(--surface);
+}
+.discovery-selection-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 8px 18px;
+}
+.discovery-selection-head h2 { margin: 0; overflow-wrap: anywhere; }
+.selection-warning {
+  margin: 12px 0 0; padding: 10px 12px; border-left: 4px solid var(--accent);
+  background: var(--accent-soft); color: var(--ink);
+}
+.selection-list { list-style: none; margin: 12px 0 0; padding: 0; }
+.selection-item {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+  padding: 8px 0; border-top: 1px solid var(--rule);
+}
+.selection-item:first-child { border-top: 0; padding-top: 0; }
+.selection-title { flex: 1 1 16rem; min-width: 0; overflow-wrap: anywhere; }
+.selection-item-unavailable .selection-title { color: var(--muted); }
+.selection-actions { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 12px; }
+#discovery-form .selection-remove,
+#discovery-form .selection-actions .button-quiet,
+#discovery-form .discovery-pager button,
+#discovery-form .discovery-link-button {
+  background: var(--surface); color: var(--accent); border: 1px solid var(--rule-strong);
+  border-radius: 7px; padding: 6px 12px; min-height: 44px; white-space: normal;
+}
+#discovery-form .selection-remove:hover,
+#discovery-form .discovery-pager button:hover,
+#discovery-form .discovery-link-button:hover {
+  background: var(--accent-soft); border-color: var(--accent); color: var(--accent);
+}
+#discovery-form .discovery-link-button {
+  background: transparent; border-color: transparent; padding-inline: 0;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+#discovery-form .discovery-link-button:hover { background: transparent; border-color: transparent; color: var(--ink); }
+#discovery-form .button[disabled] {
+  background: var(--rule-strong); border-color: var(--rule-strong); color: var(--ink);
+  opacity: .7; cursor: not-allowed;
+}
+.discovery-pager { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 20px 0 0; }
+.series-result-action { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: flex-end; gap: 10px 16px; }
+.series-result-select {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 10px;
+  border: 1px solid var(--rule-strong); border-radius: 7px; background: var(--surface);
+  font-weight: 600; cursor: pointer;
+}
+.series-result-select input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); flex: none; }
+.series-result-select:hover { border-color: var(--accent); background: var(--accent-soft); }
 .discovery-main .family { margin: 22px 0; }
 .discovery-main .family h2 { font-size: 1.15rem; margin: 0 0 12px; }
 .series-results { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
@@ -55,8 +110,16 @@
   .series-result-action .button-quiet { width: auto; }
 }
 @media (max-width: 600px) {
+  .series-result-action { justify-content: flex-start; }
   .series-result-action .button-quiet { width: 100%; }
+  .series-result-select { width: 100%; }
+  .discovery-selection { padding: 14px; }
+  .selection-title { flex-basis: 100%; }
+  .selection-remove { width: 100%; }
+  .selection-actions .button, .selection-actions .button-quiet { width: 100%; }
 }
 @media print {
-  .discovery-query, .discovery-filters, .series-result-action { display: none; }
+  /* The one native form contains the printed results too: hide only its controls. */
+  .discovery-query, .discovery-filters, .series-result-action, .discovery-selection,
+  .discovery-pager, .series-result-select, #discovery-form button { display: none; }
 }

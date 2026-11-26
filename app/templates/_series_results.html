@@ -1,4 +1,7 @@
-<ul class="series-results">
+{# Selection is an explicit opt-in context: theme pages keep their individual entry and never
+   render an orphan checkbox or a second form owner. #}
+{% set selectable = selection_enabled|default(false) %}
+<ul class="series-results"{% if selectable %} data-selection="true"{% endif %}>
   {% for row in rows %}
   <li class="series-result">
     <div class="series-result-heading">
@@ -16,6 +19,12 @@
       <div><dt>Recolhido</dt><dd>{{ row.fetched_text }}</dd></div>
     </dl>
     <p class="series-result-action">
+      {% if selectable %}
+      <label class="series-result-select">
+        <input type="checkbox" name="s" value="{{ row.id }}"{% if row.id in selected_ids %} checked{% endif %}>
+        <span>Selecionar</span><span class="sr-only"> {{ row.title }}</span>
+      </label>
+      {% endif %}
       <a class="button-quiet" href="{{ base }}{{ notebook_path([row.id]) }}"
          aria-label="Criar caderno para {{ row.title }}">Criar caderno</a>
     </p>

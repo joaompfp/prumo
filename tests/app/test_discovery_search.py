@@ -82,6 +82,74 @@ def test_all_tokens_must_match_accent_insensitively(monkeypatch):
     assert reads.SEARCH_CAP == 100
 
 
+def test_catalogue_matching_uses_the_theme_title_but_not_its_blurb(monkeypatch):
+    rows = [
+        _catalogue_row(0, family="eurostat_electricity_price_household",
+                       source="eurostat", theme="energy") | {
+            "id": "eurostat.electricity_price_household.PT",
+            "indicator_key": "eurostat_electricity_price_household.PT.M",
+        },
+        _catalogue_row(1, family="unemployment_rate") | {
+            "id": "ine.unemployment_rate.PT",
+            "indicator_key": "unemployment_rate.PT.M",
+        },
+    ]
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
+    db = _FakeDb()
+
+    # The complete catalogue appends the resolved theme title (`Energia`) to its haystack.
+    energia = reads.search_page(db, "energia")
+    assert _ids(energia.rows) == ["eurostat.electricity_price_household.PT"]
+    assert energia.total == 1
+    # The bounded notebook phrase search is untouched by the catalogue-only vocabulary.
+    assert reads.search(db, "energia") == ()
+    # The theme blurb ("Produção e preços de eletricidade.") is not searchable.
+    assert reads.search_page(db, "produção").rows == ()
+    # Ordinary title/alias matching still works in both contracts.
+    assert _ids(reads.search_page(db, "eletricidade").rows) == [
+        "eurostat.electricity_price_household.PT"]
+    assert _ids(reads.search(db, "eletricidade")) == [
+        "eurostat.electricity_price_household.PT"]
+    # Multi-term and accent-insensitive matching composes with the theme vocabulary.
+    assert _ids(reads.search_page(db, "energia eletricidade").rows) == [
+        "eurostat.electricity_price_household.PT"]
+
+
+def test_theme_title_matching_respects_filters_and_reports_eligible_counts(monkeypatch):
+    rows = [
+        _catalogue_row(0, family="eurostat_electricity_price_household",
+                       source="eurostat", theme="energy") | {
+            "id": "eurostat.electricity_price_household.PT",
+            "indicator_key": "eurostat_electricity_price_household.PT.M",
+        },
+        _catalogue_row(1, geography="DE", family="eurostat_electricity_price_household",
+                       source="eurostat", theme="energy") | {
+            "id": "eurostat.electricity_price_household.DE",
+            "indicator_key": "eurostat_electricity_price_household.DE.M",
+        },
+        _catalogue_row(2, family="unemployment_rate") | {
+            "id": "ine.unemployment_rate.PT",
+            "indicator_key": "unemployment_rate.PT.M",
+        },
+    ]
+    monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
+    db = _FakeDb()
+
+    everything = reads.search_page(db, "energia")
+    assert everything.total == 2
+    assert _ids(everything.rows) == ["eurostat.electricity_price_household.DE",
+                                     "eurostat.electricity_price_household.PT"]
+
+    portugal = reads.search_page(db, "energia", group="pt")
+    assert portugal.total == 1
+    assert _ids(portugal.rows) == ["eurostat.electricity_price_household.PT"]
+
+    # The theme filter narrows the same eligible snapshot; it never widens an empty match.
+    assert reads.search_page(db, "energia", theme="economy").rows == ()
+    # The stored theme code is not a reader alias: only the resolved title matches.
+    assert reads.search_page(db, "energy").rows == ()
+
+
 def test_search_page_reports_the_real_total_and_pages_without_the_cap(monkeypatch):
     rows = _generic_rows(130)
     monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
@@ -205,7 +273,7 @@ def test_empty_search_opens_the_catalogue(client):
     assert "Taxa de variação homóloga do IHPC" in text
     assert "Taxa de desemprego" in text
     assert "Crescimento do PIB" in text
-    task_form = re.search(r'<form class="filters discovery-search".*?</form>', response.text,
+    task_form = re.search(r'<form class="discovery-search".*?</form>', response.text,
                           re.S)
     assert task_form is not None
     assert task_form.group(0).count('type="search"') == 1
@@ -251,7 +319,7 @@ def test_unknown_filters_are_a_truthful_empty_state_with_a_clear_path(client):
                          response.text), path
 
     html = client.get("/pesquisa?q=desemprego&tema=nope").text
-    assert 'href="/pesquisa?q=desemprego"' in html
+    assert 'name="limpar" value="filtros"' in html
     assert "Limpar filtros" in html
 
 
@@ -306,7 +374,7 @@ def test_invalid_page_and_query_inputs_recover_without_a_500(client):
     assert "demasiado longo" in control.text
 
 
-def test_the_pager_carries_percent_encoded_state_into_the_page(client, monkeypatch):
+def test_the_pager_submits_the_current_form_state_into_the_page(client, monkeypatch):
     rows = [_catalogue_row(i) | {"indicator_key": f"a&b.C{i:02d}"} for i in range(30)]
     monkeypatch.setattr(reads, "catalogue", lambda db, **options: rows)
     page = reads.search_page(_FakeDb(), "a&b", theme="economy", group="pt",
@@ -314,9 +382,13 @@ def test_the_pager_carries_percent_encoded_state_into_the_page(client, monkeypat
     monkeypatch.setattr(reads, "search_page", lambda db, query="", **kwargs: page)
 
     html = client.get("/pesquisa?q=a%26b&tema=economy").text
-    assert ('href="/pesquisa?q=a%26b&amp;tema=economy&amp;grupo=pt&amp;fonte=ine'
-            '&amp;frequencia=M&amp;pagina=2"' in html)
-    assert 'rel="next"' in html
+    assert 'name="q" type="search" value="a&amp;b"' in html
+    assert '<option value="economy" selected>Economia</option>' in html
+    assert '<option value="pt" selected>Portugal</option>' in html
+    assert '<option value="ine" selected>INE' in html
+    assert '<option value="M" selected>Mensal</option>' in html
+    assert '<button type="submit" name="pagina" value="2">Página seguinte</button>' in html
+    assert 'rel="next"' not in html
 
 
 def test_discovery_counts_refresh_when_a_warm_series_is_withdrawn(client, site_path):
@@ -349,8 +421,8 @@ def test_unavailable_result_page_still_offers_accurate_recovery_and_pagination(c
     assert "Nenhuma série corresponde" not in theme
     search = client.get("/pesquisa?q=ine").text
     assert "As séries desta página deixaram de ter um valor publicado" in search
-    assert 'href="/pesquisa">Reabrir o catálogo' in search
-    assert 'rel="next"' in search
+    assert 'name="limpar" value="pesquisa"' in search
+    assert 'name="pagina" value="2"' in search
 
 
 def test_unknown_theme_filters_do_not_disguise_the_address_as_all_values(client):

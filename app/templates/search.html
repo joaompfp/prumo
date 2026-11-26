@@ -7,54 +7,96 @@
   <h1>{% if page.query %}Pesquisa{% else %}Catálogo{% endif %}</h1>
 </header>
 
-<form class="filters discovery-search" action="{{ base }}/pesquisa" method="get" role="search">
-  <div class="discovery-query">
-    <label class="sr-only" for="pesquisa-q">Pesquisar indicadores</label>
-    <input id="pesquisa-q" name="q" type="search" value="{{ page.query }}"
-           maxlength="200" placeholder="ex.: desemprego Portugal" aria-describedby="pesquisa-ajuda">
-    <button type="submit">Procurar</button>
-  </div>
-  <p id="pesquisa-ajuda" class="sr-only">Todos os termos contam. A pesquisa ignora maiúsculas e acentos.</p>
-  <details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
-    <summary>Filtros{% if page.filters_active %} ativos{% endif %}<span class="sr-only">: tema, geografia, fonte e frequência</span></summary>
-    <div class="filters">
-      {{ choice('Tema', 'tema', page.theme_options, page.theme, 'Todos os temas') }}
-      {{ choice('Geografia', 'grupo', page.group_options, page.group) }}
-      {{ choice('Fonte', 'fonte', page.source_options, page.source, 'Todas') }}
-      {{ choice('Frequência', 'frequencia', page.frequency_options, page.frequency, 'Todas') }}
-      <button type="submit">Aplicar filtros</button>
-      {% if page.filters_active %}<a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
+<form class="discovery-search" id="discovery-form" action="{{ base }}/pesquisa" method="get">
+  {# Selected references not rendered as a checkbox on this page travel unchanged. A selected
+     current-page reference emits only its checkbox, so unchecking it removes it here. #}
+  {% for series_id in page.hidden_refs %}<input type="hidden" name="s" value="{{ series_id }}">{% endfor %}
+  {% for name, value in chart_fields %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+
+  <div class="discovery-search-group" role="search" aria-label="Pesquisar no catálogo">
+    <div class="discovery-query">
+      <label class="sr-only" for="pesquisa-q">Pesquisar indicadores</label>
+      <input id="pesquisa-q" name="q" type="search" value="{{ page.query }}"
+             maxlength="200" placeholder="ex.: desemprego Portugal" aria-describedby="pesquisa-ajuda">
+      <button type="submit" class="button">Procurar</button>
     </div>
-  </details>
-</form>
+    <p id="pesquisa-ajuda" class="sr-only">Todos os termos contam. A pesquisa ignora maiúsculas e acentos.</p>
+    <details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
+      <summary>Filtros{% if page.filters_active %} ativos{% endif %}<span class="sr-only">: tema, geografia, fonte e frequência</span></summary>
+      <div class="filters">
+        {{ choice('Tema', 'tema', page.theme_options, page.theme, 'Todos os temas') }}
+        {{ choice('Geografia', 'grupo', page.group_options, page.group) }}
+        {{ choice('Fonte', 'fonte', page.source_options, page.source, 'Todas') }}
+        {{ choice('Frequência', 'frequencia', page.frequency_options, page.frequency, 'Todas') }}
+        <button type="submit">Aplicar filtros</button>
+        {% if page.filters_active %}<button type="submit" name="limpar" value="filtros" class="discovery-link-button">Limpar filtros</button>{% endif %}
+      </div>
+    </details>
+  </div>
 
-{% if page.notice %}<p class="empty-state" role="status">{{ page.notice }}</p>{% endif %}
+  {% if page.notice %}<p class="empty-state" role="status">{{ page.notice }}</p>{% endif %}
 
-<div class="discovery-summary">
-  <p class="meta">{{ format_count(page.total) }} {% if page.total == 1 %}série{% else %}séries{% endif %}{% if page.filters_active %} com os filtros ativos{% elif not page.query %} {% if page.total == 1 %}publicada{% else %}publicadas{% endif %} no catálogo{% endif %}.</p>
-  {% if page.query %}<a href="{{ base }}/pesquisa">Ver todo o catálogo</a>{% endif %}
-</div>
+  <div class="discovery-summary">
+    <p class="meta">{{ format_count(page.total) }} {% if page.total == 1 %}série{% else %}séries{% endif %}{% if page.filters_active %} com os filtros ativos{% elif not page.query %} {% if page.total == 1 %}publicada{% else %}publicadas{% endif %} no catálogo{% endif %}.</p>
+    {% if page.query %}<button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Ver todo o catálogo</button>{% endif %}
+  </div>
 
-{% if page.total %}
-<section class="discovery-results" aria-labelledby="resultados">
-  <h2 id="resultados" class="sr-only">Séries</h2>
-  {% if page.rows %}
-  {% with rows = page.rows %}{% include "_series_results.html" %}{% endwith %}
-  {% if page.rows_missing %}<p class="empty-state">Algumas séries desta página deixaram de ter um valor publicado. <a href="{{ base }}/pesquisa">Reabrir o catálogo</a>.</p>{% endif %}
+  {% if page.total %}
+  <section class="discovery-results" aria-labelledby="resultados">
+    <h2 id="resultados" class="sr-only">Séries</h2>
+    {% if page.rows %}
+    {% with rows = page.rows, selection_enabled = true, selected_ids = page.selected_ids %}
+    {% include "_series_results.html" %}
+    {% endwith %}
+    {% if page.rows_missing %}<p class="empty-state">Algumas séries desta página deixaram de ter um valor publicado. <button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Reabrir o catálogo</button>.</p>{% endif %}
+    {% else %}
+    <p class="empty-state">As séries desta página deixaram de ter um valor publicado. <button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Reabrir o catálogo</button>.</p>
+    {% endif %}
+    <nav class="pager discovery-pager" aria-label="Paginação">
+      {% if page.prev_path %}<button type="submit" name="pagina" value="{{ page.page - 1 }}">Página anterior</button>{% endif %}
+      <span>Página {{ page.page }} de {{ page.pages }}</span>
+      {% if page.next_path %}<button type="submit" name="pagina" value="{{ page.page + 1 }}">Página seguinte</button>{% endif %}
+    </nav>
+  </section>
+  {% elif page.filters_active %}
+  <p class="empty-state">Nenhuma série corresponde a estes filtros{% if page.query %} e ao termo «{{ page.query }}»{% endif %}. <button type="submit" name="limpar" value="filtros" class="discovery-link-button">Limpar filtros</button>.</p>
+  {% elif page.query %}
+  <p class="empty-state">Sem resultados para «{{ page.query }}». Tente uma palavra mais geral ou <button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">percorra o catálogo completo</button>.</p>
   {% else %}
-  <p class="empty-state">As séries desta página deixaram de ter um valor publicado. <a href="{{ base }}/pesquisa">Reabrir o catálogo</a>.</p>
+  <p class="empty-state">Ainda não há séries publicadas no catálogo.</p>
   {% endif %}
-  <nav class="pager" aria-label="Paginação">
-    {% if page.prev_path %}<a href="{{ base }}{{ page.prev_path }}" rel="prev">Página anterior</a>{% endif %}
-    <span>Página {{ page.page }} de {{ page.pages }}</span>
-    {% if page.next_path %}<a href="{{ base }}{{ page.next_path }}" rel="next">Página seguinte</a>{% endif %}
-  </nav>
-</section>
-{% elif page.filters_active %}
-<p class="empty-state">Nenhuma série corresponde a estes filtros{% if page.query %} e ao termo «{{ page.query }}»{% endif %}. <a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>.</p>
-{% elif page.query %}
-<p class="empty-state">Sem resultados para «{{ page.query }}». Tente uma palavra mais geral ou <a href="{{ base }}/pesquisa">percorra o catálogo completo</a>.</p>
-{% else %}
-<p class="empty-state">Ainda não há séries publicadas no catálogo.</p>
-{% endif %}
+
+  <section class="discovery-selection" aria-labelledby="selecao-referencias">
+    <div class="discovery-selection-head">
+      <h2 id="selecao-referencias">{{ format_count(page.selection_count) }} {% if page.selection_count == 1 %}referência selecionada{% else %}referências selecionadas{% endif %}</h2>
+      {% if page.selection %}<button type="submit" name="pagina" value="{{ page.page }}" class="discovery-link-button">Atualizar seleção</button>{% endif %}
+    </div>
+    <p class="note">A contagem descreve o último envio do formulário.</p>
+    {% if page.selection_duplicate_notice %}<p class="note" role="status">{{ page.selection_duplicate_notice }}</p>{% endif %}
+    {% if page.selection_limit_notice %}<p class="selection-warning" role="status">{{ page.selection_limit_notice }}</p>{% endif %}
+    {% if page.selection_chart_notice %}<p class="note">{{ page.selection_chart_notice }}</p>{% endif %}
+
+    {% if page.selection %}
+    <ul class="selection-list">
+      {% for reference in page.selection %}
+      <li class="selection-item{% if not reference.available %} selection-item-unavailable{% endif %}">
+        <span class="selection-title">{{ reference.title }}</span>
+        {% if not reference.available %}<span class="flag">Indisponível</span>{% endif %}
+        <button type="submit" name="retirar" value="{{ reference.id }}" class="button-quiet selection-remove" aria-label="Remover {% if reference.available %}{{ reference.title }}{% else %}referência indisponível{% endif %} da seleção">Remover</button>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="selection-actions">
+      {% if page.selection_can_open %}
+      <button type="submit" name="acao" value="abrir" class="button">Abrir caderno</button>
+      {% else %}
+      <button type="submit" name="acao" value="abrir" class="button" disabled>Abrir caderno</button>
+      {% endif %}
+      <button type="submit" name="limpar" value="selecao" class="button-quiet">Limpar seleção</button>
+    </div>
+    {% else %}
+    <p class="note">Marque resultados para reunir referências. A seleção mantém-se ao pesquisar, filtrar e mudar de página.</p>
+    {% endif %}
+  </section>
+</form>
 {% endblock %}
