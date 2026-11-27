@@ -1,0 +1,1012 @@
+{
+  "version": 1,
+  "title": "Acervo do debate nacional - novembro de 2026",
+  "documents": [
+    {
+      "kind": "chart",
+      "slug": "eletricidade-portugal-espanha-ue",
+      "body": {
+        "title": "Eletricidade doméstica: Portugal, Espanha e União Europeia",
+        "note": "Preço médio semestral em euros por kWh, para consumo doméstico anual entre 2 500 e 4 999 kWh, com impostos incluídos. Usa a mesma banda de consumo em todas as geografias. Não é uma tarifa atual, uma fatura familiar, uma média de todas as bandas ou uma medida de esforço em função do rendimento. A UE é um agregado estatístico, não outro país.",
+        "series_a": "eurostat.electricity_price_household.PT",
+        "series_b": "eurostat.electricity_price_household.ES",
+        "series_extra": [
+          "eurostat.electricity_price_household.EU27"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "countries"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "inflacao-ipc-ihpc-portugal",
+      "body": {
+        "title": "Inflação em Portugal: IPC e IHPC",
+        "note": "Taxas de variação homóloga mensais dos índices de preços no consumidor nacional e harmonizado. Medem variações de preços, não níveis de preços. Uma taxa mais baixa não significa que o cabaz ficou mais barato. Os cabazes e populações de referência diferem; não somar as duas taxas nem usar qualquer delas como salário real.",
+        "series_a": "ine.ipc_yoy.PT",
+        "series_b": "ine.hicp_yoy.PT",
+        "series_extra": [],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "produtividade-hora-portugal-europa",
+      "body": {
+        "title": "Produtividade por hora: evolução de Portugal e referências europeias",
+        "note": "Produtividade real por hora, rebaseada a 2015=100 em cada geografia. Mostra a evolução desde o mesmo ano, não o nível de produtividade de Portugal em percentagem da UE. Duas linhas no valor 110 não significam igual produção por hora. A UE é um agregado; os países não são parcelas independentes dele. Falta uma série de níveis comparáveis em paridades de poder de compra para medir a distância entre países.",
+        "series_a": "eurostat.labour_productivity_hour_real.PT",
+        "series_b": "eurostat.labour_productivity_hour_real.ES",
+        "series_extra": [
+          "eurostat.labour_productivity_hour_real.FR",
+          "eurostat.labour_productivity_hour_real.DE",
+          "eurostat.labour_productivity_hour_real.EU27_2020"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frequency": "annual",
+        "transform": "base100",
+        "base": "2015",
+        "comparison_group": "countries"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "custos-trabalho-hora-portugal-europa",
+      "body": {
+        "title": "Custos do trabalho por hora: evolução em Portugal e na Europa",
+        "note": "Índice anual nominal do custo do trabalho por hora, base 2020=100, para indústria, construção e serviços de mercado (atividades B-N), com a mesma definição nas geografias escolhidas. Mede a evolução dentro de cada economia, não quantos euros por hora se pagam em cada país. Inclui custos salariais e não salariais do empregador; não mede salário líquido, mediano, rendimento disponível nem poder de compra. Uma comparação com produtividade exige ter em conta que esta é real e o custo é nominal.",
+        "series_a": "eurostat.hourly_labour_cost_index.PT",
+        "series_b": "eurostat.hourly_labour_cost_index.ES",
+        "series_extra": [
+          "eurostat.hourly_labour_cost_index.FR",
+          "eurostat.hourly_labour_cost_index.DE",
+          "eurostat.hourly_labour_cost_index.EU27_2020"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "countries"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "investigacao-desenvolvimento-portugal-europa",
+      "body": {
+        "title": "I&D em Portugal, Espanha, França e Alemanha: histórico do Banco Mundial",
+        "note": "Despesa total em investigação e desenvolvimento em percentagem do PIB, segundo a série do Banco Mundial. Não é apenas investimento público e não mede resultados científicos. Na preparação editorial, este histórico termina em 2023; já existem dados Eurostat posteriores, ainda não integrados nesta família do Prumo. O gráfico não é uma leitura do último ano publicado por qualquer instituição e não inclui um agregado UE. Não juntar valores de fontes ou anos diferentes. As séries permanecem sujeitas a revisão. Mesma fonte e conceito para todas as geografias.",
+        "series_a": "worldbank.rnd_pct_gdp.PT",
+        "series_b": "worldbank.rnd_pct_gdp.ES",
+        "series_extra": [
+          "worldbank.rnd_pct_gdp.FR",
+          "worldbank.rnd_pct_gdp.DE"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "countries"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "saldo-orcamental-portugal-europa",
+      "body": {
+        "title": "Saldo das administrações públicas: Portugal e referências europeias",
+        "note": "Saldo anual das administrações públicas em contabilidade nacional, em percentagem do PIB. Positivo significa excedente e negativo significa défice. Não é execução mensal de caixa nem uma previsão orçamental. Os resultados anuais não se confundem com um trimestre ou com um semestre; os rácios podem ser revistos quando o PIB ou o saldo são revistos.",
+        "series_a": "eurostat.gov_deficit_pct_gdp.PT",
+        "series_b": "eurostat.gov_deficit_pct_gdp.ES",
+        "series_extra": [
+          "eurostat.gov_deficit_pct_gdp.FR",
+          "eurostat.gov_deficit_pct_gdp.DE",
+          "eurostat.gov_deficit_pct_gdp.EU27_2020"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "countries"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "divida-portugal-espanha-ue",
+      "body": {
+        "title": "Dívida pública: Portugal, Espanha e União Europeia",
+        "note": "Dívida bruta consolidada das administrações públicas na ótica de Maastricht, em percentagem do PIB, no fim de cada ano. É um stock relativo ao PIB nominal, não dívida em euros, saldo orçamental ou projeção. O rácio pode cair por alterações do numerador ou do denominador. A composição da UE inclui Portugal e Espanha.",
+        "series_a": "eurostat.gov_debt_pct_gdp.PT",
+        "series_b": "eurostat.gov_debt_pct_gdp.ES",
+        "series_extra": [
+          "eurostat.gov_debt_pct_gdp.EU27_2020"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "countries"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "juros-divida-portugal-alemanha",
+      "body": {
+        "title": "Taxas de juro da dívida a dez anos: Portugal e Alemanha",
+        "note": "Séries mensais das taxas de rendibilidade das obrigações de referência a dez anos, divulgadas pelo Banco de Portugal. O gráfico apresenta as duas taxas, não uma série calculada do diferencial. Não é o juro médio pago sobre toda a dívida pública nem a despesa do Estado com juros. Diferenças de prazo residual e de obrigação de referência devem ser consideradas.",
+        "series_a": "bportugal.pt_10y.PT",
+        "series_b": "bportugal.de_10y.DE",
+        "series_extra": [],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "credito-depositos-evolucao-base2015",
+      "body": {
+        "title": "Crédito à habitação, crédito ao consumo e depósitos: evolução desde 2015",
+        "note": "Stocks nominais em fim de ano, rebaseados a 2015=100. A harmonização anual usa a observação de fim do período, não a soma dos meses. Mostra evolução relativa, não montantes comparáveis no ano-base. Não são novos empréstimos, taxas de juro, prestações, poupança líquida nem riqueza das mesmas famílias. Não desconta inflação nem controla alterações da população.",
+        "series_a": "bportugal.credit_housing.PT",
+        "series_b": "bportugal.credit_consumer.PT",
+        "series_extra": [
+          "bportugal.deposits_households.PT"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0
+        ],
+        "frequency": "annual",
+        "transform": "base100",
+        "base": "2015",
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "euribor-tres-seis-doze-meses",
+      "body": {
+        "title": "Euribor a três, seis e doze meses",
+        "note": "Taxas mensais em percentagem para diferentes prazos na área do euro. São indexantes, não taxas efetivas dos contratos portugueses, spreads bancários, prestações ou propostas disponíveis a um cliente. A atualização de um empréstimo depende do indexante, da data de revisão e das restantes condições. Não fazer uma média das três linhas.",
+        "series_a": "bportugal.euribor_3m.EA",
+        "series_b": "bportugal.euribor_6m.EA",
+        "series_extra": [
+          "bportugal.euribor_12m.EA"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "exportacoes-importacoes-bens-portugal",
+      "body": {
+        "title": "Exportações e importações de bens de Portugal",
+        "note": "Valores mensais nominais em euros do comércio internacional de bens. Não incluem serviços, não são volumes deflacionados e podem ter sazonalidade. O gráfico não calcula o saldo nem separa transações por trabalho por encomenda. Uma variação de valor pode resultar de preços ou quantidades; não atribuir uma quebra a um setor sem a desagregação correspondente.",
+        "series_a": "ine.exports_monthly.PT",
+        "series_b": "ine.imports_monthly.PT",
+        "series_extra": [],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "industria-portugal-setores",
+      "body": {
+        "title": "Produção industrial portuguesa: total e setores selecionados",
+        "note": "Índices de volume de produção ajustados de sazonalidade e efeitos de calendário, com base 2021=100: total, têxteis, vestuário, automóvel, químicos e papel. A base comum compara evolução relativa; não o tamanho, valor acrescentado ou peso de cada setor. Os setores não esgotam o total, que os inclui; não somar as linhas. As variações e os níveis podem ser revistos.",
+        "series_a": "ine.ipi_seasonal_cae_TOT.PT",
+        "series_b": "ine.ipi_seasonal_cae_13.PT",
+        "series_extra": [
+          "ine.ipi_seasonal_cae_14.PT",
+          "ine.ipi_seasonal_cae_29.PT",
+          "ine.ipi_seasonal_cae_20.PT",
+          "ine.ipi_seasonal_cae_17.PT"
+        ],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "abertura-comercial-portugal",
+      "body": {
+        "title": "Exportações e importações de bens e serviços em percentagem do PIB",
+        "note": "Séries anuais nominais de bens e serviços, em percentagem do PIB, segundo o Banco Mundial. O aumento do rácio não implica aumento do volume exportado, do conteúdo nacional ou do bem-estar. Distinguir dos dados mensais de bens do INE. As exportações podem incorporar bens importados e os dois rácios não devem ser somados como contributo líquido para o PIB.",
+        "series_a": "worldbank.exports_pct_gdp.PT",
+        "series_b": "worldbank.imports_pct_gdp.PT",
+        "series_extra": [],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "nascimentos-obitos-portugal",
+      "body": {
+        "title": "Nados-vivos e óbitos em Portugal",
+        "note": "Contagens anuais de nados-vivos e óbitos, segundo as séries do INE. A distância entre linhas ajuda a ler o saldo natural, que este gráfico não calcula. Não mede saldo migratório, imigração, emigração ou variação total da população; para esses temas são necessárias séries próprias. Verificar as definições de residência nas fontes antes de combinar com outro universo.",
+        "series_a": "ine.live_births.PT",
+        "series_b": "ine.deaths.PT",
+        "series_extra": [],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "chart",
+      "slug": "natalidade-mortalidade-portugal",
+      "body": {
+        "title": "Taxas brutas de natalidade e mortalidade em Portugal",
+        "note": "Taxas anuais por mil habitantes segundo o Banco Mundial. Não são percentagens, número médio de filhos por mulher ou taxas padronizadas por idade. A mortalidade bruta depende da estrutura etária e não é, por si, uma medida da qualidade dos cuidados de saúde. O último período disponível pode ser anterior ao das contagens do INE.",
+        "series_a": "worldbank.birth_rate.PT",
+        "series_b": "worldbank.death_rate.PT",
+        "series_extra": [],
+        "window": "10y",
+        "scale": "single",
+        "axes": [
+          0,
+          0
+        ],
+        "frequency": "original",
+        "transform": "original",
+        "base": null,
+        "comparison_group": "portugal"
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "energia-e-precos",
+      "body": {
+        "title": "Energia e preços em Portugal",
+        "introduction": "Comparar o preço doméstico da eletricidade com Espanha e a UE, e distinguir o nível de preços da sua taxa de variação.",
+        "section": "energy",
+        "blocks": [
+          {
+            "type": "chart",
+            "chart_slug": "eletricidade-portugal-espanha-ue"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "inflacao-ipc-ihpc-portugal"
+          },
+          {
+            "type": "heading",
+            "title": "Contexto do debate",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "O programa do PS de 2025 refere que o preço médio da eletricidade na Europa aumentou quase 50% entre 2019 e 2022 (p. 46).[2] O ECO voltou a comparar preços portugueses e europeus em 30 de outubro de 2026.[8] São referências de contexto, não valores importados para os gráficos. A comparação acima usa uma banda doméstica fixa: não reproduz a média de todas as bandas nem avalia o gás."
+          },
+          {
+            "type": "heading",
+            "title": "Limites da leitura",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "Uma eletricidade mais barata em euros por kWh pode pesar mais num rendimento mais baixo. Falta a medida de esforço e falta gás doméstico no catálogo atual. A inflação total também não identifica o contributo específico da energia. Nenhum destes gráficos permite atribuir um efeito a uma decisão de um governo ou a uma empresa."
+          },
+          {
+            "type": "verification",
+            "title": "Explorar a seleção",
+            "steps": [
+              {
+                "label": "Caderno",
+                "text": "Abre uma seleção independente. Alterações feitas pelo leitor não modificam estes comparativos publicados."
+              }
+            ],
+            "action": {
+              "label": "Explorar estes indicadores no Caderno",
+              "href": "/caderno?s=eurostat.electricity_price_household.PT&s=eurostat.electricity_price_household.ES&s=eurostat.electricity_price_household.EU27"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Contexto editorial selecionado em 27 de novembro de 2026. As afirmações citadas pertencem à data e ao documento indicados; os gráficos acompanham os dados disponíveis e podem ser revistos. Esta página não é uma análise estatística congelada. As referências numeradas e ligações de consulta constam de Fontes do debate nacional."
+          },
+          {
+            "type": "verification",
+            "title": "Referências e definições",
+            "steps": [
+              {
+                "label": "Fontes",
+                "text": "Cada série tem a sua fonte e proveniência no gráfico. As fontes de contexto político e jornalístico estão separadas."
+              }
+            ],
+            "action": {
+              "label": "Fontes do debate nacional",
+              "href": "/paginas/fontes-debate-nacional"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "trabalho-produtividade-investigacao",
+      "body": {
+        "title": "Trabalho, produtividade e investigação",
+        "introduction": "Acompanhar evolução da produção por hora, custos do trabalho e esforço de investigação, sem confundir índices com salários ou níveis relativos entre países.",
+        "section": "economy",
+        "blocks": [
+          {
+            "type": "chart",
+            "chart_slug": "produtividade-hora-portugal-europa"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "custos-trabalho-hora-portugal-europa"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "investigacao-desenvolvimento-portugal-europa"
+          },
+          {
+            "type": "heading",
+            "title": "Afirmações e medidas diferentes",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "No compromisso eleitoral de 2025, o PCP cita uma passagem da despesa em I&D de 1,24% do PIB em 2015 para 1,68% em 2021 (p. 39).[1] O gráfico usa a série do Banco Mundial com os anos que estão efetivamente disponíveis no Prumo; a citação histórica não substitui essa série."
+          },
+          {
+            "type": "text",
+            "text": "O programa do CHEGA de 2025 afirma uma produtividade por trabalhador quase 30% inferior à média da UE (p. 200).[4] O ECO discutiu a posição relativa portuguesa em 22 de setembro de 2026.[9] O nosso gráfico mede evolução real por hora desde 2015, não o nível por trabalhador em relação à UE. Não confirma nem refuta aquela percentagem."
+          },
+          {
+            "type": "heading",
+            "title": "Salários: ainda falta a medida certa",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "Uma notícia sobre remuneração média bruta, como a do ECO de 13 de novembro de 2026,[12] exige uma série de remuneração. O custo do trabalho inclui componentes a cargo do empregador e não substitui salário líquido, mediano ou por hora. Essas séries e um indicador de nível de produtividade comparável ficam para uma expansão específica."
+          },
+          {
+            "type": "verification",
+            "title": "Explorar a seleção",
+            "steps": [
+              {
+                "label": "Caderno",
+                "text": "Abre uma seleção independente. Alterações feitas pelo leitor não modificam estes comparativos publicados."
+              }
+            ],
+            "action": {
+              "label": "Explorar estes indicadores no Caderno",
+              "href": "/caderno?s=eurostat.labour_productivity_hour_real.PT&s=eurostat.labour_productivity_hour_real.ES&frequencia=anual&transformacao=base100&base=2015"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Contexto editorial selecionado em 27 de novembro de 2026. As afirmações citadas pertencem à data e ao documento indicados; os gráficos acompanham os dados disponíveis e podem ser revistos. Esta página não é uma análise estatística congelada. As referências numeradas e ligações de consulta constam de Fontes do debate nacional."
+          },
+          {
+            "type": "verification",
+            "title": "Referências e definições",
+            "steps": [
+              {
+                "label": "Fontes",
+                "text": "Cada série tem a sua fonte e proveniência no gráfico. As fontes de contexto político e jornalístico estão separadas."
+              }
+            ],
+            "action": {
+              "label": "Fontes do debate nacional",
+              "href": "/paginas/fontes-debate-nacional"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "contas-publicas-portugal",
+      "body": {
+        "title": "Contas públicas de Portugal",
+        "introduction": "Separar resultados anuais, dívida e taxas de financiamento. Comparar Portugal com referências europeias sem misturar previsões e execução.",
+        "section": "economy",
+        "blocks": [
+          {
+            "type": "chart",
+            "chart_slug": "saldo-orcamental-portugal-europa"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "divida-portugal-espanha-ue"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "juros-divida-portugal-alemanha"
+          },
+          {
+            "type": "heading",
+            "title": "O mesmo rácio pode ter versões diferentes",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "O programa da AD de 2025 apresenta dívida de 97,7% do PIB em 2023 e 94,9% em 2024 (p. 26).[3] Estes são os valores citados naquele documento. Os gráficos mostram a versão estatística atualmente servida e identificam os períodos; revisões do PIB ou da dívida podem alterar os rácios históricos."
+          },
+          {
+            "type": "text",
+            "text": "A discussão jornalística da dívida de 21 de outubro de 2026[10] e a publicação governamental sobre o primeiro semestre de 2026[14] são contextos trimestrais ou semestrais. Não os inserimos como pontos de uma série anual. Projeções de um orçamento também não são resultados observados."
+          },
+          {
+            "type": "heading",
+            "title": "Limites da leitura",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "A dívida é um stock; o saldo mede operações durante um período. Uma redução do rácio da dívida não prova redução da dívida em euros. Uma taxa de mercado a dez anos não é o custo médio do stock de dívida. Atribuir causalidade exige mais do que a proximidade de duas linhas."
+          },
+          {
+            "type": "verification",
+            "title": "Explorar a seleção",
+            "steps": [
+              {
+                "label": "Caderno",
+                "text": "Abre uma seleção independente. Alterações feitas pelo leitor não modificam estes comparativos publicados."
+              }
+            ],
+            "action": {
+              "label": "Explorar estes indicadores no Caderno",
+              "href": "/caderno?s=eurostat.gov_debt_pct_gdp.PT&s=eurostat.gov_deficit_pct_gdp.PT"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Contexto editorial selecionado em 27 de novembro de 2026. As afirmações citadas pertencem à data e ao documento indicados; os gráficos acompanham os dados disponíveis e podem ser revistos. Esta página não é uma análise estatística congelada. As referências numeradas e ligações de consulta constam de Fontes do debate nacional."
+          },
+          {
+            "type": "verification",
+            "title": "Referências e definições",
+            "steps": [
+              {
+                "label": "Fontes",
+                "text": "Cada série tem a sua fonte e proveniência no gráfico. As fontes de contexto político e jornalístico estão separadas."
+              }
+            ],
+            "action": {
+              "label": "Fontes do debate nacional",
+              "href": "/paginas/fontes-debate-nacional"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "credito-e-poupanca-familias",
+      "body": {
+        "title": "Crédito e depósitos das famílias",
+        "introduction": "Ler separadamente montantes em dívida, depósitos e indexantes. Distinguir a evolução dos stocks das condições dos novos contratos.",
+        "section": "economy",
+        "blocks": [
+          {
+            "type": "chart",
+            "chart_slug": "credito-depositos-evolucao-base2015"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "euribor-tres-seis-doze-meses"
+          },
+          {
+            "type": "heading",
+            "title": "Depósitos não são rendimentos",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "A RTP noticiou a taxa dos novos depósitos a prazo em setembro de 2026.[13] Esse é um preço de novas operações. O Prumo dispõe aqui de stocks de depósitos e de crédito e de indexantes Euribor, não das taxas de novas operações. Os gráficos não reproduzem essa taxa nem calculam a margem dos bancos."
+          },
+          {
+            "type": "heading",
+            "title": "Habitação exige mais do que crédito",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "O programa da IL de 2025 cita 54,4% dos jovens dos 25 aos 34 anos a viver com os pais em 2022 (p. 84).[5] O LIVRE propõe reforço do parque habitacional público no seu programa de 2025 (p. 100).[7] São perguntas sobre acesso e oferta de habitação; montantes de crédito não são respostas estatísticas suficientes. Preços, rendas, oferta e situação dos jovens ficam para séries próprias."
+          },
+          {
+            "type": "text",
+            "text": "Os depósitos agregados e o crédito não pertencem necessariamente às mesmas pessoas. Os montantes são nominais; a base 100 não desconta inflação. O aumento de depósitos não demonstra que todas as famílias conseguem poupar."
+          },
+          {
+            "type": "verification",
+            "title": "Explorar a seleção",
+            "steps": [
+              {
+                "label": "Caderno",
+                "text": "Abre uma seleção independente. Alterações feitas pelo leitor não modificam estes comparativos publicados."
+              }
+            ],
+            "action": {
+              "label": "Explorar estes indicadores no Caderno",
+              "href": "/caderno?s=bportugal.credit_housing.PT&s=bportugal.credit_consumer.PT&s=bportugal.deposits_households.PT"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Contexto editorial selecionado em 27 de novembro de 2026. As afirmações citadas pertencem à data e ao documento indicados; os gráficos acompanham os dados disponíveis e podem ser revistos. Esta página não é uma análise estatística congelada. As referências numeradas e ligações de consulta constam de Fontes do debate nacional."
+          },
+          {
+            "type": "verification",
+            "title": "Referências e definições",
+            "steps": [
+              {
+                "label": "Fontes",
+                "text": "Cada série tem a sua fonte e proveniência no gráfico. As fontes de contexto político e jornalístico estão separadas."
+              }
+            ],
+            "action": {
+              "label": "Fontes do debate nacional",
+              "href": "/paginas/fontes-debate-nacional"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "comercio-e-industria-portugal",
+      "body": {
+        "title": "Comércio externo e indústria em Portugal",
+        "introduction": "Acompanhar bens importados e exportados, evolução da produção industrial e abertura comercial, respeitando unidades e universos diferentes.",
+        "section": "economy",
+        "blocks": [
+          {
+            "type": "chart",
+            "chart_slug": "exportacoes-importacoes-bens-portugal"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "industria-portugal-setores"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "abertura-comercial-portugal"
+          },
+          {
+            "type": "heading",
+            "title": "Uma quebra de valor não é uma quebra de volume",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "A notícia sobre o primeiro trimestre de 2026 distingue exportações totais e uma leitura sem determinadas transações de trabalho por encomenda.[11] A nossa série mensal é o total de bens em euros correntes e não contém essa exclusão. Não reproduzimos uma desagregação que não está no catálogo."
+          },
+          {
+            "type": "heading",
+            "title": "Limites da leitura",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "O índice industrial mede volume e os montantes do comércio são nominais. Nos gráficos por setor, o mesmo índice não implica o mesmo peso económico. A série anual do Banco Mundial inclui bens e serviços; a série mensal do INE inclui bens. Exportações brutas não medem valor acrescentado nacional, e uma evolução simultânea não demonstra causalidade."
+          },
+          {
+            "type": "verification",
+            "title": "Explorar a seleção",
+            "steps": [
+              {
+                "label": "Caderno",
+                "text": "Abre uma seleção independente. Alterações feitas pelo leitor não modificam estes comparativos publicados."
+              }
+            ],
+            "action": {
+              "label": "Explorar estes indicadores no Caderno",
+              "href": "/caderno?s=ine.exports_monthly.PT&s=ine.imports_monthly.PT"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Contexto editorial selecionado em 27 de novembro de 2026. As afirmações citadas pertencem à data e ao documento indicados; os gráficos acompanham os dados disponíveis e podem ser revistos. Esta página não é uma análise estatística congelada. As referências numeradas e ligações de consulta constam de Fontes do debate nacional."
+          },
+          {
+            "type": "verification",
+            "title": "Referências e definições",
+            "steps": [
+              {
+                "label": "Fontes",
+                "text": "Cada série tem a sua fonte e proveniência no gráfico. As fontes de contexto político e jornalístico estão separadas."
+              }
+            ],
+            "action": {
+              "label": "Fontes do debate nacional",
+              "href": "/paginas/fontes-debate-nacional"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "demografia-portugal",
+      "body": {
+        "title": "Demografia de Portugal",
+        "introduction": "Distinguir contagens de nascimentos e óbitos, taxas por habitante e população total. Evitar usar o saldo natural como medida de migração.",
+        "section": "demography",
+        "blocks": [
+          {
+            "type": "chart",
+            "chart_slug": "nascimentos-obitos-portugal"
+          },
+          {
+            "type": "chart",
+            "chart_slug": "natalidade-mortalidade-portugal"
+          },
+          {
+            "type": "card",
+            "series_id": "ine.population.PT"
+          },
+          {
+            "type": "heading",
+            "title": "Contar pessoas e medir taxas",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "A diferença entre nascimentos e óbitos é o saldo natural. A variação da população depende também das migrações e de ajustamentos estatísticos. Para discutir emigração jovem, imigração ou saldo migratório, precisamos de séries que meçam esses fenómenos diretamente; não deduzimos essas grandezas da distância entre as linhas."
+          },
+          {
+            "type": "heading",
+            "title": "Limites da leitura",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "Uma taxa bruta de mortalidade pode ser maior porque a população é mais idosa, mesmo com melhores condições de saúde. A taxa de natalidade por mil habitantes não é o índice sintético de fecundidade. Contagens do INE e taxas do Banco Mundial têm fontes, calendários e versões próprios, sempre identificados."
+          },
+          {
+            "type": "verification",
+            "title": "Explorar a seleção",
+            "steps": [
+              {
+                "label": "Caderno",
+                "text": "Abre uma seleção independente. Alterações feitas pelo leitor não modificam estes comparativos publicados."
+              }
+            ],
+            "action": {
+              "label": "Explorar estes indicadores no Caderno",
+              "href": "/caderno?s=ine.live_births.PT&s=ine.deaths.PT&s=ine.population.PT"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Contexto editorial selecionado em 27 de novembro de 2026. As afirmações citadas pertencem à data e ao documento indicados; os gráficos acompanham os dados disponíveis e podem ser revistos. Esta página não é uma análise estatística congelada. As referências numeradas e ligações de consulta constam de Fontes do debate nacional."
+          },
+          {
+            "type": "verification",
+            "title": "Referências e definições",
+            "steps": [
+              {
+                "label": "Fontes",
+                "text": "Cada série tem a sua fonte e proveniência no gráfico. As fontes de contexto político e jornalístico estão separadas."
+              }
+            ],
+            "action": {
+              "label": "Fontes do debate nacional",
+              "href": "/paginas/fontes-debate-nacional"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "debate-nacional",
+      "body": {
+        "title": "Dados para o debate nacional",
+        "introduction": "Cadernos temáticos editáveis, com comparativos e ligações para explorar os indicadores.",
+        "section": "general",
+        "blocks": [
+          {
+            "type": "verification",
+            "title": "Energia e preços",
+            "steps": [
+              {
+                "label": "Indicadores",
+                "text": "Eletricidade, inflação e definição do cabaz."
+              }
+            ],
+            "action": {
+              "label": "Abrir este caderno temático",
+              "href": "/paginas/energia-e-precos"
+            }
+          },
+          {
+            "type": "verification",
+            "title": "Trabalho, produtividade e investigação",
+            "steps": [
+              {
+                "label": "Indicadores",
+                "text": "Evolução por hora e esforço de I&D; sem substituir salários."
+              }
+            ],
+            "action": {
+              "label": "Abrir este caderno temático",
+              "href": "/paginas/trabalho-produtividade-investigacao"
+            }
+          },
+          {
+            "type": "verification",
+            "title": "Contas públicas",
+            "steps": [
+              {
+                "label": "Indicadores",
+                "text": "Saldo anual, dívida e juros de mercado."
+              }
+            ],
+            "action": {
+              "label": "Abrir este caderno temático",
+              "href": "/paginas/contas-publicas-portugal"
+            }
+          },
+          {
+            "type": "verification",
+            "title": "Crédito e depósitos",
+            "steps": [
+              {
+                "label": "Indicadores",
+                "text": "Stocks, indexantes e limites da leitura sobre habitação."
+              }
+            ],
+            "action": {
+              "label": "Abrir este caderno temático",
+              "href": "/paginas/credito-e-poupanca-familias"
+            }
+          },
+          {
+            "type": "verification",
+            "title": "Comércio externo e indústria",
+            "steps": [
+              {
+                "label": "Indicadores",
+                "text": "Bens, serviços e setores industriais."
+              }
+            ],
+            "action": {
+              "label": "Abrir este caderno temático",
+              "href": "/paginas/comercio-e-industria-portugal"
+            }
+          },
+          {
+            "type": "verification",
+            "title": "Demografia",
+            "steps": [
+              {
+                "label": "Indicadores",
+                "text": "Nados-vivos, óbitos e taxas por habitante."
+              }
+            ],
+            "action": {
+              "label": "Abrir este caderno temático",
+              "href": "/paginas/demografia-portugal"
+            }
+          },
+          {
+            "type": "text",
+            "text": "Programas partidários, imprensa e uma pesquisa exploratória de posts públicos no X ajudaram a selecionar perguntas. Não medimos popularidade nem representatividade das opiniões. Uma citação política é uma afirmação datada, nunca uma observação inserida nos gráficos. As séries e a proveniência são independentes dessa escolha editorial."
+          },
+          {
+            "type": "verification",
+            "title": "Fontes e critérios",
+            "steps": [
+              {
+                "label": "Leitura",
+                "text": "As afirmações citadas são datadas. Os gráficos usam séries oficiais, definições explícitas e proveniência própria."
+              }
+            ],
+            "action": {
+              "label": "Consultar as referências",
+              "href": "/paginas/fontes-debate-nacional"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "fontes-debate-nacional",
+      "body": {
+        "title": "Fontes do debate nacional",
+        "introduction": "Referências de contexto político e jornalístico, separadas das fontes estatísticas de cada gráfico.",
+        "section": "general",
+        "blocks": [
+          {
+            "type": "text",
+            "text": "Seleção editorial feita em 27 de novembro de 2026. Os programas são documentos da campanha legislativa de 2025, não anúncios de medidas executadas nem uma pesquisa exaustiva das posições atuais. A data de criação de um PDF não foi tratada como data de publicação. As referências políticas explicam a pergunta; os gráficos usam exclusivamente as séries estatísticas verificadas no Prumo."
+          },
+          {
+            "type": "text",
+            "text": "O corpus inclui PCP, PS, AD (PSD/CDS-PP), Iniciativa Liberal, CHEGA, Bloco de Esquerda e LIVRE. As propostas numéricas de impostos ou parque público não foram tratadas como factos observados. A pesquisa de posts públicos no X foi exploratória, sem recolha de métricas ou alegação de tendência. A seleção de temas não constitui uma amostra representativa da imprensa ou dos partidos."
+          },
+          {
+            "type": "heading",
+            "title": "Documentos de contexto",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "[1] PCP, programa de 2025, página 39\nhttps://www.pcp.pt/sites/default/files/documentos/2025_compromisso_eleitoral_pcp_legislativas.pdf"
+          },
+          {
+            "type": "text",
+            "text": "[2] PS, programa de 2025, página 46\nhttps://ps.pt/wp-content/uploads/2025/04/programa-eleitoral.pdf"
+          },
+          {
+            "type": "text",
+            "text": "[3] AD (PSD/CDS-PP), programa de 2025, página 26\nhttps://ad2025.pt/pdf/programa-eleitoral.pdf"
+          },
+          {
+            "type": "text",
+            "text": "[4] CHEGA, programa de 2025, página 200\nhttps://pub-acfa34005415427bb560174ca37a9c6f.r2.dev/Programa%20Eleitoral%20CHEGA%20-%202025.pdf"
+          },
+          {
+            "type": "text",
+            "text": "[5] Iniciativa Liberal, programa de 2025, página 84\nhttps://iniciativaliberal.pt/wp-content/uploads/IL_Programa_ACelerarPortugal.pdf"
+          },
+          {
+            "type": "text",
+            "text": "[6] Bloco de Esquerda, programa de 2025, página 5\nhttps://bloco.org/media/Manifesto_Bloco_legislativas2025.pdf"
+          },
+          {
+            "type": "text",
+            "text": "[7] LIVRE, programa de 2025, página 100\nhttps://partidolivre.pt/wp-content/uploads/2019/04/ProgramaV1.pdf"
+          },
+          {
+            "type": "text",
+            "text": "[8] Preço da eletricidade em Portugal abaixo da média europeia mas gás para famílias mais caro até junho - ECO\nhttps://eco.sapo.pt/2026/10/30/preco-da-eletricidade-em-portugal-abaixo-da-media-europeia-mas-gas-para-familias-mais-caro-ate-junho"
+          },
+          {
+            "type": "text",
+            "text": "[9] Produtividade de Portugal face à UE é mais baixa do que em 2000 - ECO\nhttps://eco.sapo.pt/2026/09/22/produtividade-de-portugal-face-a-ue-e-mais-baixa-do-que-em-2000"
+          },
+          {
+            "type": "text",
+            "text": "[10] Portugal foi o quarto país do euro que mais cortou a dívida pública no último ano - ECO\nhttps://eco.sapo.pt/2026/10/21/portugal-foi-o-quarto-pais-do-euro-que-mais-cortou-a-divida-publica-no-ultimo-ano"
+          },
+          {
+            "type": "text",
+            "text": "[11] Exportações caem 6,4% e importações sobem 2,6% no 1.º trimestre - Notícias ao Minuto\nhttps://www.noticiasaominuto.com/economia/2981361/exportacoes-caem-6-4-e-importacoes-sobem-2-6-no-1-trimestre"
+          },
+          {
+            "type": "text",
+            "text": "[12] Salário médio em Portugal sobe 4,9% para 1.696 euros - ECO\nhttps://eco.sapo.pt/2026/11/13/salario-medio-em-portugal-sobe-49-para-1-696-euros"
+          },
+          {
+            "type": "text",
+            "text": "[13] Juro dos novos depósitos a prazo sobe em setembro mas continua abaixo da média europeia\nhttps://www.rtp.pt/noticias/economia/juro-dos-novos-depositos-a-prazo-sobe-em-setembro-mas-continua-abaixo-da-media-europeia_n1776320"
+          },
+          {
+            "type": "text",
+            "text": "[14] Portugal regista excedente orçamental de 0,5% do PIB no primeiro semestre - XXV Governo Constitucional\nhttps://portugal.gov.pt/gc25/comunicacao/noticias/portugal-regista-excedente-orcamental-de-05-do-pib-no-primeiro-semestre"
+          },
+          {
+            "type": "heading",
+            "title": "Dados que ainda faltam",
+            "note": ""
+          },
+          {
+            "type": "text",
+            "text": "Não substituímos salário mediano por custo do trabalho, preço de casa por saldo de crédito, taxa de novo empréstimo por Euribor ou imigração por crescimento da população. Salários e distribuição, preços e rendas de habitação, esforço das famílias, gás, taxas de novas operações e migrações exigem séries próprias antes de novos comparativos. A evolução da produtividade num índice de base fixa não mede o nível relativo de produtividade entre países."
+          }
+        ]
+      }
+    }
+  ]
+}

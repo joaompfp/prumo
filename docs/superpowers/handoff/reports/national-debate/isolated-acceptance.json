@@ -1,0 +1,949 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "whole collection published",
+      "passed": true
+    },
+    {
+      "name": "rerun preserves every document and audit byte",
+      "passed": true
+    },
+    {
+      "name": "all previous documents and histories unchanged",
+      "passed": true
+    },
+    {
+      "name": " chart/eletricidade-portugal-espanha-ue: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/eletricidade-portugal-espanha-ue: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/eletricidade-portugal-espanha-ue: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/eletricidade-portugal-espanha-ue: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/inflacao-ipc-ihpc-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/inflacao-ipc-ihpc-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/inflacao-ipc-ihpc-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/inflacao-ipc-ihpc-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/produtividade-hora-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/produtividade-hora-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/produtividade-hora-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/produtividade-hora-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/custos-trabalho-hora-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/custos-trabalho-hora-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/custos-trabalho-hora-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/custos-trabalho-hora-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/investigacao-desenvolvimento-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/investigacao-desenvolvimento-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/investigacao-desenvolvimento-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/investigacao-desenvolvimento-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/saldo-orcamental-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/saldo-orcamental-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/saldo-orcamental-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/saldo-orcamental-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/divida-portugal-espanha-ue: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/divida-portugal-espanha-ue: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/divida-portugal-espanha-ue: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/divida-portugal-espanha-ue: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/juros-divida-portugal-alemanha: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/juros-divida-portugal-alemanha: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/juros-divida-portugal-alemanha: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/juros-divida-portugal-alemanha: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/credito-depositos-evolucao-base2015: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/credito-depositos-evolucao-base2015: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/credito-depositos-evolucao-base2015: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/credito-depositos-evolucao-base2015: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/euribor-tres-seis-doze-meses: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/euribor-tres-seis-doze-meses: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/euribor-tres-seis-doze-meses: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/euribor-tres-seis-doze-meses: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/exportacoes-importacoes-bens-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/exportacoes-importacoes-bens-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/exportacoes-importacoes-bens-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/exportacoes-importacoes-bens-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/industria-portugal-setores: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/industria-portugal-setores: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/industria-portugal-setores: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/industria-portugal-setores: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/abertura-comercial-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/abertura-comercial-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/abertura-comercial-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/abertura-comercial-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/nascimentos-obitos-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/nascimentos-obitos-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/nascimentos-obitos-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/nascimentos-obitos-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " chart/natalidade-mortalidade-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /comparar/natalidade-mortalidade-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /comparar/natalidade-mortalidade-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": " /comparar/natalidade-mortalidade-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": " page/energia-e-precos: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/energia-e-precos: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/energia-e-precos: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": " energia-e-precos: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": " page/trabalho-produtividade-investigacao: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/trabalho-produtividade-investigacao: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/trabalho-produtividade-investigacao: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": " trabalho-produtividade-investigacao: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": " page/contas-publicas-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/contas-publicas-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/contas-publicas-portugal: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": " contas-publicas-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": " page/credito-e-poupanca-familias: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/credito-e-poupanca-familias: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/credito-e-poupanca-familias: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": " credito-e-poupanca-familias: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": " page/comercio-e-industria-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/comercio-e-industria-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/comercio-e-industria-portugal: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": " comercio-e-industria-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": " page/demografia-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/demografia-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/demografia-portugal: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": " demografia-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": " demografia-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": " page/debate-nacional: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/debate-nacional: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/debate-nacional: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": " page/fontes-debate-nacional: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": " /paginas/fontes-debate-nacional: title and one heading",
+      "passed": true
+    },
+    {
+      "name": " /paginas/fontes-debate-nacional: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/eletricidade-portugal-espanha-ue: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/eletricidade-portugal-espanha-ue: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/eletricidade-portugal-espanha-ue: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/eletricidade-portugal-espanha-ue: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/inflacao-ipc-ihpc-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/inflacao-ipc-ihpc-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/inflacao-ipc-ihpc-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/inflacao-ipc-ihpc-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/produtividade-hora-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/produtividade-hora-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/produtividade-hora-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/produtividade-hora-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/custos-trabalho-hora-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/custos-trabalho-hora-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/custos-trabalho-hora-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/custos-trabalho-hora-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/investigacao-desenvolvimento-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/investigacao-desenvolvimento-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/investigacao-desenvolvimento-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/investigacao-desenvolvimento-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/saldo-orcamental-portugal-europa: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/saldo-orcamental-portugal-europa: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/saldo-orcamental-portugal-europa: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/saldo-orcamental-portugal-europa: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/divida-portugal-espanha-ue: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/divida-portugal-espanha-ue: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/divida-portugal-espanha-ue: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/divida-portugal-espanha-ue: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/juros-divida-portugal-alemanha: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/juros-divida-portugal-alemanha: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/juros-divida-portugal-alemanha: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/juros-divida-portugal-alemanha: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/credito-depositos-evolucao-base2015: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/credito-depositos-evolucao-base2015: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/credito-depositos-evolucao-base2015: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/credito-depositos-evolucao-base2015: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/euribor-tres-seis-doze-meses: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/euribor-tres-seis-doze-meses: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/euribor-tres-seis-doze-meses: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/euribor-tres-seis-doze-meses: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/exportacoes-importacoes-bens-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/exportacoes-importacoes-bens-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/exportacoes-importacoes-bens-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/exportacoes-importacoes-bens-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/industria-portugal-setores: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/industria-portugal-setores: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/industria-portugal-setores: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/industria-portugal-setores: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/abertura-comercial-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/abertura-comercial-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/abertura-comercial-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/abertura-comercial-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/nascimentos-obitos-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/nascimentos-obitos-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/nascimentos-obitos-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/nascimentos-obitos-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados chart/natalidade-mortalidade-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/natalidade-mortalidade-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/natalidade-mortalidade-portugal: all selected series drawn",
+      "passed": true
+    },
+    {
+      "name": "/dados /comparar/natalidade-mortalidade-portugal: public composition is not configurable",
+      "passed": true
+    },
+    {
+      "name": "/dados page/energia-e-precos: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/energia-e-precos: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/energia-e-precos: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados energia-e-precos: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": "/dados page/trabalho-produtividade-investigacao: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/trabalho-produtividade-investigacao: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/trabalho-produtividade-investigacao: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados trabalho-produtividade-investigacao: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": "/dados page/contas-publicas-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/contas-publicas-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/contas-publicas-portugal: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados contas-publicas-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": "/dados page/credito-e-poupanca-familias: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/credito-e-poupanca-familias: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/credito-e-poupanca-familias: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados credito-e-poupanca-familias: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": "/dados page/comercio-e-industria-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/comercio-e-industria-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/comercio-e-industria-portugal: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados comercio-e-industria-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": "/dados page/demografia-portugal: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/demografia-portugal: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/demografia-portugal: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados demografia-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": "/dados demografia-portugal: native notebook link works",
+      "passed": true
+    },
+    {
+      "name": "/dados page/debate-nacional: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/debate-nacional: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/debate-nacional: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "/dados page/fontes-debate-nacional: exact published CMS body",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/fontes-debate-nacional: title and one heading",
+      "passed": true
+    },
+    {
+      "name": "/dados /paginas/fontes-debate-nacional: no unavailable blocks",
+      "passed": true
+    },
+    {
+      "name": "annual stocks exclude incomplete 2026",
+      "passed": true
+    },
+    {
+      "name": "schema unchanged",
+      "passed": true
+    },
+    {
+      "name": "all non-CMS tables unchanged",
+      "passed": true
+    }
+  ],
+  "before": {
+    "cms_document": {
+      "rows": 12,
+      "sha256": "07d06aead3372ef5e597950d45436f681371dcce5c66b40b7acc51ec8f5aa0a1"
+    },
+    "cms_event": {
+      "rows": 29,
+      "sha256": "b7799fce05e0c2b17d0267830ab9d6121e1677907d71fd1600507fa875c2a265"
+    },
+    "cms_revision": {
+      "rows": 15,
+      "sha256": "a0e713282469ab08231a52a396c8fbcf3cf7330f508a7458eb9f73efeb76a4d6"
+    },
+    "dataset_run": {
+      "rows": 163,
+      "sha256": "5226e34d9c74acd1b0eee312b47a93e903997378b8af86eab5b5e8bb0459988b"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 16065,
+      "sha256": "dcf3c7af49a0668136b3dc5194c804910965bdf8702bb50bc7327df2d939321d"
+    },
+    "derived_run": {
+      "rows": 34,
+      "sha256": "94d03d26d1ca5358cbe36306614eb79c9acb50ce37a8eab040b7f3c09603aeaf"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 428,
+      "sha256": "9962d1b8bcae5ea046eaada2d74d7c26af525908287555829562452ea4aeff1e"
+    },
+    "observation": {
+      "rows": 776866,
+      "sha256": "c516c263255cb17114294ae2bd869d58bd4be42e7a6c99db3e1e30b46e84a3e1"
+    },
+    "quarantine": {
+      "rows": 34607,
+      "sha256": "297a4acf88a5b9d7af25e0a28d8a534d7e4f2147de329f7c903c980a8d546b67"
+    },
+    "raw_fetch": {
+      "rows": 1688,
+      "sha256": "e7179cb90627c5045245e51b4bf500b9a8454d6db677e6c0e58ec1c8a8305766"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "9d99b5e169aaeb6c82e4e7f41a01f7aae76f1c5acd93cafcc7ce7898ada7f9ed"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 67,
+      "sha256": "ba5d65f900aff33853f6be491451e88c3918ce47cc17ce3ef6b4edc7d02fed85"
+    },
+    "verification_item": {
+      "rows": 324156,
+      "sha256": "2d4cd41dcbea381c78a070a894ed7ad319acc2005674856f0ebd28215fb9198f"
+    },
+    "verification_spec": {
+      "rows": 2428,
+      "sha256": "11a78444c3f734c470b6171c2ebc154a0ede05abd23cffe654eaa44a3ecb3f02"
+    },
+    "schema": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7"
+  },
+  "after": {
+    "cms_document": {
+      "rows": 35,
+      "sha256": "221948321f256cfc6f4fd0dcf17b91d434a0c0c004bdf95cdfe7b1ed42bbcbad"
+    },
+    "cms_event": {
+      "rows": 75,
+      "sha256": "4368b5ad2c334aa0f593bc7c4e0bf96ba4e6b865c1f6d37061e9cc31bd4c1227"
+    },
+    "cms_revision": {
+      "rows": 38,
+      "sha256": "c826490cdaa3e99768d8cb431a710c42443a8bed6e0246a14ff353cc2d89630d"
+    },
+    "dataset_run": {
+      "rows": 163,
+      "sha256": "5226e34d9c74acd1b0eee312b47a93e903997378b8af86eab5b5e8bb0459988b"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 16065,
+      "sha256": "dcf3c7af49a0668136b3dc5194c804910965bdf8702bb50bc7327df2d939321d"
+    },
+    "derived_run": {
+      "rows": 34,
+      "sha256": "94d03d26d1ca5358cbe36306614eb79c9acb50ce37a8eab040b7f3c09603aeaf"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 428,
+      "sha256": "9962d1b8bcae5ea046eaada2d74d7c26af525908287555829562452ea4aeff1e"
+    },
+    "observation": {
+      "rows": 776866,
+      "sha256": "c516c263255cb17114294ae2bd869d58bd4be42e7a6c99db3e1e30b46e84a3e1"
+    },
+    "quarantine": {
+      "rows": 34607,
+      "sha256": "297a4acf88a5b9d7af25e0a28d8a534d7e4f2147de329f7c903c980a8d546b67"
+    },
+    "raw_fetch": {
+      "rows": 1688,
+      "sha256": "e7179cb90627c5045245e51b4bf500b9a8454d6db677e6c0e58ec1c8a8305766"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "9d99b5e169aaeb6c82e4e7f41a01f7aae76f1c5acd93cafcc7ce7898ada7f9ed"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 67,
+      "sha256": "ba5d65f900aff33853f6be491451e88c3918ce47cc17ce3ef6b4edc7d02fed85"
+    },
+    "verification_item": {
+      "rows": 324156,
+      "sha256": "2d4cd41dcbea381c78a070a894ed7ad319acc2005674856f0ebd28215fb9198f"
+    },
+    "verification_spec": {
+      "rows": 2428,
+      "sha256": "11a78444c3f734c470b6171c2ebc154a0ede05abd23cffe654eaa44a3ecb3f02"
+    },
+    "schema": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7"
+  },
+  "expected_documents": 23
+}

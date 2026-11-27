@@ -1,0 +1,1643 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/eletricidade-portugal-espanha-ue: 200",
+      "passed": true
+    },
+    {
+      "name": "390 eletricidade-portugal-espanha-ue: heading",
+      "passed": true
+    },
+    {
+      "name": "390 eletricidade-portugal-espanha-ue: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 eletricidade-portugal-espanha-ue: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 eletricidade-portugal-espanha-ue: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 eletricidade-portugal-espanha-ue/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 eletricidade-portugal-espanha-ue/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 eletricidade-portugal-espanha-ue/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/inflacao-ipc-ihpc-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 inflacao-ipc-ihpc-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 inflacao-ipc-ihpc-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 inflacao-ipc-ihpc-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 inflacao-ipc-ihpc-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 inflacao-ipc-ihpc-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 inflacao-ipc-ihpc-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 inflacao-ipc-ihpc-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/produtividade-hora-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "390 produtividade-hora-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "390 produtividade-hora-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 produtividade-hora-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 produtividade-hora-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 produtividade-hora-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 produtividade-hora-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 produtividade-hora-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/custos-trabalho-hora-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "390 custos-trabalho-hora-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "390 custos-trabalho-hora-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 custos-trabalho-hora-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 custos-trabalho-hora-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 custos-trabalho-hora-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 custos-trabalho-hora-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 custos-trabalho-hora-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/investigacao-desenvolvimento-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "390 investigacao-desenvolvimento-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "390 investigacao-desenvolvimento-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 investigacao-desenvolvimento-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 investigacao-desenvolvimento-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 investigacao-desenvolvimento-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 investigacao-desenvolvimento-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 investigacao-desenvolvimento-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/saldo-orcamental-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "390 saldo-orcamental-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "390 saldo-orcamental-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 saldo-orcamental-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 saldo-orcamental-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 saldo-orcamental-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 saldo-orcamental-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 saldo-orcamental-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/divida-portugal-espanha-ue: 200",
+      "passed": true
+    },
+    {
+      "name": "390 divida-portugal-espanha-ue: heading",
+      "passed": true
+    },
+    {
+      "name": "390 divida-portugal-espanha-ue: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 divida-portugal-espanha-ue: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 divida-portugal-espanha-ue: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 divida-portugal-espanha-ue/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 divida-portugal-espanha-ue/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 divida-portugal-espanha-ue/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/juros-divida-portugal-alemanha: 200",
+      "passed": true
+    },
+    {
+      "name": "390 juros-divida-portugal-alemanha: heading",
+      "passed": true
+    },
+    {
+      "name": "390 juros-divida-portugal-alemanha: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 juros-divida-portugal-alemanha: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 juros-divida-portugal-alemanha: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 juros-divida-portugal-alemanha/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 juros-divida-portugal-alemanha/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 juros-divida-portugal-alemanha/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/credito-depositos-evolucao-base2015: 200",
+      "passed": true
+    },
+    {
+      "name": "390 credito-depositos-evolucao-base2015: heading",
+      "passed": true
+    },
+    {
+      "name": "390 credito-depositos-evolucao-base2015: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 credito-depositos-evolucao-base2015: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 credito-depositos-evolucao-base2015: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 credito-depositos-evolucao-base2015/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 credito-depositos-evolucao-base2015/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 credito-depositos-evolucao-base2015/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/euribor-tres-seis-doze-meses: 200",
+      "passed": true
+    },
+    {
+      "name": "390 euribor-tres-seis-doze-meses: heading",
+      "passed": true
+    },
+    {
+      "name": "390 euribor-tres-seis-doze-meses: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 euribor-tres-seis-doze-meses: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 euribor-tres-seis-doze-meses: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 euribor-tres-seis-doze-meses/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 euribor-tres-seis-doze-meses/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 euribor-tres-seis-doze-meses/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/exportacoes-importacoes-bens-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 exportacoes-importacoes-bens-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 exportacoes-importacoes-bens-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 exportacoes-importacoes-bens-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 exportacoes-importacoes-bens-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 exportacoes-importacoes-bens-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 exportacoes-importacoes-bens-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 exportacoes-importacoes-bens-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/industria-portugal-setores: 200",
+      "passed": true
+    },
+    {
+      "name": "390 industria-portugal-setores: heading",
+      "passed": true
+    },
+    {
+      "name": "390 industria-portugal-setores: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 industria-portugal-setores: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 industria-portugal-setores: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 industria-portugal-setores/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 industria-portugal-setores/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 industria-portugal-setores/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/abertura-comercial-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 abertura-comercial-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 abertura-comercial-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 abertura-comercial-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 abertura-comercial-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 abertura-comercial-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 abertura-comercial-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 abertura-comercial-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/nascimentos-obitos-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 nascimentos-obitos-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 nascimentos-obitos-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 nascimentos-obitos-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 nascimentos-obitos-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 nascimentos-obitos-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 nascimentos-obitos-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 nascimentos-obitos-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/comparar/natalidade-mortalidade-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 natalidade-mortalidade-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 natalidade-mortalidade-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 natalidade-mortalidade-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 natalidade-mortalidade-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 natalidade-mortalidade-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 natalidade-mortalidade-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 natalidade-mortalidade-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/energia-e-precos: 200",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos: heading",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 energia-e-precos/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/trabalho-produtividade-investigacao: 200",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao: heading",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/2: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/2: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 trabalho-produtividade-investigacao/2: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/contas-publicas-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/2: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/2: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 contas-publicas-portugal/2: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/credito-e-poupanca-familias: 200",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias: heading",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 credito-e-poupanca-familias/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/comercio-e-industria-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/2: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/2: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 comercio-e-industria-portugal/2: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/demografia-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "390 demografia-portugal/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/debate-nacional: 200",
+      "passed": true
+    },
+    {
+      "name": "390 debate-nacional: heading",
+      "passed": true
+    },
+    {
+      "name": "390 debate-nacional: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 debate-nacional: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "390 http://127.0.0.1:8178/paginas/fontes-debate-nacional: 200",
+      "passed": true
+    },
+    {
+      "name": "390 fontes-debate-nacional: heading",
+      "passed": true
+    },
+    {
+      "name": "390 fontes-debate-nacional: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "390 fontes-debate-nacional: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/eletricidade-portugal-espanha-ue: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 eletricidade-portugal-espanha-ue: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 eletricidade-portugal-espanha-ue: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 eletricidade-portugal-espanha-ue: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 eletricidade-portugal-espanha-ue: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 eletricidade-portugal-espanha-ue/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 eletricidade-portugal-espanha-ue/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 eletricidade-portugal-espanha-ue/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/inflacao-ipc-ihpc-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 inflacao-ipc-ihpc-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 inflacao-ipc-ihpc-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 inflacao-ipc-ihpc-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 inflacao-ipc-ihpc-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 inflacao-ipc-ihpc-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 inflacao-ipc-ihpc-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 inflacao-ipc-ihpc-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/produtividade-hora-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 produtividade-hora-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 produtividade-hora-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 produtividade-hora-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 produtividade-hora-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 produtividade-hora-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 produtividade-hora-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 produtividade-hora-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/custos-trabalho-hora-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 custos-trabalho-hora-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 custos-trabalho-hora-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 custos-trabalho-hora-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 custos-trabalho-hora-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 custos-trabalho-hora-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 custos-trabalho-hora-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 custos-trabalho-hora-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/investigacao-desenvolvimento-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 investigacao-desenvolvimento-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 investigacao-desenvolvimento-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 investigacao-desenvolvimento-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 investigacao-desenvolvimento-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 investigacao-desenvolvimento-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 investigacao-desenvolvimento-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 investigacao-desenvolvimento-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/saldo-orcamental-portugal-europa: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 saldo-orcamental-portugal-europa: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 saldo-orcamental-portugal-europa: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 saldo-orcamental-portugal-europa: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 saldo-orcamental-portugal-europa: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 saldo-orcamental-portugal-europa/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 saldo-orcamental-portugal-europa/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 saldo-orcamental-portugal-europa/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/divida-portugal-espanha-ue: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 divida-portugal-espanha-ue: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 divida-portugal-espanha-ue: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 divida-portugal-espanha-ue: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 divida-portugal-espanha-ue: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 divida-portugal-espanha-ue/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 divida-portugal-espanha-ue/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 divida-portugal-espanha-ue/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/juros-divida-portugal-alemanha: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 juros-divida-portugal-alemanha: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 juros-divida-portugal-alemanha: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 juros-divida-portugal-alemanha: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 juros-divida-portugal-alemanha: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 juros-divida-portugal-alemanha/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 juros-divida-portugal-alemanha/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 juros-divida-portugal-alemanha/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/credito-depositos-evolucao-base2015: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-depositos-evolucao-base2015: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-depositos-evolucao-base2015: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-depositos-evolucao-base2015: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-depositos-evolucao-base2015: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-depositos-evolucao-base2015/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-depositos-evolucao-base2015/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-depositos-evolucao-base2015/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/euribor-tres-seis-doze-meses: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 euribor-tres-seis-doze-meses: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 euribor-tres-seis-doze-meses: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 euribor-tres-seis-doze-meses: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 euribor-tres-seis-doze-meses: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 euribor-tres-seis-doze-meses/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 euribor-tres-seis-doze-meses/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 euribor-tres-seis-doze-meses/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/exportacoes-importacoes-bens-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 exportacoes-importacoes-bens-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 exportacoes-importacoes-bens-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 exportacoes-importacoes-bens-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 exportacoes-importacoes-bens-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 exportacoes-importacoes-bens-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 exportacoes-importacoes-bens-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 exportacoes-importacoes-bens-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/industria-portugal-setores: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 industria-portugal-setores: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 industria-portugal-setores: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 industria-portugal-setores: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 industria-portugal-setores: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 industria-portugal-setores/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 industria-portugal-setores/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 industria-portugal-setores/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/abertura-comercial-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 abertura-comercial-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 abertura-comercial-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 abertura-comercial-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 abertura-comercial-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 abertura-comercial-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 abertura-comercial-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 abertura-comercial-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/nascimentos-obitos-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 nascimentos-obitos-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 nascimentos-obitos-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 nascimentos-obitos-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 nascimentos-obitos-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 nascimentos-obitos-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 nascimentos-obitos-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 nascimentos-obitos-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/comparar/natalidade-mortalidade-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 natalidade-mortalidade-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 natalidade-mortalidade-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 natalidade-mortalidade-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 natalidade-mortalidade-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 natalidade-mortalidade-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 natalidade-mortalidade-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 natalidade-mortalidade-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/energia-e-precos: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 energia-e-precos/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/trabalho-produtividade-investigacao: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/2: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/2: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 trabalho-produtividade-investigacao/2: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/contas-publicas-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/2: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/2: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 contas-publicas-portugal/2: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/credito-e-poupanca-familias: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 credito-e-poupanca-familias/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/comercio-e-industria-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/2: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/2: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 comercio-e-industria-portugal/2: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/demografia-portugal: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal: all charts enhanced",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal/0: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal/0: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal/0: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal/1: exact last period inspection",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal/1: exact displayed values",
+      "passed": true
+    },
+    {
+      "name": "1440 demografia-portugal/1: usable canvas",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/debate-nacional: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 debate-nacional: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 debate-nacional: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 debate-nacional: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "1440 http://127.0.0.1:8178/paginas/fontes-debate-nacional: 200",
+      "passed": true
+    },
+    {
+      "name": "1440 fontes-debate-nacional: heading",
+      "passed": true
+    },
+    {
+      "name": "1440 fontes-debate-nacional: no page overflow",
+      "passed": true
+    },
+    {
+      "name": "1440 fontes-debate-nacional: no forbidden punctuation",
+      "passed": true
+    },
+    {
+      "name": "no uncaught application errors",
+      "passed": true
+    },
+    {
+      "name": "no application console errors",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "origins": [
+    "http://127.0.0.1:8178"
+  ]
+}

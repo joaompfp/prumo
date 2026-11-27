@@ -1,0 +1,790 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "chart/eletricidade-portugal-espanha-ue: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/eletricidade-portugal-espanha-ue: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-portugal-espanha-ue: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-portugal-espanha-ue: axis 0",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-portugal-espanha-ue: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-portugal-espanha-ue: axis 1",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-portugal-espanha-ue: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "eletricidade-portugal-espanha-ue: axis 2",
+      "passed": true
+    },
+    {
+      "name": "chart/eletricidade-portugal-espanha-ue: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/eletricidade-portugal-espanha-ue: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/inflacao-ipc-ihpc-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/inflacao-ipc-ihpc-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "inflacao-ipc-ihpc-portugal: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "inflacao-ipc-ihpc-portugal: axis 0",
+      "passed": true
+    },
+    {
+      "name": "inflacao-ipc-ihpc-portugal: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "inflacao-ipc-ihpc-portugal: axis 1",
+      "passed": true
+    },
+    {
+      "name": "chart/inflacao-ipc-ihpc-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/inflacao-ipc-ihpc-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/produtividade-hora-portugal-europa: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/produtividade-hora-portugal-europa: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: axis 0",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: axis 1",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: axis 2",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: selected series 3",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: axis 3",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: selected series 4",
+      "passed": true
+    },
+    {
+      "name": "produtividade-hora-portugal-europa: axis 4",
+      "passed": true
+    },
+    {
+      "name": "chart/produtividade-hora-portugal-europa: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/produtividade-hora-portugal-europa: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/custos-trabalho-hora-portugal-europa: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/custos-trabalho-hora-portugal-europa: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: axis 0",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: axis 1",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: axis 2",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: selected series 3",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: axis 3",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: selected series 4",
+      "passed": true
+    },
+    {
+      "name": "custos-trabalho-hora-portugal-europa: axis 4",
+      "passed": true
+    },
+    {
+      "name": "chart/custos-trabalho-hora-portugal-europa: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/custos-trabalho-hora-portugal-europa: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/investigacao-desenvolvimento-portugal-europa: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/investigacao-desenvolvimento-portugal-europa: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: axis 0",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: axis 1",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: axis 2",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: selected series 3",
+      "passed": true
+    },
+    {
+      "name": "investigacao-desenvolvimento-portugal-europa: axis 3",
+      "passed": true
+    },
+    {
+      "name": "chart/investigacao-desenvolvimento-portugal-europa: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/investigacao-desenvolvimento-portugal-europa: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/saldo-orcamental-portugal-europa: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/saldo-orcamental-portugal-europa: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: axis 0",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: axis 1",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: axis 2",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: selected series 3",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: axis 3",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: selected series 4",
+      "passed": true
+    },
+    {
+      "name": "saldo-orcamental-portugal-europa: axis 4",
+      "passed": true
+    },
+    {
+      "name": "chart/saldo-orcamental-portugal-europa: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/saldo-orcamental-portugal-europa: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/divida-portugal-espanha-ue: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/divida-portugal-espanha-ue: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "divida-portugal-espanha-ue: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "divida-portugal-espanha-ue: axis 0",
+      "passed": true
+    },
+    {
+      "name": "divida-portugal-espanha-ue: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "divida-portugal-espanha-ue: axis 1",
+      "passed": true
+    },
+    {
+      "name": "divida-portugal-espanha-ue: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "divida-portugal-espanha-ue: axis 2",
+      "passed": true
+    },
+    {
+      "name": "chart/divida-portugal-espanha-ue: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/divida-portugal-espanha-ue: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/juros-divida-portugal-alemanha: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/juros-divida-portugal-alemanha: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "juros-divida-portugal-alemanha: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "juros-divida-portugal-alemanha: axis 0",
+      "passed": true
+    },
+    {
+      "name": "juros-divida-portugal-alemanha: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "juros-divida-portugal-alemanha: axis 1",
+      "passed": true
+    },
+    {
+      "name": "chart/juros-divida-portugal-alemanha: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/juros-divida-portugal-alemanha: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/credito-depositos-evolucao-base2015: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/credito-depositos-evolucao-base2015: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "credito-depositos-evolucao-base2015: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "credito-depositos-evolucao-base2015: axis 0",
+      "passed": true
+    },
+    {
+      "name": "credito-depositos-evolucao-base2015: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "credito-depositos-evolucao-base2015: axis 1",
+      "passed": true
+    },
+    {
+      "name": "credito-depositos-evolucao-base2015: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "credito-depositos-evolucao-base2015: axis 2",
+      "passed": true
+    },
+    {
+      "name": "chart/credito-depositos-evolucao-base2015: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/credito-depositos-evolucao-base2015: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/euribor-tres-seis-doze-meses: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/euribor-tres-seis-doze-meses: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "euribor-tres-seis-doze-meses: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "euribor-tres-seis-doze-meses: axis 0",
+      "passed": true
+    },
+    {
+      "name": "euribor-tres-seis-doze-meses: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "euribor-tres-seis-doze-meses: axis 1",
+      "passed": true
+    },
+    {
+      "name": "euribor-tres-seis-doze-meses: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "euribor-tres-seis-doze-meses: axis 2",
+      "passed": true
+    },
+    {
+      "name": "chart/euribor-tres-seis-doze-meses: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/euribor-tres-seis-doze-meses: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/exportacoes-importacoes-bens-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/exportacoes-importacoes-bens-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "exportacoes-importacoes-bens-portugal: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "exportacoes-importacoes-bens-portugal: axis 0",
+      "passed": true
+    },
+    {
+      "name": "exportacoes-importacoes-bens-portugal: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "exportacoes-importacoes-bens-portugal: axis 1",
+      "passed": true
+    },
+    {
+      "name": "chart/exportacoes-importacoes-bens-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/exportacoes-importacoes-bens-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/industria-portugal-setores: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/industria-portugal-setores: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: axis 0",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: axis 1",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: selected series 2",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: axis 2",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: selected series 3",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: axis 3",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: selected series 4",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: axis 4",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: selected series 5",
+      "passed": true
+    },
+    {
+      "name": "industria-portugal-setores: axis 5",
+      "passed": true
+    },
+    {
+      "name": "chart/industria-portugal-setores: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/industria-portugal-setores: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/abertura-comercial-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/abertura-comercial-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "abertura-comercial-portugal: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "abertura-comercial-portugal: axis 0",
+      "passed": true
+    },
+    {
+      "name": "abertura-comercial-portugal: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "abertura-comercial-portugal: axis 1",
+      "passed": true
+    },
+    {
+      "name": "chart/abertura-comercial-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/abertura-comercial-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/nascimentos-obitos-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/nascimentos-obitos-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "nascimentos-obitos-portugal: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "nascimentos-obitos-portugal: axis 0",
+      "passed": true
+    },
+    {
+      "name": "nascimentos-obitos-portugal: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "nascimentos-obitos-portugal: axis 1",
+      "passed": true
+    },
+    {
+      "name": "chart/nascimentos-obitos-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/nascimentos-obitos-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "chart/natalidade-mortalidade-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "chart/natalidade-mortalidade-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "natalidade-mortalidade-portugal: selected series 0",
+      "passed": true
+    },
+    {
+      "name": "natalidade-mortalidade-portugal: axis 0",
+      "passed": true
+    },
+    {
+      "name": "natalidade-mortalidade-portugal: selected series 1",
+      "passed": true
+    },
+    {
+      "name": "natalidade-mortalidade-portugal: axis 1",
+      "passed": true
+    },
+    {
+      "name": "chart/natalidade-mortalidade-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "chart/natalidade-mortalidade-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/energia-e-precos: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/energia-e-precos: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/energia-e-precos: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/energia-e-precos: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/trabalho-produtividade-investigacao: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/trabalho-produtividade-investigacao: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/trabalho-produtividade-investigacao: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/trabalho-produtividade-investigacao: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/contas-publicas-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/contas-publicas-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/contas-publicas-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/contas-publicas-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/credito-e-poupanca-familias: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/credito-e-poupanca-familias: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/credito-e-poupanca-familias: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/credito-e-poupanca-familias: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/comercio-e-industria-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/comercio-e-industria-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/comercio-e-industria-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/comercio-e-industria-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/demografia-portugal: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/demografia-portugal: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/demografia-portugal: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/demografia-portugal: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/debate-nacional: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/debate-nacional: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/debate-nacional: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/debate-nacional: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "page/fontes-debate-nacional: editor loaded",
+      "passed": true
+    },
+    {
+      "name": "page/fontes-debate-nacional: authored title populated",
+      "passed": true
+    },
+    {
+      "name": "page/fontes-debate-nacional: saved draft preview",
+      "passed": true
+    },
+    {
+      "name": "page/fontes-debate-nacional: preview is non-executable",
+      "passed": true
+    },
+    {
+      "name": "native save changes only the draft",
+      "passed": true
+    },
+    {
+      "name": "changed private preview is populated",
+      "passed": true
+    },
+    {
+      "name": "native publish uses changed series order",
+      "passed": true
+    },
+    {
+      "name": "reader receives changed publication",
+      "passed": true
+    },
+    {
+      "name": "homepage unchanged through real browser writes",
+      "passed": true
+    },
+    {
+      "name": "all non-CMS tables unchanged through authoring",
+      "passed": true
+    }
+  ]
+}

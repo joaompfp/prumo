@@ -1,0 +1,10 @@
+{
+  "completed": false,
+  "passed": false,
+  "checks": [],
+  "errors": [],
+  "warnings": [],
+  "origins": [
+    "http://127.0.0.1:8178"
+  ]
+}
