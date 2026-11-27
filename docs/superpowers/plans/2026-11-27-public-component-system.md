@@ -40,5 +40,11 @@ por pelo menos 15 minutos. Só depois marcar instalada no handoff e no roadmap.
 
 ## Estado
 
-Implementação e primeira revisão concluídas; correções de cascata e aceitação
-com dados reais em curso. Ainda não instalada.
+Instalada em `acef14b` a 27/11 às 02:49 UTC, após CI exata `45929241699`
+aprovada: 3.433 testes passaram, 43 saltados e sete de rede excluídos. Correções
+de cascata e percurso nativo verificadas. Passaram 624 verificações públicas em
+28 casos nos dois endereços, 27 do percurso nativo, 13 de cascata e 32 das
+pré-visualizações privadas. Observação concluída às 03:04:22 UTC após
+900,036153 segundos e 30 amostras estáveis; as 38 verificações finais passaram
+novamente às 03:04:44 UTC. A aceitação humana com leitor de ecrã continua separada. Registo completo em
+`../handoff/reports/frontend-toolkit/installed.md`.

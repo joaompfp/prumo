@@ -1,6 +1,31 @@
 # Prumo image and ingestion operations
 
-## Current app-style reader interface
+## Current compact public component system
+
+Runtime `acef14b` is installed from 27/11/2026 02:49 UTC after exact CI
+`45929241699` passed 3433 tests. Public controls use the pinned local Bootstrap
+5.3.9 subset; ECharts remains unchanged. Body 22px, practical 44px action targets,
+Admin Tabler and its type remain separate. Public/static-preview readers only
+changed. Original data, coordinates/CSV, schema/migrations, authored CMS/history
+and complete worker identity/image/start/restart baseline are preserved.
+
+Installed public 624/28-case browser acceptance, native JS/no-JS/print 27,
+cascade 13, private previews 32 and state/access 38 passed. Reader observation
+passed at 03:04:22 UTC after 900.036153 seconds/30 matching samples, with the final
+38 state/access checks passing again at 03:04:44 UTC. Human
+screen-reader acceptance remains open. [Evidence and recovery](../superpowers/handoff/reports/frontend-toolkit/installed.md).
+
+Recovery: actual previous checkout `72d1cda` and exact pinned images
+`prumo:rollback-frontend-toolkit-20261127` and
+`prumo-backoffice:rollback-frontend-toolkit-20261127`. Stop only the affected
+bind-mounted public reader before restoring code, then recreate the two readers
+through established aliases; do not restore the database or operate ingestion.
+Operator directory `/home/joao/prumo-operations/frontend-toolkit-20261127`.
+Materialise code under umask 022 inside the private operator directory. Dated
+scripts are receipts and must not be rerun blindly. Report-only follow-ups do
+not require another runtime rollout.
+
+## Previous app-style reader interface
 
 Release `733a536` (runtime `5e68fd0`) is installed from 27/11/2026, final reader starts 00:05:14 UTC. Only public web and static-preview Admin changed. Exact-release CI `45913029165` passed 3424 tests, with real browser regressions exercised locally. Installed acceptance passed 512 public checks, native JS/no-JS/print journeys, nine real editors and both static previews. Worker, schema/migrations, CMS/homepage/history, original coordinates and CSV are preserved. Reader observation completed at 00:20:14 UTC after 900.036113 seconds/29 stable samples; final 36 state/access checks passed again at 00:21:11 UTC; [installed evidence and retained activation failure](../superpowers/handoff/reports/app-ui/installed.md).
 

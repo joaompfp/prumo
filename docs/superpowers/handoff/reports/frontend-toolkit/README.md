@@ -59,3 +59,23 @@ Plano: `../../../plans/2026-11-27-public-component-system.md`.
 Scripts de aceitação: browser_check.py, workflow_check.py e cascade_check.py.
 Recibos integrais locais: `/home/joao/.hermes/cache/scratch/prumo-frontend-release`.
 A população aceite e capturas finais relevantes serão arquivadas na instalação.
+
+## Verificação do commit enviado
+
+No checkout destacado de `acef14b`, o controlador verificou as origens dos imports,
+passou 75 testes focados, incluindo Chromium real, e ruff. O verificador de
+navegador desse checkout passou 312 verificações/14 casos sobre o runtime com os
+mesmos bytes de CSS e templates. O percurso nativo passou 28 e a cascata 13.
+
+O ciclo adicional sobre outra cópia de produção criou uma página com texto,
+indicador e gráfico publicado; guardou, previu, publicou, confirmou publicamente
+e retirou a página. Passaram dez verificações, incluindo hashes iguais das vinte
+tabelas fora do CMS. A primeira leitura final falhou porque o escritor do CMS
+pôs essa cópia offline em WAL e removeu o SHM ao fechar. O verificador corrigido
+preparou apenas a cópia de ensaio em DELETE antes de ler; não fez recuperação
+no leitor nem tocou na base ou nos ficheiros auxiliares de produção. O recibo
+incompleto permanece arquivado, separado da passagem concluída.
+
+O primeiro cliente de acompanhamento da CI terminou com HTTP 502 da API GitHub;
+a execução remota ainda estava em curso, não foi repetida nem tratada como falha
+de testes. Mantêm-se o recibo e a consulta da mesma identidade de execução.
