@@ -102,6 +102,7 @@
   line-height: 1.2;
   white-space: nowrap;
 }
+.app-disclosure[data-state] > .app-disclosure-toggle { color: var(--accent); border-color: var(--accent); }
 .app-disclosure > summary { list-style: none; cursor: pointer; }
 .app-disclosure > summary::-webkit-details-marker { display: none; }
 .app-disclosure > summary .ui-icon { flex: none; width: 1.05em; height: 1.05em; }
@@ -243,12 +244,15 @@
     flex: 1 1 100%;
     width: 100%;
   }
-  .app-search .form-control {
-    border-radius: 7px 7px 0 0;
+  /* Bootstrap's multiple :not selectors outrank ordinary theme classes. The
+     stacked-only exception restores all outer corners, not the joined row. */
+  .app-search > .input-group > .form-control:not(:last-child) {
+    border-radius: 7px 7px 0 0 !important;
   }
-  .app-search .btn {
+  .app-search > .input-group > .btn:not(:first-child) {
     margin-top: -1px;
-    border-radius: 0 0 7px 7px;
+    margin-left: 0 !important;
+    border-radius: 0 0 7px 7px !important;
   }
 }
 

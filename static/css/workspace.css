@@ -38,7 +38,7 @@
 }
 .notebook-chart-period { margin: 0 0 4px; color: var(--ink); font-size: .8rem; line-height: 1.3; }
 .notebook-chart-period-label {
-  color: var(--accent); font-weight: 600; letter-spacing: 0; margin: 0 4px 0 0;
+  display: block; color: var(--muted); font-weight: 600; letter-spacing: 0; margin: 0 0 2px;
 }
 .notebook-chart-period .note { font-size: .75rem; }
 .notebook-chart-sources {
@@ -224,7 +224,7 @@
 }
 
 @media print {
-  .site-header, .site-footer, .search, .filters, .windows, .pager, .download { display: none; }
+  .site-header, .site-footer, .search, .filters, .windows, .pager, .pagination, .app-pagination, .download { display: none; }
   .notebook-toolbar, .notebook-chart-settings, .notebook-chart-options,
   .notebook-search { display: none; }
   .notebook-workspace { width: 100%; }

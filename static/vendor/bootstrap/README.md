@@ -5,6 +5,11 @@ framework: only reboot plus the button, form, navigation, pagination and visuall
 components are present, so Bootstrap's `.card`, `.badge` and navbar rules cannot collide
 with Prumo's own presentation or its Admin Tabler toolkit.
 
+The reviewed button family includes upstream size/close/check and button-group
+selectors selected by the `.btn` prefix. Those variants are available but are not
+required by current public templates; the manifest names component families, not
+every selector. An upstream upgrade requires a fresh byte and selector review.
+
 - Upstream package: `bootstrap@5.3.9` from npm.
 - Upstream files: `dist/css/bootstrap-reboot.css` and `dist/css/bootstrap.css`.
 - Licence: MIT, reproduced in `LICENSE`.
