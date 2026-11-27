@@ -1,0 +1,18 @@
+{
+  "completed": true,
+  "all_document_identities_preserved": true,
+  "unrelated_documents_exact": 27,
+  "updated_pages": {
+    "energia-e-precos": 4,
+    "trabalho-produtividade-investigacao": 4,
+    "contas-publicas-portugal": 4,
+    "credito-e-poupanca-familias": 4,
+    "comercio-e-industria-portugal": 4,
+    "demografia-portugal": 4
+  },
+  "retired_pages": {
+    "debate-nacional": 3,
+    "fontes-debate-nacional": 3
+  },
+  "previous_events_preserved": true
+}

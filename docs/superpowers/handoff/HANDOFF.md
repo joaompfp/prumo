@@ -1,6 +1,14 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
-## Portugal public-debate collection published through CMS (2026-11-27)
+## Editorial scope corrected in production (2026-11-27)
+
+The owner explicitly rejected the invented public "Debate nacional" grouping: the request was to populate existing sections. At 09:55-09:56 UTC the restricted CMS service unpublished only `page/debate-nacional` and `page/fontes-debate-nacional`, retaining their history. The six existing thematic notebooks keep their original economy/energy/demography categories and charts; relevant context references are now inline, without orphan links. All fifteen added comparisons remain in `/comparar`; notebooks remain discoverable in `/paginas` and their existing themes. Do not recreate the wrapper, invent another collection label or change navigation in response to a content-population request.
+
+Exact readback and audit passed for all eight targets, with six new revisions and fourteen intended events; every other CMS document/chart, homepage and history is identical. Production non-CMS table/schema fingerprints and all three service identities/images/start/restarts match before/after. No runtime deployment, migration, worker operation, source-data/rights/edge/authentication change. Independent review approved; controller gates: 28 collection/service tests, 18 typography tests, 118 isolated-copy checks and 196 public HTTP assertions on both mounts. These are scoped correction results, not a fresh full-suite/hosted-CI claim.
+
+Current correction plan and evidence: `docs/editorial/2026-11-27-existing-sections-correction/plan.json` and `reports/editorial-scope/README.md`, `production.json`, `public.json`. Feature worktree `/home/joao/projects/prumo-debate-national`; main holder `/home/joao/docker/stacks/web/images/prumo`. CMS remains authoritative; the original publication manifest below is historical and must not be replayed. Source/worker/human-accessibility gates and other product phases remain unchanged.
+
+## Previous initial publication, scope superseded above (2026-11-27)
 
 Owner requested an editable, relevant collection inspired by press/X and statistics in PCP/other party programmes. Content/helper commit `9087bc4` is pushed and integrated in main. At 04:31 UTC, the existing Admin CMS service published fifteen charts and eight pages: six thematic notebooks, an index and a reference page. Entry `https://joao.date/dados/paginas/debate-nacional`; its real editor is `/dados/admin/cms/page/debate-nacional`. Every composition is stored in CMS revisions and editable through existing labelled forms, not a new custom route/catalogue. Caderno links are a separate reader exploration. All prior documents and history, including homepage, are preserved.
 

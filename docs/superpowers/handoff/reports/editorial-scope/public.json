@@ -1,0 +1,790 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "https://joao.date/dados/: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/temas/economy: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/temas/economy: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/temas/demography: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/temas/demography: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/temas/energy: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/temas/energy: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/energia-e-precos: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/energia-e-precos: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/trabalho-produtividade-investigacao: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/trabalho-produtividade-investigacao: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/contas-publicas-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/contas-publicas-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/credito-e-poupanca-familias: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/credito-e-poupanca-familias: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/comercio-e-industria-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/comercio-e-industria-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/demografia-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/demografia-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/debate-nacional: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/paginas/fontes-debate-nacional: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/eletricidade-portugal-espanha-ue: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/eletricidade-portugal-espanha-ue: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/inflacao-ipc-ihpc-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/inflacao-ipc-ihpc-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/produtividade-hora-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/produtividade-hora-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/custos-trabalho-hora-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/custos-trabalho-hora-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/investigacao-desenvolvimento-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/investigacao-desenvolvimento-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/saldo-orcamental-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/saldo-orcamental-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/divida-portugal-espanha-ue: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/divida-portugal-espanha-ue: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/juros-divida-portugal-alemanha: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/juros-divida-portugal-alemanha: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/credito-depositos-evolucao-base2015: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/credito-depositos-evolucao-base2015: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/euribor-tres-seis-doze-meses: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/euribor-tres-seis-doze-meses: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/exportacoes-importacoes-bens-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/exportacoes-importacoes-bens-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/industria-portugal-setores: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/industria-portugal-setores: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/abertura-comercial-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/abertura-comercial-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/nascimentos-obitos-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/nascimentos-obitos-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/natalidade-mortalidade-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados/comparar/natalidade-mortalidade-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: thematic page exact title energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: discoverable through existing pages and theme energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: thematic page exact title trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: discoverable through existing pages and theme trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: thematic page exact title contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: discoverable through existing pages and theme contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: thematic page exact title credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: discoverable through existing pages and theme credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: thematic page exact title comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: discoverable through existing pages and theme comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: thematic page exact title demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: discoverable through existing pages and theme demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains in normal library natalidade-mortalidade-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://joao.date/dados: comparison remains fully populated natalidade-mortalidade-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/temas/economy: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/temas/economy: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/temas/demography: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/temas/demography: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/temas/energy: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/temas/energy: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/energia-e-precos: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/energia-e-precos: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/trabalho-produtividade-investigacao: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/trabalho-produtividade-investigacao: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/contas-publicas-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/contas-publicas-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/credito-e-poupanca-familias: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/credito-e-poupanca-familias: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/comercio-e-industria-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/comercio-e-industria-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/demografia-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/demografia-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/debate-nacional: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/paginas/fontes-debate-nacional: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/eletricidade-portugal-espanha-ue: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/eletricidade-portugal-espanha-ue: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/inflacao-ipc-ihpc-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/inflacao-ipc-ihpc-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/produtividade-hora-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/produtividade-hora-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/custos-trabalho-hora-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/custos-trabalho-hora-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/investigacao-desenvolvimento-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/investigacao-desenvolvimento-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/saldo-orcamental-portugal-europa: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/saldo-orcamental-portugal-europa: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/divida-portugal-espanha-ue: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/divida-portugal-espanha-ue: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/juros-divida-portugal-alemanha: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/juros-divida-portugal-alemanha: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/credito-depositos-evolucao-base2015: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/credito-depositos-evolucao-base2015: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/euribor-tres-seis-doze-meses: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/euribor-tres-seis-doze-meses: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/exportacoes-importacoes-bens-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/exportacoes-importacoes-bens-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/industria-portugal-setores: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/industria-portugal-setores: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/abertura-comercial-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/abertura-comercial-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/nascimentos-obitos-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/nascimentos-obitos-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/natalidade-mortalidade-portugal: correct public status",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date/comparar/natalidade-mortalidade-portugal: no unwanted label or orphan reference",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: thematic page exact title energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: discoverable through existing pages and theme energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: thematic page exact title trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: discoverable through existing pages and theme trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: thematic page exact title contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: discoverable through existing pages and theme contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: thematic page exact title credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: discoverable through existing pages and theme credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: thematic page exact title comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: discoverable through existing pages and theme comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: thematic page exact title demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: discoverable through existing pages and theme demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains in normal library natalidade-mortalidade-portugal",
+      "passed": true
+    },
+    {
+      "name": "https://cae.joao.date: comparison remains fully populated natalidade-mortalidade-portugal",
+      "passed": true
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 # Acervo do debate nacional publicado
 
+Estado histórico: o proprietário rejeitou a secção agregadora. Às 09:55-09:56 UTC de 27/11 os dois wrappers foram despublicados, sem retirar os quinze gráficos nem os seis cadernos das secções existentes. As referências de contexto passaram para cada caderno. O estado atual e a prova estão em `../editorial-scope/README.md`; os URLs agregadores abaixo já não são entradas públicas ativas.
+
 ## Estado instalado
 
 Publicação editorial efetuada no f0nix a 27 de novembro de 2026, entre 04:31:11 e 04:31:32 UTC. Conteúdo e utilitário versionados em `9087bc47a67ca3f748eb57b108362b11a637f510`, enviado e integrado em main. Não houve instalação de código da aplicação. O runtime web/Admin mantém `acef14b`, com checkout de instalação anterior `391d12b`; as mesmas imagens, contentores, arranques e reinícios permanecem.

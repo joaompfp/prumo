@@ -1,0 +1,715 @@
+{
+  "completed": true,
+  "checks": [
+    {
+      "name": "dry-run is complete and makes no writes",
+      "passed": true
+    },
+    {
+      "name": "all planned corrections read back and unrelated CMS stays exact",
+      "passed": true
+    },
+    {
+      "name": "energia-e-precos: exact revised published and draft body",
+      "passed": true
+    },
+    {
+      "name": "trabalho-produtividade-investigacao: exact revised published and draft body",
+      "passed": true
+    },
+    {
+      "name": "contas-publicas-portugal: exact revised published and draft body",
+      "passed": true
+    },
+    {
+      "name": "credito-e-poupanca-familias: exact revised published and draft body",
+      "passed": true
+    },
+    {
+      "name": "comercio-e-industria-portugal: exact revised published and draft body",
+      "passed": true
+    },
+    {
+      "name": "demografia-portugal: exact revised published and draft body",
+      "passed": true
+    },
+    {
+      "name": "debate-nacional: unpublished with history retained",
+      "passed": true
+    },
+    {
+      "name": "fontes-debate-nacional: unpublished with history retained",
+      "passed": true
+    },
+    {
+      "name": "every non-CMS table and schema unchanged",
+      "passed": true
+    },
+    {
+      "name": "no documents added or deleted",
+      "passed": true
+    },
+    {
+      "name": "only six new revisions",
+      "passed": true
+    },
+    {
+      "name": "only intended save/publish/unpublish audit events",
+      "passed": true
+    },
+    {
+      "name": ": existing page directory works without the invented label",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison listed natalidade-mortalidade-portugal",
+      "passed": true
+    },
+    {
+      "name": ": comparison still fully plotted natalidade-mortalidade-portugal",
+      "passed": true
+    },
+    {
+      "name": ": thematic page is still discoverable energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": ": no orphan wrapper links energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": ": page stays in existing theme energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": ": thematic page is still discoverable trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": ": no orphan wrapper links trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": ": page stays in existing theme trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": ": thematic page is still discoverable contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": ": no orphan wrapper links contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": ": page stays in existing theme contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": ": thematic page is still discoverable credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": ": no orphan wrapper links credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": ": page stays in existing theme credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": ": thematic page is still discoverable comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": ": no orphan wrapper links comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": ": page stays in existing theme comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": ": thematic page is still discoverable demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": ": no orphan wrapper links demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": ": page stays in existing theme demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": ": retired wrapper returns 404 debate-nacional",
+      "passed": true
+    },
+    {
+      "name": ": retired wrapper returns 404 fontes-debate-nacional",
+      "passed": true
+    },
+    {
+      "name": "/dados: existing page directory works without the invented label",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted eletricidade-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted inflacao-ipc-ihpc-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted produtividade-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted custos-trabalho-hora-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted investigacao-desenvolvimento-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted saldo-orcamental-portugal-europa",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted divida-portugal-espanha-ue",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted juros-divida-portugal-alemanha",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted credito-depositos-evolucao-base2015",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted euribor-tres-seis-doze-meses",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted exportacoes-importacoes-bens-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted industria-portugal-setores",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted abertura-comercial-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted nascimentos-obitos-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison listed natalidade-mortalidade-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: comparison still fully plotted natalidade-mortalidade-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: thematic page is still discoverable energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": "/dados: no orphan wrapper links energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": "/dados: page stays in existing theme energia-e-precos",
+      "passed": true
+    },
+    {
+      "name": "/dados: thematic page is still discoverable trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": "/dados: no orphan wrapper links trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": "/dados: page stays in existing theme trabalho-produtividade-investigacao",
+      "passed": true
+    },
+    {
+      "name": "/dados: thematic page is still discoverable contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: no orphan wrapper links contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: page stays in existing theme contas-publicas-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: thematic page is still discoverable credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": "/dados: no orphan wrapper links credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": "/dados: page stays in existing theme credito-e-poupanca-familias",
+      "passed": true
+    },
+    {
+      "name": "/dados: thematic page is still discoverable comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: no orphan wrapper links comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: page stays in existing theme comercio-e-industria-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: thematic page is still discoverable demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: no orphan wrapper links demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: page stays in existing theme demografia-portugal",
+      "passed": true
+    },
+    {
+      "name": "/dados: retired wrapper returns 404 debate-nacional",
+      "passed": true
+    },
+    {
+      "name": "/dados: retired wrapper returns 404 fontes-debate-nacional",
+      "passed": true
+    },
+    {
+      "name": "repeat makes no writes",
+      "passed": true
+    },
+    {
+      "name": "private draft refuses all writes",
+      "passed": true
+    }
+  ],
+  "before": {
+    "cms_document": {
+      "rows": 35,
+      "sha256": "d5fd4189ba8774870b717cca97cbf5cb051b426d13f05a9aae7f70d8ee081400"
+    },
+    "cms_event": {
+      "rows": 75,
+      "sha256": "0b72636c0a2f01f807e03fb7f457243522fdca92c413f11a998a5aaa95a92081"
+    },
+    "cms_revision": {
+      "rows": 38,
+      "sha256": "a4560f4e12bc53d26b8d9f438d6e62f8e3f4ddba6c1f960d62378c1cef0eaaae"
+    },
+    "dataset_run": {
+      "rows": 166,
+      "sha256": "9062f73de3afa5bb5145f6ee8529895a64f71630bec0e86a06babe4c06b5b2a9"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 16065,
+      "sha256": "dcf3c7af49a0668136b3dc5194c804910965bdf8702bb50bc7327df2d939321d"
+    },
+    "derived_run": {
+      "rows": 34,
+      "sha256": "94d03d26d1ca5358cbe36306614eb79c9acb50ce37a8eab040b7f3c09603aeaf"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 429,
+      "sha256": "c4c22456e13bf70d15c7ecf167292a2e877e87b074825cfb3b3e64ae66398b73"
+    },
+    "observation": {
+      "rows": 777048,
+      "sha256": "0f8ab2f01dcb27b9f654ee060f8f8fc3523e1aefdf5ba9167b0b8dac19698d67"
+    },
+    "quarantine": {
+      "rows": 34607,
+      "sha256": "297a4acf88a5b9d7af25e0a28d8a534d7e4f2147de329f7c903c980a8d546b67"
+    },
+    "raw_fetch": {
+      "rows": 1731,
+      "sha256": "2bc0a6386d4b240f44a6a8de0be778e4c7c423e46509c1fb57540c11efe901c8"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "94459dbb385ee1d1170d28763b9622771e360cb7abc83811b2bac08e1c9c022a"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 68,
+      "sha256": "15e33195579348959e835ab0c3b330351bda1fb94d3dbe28455e9e71f0897553"
+    },
+    "verification_item": {
+      "rows": 324338,
+      "sha256": "738805bd37eb7ce882ae07c7ae2ec852e9e2b0d14f3379dfdeff43a240697ab0"
+    },
+    "verification_spec": {
+      "rows": 2442,
+      "sha256": "d54e2cfa1363d1373a3df8bb636e2bc1c3f99ca7298dbb21575760f62742d3fe"
+    },
+    "schema": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7"
+  },
+  "after": {
+    "cms_document": {
+      "rows": 35,
+      "sha256": "26e45446c3c0e509b02786ed79e4a47bd5895250b388aa34f6f55965f2d0f8a8"
+    },
+    "cms_event": {
+      "rows": 89,
+      "sha256": "34c7852fbd4efc73bcdaa77c527706d9cc0a831b0cc02ef5b142a8cb0f7851e2"
+    },
+    "cms_revision": {
+      "rows": 44,
+      "sha256": "7dc344a9357901177152a51262fb02819c9385ca724ab95166e6869b29b3c2f4"
+    },
+    "dataset_run": {
+      "rows": 166,
+      "sha256": "9062f73de3afa5bb5145f6ee8529895a64f71630bec0e86a06babe4c06b5b2a9"
+    },
+    "derived_event": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "derived_observation": {
+      "rows": 16065,
+      "sha256": "dcf3c7af49a0668136b3dc5194c804910965bdf8702bb50bc7327df2d939321d"
+    },
+    "derived_run": {
+      "rows": 34,
+      "sha256": "94d03d26d1ca5358cbe36306614eb79c9acb50ce37a8eab040b7f3c09603aeaf"
+    },
+    "derived_series": {
+      "rows": 23,
+      "sha256": "90fe301b3865d9957b4c9759559831f741069de03a60e21c68f4bc88854e6e87"
+    },
+    "editorial_event": {
+      "rows": 4,
+      "sha256": "50f0248836e0f846d3ae38a77c756d626955cde762a3e8d5c660cf3592ebb828"
+    },
+    "editorial_page": {
+      "rows": 1,
+      "sha256": "60260fef0c8502a8016db34bfc250a0d8e69f4c195d7c09e65d21b26865dab84"
+    },
+    "editorial_slot": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "event": {
+      "rows": 429,
+      "sha256": "c4c22456e13bf70d15c7ecf167292a2e877e87b074825cfb3b3e64ae66398b73"
+    },
+    "observation": {
+      "rows": 777048,
+      "sha256": "0f8ab2f01dcb27b9f654ee060f8f8fc3523e1aefdf5ba9167b0b8dac19698d67"
+    },
+    "quarantine": {
+      "rows": 34607,
+      "sha256": "297a4acf88a5b9d7af25e0a28d8a534d7e4f2147de329f7c903c980a8d546b67"
+    },
+    "raw_fetch": {
+      "rows": 1731,
+      "sha256": "2bc0a6386d4b240f44a6a8de0be778e4c7c423e46509c1fb57540c11efe901c8"
+    },
+    "scheduler_state": {
+      "rows": 26,
+      "sha256": "94459dbb385ee1d1170d28763b9622771e360cb7abc83811b2bac08e1c9c022a"
+    },
+    "schema_migration": {
+      "rows": 19,
+      "sha256": "93ae6ca79cd3b6edb92d7d641d8c452bf28535fe7e63873e85aeb83b2096dd9a"
+    },
+    "series": {
+      "rows": 1791,
+      "sha256": "dd24897a38a46d78357b16b15869595f3b376a89dbbbfc5c51f8ea8787b55bab"
+    },
+    "setting": {
+      "rows": 2,
+      "sha256": "2d5a649d6f144b5a526fe3dd9a3186a38b09953b9aa7d65b196f2202020fd3e2"
+    },
+    "source": {
+      "rows": 9,
+      "sha256": "ebcc7bab062e51c1f0684ea7fb0a0c15f8698ca50a109fa88ba8563727278a98"
+    },
+    "verification": {
+      "rows": 68,
+      "sha256": "15e33195579348959e835ab0c3b330351bda1fb94d3dbe28455e9e71f0897553"
+    },
+    "verification_item": {
+      "rows": 324338,
+      "sha256": "738805bd37eb7ce882ae07c7ae2ec852e9e2b0d14f3379dfdeff43a240697ab0"
+    },
+    "verification_spec": {
+      "rows": 2442,
+      "sha256": "d54e2cfa1363d1373a3df8bb636e2bc1c3f99ca7298dbb21575760f62742d3fe"
+    },
+    "schema": "ae08993de621a3742e0b05624abe94f3abbc60f52f665a2c2bd5fa548177c2c7"
+  },
+  "operation": {
+    "completed": true,
+    "apply": true,
+    "jobs": [
+      {
+        "slug": "energia-e-precos",
+        "state": "updated",
+        "version": 4
+      },
+      {
+        "slug": "trabalho-produtividade-investigacao",
+        "state": "updated",
+        "version": 4
+      },
+      {
+        "slug": "contas-publicas-portugal",
+        "state": "updated",
+        "version": 4
+      },
+      {
+        "slug": "credito-e-poupanca-familias",
+        "state": "updated",
+        "version": 4
+      },
+      {
+        "slug": "comercio-e-industria-portugal",
+        "state": "updated",
+        "version": 4
+      },
+      {
+        "slug": "demografia-portugal",
+        "state": "updated",
+        "version": 4
+      },
+      {
+        "slug": "debate-nacional",
+        "state": "unpublished",
+        "version": 3
+      },
+      {
+        "slug": "fontes-debate-nacional",
+        "state": "unpublished",
+        "version": 3
+      }
+    ],
+    "actor": "operator:jarbas",
+    "unrelated_documents_preserved": true
+  }
+}
