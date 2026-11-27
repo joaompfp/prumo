@@ -1,8 +1,8 @@
-{% from "_ui.html" import icon %}
+{% from "_ui.html" import icon, btn_class %}
 <section class="notebook-search" aria-labelledby="pesquisa">
   <div class="section-head">
     <h2 id="pesquisa">{{ page.copy.search_heading }}</h2>
-    <a class="button-quiet" href="{{ base }}{{ page.catalogue_path }}">{{ icon("list") }}{{ page.copy.search_catalogue_label }}</a>
+    <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}{{ page.catalogue_path }}">{{ icon("list") }}{{ page.copy.search_catalogue_label }}</a>
   </div>
   <form id="notebook-search-form" class="notebook-batch" action="{{ base }}/pesquisa" method="get">
     {# One form owns both the query and the result checkboxes. A visible result emits only its
@@ -12,9 +12,9 @@
     {% for name, value in page.batch_chart_fields %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
     <div class="filters">
       <label>{{ page.copy.search_label }}
-        <input name="q" type="search" maxlength="200" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
+        <input class="form-control" name="q" type="search" maxlength="200" value="{{ page.query }}" placeholder="{{ page.copy.search_placeholder }}">
       </label>
-      <button type="submit" name="acao" value="pesquisar_caderno">{{ icon("search") }}{{ page.copy.search_button }}</button>
+      <button class="{{ btn_class('primary') }}" type="submit" name="acao" value="pesquisar_caderno">{{ icon("search") }}{{ page.copy.search_button }}</button>
     </div>
 
     <div class="notebook-results">
@@ -24,7 +24,7 @@
       <div class="notebook-batch-bar">
         <p class="selection-instruction">{{ page.copy.search_batch_note }}</p>
         <p class="selection-live" role="status" aria-live="polite" data-selection-count-text>{{ page.batch_selection_text }}</p>
-        <button type="submit" class="button" name="acao" value="abrir">{{ page.copy.search_batch_action }}</button>
+        <button class="{{ btn_class('primary') }}" type="submit" name="acao" value="abrir">{{ page.copy.search_batch_action }}</button>
       </div>
       {% if page.at_limit %}<p class="selection-warning" role="status">{{ page.copy.limit_reached }}</p>{% endif %}
       <p class="note selection-pending" role="status" data-selection-pending hidden>Tem séries por aplicar. Use Acrescentar selecionadas antes de configurar o gráfico.</p>
@@ -39,7 +39,7 @@
             <tr class="notebook-result-row{% if result.selected %} is-selected{% endif %}" data-selection-row>
               <td data-label="{{ page.copy.search_batch_col }}" class="selection-cell">
                 <label class="notebook-result-select">
-                  <input type="checkbox" name="s" value="{{ result.row.id }}"{% if result.selected %} checked{% endif %}>
+                  <input class="form-check-input" type="checkbox" name="s" value="{{ result.row.id }}"{% if result.selected %} checked{% endif %}>
                   <span class="sr-only">{{ page.copy.search_batch_select }} {{ result.row.title }}</span>
                 </label>
               </td>

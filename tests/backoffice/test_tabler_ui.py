@@ -65,6 +65,9 @@ def test_tabler_stays_under_the_validated_admin_mount(env):
     links = _stylesheets(html)
     assert "/dados/admin" + TABLER in links
     assert "/dados/admin/static/css/admin.css" in links
+    # The public Bootstrap subset belongs to the public/CMS preview surface only.
+    assert all("bootstrap-subset" not in link for link in links)
+    assert all("bootstrap-theme" not in link for link in links)
 
 
 def test_cms_dashboard_uses_tabler_cards_tables_buttons_and_controls(tmp_path):

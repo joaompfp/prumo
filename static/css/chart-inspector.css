@@ -100,7 +100,7 @@
 
 .chart-readout-period {
   font-weight: 700;
-  padding: 10px 12px;
+  padding: 8px 10px;
   border-radius: 6px;
   background: var(--paper);
 }
@@ -110,7 +110,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0 .5em;
-  padding: 10px 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--rule);
   min-width: 0;
 }
@@ -176,10 +176,10 @@ details.chart-meta {
 
 details.chart-meta > summary {
   cursor: pointer;
-  display: flex; align-items: center; gap: 10px; min-height: 52px;
+  display: flex; align-items: center; gap: 8px; min-height: 44px;
   color: var(--ink); font-weight: 600;
-  font-size: .88rem;
-  padding: 10px 12px; list-style: none;
+  font-size: .85rem;
+  padding: 8px 10px; list-style: none;
   background: var(--paper); border: 1px solid var(--rule); border-radius: 7px;
 }
 
@@ -197,7 +197,7 @@ details.chart-meta[open] > summary::after { transform: rotate(225deg); }
   gap: 4px;
   margin: 0;
   padding: 0;
-  font-size: .85rem;
+  font-size: .8rem;
   line-height: 1.35;
   color: var(--muted);
 }

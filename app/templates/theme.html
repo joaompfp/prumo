@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "_discovery_filters.html" import choice %}
+{% from "_ui.html" import btn_class %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block main_class %} discovery-main{% endblock %}
 {% block content %}
@@ -17,8 +18,8 @@
     {{ choice('Geografia', 'grupo', page.groups_filter, page.group) }}
     {{ choice('Fonte', 'fonte', page.sources, page.source, 'Todas') }}
     {{ choice('Frequência', 'frequencia', page.frequencies, page.frequency, 'Todas') }}
-    <button type="submit">Aplicar filtros</button>
-    {% if page.filters_active %}<a href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
+    <button class="{{ btn_class('primary') }}" type="submit">Aplicar filtros</button>
+    {% if page.filters_active %}<a class="{{ btn_class('link') }}" href="{{ base }}{{ page.clear_path }}">Limpar filtros</a>{% endif %}
     <p class="discovery-description">{{ page.blurb }}</p>
   </form>
 </details>
@@ -37,10 +38,12 @@
 {% endif %}
 
 {% if page.total %}
-<nav class="pager" aria-label="Paginação">
-  {% if page.prev_path %}<a href="{{ base }}{{ page.prev_path }}" rel="prev">Página anterior</a>{% endif %}
-  <span>Página {{ page.page }} de {{ page.pages }}</span>
-  {% if page.next_path %}<a href="{{ base }}{{ page.next_path }}" rel="next">Página seguinte</a>{% endif %}
+<nav aria-label="Paginação">
+  <ul class="pagination app-pagination">
+    {% if page.prev_path %}<li class="page-item"><a class="page-link" href="{{ base }}{{ page.prev_path }}" rel="prev">Página anterior</a></li>{% endif %}
+    <li class="page-item disabled"><span class="page-link">Página {{ page.page }} de {{ page.pages }}</span></li>
+    {% if page.next_path %}<li class="page-item"><a class="page-link" href="{{ base }}{{ page.next_path }}" rel="next">Página seguinte</a></li>{% endif %}
+  </ul>
 </nav>
 {% endif %}
 

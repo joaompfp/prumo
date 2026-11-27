@@ -260,6 +260,8 @@ def test_home_preview_route_uses_the_home_shell_and_stays_script_free(env):
     assert "/static/js/prumo-charts" not in preview.text
     assert "script-src" not in preview.headers["content-security-policy"]
     assert "/dados/admin/static/css/prumo.css" in preview.text
+    assert "/dados/admin/static/vendor/bootstrap/bootstrap-subset.css" in preview.text
+    assert "/dados/admin/static/css/bootstrap-theme.css" in preview.text
     assert 'href="/dados/admin/cms/page/inicio"' in preview.text
 
 

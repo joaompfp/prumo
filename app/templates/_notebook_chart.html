@@ -1,5 +1,5 @@
 {% from "_chart.html" import chart_shell, chart_meta %}
-{% from "_ui.html" import icon %}
+{% from "_ui.html" import icon, btn_class %}
 {% set panel = page.chart_panel %}
 {% if panel.settings.window == "5a" %}{% set active_window = page.copy.chart_window_5a %}
 {% elif panel.settings.window == "max" %}{% set active_window = page.copy.chart_window_max %}
@@ -20,8 +20,8 @@
   <div class="notebook-chart-head">
     <h2 id="grafico-caderno">{{ page.copy.chart_heading }}</h2>
     <div class="notebook-chart-links">
-      <a class="button" href="{{ base }}{{ page.catalogue_path }}" aria-label="{{ page.copy.search_heading }}">{{ icon("plus") }}{{ page.copy.chart_add_label }}</a>
-      <a class="button-quiet" href="#definicoes" aria-label="{{ page.copy.chart_configure_label }}: {{ page.copy.chart_settings_summary }} · {{ active_window }} · {{ active_scale }}">{{ icon("settings") }}{{ page.copy.chart_configure_label }}</a>
+      <a class="{{ btn_class('primary') }}" href="{{ base }}{{ page.catalogue_path }}" aria-label="{{ page.copy.search_heading }}">{{ icon("plus") }}{{ page.copy.chart_add_label }}</a>
+      <a class="{{ btn_class('outline-secondary') }}" href="#definicoes" aria-label="{{ page.copy.chart_configure_label }}: {{ page.copy.chart_settings_summary }} · {{ active_window }} · {{ active_scale }}">{{ icon("settings") }}{{ page.copy.chart_configure_label }}</a>
     </div>
   </div>
   {% if panel.state_label %}<p class="notebook-chart-state" data-chart-state="{{ panel.public_state }}">{{ panel.state_label }}</p>{% endif %}
@@ -57,8 +57,8 @@
   </form>
 
   <div class="notebook-toolbar">
-    <a class="button-quiet" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ icon("share") }}{{ page.copy.canonical_label }}</a>
-    {% if page.clear_path %}<a class="button-link" href="{{ base }}{{ page.clear_path }}">{{ icon("trash") }}{{ page.copy.clear_label }}</a>{% endif %}
+    <a class="{{ btn_class('outline-secondary') }}" id="ligacao-limpa" href="{{ base }}{{ page.canonical_path }}">{{ icon("share") }}{{ page.copy.canonical_label }}</a>
+    {% if page.clear_path %}<a class="{{ btn_class('link') }}" href="{{ base }}{{ page.clear_path }}">{{ icon("trash") }}{{ page.copy.clear_label }}</a>{% endif %}
   </div>
 
   <details class="authored-reading notebook-method">

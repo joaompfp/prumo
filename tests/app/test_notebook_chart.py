@@ -803,7 +803,7 @@ def test_search_and_card_actions_preserve_or_prune_the_chart_settings(tmp_path):
 
     with client(path) as site:
         last = site.get("/caderno?s=ine.act_a.PT&s=ine.act_b.PT&grafico=on&g=ine.act_a.PT")
-    remove = re.search(r'class="card-remove" href="([^"]+)"', last.text)
+    remove = re.search(r'class="[^"]*card-remove[^"]*" href="([^"]+)"', last.text)
     assert remove is not None
     assert "grafico=off" in remove.group(1)
     assert "g=" not in remove.group(1)

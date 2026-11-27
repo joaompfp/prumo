@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% from "_ui.html" import btn_class %}
 {% block title %}Páginas - Prumo{% endblock %}
 {% block content %}
 {% if preview %}
 <div class="preview-banner" role="status">
   <p><strong>Pré-visualização.</strong> Rascunho do backoffice; o índice público não foi alterado.</p>
-  <p><a class="button" href="{{ admin_base }}">Voltar ao editor</a></p>
+  <p><a class="{{ btn_class('primary') }}" href="{{ admin_base }}">Voltar ao editor</a></p>
 </div>
 {% endif %}
 <nav class="crumbs" aria-label="Caminho">

@@ -1,10 +1,9 @@
-"""The 10 percent typography increment: roots, clamps and chart label roles move together.
+"""The public compact scale: smaller reading type, unchanged chart geometry and Admin.
 
-The approved legibility release set the public root at 25.5px (body 25.5px) and the Admin
-root at 24px (`.875rem` body 21px). The owner asked for a further modest increase. These
-static pins follow each functional text role to 28.05px / 26.4px and assert that fixed SVG
-and canvas chart labels, their margins and the narrow-chart floor grew with the same scale,
-so no role stays at the previous size by accident. Rendered geometry is covered by the
+The owner reviewed the installed 28.05px public release and asked for a more compact,
+app-like surface. The public root is now 22px; Admin stays at 26.4px and the fixed SVG
+and canvas chart labels keep their reviewed role and geometry. These static pins catch a
+role that silently returns to the old public scale. Rendered geometry is covered by the
 browser acceptance run, not here.
 """
 import re
@@ -29,27 +28,27 @@ def _root_px(css: str) -> float:
     return float(match.group(1))
 
 
-def test_public_and_admin_roots_grow_by_ten_percent():
+def test_public_root_is_compact_and_admin_is_unchanged():
     public = _read(CSS / "prumo.css")
     admin = _read(CSS / "admin.css")
-    assert _root_px(public) == pytest.approx(25.5 * 1.10)
-    assert _root_px(admin) == pytest.approx(24 * 1.10)
-    # The body role stays a rem token so it follows the root: 23.1px in Admin.
+    assert _root_px(public) == pytest.approx(22.0)
+    assert _root_px(admin) == pytest.approx(26.4)
+    # The body role stays a rem token so it follows each root: 23.1px in Admin.
     assert "font: 400 0.875rem/1.5 var(--sans);" in admin
     assert _root_px(admin) * 0.875 == pytest.approx(23.1)
 
 
-def test_clamp_preferred_sizes_track_the_ten_percent_increase():
+def test_public_clamps_track_the_compact_scale():
     public = _read(CSS / "prumo.css")
     admin = _read(CSS / "admin.css")
-    assert "clamp(2.1rem, 7.6vw, 3.3rem)" in public
-    assert "clamp(1.35rem, 4vw, 1.75rem)" in public
-    assert "clamp(2.4rem, 8.25vw, 3.2rem)" in public
+    assert "clamp(1.65rem, 5.2vw, 2.35rem)" in public
+    assert "clamp(1.2rem, 3.4vw, 1.55rem)" in public
+    assert "clamp(2rem, 6.6vw, 2.7rem)" in public
     assert "clamp(1.5rem, 3.63vw, 1.9rem)" in admin
     assert "clamp(1.25rem, 3.3vw, 1.55rem)" in admin
 
 
-def test_fixed_svg_and_canvas_labels_use_the_new_type_role():
+def test_fixed_svg_and_canvas_labels_keep_their_reviewed_type():
     css = _read(CSS / "prumo.css")
     adapter = _read(ADAPTER)
     assert css.count("font-size: 18.15px") == 2   # x/y ticks and axis unit names
@@ -61,7 +60,7 @@ def test_fixed_svg_and_canvas_labels_use_the_new_type_role():
         assert stale not in adapter, stale
 
 
-def test_chart_gutters_and_adapter_grid_share_the_scaled_geometry():
+def test_chart_gutters_and_adapter_grid_keep_the_reviewed_geometry():
     adapter = _read(ADAPTER)
     # The SVG model and the canvas overlay must keep the same plot box and label gutters.
     assert (chart_model.LEFT, chart_model.RIGHT, chart_model.TOP, chart_model.BOTTOM) == \

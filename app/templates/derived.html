@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell, chart_meta %}
 {% from "_original_value.html" import original_value %}
+{% from "_ui.html" import btn_class %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
 {% block content %}
@@ -18,8 +19,8 @@
   <div class="notebook-chart-head">
     <h2 id="grafico">Série calculada</h2>
     <div class="notebook-chart-links">
-      <a class="button-quiet" href="{{ base }}/series/{{ page.base_id }}">Ver série de origem</a>
-      <a class="button-quiet" href="{{ base }}/calculadas/{{ page.key }}.csv">Descarregar CSV</a>
+      <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}/series/{{ page.base_id }}">Ver série de origem</a>
+      <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}/calculadas/{{ page.key }}.csv">Descarregar CSV</a>
     </div>
   </div>
   <figure class="chart-figure chart-figure-interactive">

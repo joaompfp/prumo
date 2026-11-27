@@ -252,7 +252,7 @@ def test_unusable_database_is_503(tmp_path):
 def test_nav_carries_the_section_once_per_page(pairs_client):
     for path in ("/", "/comparar", "/comparar/credito-e-taxa"):
         html = pairs_client.get(path).text
-        nav = re.search(r'<nav class="site-nav".*?</nav>', html, re.S)
+        nav = re.search(r'<nav class="site-nav nav".*?</nav>', html, re.S)
         assert nav is not None, path
         assert nav.group(0).count('href="/comparar"') == 1, path
         assert ">Comparações<" in nav.group(0), path

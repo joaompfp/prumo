@@ -1,6 +1,7 @@
-/* Shared public app shell: one compact task bar, native disclosures and the action
-   control roles. Loaded after prumo.css, before component styles. The shell keeps the
-   approved reading scale: navigation remains .95rem (26.65px at the 28.05px root). */
+/* Shared public app shell: one compact task bar and native disclosures. Loaded after
+   bootstrap-theme.css, which owns the Bootstrap component theme. This file composes the
+   real Bootstrap `.nav`/`.nav-link`, `.btn` and `.input-group` classes for the masthead;
+   it does not draw a second native control layer. */
 
 .ui-icon { flex: none; vertical-align: middle; }
 
@@ -29,10 +30,10 @@
   text-decoration: none;
 }
 .brand:hover { color: var(--ink); }
-.brand-icon { display: block; width: 32px; height: 32px; flex: none; }
+.brand-icon { display: block; width: 28px; height: 28px; flex: none; }
 .brand-name {
   font-family: var(--serif);
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1;
@@ -41,34 +42,42 @@
 /* Primary destinations: one responsive nav, no duplicated desktop/mobile copies. */
 .site-nav {
   grid-area: nav;
-  display: flex;
   align-items: stretch;
+  flex-wrap: nowrap;
   gap: 2px;
   min-width: 0;
 }
-.app-nav-link {
+.site-nav .nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 52px;
-  padding: 7px 12px;
+  gap: 6px;
+  min-height: 44px;
+  padding: 6px 10px;
   border-radius: 7px;
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.15;
   white-space: nowrap;
   transition: color var(--motion) ease, background-color var(--motion) ease,
               box-shadow var(--motion) ease;
 }
-.app-nav-link .ui-icon { flex: none; }
-.app-nav-link:hover { color: var(--accent); background: var(--accent-soft); }
-.app-nav-link[aria-current] {
+.site-nav .nav-link:hover { color: var(--accent); background: var(--accent-soft); }
+.site-nav .nav-link[aria-current] {
   color: var(--accent);
   font-weight: 600;
   background: var(--accent-soft);
   box-shadow: inset 0 -3px 0 var(--accent);
+}
+/* Bootstrap's `.nav-link:focus-visible` sets `outline: 0` at a higher specificity than
+   the shared focus rule. Restore the solid public focus outline at the shell boundary. */
+.site-nav .nav-link:focus-visible,
+.app-panel-link:focus-visible,
+.app-disclosure-toggle:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: none;
 }
 .app-nav-label-narrow { display: none; }
 
@@ -83,36 +92,18 @@
   min-width: 0;
 }
 .app-disclosure { position: relative; min-width: 0; line-height: 1.2; }
-.app-disclosure > summary {
-  display: inline-flex;
-  align-items: center;
+.app-disclosure-toggle {
   gap: 6px;
   min-height: 44px;
   padding: 6px 10px;
-  border: 1px solid var(--rule);
   border-radius: 7px;
-  background: var(--surface);
-  color: var(--ink);
-  cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.2;
-  list-style: none;
   white-space: nowrap;
-  transition: color var(--motion) ease, border-color var(--motion) ease,
-              background-color var(--motion) ease;
 }
+.app-disclosure > summary { list-style: none; cursor: pointer; }
 .app-disclosure > summary::-webkit-details-marker { display: none; }
-.app-disclosure > summary:hover,
-.app-disclosure[open] > summary {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.app-disclosure[data-state] > summary {
-  color: var(--accent);
-  border-color: var(--accent);
-}
 .app-disclosure > summary .ui-icon { flex: none; width: 1.05em; height: 1.05em; }
 .app-disclosure-label { overflow-wrap: normal; }
 .app-disclosure-marker { display: inline-flex; flex: none; transition: transform var(--motion) ease; }
@@ -137,13 +128,13 @@
 .app-panel-title {
   margin: 0 0 2px;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 .app-panel-list { margin: 0; padding: 0; list-style: none; }
-.app-panel-list a {
+.app-panel-link {
   display: flex;
   align-items: center;
   min-height: 44px;
@@ -151,117 +142,25 @@
   border-radius: 5px;
   color: var(--ink);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   line-height: 1.2;
   white-space: nowrap;
 }
-.app-panel-list a:hover { color: var(--accent); background: var(--accent-soft); }
-.app-panel-list a[aria-current] { color: var(--accent); font-weight: 600; }
+.app-panel-link:hover { color: var(--accent); background: var(--accent-soft); }
+.app-panel-link[aria-current] { color: var(--accent); font-weight: 600; }
 .app-disclosure:not([open]) > .app-panel { display: none; }
 
-/* Search is one native form inside the disclosure: no second term field. */
-.search { display: flex; align-items: stretch; width: 100%; min-width: 0; margin: 0; }
-.search input {
-  flex: 1 1 auto;
-  min-width: 0;
-  width: 100%;
-  margin: 0;
-  border: 1px solid var(--rule-strong);
-  border-right: 0;
-  border-radius: 7px 0 0 7px;
-  background: var(--surface);
-  padding: 8px 12px;
-  color: var(--ink);
-  font: inherit;
-  font-size: 0.9rem;
-  min-height: 48px;
-}
-.search input:focus-visible { outline-offset: -2px; }
-/* The locally drawn vector supplements the visible Procurar label. */
-.search button::before {
-  content: "";
-  width: 0.92em;
-  height: 0.92em;
-  flex: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23f6f4f1' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-.search button {
-  flex: 0 0 auto;
-  border-radius: 0 7px 7px 0;
-}
-.search button,
-.filters button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  border: 1px solid var(--accent);
-  border-radius: 7px;
-  background: var(--accent);
-  color: #fff;
-  padding: 8px 16px;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  min-height: 48px;
-  white-space: nowrap;
-  transition: background-color var(--motion) ease, border-color var(--motion) ease,
-              transform 80ms ease;
-}
-.search button:hover,
-.filters button:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-.search button:active, .filters button:active { transform: translateY(1px); }
-
-/* Action roles ------------------------------------------------------------ */
-.button, .button-quiet, .button-danger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 54px;
-  padding: 13px 22px;
-  border: 1px solid transparent;
-  border-radius: 7px;
-  font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.2;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color var(--motion) ease, border-color var(--motion) ease,
-              color var(--motion) ease, transform 80ms ease;
-}
-.button { background: var(--accent); border-color: var(--accent); color: #fff; }
-.button:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
-.button-quiet { background: var(--surface); border-color: var(--rule-strong); color: var(--ink); }
-.button-quiet:hover { background: var(--surface); border-color: var(--ink); color: var(--ink); }
-.button-danger { background: var(--surface); border-color: var(--accent); color: var(--accent); }
-.button-danger:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
-.button-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+/* Search is one native input group inside the disclosure: no second term field. */
+.search { display: block; width: 100%; min-width: 0; margin: 0; }
+.app-search .form-control {
   min-height: 44px;
-  padding: 4px 2px;
-  border: 0;
-  background: transparent;
-  color: var(--accent);
-  font-family: inherit;
+  padding: 8px 10px;
   font-size: 0.9rem;
-  font-weight: 600;
-  text-align: left;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
 }
-.button-link:hover { color: var(--ink); }
-.button:active, .button-quiet:active, .button-danger:active, .button-link:active {
-  transform: translateY(1px);
-}
-@media (max-width: 760px) {
-  .detail-actions .button-quiet { width: 100%; }
+.app-search .btn {
+  min-height: 44px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 1120px) {
@@ -284,24 +183,24 @@
     row-gap: 3px;
     padding-block: 2px;
   }
-  .brand { justify-self: start; min-height: 54px; max-width: calc(100% - 110px); }
-  .brand-name { font-size: 1.45rem; }
+  .brand { justify-self: start; min-height: 48px; max-width: calc(100% - 96px); }
+  .brand-name { font-size: 1.25rem; }
   .site-nav {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2px;
   }
-  .app-nav-link {
+  .site-nav .nav-link {
     flex-direction: column;
     justify-content: center;
-    gap: 0;
+    gap: 1px;
     min-height: 48px;
-    padding: 0;
+    padding: 3px 2px;
     text-align: center;
     white-space: normal;
     line-height: 1.0;
   }
-  .app-nav-link .ui-icon { width: 20px; height: 20px; }
+  .site-nav .nav-link .ui-icon { width: 18px; height: 18px; }
   .app-nav-label { display: block; }
   .app-nav-label-wide { display: none; }
   .app-nav-label-narrow { display: inline; }
@@ -311,7 +210,7 @@
     gap: 6px;
     padding-top: 0;
   }
-  .app-disclosure > summary {
+  .app-disclosure-toggle {
     gap: 3px;
     min-height: 44px;
     padding: 7px 8px;
@@ -322,7 +221,7 @@
     height: 0.5em;
   }
   .app-more { position: static; width: 100%; }
-  .app-more > summary { position: absolute; top: 6px; right: 24px; }
+  .app-more > summary { position: absolute; top: 6px; right: 20px; }
   .app-disclosure[open] { flex: 1 1 100%; }
   .app-panel {
     position: static;
@@ -337,43 +236,28 @@
 }
 
 @media (max-width: 480px) {
-  .brand-icon { width: 30px; height: 30px; }
-  .search { flex-wrap: wrap; gap: 8px; }
-  .search input {
-    flex-basis: 100%;
-    border-right: 1px solid var(--rule-strong);
-    border-radius: 7px;
-  }
-  .search button {
+  .brand-icon { width: 26px; height: 26px; }
+  .app-more > summary { right: 16px; }
+  .app-search .form-control,
+  .app-search .btn {
     flex: 1 1 100%;
     width: 100%;
-    border-radius: 7px;
   }
-}
-
-@media (max-width: 360px) {
-  /* At 320 the three labels cannot share one row at 26.65px: Catálogo, Comparar and
-     Caderno together are wider than the content rail. Keep all three cells and the
-     reading scale; the notebook takes a full-width second row instead of a word break. */
-  .site-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .app-nav-link:nth-child(3) {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    gap: 6px;
-    min-height: 44px;
+  .app-search .form-control {
+    border-radius: 7px 7px 0 0;
+  }
+  .app-search .btn {
+    margin-top: -1px;
+    border-radius: 0 0 7px 7px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-nav-link, .app-disclosure > summary, .app-disclosure-marker,
-  .search button, .filters button, .button, .button-quiet, .button-danger,
-  .button-link {
+  .site-nav .nav-link, .app-disclosure-toggle, .app-disclosure-marker {
     transition: none !important;
     animation: none !important;
   }
   .app-disclosure[open] .app-disclosure-marker { transform: none; }
-  .button:active, .button-quiet:active, .button-danger:active, .button-link:active,
-  .search button:active, .filters button:active { transform: none; }
 }
 
 @media print {

@@ -263,7 +263,7 @@ def test_tray_counts_server_state_lists_titles_and_keeps_offpage_refs_hidden(cli
     assert f'<input type="hidden" name="s" value="{WORLD}">' in form
     assert form.count(f'name="s" value="{HICP}"') == 1
     assert 'checked' in re.search(
-        rf'<input type="checkbox" name="s" value="{HICP}"[^>]*>', form).group(0)
+        rf'<input [^>]*type="checkbox" name="s" value="{HICP}"[^>]*>', form).group(0)
     assert 'type="checkbox" name="s" value="' + WORLD + '"' not in form
     assert f'name="retirar" value="{HICP}"' in tray
     assert f'name="retirar" value="{WORLD}"' in tray
@@ -452,7 +452,7 @@ def test_check_germany_and_spain_across_a_page_change_then_uncheck_spain(client,
     assert "1 referência selecionada" in _visible(_tray(unchecked))
     assert f'<input type="hidden" name="s" value="{es}">' not in _form(unchecked)
     assert "checked" not in re.search(
-        rf'<input type="checkbox" name="s" value="{es}"[^>]*>', _form(unchecked)).group(0)
+        rf'<input [^>]*type="checkbox" name="s" value="{es}"[^>]*>', _form(unchecked)).group(0)
 
     opened = client.get("/pesquisa", params=[("s", de), ("acao", "abrir")],
                         follow_redirects=False)
@@ -465,7 +465,7 @@ def test_check_germany_and_spain_across_a_page_change_then_uncheck_spain(client,
 def _catalogue_href(html: str) -> str:
     from html import unescape
     match = re.search(
-        r'<a class="button" href="([^"]+)" aria-label="Acrescentar séries"', html)
+        r'<a class="btn btn-primary" href="([^"]+)" aria-label="Acrescentar séries"', html)
     assert match is not None
     return unescape(match.group(1))
 
@@ -501,7 +501,7 @@ def test_caderno_links_to_the_catalogue_with_addressed_refs_and_chart_settings(c
     assert 'name="transformacao" value="base100"' in form
     assert 'name="base" value="2020"' in form
     # The chart display frequency is not the catalogue frequency filter.
-    assert '<select name="frequencia">' in form
+    assert '<select class="form-select" name="frequencia">' in form
     assert '<option value="anual"' not in form
     assert "3 séries publicadas no catálogo" in _visible(catalogue.text)
     assert '<details class="discovery-filters">' in catalogue.text
@@ -570,15 +570,17 @@ def test_selection_controls_are_native_44px_labels_and_print_keeps_results(clien
 
     css = client.get("/static/css/discovery.css").text
     assert ".series-result-select" in css and "min-height: 44px" in css
-    assert "accent-color: var(--accent)" in css
     assert ".series-result.is-selected" in css
     assert "position: sticky" in css
-    assert "#discovery-form .selection-remove" in css
+    from tests.app.conftest import HICP
+    assert 'class="btn btn-outline-secondary selection-remove"' in client.get(
+        f"/pesquisa?s={HICP}").text
     assert ".discovery-selection," in css  # hidden in print, unlike the results
+    theme = client.get("/static/css/bootstrap-theme.css").text
+    assert ".form-check-input" in theme and "accent-color: var(--accent)" in theme
 
     notebook_css = client.get("/static/css/prumo.css").text
     assert ".notebook-result-select" in notebook_css and "min-height: 44px" in notebook_css
-    assert "accent-color: var(--accent)" in notebook_css
     assert ".notebook-result-row.is-selected" in notebook_css
 
 
@@ -613,7 +615,7 @@ def test_catalogue_selected_rows_are_marked_and_counted_without_javascript(clien
     html = client.get(f"/pesquisa?s={HICP}").text
     row = _row(html, HICP)
     assert 'class="series-result is-selected"' in row
-    assert re.search(rf'<input type="checkbox" name="s" value="{HICP}"[^>]*checked', row)
+    assert re.search(rf'<input [^>]*type="checkbox" name="s" value="{HICP}"[^>]*checked', row)
     assert "1 selecionada" in _visible(_results_bar(html))
 
 

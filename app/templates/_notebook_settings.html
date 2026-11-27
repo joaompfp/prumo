@@ -1,4 +1,4 @@
-{% from "_ui.html" import icon %}
+{% from "_ui.html" import icon, btn_class %}
 <details class="notebook-chart-settings"{% if not panel.chart %} open{% endif %}>
   <summary>{{ icon("settings") }}<span>{{ page.copy.chart_settings_summary }}</span>{{ icon("chevron") }}</summary>
   <div class="notebook-chart-options" id="definicoes">
@@ -6,14 +6,14 @@
       <legend>{{ page.copy.chart_period_group }}</legend>
       <div class="notebook-chart-pair">
         <label>{{ page.copy.chart_window_legend }}
-          <select name="janela">
+          <select class="form-select" name="janela">
             <option value="10a"{% if panel.settings.window == "10a" %} selected{% endif %}>{{ page.copy.chart_window_10a }}</option>
             <option value="5a"{% if panel.settings.window == "5a" %} selected{% endif %}>{{ page.copy.chart_window_5a }}</option>
             <option value="max"{% if panel.settings.window == "max" %} selected{% endif %}>{{ page.copy.chart_window_max }}</option>
           </select>
         </label>
         <label>{{ page.copy.chart_scale_legend }}
-          <select name="escala">
+          <select class="form-select" name="escala">
             <option value="comum"{% if panel.settings.scale == "comum" %} selected{% endif %}>{{ page.copy.chart_scale_shared }}</option>
             <option value="dupla"{% if panel.settings.scale == "dupla" %} selected{% endif %}>{{ page.copy.chart_scale_dual }}</option>
           </select>
@@ -24,20 +24,20 @@
       <legend>{{ page.copy.chart_treatment_group }}</legend>
       <div class="notebook-chart-pair">
         <label>{{ page.copy.chart_frequency_legend }}
-          <select name="frequencia">
+          <select class="form-select" name="frequencia">
             <option value="original"{% if panel.settings.frequency == "original" %} selected{% endif %}>{{ page.copy.chart_frequency_original }}</option>
             <option value="anual"{% if panel.settings.frequency == "anual" %} selected{% endif %}>{{ page.copy.chart_frequency_annual }}</option>
           </select>
         </label>
         <label>{{ page.copy.chart_transform_legend }}
-          <select name="transformacao">
+          <select class="form-select" name="transformacao">
             <option value="original"{% if panel.settings.transform == "original" %} selected{% endif %}>{{ page.copy.chart_transform_original }}</option>
             <option value="base100"{% if panel.settings.transform == "base100" %} selected{% endif %}>{{ page.copy.chart_transform_base100 }}</option>
             <option value="pp"{% if panel.settings.transform == "pp" %} selected{% endif %}>{{ page.copy.chart_transform_pp }}</option>
           </select>
         </label>
         <label>{{ page.copy.chart_base_label }}
-          <input type="text" name="base" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" value="{{ panel.settings.base or '' }}" placeholder="{{ page.copy.chart_base_placeholder }}">
+          <input class="form-control" type="text" name="base" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" value="{{ panel.settings.base or '' }}" placeholder="{{ page.copy.chart_base_placeholder }}">
         </label>
       </div>
       <p class="note">{{ page.copy.chart_analysis_note }}</p>
@@ -47,7 +47,7 @@
       <div class="notebook-chart-choices">
         {% for choice in panel.choices %}
         <label>
-          <input type="checkbox" name="g" value="{{ choice.series_id }}"{% if choice.checked %} checked{% endif %}>
+          <input class="form-check-input" type="checkbox" name="g" value="{{ choice.series_id }}"{% if choice.checked %} checked{% endif %}>
           <span>{{ choice.label }}{% if choice.unit_text %} <span class="note">({{ choice.unit_text }})</span>{% endif %}{% if not choice.available %} <span class="note">({{ page.copy.chart_unavailable_mark }})</span>{% endif %}</span>
         </label>
         {% endfor %}
@@ -67,16 +67,16 @@
     <fieldset class="settings-group">
       <legend>{{ page.copy.chart_interval_group }}</legend>
       <label>{{ page.copy.chart_day_label }}
-        <input name="dia" type="date" value="{{ panel.settings.day or '' }}">
+        <input class="form-control" name="dia" type="date" value="{{ panel.settings.day or '' }}">
       </label>
       <p class="note">{{ page.copy.chart_interval_note }}</p>
     </fieldset>
     <div class="settings-actions">
-      <button type="submit" formaction="{{ base }}/caderno#grafico">{{ icon("chart") }}{{ page.copy.chart_submit }}</button>
+      <button class="{{ btn_class('primary') }}" type="submit" formaction="{{ base }}/caderno#grafico">{{ icon("chart") }}{{ page.copy.chart_submit }}</button>
       {% if panel.state == "off" %}
-      <a class="button-quiet" href="{{ base }}{{ page.chart_auto_path }}#grafico">{{ page.copy.chart_activate }}</a>
+      <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}{{ page.chart_auto_path }}#grafico">{{ page.copy.chart_activate }}</a>
       {% else %}
-      <a class="button-link" href="{{ base }}{{ page.chart_off_path }}#grafico">{{ page.copy.chart_deactivate }}</a>
+      <a class="{{ btn_class('link') }}" href="{{ base }}{{ page.chart_off_path }}#grafico">{{ page.copy.chart_deactivate }}</a>
       {% endif %}
     </div>
     <p class="note">{{ page.copy.chart_settings_note }}</p>

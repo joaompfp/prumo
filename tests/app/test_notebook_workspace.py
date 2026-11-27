@@ -222,11 +222,11 @@ def test_compact_title_keeps_functional_roles_at_the_approved_scale(site_path):
     rule = css[css.index(".notebook-main .page-head h1 {"):]
     rule = rule[:rule.index("}")]
     assert "font-size: clamp(" in rule
-    assert "1.85rem" in rule and "font-family: var(--sans)" in rule
-    # Existing functional roles keep their approved tokens.
-    assert "html { font-size: 28.05px; }" in css
-    assert ".note { color: var(--muted); font-size: 0.85rem; }" in css
-    assert ".meta { font-size: 0.88rem;" in css
+    assert "1.65rem" in rule and "font-family: var(--sans)" in rule
+    # Existing functional roles follow the compact public scale.
+    assert "html { font-size: 22px; }" in css
+    assert ".note { color: var(--muted); font-size: 0.78rem; }" in css
+    assert ".meta { font-size: 0.75rem;" in css
 
 
 def test_analytical_order_is_chart_then_search_then_cards_then_evidence_and_help(site_path):
@@ -429,9 +429,9 @@ def test_quick_search_batch_and_card_remove_return_to_their_work_area(site_path)
     match = re.search(r'<form id="notebook-search-form".*?</form>', selected, re.S)
     assert match is not None
     form = match.group(0)
-    assert re.search(rf'<input type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
+    assert re.search(rf'<input [^>]*type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
     assert form.count(f'name="s" value="{UNEMP}"') == 1
-    card_remove = re.search(r'class="card-remove" href="([^"]+)"', selected)
+    card_remove = re.search(r'class="[^"]*card-remove[^"]*" href="([^"]+)"', selected)
     assert card_remove is not None and card_remove.group(1).endswith("#selecao")
     canonical = re.search(r'id="ligacao-limpa" href="([^"]+)"', selected).group(1)
     assert "#" not in canonical
@@ -466,8 +466,8 @@ def test_mount_prefix_is_preserved_on_every_new_action(site_path):
     assert 'action="/dados/caderno"' in form_text(html)
     assert 'formaction="/dados/caderno#grafico"' in form_text(html)
     assert 'href="/dados/caderno?s=' in html
-    assert 'class="button-quiet" href="/dados/pesquisa?s=' in html
-    assert 'class="button-quiet" href="#definicoes"' in html
+    assert 'class="btn btn-outline-secondary" href="/dados/pesquisa?s=' in html
+    assert 'class="btn btn-outline-secondary" href="#definicoes"' in html
     assert 'href="/caderno' not in html and 'action="/caderno' not in html
     assert 'href="/pesquisa' not in html
 

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_ui.html" import icon %}
+{% from "_ui.html" import icon, btn_class %}
 {% from "_discovery_filters.html" import choice %}
 {% block title %}{% if page.query %}Pesquisa: {{ page.query }} - Prumo{% else %}Catálogo de séries - Prumo{% endif %}{% endblock %}
 {% block main_class %} discovery-main{% endblock %}
@@ -17,11 +17,11 @@
   {% for name, value in chart_fields %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
 
   <div class="discovery-search-group" role="search" aria-label="Pesquisar no catálogo">
-    <div class="discovery-query">
-      <label class="sr-only" for="pesquisa-q">Pesquisar indicadores</label>
-      <input id="pesquisa-q" name="q" type="search" value="{{ page.query }}"
+    <label class="sr-only" for="pesquisa-q">Pesquisar indicadores</label>
+    <div class="input-group discovery-query">
+      <input class="form-control" id="pesquisa-q" name="q" type="search" value="{{ page.query }}"
              maxlength="200" placeholder="ex.: desemprego Portugal" aria-describedby="pesquisa-ajuda">
-      <button type="submit" class="button-quiet">{{ icon("search") }}Procurar</button>
+      <button class="btn btn-outline-secondary" type="submit">{{ icon("search") }}Procurar</button>
     </div>
     <p id="pesquisa-ajuda" class="sr-only">Todos os termos contam. A pesquisa ignora maiúsculas e acentos.</p>
     <details class="discovery-filters"{% if page.filters_active %} open{% endif %}>
@@ -31,9 +31,9 @@
         {{ choice('Geografia', 'grupo', page.group_options, page.group) }}
         {{ choice('Fonte', 'fonte', page.source_options, page.source, 'Todas') }}
         {{ choice('Frequência', 'frequencia', page.frequency_options, page.frequency, 'Todas') }}
-        <button type="submit">Aplicar filtros</button>
-        {% if page.query %}<button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Ver todo o catálogo</button>{% endif %}
-        {% if page.filters_active %}<button type="submit" name="limpar" value="filtros" class="discovery-link-button">Limpar filtros</button>{% endif %}
+        <button class="{{ btn_class('primary') }}" type="submit">Aplicar filtros</button>
+        {% if page.query %}<button class="{{ btn_class('link') }}" type="submit" name="limpar" value="pesquisa">Ver todo o catálogo</button>{% endif %}
+        {% if page.filters_active %}<button class="{{ btn_class('link') }}" type="submit" name="limpar" value="filtros">Limpar filtros</button>{% endif %}
       </div>
     </details>
   </div>
@@ -47,7 +47,7 @@
   <section class="discovery-selection" aria-labelledby="selecao-referencias">
     <div class="discovery-selection-head">
       <h2 id="selecao-referencias"><span class="sr-only">Seleção: </span><span data-selection-count-number>{{ page.selection_count }}</span> / 12<span class="sr-only"> séries selecionadas</span></h2>
-      <button type="submit" name="acao" value="abrir" class="button">{{ icon("notebook") }}Abrir caderno</button>
+      <button class="{{ btn_class('primary') }}" type="submit" name="acao" value="abrir">{{ icon("notebook") }}Abrir caderno</button>
     </div>
     <p class="selection-instruction" id="selecao-ajuda">Marque várias séries para as juntar.</p>
     <p class="sr-only" role="status" aria-live="polite" data-selection-count-text>{% if page.selection_count == 1 %}1 selecionada{% else %}{{ page.selection_count }} selecionadas{% endif %}</p>
@@ -63,13 +63,13 @@
         <li class="selection-item{% if not reference.available %} selection-item-unavailable{% endif %}">
           <span class="selection-title">{{ reference.title }}</span>
           {% if not reference.available %}<span class="flag">Indisponível</span>{% endif %}
-          <button type="submit" name="retirar" value="{{ reference.id }}" class="button-quiet selection-remove" aria-label="Remover {% if reference.available %}{{ reference.title }}{% else %}referência indisponível{% endif %} da seleção">Remover</button>
+          <button class="{{ btn_class('outline-secondary', 'selection-remove') }}" type="submit" name="retirar" value="{{ reference.id }}" aria-label="Remover {% if reference.available %}{{ reference.title }}{% else %}referência indisponível{% endif %} da seleção">Remover</button>
         </li>
         {% endfor %}
       </ul>
       <div class="selection-actions">
-        <button type="submit" name="pagina" value="{{ page.page }}" class="discovery-link-button">Atualizar seleção</button>
-        <button type="submit" name="limpar" value="selecao" class="button-quiet">Limpar seleção</button>
+        <button class="{{ btn_class('link') }}" type="submit" name="pagina" value="{{ page.page }}">Atualizar seleção</button>
+        <button class="{{ btn_class('outline-secondary') }}" type="submit" name="limpar" value="selecao">Limpar seleção</button>
       </div>
     </details>
     {% endif %}
@@ -82,21 +82,21 @@
     {% with rows = page.rows, selection_enabled = true, selected_ids = page.selected_ids %}
     {% include "_series_results.html" %}
     {% endwith %}
-    {% if page.rows_missing %}<p class="empty-state">Algumas séries desta página deixaram de ter um valor publicado. <button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Reabrir o catálogo</button>.</p>{% endif %}
+    {% if page.rows_missing %}<p class="empty-state">Algumas séries desta página deixaram de ter um valor publicado. <button class="{{ btn_class('link') }}" type="submit" name="limpar" value="pesquisa">Reabrir o catálogo</button>.</p>{% endif %}
     {% else %}
-    <p class="empty-state">As séries desta página deixaram de ter um valor publicado. <button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">Reabrir o catálogo</button>.</p>
+    <p class="empty-state">As séries desta página deixaram de ter um valor publicado. <button class="{{ btn_class('link') }}" type="submit" name="limpar" value="pesquisa">Reabrir o catálogo</button>.</p>
     {% endif %}
-    <nav class="pager discovery-pager" aria-label="Paginação">
-      {% if page.prev_path %}<button type="submit" name="pagina" value="{{ page.page - 1 }}">Página anterior</button>{% endif %}
-      <span>Página {{ page.page }} de {{ page.pages }}</span>
-      {% if page.next_path %}<button type="submit" name="pagina" value="{{ page.page + 1 }}">Página seguinte</button>{% endif %}
+    <nav class="discovery-pager" aria-label="Paginação">
+      {% if page.prev_path %}<button class="{{ btn_class('outline-secondary') }}" type="submit" name="pagina" value="{{ page.page - 1 }}">Página anterior</button>{% endif %}
+      <span class="meta">Página {{ page.page }} de {{ page.pages }}</span>
+      {% if page.next_path %}<button class="{{ btn_class('outline-secondary') }}" type="submit" name="pagina" value="{{ page.page + 1 }}">Página seguinte</button>{% endif %}
     </nav>
-    <div class="discovery-selection-end"><button type="submit" name="acao" value="abrir" class="button">Abrir seleção no Caderno</button></div>
+    <div class="discovery-selection-end"><button class="{{ btn_class('primary') }}" type="submit" name="acao" value="abrir">Abrir seleção no Caderno</button></div>
   </section>
   {% elif page.filters_active %}
-  <p class="empty-state">Nenhuma série corresponde a estes filtros{% if page.query %} e ao termo «{{ page.query }}»{% endif %}. <button type="submit" name="limpar" value="filtros" class="discovery-link-button">Limpar filtros</button>.</p>
+  <p class="empty-state">Nenhuma série corresponde a estes filtros{% if page.query %} e ao termo «{{ page.query }}»{% endif %}. <button class="{{ btn_class('link') }}" type="submit" name="limpar" value="filtros">Limpar filtros</button>.</p>
   {% elif page.query %}
-  <p class="empty-state">Sem resultados para «{{ page.query }}». Tente uma palavra mais geral ou <button type="submit" name="limpar" value="pesquisa" class="discovery-link-button">percorra o catálogo completo</button>.</p>
+  <p class="empty-state">Sem resultados para «{{ page.query }}». Tente uma palavra mais geral ou <button class="{{ btn_class('link') }}" type="submit" name="limpar" value="pesquisa">percorra o catálogo completo</button>.</p>
   {% else %}
   <p class="empty-state">Ainda não há séries publicadas no catálogo.</p>
   {% endif %}

@@ -353,7 +353,8 @@ def test_discovery_css_is_served_and_never_shrinks_inherited_type(client):
     assert ".series-results" in css and ".discovery-filters" in css
     sized_selectors = re.findall(r"([^{}]+)\{[^{}]*font-size:\s*[\d.][^{}]*\}", css)
     assert {selector.strip() for selector in sized_selectors} <= {
-        ".discovery-head h1", ".discovery-main .family h2"}
+        ".discovery-head h1", ".discovery-main .family h2",
+        ".discovery-filters > summary", ".series-result-select"}
     assert ".series-result-title { margin: 0; font-family: inherit; font-size: inherit;" in css
 
 
@@ -387,7 +388,7 @@ def test_the_pager_submits_the_current_form_state_into_the_page(client, monkeypa
     assert '<option value="pt" selected>Portugal</option>' in html
     assert '<option value="ine" selected>INE' in html
     assert '<option value="M" selected>Mensal</option>' in html
-    assert '<button type="submit" name="pagina" value="2">Página seguinte</button>' in html
+    assert '<button class="btn btn-outline-secondary" type="submit" name="pagina" value="2">Página seguinte</button>' in html
     assert 'rel="next"' not in html
 
 

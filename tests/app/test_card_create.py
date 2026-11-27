@@ -34,7 +34,7 @@ EXPECTED_LEGACY_CARD = (
     '      <div class="card-spark"><svg class="spark" aria-hidden="true"></svg></div>\n'
     '      <p class="card-source">INE - Instituto Nacional de Estatística · recolhido a '
     '03/11/2026, 09:00 UTC</p>\n'
-    '      <a class="card-link" href="/series/ine.hicp_yoy.PT">Série e proveniência</a>\n'
+    '      <a class="btn btn-link card-link" href="/series/ine.hicp_yoy.PT">Série e proveniência</a>\n'
     '    </article>'
 )
 
@@ -79,12 +79,12 @@ def test_shared_card_without_the_optional_entry_keeps_the_legacy_bytes():
 def test_shared_card_adds_one_entry_only_when_the_caller_supplies_a_path():
     html = _render_card(card_create_path=f"/caderno?s={HICP}")
     assert (
-        f'<p class="card-actions"><a class="card-link" href="/series/{HICP}">'
+        f'<p class="card-actions"><a class="btn btn-link card-link" href="/series/{HICP}">'
         'Série e proveniência</a> '
-        f'<a class="card-create" href="/caderno?s={HICP}" aria-label="{CREATE_LABEL}">'
+        f'<a class="btn btn-link card-create" href="/caderno?s={HICP}" aria-label="{CREATE_LABEL}">'
         'Criar caderno</a></p>'
     ) in html
-    assert html.count('class="card-create"') == 1
+    assert html.count('class="btn btn-link card-create"') == 1
 
 
 def test_legacy_home_card_does_not_gain_the_cms_notebook_entry(client):
@@ -97,7 +97,7 @@ def test_cms_home_card_offers_and_opens_a_one_indicator_notebook(site_path):
     _publish_home_with_card(site_path)
     with TestClient(create_app(str(site_path))) as client:
         html = client.get("/").text
-        assert html.count('class="card-create"') == 1
+        assert html.count('class="btn btn-link card-create"') == 1
         assert f'href="/caderno?s={HICP}"' in html
         assert f'aria-label="{CREATE_LABEL}"' in html
         assert '>Criar caderno</a>' in html
@@ -124,22 +124,22 @@ def test_each_cms_card_entry_names_only_its_own_indicator(site_path):
     _publish_home_with_card(site_path, series_ids=(HICP, UNEMP))
     with TestClient(create_app(str(site_path))) as client:
         html = client.get("/").text
-    entries = re.findall(r'<a class="card-create" href="([^"]+)"[^>]*>Criar caderno</a>', html)
+    entries = re.findall(r'<a class="[^"]*card-create[^"]*" href="([^"]+)"[^>]*>Criar caderno</a>', html)
     assert entries == [f"/caderno?s={HICP}", f"/caderno?s={UNEMP}"]
     assert "&" not in "".join(entries)
-    assert html.count('class="card-create"') == 2
+    assert html.count('class="btn btn-link card-create"') == 2
 
 
 def test_notebook_cards_keep_only_their_remove_control(client):
     html = client.get(f"/caderno?s={HICP}&s={UNEMP}").text
     assert 'class="card-create"' not in html
     assert "Criar caderno" not in html
-    assert html.count('class="card-remove"') == 2
+    assert html.count('class="btn btn-link card-remove"') == 2
 
 
 @pytest.mark.parametrize("prefix", ["", "/dados"])
 def test_shared_card_does_not_duplicate_controls_when_a_remove_path_is_present(prefix):
     html = _render_card(card_remove_path=f"/caderno?s={HICP}", base=prefix)
-    assert html.count('class="card-link"') == 1
-    assert html.count('class="card-remove"') == 1
-    assert 'class="card-create"' not in html
+    assert html.count('class="btn btn-link card-link"') == 1
+    assert html.count('class="btn btn-link card-remove"') == 1
+    assert 'card-create' not in html

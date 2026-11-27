@@ -1,5 +1,6 @@
 {# Selection is an explicit opt-in context: theme pages keep their individual entry and never
    render an orphan checkbox or a second form owner. #}
+{% from "_ui.html" import btn_class %}
 {% set selectable = selection_enabled|default(false) %}
 {% set chosen = selected_ids|default((), true) %}
 <ul class="series-results"{% if selectable %} data-selection="true"{% endif %}>
@@ -9,7 +10,7 @@
     <div class="series-result-heading">
       {% if selectable %}
       <label class="series-result-select">
-        <input type="checkbox" name="s" value="{{ row.id }}"{% if row.id in chosen %} checked{% endif %}>
+        <input class="form-check-input" type="checkbox" name="s" value="{{ row.id }}"{% if row.id in chosen %} checked{% endif %}>
         <span>Selecionar</span><span class="sr-only"> {{ row.title }}</span>
       </label>
       {% endif %}
@@ -28,7 +29,7 @@
     </dl>
     {% if not selectable %}
     <p class="series-result-action">
-      <a class="button-quiet" href="{{ base }}{{ notebook_path([row.id]) }}"
+      <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}{{ notebook_path([row.id]) }}"
          aria-label="Criar caderno para {{ row.title }}">Criar caderno</a>
     </p>
     {% endif %}

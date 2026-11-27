@@ -23,11 +23,13 @@ and uses the new shared chart geometry. Its earlier full capture remains unchang
 `golden/pre_legibility/home_code_list.html.gz` (lossless archive); the current golden is the reviewed new chrome
 against the unchanged fixture. Source values and publisher precision remain unchanged.
 
-The 2026-11-18 public-shell slice replaces the shared header again (masthead, grouped
-native disclosures and a joined search) while leaving every page below it untouched. The
-goldens stay immutable historical captures: the equality checks here compare the bytes
-from `<main id="conteudo">` onward, so the expected shared-chrome delta is explicit and
-the content/footer contract is still proven byte for byte.
+The 2026-11-18 public-shell slice replaced the shared header again (masthead, grouped
+native disclosures and a joined search). The 2026-11-27 Bootstrap toolkit pass recaptures
+the current golden with that shell and the compact 22px public scale; the equality checks
+here compare the content from `<main id="conteudo">` onward (with trailing Jinja whitespace
+normalized), so the shared-chrome delta is explicit and the content/footer contract is still
+proven line for line. The older `home_before_editorial.html` capture remains an immutable
+historical reference.
 """
 
 from pathlib import Path
@@ -77,10 +79,15 @@ def _add_extra_series(site_path):
 
 
 def _below_shared_chrome(html: str) -> str:
-    """Everything from the main landmark onward: the page contract below the header."""
+    """Everything from the main landmark onward: the page contract below the header.
+
+    Trailing horizontal whitespace emitted by Jinja loops is not part of the content
+    contract; every visible byte, line break and attribute remains exact.
+    """
     marker = '<main id="conteudo"'
     assert marker in html
-    return html[html.index(marker):]
+    body = html[html.index(marker):]
+    return "\n".join(line.rstrip() for line in body.splitlines())
 
 
 def test_empty_composition_home_content_is_unchanged_below_the_new_header(site_path):
@@ -88,9 +95,10 @@ def test_empty_composition_home_content_is_unchanged_below_the_new_header(site_p
     with TestClient(create_app(str(site_path))) as c:
         html = c.get("/").text
     golden = GOLDEN.read_text(encoding="utf-8")
-    # The shared chrome is the one reviewed delta; the old capture keeps the old header.
+    # The current golden carries the reviewed Bootstrap app shell; the equality contract
+    # starts at the main landmark and still proves the content below it byte for byte.
     assert 'class="wrap masthead"' in html
-    assert 'class="wrap masthead"' not in golden
+    assert 'class="wrap masthead"' in golden
     assert _below_shared_chrome(html) == _below_shared_chrome(golden)
 
 

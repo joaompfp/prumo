@@ -1,3 +1,10 @@
+{# Bootstrap component classes are composed here so templates keep one spelling for each
+   action role. The public pages still use the vendor's real `.btn` component; this macro
+   only selects the reviewed variant and an optional product hook. #}
+{% macro btn_class(variant='primary', extra='') -%}
+btn btn-{{ variant }}{% if extra %} {{ extra }}{% endif %}
+{%- endmacro %}
+
 {# One local, deterministic icon vocabulary for the public app shell. Every path is
    hardcoded here; the macro never accepts markup, a URL or a CSS class from a caller.
    Icons are decorative supplements to a visible label, so they are hidden from the

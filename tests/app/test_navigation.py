@@ -19,7 +19,7 @@ SHELL = Path(__file__).resolve().parents[2] / "static" / "css" / "app-shell.css"
 
 
 def _attrs(html: str, href: str) -> str:
-    match = re.search(rf'<a href="{re.escape(href)}"([^>]*)>', html)
+    match = re.search(rf'<a [^>]*href="{re.escape(href)}"([^>]*)>', html)
     assert match, href
     return match.group(1)
 
@@ -198,9 +198,9 @@ def test_every_destination_is_discoverable_once_in_the_shared_nav(client):
              "/comparar", "/caderno", "/paginas", "/fontes", "/metodologia"}
     for href in hrefs:
         assert header.count(f'href="{href}"') == 1, href
-    assert '<nav class="site-nav" aria-label="Secções">' in header
+    assert '<nav class="site-nav nav" aria-label="Secções">' in header
     assert '<details class="app-disclosure app-more">' in header
-    assert '<form class="search"' in header
+    assert '<form class="search app-search"' in header
     assert '<details class="nav-menu">' not in header
     assert header.count('href="/pesquisa"') == 1
 
@@ -208,8 +208,8 @@ def test_every_destination_is_discoverable_once_in_the_shared_nav(client):
 def test_native_menu_and_search_need_no_script(client):
     html = client.get("/").text
     assert '<details class="app-disclosure app-more">' in html
-    assert '<form class="search" action="/pesquisa" method="get" role="search">' in html
-    assert '<button type="submit">Procurar</button>' in html
+    assert '<form class="search app-search" action="/pesquisa" method="get" role="search">' in html
+    assert '>Procurar</button>' in html
     assert 'name="q"' in html
     assert "<script" not in html.lower()
     assert "onclick" not in html.lower()
@@ -220,10 +220,10 @@ def test_task_pages_suppress_the_global_search_and_keep_their_own(client):
         assert '<form class="search"' not in client.get(path).text, path
         assert '<details class="app-disclosure app-search">' not in client.get(path).text, path
     notebook = client.get(f"/caderno?s={HICP}").text
-    assert '<form class="search"' not in notebook
+    assert '<form class="search app-search"' not in notebook
     assert '<form id="notebook-search-form"' in notebook
     add_link = re.search(
-        rf'<a class="button" href="/pesquisa\?s={re.escape(HICP)}" '
+        rf'<a class="btn btn-primary" href="/pesquisa\?s={re.escape(HICP)}" '
         r'aria-label="Acrescentar séries">(.*?)</a>', notebook, re.S)
     assert add_link is not None
     assert 'class="ui-icon"' in add_link.group(1)
@@ -292,7 +292,7 @@ def test_responsive_wrap_padding_preserves_header_block_padding():
     # resets its vertical padding, so only the inline axis may change at each breakpoint.
     assert ".wrap { padding: 0 24px; }" not in css
     assert ".wrap { padding: 0 18px; }" not in css
-    assert ".wrap { padding-inline: 24px; }" in css
-    assert ".wrap { padding-inline: 18px; }" in css
+    assert ".wrap { padding-inline: 20px; }" in css
+    assert ".wrap { padding-inline: 16px; }" in css
     assert ".masthead" in shell and "padding-block: 6px;" in shell
     assert ".masthead" in shell and "padding-block: 2px;" in shell

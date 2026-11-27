@@ -421,7 +421,7 @@ def test_structured_readout_rows_keep_exact_text_and_polite_keyboard_announcemen
         }""")
         assert metrics["rangeH"] >= 47.5, metrics
         assert metrics["rangeTop"] >= metrics["readoutTop"] - 1, metrics
-        assert metrics["font"] >= 25.2, metrics
+        assert metrics["font"] >= 18.5, metrics
         assert metrics["readoutTop"] >= metrics["plotBottom"] - 1, metrics
         assert metrics["readoutTop"] - metrics["plotBottom"] <= 8, metrics
         assert metrics["readoutW"] >= metrics["controlsW"] - 1, metrics

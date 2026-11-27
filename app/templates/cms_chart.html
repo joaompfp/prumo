@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell, chart_meta %}
+{% from "_ui.html" import btn_class %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
 {% block content %}
 {% if preview %}
 <div class="preview-banner" role="status">
   <p><strong>Pré-visualização.</strong> Este é o rascunho no backoffice; o gráfico público não foi alterado.</p>
-  <p><a class="button" href="{{ admin_base }}">Voltar ao editor</a></p>
+  <p><a class="{{ btn_class('primary') }}" href="{{ admin_base }}">Voltar ao editor</a></p>
 </div>
 {% endif %}
 {% if page.analysis %}

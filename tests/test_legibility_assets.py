@@ -1,8 +1,9 @@
-"""Presentation regression pins for the 2026-11-17 legibility pass.
+"""Presentation regression pins for the compact public reading release.
 
-These checks are static and fast: they pin the local licensed font assets, the two root
-sizes, the minimum role tokens and the long-value wrapping rule. Real rendered geometry is
-covered by the browser acceptance run, not here.
+These checks are static and fast: they pin the local licensed font assets, the public and
+Admin root sizes, the minimum public label tokens and the long-value wrapping rule. The
+public root is 22px after the owner reviewed the installed 28.05px release; Admin keeps
+its 26.4px scale. Real rendered geometry is covered by the browser acceptance run, not here.
 """
 import hashlib
 import json
@@ -48,29 +49,29 @@ def test_font_stylesheet_is_local_and_covers_regular_semibold_bold():
 
 def test_public_root_and_wrap_support_the_approved_scale():
     css = (ROOT / "static" / "css" / "prumo.css").read_text()
-    assert "html { font-size: 28.05px; }" in css
+    assert "html { font-size: 22px; }" in css
     assert "--wrap: 1240px;" in css
     assert '--sans: "Lato",' in css
     assert '--serif: "TeX Gyre Schola",' in css
-    assert ".card-value--long { font-size: 2.1rem;" in css
-    # The four-card grid recomposes to 3/2/1 rather than shrinking the text.
-    assert "grid-template-columns: repeat(3, minmax(0, 1fr))" in css
-    assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in css
+    assert ".card-value--long { font-size: 1.9rem;" in css
+    # The card row collapses empty tracks, so two real cards fill the row while three
+    # cards still compose as 3/2/1 at the reviewed widths.
+    assert "grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));" in css
     assert ".cards, .themes { grid-template-columns: 1fr; }" in css
 
 
-def test_public_fixed_role_tokens_meet_the_one_and_a_half_floor():
+def test_public_fixed_role_tokens_meet_the_compact_label_floor():
     css = (ROOT / "static" / "css" / "prumo.css").read_text()
     for token in (
-        ".card-label {", "font-size: .8rem",            # 22.44px
-        ".card-source {", "font-size: .78rem",          # 21.879px
-        ".data-table th {", "font-size: .74rem",        # 20.757px
-        ".figure-meta {", "font-size: .82rem",          # 23.001px
-        ".site-footer p {", "font-size: .82rem",        # 23.001px
+        ".card-label {", "font-size: 0.75rem",            # 16.5px
+        ".card-source {", "font-size: 0.75rem",          # 16.5px
+        ".data-table th {", "font-size: 0.75rem",        # 16.5px
+        ".figure-meta {", "font-size: 0.8rem",           # 17.6px
+        ".site-footer p {", "font-size: 0.78rem",        # 17.16px
     ):
         assert token in css, token
     shell = (ROOT / "static" / "css" / "app-shell.css").read_text()
-    assert ".app-nav-link {" in shell and "font-size: 0.95rem" in shell
+    assert ".site-nav .nav-link {" in shell and "font-size: 0.9rem" in shell
     # SVG unit names use .chart-axis-label at 18.15px; .chart-axis-title at 19.8px has no
     # consumer. The canvas adapter draws its axis names at 19.8 CSS px.
     assert css.count("font-size: 18.15px") == 2           # SVG ticks and axis unit names

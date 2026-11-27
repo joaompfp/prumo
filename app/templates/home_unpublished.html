@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_ui.html" import btn_class %}
 {% block title %}Início - Prumo{% endblock %}
 {% block content %}
 <section class="hero" aria-labelledby="inicio-titulo">
@@ -6,8 +7,8 @@
   <h1 id="inicio-titulo">Início</h1>
   <p class="lede">A página inicial está por publicar.</p>
   <p class="hero-actions">
-    <a class="button" href="{{ base }}/temas/economy">Explorar os temas</a>
-    <a class="button-quiet" href="{{ base }}/fontes">Fontes e licenças</a>
+    <a class="{{ btn_class('primary') }}" href="{{ base }}/temas/economy">Explorar os temas</a>
+    <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}/fontes">Fontes e licenças</a>
   </p>
   <p class="section-note"><a href="{{ base }}/metodologia">Como verificamos os dados</a> · <a href="{{ base }}/pesquisa">Pesquisar séries</a></p>
 </section>

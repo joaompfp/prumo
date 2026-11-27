@@ -9,61 +9,110 @@
 <link rel="icon" type="image/svg+xml" href="/static/images/prumo/favicon.svg">
 <link rel="preload" href="/static/fonts/prumo/lato-regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/static/fonts/prumo/lato-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/vendor/bootstrap/bootstrap-subset.css">
 <link rel="stylesheet" href="/static/css/fonts.css">
 <link rel="stylesheet" href="/static/css/prumo.css">
+<link rel="stylesheet" href="/static/css/bootstrap-theme.css">
+<link rel="stylesheet" href="/static/css/app-shell.css">
+<link rel="stylesheet" href="/static/css/chart-inspector.css">
+<link rel="stylesheet" href="/static/css/discovery.css">
+<link rel="stylesheet" href="/static/css/workspace.css">
 </head>
 <body>
 <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+
+
 <header class="site-header">
-  <div class="wrap header-row">
-    <a class="brand" href="/">
-      <img class="brand-icon" src="/static/images/prumo/favicon.svg" alt="" width="28" height="28">
+  <div class="wrap masthead">
+    <a href="/" class="brand" aria-current="page">
+      <img class="brand-icon" src="/static/images/prumo/favicon.svg" alt="" width="32" height="32">
       <span class="brand-name">Prumo</span>
     </a>
-    <nav class="site-nav site-nav-desktop" aria-label="Secções">
-      
-      <a href="/" aria-current="page">Início</a>
-      
-      <a href="/temas/economy">Economia</a>
-      
-      <a href="/temas/demography">Demografia</a>
-      
-      <a href="/temas/energy">Energia</a>
-      
-      <a href="/comparar">Comparações</a>
-      
-      <a href="/fontes">Fontes</a>
-      
-      <a href="/metodologia">Metodologia</a>
-      
-      <a href="/caderno">Caderno</a>
+
+    <nav class="site-nav nav" aria-label="Secções">
+
+      <a href="/pesquisa" class="app-nav-link nav-link">
+        <svg class="ui-icon" viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg>
+
+        <span class="app-nav-label">Catálogo</span>
+
+      </a>
+
+      <a href="/comparar" class="app-nav-link nav-link">
+        <svg class="ui-icon" viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3"/></svg>
+
+        <span class="app-nav-label app-nav-label-wide">Comparações</span>
+        <span class="app-nav-label app-nav-label-narrow">Comparar</span>
+
+      </a>
+
+      <a href="/caderno" class="app-nav-link nav-link">
+        <svg class="ui-icon" viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 3h10a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M5 17h14M9 7h6"/></svg>
+
+        <span class="app-nav-label">Caderno</span>
+
+      </a>
+
     </nav>
-    <details class="nav-disclosure">
-      <summary>Menu</summary>
-      <nav class="site-nav" aria-label="Secções no telemóvel">
 
-        <a href="/" aria-current="page">Início</a>
+    <div class="app-utilities">
+      <details class="app-disclosure app-more">
+        <summary class="btn btn-outline-secondary app-disclosure-toggle">
+          <span class="app-disclosure-label">Mais</span>
 
-        <a href="/temas/economy">Economia</a>
+          <span class="app-disclosure-marker"><svg class="ui-icon" viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg></span>
+        </summary>
+        <div class="app-panel app-more-panel">
 
-        <a href="/temas/demography">Demografia</a>
+          <div class="app-panel-group">
+            <p class="app-panel-title">Pesquisar séries</p>
+            <form class="search app-search" action="/pesquisa" method="get" role="search">
+              <label class="sr-only" for="q">Pesquisar séries</label>
+              <div class="input-group">
+                <input class="form-control" id="q" name="q" type="search" placeholder="Pesquisar séries" value="">
+                <button class="btn btn-primary" type="submit"><svg class="ui-icon" viewBox="0 0 24 24" width="24" height="24" fill="none"
+     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>Procurar</button>
+              </div>
+            </form>
+          </div>
 
-        <a href="/temas/energy">Energia</a>
 
-        <a href="/comparar">Comparações</a>
+          <div class="app-panel-group">
+            <p class="app-panel-title">Temas</p>
+            <ul class="app-panel-list">
 
-        <a href="/fontes">Fontes</a>
+              <li><a class="nav-link app-panel-link" href="/temas/economy">Economia</a></li>
 
-        <a href="/metodologia">Metodologia</a>
+              <li><a class="nav-link app-panel-link" href="/temas/demography">Demografia</a></li>
 
-        <a href="/caderno">Caderno</a>
-      </nav>
-    </details>
-    <form class="search" action="/pesquisa" method="get" role="search">
-      <label class="sr-only" for="q">Pesquisar séries</label>
-      <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="">
-      <button type="submit">Procurar</button>
-    </form>
+              <li><a class="nav-link app-panel-link" href="/temas/energy">Energia</a></li>
+
+            </ul>
+          </div>
+          <div class="app-panel-group">
+            <p class="app-panel-title">Sobre</p>
+            <ul class="app-panel-list">
+
+              <li><a class="nav-link app-panel-link" href="/paginas">Páginas</a></li>
+
+              <li><a class="nav-link app-panel-link" href="/fontes">Fontes</a></li>
+
+              <li><a class="nav-link app-panel-link" href="/metodologia">Metodologia</a></li>
+
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
   </div>
 </header>
 <main id="conteudo" class="wrap">
@@ -72,7 +121,7 @@
   <p class="eyebrow">Dados oficiais · proveniência verificada</p>
   <h1>Estatísticas oficiais, com a proveniência à vista.</h1>
   <p class="lede">3 séries de 2 instituições. Cada valor liga à publicação original, à data em que foi recolhido e à verificação independente que o acompanhou.</p>
-  <p class="hero-actions"><a class="button" href="/temas/economy">Explorar os dados</a> <a class="button-quiet" href="/metodologia">Como verificamos</a></p>
+  <p class="hero-actions"><a class="btn btn-primary" href="/temas/economy">Explorar os dados</a> <a class="btn btn-outline-secondary" href="/metodologia">Como verificamos</a></p>
   <p class="freshness"><span class="dot" aria-hidden="true"></span>Última recolha verificada: 03/11/2026, 09:00 UTC</p>
 </section>
 
@@ -82,7 +131,7 @@
     <p class="section-note">Portugal. Valores publicados tal como a fonte os publica.</p>
   </div>
   <div class="cards">
-    
+
     <article class="card">
       <p class="card-label">Inflação (IHPC)</p>
       <p class="card-value">1,8 <span class="card-unit">%</span></p>
@@ -91,9 +140,9 @@
       <p class="calc-line"></p>
       <div class="card-spark"><svg class="spark" viewBox="0 0 132 40" aria-hidden="true"><path class="spark-line" d="M4.0,4.0 L66.0,14.7 L128.0,36.0" /><circle class="spark-end" cx="128.0" cy="36.0" r="2.2" /></svg></div>
       <p class="card-source">INE - Instituto Nacional de Estatística · recolhido a 03/11/2026</p>
-      <a class="card-link" href="/series/ine.hicp_yoy.PT">Série e proveniência</a>
+      <a class="btn btn-link card-link" href="/series/ine.hicp_yoy.PT">Série e proveniência</a>
     </article>
-    
+
     <article class="card">
       <p class="card-label">Desemprego</p>
       <p class="card-value">6,2 <span class="card-unit">%</span></p>
@@ -102,9 +151,9 @@
       <p class="calc-line">Variação homóloga: 0,3 p.p. <span class="calc-period">outubro de 2026</span></p>
       <div class="card-spark"><svg class="spark" viewBox="0 0 132 40" aria-hidden="true"><path class="spark-line" d="M4.0,4.0 L128.0,36.0" /><circle class="spark-end" cx="128.0" cy="36.0" r="2.2" /></svg></div>
       <p class="card-source">INE - Instituto Nacional de Estatística · recolhido a 03/11/2026</p>
-      <a class="card-link" href="/series/ine.unemployment_monthly.PT">Série e proveniência</a>
+      <a class="btn btn-link card-link" href="/series/ine.unemployment_monthly.PT">Série e proveniência</a>
     </article>
-    
+
   </div>
 </section>
 
@@ -114,25 +163,25 @@
     <p class="section-note">Todo o catálogo, por assunto.</p>
   </div>
   <div class="themes">
-    
+
     <a class="theme-card" href="/temas/economy">
       <span class="theme-title">Economia</span>
       <span class="theme-blurb">Atividade, preços, emprego, crédito e finanças públicas.</span>
       <span class="theme-count">3 séries</span>
     </a>
-    
+
     <a class="theme-card" href="/temas/demography">
       <span class="theme-title">Demografia</span>
       <span class="theme-blurb">População, natalidade, mortalidade e esperança de vida.</span>
       <span class="theme-count">0 séries</span>
     </a>
-    
+
     <a class="theme-card" href="/temas/energy">
       <span class="theme-title">Energia</span>
       <span class="theme-blurb">Produção e preços de eletricidade.</span>
       <span class="theme-count">0 séries</span>
     </a>
-    
+
   </div>
 </section>
 

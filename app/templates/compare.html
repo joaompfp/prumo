@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell %}
+{% from "_ui.html" import btn_class %}
 {% block title %}{{ page.title }} - Prumo{% endblock %}
 {% block content %}
 <nav class="crumbs" aria-label="Caminho">
@@ -8,7 +9,7 @@
 
 <header class="page-head">
   <h1>{{ page.title }}</h1>
-  <p class="detail-actions"><a class="button-quiet" href="{{ base }}{{ notebook_path([page.a.id, page.b.id]) }}">{{ notebook_copy.comparison_action }}</a></p>
+  <p class="detail-actions"><a class="{{ btn_class('outline-secondary') }}" href="{{ base }}{{ notebook_path([page.a.id, page.b.id]) }}">{{ notebook_copy.comparison_action }}</a></p>
   <p class="lede">{{ page.subtitle }}</p>
   <p class="meta">
     {{ page.a.title }} · {{ page.a.frequency_text }} · {{ page.a.unit_text }}

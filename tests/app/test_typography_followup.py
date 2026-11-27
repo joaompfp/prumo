@@ -3,8 +3,9 @@
 Three findings were left open by the independent quality review: the SVG gutter under-
 estimated real Lato digit advances, the canvas top gutter scaled below its fixed CSS type,
 and the figure block narrowed the latest value between 1101px and 1139px. The public h1
-also broke "eletricidade" without a hyphen at 390px. These are static pins plus measured
-Lato widths; the parent browser matrix still owns the rendered check.
+now uses the compact clamp with an overflow fallback rather than dictionary hyphenation.
+These are static pins plus measured Lato widths; the parent browser matrix still owns the
+rendered check.
 """
 import re
 import xml.etree.ElementTree as ET
@@ -62,19 +63,18 @@ def test_figure_block_stacks_at_1200px_before_the_value_column_narrows():
     end = css.index("@media (max-width: 1100px) {")
     assert start < end
     block = css[start:end]
-    assert ".figure-block { grid-template-columns: 1fr; gap: 24px; }" in block
+    assert ".figure-block { grid-template-columns: 1fr; gap: 20px; }" in block
     assert ".figure-meta { border-left: 0; border-top: 1px solid var(--rule);" in block
     # The old 1100px query no longer collapses the figure block.
     narrow = css[end:css.index("@media (max-width: 900px) {")]
     assert ".figure-block" not in narrow
 
 
-def test_h1_requests_portuguese_hyphenation_with_overflow_fallback():
+def test_h1_uses_the_compact_clamp_and_an_overflow_fallback():
     css = CSS.read_text(encoding="utf-8")
     heading = re.search(r"\nh1 \{([^}]*)\}", css)
     shared = re.search(r"h1, h2, h3 \{([^}]*)\}", css)
     assert heading and shared
-    assert "hyphens: auto;" in heading.group(1)
-    assert "-webkit-hyphens: auto;" in heading.group(1)
-    assert "font-size: clamp(2.1rem, 7.6vw, 3.3rem);" in heading.group(1)
+    assert "font-size: clamp(1.65rem, 5.2vw, 2.35rem);" in heading.group(1)
+    assert "hyphens: auto;" not in heading.group(1)
     assert "overflow-wrap: anywhere;" in shared.group(1)

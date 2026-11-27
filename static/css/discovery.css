@@ -1,31 +1,28 @@
 /* Discovery has its own work surface, not an editorial introduction.
-   Functional text keeps the installed reading scale; only display headings compact. */
-.discovery-main .crumbs { padding-top: 12px; }
-.discovery-head { padding: 12px 0 8px; }
-.discovery-head h1 { font-family: var(--sans); font-size: clamp(1.45rem, 4.2vw, 1.85rem); line-height: 1.15; margin: 0; }
-.discovery-head .meta { margin: 6px 0 0; }
+   Functional labels follow the compact public scale; controls come from the shared
+   Bootstrap theme and this file only composes their discovery layout. */
+.discovery-main .crumbs { padding-top: 8px; }
+.discovery-head { padding: 8px 0 4px; }
+.discovery-head h1 { font-family: var(--sans); font-size: clamp(1.35rem, 3.6vw, 1.65rem); line-height: 1.15; margin: 0; }
+.discovery-head .meta { margin: 4px 0 0; }
 .discovery-search { display: block; margin: 0; padding: 0; border: 0; background: transparent; }
-.discovery-query { display: flex; align-items: stretch; gap: 10px; }
-.discovery-query input { flex: 1 1 0; width: 100%; min-width: 0; font: inherit; line-height: 1.25; }
-.discovery-filters select { font: inherit; line-height: 1.25; }
-#discovery-form .discovery-link-button,
-#discovery-form .discovery-pager button { font: inherit; line-height: 1.25; }
-.discovery-query button { flex: 0 0 auto; width: auto; }
+.discovery-query { width: 100%; }
+.discovery-query .form-control { flex: 1 1 0; width: 1%; min-width: 0; }
+.discovery-query .btn { flex: 0 0 auto; width: auto; }
 .discovery-results { margin: 0 0 30px; }
-.discovery-filters { margin: 14px 0; border: 1px solid var(--rule-strong); border-radius: 8px; background: var(--surface); }
-.discovery-filters > summary { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 10px 12px; color: var(--ink); font-weight: 600; cursor: pointer; list-style: none; }
+.discovery-filters { margin: 12px 0; border: 1px solid var(--rule-strong); border-radius: 8px; background: var(--surface); }
+.discovery-filters > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 10px; color: var(--ink); font-weight: 600; cursor: pointer; list-style: none; font-size: .9rem; }
 .discovery-filters > summary span { flex: 1; }
 .discovery-filters > summary::-webkit-details-marker { display: none; }
 .discovery-filters[open] > summary > .ui-icon:last-child { transform: rotate(180deg); }
 .discovery-filters[open] > summary { border-bottom: 1px solid var(--rule); }
 .discovery-filters .filters {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
-  margin: 0; padding: 16px; border: 0; background: transparent; align-items: end;
+  margin: 0; padding: 12px; border: 0; background: transparent; align-items: end;
 }
-.discovery-filters select { width: 100%; min-width: 0; }
 .discovery-filters .filters > a { align-self: center; }
 .discovery-description { grid-column: 1 / -1; margin: 0; }
-.discovery-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin: 14px 0; }
+.discovery-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin: 10px 0; }
 .discovery-summary p { margin: 0; }
 .discovery-summary a { font-size: inherit; }
 /* One native form owns query, filters, results, tray and pager. The search landmark is the
@@ -33,14 +30,14 @@
 .discovery-search-group { display: block; }
 .discovery-selection {
   position: relative; z-index: 5;
-  margin: 12px 0 8px; padding: 10px 14px; border: 1px solid var(--rule-strong);
+  margin: 10px 0 8px; padding: 10px 12px; border: 1px solid var(--rule-strong);
   border-radius: 8px; background: var(--surface);
 }
 .discovery-selection-head {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
   gap: 8px 18px;
 }
-.discovery-selection-head > .button { width: auto; flex: 0 0 auto; }
+.discovery-selection-head > .btn { width: auto; flex: 0 0 auto; }
 .discovery-selection-head h2 { margin: 0; font-family: inherit; font-size: inherit; overflow-wrap: anywhere; }
 .discovery-selection > .note, .discovery-selection > .selection-instruction { margin: 6px 0 0; }
 .selection-review { margin-top: 10px; }
@@ -59,27 +56,6 @@
 .selection-title { flex: 1 1 16rem; min-width: 0; overflow-wrap: anywhere; }
 .selection-item-unavailable .selection-title { color: var(--muted); }
 .selection-actions { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 12px; }
-#discovery-form .selection-remove,
-#discovery-form .selection-actions .button-quiet,
-#discovery-form .discovery-pager button,
-#discovery-form .discovery-link-button {
-  background: var(--surface); color: var(--accent); border: 1px solid var(--rule-strong);
-  border-radius: 7px; padding: 6px 12px; min-height: 44px; white-space: normal;
-}
-#discovery-form .selection-remove:hover,
-#discovery-form .discovery-pager button:hover,
-#discovery-form .discovery-link-button:hover {
-  background: var(--accent-soft); border-color: var(--accent); color: var(--accent);
-}
-#discovery-form .discovery-link-button {
-  background: transparent; border-color: transparent; padding-inline: 0;
-  text-decoration: underline; text-underline-offset: 3px;
-}
-#discovery-form .discovery-link-button:hover { background: transparent; border-color: transparent; color: var(--ink); }
-#discovery-form .button[disabled] {
-  background: var(--rule-strong); border-color: var(--rule-strong); color: var(--ink);
-  opacity: .7; cursor: not-allowed;
-}
 .discovery-pager { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 20px 0 0; }
 .series-result-action { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: flex-end; gap: 10px 16px; }
 .series-result-select {
@@ -87,15 +63,15 @@
   border: 1px solid var(--rule-strong); border-radius: 7px; background: var(--surface);
   font-weight: 600; cursor: pointer;
 }
-.series-result-heading .series-result-select { margin-bottom: 8px; border: 0; background: transparent; padding-inline: 0; }
-.series-result-select input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); flex: none; }
+.series-result-heading .series-result-select { margin-bottom: 6px; border: 0; background: transparent; padding-inline: 0; }
 .series-result-select:hover { border-color: var(--accent); background: var(--accent-soft); }
-.discovery-main .family { margin: 22px 0; }
-.discovery-main .family h2 { font-size: 1.15rem; margin: 0 0 12px; }
+.series-result-select { font-size: .85rem; }
+.discovery-main .family { margin: 20px 0; }
+.discovery-main .family h2 { font-size: 1.05rem; margin: 0 0 10px; }
 .series-results { list-style: none; margin: 0; padding: 0; border: 1px solid var(--rule); border-radius: 9px; background: var(--surface); }
 .series-result {
   display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr) auto;
-  gap: 12px 24px; align-items: start; padding: 16px; border-bottom: 1px solid var(--rule);
+  gap: 10px 20px; align-items: start; padding: 12px; border-bottom: 1px solid var(--rule);
 }
 .series-result > * { min-width: 0; }
 .series-result:hover { background: var(--accent-soft); }
@@ -112,7 +88,7 @@
 .series-result-facts dt::after { content: ": "; }
 .series-result-facts dd { display: inline; margin: 0; overflow-wrap: anywhere; }
 .series-result-action { grid-column: 3; grid-row: 1; margin: 0; }
-.series-result-action .button-quiet { white-space: nowrap; }
+.series-result-action .btn { white-space: nowrap; }
 @media (min-width: 901px) {
   .discovery-selection { position: sticky; top: 12px; }
 }
@@ -124,16 +100,16 @@
 @media (max-width: 820px) {
   .series-result { grid-template-columns: minmax(0, 1fr); }
   .series-result > * { grid-column: 1; grid-row: auto; }
-  .series-result-action .button-quiet { width: auto; }
+  .series-result-action .btn { width: auto; }
 }
 @media (max-width: 600px) {
   .series-result-action { justify-content: flex-start; }
-  .series-result-action .button-quiet { width: 100%; }
+  .series-result-action .btn { width: 100%; }
   .series-result-select { width: 100%; }
   .discovery-selection { padding: 8px 10px; }
   .selection-title { flex-basis: 100%; }
   .selection-remove { width: 100%; }
-  .selection-actions .button, .selection-actions .button-quiet { width: 100%; }
+  .selection-actions .btn { width: 100%; }
 }
 @media print {
   /* The one native form contains the printed results too: hide only its controls. */

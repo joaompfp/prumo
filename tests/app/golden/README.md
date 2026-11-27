@@ -20,6 +20,14 @@ precision changed. All previous bytes are retained under `pre_legibility/`; befo
 hashes and text-comparison results are in
 `docs/superpowers/handoff/reports/legibility-notebook/golden-deltas.json`.
 
+The 2026-11-27 Bootstrap toolkit pass is another explicitly reviewed presentation delta.
+It recaptured `home_code_list.html` with the real Bootstrap app shell and the compact 22px
+public scale. The test still compares only from `<main id="conteudo">` onward, so the
+content/footer contract remains exact for every visible byte and attribute; only trailing
+horizontal whitespace emitted by Jinja loops is normalized. The header delta is documented
+rather than silently absorbed. `charts/*.svg` were not touched: the chart engine, fonts,
+coordinates and fixed label geometry are unchanged.
+
 `home_before_editorial.html` remains unchanged as the older historical reference.
 Subsequent captures require another explicitly reviewed presentation delta. The historical
 pre-legibility capture procedure and rationale follow below.

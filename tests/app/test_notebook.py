@@ -86,7 +86,7 @@ def form_selection(form: str, *, checked=(), unchecked=()) -> list[str]:
     """The `s` values a native submission sends for the form's current checkbox state."""
     values = re.findall(r'<input type="hidden" name="s" value="([^"]+)">', form)
     for value, attrs in re.findall(
-            r'<input type="checkbox" name="s" value="([^"]+)"([^>]*)>', form):
+            r'<input [^>]*type="checkbox" name="s" value="([^"]+)"([^>]*)>', form):
         is_checked = " checked" in attrs
         if value in checked:
             is_checked = True
@@ -110,19 +110,19 @@ def native_search(form: str, query: str, *, checked=(), unchecked=()) -> list[tu
 
 
 def canonical_href(html: str) -> str:
-    match = re.search(r'<a class="button-quiet" id="ligacao-limpa" href="([^"]+)"', html)
+    match = re.search(r'<a class="btn btn-outline-secondary" id="ligacao-limpa" href="([^"]+)"', html)
     assert match is not None
     return unescape(match.group(1))
 
 
 def card_remove_href(html: str) -> str:
-    match = re.search(r'class="card-remove" href="([^"]+)"', html)
+    match = re.search(r'class="[^"]*card-remove[^"]*" href="([^"]+)"', html)
     assert match is not None
     return unescape(match.group(1))
 
 
 def clear_href(html: str) -> str | None:
-    match = re.search(r'<a class="button-link" href="([^"]+)">(?:(?!</a>).)*Limpar seleção</a>', html, re.S)
+    match = re.search(r'<a class="btn btn-link" href="([^"]+)">(?:(?!</a>).)*Limpar seleção</a>', html, re.S)
     return unescape(match.group(1)) if match else None
 
 
@@ -376,7 +376,7 @@ def test_quick_search_batch_never_duplicates_a_visible_member_and_keeps_it_check
     response = notebook_client.get(f"/caderno?s={HICP}&s={UNEMP}&q=desemprego")
     assert response.status_code == 200
     form = quick_search_form(response.text)
-    assert re.search(rf'<input type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
+    assert re.search(rf'<input [^>]*type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
     assert form.count(f'name="s" value="{UNEMP}"') == 1
     assert f'<input type="hidden" name="s" value="{HICP}">' in form
     assert 'class="notebook-result-row is-selected"' in form
@@ -399,7 +399,7 @@ def test_quick_search_native_search_keeps_results_ticked_but_not_yet_submitted(n
     assert "2 de 12 séries." in visible(followed.text)
     result_form = quick_search_form(followed.text)
     for series_id in (HICP, UNEMP):
-        assert re.search(rf'<input type="checkbox" name="s" value="{series_id}"[^>]*checked',
+        assert re.search(rf'<input [^>]*type="checkbox" name="s" value="{series_id}"[^>]*checked',
                          result_form)
 
 
@@ -407,7 +407,7 @@ def test_quick_search_native_search_drops_a_visible_member_unchecked_but_not_sub
         notebook_client):
     html = notebook_client.get(f"/caderno?s={HICP}&s={UNEMP}&q=taxa").text
     form = quick_search_form(html)
-    assert re.search(rf'<input type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
+    assert re.search(rf'<input [^>]*type="checkbox" name="s" value="{UNEMP}"[^>]*checked', form)
 
     searched = notebook_client.get("/pesquisa", params=native_search(
         form, "taxa", unchecked=(UNEMP,)), follow_redirects=False)
@@ -418,7 +418,7 @@ def test_quick_search_native_search_drops_a_visible_member_unchecked_but_not_sub
     assert "1 de 12 séries." in visible(followed.text)
     assert card_count(followed.text) == 1
     assert not re.search(
-        rf'<input type="checkbox" name="s" value="{UNEMP}"[^>]*checked',
+        rf'<input [^>]*type="checkbox" name="s" value="{UNEMP}"[^>]*checked',
         quick_search_form(followed.text))
 
 

@@ -3,16 +3,18 @@ and the same prefixing/no-external rules as the rest of the public site."""
 from app.main import SECURITY_HEADERS
 
 
-def test_public_css_draws_the_search_icon_locally(client):
+def test_public_html_draws_the_search_icon_locally(client):
     html = client.get("/", headers={"X-Forwarded-Prefix": "/dados"}).text
     assert 'href="/dados/static/css/prumo.css"' in html
+    assert 'href="/dados/static/vendor/bootstrap/bootstrap-subset.css"' in html
     assert 'href="/dados/static/images/prumo/favicon.svg"' in html
     assert "cdn." not in html and "googleapis" not in html
 
+    assert "Procurar" in html
+    assert '<svg class="ui-icon"' in html
     css = client.get("/static/css/app-shell.css").text
-    assert ".search button::before" in css and "data:image/svg+xml" in css
-    # The visible label stays in the markup; the glyph is additional.
-    assert "<button type=\"submit\">Procurar</button>" in html
+    assert "data:image/svg+xml" not in css
+    assert "url(http" not in css
 
 
 def test_icon_font_and_licence_are_served_locally(client):

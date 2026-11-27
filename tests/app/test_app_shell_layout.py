@@ -30,7 +30,7 @@ def test_mobile_utility_and_brand_do_not_cover_primary_targets(browser, site_url
         assert separate(utility, boxes['brand'])
         assert utility['height'] >= 44
         assert page.locator('.app-more > summary').evaluate(
-            '(e) => parseFloat(getComputedStyle(e).fontSize)') >= 26.64
+            '(e) => parseFloat(getComputedStyle(e).fontSize)') >= 18
         page.locator('.app-more > summary').click()
         assert page.locator('.app-more').get_attribute('open') is not None
         assert page.locator('.app-more .app-panel').is_visible()

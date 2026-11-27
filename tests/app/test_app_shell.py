@@ -1,4 +1,4 @@
-"""Focused contract checks for the shared public app shell and action roles."""
+"""Focused contract checks for the shared public app shell and Bootstrap action roles."""
 import re
 from pathlib import Path
 
@@ -7,6 +7,7 @@ from jinja2 import Environment, FileSystemLoader
 ROOT = Path(__file__).resolve().parents[2]
 TEMPLATES = ROOT / "app" / "templates"
 SHELL = ROOT / "static" / "css" / "app-shell.css"
+THEME = ROOT / "static" / "css" / "bootstrap-theme.css"
 PRUMO = ROOT / "static" / "css" / "prumo.css"
 HEADER = re.compile(r"<header class=\"site-header\">.*?</header>", re.S)
 
@@ -44,12 +45,12 @@ def test_ui_icon_macro_covers_every_shell_name_with_safe_inline_svg():
 
 def test_header_has_one_direct_primary_rail_with_visible_icons_and_labels(client):
     header = _header(client.get("/").text)
-    assert header.count('<nav class="site-nav" aria-label="Secções">') == 1
+    assert header.count('<nav class="site-nav nav" aria-label="Secções">') == 1
     assert '<details class="nav-menu">' not in header
     assert 'aria-label="Secções no telemóvel"' not in header
     assert [header.count(f">{label}</span>")
             for label in ("Catálogo", "Comparações", "Caderno")] == [1, 1, 1]
-    assert header.count('class="app-nav-link"') == 3
+    assert header.count('class="app-nav-link nav-link"') == 3
     for label in ("Catálogo", "Comparações", "Caderno"):
         start = header.index(f">{label}</span>")
         start = header.rfind("<a ", 0, start)
@@ -64,11 +65,11 @@ def test_header_current_state_comes_from_the_navigation_model(client):
     home = _header(client.get("/").text)
     assert 'href="/" class="brand" aria-current="page"' in home
     compare = _header(client.get("/comparar").text)
-    assert 'href="/comparar" class="app-nav-link" aria-current="page"' in compare
+    assert 'href="/comparar" class="app-nav-link nav-link" aria-current="page"' in compare
     nested = _header(client.get("/comparar/inflacao-e-desemprego").text)
-    assert 'href="/comparar" class="app-nav-link" aria-current="location"' in nested
+    assert 'href="/comparar" class="app-nav-link nav-link" aria-current="location"' in nested
     catalogue = _header(client.get("/pesquisa").text)
-    assert 'href="/pesquisa" class="app-nav-link" aria-current="page"' in catalogue
+    assert 'href="/pesquisa" class="app-nav-link nav-link" aria-current="page"' in catalogue
 
 
 def test_more_disclosure_groups_themes_and_support_with_one_current_marker(client):
@@ -93,68 +94,97 @@ def test_global_search_is_one_native_labeled_disclosure_and_stays_off_task_pages
     home = client.get("/").text
     assert '<details class="app-disclosure app-more">' in home
     assert '<p class="app-panel-title">Pesquisar séries</p>' in home
-    assert home.count('class="search"') == 1
+    assert home.count('class="search app-search"') == 1
     assert home.count('id="q"') == 1
     assert home.count('name="q"') == 1
     for path in ("/pesquisa", "/pesquisa/series/calculadas", "/caderno"):
         body = client.get(path).text
-        assert '<form class="search"' not in body, path
+        assert '<form class="search app-search"' not in body, path
         assert '<details class="app-disclosure app-search">' not in body, path
         assert 'id="q"' not in body, path
 
 
-def test_search_icon_is_local_and_the_visible_submit_label_remains(client):
-    css = client.get("/static/css/app-shell.css").text
-    assert ".search button::before" in css and "data:image/svg+xml" in css
-    assert "cdn." not in css and "googleapis" not in css
-    assert '<button type="submit">Procurar</button>' in client.get("/").text
+def test_search_uses_the_local_bootstrap_input_group_and_a_visible_submit_label(client):
+    header = _header(client.get("/").text)
+    assert 'class="input-group"' in header
+    assert 'class="form-control"' in header
+    assert 'class="btn btn-primary"' in header
+    assert "Procurar" in header
+    assert '<svg class="ui-icon"' in header
+    shell = client.get("/static/css/app-shell.css").text
+    assert "data:image/svg+xml" not in shell
+    assert "cdn." not in shell and "googleapis" not in shell
 
 
-def test_app_shell_stylesheet_is_served_and_ordered_after_prumo(client):
+def test_app_shell_stylesheets_are_served_and_ordered_after_the_vendor_subset(client):
     html = client.get("/").text
-    assert html.index("/static/css/prumo.css") < html.index("/static/css/app-shell.css")
+    assert html.index("/static/vendor/bootstrap/bootstrap-subset.css") < html.index(
+        "/static/css/prumo.css")
+    assert html.index("/static/css/prumo.css") < html.index(
+        "/static/css/bootstrap-theme.css")
+    assert html.index("/static/css/bootstrap-theme.css") < html.index(
+        "/static/css/app-shell.css")
     assert html.index("/static/css/app-shell.css") < html.index(
         "/static/css/chart-inspector.css")
     assert html.index("/static/css/app-shell.css") < html.index(
         "/static/css/discovery.css")
-    css = client.get("/static/css/app-shell.css")
-    assert css.status_code == 200
-    assert "@import" not in css.text
-    assert "url(http" not in css.text
+    for path in ("/static/vendor/bootstrap/bootstrap-subset.css",
+                 "/static/css/bootstrap-theme.css", "/static/css/app-shell.css"):
+        css = client.get(path)
+        assert css.status_code == 200, path
+        assert "@import" not in css.text, path
+        assert "url(http" not in css.text, path
     prefixed = client.get("/", headers={"X-Forwarded-Prefix": "/dados"}).text
-    assert "/dados/static/css/app-shell.css" in prefixed
+    assert "/dados/static/vendor/bootstrap/bootstrap-subset.css" in prefixed
+    assert "/dados/static/css/bootstrap-theme.css" in prefixed
 
 
-def test_prumo_no_longer_owns_the_shared_navigation_or_action_rules():
+def test_prumo_no_longer_owns_a_second_native_control_layer():
     prumo = PRUMO.read_text(encoding="utf-8")
     shell = SHELL.read_text(encoding="utf-8")
+    theme = THEME.read_text(encoding="utf-8")
     for stale in (".masthead", ".destination-rail", ".nav-menu", ".nav-disclosure",
                   ".site-nav > a", ".button, .button-quiet", ".search button::before",
-                  ".nav-compact-group"):
+                  ".nav-compact-group", ".search input {", ".search button {"):
         assert stale not in prumo, stale
-    assert ".app-nav-link" in shell
-    assert ".site-nav {" in shell and "display: flex;" in shell
-    assert ".app-disclosure > summary" in shell
-    assert ".button, .button-quiet, .button-danger" in shell
+    for stale in (".destination-rail", ".nav-menu", ".nav-disclosure",
+                  ".site-nav > a", ".button, .button-quiet", ".search button::before",
+                  ".nav-compact-group", ".search input {", ".search button {"):
+        assert stale not in shell, stale
+    assert ".site-nav .nav-link" in shell
+    assert ".site-nav .nav-link:focus-visible" in shell
+    assert "outline: 3px solid var(--accent);" in shell
+    assert ".app-disclosure-toggle" in shell
+    assert ".app-panel-link" in shell
+    assert ".btn {" in theme
+    assert ".btn-primary {" in theme
+    assert ".btn-outline-secondary {" in theme
+    assert ".btn-outline-danger {" in theme
+    assert ".btn-link {" in theme
+    assert ".form-control," in theme and ".form-select" in theme
+    assert ".form-check-input" in theme
+    assert ".input-group > .form-control" in theme
 
 
-def test_action_roles_are_distinct_and_keep_the_approved_control_size():
-    shell = SHELL.read_text(encoding="utf-8")
-    assert ".button { background: var(--accent); border-color: var(--accent); color: #fff; }" in shell
-    assert ".button-quiet { background: var(--surface); border-color: var(--rule-strong); color: var(--ink); }" in shell
-    assert ".button-danger { background: var(--surface); border-color: var(--accent); color: var(--accent); }" in shell
-    assert ".button-link {" in shell and "text-decoration: underline;" in shell
-    assert "min-height: 54px;" in shell
-    assert "padding: 13px 22px;" in shell
-    assert "font-size: 0.9rem;" in shell
-    assert ".button-danger:hover { background: var(--accent);" in shell
+def test_action_roles_are_bootstrap_variants_with_the_compact_control_size():
+    theme = THEME.read_text(encoding="utf-8")
+    assert "--bs-btn-font-size: 0.85rem;" in theme
+    assert "min-height: 44px;" in theme
+    assert "--bs-btn-padding-y: 8px;" in theme
+    assert "--bs-btn-padding-x: 14px;" in theme
+    assert "--bs-btn-bg: var(--accent);" in theme
+    assert "--bs-btn-border-color: var(--accent);" in theme
+    assert "--bs-btn-hover-bg: var(--accent-hover);" in theme
+    assert "--bs-btn-color: var(--ink);" in theme
+    assert "--bs-btn-border-color: var(--rule-strong);" in theme
+    assert "--bs-btn-color: var(--accent);" in theme
 
 
-def test_narrow_primary_nav_is_a_three_cell_grid_with_the_reading_scale():
+def test_narrow_primary_nav_is_a_three_cell_grid_with_the_compact_scale():
     shell = SHELL.read_text(encoding="utf-8")
     assert "grid-template-columns: repeat(3, minmax(0, 1fr));" in shell
-    assert "font-size: 0.95rem;" in shell
-    assert ".app-nav-link .ui-icon { width: 20px; height: 20px; }" in shell
+    assert "font-size: 0.9rem;" in shell
+    assert ".site-nav .nav-link .ui-icon { width: 18px; height: 18px; }" in shell
     assert ".app-nav-label-wide { display: none; }" in shell
     assert ".site-nav { display: none; }" not in shell
     assert ".app-nav-label { display: none; }" not in shell

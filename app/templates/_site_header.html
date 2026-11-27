@@ -6,9 +6,9 @@
       <span class="brand-name">Prumo</span>
     </a>
 
-    <nav class="site-nav" aria-label="Secções">
+    <nav class="site-nav nav" aria-label="Secções">
       {% for link in header_nav.primary %}
-      <a href="{{ link.href }}" class="app-nav-link"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>
+      <a href="{{ link.href }}" class="app-nav-link nav-link"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>
         {{ icon(link.icon) }}
         {% if link.compact_label and link.compact_label != link.label %}
         <span class="app-nav-label app-nav-label-wide">{{ link.label }}</span>
@@ -22,7 +22,7 @@
 
     <div class="app-utilities">
       <details class="app-disclosure app-more"{% if header_nav.more.state %} data-state="{{ header_nav.more.state }}"{% endif %}>
-        <summary>
+        <summary class="btn btn-outline-secondary app-disclosure-toggle">
           <span class="app-disclosure-label">Mais</span>
           {% if header_nav.more.current_label %}<span class="sr-only">: {{ header_nav.more.current_label }}</span>{% endif %}
           <span class="app-disclosure-marker">{{ icon("chevron") }}</span>
@@ -31,10 +31,12 @@
           {% if header_nav.show_search|default(true) %}
           <div class="app-panel-group">
             <p class="app-panel-title">Pesquisar séries</p>
-            <form class="search" action="{{ header_nav.search_href }}" method="get" role="search">
+            <form class="search app-search" action="{{ header_nav.search_href }}" method="get" role="search">
               <label class="sr-only" for="q">Pesquisar séries</label>
-              <input id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
-              <button type="submit">Procurar</button>
+              <div class="input-group">
+                <input class="form-control" id="q" name="q" type="search" placeholder="Pesquisar séries" value="{{ query|default('') }}">
+                <button class="btn btn-primary" type="submit">{{ icon("search") }}Procurar</button>
+              </div>
             </form>
           </div>
           {% endif %}
@@ -43,7 +45,7 @@
             <p class="app-panel-title">Temas</p>
             <ul class="app-panel-list">
               {% for link in header_nav.themes.links %}
-              <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
+              <li><a class="nav-link app-panel-link" href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
               {% endfor %}
             </ul>
           </div>
@@ -51,7 +53,7 @@
             <p class="app-panel-title">Sobre</p>
             <ul class="app-panel-list">
               {% for link in header_nav.support.links %}
-              <li><a href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
+              <li><a class="nav-link app-panel-link" href="{{ link.href }}"{% if link.current %} aria-current="{{ link.current }}"{% endif %}>{{ link.label }}</a></li>
               {% endfor %}
             </ul>
           </div>

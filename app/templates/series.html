@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% from "_chart.html" import chart_shell, chart_meta %}
 {% from "_original_value.html" import original_value %}
+{% from "_ui.html" import btn_class %}
 {% block title %}{{ page.series.title }} - Prumo{% endblock %}
 {% block main_class %} notebook-main{% endblock %}
 {% block content %}
@@ -19,7 +20,7 @@
 <section class="chart-section notebook-chart" aria-labelledby="grafico">
   <div class="notebook-chart-head">
     <h2 id="grafico">Série</h2>
-    <div class="notebook-chart-links"><a class="button-quiet" href="#opcoes-serie">Intervalo e ações</a></div>
+    <div class="notebook-chart-links"><a class="{{ btn_class('outline-secondary') }}" href="#opcoes-serie">Intervalo e ações</a></div>
   </div>
   <figure class="chart-figure chart-figure-interactive">
     {% macro source_metadata() %}
@@ -32,21 +33,21 @@
     <div class="analytical-options-body" id="opcoes-serie">
     {% if not page.is_15m %}
     <nav class="windows" aria-label="Janela temporal">
-      {% for code, label in page.windows %}<a href="{{ base }}/series/{{ page.series.id }}?janela={{ code }}"{% if code == page.window %} aria-current="true"{% endif %}>{{ label }}</a>{% endfor %}
+      {% for code, label in page.windows %}<a class="{{ btn_class('outline-secondary') }}" href="{{ base }}/series/{{ page.series.id }}?janela={{ code }}"{% if code == page.window %} aria-current="true"{% endif %}>{{ label }}</a>{% endfor %}
     </nav>
     {% endif %}
     <div class="notebook-chart-links">
-      <a class="button-quiet" href="{{ base }}{{ notebook_path([page.series.id]) }}">{{ notebook_copy.series_action }}</a>
-      <a class="button-quiet" href="{{ base }}/series/{{ page.series.id }}.csv">Descarregar CSV</a>
+      <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}{{ notebook_path([page.series.id]) }}">{{ notebook_copy.series_action }}</a>
+      <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}/series/{{ page.series.id }}.csv">Descarregar CSV</a>
     </div>
   {% if page.is_15m %}
   <form class="chart-day-form" action="{{ base }}/series/{{ page.series.id }}" method="get">
     <label>Dia (UTC)
-      <select name="dia">
+      <select class="form-select" name="dia">
         {% for d in page.days %}<option value="{{ d }}"{% if d == page.day %} selected{% endif %}>{{ format_date(d) }}</option>{% endfor %}
       </select>
     </label>
-    <button type="submit">Ver</button>
+    <button class="{{ btn_class('primary') }}" type="submit">Ver</button>
   </form>
   {% endif %}
     </div>

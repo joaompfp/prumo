@@ -675,7 +675,7 @@ def test_controls_links_and_actions_preserve_frequency_transform_and_base(tmp_pa
     assert "Acrescentar selecionadas" in visible(batch)
 
     clear_match = re.search(
-        r'<a class="button-link" href="([^"]+)">(?:(?!</a>).)*Limpar seleção</a>', html, re.S)
+        r'<a class="btn btn-link" href="([^"]+)">(?:(?!</a>).)*Limpar seleção</a>', html, re.S)
     assert clear_match is not None
     clear = unescape(clear_match.group(1))
     assert clear.startswith("/caderno?")
@@ -917,9 +917,9 @@ def test_base_control_matches_enlarged_controls_at_mobile_widths(tmp_path):
             page.set_viewport_size({"width": width, "height": 900})
             boxes = page.evaluate(probe)
             for control in (boxes["base"], boxes["select"]):
-                assert control["font"] >= 25.2
-                assert control["minHeight"] >= 52
-                assert control["height"] >= 52
+                assert control["font"] >= 18
+                assert control["minHeight"] >= 44
+                assert control["height"] >= 44
             assert boxes["base"]["left"] >= 0
             assert boxes["base"]["right"] <= boxes["innerWidth"] + 0.5
             assert boxes["scrollWidth"] <= boxes["innerWidth"] + 1

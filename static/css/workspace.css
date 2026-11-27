@@ -8,7 +8,7 @@
 .notebook-main { padding-inline: clamp(18px, 2.4vw, 48px); }
 .notebook-main .crumbs { padding-top: 6px; }
 .notebook-main .page-head { padding: 16px 0; max-width: none; }
-.notebook-main .page-head h1 { font-family: var(--sans); font-size: clamp(1.45rem, 4.2vw, 1.85rem); line-height: 1.15; letter-spacing: -.025em; }
+.notebook-main .page-head h1 { font-family: var(--sans); font-size: clamp(1.35rem, 3.6vw, 1.65rem); line-height: 1.15; letter-spacing: -.02em; }
 .notebook-main .page-head .meta { margin: 4px 0 0; }
 .notebook-head-row {
   display: flex; align-items: baseline; justify-content: space-between;
@@ -24,29 +24,29 @@
   display: flex; align-items: center; justify-content: space-between;
   gap: 10px 20px; flex-wrap: wrap; margin: 0 0 8px;
 }
-.notebook-chart-head h2 { font-family: var(--sans); font-size: clamp(1.05rem, 2.2vw, 1.3rem); line-height: 1.2; }
-.notebook-chart-links { display: flex; flex-wrap: wrap; gap: 8px 12px; }
-.notebook-chart-links .button, .notebook-chart-links .button-quiet { min-height: 52px; padding: 8px 12px; font-size: .85rem; }
+.notebook-chart-head h2 { font-family: var(--sans); font-size: clamp(1rem, 1.9vw, 1.15rem); line-height: 1.2; }
+.notebook-chart-links { display: flex; flex-wrap: wrap; gap: 6px 10px; }
+.notebook-chart-links .btn { min-height: 44px; padding: 7px 10px; font-size: .85rem; }
 .notebook-chart-state {
-  margin: 0 0 8px; color: var(--accent); font-weight: 600; font-size: .88rem;
+  margin: 0 0 6px; color: var(--accent); font-weight: 600; font-size: .8rem;
 }
 .notebook-chart-form { margin: 0; }
 .notebook-chart .chart-figure { margin: 0 0 8px; }
 .notebook-chart .chart-figure figcaption {
-  max-width: none; margin: 0 0 8px; color: var(--muted);
-  font-size: .8rem; line-height: 1.3;
+  max-width: none; margin: 0 0 6px; color: var(--muted);
+  font-size: .75rem; line-height: 1.3;
 }
-.notebook-chart-period { margin: 0 0 4px; color: var(--ink); font-size: .85rem; line-height: 1.3; }
+.notebook-chart-period { margin: 0 0 4px; color: var(--ink); font-size: .8rem; line-height: 1.3; }
 .notebook-chart-period-label {
   color: var(--accent); font-weight: 600; letter-spacing: 0; margin: 0 4px 0 0;
 }
-.notebook-chart-period .note { font-size: .8rem; }
+.notebook-chart-period .note { font-size: .75rem; }
 .notebook-chart-sources {
-  list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: 2px 26px; margin: 0; padding: 0;
+  list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 2px 20px; margin: 0; padding: 0;
 }
 .notebook-chart-sources li { display: grid; gap: 0; min-width: 0; }
-.notebook-chart-sources strong, .notebook-chart-sources span { line-height: 1.3; }
+.notebook-chart-sources strong, .notebook-chart-sources span { line-height: 1.3; font-size: .78rem; }
 .notebook-chart-sources strong { color: var(--ink); }
 .notebook-chart-sources .legend-swatch { vertical-align: middle; margin-right: 8px; }
 .notebook-chart-alignment { margin: 10px 0 0; max-width: 78ch; }
@@ -63,29 +63,29 @@
   margin: 28px 0 0; border-top: 1px solid var(--rule); padding-top: 10px;
 }
 .notebook-help > summary {
-  cursor: pointer; color: var(--accent); font-size: .88rem; font-weight: 600;
-  padding: 8px 0;
+  cursor: pointer; color: var(--accent); font-size: .85rem; font-weight: 600;
+  padding: 6px 0;
 }
 .notebook-help-body { max-width: 68ch; }
-.notebook-help-body p { font-size: .9rem; }
+.notebook-help-body p { font-size: .85rem; }
 .notebook-toolbar {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
-  margin: 10px 0 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+  margin: 8px 0 0;
 }
-.notebook-toolbar .button-quiet { min-height: 48px; padding: 10px 16px; font-size: .85rem; }
+.notebook-toolbar .btn { min-height: 44px; padding: 8px 12px; font-size: .85rem; }
 .notebook-caveat {
-  margin: 14px 0 0; padding: 10px 14px; border-left: 4px solid #d9b45a;
-  background: #fbf6e8; color: #5a4a00; max-width: 78ch;
+  margin: 12px 0 0; padding: 8px 12px; border-left: 4px solid #d9b45a;
+  background: #fbf6e8; color: #5a4a00; max-width: 78ch; font-size: .85rem;
 }
-.notebook-chart { margin: 4px 0 20px; padding: 20px; background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 12px; }
-.notebook-chart .figure-block { grid-template-columns: 1fr; gap: 20px; }
+.notebook-chart { margin: 4px 0 16px; padding: 16px; background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 8px; }
+.notebook-chart .figure-block { grid-template-columns: 1fr; gap: 16px; }
 .notebook-chart .figure-meta {
-  border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 18px;
+  border-left: 0; border-top: 1px solid var(--rule); padding-left: 0; padding-top: 14px;
 }
 .notebook-chart .chart-shell, .notebook-chart .chart-figure { width: 100%; }
 .notebook-chart .legend {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: 12px 26px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 8px 20px;
 }
 .notebook-chart .legend li {
   display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 4px 10px;
@@ -93,7 +93,7 @@
 .notebook-chart .legend-value { grid-column: 2; }
 .notebook-definitions, .notebook-chart .provenance-details { margin-top: 12px; }
 .notebook-definitions > summary, .notebook-chart .provenance-details > summary {
-  cursor: pointer; color: var(--accent); font-size: .88rem; padding: 8px 0;
+  cursor: pointer; color: var(--accent); font-size: .85rem; padding: 6px 0;
 }
 .notebook-table-scroll { overflow-x: auto; max-width: 100%; }
 .notebook-table-scroll .data-table {
@@ -101,89 +101,80 @@
 }
 .notebook-table-scroll th { max-width: 18rem; }
 .notebook-chart-settings {
-  margin: 20px 0 0; background: var(--paper); border: 1px solid var(--rule-strong);
-  border-radius: 9px;
+  margin: 16px 0 0; background: var(--paper); border: 1px solid var(--rule-strong);
+  border-radius: 8px;
 }
 /* Settings are grouped controls, separate from chart reading and source evidence. */
 .notebook-chart-settings > summary {
-  display: flex; align-items: center; gap: 10px;
-  min-height: 56px; padding: 12px 16px; cursor: pointer; font-weight: 600;
-  list-style: none; font-size: 1rem;
+  display: flex; align-items: center; gap: 8px;
+  min-height: 48px; padding: 10px 12px; cursor: pointer; font-weight: 600;
+  list-style: none; font-size: 0.95rem;
 }
 .notebook-chart-settings > summary span { flex: 1; min-width: 0; }
 .notebook-chart-settings > summary::-webkit-details-marker { display: none; }
 .notebook-chart-settings > summary > .ui-icon:last-child { transition: transform var(--motion) ease; }
 .notebook-chart-settings[open] > summary { border-bottom: 1px solid var(--rule-strong); }
 .notebook-chart-settings[open] > summary > .ui-icon:last-child { transform: rotate(180deg); }
-.notebook-chart-options { display: grid; gap: 20px; padding: 20px 16px; }
+.notebook-chart-options { display: grid; gap: 16px; padding: 14px 12px; }
 .notebook-chart-options .settings-group {
   border: 1px solid var(--rule); border-radius: 8px; margin: 0;
-  padding: 12px 16px 16px; min-width: 0; background: var(--surface);
+  padding: 10px 12px 12px; min-width: 0; background: var(--surface);
 }
-.notebook-chart-options legend { font-weight: 700; padding-inline: 6px; font-size: 1rem; }
-.notebook-chart-options .note { margin: 12px 0 0; }
-.settings-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
-.notebook-count { padding: 6px 12px; border: 1px solid var(--rule); border-radius: 7px; background: var(--surface); }
+.notebook-chart-options legend { font-weight: 700; padding-inline: 6px; font-size: 0.9rem; }
+.notebook-chart-options .note { margin: 8px 0 0; }
+.settings-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.notebook-count { padding: 4px 10px; border: 1px solid var(--rule); border-radius: 7px; background: var(--surface); }
 .notebook-count strong { color: var(--accent); font-variant-numeric: tabular-nums; }
 .notebook-chart-pair {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 .notebook-chart-pair label {
-  display: flex; flex-direction: column; gap: 6px; min-width: 0; font-weight: 600;
+  display: flex; flex-direction: column; gap: 4px; min-width: 0; font-weight: 600;
+  font-size: .85rem;
 }
 .notebook-chart-options .settings-group > label {
-  display: flex; flex-direction: column; gap: 6px; font-weight: 600;
+  display: flex; flex-direction: column; gap: 4px; font-weight: 600;
+  font-size: .85rem;
 }
-.notebook-chart-options select, .notebook-chart-options input[type="date"],
-.notebook-chart-options input[name="base"] {
-  width: 100%; max-width: 100%;
-  font: inherit; font-size: .9rem; color: var(--ink); background: var(--surface);
-  border: 1px solid var(--rule-strong); border-radius: 6px;
-  padding: 10px 12px; min-height: 52px; min-width: 0;
+.notebook-chart-options .form-select, .notebook-chart-options .form-control {
+  width: 100%; max-width: 100%; min-width: 0;
 }
-.notebook-chart-options button {
-  justify-self: start; min-height: 52px; padding: 10px 20px;
-  border: 1px solid var(--accent); border-radius: 7px;
-  background: var(--accent); color: #fff; font: inherit; font-size: .85rem;
-  font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-}
-.notebook-chart-options button:hover {
-  background: var(--accent-hover); border-color: var(--accent-hover);
+.notebook-chart-options .btn {
+  justify-self: start; min-height: 44px; padding: 8px 14px;
 }
 .notebook-chart-choices { display: grid; gap: 8px; margin: 8px 0 0; padding: 0; }
 .notebook-chart-choices label {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 12px; border: 1px solid var(--rule); border-radius: 7px; cursor: pointer; background: var(--surface);
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 10px; border: 1px solid var(--rule); border-radius: 7px; cursor: pointer; background: var(--surface);
+  font-size: .9rem;
 }
 .notebook-chart-choices label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
 .notebook-chart-choices label > span { min-width: 0; overflow-wrap: anywhere; }
-.notebook-chart-choices input[type="checkbox"] {
-  width: 22px; height: 22px; margin: 4px 0 0; flex: none; accent-color: var(--accent);
-}
+.notebook-chart-choices .form-check-input { margin: 3px 0 0; }
 .notebook-chart .chart-series-meta {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
-  gap: 18px; margin-top: 18px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 14px; margin-top: 14px;
 }
 .notebook-chart .chart-series-meta-side {
-  background: var(--surface); border: 1px solid var(--rule); border-radius: 9px;
-  padding: 20px 22px; min-width: 0;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
+  padding: 16px; min-width: 0;
 }
-.notebook-chart .chart-series-meta-side h3 { font-size: 1rem; margin-bottom: 10px; }
+.notebook-chart .chart-series-meta-side h3 { font-size: 0.95rem; margin-bottom: 8px; }
 .notebook-chart .chart-series-meta-side dl {
-  display: grid; grid-template-columns: minmax(7rem, max-content) minmax(0, 1fr);
-  gap: 6px 14px; margin: 0; font-size: .85rem;
+  display: grid; grid-template-columns: minmax(6rem, max-content) minmax(0, 1fr);
+  gap: 4px 12px; margin: 0; font-size: 0.8rem;
 }
 .notebook-chart .chart-series-meta-side dt { color: var(--muted); font-weight: 600; }
 .notebook-chart .chart-series-meta-side dd { margin: 0; overflow-wrap: anywhere; }
 .notebook-results { width: 100%; overflow-x: auto; }
 .notebook-results .data-table { min-width: 100%; }
 .notebook-results th, .notebook-results td {
-  padding: 12px 10px; border-bottom: 1px solid var(--rule);
+  padding: 8px 8px; border-bottom: 1px solid var(--rule);
   text-align: left; vertical-align: top;
 }
-.notebook-results th { font-size: .74rem; font-weight: 700; color: var(--muted); }
+.notebook-results th { font-size: .75rem; font-weight: 700; color: var(--muted); }
 
 @media (max-width: 1280px) {
   /* Large reading type needs labelled result records through tablet/laptop widths. */
@@ -225,7 +216,7 @@
   .notebook-chart-options { padding: 16px 10px; }
   .notebook-chart-options .settings-group { padding-inline: 12px; }
   .settings-actions { align-items: stretch; flex-direction: column; }
-  .settings-actions button { width: 100%; }
+  .settings-actions .btn { width: 100%; }
   .notebook-main .notebook-head-row .meta { margin-top: 4px; }
   .notebook-chart-caption { font-size: .8rem; }
   .notebook-chart-period { font-size: .85rem; }
@@ -294,23 +285,23 @@
 .notebook-workspace details.provenance-details > summary,
 .notebook-workspace details.authored-reading > summary,
 .notebook-workspace details.analytical-options > summary {
-  min-height: 52px; padding: 12px; color: var(--ink); font-weight: 600;
+  min-height: 44px; padding: 10px; color: var(--ink); font-weight: 600;
 }
 .notebook-workspace details[open].table-details > summary,
 .notebook-workspace details[open].notebook-definitions > summary,
 .notebook-workspace details[open].provenance-details > summary,
 .notebook-workspace details[open].authored-reading > summary,
 .notebook-workspace details[open].analytical-options > summary { border-bottom: 1px solid var(--rule); }
-.notebook-workspace .analytical-options-body, .notebook-workspace .authored-note, .notebook-method-body { padding: 12px; }
-.notebook-workspace .card { padding: 20px; border-radius: 8px; }
+.notebook-workspace .analytical-options-body, .notebook-workspace .authored-note, .notebook-method-body { padding: 10px; }
+.notebook-workspace .card { padding: 16px; border-radius: 8px; }
 .notebook-workspace .notebook-selection .card-label { font-family: var(--sans); line-height: 1.35; }
-.directory-main .page-head { padding: 24px 0 16px; }
-.directory-main .page-head h1 { font-family: var(--sans); font-size: clamp(1.45rem, 4.2vw, 1.85rem); }
-.directory-main .page-head .lede { font-size: 1rem; margin: 12px 0 0; }
-.directory-main section { margin: 28px 0; }
-.directory-main .section-head h2 { font-family: var(--sans); font-size: 1.2rem; }
-.directory-main .compare-list { display: grid; gap: 12px; }
-.directory-main .compare-item { padding: 20px; background: var(--surface); border: 1px solid var(--rule); border-radius: 9px; }
+.directory-main .page-head { padding: 20px 0 12px; }
+.directory-main .page-head h1 { font-family: var(--sans); font-size: clamp(1.35rem, 3.6vw, 1.65rem); }
+.directory-main .page-head .lede { font-size: 0.95rem; margin: 10px 0 0; }
+.directory-main section { margin: 24px 0; }
+.directory-main .section-head h2 { font-family: var(--sans); font-size: 1.1rem; }
+.directory-main .compare-list { display: grid; gap: 10px; }
+.directory-main .compare-item { padding: 16px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; }
 .directory-main .compare-link { font-family: var(--sans); font-size: 1rem; line-height: 1.3; }
 @media (max-width: 760px) {
   .notebook-workspace .notebook-search, .notebook-workspace .notebook-selection { padding: 16px 12px; }
@@ -324,11 +315,11 @@
 }
 
 /* The entry is still the operator's CMS page, rendered as a data application. */
-.cms-home-main .hero { padding: 28px 0 24px; margin: 0; }
-.cms-home-main .hero h1 { font-family: var(--sans); font-size: clamp(1.6rem, 5vw, 2.1rem); line-height: 1.15; max-width: 30ch; text-wrap: initial; }
-.cms-home-main .hero .eyebrow { margin-bottom: 12px; }
-.cms-home-main .hero-actions { margin: 20px 0 16px; }
-.cms-home-main > .section-head { margin-block: 20px 16px; }
+.cms-home-main .hero { padding: 20px 0 16px; margin: 0; }
+.cms-home-main .hero h1 { font-family: var(--sans); font-size: clamp(1.45rem, 4.2vw, 1.85rem); line-height: 1.15; max-width: 30ch; text-wrap: initial; }
+.cms-home-main .hero .eyebrow { margin-bottom: 8px; }
+.cms-home-main .hero-actions { margin: 16px 0 12px; }
+.cms-home-main > .section-head { margin-block: 16px 12px; }
 .cms-home-main .section-head h2 { font-family: var(--sans); }
 .cms-home-main .card-label { font-family: var(--sans); }
 @media (max-width: 600px) {

@@ -5,6 +5,7 @@
    by the environment's autoescape. A chart block renders its static SVG; the page-level
    template decides whether the published eligible payload may load the local chart script. #}
 {% from "_chart.html" import chart_shell, chart_meta %}
+{% from "_ui.html" import btn_class %}
 {% macro block_provenance(chart) %}
 <ul class="chart-source-list">
   {% for line in chart.provenance %}<li>{{ line.title }}. Fonte: {{ line.source_title }}. Último período desenhado: {{ line.period_text }}.</li>{% endfor %}
@@ -33,7 +34,7 @@
   {% endif %}
   {% if block.actions %}
   <p class="hero-actions">
-    {% for action in block.actions %}<a class="{{ 'button' if loop.first else 'button-quiet' }}" href="{{ base }}{{ action.href }}">{{ action.label }}</a>{% if not loop.last %} {% endif %}{% endfor %}
+    {% for action in block.actions %}<a class="{{ btn_class('primary' if loop.first else 'outline-secondary') }}" href="{{ base }}{{ action.href }}">{{ action.label }}</a>{% if not loop.last %} {% endif %}{% endfor %}
   </p>
   {% endif %}
   {% if block.freshness_text %}<p class="freshness"><span class="dot" aria-hidden="true"></span>{{ block.freshness_text }}</p>{% endif %}

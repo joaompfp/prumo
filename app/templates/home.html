@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% from "_ui.html" import btn_class %}
 {% block title %}Prumo - estatísticas oficiais com proveniência{% endblock %}
 {% block content %}
 <section class="hero">
   <p class="eyebrow">Dados oficiais · proveniência verificada</p>
   <h1>Estatísticas oficiais, com a proveniência à vista.</h1>
   <p class="lede">{{ format_count(page.series_count) }} séries de {{ page.source_count }} instituições. Cada valor liga à publicação original, à data em que foi recolhido e à verificação independente que o acompanhou.</p>
-  <p class="hero-actions"><a class="button" href="{{ base }}/temas/economy">Explorar os dados</a> <a class="button-quiet" href="{{ base }}/metodologia">Como verificamos</a></p>
+  <p class="hero-actions"><a class="{{ btn_class('primary') }}" href="{{ base }}/temas/economy">Explorar os dados</a> <a class="{{ btn_class('outline-secondary') }}" href="{{ base }}/metodologia">Como verificamos</a></p>
   <p class="freshness"><span class="dot" aria-hidden="true"></span>Última recolha verificada: {{ page.last_update_text }}</p>
 </section>
 

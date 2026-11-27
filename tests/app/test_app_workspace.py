@@ -32,9 +32,9 @@ def test_notebook_primary_add_and_secondary_settings_are_distinct(client):
     root = dom(html)
     toolbar = one(root, 'div', 'notebook-chart-links')
     links = toolbar.find_all('a')
-    assert 'button' in links[0].classes()
+    assert 'btn' in links[0].classes() and 'btn-primary' in links[0].classes()
     assert links[0].all_text().strip() == 'Acrescentar'
-    assert 'button-quiet' in links[1].classes()
+    assert 'btn' in links[1].classes() and 'btn-outline-secondary' in links[1].classes()
     assert links[1].attrs['href'] == '#definicoes'
     assert links[1].all_text().strip() == 'Configurar'
     assert all(link.find_all('svg') for link in links)
@@ -55,7 +55,7 @@ def test_workspace_styles_are_local_prefix_safe_and_readable_in_preview(client):
     css = response.text
     assert '.notebook-main .page-head h1 { font-family: var(--sans)' in css
     assert '.notebook-chart-options .settings-group' in css
-    assert 'font-size: .9rem' in css
+    assert '.notebook-chart-options .form-select' in css
     assert 'position: fixed' not in css
     assert '.notebook-main { overflow: hidden' not in css
     assert '.notebook-chart { overflow: hidden' not in css

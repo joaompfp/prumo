@@ -1,0 +1,207 @@
+/* Prumo's theme for the pinned Bootstrap component subset.
+ *
+ * Loaded after the vendor stylesheet and after Prumo's design tokens, before the
+ * surface-specific layout files. It is the single owner of public button, form,
+ * check and pagination appearance. Surface files may compose or resize a component
+ * for their context, but they do not redraw a second native control layer.
+ */
+
+:root {
+  --bs-body-font-family: var(--sans);
+  --bs-body-font-size: 1rem;
+  --bs-body-color: var(--ink);
+  --bs-body-bg: var(--paper);
+  --bs-border-color: var(--rule-strong);
+  --bs-border-radius: 7px;
+  --bs-primary: #9b1c2e;
+  --bs-primary-rgb: 155, 28, 46;
+  --bs-danger: #9b1c2e;
+  --bs-danger-rgb: 155, 28, 46;
+  --bs-link-color: var(--accent);
+  --bs-link-hover-color: var(--ink);
+  --bs-focus-ring-color: rgba(155, 28, 46, 0.25);
+}
+
+/* Buttons ----------------------------------------------------------------- */
+.btn {
+  --bs-btn-font-size: 0.85rem;
+  --bs-btn-font-weight: 600;
+  --bs-btn-line-height: 1.2;
+  --bs-btn-border-radius: 7px;
+  --bs-btn-padding-y: 8px;
+  --bs-btn-padding-x: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--motion) ease, border-color var(--motion) ease,
+              color var(--motion) ease, transform 80ms ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--accent-hover);
+  --bs-btn-hover-border-color: var(--accent-hover);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--accent-hover);
+  --bs-btn-active-border-color: var(--accent-hover);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--accent);
+  --bs-btn-disabled-border-color: var(--accent);
+  --bs-btn-focus-shadow-rgb: 155, 28, 46;
+}
+.btn-outline-secondary {
+  --bs-btn-color: var(--ink);
+  --bs-btn-border-color: var(--rule-strong);
+  --bs-btn-hover-color: var(--ink);
+  --bs-btn-hover-bg: var(--surface);
+  --bs-btn-hover-border-color: var(--ink);
+  --bs-btn-active-color: var(--ink);
+  --bs-btn-active-bg: var(--surface);
+  --bs-btn-active-border-color: var(--ink);
+  --bs-btn-disabled-color: var(--muted);
+  --bs-btn-disabled-border-color: var(--rule);
+  --bs-btn-focus-shadow-rgb: 26, 26, 26;
+}
+.btn-outline-danger {
+  --bs-btn-color: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--accent);
+  --bs-btn-hover-border-color: var(--accent);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--accent-hover);
+  --bs-btn-active-border-color: var(--accent-hover);
+  --bs-btn-disabled-color: var(--accent);
+  --bs-btn-disabled-border-color: var(--accent);
+  --bs-btn-focus-shadow-rgb: 155, 28, 46;
+}
+.btn-link {
+  --bs-btn-color: var(--accent);
+  --bs-btn-hover-color: var(--ink);
+  --bs-btn-active-color: var(--ink);
+  --bs-btn-disabled-color: var(--muted);
+  --bs-btn-font-size: 0.8rem;
+  --bs-btn-padding-y: 4px;
+  --bs-btn-padding-x: 2px;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.btn-link:hover { text-decoration: underline; }
+.btn:focus-visible,
+.btn-link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* Forms ------------------------------------------------------------------- */
+.form-label {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.form-text { font-size: 0.75rem; color: var(--muted); }
+.form-control,
+.form-select {
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  background-color: var(--surface);
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+.form-select {
+  padding-right: 2.5rem;
+  background-color: var(--surface);
+}
+.form-control::placeholder { color: var(--muted); opacity: 0.82; }
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--accent);
+  background-color: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(155, 28, 46, 0.16);
+}
+.form-control:focus-visible,
+.form-select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+}
+.form-control:disabled,
+.form-select:disabled {
+  background-color: var(--paper);
+  color: var(--muted);
+}
+.form-check-input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: 4px;
+  background-color: var(--surface);
+  accent-color: var(--accent);
+  flex: none;
+}
+.form-check-input:checked {
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+.form-check-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(155, 28, 46, 0.16);
+}
+.form-check-input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.form-check-label { font-size: 1rem; }
+
+.input-group > .form-control,
+.input-group > .form-select {
+  min-height: 44px;
+}
+
+/* Pagination -------------------------------------------------------------- */
+.pagination {
+  --bs-pagination-font-size: 0.8rem;
+  --bs-pagination-padding-y: 6px;
+  --bs-pagination-padding-x: 10px;
+  --bs-pagination-border-radius: 7px;
+  --bs-pagination-color: var(--accent);
+  --bs-pagination-bg: var(--surface);
+  --bs-pagination-border-color: var(--rule-strong);
+  --bs-pagination-hover-color: var(--accent-hover);
+  --bs-pagination-hover-bg: var(--accent-soft);
+  --bs-pagination-hover-border-color: var(--accent);
+  --bs-pagination-focus-color: var(--ink);
+  --bs-pagination-focus-bg: var(--accent-soft);
+  --bs-pagination-focus-box-shadow: 0 0 0 3px rgba(155, 28, 46, 0.16);
+  --bs-pagination-active-color: #fff;
+  --bs-pagination-active-bg: var(--accent);
+  --bs-pagination-active-border-color: var(--accent);
+  --bs-pagination-disabled-color: var(--muted);
+  --bs-pagination-disabled-bg: var(--surface);
+  --bs-pagination-disabled-border-color: var(--rule);
+  gap: 6px;
+  margin: 0;
+}
+.page-link { text-decoration: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .form-control, .form-select {
+    transition: none !important;
+  }
+  .btn:active { transform: none; }
+}
