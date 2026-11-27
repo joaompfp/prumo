@@ -1,0 +1,152 @@
+{
+  "completed": true,
+  "passed": true,
+  "required_uptime_seconds": 900,
+  "samples": [
+    {
+      "at": "2026-11-27T00:06:27.095044+00:00",
+      "reader_minimum_uptime_seconds": 72.428809,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:06:57.125589+00:00",
+      "reader_minimum_uptime_seconds": 102.459354,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:07:27.160910+00:00",
+      "reader_minimum_uptime_seconds": 132.494675,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:07:57.194737+00:00",
+      "reader_minimum_uptime_seconds": 162.528502,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:08:27.229304+00:00",
+      "reader_minimum_uptime_seconds": 192.563069,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:08:57.253959+00:00",
+      "reader_minimum_uptime_seconds": 222.587724,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:09:27.290555+00:00",
+      "reader_minimum_uptime_seconds": 252.62432,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:09:57.308888+00:00",
+      "reader_minimum_uptime_seconds": 282.642653,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:10:27.344120+00:00",
+      "reader_minimum_uptime_seconds": 312.677885,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:10:57.380776+00:00",
+      "reader_minimum_uptime_seconds": 342.714541,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:11:27.416075+00:00",
+      "reader_minimum_uptime_seconds": 372.74984,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:11:57.450590+00:00",
+      "reader_minimum_uptime_seconds": 402.784355,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:12:27.489454+00:00",
+      "reader_minimum_uptime_seconds": 432.823219,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:12:57.525720+00:00",
+      "reader_minimum_uptime_seconds": 462.859485,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:13:27.562926+00:00",
+      "reader_minimum_uptime_seconds": 492.896691,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:13:57.600271+00:00",
+      "reader_minimum_uptime_seconds": 522.934036,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:14:27.633695+00:00",
+      "reader_minimum_uptime_seconds": 552.96746,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:14:57.669821+00:00",
+      "reader_minimum_uptime_seconds": 583.003586,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:15:27.707520+00:00",
+      "reader_minimum_uptime_seconds": 613.041285,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:15:57.733453+00:00",
+      "reader_minimum_uptime_seconds": 643.067218,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:16:27.761968+00:00",
+      "reader_minimum_uptime_seconds": 673.095733,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:16:57.798607+00:00",
+      "reader_minimum_uptime_seconds": 703.132372,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:17:27.835584+00:00",
+      "reader_minimum_uptime_seconds": 733.169349,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:17:57.869993+00:00",
+      "reader_minimum_uptime_seconds": 763.203758,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:18:27.902385+00:00",
+      "reader_minimum_uptime_seconds": 793.23615,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:18:57.939023+00:00",
+      "reader_minimum_uptime_seconds": 823.272788,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:19:27.979644+00:00",
+      "reader_minimum_uptime_seconds": 853.313409,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:19:58.014123+00:00",
+      "reader_minimum_uptime_seconds": 883.347888,
+      "containers_match": true
+    },
+    {
+      "at": "2026-11-27T00:20:14.702348+00:00",
+      "reader_minimum_uptime_seconds": 900.036113,
+      "containers_match": true
+    }
+  ]
+}

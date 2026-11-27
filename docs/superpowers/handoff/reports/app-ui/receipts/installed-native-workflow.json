@@ -1,0 +1,114 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "populated native selection",
+      "passed": true
+    },
+    {
+      "name": "native batch keeps all chosen references",
+      "passed": true
+    },
+    {
+      "name": "three real notebook cards",
+      "passed": true
+    },
+    {
+      "name": "native fragment opens settings without script",
+      "passed": true
+    },
+    {
+      "name": "native settings preserve chosen references",
+      "passed": true
+    },
+    {
+      "name": "native settings preserve selected window",
+      "passed": true
+    },
+    {
+      "name": "no-JS fallback has no readout gap",
+      "passed": true
+    },
+    {
+      "name": "method initially closed",
+      "passed": true
+    },
+    {
+      "name": "print preserves method caveat inside closed details",
+      "passed": true
+    },
+    {
+      "name": "print restores server SVG",
+      "passed": true
+    },
+    {
+      "name": "print hides app controls",
+      "passed": true
+    },
+    {
+      "name": "print preserves source metadata",
+      "passed": true
+    },
+    {
+      "name": "populated native selection",
+      "passed": true
+    },
+    {
+      "name": "native batch keeps all chosen references",
+      "passed": true
+    },
+    {
+      "name": "three real notebook cards",
+      "passed": true
+    },
+    {
+      "name": "native fragment opens settings without script",
+      "passed": true
+    },
+    {
+      "name": "native settings preserve chosen references",
+      "passed": true
+    },
+    {
+      "name": "native settings preserve selected window",
+      "passed": true
+    },
+    {
+      "name": "keyboard enters first visible task",
+      "passed": true
+    },
+    {
+      "name": "immediate visible keyboard focus",
+      "passed": true
+    },
+    {
+      "name": "keyboard opens secondary navigation",
+      "passed": true
+    },
+    {
+      "name": "point Enter does not submit settings or reset position",
+      "passed": true
+    },
+    {
+      "name": "method initially closed",
+      "passed": true
+    },
+    {
+      "name": "print preserves method caveat inside closed details",
+      "passed": true
+    },
+    {
+      "name": "print restores server SVG",
+      "passed": true
+    },
+    {
+      "name": "print hides app controls",
+      "passed": true
+    },
+    {
+      "name": "print preserves source metadata",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,319 @@
+{
+  "at": "2026-11-27T00:05:20.127467+00:00",
+  "containers": {
+    "prumo": {
+      "id": "3df68917082909ac9de6dca6c9f3c68d6bfb22994096d2ad5f4d2ab86e4a8e25",
+      "image": "sha256:a15299e5b767fd27133b7ab31724b31f7422be1e13a589d340c788932c459cbd",
+      "started": "2026-11-27T00:05:14.666235324Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    },
+    "prumo-ingest": {
+      "id": "fd1f7b572bd8f355de68f3ea21e19eed2d3f81cb45b168c111cb1bb2c343d5e0",
+      "image": "sha256:8679a19d535a450343c5bd130104c58a466dddb095957cf610e48684cfd28af9",
+      "started": "2026-11-23T08:32:43.627785908Z",
+      "restarts": 0,
+      "running": true,
+      "health": null
+    },
+    "prumo-backoffice": {
+      "id": "38f8892d91960be0ec4c84b6e5c26e30605789c3a8d5217d3dec7475f151c01b",
+      "image": "sha256:307f5eb68546a56dc235810a06f762846ff6a164a7799f91ca914306ba89fc1d",
+      "started": "2026-11-27T00:05:14.662541199Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    }
+  },
+  "checks": [
+    {
+      "check": "all services running",
+      "passed": true
+    },
+    {
+      "check": "web and admin healthy",
+      "passed": true
+    },
+    {
+      "check": "integrity and FK",
+      "passed": true
+    },
+    {
+      "check": "worker identity/image/start/restarts unchanged",
+      "passed": true
+    },
+    {
+      "check": "schema/migrations unchanged",
+      "passed": true
+    },
+    {
+      "check": "authored CMS/history unchanged",
+      "passed": true
+    },
+    {
+      "check": "all unrelated tracked infra edits preserved",
+      "passed": true
+    },
+    {
+      "check": "preexisting infra edits preserved",
+      "passed": true
+    },
+    {
+      "check": "prumo recreated",
+      "passed": true
+    },
+    {
+      "check": "prumo logs free of error-class lines",
+      "passed": true
+    },
+    {
+      "check": "prumo-backoffice recreated",
+      "passed": true
+    },
+    {
+      "check": "prumo-backoffice logs free of error-class lines",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms/page/inicio",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms/page/inicio",
+      "passed": true
+    },
+    {
+      "check": "new editor with local toolkit",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /cms/page/inicio/preview",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /cms/page/inicio/preview",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /queue",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /queue",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /series",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /series",
+      "passed": true
+    },
+    {
+      "check": "trusted proxy /derived",
+      "passed": true
+    },
+    {
+      "check": "private strict CSP /derived",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/css/prumo.css",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/css/discovery.css",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/css/admin.css",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/js/admin.js",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/images/prumo/favicon.svg",
+      "passed": true
+    },
+    {
+      "check": "installed admin asset static/vendor/tabler/1.7.5/tabler.min.css",
+      "passed": true
+    },
+    {
+      "check": "direct anonymous refused",
+      "passed": true
+    },
+    {
+      "check": "forged identity refused",
+      "passed": true
+    },
+    {
+      "check": "non-owner refused",
+      "passed": true
+    },
+    {
+      "check": "wrong proxy secret refused",
+      "passed": true
+    },
+    {
+      "check": "cross-origin form refused without write",
+      "passed": true
+    }
+  ],
+  "completed": true,
+  "passed": true,
+  "checkout": "733a5362ca0c90ccacf4f5c447c79cdde3a2516f",
+  "infra_status": [
+    " M .env",
+    " M secrets/web.enc.env",
+    " M stacks/web/compose.yml",
+    " M stacks/web/compose/prumo-backoffice.yml",
+    " M stacks/web/images/ifc-viewer/dist-xeokit/index.html",
+    " M stacks/web/images/prumo",
+    " M stacks/web/images/schedule-app/backend/main.py",
+    " D stacks/web/images/schedule-app/frontend/dist/assets/exceljs.min-DKVVNqIe.js",
+    " D stacks/web/images/schedule-app/frontend/dist/assets/index-Bsjn8-VJ.js",
+    " D stacks/web/images/schedule-app/frontend/dist/assets/index-CRni1cjL.css",
+    " M stacks/web/images/schedule-app/frontend/dist/index.html",
+    "?? stacks/web/compose/ifc4d-api.yml",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/4d/",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/4d",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/data",
+    "?? stacks/web/images/ifc4d-api/",
+    "?? stacks/web/images/schedule-app/frontend/dist/assets/exceljs.min-CLa2KqzS.js",
+    "?? stacks/web/images/schedule-app/frontend/dist/assets/index-8rF85Kb8.js",
+    "?? stacks/web/images/schedule-app/frontend/dist/assets/index-BXJcwlWN.css"
+  ],
+  "preexisting_infra_diff": {
+    "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+    "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb"
+  },
+  "unrelated_infra_sha256": "5a36a8aec4ef338007efdea1838da56c341c26851138b1f04a1699a0288c2b53",
+  "infra_head": "46e72210c7143a385eaee6f0432d86e12e6a6e89",
+  "unrelated_infra_paths": {
+    ".env": "d20269a64172a1e8abe11c4d2478b8d48a1e0cafa4994b3bacb7475826c9c7a3",
+    "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+    "stacks/web/compose.yml": "2670e9ad427c1d857c6c87725edbe075b36d5695a3038086550a23c4566b709d",
+    "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb",
+    "stacks/web/images/ifc-viewer/dist-xeokit/index.html": "7881e0a50d6660c025370285bef235dd6653f57338bf2342d5d1c469e0fcfa2e",
+    "stacks/web/images/schedule-app/backend/main.py": "a48704ccff407713166d5a19c1f7cfeb908732b25b3a11791ba43c996a330b28",
+    "stacks/web/images/schedule-app/frontend/dist/assets/exceljs.min-DKVVNqIe.js": "3c43afaabe0e4de2d70740ca0a16f9aa54181b792ff169b3627c5410b9de8e61",
+    "stacks/web/images/schedule-app/frontend/dist/assets/index-Bsjn8-VJ.js": "98725840df70529cc38430ddcd2020ebbafeab1615e0dee290ce4ede827aaa03",
+    "stacks/web/images/schedule-app/frontend/dist/assets/index-CRni1cjL.css": "d3311f6ea675c7fa72c47ed6516cf84306e92ae0dcd5f1205e1cb1e81bccdd52",
+    "stacks/web/images/schedule-app/frontend/dist/index.html": "1f13f30e8472365b0b50a1824474ec503940f3640cbd53235ac225886bfc8971"
+  },
+  "schema": "e314abd22f6d1575a620881e1f2e8bc480c67206b3cf53f61d9369a8a145f13a",
+  "migrations": [
+    [
+      "0001_init"
+    ],
+    [
+      "0002_dataset_key"
+    ],
+    [
+      "0003_verification_replay"
+    ],
+    [
+      "0004_verification_audit"
+    ],
+    [
+      "0005_served_licence_gate"
+    ],
+    [
+      "0006_pt15m"
+    ],
+    [
+      "0007_scoped_legacy_serving"
+    ],
+    [
+      "0008_input_origin"
+    ],
+    [
+      "0009_blocked_stale_state"
+    ],
+    [
+      "0010_scheduler_state"
+    ],
+    [
+      "0011_data_time_serving_and_withdrawal"
+    ],
+    [
+      "0012_verification_audit_v2"
+    ],
+    [
+      "0013_run_and_audit_guards"
+    ],
+    [
+      "0014_derived_layer"
+    ],
+    [
+      "0015_observation_run_index"
+    ],
+    [
+      "0016_language_neutral_derived"
+    ],
+    [
+      "0017_derived_caveats"
+    ],
+    [
+      "0018_editorial_composition"
+    ],
+    [
+      "0019_statistics_cms"
+    ]
+  ],
+  "cms": {
+    "cms_document": {
+      "rows": 12,
+      "sha256": "14a31f5e0ca2cb7b6357f5451a770031e9bf2719263b9b5c197c221d351b2aa3"
+    },
+    "cms_revision": {
+      "rows": 15,
+      "sha256": "f34f5dbfdfcef30fdae93918b55ddb551906120948861b1bc579e4e275ecfdff"
+    },
+    "cms_event": {
+      "rows": 29,
+      "sha256": "74464c51089ebced2b5b9182a519d9b19c359bcb1ace221ec8ee1371715d4a0f"
+    }
+  },
+  "quick_check": "ok",
+  "foreign_keys": [],
+  "assets": {
+    "static/css/prumo.css": {
+      "bytes": 29021,
+      "sha256": "90696fcaffdff55a0192749de2023fb11e6f88f9bfe438d3af6b26cc21339d48"
+    },
+    "static/css/discovery.css": {
+      "bytes": 8487,
+      "sha256": "14c0ebe1ad8b18e32f71b74c607e0ad492ee38e80bbd83f44a099ce8fbfe17fb"
+    },
+    "static/css/admin.css": {
+      "bytes": 29443,
+      "sha256": "da469e204c34959b6884ca3ec83675ee632ed3563ff29b5feb0b69ae46aed096"
+    },
+    "static/js/admin.js": {
+      "bytes": 6714,
+      "sha256": "8cb3667a12982b13a113664280e97a82ce32806b4c879ac405eafedcd2f6b17f"
+    },
+    "static/images/prumo/favicon.svg": {
+      "bytes": 319,
+      "sha256": "0654b83780747bd7218a0c5dce9f62d2d120359aea178fb30c75757e94c92db6"
+    },
+    "static/vendor/tabler/1.7.5/tabler.min.css": {
+      "bytes": 683684,
+      "sha256": "4421622c90b17e122517d1f4bcc245be004ef3e353f43481ef07e13a55d32ce3"
+    }
+  }
+}

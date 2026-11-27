@@ -1,0 +1,1564 @@
+{
+  "scope": [
+    "app",
+    "analysis",
+    "static",
+    "ingest",
+    "backoffice",
+    "presentation",
+    "registry",
+    "requirements.txt",
+    "entrypoint.sh",
+    "Dockerfile"
+  ],
+  "changes": [
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/navigation.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/_notebook_chart.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/_notebook_search.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/_notebook_settings.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/_site_header.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/_ui.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/base.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/cms_home.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/compare_index.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/notebook.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "app/templates/search.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "presentation/notebook.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "static/css/app-shell.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "static/css/chart-inspector.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "static/css/discovery.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "static/css/prumo.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/docker/stacks/web/images/prumo",
+      "path": "static/css/workspace.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "Dockerfile",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "analysis/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "analysis/periods.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "analysis/transforms.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/calendar_model.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/calendar_notebook.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/calendar_svg.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/chart_model.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/charts.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/cms_comparisons.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/cms_reads.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/cms_routes.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/country_comparisons.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/discovery_selection.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/formatting.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/home.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/interactive.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/main.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/navigation.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/notebook.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/notebook_chart.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/notebook_routes.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/portugal_comparisons.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/reads.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/statistical_definitions.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/404.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/503.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_card.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_chart.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_cms_analysis.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_cms_blocks.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_derived_formula.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_derived_latest.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_discovery_filters.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_notebook_analysis.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_notebook_chart.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_notebook_evidence.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_notebook_search.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_notebook_settings.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_original_value.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_series_latest.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_series_results.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_site_header.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/_ui.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/base.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/cms_chart.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/cms_home.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/cms_index.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/cms_page.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/compare.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/compare_countries.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/compare_index.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/derived.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/home.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/home_unavailable.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/home_unpublished.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/methodology.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/notebook.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/search.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/series.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/sources.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates/theme.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/access.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/app.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/cms.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/cms_routes.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/comparison_import.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/deps.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/editorial.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/forms.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/queue.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/reads.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/registry_notes.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/replay.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/_calc_badge.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/_nav.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/_report_age.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/base.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/cms_editor.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/cms_home.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/cms_list.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/cms_macros.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/derived_detail.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/derived_list.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/editorial_list.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/editorial_page.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/error.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/item.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/overview.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/queue.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/series_detail.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates/series_list.html",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/ttl_cache.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "entrypoint.sh",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/__main__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/bundle.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/cadence.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/cli.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/cms.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/data_lag.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/db.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/derive.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/derive_verify.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/docgen.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/editorial_rules.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/flags.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/http.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/legacy_import.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0001_init.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0002_dataset_key.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0003_verification_replay.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0004_verification_audit.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0005_served_licence_gate.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0006_pt15m.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0007_scoped_legacy_serving.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0008_input_origin.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0009_blocked_stale_state.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0010_scheduler_state.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0011_data_time_serving_and_withdrawal.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0012_verification_audit_v2.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0013_run_and_audit_guards.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0014_derived_layer.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0015_observation_run_index.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0016_language_neutral_derived.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0017_derived_caveats.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0018_editorial_composition.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations/0019_statistics_cms.sql",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/models.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/operations.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/pipeline.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/propose_registry.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/rawstore.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/receipts.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/registry.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sampling.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/scheduler.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/bportugal.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/eredes.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/eurostat.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/fred.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/ine.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/oecd.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/ren.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources/worldbank.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/status.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/validate.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/bportugal.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/eredes.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/eurostat.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/fred.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/independence.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/ine.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/oecd.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/ren.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers/worldbank.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verify.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/catalog/__init__.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/catalog/en.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/catalog/pt.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/notebook.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/portugal_comparisons.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/web.py",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/core.proposed.yaml",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/core.yaml",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/deferred-tail.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/licences-todo.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/mappings-oecd.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/overlaps.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/unclassified.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/unmapped-dgeg.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/unmapped-eurostat.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/unmapped-fred.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/unmapped-ine.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/unmapped-worldbank.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry/unverifiable.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "requirements.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css/admin.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css/chart-inspector.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css/discovery.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css/fonts.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css/icons.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css/prumo.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css/workspace.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/icons/LICENSE.bootstrap-icons.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/icons/README.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/icons/prumo-icons.woff2",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/GUST-FONT-LICENSE.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/GUST-FONT-LICENSE.txt.gz",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/LICENCES.json",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/MANIFEST.json",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/OFL-1.1.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/OFL-1.1.txt.gz",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/README.md",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/lato-bold.woff2",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/lato-regular.woff2",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/lato-semibold.woff2",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/schola-bold.woff2",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo/schola-regular.woff2",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/images/prumo/favicon.svg",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/admin.js",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/licenses/echarts-APACHE-2.0.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/licenses/tslib-0BSD.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/licenses/zrender-APACHE-2.0.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/prumo-charts.NOTICE.txt",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/prumo-charts.manifest.json",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/prumo-charts.min.js",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/selection.js",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/vendor/tabler/1.7.5/LICENSE",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/vendor/tabler/1.7.5/manifest.json",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/vendor/tabler/1.7.5/tabler.min.css",
+      "before": "0o600",
+      "after": "0o644"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/vendor/tabler/1.7.5",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/vendor",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/sources",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/verifiers",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/css",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest/migrations",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "ingest",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/images/prumo",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "presentation/catalog",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": ".",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/images",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/vendor/tabler",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/js/licenses",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "registry",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "app/templates",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "backoffice/templates",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "analysis",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/prumo",
+      "before": "0o700",
+      "after": "0o755"
+    },
+    {
+      "root": "/home/joao/prumo-operations/app-ui-release-20261126/build-source",
+      "path": "static/fonts/icons",
+      "before": "0o700",
+      "after": "0o755"
+    }
+  ]
+}

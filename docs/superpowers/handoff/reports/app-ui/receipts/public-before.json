@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "cases": {
+    "https://cae.joao.date/series/worldbank.life_expectancy.DE": {
+      "geometry_sha256": "875690695aa8ea59e5db8bd3cad0b2a83d822dae086128769396c1a9919111b2",
+      "points": 65,
+      "csv_except_export_clock_sha256": "a9121f92a4811de24e9a3bac554e4d6f46b16bd1d55cf5f5e5fcb6d9444455fd"
+    },
+    "https://cae.joao.date/series/worldbank.trade_balance_pct_gdp.DE": {
+      "geometry_sha256": "4c834cd84ba5f29841093d63f5f67a44d626f90772a4f3a6042bbd35fe1c6f36",
+      "points": 56,
+      "csv_except_export_clock_sha256": "2f755c5f08ade04fe76cc6f5549ebe601fd9e8ec8210f9eecb0e3243ab0eeb43"
+    },
+    "https://cae.joao.date/calculadas/derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct": {
+      "geometry_sha256": "21f55e8e0c540279cfd917b3295508f41344ec7ebc40cbb71fe6b26afd691ff2",
+      "points": 249,
+      "csv_except_export_clock_sha256": "98adeaff3c328a071567d54864730f1e48df4b99bdc368943cf4f2b45a658547"
+    },
+    "https://cae.joao.date/comparar/taxas-juro-credito-depositos": {
+      "geometry_sha256": "1a2fb8fd50322be7137574dd129f23ce5428dcdbb112a45d00e1ed6e4c538911",
+      "points": 121
+    },
+    "https://joao.date/dados/series/worldbank.life_expectancy.DE": {
+      "geometry_sha256": "875690695aa8ea59e5db8bd3cad0b2a83d822dae086128769396c1a9919111b2",
+      "points": 65,
+      "csv_except_export_clock_sha256": "a9121f92a4811de24e9a3bac554e4d6f46b16bd1d55cf5f5e5fcb6d9444455fd"
+    },
+    "https://joao.date/dados/series/worldbank.trade_balance_pct_gdp.DE": {
+      "geometry_sha256": "4c834cd84ba5f29841093d63f5f67a44d626f90772a4f3a6042bbd35fe1c6f36",
+      "points": 56,
+      "csv_except_export_clock_sha256": "2f755c5f08ade04fe76cc6f5549ebe601fd9e8ec8210f9eecb0e3243ab0eeb43"
+    },
+    "https://joao.date/dados/calculadas/derived.ipi_seasonal_cae_TOT.PT.yoy_change_pct": {
+      "geometry_sha256": "21f55e8e0c540279cfd917b3295508f41344ec7ebc40cbb71fe6b26afd691ff2",
+      "points": 249,
+      "csv_except_export_clock_sha256": "98adeaff3c328a071567d54864730f1e48df4b99bdc368943cf4f2b45a658547"
+    },
+    "https://joao.date/dados/comparar/taxas-juro-credito-depositos": {
+      "geometry_sha256": "1a2fb8fd50322be7137574dd129f23ce5428dcdbb112a45d00e1ed6e4c538911",
+      "points": 121
+    }
+  }
+}

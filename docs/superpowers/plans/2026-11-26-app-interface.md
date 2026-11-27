@@ -25,4 +25,4 @@ Apenas site e backoffice, que incorpora a pré-visualização pública estática
 
 ## Estado
 
-Implementação e revisões independentes concluídas. Verificação final e instalação em curso. Evidência em `../handoff/reports/app-ui/`; o registo de instalação deve substituir este estado apenas depois da verificação real.
+Implementação, revisões independentes, CI integral e instalação concluídas em `733a536` (runtime `5e68fd0`). A aceitação pública, os percursos nativos e as pré-visualizações passaram; o recibo da observação final dos leitores fica em `../handoff/reports/app-ui/installed.md`. A passagem editorial L4 e a aceitação humana com leitor de ecrã continuam separadas.

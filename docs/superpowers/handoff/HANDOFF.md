@@ -1,5 +1,15 @@
 # HANDOFF - Prumo base data pipeline (read this first)
 
+## App-style reader interface installed (2026-11-27)
+
+Owner requested a clearer application UI while retaining the approved chart behavior. Release/main `733a536`, runtime `5e68fd0`, is installed on f0nix; exact-release CI `45913029165` passed 3424 tests, 43 skipped/seven live deselected. Direct primary navigation, distinct action roles, grouped settings and bounded analytical surfaces are live. Large functional type, carmim/plumb-bob, four-significant-figure formatting and mobile-below-plot/desktop-floating inspection remain. Public editorial content still comes exclusively from published CMS revisions; no homepage/draft/history write ran.
+
+Controller clean-commit 95 and corrected-module 48 tests passed, including real chart interaction. Final local browser matrix 1276/70 and native workflow 28 passed with the full isolated database unchanged. Installed: 512 checks/28 cases on both addresses, 27 native/print workflow checks, 54 real-editor and 26 private-preview checks passed. Eight coordinate cases/six CSVs preserve original values apart from export time. A 400-second installed broad-matrix timeout is retained and not counted as a pass. Human screen-reader acceptance and separate source/worker gates stay open.
+
+Initial Admin activation failed because source materialisation inherited umask 077, shipping a 0600 presentation module to uid 1000. Only tracked runtime-code modes were restored to their reviewed readability/executability; no data, sidecar, secret or owner change. Final web/Admin started healthy at 00:05:14 UTC, actual images `a15299e5` / `307f5eb6`, zero restarts. The full worker baseline, schema/migrations and CMS/history fingerprints match. Reader observation completed at 00:20:14 UTC after 900.036113 seconds/29 matching samples; final 36 state/access checks passed again at 00:21:11 UTC. The browser-equivalent public Admin request challenges through Authelia; human login/accessibility acceptance remains separate. Operational records: `f0nix:/home/joao/prumo-operations/app-ui-release-20261126`; recovery is actual old checkout `2c784a1` and pinned `rollback-app-ui-20261126` reader tags, no database restore. Read `reports/app-ui/installed.md` and `../plans/2026-11-26-app-interface.md`. Main holder remains `/home/joao/docker/stacks/web/images/prumo`; feature/evidence worktree is `/home/joao/projects/prumo-app-ui`.
+
+L4 authored data-first entry, semantic grouping and dated/human-approved AI remain separate. No additional product phase is started by this visual release.
+
 ## Mobile point inspection installed (2026-11-26)
 
 Owner requested that mobile values appear below the chart instead of hiding it, while retaining the desktop floating effect. Runtime/main `f6fc106` is pushed and installed on f0nix from 21:32 UTC. Shared narrow/coarse inspection uses the full-width persistent readout immediately after the plot, then the native range; swatches, titles and values keep stable slots. Fine desktop hover stays floating. Responsive/hybrid touch-to-mouse changes preserve the selected row and touch scrolling does not select.

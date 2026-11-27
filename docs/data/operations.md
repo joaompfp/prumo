@@ -1,6 +1,12 @@
 # Prumo image and ingestion operations
 
-## Current responsive chart inspection
+## Current app-style reader interface
+
+Release `733a536` (runtime `5e68fd0`) is installed from 27/11/2026, final reader starts 00:05:14 UTC. Only public web and static-preview Admin changed. Exact-release CI `45913029165` passed 3424 tests, with real browser regressions exercised locally. Installed acceptance passed 512 public checks, native JS/no-JS/print journeys, nine real editors and both static previews. Worker, schema/migrations, CMS/homepage/history, original coordinates and CSV are preserved. Reader observation completed at 00:20:14 UTC after 900.036113 seconds/29 stable samples; final 36 state/access checks passed again at 00:21:11 UTC; [installed evidence and retained activation failure](../superpowers/handoff/reports/app-ui/installed.md).
+
+Keep operator receipts private, but materialise source checkouts/build contexts with `umask 022`: Git preserves executable intent, not general readability. The first activation used 077 and Admin uid 1000 could not read a 0600 Python module even though the root web reader started. Restore only reviewed modes of tracked runtime files/directories; never use this as authority to chmod data, sidecars or secrets. After correction, the actual uid-1000 import and all 139 public/preview runtime files were checked. Recovery is prior checkout `2c784a1` plus pinned `prumo:rollback-app-ui-20261126` and `prumo-backoffice:rollback-app-ui-20261126`. Stop only the bind-mounted reader before restoring code; recreate affected readers through the established aliases, preserve database/history/worker. Operator directory: `/home/joao/prumo-operations/app-ui-release-20261126`. Dated scripts are execution receipts, not commands to rerun blindly.
+
+## Previous responsive chart inspection
 
 Runtime/main `f6fc106` is installed from 26/11/2026 21:32 UTC. Mobile/narrow/coarse charts keep inspected values in flow below the plot, with no covering tooltip; desktop fine-hover keeps its floating tooltip. Hybrid input and responsive changes retain the period. Touch scroll does not change selection. Public web and shared static-preview Admin only were recreated. Worker, schema/migrations, authored CMS/history, original coordinates and CSV are unchanged. Exact-runtime hosted CI `45897388598` passed 3409 tests; public acceptance passed 2092 assertions on both mounts and real-editor/static-preview checks passed. Reader observation passed at 21:46:59 UTC after 900.034003 seconds/30 stable samples; final 36 state/access checks passed again at 21:47:11 UTC, worker/schema/CMS and unrelated infrastructure unchanged. Full record: [mobile inspection](../superpowers/handoff/reports/mobile-inspector/installed.md).
 

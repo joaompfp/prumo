@@ -1,0 +1,110 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "private preview HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "static preview has no executable scripts",
+      "passed": true
+    },
+    {
+      "name": "static preview strict script policy",
+      "passed": true
+    },
+    {
+      "name": "shared primary app navigation present",
+      "passed": true
+    },
+    {
+      "name": "preview links keep public base",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix workspace.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes workspace.css",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix discovery.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes discovery.css",
+      "passed": true
+    },
+    {
+      "name": "private preview HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "static preview has no executable scripts",
+      "passed": true
+    },
+    {
+      "name": "static preview strict script policy",
+      "passed": true
+    },
+    {
+      "name": "shared primary app navigation present",
+      "passed": true
+    },
+    {
+      "name": "preview links keep public base",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix workspace.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes workspace.css",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "preview uses admin asset prefix discovery.css",
+      "passed": true
+    },
+    {
+      "name": "preview exact asset bytes discovery.css",
+      "passed": true
+    }
+  ]
+}

@@ -105,7 +105,13 @@ def main():
                             check('keyboard endpoints exact', True)
                             if width <= 600:
                                 check('mobile inspection stays below plot', page.locator('.chart-shell').first.evaluate('(e) => {const r=e.querySelector(".chart-readout").getBoundingClientRect(), p=e.querySelector(".chart-scroll").getBoundingClientRect();return r.y>=p.bottom-1}'))
-                            page.mouse.move(1, 1)
+                            if width > 600:
+                                plot.scroll_into_view_if_needed()
+                                plot_box = plot.bounding_box()
+                                assert plot_box is not None
+                                page.mouse.move(plot_box['x'] + 2, plot_box['y'] + 2)
+                                page.mouse.move(1, 1)
+                                expect(page.locator('.chart-tip-line').first).to_be_hidden()
                             page.locator('h1').click()
                         page.evaluate('() => window.scrollTo(0,0)')
                         check('neutral capture at origin', page.evaluate('() => scrollY') == 0)

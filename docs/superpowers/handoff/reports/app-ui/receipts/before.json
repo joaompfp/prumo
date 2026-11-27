@@ -1,0 +1,147 @@
+{
+  "at": "2026-11-27T00:01:35.785103+00:00",
+  "containers": {
+    "prumo": {
+      "id": "dc34c7e57067ef12c385da68839ba7fc029b0763919412a7ff5f78bc703d3ac5",
+      "image": "sha256:c0a0b79f05759fc5d017be3a0bffa95e4a1aa30bd7698ce9dce9147adb6459d5",
+      "started": "2026-11-26T21:31:58.020504035Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    },
+    "prumo-ingest": {
+      "id": "fd1f7b572bd8f355de68f3ea21e19eed2d3f81cb45b168c111cb1bb2c343d5e0",
+      "image": "sha256:8679a19d535a450343c5bd130104c58a466dddb095957cf610e48684cfd28af9",
+      "started": "2026-11-23T08:32:43.627785908Z",
+      "restarts": 0,
+      "running": true,
+      "health": null
+    },
+    "prumo-backoffice": {
+      "id": "0eee588cd4cff7d1c4f0a4328b200eb9ea05b5a5318341872345dddff08b6823",
+      "image": "sha256:78093a19bde337d9adf0d1bac101ec2f3650c57ca980a9a5f25680144d5975d4",
+      "started": "2026-11-26T21:31:59.6195807Z",
+      "restarts": 0,
+      "running": true,
+      "health": "healthy"
+    }
+  },
+  "checks": [],
+  "completed": true,
+  "passed": true,
+  "checkout": "2c784a125ff1e8ace664d881b9d466c0e5dc2e82",
+  "infra_status": [
+    " M .env",
+    " M secrets/web.enc.env",
+    " M stacks/web/compose.yml",
+    " M stacks/web/compose/prumo-backoffice.yml",
+    " M stacks/web/images/ifc-viewer/dist-xeokit/index.html",
+    " M stacks/web/images/schedule-app/backend/main.py",
+    " D stacks/web/images/schedule-app/frontend/dist/assets/exceljs.min-DKVVNqIe.js",
+    " D stacks/web/images/schedule-app/frontend/dist/assets/index-Bsjn8-VJ.js",
+    " D stacks/web/images/schedule-app/frontend/dist/assets/index-CRni1cjL.css",
+    " M stacks/web/images/schedule-app/frontend/dist/index.html",
+    "?? stacks/web/compose/ifc4d-api.yml",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/4d/",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/4d",
+    "?? stacks/web/images/ifc-viewer/dist-xeokit/data/data",
+    "?? stacks/web/images/ifc4d-api/",
+    "?? stacks/web/images/schedule-app/frontend/dist/assets/exceljs.min-CLa2KqzS.js",
+    "?? stacks/web/images/schedule-app/frontend/dist/assets/index-8rF85Kb8.js",
+    "?? stacks/web/images/schedule-app/frontend/dist/assets/index-BXJcwlWN.css"
+  ],
+  "preexisting_infra_diff": {
+    "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+    "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb"
+  },
+  "unrelated_infra_sha256": "5a36a8aec4ef338007efdea1838da56c341c26851138b1f04a1699a0288c2b53",
+  "infra_head": "46e72210c7143a385eaee6f0432d86e12e6a6e89",
+  "unrelated_infra_paths": {
+    ".env": "d20269a64172a1e8abe11c4d2478b8d48a1e0cafa4994b3bacb7475826c9c7a3",
+    "secrets/web.enc.env": "297f6befcf4ed464cd3a542f102eac803a6835999cba14f7c16e48f5ae835b87",
+    "stacks/web/compose.yml": "2670e9ad427c1d857c6c87725edbe075b36d5695a3038086550a23c4566b709d",
+    "stacks/web/compose/prumo-backoffice.yml": "d4c28bafc712ca561cd920fedd8a45f479e2db17193017b687e6be157ee61ffb",
+    "stacks/web/images/ifc-viewer/dist-xeokit/index.html": "7881e0a50d6660c025370285bef235dd6653f57338bf2342d5d1c469e0fcfa2e",
+    "stacks/web/images/schedule-app/backend/main.py": "a48704ccff407713166d5a19c1f7cfeb908732b25b3a11791ba43c996a330b28",
+    "stacks/web/images/schedule-app/frontend/dist/assets/exceljs.min-DKVVNqIe.js": "3c43afaabe0e4de2d70740ca0a16f9aa54181b792ff169b3627c5410b9de8e61",
+    "stacks/web/images/schedule-app/frontend/dist/assets/index-Bsjn8-VJ.js": "98725840df70529cc38430ddcd2020ebbafeab1615e0dee290ce4ede827aaa03",
+    "stacks/web/images/schedule-app/frontend/dist/assets/index-CRni1cjL.css": "d3311f6ea675c7fa72c47ed6516cf84306e92ae0dcd5f1205e1cb1e81bccdd52",
+    "stacks/web/images/schedule-app/frontend/dist/index.html": "1f13f30e8472365b0b50a1824474ec503940f3640cbd53235ac225886bfc8971"
+  },
+  "schema": "e314abd22f6d1575a620881e1f2e8bc480c67206b3cf53f61d9369a8a145f13a",
+  "migrations": [
+    [
+      "0001_init"
+    ],
+    [
+      "0002_dataset_key"
+    ],
+    [
+      "0003_verification_replay"
+    ],
+    [
+      "0004_verification_audit"
+    ],
+    [
+      "0005_served_licence_gate"
+    ],
+    [
+      "0006_pt15m"
+    ],
+    [
+      "0007_scoped_legacy_serving"
+    ],
+    [
+      "0008_input_origin"
+    ],
+    [
+      "0009_blocked_stale_state"
+    ],
+    [
+      "0010_scheduler_state"
+    ],
+    [
+      "0011_data_time_serving_and_withdrawal"
+    ],
+    [
+      "0012_verification_audit_v2"
+    ],
+    [
+      "0013_run_and_audit_guards"
+    ],
+    [
+      "0014_derived_layer"
+    ],
+    [
+      "0015_observation_run_index"
+    ],
+    [
+      "0016_language_neutral_derived"
+    ],
+    [
+      "0017_derived_caveats"
+    ],
+    [
+      "0018_editorial_composition"
+    ],
+    [
+      "0019_statistics_cms"
+    ]
+  ],
+  "cms": {
+    "cms_document": {
+      "rows": 12,
+      "sha256": "14a31f5e0ca2cb7b6357f5451a770031e9bf2719263b9b5c197c221d351b2aa3"
+    },
+    "cms_revision": {
+      "rows": 15,
+      "sha256": "f34f5dbfdfcef30fdae93918b55ddb551906120948861b1bc579e4e275ecfdff"
+    },
+    "cms_event": {
+      "rows": 29,
+      "sha256": "74464c51089ebced2b5b9182a519d9b19c359bcb1ace221ec8ee1371715d4a0f"
+    }
+  },
+  "quick_check": "ok",
+  "foreign_keys": []
+}

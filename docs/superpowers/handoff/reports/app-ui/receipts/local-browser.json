@@ -1,0 +1,6153 @@
+{
+  "completed": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "mobile inspection stays below plot",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "configure reveals native settings",
+      "passed": true
+    },
+    {
+      "name": "settings groups present",
+      "passed": true
+    },
+    {
+      "name": "settings do not displace earlier plot",
+      "passed": true
+    },
+    {
+      "name": "settings preserve font",
+      "passed": true
+    },
+    {
+      "name": "settings controls fit their panel",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "real canvas painted",
+      "passed": true
+    },
+    {
+      "name": "usable plot height",
+      "passed": true
+    },
+    {
+      "name": "point inspector outside form",
+      "passed": true
+    },
+    {
+      "name": "keyboard endpoints exact",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    },
+    {
+      "name": "route HTTP 200",
+      "passed": true
+    },
+    {
+      "name": "root type preserved",
+      "passed": true
+    },
+    {
+      "name": "three direct task links visible",
+      "passed": true
+    },
+    {
+      "name": "no horizontal page overflow",
+      "passed": true
+    },
+    {
+      "name": "no page or CSP errors",
+      "passed": true
+    },
+    {
+      "name": "no off-origin requests",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS app-shell.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS workspace.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS discovery.css",
+      "passed": true
+    },
+    {
+      "name": "exact served CSS chart-inspector.css",
+      "passed": true
+    },
+    {
+      "name": "nav reading scale preserved",
+      "passed": true
+    },
+    {
+      "name": "utility never covers task navigation",
+      "passed": true
+    },
+    {
+      "name": "native more panel opens",
+      "passed": true
+    },
+    {
+      "name": "open menu stays within viewport",
+      "passed": true
+    },
+    {
+      "name": "neutral capture at origin",
+      "passed": true
+    }
+  ],
+  "cases": [
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 320,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 569.34375,
+        "width": 258,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 320,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 163
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 320,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 514.171875,
+        "width": 258,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 320,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 163
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 320,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 552.546875,
+        "width": 258,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 320,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 743.765625,
+        "width": 258,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 320,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 163
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 360,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 569.34375,
+        "width": 298,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 360,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 163
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 360,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 514.171875,
+        "width": 298,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 360,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 163
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 360,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 505.203125,
+        "width": 298,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 360,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 163
+      },
+      "plot": {
+        "x": 31,
+        "y": 743.765625,
+        "width": 298,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 360,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 163
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 390,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 468.578125,
+        "width": 328,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 390,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 390,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 468.171875,
+        "width": 328,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 390,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 390,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 459.203125,
+        "width": 328,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 390,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 697.765625,
+        "width": 328,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 390,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 600,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 377.59375,
+        "width": 538,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 600,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 600,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 390.421875,
+        "width": 538,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 600,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 600,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 412.4375,
+        "width": 538,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 600,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 117
+      },
+      "plot": {
+        "x": 31,
+        "y": 552.734375,
+        "width": 538,
+        "height": 264
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 600,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 600,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 768,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 117
+      },
+      "plot": {
+        "x": 39.421875,
+        "y": 324.25,
+        "width": 689.15625,
+        "height": 266.25
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 768,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 768,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 117
+      },
+      "plot": {
+        "x": 39.421875,
+        "y": 398.421875,
+        "width": 689.15625,
+        "height": 266.25
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 768,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 768,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 117
+      },
+      "plot": {
+        "x": 39.421875,
+        "y": 407.4375,
+        "width": 689.15625,
+        "height": 266.25
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 768,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 117
+      },
+      "plot": {
+        "x": 39.421875,
+        "y": 462.125,
+        "width": 689.15625,
+        "height": 266.25
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 768,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 900,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 900,
+        "height": 117
+      },
+      "plot": {
+        "x": 42.59375,
+        "y": 328.25,
+        "width": 814.8125,
+        "height": 314.8125
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 900,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 900,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 900,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 900,
+        "height": 117
+      },
+      "plot": {
+        "x": 42.59375,
+        "y": 351.65625,
+        "width": 814.8125,
+        "height": 314.8125
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 900,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 900,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 900,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 900,
+        "height": 117
+      },
+      "plot": {
+        "x": 42.59375,
+        "y": 364.671875,
+        "width": 814.8125,
+        "height": 314.8125
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 900,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 900,
+        "height": 117
+      },
+      "plot": {
+        "x": 42.59375,
+        "y": 419.359375,
+        "width": 814.8125,
+        "height": 314.8125
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 900,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 900,
+        "height": 117
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 901,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 901,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 42.609375,
+        "y": 328.21875,
+        "width": 815.78125,
+        "height": 315.1875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 901,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 901,
+        "height": 116.96875
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 901,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 901,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 42.609375,
+        "y": 351.625,
+        "width": 815.78125,
+        "height": 315.1875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 901,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 901,
+        "height": 116.96875
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 901,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 901,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 42.609375,
+        "y": 364.640625,
+        "width": 815.78125,
+        "height": 315.1875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 901,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 901,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 42.609375,
+        "y": 419.328125,
+        "width": 815.78125,
+        "height": 315.1875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 901,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 901,
+        "height": 116.96875
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 1120,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1120,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 47.875,
+        "y": 335.21875,
+        "width": 1024.25,
+        "height": 395.71875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 1120,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1120,
+        "height": 116.96875
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 1120,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1120,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 47.875,
+        "y": 358.953125,
+        "width": 1024.25,
+        "height": 395.71875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 1120,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1120,
+        "height": 116.96875
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 1120,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1120,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 47.875,
+        "y": 371.96875,
+        "width": 1024.25,
+        "height": 395.71875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 1120,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1120,
+        "height": 116.96875
+      },
+      "plot": {
+        "x": 47.875,
+        "y": 426.65625,
+        "width": 1024.25,
+        "height": 395.71875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 1120,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1120,
+        "height": 116.96875
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 1440,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 69
+      },
+      "plot": {
+        "x": 151.15625,
+        "y": 291.25,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 1440,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 69
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 1440,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 69
+      },
+      "plot": {
+        "x": 151.15625,
+        "y": 316.5625,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 1440,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 69
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 1440,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 69
+      },
+      "plot": {
+        "x": 151.15625,
+        "y": 329.578125,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 1440,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 69
+      },
+      "plot": {
+        "x": 151.15625,
+        "y": 384.265625,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 1440,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 69
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/caderno?s=ine.hicp_yoy.PT&s=ine.unemployment_monthly.PT",
+      "width": 1920,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 69
+      },
+      "plot": {
+        "x": 391.15625,
+        "y": 291.25,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/pesquisa?q=eletricidade",
+      "width": 1920,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 69
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar/taxas-juro-credito-depositos",
+      "width": 1920,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 69
+      },
+      "plot": {
+        "x": 391.15625,
+        "y": 316.5625,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/comparar",
+      "width": 1920,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 69
+      },
+      "plot": null
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/series/ine.hicp_yoy.PT",
+      "width": 1920,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 69
+      },
+      "plot": {
+        "x": 391.15625,
+        "y": 329.578125,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/calculadas/derived.unemployment_monthly.PT.yoy_change",
+      "width": 1920,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 69
+      },
+      "plot": {
+        "x": 391.15625,
+        "y": 384.265625,
+        "width": 1137.6875,
+        "height": 439.546875
+      }
+    },
+    {
+      "base": "http://127.0.0.1:8140",
+      "route": "/",
+      "width": 1920,
+      "header": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 69
+      },
+      "plot": null
+    }
+  ],
+  "warnings": []
+}
