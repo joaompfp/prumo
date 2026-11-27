@@ -1,0 +1,42 @@
+{
+  "components": [
+    "reboot",
+    "buttons",
+    "form-label",
+    "form-text",
+    "form-control",
+    "form-select",
+    "form-check",
+    "input-group",
+    "nav",
+    "nav-link",
+    "pagination",
+    "page-item",
+    "page-link",
+    "visually-hidden"
+  ],
+  "license": {
+    "path": "static/vendor/bootstrap/LICENSE",
+    "sha256": "bc0cd18d94c028f1c0b62ec9fdaddcb9921c1e07c29cf52dc7df8cca9daf2488"
+  },
+  "package": "bootstrap",
+  "reproduce": "npm pack bootstrap@5.3.9 && tar -xzf bootstrap-5.3.9.tgz && python scripts/vendor_bootstrap.py --package package",
+  "source": "https://www.npmjs.com/package/bootstrap/v/5.3.9",
+  "subset": {
+    "bytes": 52035,
+    "path": "static/vendor/bootstrap/bootstrap-subset.css",
+    "sha256": "0352c4ba9ff3c81c16ac3a6f351534269329769f8e5e0076411411e3da23afe8"
+  },
+  "upstream": {
+    "LICENSE": {
+      "sha256": "bc0cd18d94c028f1c0b62ec9fdaddcb9921c1e07c29cf52dc7df8cca9daf2488"
+    },
+    "bootstrap-reboot.css": {
+      "sha256": "8667435d3e5865bfdfbf60602245f433151ba918bf0a5518885e5bfef39621e7"
+    },
+    "bootstrap.css": {
+      "sha256": "ec743fa098b0dc109177873c05296547234dcff6777c5a7d7324974a1aa4c172"
+    }
+  },
+  "version": "5.3.9"
+}
