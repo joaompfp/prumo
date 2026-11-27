@@ -1,7 +1,7 @@
 # Acervo do debate nacional
 
 Data de seleção: 27 de novembro de 2026.
-Estado: conteúdo final em aceitação, ainda não publicado em produção.
+Estado: publicado pelo CMS em produção a 27/11/2026, 04:31 UTC. Conteúdo inicial versionado em `9087bc4`; edições posteriores pertencem ao CMS.
 
 ## Objetivo e contrato
 
